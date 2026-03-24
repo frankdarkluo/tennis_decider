@@ -1,0 +1,421 @@
+export type ContentType = "video" | "article" | "post";
+export type ContentPlatform = "Bilibili" | "Xiaohongshu" | "Zhihu" | "YouTube" | "Instagram";
+
+export type ContentItem = {
+  id: string;
+  title: string;
+  creatorId: string;
+  platform: ContentPlatform;
+  type: ContentType;
+  levels: string[];
+  skills: string[];
+  problemTags: string[];
+  language: "zh" | "en";
+  summary: string;
+  reason: string;
+  duration?: string;
+  url: string;
+  cover?: string;
+};
+
+export const contents: ContentItem[] = [
+  {
+    id: "content_gaiao_01",
+    title: "正手基础：先建立挥拍框架",
+    creatorId: "creator_gaiao",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["2.5", "3.0"],
+    skills: ["forehand"],
+    problemTags: ["forehand-basics", "no-clear-technique"],
+    language: "zh",
+    summary: "适合刚开始接触网球或正手动作还不稳定的球员。",
+    reason: "适合作为正手动作框架的第一步内容。",
+    duration: "05:30",
+    url: "https://placeholder.com/content/gaiao-01"
+  },
+  {
+    id: "content_gaiao_02",
+    title: "发球入门：先别急着发力",
+    creatorId: "creator_gaiao",
+    platform: "YouTube",
+    type: "video",
+    levels: ["2.5", "3.0"],
+    skills: ["serve"],
+    problemTags: ["serve-basics", "second-serve-confidence"],
+    language: "zh",
+    summary: "适合发球还没有动作概念、总想直接发力的新手。",
+    reason: "适合作为发球入门内容和二发焦虑的降难度入口。",
+    duration: "06:10",
+    url: "https://placeholder.com/content/gaiao-02"
+  },
+  {
+    id: "content_gaiao_03",
+    title: "反手基础：为什么总是击球不扎实",
+    creatorId: "creator_gaiao",
+    platform: "Xiaohongshu",
+    type: "post",
+    levels: ["3.0"],
+    skills: ["backhand"],
+    problemTags: ["backhand-basics", "late-contact"],
+    language: "zh",
+    summary: "适合反手动作还没固定下来的球员。",
+    reason: "适合 3.0 球员做反手基础补课。",
+    url: "https://placeholder.com/content/gaiao-03"
+  },
+  {
+    id: "content_zlx_01",
+    title: "发球节奏：建立停顿感而不是乱发力",
+    creatorId: "creator_zhaolingxi",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["serve"],
+    problemTags: ["second-serve-confidence", "serve-rhythm"],
+    language: "zh",
+    summary: "适合二发不稳、节奏混乱的球员。",
+    reason: "更适合 3.0–3.5 球员做发球节奏和信心修正。",
+    duration: "06:00",
+    url: "https://placeholder.com/content/zlx-01"
+  },
+  {
+    id: "content_zlx_02",
+    title: "发球步伐：上步发球的正确节奏",
+    creatorId: "creator_zhaolingxi",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5"],
+    skills: ["serve"],
+    problemTags: ["serve-rhythm", "serve-footwork"],
+    language: "zh",
+    summary: "适合发球时上下肢节奏脱节的球员。",
+    reason: "适合作为发球节奏类问题的定向推荐内容。",
+    duration: "06:09",
+    url: "https://placeholder.com/content/zlx-02"
+  },
+  {
+    id: "content_zlx_03",
+    title: "基本功细节：反手与中前场连接",
+    creatorId: "creator_zhaolingxi",
+    platform: "Xiaohongshu",
+    type: "post",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["backhand", "net"],
+    problemTags: ["backhand-into-net", "net-confidence"],
+    language: "zh",
+    summary: "适合开始从能打向打得更合理过渡的球员。",
+    reason: "适合作为 3.5 左右球员的细节提升样本。",
+    url: "https://placeholder.com/content/zlx-03"
+  },
+
+  {
+    id: "content_cn_a_01",
+    title: "反手总下网：先别急着加力",
+    creatorId: "creator_cn_a",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5"],
+    skills: ["backhand"],
+    problemTags: ["backhand-into-net"],
+    language: "zh",
+    summary: "适合反手下网频率高、越用力越乱的球员。",
+    reason: "适合作为反手稳定性问题的直接入口。",
+    duration: "04:50",
+    url: "https://placeholder.com/content/cn-a-01"
+  },
+  {
+    id: "content_cn_a_02",
+    title: "击球点总晚：如何更早准备",
+    creatorId: "creator_cn_a",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5"],
+    skills: ["movement", "backhand"],
+    problemTags: ["late-contact", "slow-preparation"],
+    language: "zh",
+    summary: "适合来不及准备、总被球顶住的球员。",
+    reason: "适合与反手/正手晚点击球问题联动推荐。",
+    duration: "05:20",
+    url: "https://placeholder.com/content/cn-a-02"
+  },
+  {
+    id: "content_cn_a_03",
+    title: "脚步先到位：两点移动基础练习",
+    creatorId: "creator_cn_a",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5"],
+    skills: ["movement"],
+    problemTags: ["movement-slow", "late-contact"],
+    language: "zh",
+    summary: "适合击球前总找不到位置的球员。",
+    reason: "可以和任何‘来不及’类问题搭配推荐。",
+    duration: "03:40",
+    url: "https://placeholder.com/content/cn-a-03"
+  },
+
+  {
+    id: "content_cn_b_01",
+    title: "双打网前：先学会站住和挡住",
+    creatorId: "creator_cn_b",
+    platform: "Xiaohongshu",
+    type: "post",
+    levels: ["3.0", "3.5"],
+    skills: ["net", "doubles"],
+    problemTags: ["net-confidence", "doubles-net-fear"],
+    language: "zh",
+    summary: "适合双打时站上网前就紧张的球员。",
+    reason: "更适合新手双打网前建立信心。",
+    url: "https://placeholder.com/content/cn-b-01"
+  },
+  {
+    id: "content_cn_b_02",
+    title: "双打站位：搭档间最基础的配合",
+    creatorId: "creator_cn_b",
+    platform: "Zhihu",
+    type: "article",
+    levels: ["3.0", "3.5"],
+    skills: ["doubles", "matchplay"],
+    problemTags: ["doubles-positioning", "match-anxiety"],
+    language: "zh",
+    summary: "适合双打时总感觉不知该站哪的球员。",
+    reason: "对双打初学者非常友好。",
+    url: "https://placeholder.com/content/cn-b-02"
+  },
+  {
+    id: "content_cn_b_03",
+    title: "截击动作：缩小动作提高成功率",
+    creatorId: "creator_cn_b",
+    platform: "Xiaohongshu",
+    type: "post",
+    levels: ["3.0", "3.5"],
+    skills: ["net"],
+    problemTags: ["net-confidence", "volley-errors"],
+    language: "zh",
+    summary: "适合把截击打成大挥拍的球员。",
+    reason: "直接对应网前失误和截击成功率低的问题。",
+    url: "https://placeholder.com/content/cn-b-03"
+  },
+
+  {
+    id: "content_cn_c_01",
+    title: "稳定性优先：先把球打深再谈发力",
+    creatorId: "creator_cn_c",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["2.5", "3.0", "3.5"],
+    skills: ["consistency", "forehand", "backhand"],
+    problemTags: ["balls-too-short", "no-clear-technique"],
+    language: "zh",
+    summary: "适合总把球打浅、稳定性差的球员。",
+    reason: "适合做高频通用推荐内容。",
+    duration: "05:00",
+    url: "https://placeholder.com/content/cn-c-01"
+  },
+  {
+    id: "content_cn_c_02",
+    title: "分腿垫步：为什么你总来不及",
+    creatorId: "creator_cn_c",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5"],
+    skills: ["movement"],
+    problemTags: ["movement-slow", "late-contact"],
+    language: "zh",
+    summary: "适合移动慢、准备慢的球员。",
+    reason: "适合与击球点晚、步伐慢等问题配对。",
+    duration: "04:15",
+    url: "https://placeholder.com/content/cn-c-02"
+  },
+  {
+    id: "content_cn_c_03",
+    title: "课后不会自己练：3 个最基础的自练方法",
+    creatorId: "creator_cn_c",
+    platform: "Zhihu",
+    type: "article",
+    levels: ["2.5", "3.0", "3.5"],
+    skills: ["training"],
+    problemTags: ["cant-self-practice", "no-clear-technique"],
+    language: "zh",
+    summary: "适合上完课后不知道如何巩固的球员。",
+    reason: "很适合教练给学生当课后阅读。",
+    url: "https://placeholder.com/content/cn-c-03"
+  },
+
+  {
+    id: "content_cn_d_01",
+    title: "正手总出界：先把弧线拉起来",
+    creatorId: "creator_cn_d",
+    platform: "Xiaohongshu",
+    type: "post",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["forehand"],
+    problemTags: ["forehand-out", "topspin-low"],
+    language: "zh",
+    summary: "适合正手一发力就乱飞的球员。",
+    reason: "适合用来解释上旋和控制的关系。",
+    url: "https://placeholder.com/content/cn-d-01"
+  },
+  {
+    id: "content_cn_d_02",
+    title: "正手没力量：别先怪手臂",
+    creatorId: "creator_cn_d",
+    platform: "Xiaohongshu",
+    type: "post",
+    levels: ["3.0", "3.5"],
+    skills: ["forehand"],
+    problemTags: ["forehand-no-power", "timing-off"],
+    language: "zh",
+    summary: "适合想发力但球速和质量都上不去的球员。",
+    reason: "适合讲清楚发力顺序和身体参与。",
+    url: "https://placeholder.com/content/cn-d-02"
+  },
+  {
+    id: "content_cn_d_03",
+    title: "上旋感受：把球从拍后往上带",
+    creatorId: "creator_cn_d",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["forehand", "topspin"],
+    problemTags: ["topspin-low", "forehand-out"],
+    language: "zh",
+    summary: "适合正手控制弱、弧线不够的球员。",
+    reason: "适合作为正手控制类问题的第二条推荐。",
+    duration: "05:48",
+    url: "https://placeholder.com/content/cn-d-03"
+  },
+
+  {
+    id: "content_cn_e_01",
+    title: "接发球太被动：先解决准备和站位",
+    creatorId: "creator_cn_e",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["return", "matchplay"],
+    problemTags: ["return-under-pressure", "late-contact"],
+    language: "zh",
+    summary: "适合接发总被顶住、来不及的球员。",
+    reason: "适合作为接发球问题的第一条推荐。",
+    duration: "06:20",
+    url: "https://placeholder.com/content/cn-e-01"
+  },
+  {
+    id: "content_cn_e_02",
+    title: "发接发流程：比赛开始先稳住",
+    creatorId: "creator_cn_e",
+    platform: "Xiaohongshu",
+    type: "post",
+    levels: ["3.0", "3.5"],
+    skills: ["serve", "return", "matchplay"],
+    problemTags: ["match-anxiety", "return-under-pressure"],
+    language: "zh",
+    summary: "适合比赛一开始就节奏乱的球员。",
+    reason: "适合作为比赛心理和发接发专题的桥梁内容。",
+    url: "https://placeholder.com/content/cn-e-02"
+  },
+  {
+    id: "content_cn_e_03",
+    title: "接发只做一件事：先把球送深",
+    creatorId: "creator_cn_e",
+    platform: "Zhihu",
+    type: "article",
+    levels: ["3.0", "3.5"],
+    skills: ["return"],
+    problemTags: ["return-under-pressure", "balls-too-short"],
+    language: "zh",
+    summary: "适合接发质量低、总给对手机会的球员。",
+    reason: "适合搭配接发球和深度不足类问题。",
+    url: "https://placeholder.com/content/cn-e-03"
+  },
+
+  {
+    id: "content_cn_f_01",
+    title: "比赛紧张：把注意力从结果拉回执行",
+    creatorId: "creator_cn_f",
+    platform: "Zhihu",
+    type: "article",
+    levels: ["3.0", "3.5"],
+    skills: ["mental", "matchplay"],
+    problemTags: ["match-anxiety"],
+    language: "zh",
+    summary: "适合比赛里越打越紧、越想越乱的球员。",
+    reason: "适合作为比赛心理问题的基础阅读。",
+    url: "https://placeholder.com/content/cn-f-01"
+  },
+  {
+    id: "content_cn_f_02",
+    title: "不会安排训练：每周 3 次怎么练",
+    creatorId: "creator_cn_f",
+    platform: "Zhihu",
+    type: "article",
+    levels: ["2.5", "3.0", "3.5"],
+    skills: ["training"],
+    problemTags: ["cant-self-practice", "no-clear-technique"],
+    language: "zh",
+    summary: "适合有教练课但课后练习混乱的球员。",
+    reason: "适合作为训练计划模块的内容补充。",
+    url: "https://placeholder.com/content/cn-f-02"
+  },
+  {
+    id: "content_cn_f_03",
+    title: "练得不少却没进步：先缩小目标",
+    creatorId: "creator_cn_f",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5"],
+    skills: ["training", "mental"],
+    problemTags: ["cant-self-practice", "match-anxiety"],
+    language: "zh",
+    summary: "适合目标太多、动作越改越乱的球员。",
+    reason: "适合和不会自练、比赛心态类问题联动。",
+    duration: "04:35",
+    url: "https://placeholder.com/content/cn-f-03"
+  },
+
+  {
+    id: "content_common_01",
+    title: "不会打高球：先理解弧线和落点",
+    creatorId: "creator_cn_c",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5"],
+    skills: ["matchplay", "defense"],
+    problemTags: ["cant-hit-lob", "balls-too-short"],
+    language: "zh",
+    summary: "适合防守球路单一的球员。",
+    reason: "为后续高球/防守专题预留。",
+    duration: "05:12",
+    url: "https://placeholder.com/content/common-01"
+  },
+  {
+    id: "content_common_02",
+    title: "不会打下旋来球：击球点别掉到身后",
+    creatorId: "creator_cn_a",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5"],
+    skills: ["forehand", "backhand"],
+    problemTags: ["trouble-with-slice", "late-contact"],
+    language: "zh",
+    summary: "适合遇到下旋来球就动作变形的球员。",
+    reason: "适合补足常见来球识别和应对。",
+    duration: "05:05",
+    url: "https://placeholder.com/content/common-02"
+  },
+  {
+    id: "content_common_03",
+    title: "反手切削总飘：拍面和送拍方向",
+    creatorId: "creator_cn_d",
+    platform: "Xiaohongshu",
+    type: "post",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["backhand", "slice"],
+    problemTags: ["slice-too-high"],
+    language: "zh",
+    summary: "适合反手切削缺少控制和落点意识的球员。",
+    reason: "适合作为 3.5 球员的专项问题内容。",
+    url: "https://placeholder.com/content/common-03"
+  }
+];

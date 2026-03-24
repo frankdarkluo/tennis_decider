@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# build outputs
+.next/
+out/
+dist/
+build/
+
+# caches
+.cache/
+*.tsbuildinfo
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# env
+.env
+.env.*
+!.env.example
+
+# os/editor
+.DS_Store
+.vscode/
+
+# optional: 本地文档/原始素材（如果线上不需要）
+more_comphrensive_raw_data/
+CHAT_MIGRATION_SUMMARY.md
+CONTENT_EDIT_GUIDE.md
+requirement.txt

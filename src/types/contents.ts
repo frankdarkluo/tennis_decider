@@ -1,0 +1,92 @@
+import { ContentItem } from "./content";
+
+export const contents: ContentItem[] = [
+  {
+    id: "content_gaiao_01",
+    title: "正手零基础教学：先建立挥拍框架",
+    creatorId: "creator_gaiao",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["2.5", "3.0"],
+    skills: ["forehand"],
+    problemTags: ["forehand-basics", "no-clear-technique"],
+    language: "zh",
+    summary: "适合刚开始接触网球或正手动作还不稳定的球员。",
+    reason: "讲动作框架更清楚，适合初学者先建立大轮廓。",
+    duration: "05:30",
+    url: "https://placeholder.com/content/gaiao-01"
+  },
+  {
+    id: "content_gaiao_02",
+    title: "发球零基础教学：先别急着发力",
+    creatorId: "creator_gaiao",
+    platform: "YouTube",
+    type: "video",
+    levels: ["2.5", "3.0"],
+    skills: ["serve"],
+    problemTags: ["serve-basics", "second-serve-confidence"],
+    language: "zh",
+    summary: "适合发球还没有动作概念、总想直接发力的新手。",
+    reason: "对初学者友好，适合作为发球入门内容。",
+    duration: "06:10",
+    url: "https://placeholder.com/content/gaiao-02"
+  },
+  {
+    id: "content_gaiao_03",
+    title: "反手基础：为什么总是击球不扎实",
+    creatorId: "creator_gaiao",
+    platform: "Xiaohongshu",
+    type: "post",
+    levels: ["3.0"],
+    skills: ["backhand"],
+    problemTags: ["backhand-basics", "late-contact"],
+    language: "zh",
+    summary: "适合反手动作还没固定下来的球员。",
+    reason: "适合作为 3.0 球员的基础反手补课内容。",
+    url: "https://placeholder.com/content/gaiao-03"
+  },
+  {
+    id: "content_zlx_01",
+    title: "发球中的停顿感：建立节奏而不是乱发力",
+    creatorId: "creator_zhaolingxi",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["serve"],
+    problemTags: ["second-serve-confidence", "serve-rhythm"],
+    language: "zh",
+    summary: "适合二发不稳、节奏混乱的球员。",
+    reason: "更适合 3.0–3.5 球员做发球细节优化。",
+    duration: "06:00",
+    url: "https://placeholder.com/content/zlx-01"
+  },
+  {
+    id: "content_zlx_02",
+    title: "上步发球的正确节奏",
+    creatorId: "creator_zhaolingxi",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5"],
+    skills: ["serve"],
+    problemTags: ["serve-rhythm", "serve-footwork"],
+    language: "zh",
+    summary: "适合发球时上下肢节奏脱节的球员。",
+    reason: "适合作为发球节奏类问题的定向推荐内容。",
+    duration: "06:09",
+    url: "https://placeholder.com/content/zlx-02"
+  },
+  {
+    id: "content_zlx_03",
+    title: "3.0–4.0 基本功细节打磨：反手与中前场",
+    creatorId: "creator_zhaolingxi",
+    platform: "Xiaohongshu",
+    type: "post",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["backhand", "net"],
+    problemTags: ["backhand-into-net", "net-confidence"],
+    language: "zh",
+    summary: "适合开始从‘能打’向‘打得更合理’过渡的球员。",
+    reason: "适合作为 3.5 左右球员的细节提升样本。",
+    url: "https://placeholder.com/content/zlx-03"
+  }
+];
