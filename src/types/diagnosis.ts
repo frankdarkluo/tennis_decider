@@ -1,6 +1,9 @@
+import { ContentItem } from "@/types/content";
+
 export type DiagnosisRule = {
   id: string;
   keywords: string[];
+  synonyms?: string[];
   category: string[];
   problemTag: string;
   causes: string[];
@@ -10,14 +13,24 @@ export type DiagnosisRule = {
   fallbackLevel?: string[];
 };
 
+export type DiagnosisConfidence = "较低" | "中等" | "较高";
+
 export type DiagnosisResult = {
-  matched: boolean;
-  matchedRuleId?: string;
+  input: string;
+  normalizedInput: string;
+  matchedRuleId: string | null;
+  matchedKeywords: string[];
+  matchedSynonyms: string[];
+  matchScore: number;
+  confidence: DiagnosisConfidence;
   problemTag: string;
-  categories: string[];
+  category: string[];
+  title: string;
+  summary: string;
   causes: string[];
   fixes: string[];
   drills: string[];
-  recommendedContentIds: string[];
-  fallbackText?: string;
+  recommendedContents: ContentItem[];
+  fallbackUsed: boolean;
+  level?: string;
 };

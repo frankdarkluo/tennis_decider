@@ -8,7 +8,7 @@ export type DayPlan = {
 
 export type PlanTemplate = {
   problemTag: string;
-  level: string;
+  level: "3.0" | "3.5" | "4.0";
   title: string;
   target: string;
   days: DayPlan[];

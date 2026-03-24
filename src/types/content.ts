@@ -13,6 +13,8 @@ export type ContentItem = {
   language: "zh" | "en";
   summary: string;
   reason: string;
+  useCases?: string[];
+  coachReason?: string;
   duration?: string;
   url: string;
   cover?: string;

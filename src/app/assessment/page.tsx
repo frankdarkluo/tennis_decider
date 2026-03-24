@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { assessmentQuestions } from "@/data/assessmentQuestions";
 import { calculateAssessmentResult } from "@/lib/assessment";
-import { ASSESSMENT_STORAGE_KEY } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { AssessmentProgress } from "@/components/assessment/AssessmentProgress";
 import { QuestionCard } from "@/components/assessment/QuestionCard";
@@ -26,8 +25,8 @@ export default function AssessmentPage() {
     if (!canNext) {
       return;
     }
-    const result = calculateAssessmentResult(assessmentQuestions, answers);
-    localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify(result));
+    const result = calculateAssessmentResult(answers);
+    localStorage.setItem("assessmentResult", JSON.stringify(result));
     router.push("/assessment/result");
   };
 
@@ -35,8 +34,8 @@ export default function AssessmentPage() {
     <PageContainer>
       <div className="space-y-5">
         <div>
-          <h1 className="text-3xl font-black text-slate-900">5 分钟了解你的网球能力区间</h1>
-          <p className="mt-2 text-slate-600">通过六个维度进行参考评估</p>
+          <h1 className="text-3xl font-black text-slate-900">1 分钟快速了解你的网球能力区间</h1>
+          <p className="mt-2 text-slate-600">回答 8 个问题，获取参考水平与提升建议</p>
         </div>
         <AssessmentProgress current={index + 1} total={total} />
         <QuestionCard

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { contents } from "@/data/contents";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -8,7 +8,7 @@ import { LibraryFilters } from "@/components/library/LibraryFilters";
 import { ContentCard } from "@/components/library/ContentCard";
 import { Button } from "@/components/ui/Button";
 
-export default function LibraryPage() {
+function LibraryPageContent() {
   const params = useSearchParams();
   const [keyword, setKeyword] = useState("");
   const [level, setLevel] = useState(params.get("level") ?? "全部等级");
@@ -82,5 +82,13 @@ export default function LibraryPage() {
         )}
       </div>
     </PageContainer>
+  );
+}
+
+export default function LibraryPage() {
+  return (
+    <Suspense fallback={<PageContainer><p className="text-slate-600">正在加载内容库...</p></PageContainer>}>
+      <LibraryPageContent />
+    </Suspense>
   );
 }

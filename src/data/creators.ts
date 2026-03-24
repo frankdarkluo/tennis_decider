@@ -27,7 +27,7 @@ export const creators: Creator[] = [
     bio: "适合零基础到 3.5 左右球员，偏基础动作建立和启蒙教学。",
     suitableFor: ["零基础", "正手框架建立", "发球入门"],
     featuredContentIds: ["content_gaiao_01", "content_gaiao_02", "content_gaiao_03"],
-    profileUrl: "https://placeholder.com/gaiao"
+    profileUrl: "https://space.bilibili.com/1664596828?spm_id_from=333.337.0.0"
   },
   {
     id: "creator_zhaolingxi",
@@ -119,5 +119,31 @@ export const creators: Creator[] = [
     suitableFor: ["比赛紧张", "不会自练", "训练无计划"],
     featuredContentIds: ["content_cn_f_01", "content_cn_f_02", "content_cn_f_03"],
     profileUrl: "https://placeholder.com/cn-f"
+  },
+  {
+    id: "creator_racketbrothers",
+    name: "RacketBrothers",
+    region: "domestic",
+    platforms: ["Bilibili"],
+    levels: ["3.0", "3.5", "4.0"],
+    specialties: ["doubles", "net", "matchplay", "return"],
+    styleTags: ["实战导向", "双打导向", "比赛导向"],
+    bio: "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
+    suitableFor: ["双打网前", "接发被压制", "比赛策略执行"],
+    featuredContentIds: ["content_rb_01", "content_rb_02", "content_rb_03"],
+    profileUrl: "https://space.bilibili.com/6796357?spm_id_from=333.337.search-card.all.click"
+  },
+  {
+    id: "creator_furao",
+    name: "网球工匠付饶",
+    region: "domestic",
+    platforms: ["Bilibili"],
+    levels: ["3.0", "3.5", "4.0"],
+    specialties: ["forehand", "backhand", "movement", "basics"],
+    styleTags: ["细节导向", "讲解清晰", "动作拆解"],
+    bio: "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步到位问题。",
+    suitableFor: ["反手下网", "击球点偏晚", "基础动作修正"],
+    featuredContentIds: ["content_fr_01", "content_fr_02", "content_fr_03"],
+    profileUrl: "https://space.bilibili.com/370058962?spm_id_from=333.337.search-card.all.click"
   }
 ];

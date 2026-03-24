@@ -2,28 +2,27 @@ import { AssessmentResult } from "@/types/assessment";
 import { Card } from "@/components/ui/Card";
 import { Progress } from "@/components/ui/Progress";
 
-const labelMap: Record<string, string> = {
-  forehand: "正手",
-  backhand: "反手",
-  serve: "发球",
-  net: "网前",
-  movement: "移动",
-  matchplay: "比赛意识"
-};
-
 export function SkillBreakdown({ result }: { result: AssessmentResult }) {
-  const maxDimensionScore = 15;
+  if (result.dimensions.length === 0) {
+    return (
+      <Card className="space-y-4">
+        <h2 className="text-xl font-bold text-slate-900">分项能力</h2>
+        <p className="text-sm text-slate-600">完成题目后可查看分项能力表现。</p>
+      </Card>
+    );
+  }
 
   return (
     <Card className="space-y-4">
       <h2 className="text-xl font-bold text-slate-900">分项能力</h2>
-      {Object.entries(result.dimensionScores).map(([key, score]) => (
-        <div key={key} className="space-y-1">
+      {result.dimensions.map((dimension) => (
+        <div key={dimension.key} className="space-y-1">
           <div className="flex items-center justify-between text-sm">
-            <span>{labelMap[key] ?? key}</span>
-            <span>{score} 分</span>
+            <span>{dimension.label}</span>
+            <span>{dimension.score} / {dimension.maxScore}</span>
           </div>
-          <Progress value={(score / maxDimensionScore) * 100} />
+          <Progress value={(dimension.score / dimension.maxScore) * 100} />
+          <p className="text-xs text-slate-500">状态：{dimension.status}</p>
         </div>
       ))}
     </Card>

@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { AssessmentResult } from "@/types/assessment";
-import { ASSESSMENT_STORAGE_KEY } from "@/lib/utils";
+import { getDefaultAssessmentResult } from "@/lib/assessment";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
 import { SkillBreakdown } from "@/components/assessment/SkillBreakdown";
@@ -12,31 +11,18 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 
 export default function AssessmentResultPage() {
-  const router = useRouter();
-  const [result, setResult] = useState<AssessmentResult | null>(null);
+  const [result, setResult] = useState<AssessmentResult>(getDefaultAssessmentResult());
 
   useEffect(() => {
-    const raw = localStorage.getItem(ASSESSMENT_STORAGE_KEY);
-    if (!raw) {
-      router.replace("/assessment");
-      return;
-    }
+    const raw = localStorage.getItem("assessmentResult");
 
     try {
-      const parsed = JSON.parse(raw) as AssessmentResult;
+      const parsed = raw ? (JSON.parse(raw) as AssessmentResult) : getDefaultAssessmentResult();
       setResult(parsed);
     } catch {
-      router.replace("/assessment");
+      setResult(getDefaultAssessmentResult());
     }
-  }, [router]);
-
-  if (!result) {
-    return (
-      <PageContainer>
-        <p className="text-slate-600">正在加载评估结果...</p>
-      </PageContainer>
-    );
-  }
+  }, []);
 
   return (
     <PageContainer>
@@ -44,12 +30,36 @@ export default function AssessmentResultPage() {
         <ResultSummary result={result} />
         <SkillBreakdown result={result} />
         <Card className="space-y-2">
-          <h2 className="text-xl font-bold text-slate-900">主要短板总结</h2>
-          <ul className="list-disc space-y-1 pl-5 text-sm text-slate-700">
-            {result.weakSummary.slice(0, 3).map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          <h2 className="text-xl font-bold text-slate-900">评估总结</h2>
+          <p className="text-sm text-slate-700">{result.summary}</p>
+          {result.observationNeeded.length > 0 ? (
+            <div className="rounded-xl bg-amber-50 p-3 text-sm text-amber-800">
+              <p className="font-semibold">待观察维度：{result.observationNeeded.join(" / ")}</p>
+              <p className="mt-1">建议先看推荐内容并训练 1-2 周，再回来更新判断。</p>
+            </div>
+          ) : null}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <p className="text-sm font-semibold text-slate-900">相对强项</p>
+              <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                {result.strengths.length > 0 ? (
+                  result.strengths.map((item) => <li key={item}>{item}</li>)
+                ) : (
+                  <li>暂无</li>
+                )}
+              </ul>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-900">优先补强</p>
+              <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                {result.weaknesses.length > 0 ? (
+                  result.weaknesses.map((item) => <li key={item}>{item}</li>)
+                ) : (
+                  <li>暂无</li>
+                )}
+              </ul>
+            </div>
+          </div>
         </Card>
         <div className="flex flex-wrap gap-2">
           <Link href="/diagnose"><Button>去做问题诊断</Button></Link>

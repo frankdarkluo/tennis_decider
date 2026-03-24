@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getPlanTemplate } from "@/lib/plans";
 import { toChineseLevel } from "@/lib/utils";
@@ -10,7 +10,7 @@ import { PlanSummary } from "@/components/plan/PlanSummary";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
 import { Button } from "@/components/ui/Button";
 
-export default function PlanPage() {
+function PlanPageContent() {
   const params = useSearchParams();
   const defaultProblemTag = params.get("problemTag") ?? "no-plan";
   const defaultLevel = (params.get("level") as "3.0" | "3.5" | "4.0") ?? "3.0";
@@ -63,5 +63,13 @@ export default function PlanPage() {
         </div>
       </div>
     </PageContainer>
+  );
+}
+
+export default function PlanPage() {
+  return (
+    <Suspense fallback={<PageContainer><p className="text-slate-600">正在加载训练计划...</p></PageContainer>}>
+      <PlanPageContent />
+    </Suspense>
   );
 }

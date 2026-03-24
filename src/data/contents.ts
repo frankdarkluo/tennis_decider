@@ -13,6 +13,8 @@ export type ContentItem = {
   language: "zh" | "en";
   summary: string;
   reason: string;
+  useCases?: string[];
+  coachReason?: string;
   duration?: string;
   url: string;
   cover?: string;
@@ -31,14 +33,16 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合刚开始接触网球或正手动作还不稳定的球员。",
     reason: "适合作为正手动作框架的第一步内容。",
+    useCases: ["正手动作还没有固定下来", "正手总觉得不顺手"],
+    coachReason: "先建立正手动作框架，再谈提速和细节，成功率会更高。",
     duration: "05:30",
-    url: "https://placeholder.com/content/gaiao-01"
+    url: "https://www.bilibili.com/video/BV1XM4y187mR"
   },
   {
     id: "content_gaiao_02",
     title: "发球入门：先别急着发力",
     creatorId: "creator_gaiao",
-    platform: "YouTube",
+    platform: "Bilibili",
     type: "video",
     levels: ["2.5", "3.0"],
     skills: ["serve"],
@@ -46,22 +50,26 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合发球还没有动作概念、总想直接发力的新手。",
     reason: "适合作为发球入门内容和二发焦虑的降难度入口。",
+    useCases: ["发球经常发不进去", "二发没有信心"],
+    coachReason: "这条先把发球节奏和动作顺序放对，再去追求球速。",
     duration: "06:10",
-    url: "https://placeholder.com/content/gaiao-02"
+    url: "https://www.bilibili.com/video/BV1q7411L7cD"
   },
   {
     id: "content_gaiao_03",
     title: "反手基础：为什么总是击球不扎实",
     creatorId: "creator_gaiao",
-    platform: "Xiaohongshu",
-    type: "post",
+    platform: "Bilibili",
+    type: "video",
     levels: ["3.0"],
     skills: ["backhand"],
     problemTags: ["backhand-basics", "late-contact"],
     language: "zh",
     summary: "适合反手动作还没固定下来的球员。",
     reason: "适合 3.0 球员做反手基础补课。",
-    url: "https://placeholder.com/content/gaiao-03"
+    useCases: ["反手总不扎实", "反手动作不稳定"],
+    coachReason: "当反手问题还很泛时，先回到基础框架通常最有效。",
+    url: "https://www.bilibili.com/video/BV1YL411d7oX"
   },
   {
     id: "content_zlx_01",
@@ -417,5 +425,107 @@ export const contents: ContentItem[] = [
     summary: "适合反手切削缺少控制和落点意识的球员。",
     reason: "适合作为 3.5 球员的专项问题内容。",
     url: "https://placeholder.com/content/common-03"
+  },
+  {
+    id: "content_rb_01",
+    title: "双打网前封网：站位与截击时机",
+    creatorId: "creator_racketbrothers",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["doubles", "net", "matchplay"],
+    problemTags: ["net-confidence", "doubles-net-fear", "match-anxiety"],
+    language: "zh",
+    summary: "适合双打上网犹豫、网前出手不稳定的球员。",
+    reason: "与网前信心不足和双打配合场景高度匹配。",
+    useCases: ["双打网前不敢压", "截击时机总慢半拍"],
+    coachReason: "双打网前问题优先看站位与时机，改动快、收益高。",
+    duration: "06:00",
+    url: "https://www.bilibili.com/video/BV1954y147nF"
+  },
+  {
+    id: "content_rb_02",
+    title: "接发球被压制：站位与第一拍选择",
+    creatorId: "creator_racketbrothers",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["return", "matchplay"],
+    problemTags: ["return-under-pressure", "late-contact"],
+    language: "zh",
+    summary: "适合接发总被顶住、第一拍缺少方向的球员。",
+    reason: "与接发被压制、准备偏慢等问题直接对应。",
+    useCases: ["接发球总被压制", "接发第一拍质量差"],
+    coachReason: "先把接发站位和第一拍目标固定，比赛质量会明显改善。",
+    duration: "07:10",
+    url: "https://www.bilibili.com/video/BV1Ep4y1W7kc"
+  },
+  {
+    id: "content_rb_03",
+    title: "比赛执行与双打配合：先稳再压",
+    creatorId: "creator_racketbrothers",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["matchplay", "doubles", "mental"],
+    problemTags: ["match-anxiety", "cant-self-practice"],
+    language: "zh",
+    summary: "适合比赛中思路断档、执行波动大的球员。",
+    reason: "可作为比赛心理与执行流程的实战补充。",
+    useCases: ["比赛执行波动大", "双打配合总断档"],
+    coachReason: "执行稳定性是比赛表现上限的底层能力，这条内容适合先补流程。",
+    duration: "05:45",
+    url: "https://www.bilibili.com/video/BV1JN4y18792"
+  },
+  {
+    id: "content_fr_01",
+    title: "反手总下网：前点击球与拍面控制",
+    creatorId: "creator_furao",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["backhand", "basics"],
+    problemTags: ["backhand-into-net", "late-contact"],
+    language: "zh",
+    summary: "适合反手总下网、击球点偏晚的球员。",
+    reason: "与反手稳定性问题和准备时机问题匹配度高。",
+    useCases: ["反手总下网", "反手击球点偏晚"],
+    coachReason: "反手先把前点击球和拍面稳定，能快速止损高频失误。",
+    duration: "06:12",
+    url: "https://www.bilibili.com/video/BV1jm4y1X7yF"
+  },
+  {
+    id: "content_fr_02",
+    title: "击球点偏晚：准备节奏与脚步到位",
+    creatorId: "creator_furao",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["movement", "forehand", "backhand"],
+    problemTags: ["late-contact", "movement-slow"],
+    language: "zh",
+    summary: "适合来不及准备、对抗中总被顶住的球员。",
+    reason: "与击球点偏晚和移动到位问题直接对应。",
+    useCases: ["准备总慢半拍", "击球点总在身后"],
+    coachReason: "比起盲目加力，先把准备和脚步到位更能提升击球质量。",
+    duration: "05:20",
+    url: "https://www.bilibili.com/video/BV1SQ4y1M7y8"
+  },
+  {
+    id: "content_fr_03",
+    title: "正手发力链条：从稳定到加速",
+    creatorId: "creator_furao",
+    platform: "Bilibili",
+    type: "video",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["forehand", "basics", "topspin"],
+    problemTags: ["forehand-no-power", "forehand-out"],
+    language: "zh",
+    summary: "适合正手想发力却失误增多或球质不够的球员。",
+    reason: "与正手发力链条和上旋控制需求匹配。",
+    useCases: ["正手没力量", "正手发力后失误增多"],
+    coachReason: "发力链条问题要从节奏和重心入手，这条讲得很系统。",
+    duration: "05:55",
+    url: "https://www.bilibili.com/video/BV1Zf4y1b7aW"
   }
 ];

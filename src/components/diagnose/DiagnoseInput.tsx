@@ -1,16 +1,15 @@
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
 
-const quickTags = ["正手出界", "反手下网", "二发没信心", "网前失误", "移动慢", "比赛紧张"];
-
 type DiagnoseInputProps = {
   value: string;
+  quickTags: string[];
   onChange: (value: string) => void;
   onDiagnose: () => void;
   onClear: () => void;
 };
 
-export function DiagnoseInput({ value, onChange, onDiagnose, onClear }: DiagnoseInputProps) {
+export function DiagnoseInput({ value, quickTags, onChange, onDiagnose, onClear }: DiagnoseInputProps) {
   return (
     <div className="space-y-4 rounded-2xl border border-[var(--line)] bg-white p-5 shadow-soft">
       <Textarea

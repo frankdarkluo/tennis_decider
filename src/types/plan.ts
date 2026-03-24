@@ -20,5 +20,6 @@ export type GeneratedPlan = {
   problemTag: string;
   title: string;
   target: string;
+  summary?: string;
   days: DayPlan[];
 };
