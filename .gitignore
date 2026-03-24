@@ -25,6 +25,7 @@ pnpm-debug.log*
 # os/editor
 .DS_Store
 .vscode/
+.history/
 
 # optional: 本地文档/原始素材（如果线上不需要）
 more_comphrensive_raw_data/
