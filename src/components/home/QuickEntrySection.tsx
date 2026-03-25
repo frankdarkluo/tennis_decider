@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
+import { logEvent } from "@/lib/eventLogger";
 
 const entries = [
   {
@@ -22,7 +25,11 @@ export function QuickEntrySection() {
   return (
     <section className="mx-auto grid max-w-5xl gap-5 md:grid-cols-2">
       {entries.map((item) => (
-        <Link key={item.href} href={item.href}>
+        <Link
+          key={item.href}
+          href={item.href}
+          onClick={() => logEvent("cta_click", { ctaLabel: item.cta, ctaLocation: "home_quick_entry", targetPage: item.href })}
+        >
           <Card className="h-full transition hover:-translate-y-0.5 hover:border-brand-200">
             <p className="text-xs font-semibold tracking-[0.16em] text-brand-700">{item.eyebrow}</p>
             <h3 className="mt-3 text-lg font-bold leading-7 text-slate-900">{item.title}</h3>

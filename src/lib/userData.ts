@@ -5,7 +5,9 @@ import { GeneratedPlan } from "@/types/plan";
 import {
   AssessmentResultRow,
   BookmarkRow,
+  DiagnosisHistoryRow,
   PersistedAssessmentScores,
+  SavedPlanRow,
   SavedPlanSource
 } from "@/types/userData";
 
@@ -131,6 +133,29 @@ export async function saveDiagnosisHistory(userId: string, inputText: string, re
   return {};
 }
 
+export async function getDiagnosisHistory(userId: string, limit = 5) {
+  const supabase = getClient();
+
+  if (!supabase) {
+    return { data: [] as DiagnosisHistoryRow[], error: "Supabase 尚未配置完成。" };
+  }
+
+  const { data, error } = await supabase
+    .from("diagnosis_history")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    return { data: [] as DiagnosisHistoryRow[], error: getErrorMessage(error, "读取诊断历史时发生未知错误。") };
+  }
+
+  return {
+    data: (data as DiagnosisHistoryRow[] | null) ?? []
+  };
+}
+
 export async function getBookmarkedContentIds(userId: string) {
   const supabase = getClient();
 
@@ -223,4 +248,27 @@ export async function saveGeneratedPlan(
   }
 
   return {};
+}
+
+export async function getSavedPlans(userId: string, limit = 10) {
+  const supabase = getClient();
+
+  if (!supabase) {
+    return { data: [] as SavedPlanRow[], error: "Supabase 尚未配置完成。" };
+  }
+
+  const { data, error } = await supabase
+    .from("saved_plans")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    return { data: [] as SavedPlanRow[], error: getErrorMessage(error, "读取已保存训练计划时发生未知错误。") };
+  }
+
+  return {
+    data: (data as SavedPlanRow[] | null) ?? []
+  };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { creators } from "@/data/creators";
 import { Creator } from "@/types/creator";
@@ -8,6 +8,7 @@ import { PageContainer } from "@/components/layout/PageContainer";
 import { TabButton } from "@/components/ui/Tabs";
 import { CreatorCard } from "@/components/rankings/CreatorCard";
 import { CreatorDetailModal } from "@/components/rankings/CreatorDetailModal";
+import { logEvent } from "@/lib/eventLogger";
 import { toChineseSkill } from "@/lib/utils";
 
 const specialtyOptions = [
@@ -32,7 +33,7 @@ function FilterSelect(
   { value, setValue, options }: { value: string; setValue: (value: string) => void; options: Array<{ label: string; value: string }> }
 ) {
   return (
-    <select className="rounded-xl border border-[var(--line)] bg-white px-3 py-2 text-sm" value={value} onChange={(e) => setValue(e.target.value)}>
+    <select className="min-h-11 rounded-xl border border-[var(--line)] bg-white px-3 py-2 text-sm" value={value} onChange={(e) => setValue(e.target.value)}>
       {options.map((option) => (
         <option key={option.value} value={option.value}>{option.label}</option>
       ))}
@@ -48,6 +49,7 @@ export default function RankingsPage() {
   const [language, setLanguage] = useState("全部语言");
   const [style, setStyle] = useState("全部风格");
   const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
+  const previousFiltersRef = useRef<Record<string, string> | null>(null);
 
   const list = useMemo(() => {
     return creators.filter((creator) => {
@@ -59,6 +61,23 @@ export default function RankingsPage() {
       return hitRegion && hitLevel && hitSpecialty && hitLanguage && hitStyle;
     });
   }, [region, level, specialty, language, style]);
+
+  useEffect(() => {
+    const currentFilters = { region, level, specialty, language, style };
+
+    if (!previousFiltersRef.current) {
+      previousFiltersRef.current = currentFilters;
+      return;
+    }
+
+    for (const [filterType, filterValue] of Object.entries(currentFilters)) {
+      if (previousFiltersRef.current[filterType] !== filterValue) {
+        logEvent("creator_filter", { filterType, filterValue });
+      }
+    }
+
+    previousFiltersRef.current = currentFilters;
+  }, [language, level, region, specialty, style]);
 
   return (
     <PageContainer>
@@ -86,8 +105,14 @@ export default function RankingsPage() {
               <CreatorCard
                 key={creator.id}
                 creator={creator}
-                onDetail={() => setSelectedCreator(creator)}
-                onViewLibrary={() => router.push(`/library?creator=${creator.id}`)}
+                onDetail={() => {
+                  logEvent("creator_click", { creatorId: creator.id });
+                  setSelectedCreator(creator);
+                }}
+                onViewLibrary={() => {
+                  logEvent("cta_click", { ctaLabel: "查看推荐内容", ctaLocation: "creator_card", targetPage: "/library" });
+                  router.push(`/library?creator=${creator.id}`);
+                }}
               />
             ))}
           </div>

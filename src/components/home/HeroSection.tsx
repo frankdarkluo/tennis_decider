@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
+import { logEvent } from "@/lib/eventLogger";
 
 const quickTags = [
   "反手总是下网",
@@ -39,9 +40,13 @@ export function HeroSection() {
         <div className="flex flex-wrap gap-2">
           {quickTags.map((tag) => (
             <button
+              type="button"
               key={tag}
-              className="rounded-full border border-[var(--line)] px-3 py-1 text-xs text-slate-700 hover:border-brand-300"
-              onClick={() => setQuestion(tag)}
+              className="min-h-11 rounded-full border border-[var(--line)] px-4 py-2 text-sm text-slate-700 transition hover:border-brand-300 hover:text-brand-700"
+              onClick={() => {
+                setQuestion(tag);
+                logEvent("cta_click", { ctaLabel: tag, ctaLocation: "home_hero_tag", targetPage: "/diagnose" });
+              }}
             >
               {tag}
             </button>
@@ -49,10 +54,16 @@ export function HeroSection() {
         </div>
       </div>
       <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-        <Link href={diagnoseHref}><Button className="h-11 px-6">立即诊断</Button></Link>
+        <Link
+          href={diagnoseHref}
+          onClick={() => logEvent("cta_click", { ctaLabel: "立即诊断", ctaLocation: "home_hero", targetPage: "/diagnose" })}
+        >
+          <Button className="h-11 px-6">立即诊断</Button>
+        </Link>
         <Link
           href="/assessment"
           className="text-sm font-medium text-slate-500 transition hover:text-brand-700"
+          onClick={() => logEvent("cta_click", { ctaLabel: "先花 1 分钟评估水平", ctaLocation: "home_hero_secondary", targetPage: "/assessment" })}
         >
           想更精准？先花 1 分钟评估水平
         </Link>

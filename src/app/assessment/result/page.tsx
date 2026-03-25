@@ -8,8 +8,10 @@ import {
   readAssessmentResultFromStorage,
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
+import { logEvent } from "@/lib/eventLogger";
 import { getLatestAssessmentResult, saveAssessmentResult } from "@/lib/userData";
 import { PageContainer } from "@/components/layout/PageContainer";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
 import { SkillBreakdown } from "@/components/assessment/SkillBreakdown";
 import { Button } from "@/components/ui/Button";
@@ -74,22 +76,28 @@ export default function AssessmentResultPage() {
     };
   }, [configured, loading, user?.id]);
 
+  useEffect(() => {
+    if (source === "loading" || result.answeredCount === 0) {
+      return;
+    }
+
+    logEvent("assessment_complete", {
+      level: result.level,
+      strengths: result.strengths,
+      weaknesses: result.weaknesses,
+      uncertainItems: result.observationNeeded
+    });
+  }, [result, source]);
+
   return (
     <PageContainer>
       <div className="space-y-5">
+        <PageBreadcrumbs items={[
+          { href: "/assessment", label: "← 重新评估" },
+          { href: "/", label: "回到首页" }
+        ]} />
         {source === "loading" ? (
           <Card className="text-sm text-slate-600">正在同步你的评估记录...</Card>
-        ) : null}
-        {!loading && !user ? (
-          <Card className="flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h2 className="text-lg font-bold text-slate-900">登录后可保存评估记录</h2>
-              <p className="mt-1 text-sm text-slate-600">这样你刷新页面、换设备登录后，也能继续看到最近一次评估结果。</p>
-            </div>
-            <Button variant="secondary" onClick={() => openLoginModal("登录后可保存评估记录")}>
-              登录后保存评估记录
-            </Button>
-          </Card>
         ) : null}
         {user && source === "remote" ? (
           <div className="rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-700">
@@ -136,10 +144,37 @@ export default function AssessmentResultPage() {
           </div>
         </Card>
         <div className="flex flex-wrap gap-2">
-          <Link href="/diagnose"><Button>去做问题诊断</Button></Link>
-          <Link href={`/library?level=${result.level}`}><Button variant="secondary">去看推荐内容</Button></Link>
-          <Link href="/assessment"><Button variant="ghost">重新测试</Button></Link>
+          <Link href="/diagnose" onClick={() => logEvent("cta_click", { ctaLabel: "去做问题诊断", ctaLocation: "assessment_result", targetPage: "/diagnose" })}>
+            <Button>去做问题诊断</Button>
+          </Link>
+          <Link href={`/library?level=${result.level}`} onClick={() => logEvent("cta_click", { ctaLabel: "去看推荐内容", ctaLocation: "assessment_result", targetPage: "/library" })}>
+            <Button variant="secondary">去看推荐内容</Button>
+          </Link>
+          <Link href="/assessment" onClick={() => logEvent("cta_click", { ctaLabel: "重新测试", ctaLocation: "assessment_result", targetPage: "/assessment" })}>
+            <Button variant="ghost">重新测试</Button>
+          </Link>
         </div>
+        {user ? (
+          <Card className="flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900">你的评估结果已保存</h2>
+              <p className="mt-1 text-sm text-slate-600">随时可以在「我的记录」里回看最近一次评估结果、短板和推荐方向。</p>
+            </div>
+            <Link href="/profile">
+              <Button variant="secondary">查看我的记录</Button>
+            </Link>
+          </Card>
+        ) : (
+          <Card className="flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900">登录后可以保存评估记录</h2>
+              <p className="mt-1 text-sm text-slate-600">这样你下次回来时，可以直接在「我的记录」里继续查看最近结果。</p>
+            </div>
+            <Button variant="secondary" onClick={() => openLoginModal("登录后可以保存评估记录", "generic")}>
+              登录后保存
+            </Button>
+          </Card>
+        )}
       </div>
     </PageContainer>
   );

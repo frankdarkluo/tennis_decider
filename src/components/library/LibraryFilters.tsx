@@ -17,6 +17,9 @@ type LibraryFiltersProps = {
   setType: (value: string) => void;
   creator: string;
   setCreator: (value: string) => void;
+  showBookmarkedOnly: boolean;
+  setShowBookmarkedOnly: (value: boolean) => void;
+  bookmarkFilterEnabled: boolean;
 };
 
 type FilterOption = {
@@ -27,7 +30,7 @@ type FilterOption = {
 function SelectFilter({ value, setValue, options }: { value: string; setValue: (value: string) => void; options: FilterOption[] }) {
   return (
     <select
-      className="w-full rounded-xl border border-[var(--line)] bg-white px-3 py-2 text-sm"
+      className="min-h-11 w-full rounded-xl border border-[var(--line)] bg-white px-3 py-2 text-sm"
       value={value}
       onChange={(e) => setValue(e.target.value)}
     >
@@ -77,6 +80,31 @@ export function LibraryFilters(props: LibraryFiltersProps) {
         value={props.keyword}
         onChange={(e) => props.setKeyword(e.target.value)}
       />
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          aria-pressed={props.showBookmarkedOnly}
+          aria-disabled={!props.bookmarkFilterEnabled}
+          title={props.bookmarkFilterEnabled ? "只看你收藏过的内容" : "登录后可使用收藏功能"}
+          className={props.bookmarkFilterEnabled
+            ? props.showBookmarkedOnly
+              ? "inline-flex min-h-11 items-center rounded-full bg-brand-500 px-4 text-sm font-semibold text-white"
+              : "inline-flex min-h-11 items-center rounded-full border border-[var(--line)] px-4 text-sm font-semibold text-slate-700 transition hover:border-brand-300 hover:text-brand-700"
+            : "inline-flex min-h-11 cursor-not-allowed items-center rounded-full border border-[var(--line)] bg-slate-100 px-4 text-sm font-semibold text-slate-400"}
+          onClick={() => {
+            if (!props.bookmarkFilterEnabled) {
+              return;
+            }
+
+            props.setShowBookmarkedOnly(!props.showBookmarkedOnly);
+          }}
+        >
+          我的收藏
+        </button>
+        {!props.bookmarkFilterEnabled ? (
+          <p className="text-xs text-slate-500">登录后可使用收藏筛选</p>
+        ) : null}
+      </div>
       <div className="grid gap-2 md:grid-cols-3">
         <SelectFilter value={props.level} setValue={props.setLevel} options={levelOptions} />
         <SelectFilter value={props.skill} setValue={props.setSkill} options={skillOptions} />

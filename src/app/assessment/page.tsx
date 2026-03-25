@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { assessmentQuestions } from "@/data/assessmentQuestions";
 import { calculateAssessmentResult } from "@/lib/assessment";
 import { writeAssessmentResultToStorage } from "@/lib/assessmentStorage";
+import { logEvent } from "@/lib/eventLogger";
 import { saveAssessmentResult } from "@/lib/userData";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { AssessmentProgress } from "@/components/assessment/AssessmentProgress";
@@ -18,6 +19,9 @@ export default function AssessmentPage() {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [submitting, setSubmitting] = useState(false);
+  const completedRef = useRef(false);
+  const answersRef = useRef<Record<string, number>>({});
+  const indexRef = useRef(0);
 
   const total = assessmentQuestions.length;
   const question = assessmentQuestions[index];
@@ -26,6 +30,24 @@ export default function AssessmentPage() {
 
   const canNext = useMemo(() => selectedScore !== undefined, [selectedScore]);
 
+  useEffect(() => {
+    answersRef.current = answers;
+    indexRef.current = index;
+  }, [answers, index]);
+
+  useEffect(() => {
+    logEvent("assessment_start", { totalQuestions: total });
+
+    return () => {
+      if (!completedRef.current && Object.keys(answersRef.current).length > 0) {
+        logEvent("assessment_abandon", {
+          lastQuestionIndex: indexRef.current + 1,
+          totalQuestions: total
+        });
+      }
+    };
+  }, []);
+
   const onSubmit = async () => {
     if (!canNext || submitting) {
       return;
@@ -33,6 +55,7 @@ export default function AssessmentPage() {
 
     setSubmitting(true);
     const result = calculateAssessmentResult(answers);
+    completedRef.current = true;
     writeAssessmentResultToStorage(result);
 
     if (user?.id && configured) {
@@ -56,7 +79,15 @@ export default function AssessmentPage() {
         <QuestionCard
           question={question}
           selectedScore={selectedScore}
-          onSelect={(score) => setAnswers((prev) => ({ ...prev, [question.id]: score }))}
+          onSelect={(score) => {
+            const selectedOption = question.options.find((option) => option.score === score);
+            logEvent("assessment_answer", {
+              questionId: question.id,
+              selectedOption: selectedOption?.label ?? score,
+              isUncertain: score === 0
+            });
+            setAnswers((prev) => ({ ...prev, [question.id]: score }));
+          }}
         />
         <div className="flex flex-wrap gap-2">
           <Button variant="secondary" disabled={index === 0} onClick={() => setIndex((v) => Math.max(0, v - 1))}>上一题</Button>

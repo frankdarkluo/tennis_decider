@@ -1,9 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { creators } from "@/data/creators";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
+import { logEvent } from "@/lib/eventLogger";
 
 const featuredCreatorIds = ["creator_furao", "creator_racketbrothers"];
 
@@ -18,13 +21,22 @@ export function HotCreatorsSection() {
         <div>
           <h3 className="text-xl font-bold text-slate-900">先看这些中文创作者</h3>
         </div>
-        <Link href="/rankings" className="shrink-0 pt-1 text-sm font-medium text-slate-500 transition hover:text-slate-700">
+        <Link
+          href="/rankings"
+          className="shrink-0 pt-1 text-sm font-medium text-slate-500 transition hover:text-slate-700"
+          onClick={() => logEvent("cta_click", { ctaLabel: "查看更多博主", ctaLocation: "home_hot_creators", targetPage: "/rankings" })}
+        >
           查看更多 →
         </Link>
       </div>
       <div className="grid flex-1 auto-rows-fr gap-3">
         {featuredCreators.map((creator) => (
-          <Link key={creator.id} href="/rankings" className="h-full">
+          <Link
+            key={creator.id}
+            href="/rankings"
+            className="h-full"
+            onClick={() => logEvent("creator_click", { creatorId: creator.id, source: "homepage" })}
+          >
             <Card className="flex h-full flex-col justify-between p-4 transition hover:-translate-y-0.5 hover:border-brand-200">
               <div className="flex items-start gap-3">
                 <CreatorAvatar name={creator.name} size="sm" />

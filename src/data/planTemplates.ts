@@ -89,5 +89,65 @@ export const planTemplates: PlanTemplate[] = [
       { day: 6, focus: "组合一次 30 分钟训练", contentIds: ["content_cn_f_02"], drills: ["5 分钟热身", "10 分钟主问题", "10 分钟发球", "5 分钟记录"], duration: "30 分钟" },
       { day: 7, focus: "形成每周固定模版", contentIds: ["content_cn_c_03"], drills: ["写下下周 3 次训练安排", "每次只保留 1 个重点"], duration: "20 分钟" }
     ]
+  },
+  {
+    problemTag: "topspin-low",
+    level: "3.0",
+    title: "正手稳定性 7 天计划",
+    target: "先把正手弧线、深度和稳定性建立起来",
+    days: [
+      { day: 1, focus: "正手定点击球与目标区", contentIds: ["content_cn_d_01"], drills: ["底线深区正手 20 球", "只记录过网高度 20 球"], duration: "20 分钟" },
+      { day: 2, focus: "移动中正手稳定击球", contentIds: ["content_cn_a_03"], drills: ["侧向两点移动 15 组", "移动后正手 20 球"], duration: "25 分钟" },
+      { day: 3, focus: "正手连续对拉稳定性", contentIds: ["content_cn_d_03"], drills: ["正手连续 10 拍 5 组", "失误只记弧线是否太低"], duration: "25 分钟" },
+      { day: 4, focus: "休息与内容复盘", contentIds: ["content_cn_d_03"], drills: ["看一条推荐内容", "写 2 条正手体感"], duration: "15 分钟" },
+      { day: 5, focus: "正手变线控制", contentIds: ["content_fr_03"], drills: ["直线和斜线交替 20 球", "只求路线清楚不求球速"], duration: "25 分钟" },
+      { day: 6, focus: "分腿垫步接正手", contentIds: ["content_cn_a_03"], drills: ["分腿垫步 + 正手 20 球", "移动后停住检查站位 10 次"], duration: "20 分钟" },
+      { day: 7, focus: "模拟比赛只关注正手深度", contentIds: ["content_cn_c_01"], drills: ["半场对抗 15 分钟", "每拍只记是否打进深区"], duration: "30 分钟" }
+    ]
+  },
+  {
+    problemTag: "serve-accuracy",
+    level: "3.0",
+    title: "发球建立信心 7 天计划",
+    target: "先建立稳定抛球和可重复的发球节奏",
+    days: [
+      { day: 1, focus: "只练抛球", contentIds: ["content_gaiao_02"], drills: ["抛球 50 次不挥拍", "记录落点 20 次"], duration: "15 分钟" },
+      { day: 2, focus: "半挥拍发球", contentIds: ["content_zlx_01"], drills: ["半动作发球 20 次", "只求过网进区 20 球"], duration: "20 分钟" },
+      { day: 3, focus: "完整动作慢速发球", contentIds: ["content_ttt_01"], drills: ["慢速完整动作 20 球", "目标 70% 进区率"], duration: "25 分钟" },
+      { day: 4, focus: "休息与节奏复盘", contentIds: ["content_zlx_01"], drills: ["看推荐内容", "写下自己的发球节奏口令"], duration: "15 分钟" },
+      { day: 5, focus: "二发连续进区", contentIds: ["content_gaiao_02"], drills: ["连续 10 个二发进区 3 组", "失败后重新开始"], duration: "20 分钟" },
+      { day: 6, focus: "一发二发交替流程", contentIds: ["content_zlx_02"], drills: ["一发 + 二发交替 20 组", "每次都保持同样准备"], duration: "25 分钟" },
+      { day: 7, focus: "模拟比赛发球局", contentIds: ["content_ttt_01"], drills: ["和朋友打发球局", "只记录节奏完成度"], duration: "30 分钟" }
+    ]
+  },
+  {
+    problemTag: "doubles-positioning",
+    level: "3.0",
+    title: "双打基础配合 7 天计划",
+    target: "先把双打站位、轮转和网前基础处理理顺",
+    days: [
+      { day: 1, focus: "理解一前一后站位", contentIds: ["content_cn_b_02"], drills: ["口头复述 3 种基础站位", "和搭档空位走位 10 组"], duration: "20 分钟" },
+      { day: 2, focus: "网前截击基础", contentIds: ["content_cn_b_03"], drills: ["缩小动作截击 20 球", "近网挡球 20 次"], duration: "20 分钟" },
+      { day: 3, focus: "前后轮转移动", contentIds: ["content_rb_01"], drills: ["一人底线一人网前轮换 10 组", "搭档交叉补位练习"], duration: "25 分钟" },
+      { day: 4, focus: "休息与站位复盘", contentIds: ["content_cn_b_02"], drills: ["看推荐内容", "写下最不熟的双打场景"], duration: "15 分钟" },
+      { day: 5, focus: "双打接发后的站位选择", contentIds: ["content_rb_02"], drills: ["接发后第一步移动 15 组", "接发后是否上网判断"], duration: "25 分钟" },
+      { day: 6, focus: "双打模拟比赛只看站位", contentIds: ["content_rb_03"], drills: ["双打练习赛 20 分钟", "不记比分只记站位失误"], duration: "30 分钟" },
+      { day: 7, focus: "总结本周最不熟的轮转", contentIds: ["content_cn_b_02"], drills: ["记录 3 个常错站位", "下周保留 1 个重点"], duration: "15 分钟" }
+    ]
+  },
+  {
+    problemTag: "match-anxiety",
+    level: "4.0",
+    title: "比赛心态与执行 7 天计划",
+    target: "在比赛压力下仍然保持清楚的执行和复盘节奏",
+    days: [
+      { day: 1, focus: "每分只保留一个执行关键词", contentIds: ["content_cn_f_01"], drills: ["一分只想一个关键词", "记录关键词是否执行"], duration: "15 分钟" },
+      { day: 2, focus: "模拟落后时的执行专注", contentIds: ["content_cn_e_02"], drills: ["从 2-4 落后开始打 3 组", "每分前重复执行口令"], duration: "25 分钟" },
+      { day: 3, focus: "发接发流程固定化", contentIds: ["content_cn_e_01"], drills: ["发球前流程 10 次", "接发前流程 10 次"], duration: "20 分钟" },
+      { day: 4, focus: "休息与心态复盘", contentIds: ["content_cn_f_01"], drills: ["看推荐内容", "写下最容易乱的比分场景"], duration: "15 分钟" },
+      { day: 5, focus: "只记录非受迫性失误", contentIds: ["content_cn_f_03"], drills: ["打一盘只记非受迫失误", "每局结束写一句提醒"], duration: "30 分钟" },
+      { day: 6, focus: "每局结束做一句执行复盘", contentIds: ["content_rb_03"], drills: ["和朋友打一盘", "每局结束写一句执行复盘"], duration: "35 分钟" },
+      { day: 7, focus: "总结最常丢分的模式", contentIds: ["content_cn_f_03"], drills: ["整理本周记录", "选出下周唯一重点"], duration: "20 分钟" }
+    ]
   }
 ];

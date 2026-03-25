@@ -7,7 +7,11 @@ import DiagnosePage from "@/app/diagnose/page";
 import LibraryPage from "@/app/library/page";
 import RankingsPage from "@/app/rankings/page";
 import PlanPage from "@/app/plan/page";
+import ProfilePage from "@/app/profile/page";
+import StudyPage from "@/app/study/page";
+import SurveyPage from "@/app/survey/page";
 import { assessmentQuestions } from "@/data/assessmentQuestions";
+import { calculateSUS } from "@/lib/survey";
 
 const mockPush = vi.fn();
 let mockSearchParams = new URLSearchParams();
@@ -131,5 +135,32 @@ describe("app smoke tests", () => {
     expect(await screen.findByText("你的 7 天提升计划")).toBeInTheDocument();
     expect(screen.getByText("问题摘要")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("renders profile page login prompt when user is not signed in", () => {
+    render(React.createElement(ProfilePage));
+
+    expect(screen.getByText("登录后查看你的评估、诊断、收藏和训练计划")).toBeInTheDocument();
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("renders survey page without crashing", () => {
+    render(React.createElement(SurveyPage));
+
+    expect(screen.getByText("TennisLevel 使用体验问卷")).toBeInTheDocument();
+    expect(screen.getByText("Part 2：SUS 系统可用性量表")).toBeInTheDocument();
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("renders study page and shows consent modal on first visit", async () => {
+    render(React.createElement(StudyPage));
+
+    expect(await screen.findByText("欢迎参加 TennisLevel 用户体验测试")).toBeInTheDocument();
+    expect(screen.getByText("用户体验研究知情同意书")).toBeInTheDocument();
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("calculates SUS score using the standard formula", () => {
+    expect(calculateSUS([3, 3, 3, 3, 3, 3, 3, 3, 3, 3])).toBe(50);
   });
 });

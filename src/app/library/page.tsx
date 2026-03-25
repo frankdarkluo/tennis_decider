@@ -1,9 +1,11 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { contents } from "@/data/contents";
-import { addBookmark, getBookmarkedContentIds, removeBookmark } from "@/lib/userData";
+import { readAssessmentResultFromStorage, writeAssessmentResultToStorage } from "@/lib/assessmentStorage";
+import { logEvent } from "@/lib/eventLogger";
+import { addBookmark, getBookmarkedContentIds, getLatestAssessmentResult, removeBookmark } from "@/lib/userData";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
@@ -24,6 +26,9 @@ function LibraryPageContent() {
   const [creator, setCreator] = useState(params.get("creator") ?? "全部博主");
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([]);
   const [bookmarkPendingId, setBookmarkPendingId] = useState<string | null>(null);
+  const [showBookmarkedOnly, setShowBookmarkedOnly] = useState(false);
+  const [viewerLevel, setViewerLevel] = useState<string | undefined>(undefined);
+  const previousFiltersRef = useRef<Record<string, string | boolean> | null>(null);
 
   useEffect(() => {
     if (loading) {
@@ -59,6 +64,70 @@ function LibraryPageContent() {
     };
   }, [configured, loading, user?.id]);
 
+  useEffect(() => {
+    const currentFilters: Record<string, string | boolean> = {
+      keyword,
+      level,
+      skill,
+      platform,
+      language,
+      type,
+      creator,
+      bookmarked: showBookmarkedOnly
+    };
+
+    if (!previousFiltersRef.current) {
+      previousFiltersRef.current = currentFilters;
+      return;
+    }
+
+    for (const [filterType, filterValue] of Object.entries(currentFilters)) {
+      if (previousFiltersRef.current[filterType] !== filterValue) {
+        logEvent("content_filter", { filterType, filterValue });
+      }
+    }
+
+    previousFiltersRef.current = currentFilters;
+  }, [creator, keyword, language, level, platform, showBookmarkedOnly, skill, type]);
+
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+
+    let active = true;
+
+    async function hydrateViewerLevel() {
+      const localResult = readAssessmentResultFromStorage();
+      let nextLevel = localResult?.level;
+
+      if (user?.id && configured) {
+        const remoteResult = await getLatestAssessmentResult(user.id);
+
+        if (!active) {
+          return;
+        }
+
+        if (remoteResult.data) {
+          nextLevel = remoteResult.data.level;
+          writeAssessmentResultToStorage(remoteResult.data);
+        }
+      }
+
+      if (!active) {
+        return;
+      }
+
+      setViewerLevel(nextLevel);
+    }
+
+    void hydrateViewerLevel();
+
+    return () => {
+      active = false;
+    };
+  }, [configured, loading, user?.id]);
+
   const filtered = useMemo(() => {
     return contents.filter((item) => {
       const hitKeyword = keyword
@@ -70,9 +139,10 @@ function LibraryPageContent() {
       const hitLanguage = language === "全部语言" ? true : item.language === language;
       const hitType = type === "全部类型" ? true : item.type === type;
       const hitCreator = creator === "全部博主" ? true : item.creatorId === creator;
-      return hitKeyword && hitLevel && hitSkill && hitPlatform && hitLanguage && hitType && hitCreator;
+      const hitBookmark = showBookmarkedOnly ? bookmarkedIds.includes(item.id) : true;
+      return hitKeyword && hitLevel && hitSkill && hitPlatform && hitLanguage && hitType && hitCreator && hitBookmark;
     });
-  }, [keyword, level, skill, platform, language, type, creator]);
+  }, [keyword, level, skill, platform, language, type, creator, showBookmarkedOnly, bookmarkedIds]);
 
   const clearAll = () => {
     setKeyword("");
@@ -82,11 +152,12 @@ function LibraryPageContent() {
     setLanguage("全部语言");
     setType("全部类型");
     setCreator("全部博主");
+    setShowBookmarkedOnly(false);
   };
 
   const handleToggleBookmark = async (contentId: string) => {
     if (!user?.id || !configured) {
-      openLoginModal("登录后可收藏内容");
+      openLoginModal("登录后可收藏内容", "bookmark");
       return;
     }
 
@@ -106,6 +177,7 @@ function LibraryPageContent() {
     setBookmarkedIds((prev) =>
       isBookmarked ? prev.filter((id) => id !== contentId) : [...prev, contentId]
     );
+    logEvent("content_bookmark", { contentId, action: isBookmarked ? "remove" : "add" });
     setBookmarkPendingId(null);
   };
 
@@ -132,6 +204,9 @@ function LibraryPageContent() {
           setType={setType}
           creator={creator}
           setCreator={setCreator}
+          showBookmarkedOnly={showBookmarkedOnly}
+          setShowBookmarkedOnly={setShowBookmarkedOnly}
+          bookmarkFilterEnabled={Boolean(user?.id && configured)}
         />
 
         {filtered.length > 0 ? (
@@ -140,6 +215,8 @@ function LibraryPageContent() {
               <ContentCard
                 key={item.id}
                 item={item}
+                viewerLevel={viewerLevel}
+                source="library"
                 bookmarked={bookmarkedIds.includes(item.id)}
                 bookmarkLoading={bookmarkPendingId === item.id}
                 onToggleBookmark={() => void handleToggleBookmark(item.id)}

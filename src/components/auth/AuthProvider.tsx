@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { User } from "@supabase/supabase-js";
+import { logEvent, setEventLoggerUser } from "@/lib/eventLogger";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase";
 
 type AuthContextValue = {
@@ -32,13 +33,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data }) => {
       if (mounted) {
         setUser(data.session?.user ?? null);
+        setEventLoggerUser(data.session?.user?.id ?? null);
         setLoading(false);
       }
     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      setEventLoggerUser(session?.user?.id ?? null);
       setUser(session?.user ?? null);
       setLoading(false);
+
+      if (event === "SIGNED_IN" && session?.user) {
+        logEvent("login_complete", { email: session.user.email ?? null });
+      }
     });
 
     return () => {
@@ -73,6 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     await supabase.auth.signOut();
+    setEventLoggerUser(null);
   }
 
   return (

@@ -12,6 +12,11 @@ export type DiagnoseOptions = {
   contentPool?: ContentItem[];
 };
 
+export type ProblemPreviewOption = {
+  label: string;
+  problemTag: string;
+};
+
 const DEFAULT_PROBLEM_TAG = "general-improvement";
 
 const DEFAULT_SUMMARY =
@@ -37,6 +42,17 @@ const DEFAULT_DRILLS = [
 
 const DEFAULT_CONTENT_IDS = ["content_cn_c_01", "content_cn_f_02", "content_gaiao_01"];
 
+const PROBLEM_PREVIEW_OPTIONS: ProblemPreviewOption[] = [
+  { label: "反手总是下网", problemTag: "backhand-into-net" },
+  { label: "正手一发力就出界", problemTag: "forehand-out" },
+  { label: "发球二发没信心", problemTag: "second-serve-confidence" },
+  { label: "双打不知道站哪", problemTag: "doubles-positioning" },
+  { label: "脚步总慢半拍", problemTag: "movement-slow" },
+  { label: "比赛一紧张就乱", problemTag: "match-anxiety" },
+  { label: "不知道自己该练什么", problemTag: "cant-self-practice" },
+  { label: "练了很久没进步", problemTag: "plateau-no-progress" }
+];
+
 const LEVEL_PREFERENCE_MAP: Record<string, string[]> = {
   "2.5": ["2.5", "3.0"],
   "3.0": ["2.5", "3.0"],
@@ -51,27 +67,27 @@ const ASSESSMENT_DIMENSION_HINTS: Record<
 > = {
   forehand: {
     skills: ["forehand", "topspin"],
-    problemTags: ["forehand-out", "forehand-no-power", "balls-too-short"]
+    problemTags: ["forehand-out", "forehand-no-power", "balls-too-short", "topspin-low"]
   },
   backhand: {
     skills: ["backhand", "slice"],
-    problemTags: ["backhand-into-net", "slice-too-high", "late-contact"]
+    problemTags: ["backhand-into-net", "slice-too-high", "late-contact", "trouble-with-slice"]
   },
   serve: {
     skills: ["serve"],
-    problemTags: ["second-serve-confidence", "serve-toss-inconsistent"]
+    problemTags: ["second-serve-confidence", "serve-toss-inconsistent", "serve-accuracy"]
   },
   net: {
     skills: ["net", "doubles"],
-    problemTags: ["net-confidence"]
+    problemTags: ["net-confidence", "doubles-positioning"]
   },
   movement: {
     skills: ["movement", "footwork"],
-    problemTags: ["late-contact", "balls-too-short"]
+    problemTags: ["late-contact", "balls-too-short", "movement-slow"]
   },
   matchplay: {
     skills: ["matchplay", "mental", "return"],
-    problemTags: ["match-anxiety", "return-under-pressure", "cant-self-practice"]
+    problemTags: ["match-anxiety", "return-under-pressure", "cant-self-practice", "cant-hit-lob", "plateau-no-progress"]
   }
 };
 
@@ -87,6 +103,13 @@ const TITLE_MAP: Record<string, string> = {
   "balls-too-short": "你的问题更接近：击球深度不足",
   "return-under-pressure": "你的问题更接近：接发球准备和策略不足",
   "slice-too-high": "你的问题更接近：切削控制不足",
+  "topspin-low": "你的问题更接近：正手上旋和弧线不足",
+  "serve-accuracy": "你的问题更接近：发球进区率和落点控制不足",
+  "movement-slow": "你的问题更接近：脚步启动和到位偏慢",
+  "doubles-positioning": "你的问题更接近：双打站位和轮转不清晰",
+  "trouble-with-slice": "你的问题更接近：下旋来球处理不顺",
+  "cant-hit-lob": "你的问题更接近：防守高球选择不足",
+  "plateau-no-progress": "你的问题更接近：训练聚焦不够，进入平台期",
   "cant-self-practice": "你的问题更接近：训练规划不清晰",
   "general-improvement": "你的问题暂时更接近：通用提升方向"
 };
@@ -415,5 +438,9 @@ export function getDefaultDiagnosisResult(
 }
 
 export function getProblemPreviewTags(): string[] {
-  return ["反手总是下网", "发球没有旋转", "正手一发力就出界", "不知道怎么打双打", "比赛一紧张就乱"];
+  return PROBLEM_PREVIEW_OPTIONS.map((item) => item.label);
+}
+
+export function getProblemPreviewOptions(): ProblemPreviewOption[] {
+  return PROBLEM_PREVIEW_OPTIONS;
 }

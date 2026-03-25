@@ -17,7 +17,7 @@ export function QuestionCard({ question, selectedScore, onSelect }: QuestionCard
             key={option.label}
             onClick={() => onSelect(option.score)}
             className={[
-              "w-full rounded-xl border px-4 py-3 text-left text-sm transition",
+              "min-h-11 w-full rounded-xl border px-4 py-3 text-left text-sm transition",
               selectedScore === option.score
                 ? "border-brand-500 bg-brand-50 text-brand-700"
                 : "border-[var(--line)] bg-white text-slate-700 hover:border-brand-300"

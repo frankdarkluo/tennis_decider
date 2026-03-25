@@ -2,9 +2,12 @@
 
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 import { LoginModal } from "@/components/auth/LoginModal";
+import { logEvent } from "@/lib/eventLogger";
+
+type LoginTrigger = "header" | "bookmark" | "save_plan" | "profile" | "generic";
 
 type AuthModalContextValue = {
-  openLoginModal: (contextMessage?: string) => void;
+  openLoginModal: (contextMessage?: string, trigger?: LoginTrigger) => void;
   closeLoginModal: () => void;
 };
 
@@ -16,9 +19,10 @@ export function AuthModalProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<AuthModalContextValue>(
     () => ({
-      openLoginModal: (message?: string) => {
+      openLoginModal: (message?: string, trigger: LoginTrigger = "generic") => {
         setContextMessage(message);
         setOpen(true);
+        logEvent("login_trigger", { trigger });
       },
       closeLoginModal: () => {
         setOpen(false);

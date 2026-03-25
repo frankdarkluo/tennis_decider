@@ -4,26 +4,48 @@ import { Textarea } from "@/components/ui/Textarea";
 type DiagnoseInputProps = {
   value: string;
   quickTags: string[];
+  quickTagsLabel?: string;
+  variant?: "default" | "compact";
   onChange: (value: string) => void;
   onDiagnose: () => void;
   onClear: () => void;
+  onQuickTagClick?: (tag: string) => void;
 };
 
-export function DiagnoseInput({ value, quickTags, onChange, onDiagnose, onClear }: DiagnoseInputProps) {
+export function DiagnoseInput({
+  value,
+  quickTags,
+  quickTagsLabel = "猜你想问：",
+  variant = "default",
+  onChange,
+  onDiagnose,
+  onClear,
+  onQuickTagClick
+}: DiagnoseInputProps) {
   return (
     <div className="space-y-4 rounded-2xl border border-[var(--line)] bg-white p-5 shadow-soft">
       <Textarea
-        rows={5}
+        rows={variant === "compact" ? 3 : 5}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        className={variant === "compact" ? "min-h-[120px]" : undefined}
         placeholder="我反手总是下网 / 我的二发没有信心 / 正手一发力就容易出界 / 比赛里总觉得来不及准备"
       />
+      {quickTagsLabel ? <p className="text-sm text-slate-500">{quickTagsLabel}</p> : null}
       <div className="flex flex-wrap gap-2">
         {quickTags.map((tag) => (
           <button
             key={tag}
-            className="rounded-full border border-[var(--line)] px-3 py-1 text-xs text-slate-700 hover:border-brand-300"
-            onClick={() => onChange(tag)}
+            type="button"
+            className="min-h-11 rounded-full border border-[var(--line)] px-4 py-2 text-sm text-slate-700 transition hover:border-brand-300 hover:text-brand-700"
+            onClick={() => {
+              if (onQuickTagClick) {
+                onQuickTagClick(tag);
+                return;
+              }
+
+              onChange(tag);
+            }}
           >
             {tag}
           </button>

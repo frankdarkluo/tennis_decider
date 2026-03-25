@@ -3,8 +3,12 @@ import { DiagnosisResult as DiagnosisResultType } from "@/types/diagnosis";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { logEvent } from "@/lib/eventLogger";
 
 export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
+  const planHref = `/plan?problemTag=${encodeURIComponent(result.problemTag)}${result.level ? `&level=${encodeURIComponent(result.level)}` : ""}`;
+  const canGeneratePlan = Boolean(result.input.trim());
+
   return (
     <Card className="space-y-4">
       <div className="space-y-2">
@@ -68,9 +72,32 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
               {item.coachReason && !item.coachReason.includes("[待填写") ? (
                 <p className="mt-1 text-xs text-slate-500">教练视角：{item.coachReason}</p>
               ) : null}
+              <div className="mt-3">
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => {
+                    logEvent("content_click", { contentId: item.id, source: "diagnosis" });
+                    logEvent("content_external", { contentId: item.id, platform: item.platform, url: item.url });
+                  }}
+                >
+                  <Button variant="secondary">去看这条内容</Button>
+                </a>
+              </div>
             </div>
           ))}
         </div>
+        {canGeneratePlan ? (
+          <div className="mt-4">
+            <Link
+              href={planHref}
+              onClick={() => logEvent("cta_click", { ctaLabel: "根据这个问题生成 7 天训练计划", ctaLocation: "diagnosis_result", targetPage: "/plan" })}
+            >
+              <Button>根据这个问题生成 7 天训练计划</Button>
+            </Link>
+          </div>
+        ) : null}
       </div>
     </Card>
   );

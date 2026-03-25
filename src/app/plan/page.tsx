@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { logEvent } from "@/lib/eventLogger";
 import { getPlanTemplate } from "@/lib/plans";
 import { saveGeneratedPlan } from "@/lib/userData";
 import { toChineseLevel } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
+import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
 import { PlanSummary } from "@/components/plan/PlanSummary";
@@ -45,9 +47,21 @@ function PlanPageContent() {
     setSaveMessage("");
   }, [level, problemTag]);
 
+  useEffect(() => {
+    if (!hasSource) {
+      return;
+    }
+
+    logEvent("plan_generate", {
+      sourceType,
+      sourceLabel,
+      level: plan.level
+    });
+  }, [hasSource, plan.level, sourceLabel, sourceType]);
+
   const handleSavePlan = async () => {
     if (!user?.id || !configured) {
-      openLoginModal("登录后可保存训练计划");
+      openLoginModal("登录后可保存训练计划", "save_plan");
       return;
     }
 
@@ -64,16 +78,23 @@ function PlanPageContent() {
 
     setSaveStatus("saved");
     setSaveMessage("这份训练计划已经保存到你的账号。");
+    logEvent("plan_save", { planId: `${plan.problemTag}:${plan.level}` });
   };
 
   if (!hasSource && problemTag === "no-plan") {
     return (
       <PageContainer>
-        <div className="rounded-2xl border border-dashed border-[var(--line)] bg-white p-8 text-center">
-          <p className="text-slate-700">暂无可用来源数据，请先完成水平评估或问题诊断。</p>
-          <div className="mt-4 flex justify-center gap-2">
-            <Link href="/assessment"><Button>去水平评估</Button></Link>
-            <Link href="/diagnose"><Button variant="secondary">去问题诊断</Button></Link>
+        <div className="space-y-5">
+          <PageBreadcrumbs items={[
+            { href: "/diagnose", label: "← 回到诊断" },
+            { href: "/", label: "回到首页" }
+          ]} />
+          <div className="rounded-2xl border border-dashed border-[var(--line)] bg-white p-8 text-center">
+            <p className="text-slate-700">暂无可用来源数据，请先完成水平评估或问题诊断。</p>
+            <div className="mt-4 flex justify-center gap-2">
+              <Link href="/assessment"><Button>去水平评估</Button></Link>
+              <Link href="/diagnose"><Button variant="secondary">去问题诊断</Button></Link>
+            </div>
           </div>
         </div>
       </PageContainer>
@@ -83,6 +104,10 @@ function PlanPageContent() {
   return (
     <PageContainer>
       <div className="space-y-5">
+        <PageBreadcrumbs items={[
+          { href: "/diagnose", label: "← 回到诊断" },
+          { href: "/", label: "回到首页" }
+        ]} />
         <div>
           <h1 className="text-3xl font-black text-slate-900">你的 7 天提升计划</h1>
           <p className="mt-2 text-slate-600">根据你的问题自动生成练习路径</p>
@@ -92,7 +117,11 @@ function PlanPageContent() {
 
         <div className="grid gap-4 md:grid-cols-2">
           {plan.days.map((day) => (
-            <DayPlanCard key={day.day} day={day} />
+            <DayPlanCard
+              key={day.day}
+              day={day}
+              onViewDetails={(dayNumber) => logEvent("plan_view_day", { dayNumber })}
+            />
           ))}
         </div>
 
@@ -101,7 +130,6 @@ function PlanPageContent() {
             {saveStatus === "saving" ? "保存中..." : saveStatus === "saved" ? "已保存 ✓" : "保存这份计划"}
           </Button>
           <Button variant="secondary" onClick={regenerate}>重新生成</Button>
-          <Link href="/diagnose"><Button variant="ghost">返回诊断</Button></Link>
         </div>
         {saveMessage ? (
           <div className={saveStatus === "error"

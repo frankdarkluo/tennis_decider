@@ -3,14 +3,44 @@ import { ContentItem } from "@/types/content";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { logEvent } from "@/lib/eventLogger";
 import { toChineseSkill } from "@/lib/utils";
 
 type ContentCardProps = {
   item: ContentItem;
+  viewerLevel?: string;
+  source?: "library" | "profile";
   bookmarked?: boolean;
   bookmarkLoading?: boolean;
   onToggleBookmark?: () => void;
 };
+
+function getLevelFitMeta(levels: string[], viewerLevel?: string) {
+  if (!viewerLevel) {
+    return null;
+  }
+
+  if (levels.includes(viewerLevel)) {
+    return {
+      label: "适合你的水平",
+      className: "bg-brand-100 text-brand-800"
+    };
+  }
+
+  const viewerScore = Number.parseFloat(viewerLevel);
+  const nearest = levels
+    .map((level) => ({ level, diff: Number.parseFloat(level) - viewerScore }))
+    .sort((a, b) => Math.abs(a.diff) - Math.abs(b.diff))[0];
+
+  if (!nearest || Math.abs(nearest.diff) > 0.5) {
+    return null;
+  }
+
+  return {
+    label: nearest.diff > 0 ? "略高于你的水平" : "略低于你的水平",
+    className: "bg-slate-100 text-slate-600"
+  };
+}
 
 function BookmarkIcon({ filled }: { filled: boolean }) {
   return (
@@ -29,12 +59,15 @@ function BookmarkIcon({ filled }: { filled: boolean }) {
 
 export function ContentCard({
   item,
+  viewerLevel,
+  source = "library",
   bookmarked = false,
   bookmarkLoading = false,
   onToggleBookmark
 }: ContentCardProps) {
   const creator = creators.find((c) => c.id === item.creatorId);
   const shouldShowCoachReason = item.coachReason && !item.coachReason.includes("[待填写");
+  const levelFitMeta = getLevelFitMeta(item.levels, viewerLevel);
 
   return (
     <Card className="space-y-3">
@@ -43,6 +76,7 @@ export function ContentCard({
           <Badge>{item.platform}</Badge>
           <Badge>{item.language === "zh" ? "中文" : "英文"}</Badge>
           <Badge>{item.type}</Badge>
+          {levelFitMeta ? <Badge className={levelFitMeta.className}>{levelFitMeta.label}</Badge> : null}
         </div>
         {onToggleBookmark ? (
           <Button
@@ -68,7 +102,17 @@ export function ContentCard({
         <p className="text-xs text-slate-500">适用场景：{item.useCases.slice(0, 2).join(" / ")}</p>
       ) : null}
       <div className="flex flex-wrap gap-2">
-        <a href={item.url} target="_blank" rel="noreferrer"><Button>查看</Button></a>
+        <a
+          href={item.url}
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => {
+            logEvent("content_click", { contentId: item.id, source });
+            logEvent("content_external", { contentId: item.id, platform: item.platform, url: item.url });
+          }}
+        >
+          <Button>查看</Button>
+        </a>
       </div>
     </Card>
   );

@@ -1,9 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { contents } from "@/data/contents";
 import { creators } from "@/data/creators";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
+import { logEvent } from "@/lib/eventLogger";
 
 const featuredContentIds = ["content_fr_01", "content_gaiao_02"];
 
@@ -18,7 +21,11 @@ export function HotContentSection() {
         <div>
           <h3 className="text-xl font-bold text-slate-900">从这些内容开始练，更像真的有人在带你</h3>
         </div>
-        <Link href="/library" className="shrink-0 pt-1 text-sm font-medium text-slate-500 transition hover:text-slate-700">
+        <Link
+          href="/library"
+          className="shrink-0 pt-1 text-sm font-medium text-slate-500 transition hover:text-slate-700"
+          onClick={() => logEvent("cta_click", { ctaLabel: "查看更多内容", ctaLocation: "home_hot_content", targetPage: "/library" })}
+        >
           查看更多 →
         </Link>
       </div>
@@ -27,7 +34,12 @@ export function HotContentSection() {
           const creator = creators.find((entry) => entry.id === item.creatorId);
 
           return (
-            <Link key={item.id} href="/library" className="h-full">
+            <Link
+              key={item.id}
+              href="/library"
+              className="h-full"
+              onClick={() => logEvent("content_click", { contentId: item.id, source: "homepage" })}
+            >
               <Card className="flex h-full flex-col justify-between gap-3 p-4 transition hover:-translate-y-0.5 hover:border-brand-200">
                 <div className="flex flex-wrap items-center gap-2">
                   <PlatformBadge platform={item.platform} />
