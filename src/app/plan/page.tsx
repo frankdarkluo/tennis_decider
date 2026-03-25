@@ -1,30 +1,70 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getPlanTemplate } from "@/lib/plans";
+import { saveGeneratedPlan } from "@/lib/userData";
 import { toChineseLevel } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { useAuthModal } from "@/components/auth/AuthModalProvider";
 import { PlanSummary } from "@/components/plan/PlanSummary";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
 import { Button } from "@/components/ui/Button";
+import { SavedPlanSource } from "@/types/userData";
 
 function PlanPageContent() {
   const params = useSearchParams();
+  const { user, configured } = useAuth();
+  const { openLoginModal } = useAuthModal();
   const defaultProblemTag = params.get("problemTag") ?? "no-plan";
   const defaultLevel = (params.get("level") as "3.0" | "3.5" | "4.0") ?? "3.0";
 
   const [problemTag, setProblemTag] = useState(defaultProblemTag);
   const [level, setLevel] = useState<"3.0" | "3.5" | "4.0">(defaultLevel);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [saveMessage, setSaveMessage] = useState("");
 
   const plan = useMemo(() => getPlanTemplate(problemTag, level), [problemTag, level]);
+  const sourceType: SavedPlanSource = params.get("problemTag")
+    ? "diagnosis"
+    : params.get("level")
+      ? "assessment"
+      : "default";
+  const sourceLabel = params.get("problemTag") ?? params.get("level") ?? `${problemTag}:${level}`;
 
   const regenerate = () => {
     setLevel((prev) => (prev === "3.0" ? "3.5" : prev === "3.5" ? "4.0" : "3.0"));
   };
 
   const hasSource = Boolean(params.get("problemTag") || params.get("level"));
+
+  useEffect(() => {
+    setSaveStatus("idle");
+    setSaveMessage("");
+  }, [level, problemTag]);
+
+  const handleSavePlan = async () => {
+    if (!user?.id || !configured) {
+      openLoginModal("登录后可保存训练计划");
+      return;
+    }
+
+    setSaveStatus("saving");
+    setSaveMessage("");
+
+    const saveResult = await saveGeneratedPlan(user.id, plan, sourceType, sourceLabel);
+
+    if (saveResult.error) {
+      setSaveStatus("error");
+      setSaveMessage(saveResult.error);
+      return;
+    }
+
+    setSaveStatus("saved");
+    setSaveMessage("这份训练计划已经保存到你的账号。");
+  };
 
   if (!hasSource && problemTag === "no-plan") {
     return (
@@ -57,10 +97,20 @@ function PlanPageContent() {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <Button onClick={() => alert("已保存到本地计划（示意）")}>保存计划</Button>
+          <Button onClick={() => void handleSavePlan()} disabled={saveStatus === "saving" || saveStatus === "saved"}>
+            {saveStatus === "saving" ? "保存中..." : saveStatus === "saved" ? "已保存 ✓" : "保存这份计划"}
+          </Button>
           <Button variant="secondary" onClick={regenerate}>重新生成</Button>
           <Link href="/diagnose"><Button variant="ghost">返回诊断</Button></Link>
         </div>
+        {saveMessage ? (
+          <div className={saveStatus === "error"
+            ? "rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
+            : "rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-700"}
+          >
+            {saveMessage}
+          </div>
+        ) : null}
       </div>
     </PageContainer>
   );

@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/Button";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { useAuthModal } from "@/components/auth/AuthModalProvider";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -16,6 +18,8 @@ const navItems = [
 
 export function Header() {
   const pathname = usePathname();
+  const { user, loading } = useAuth();
+  const { openLoginModal } = useAuthModal();
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-white/90 backdrop-blur">
@@ -36,7 +40,9 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <Button variant="ghost">登录</Button>
+          <Button variant="ghost" onClick={() => openLoginModal()}>
+            {loading ? "账号" : user?.email ? "我的账号" : "登录"}
+          </Button>
           <Link href="/assessment"><Button>免费开始</Button></Link>
         </div>
       </div>

@@ -1,6 +1,15 @@
 export type ContentType = "video" | "article" | "post";
 export type ContentPlatform = "Bilibili" | "Xiaohongshu" | "Zhihu" | "YouTube" | "Instagram";
 
+const bilibiliSearchUrl = (query: string) =>
+  `https://search.bilibili.com/all?keyword=${encodeURIComponent(query)}`;
+
+const xiaohongshuSearchUrl = (query: string) =>
+  `https://www.xiaohongshu.com/search_result?keyword=${encodeURIComponent(query)}`;
+
+const zhihuSearchUrl = (query: string) =>
+  `https://www.zhihu.com/search?type=content&q=${encodeURIComponent(query)}`;
+
 export type ContentItem = {
   id: string;
   title: string;
@@ -13,8 +22,8 @@ export type ContentItem = {
   language: "zh" | "en";
   summary: string;
   reason: string;
-  useCases?: string[];
-  coachReason?: string;
+  useCases: string[];
+  coachReason: string;
   duration?: string;
   url: string;
   cover?: string;
@@ -34,7 +43,7 @@ export const contents: ContentItem[] = [
     summary: "适合刚开始接触网球或正手动作还不稳定的球员。",
     reason: "适合作为正手动作框架的第一步内容。",
     useCases: ["正手动作还没有固定下来", "正手总觉得不顺手"],
-    coachReason: "先建立正手动作框架，再谈提速和细节，成功率会更高。",
+    coachReason: "正手框架没定下来之前改细节都白搭，先看这条把轨迹跑顺。",
     duration: "05:30",
     url: "https://www.bilibili.com/video/BV1XM4y187mR"
   },
@@ -51,7 +60,7 @@ export const contents: ContentItem[] = [
     summary: "适合发球还没有动作概念、总想直接发力的新手。",
     reason: "适合作为发球入门内容和二发焦虑的降难度入口。",
     useCases: ["发球经常发不进去", "二发没有信心"],
-    coachReason: "这条先把发球节奏和动作顺序放对，再去追求球速。",
+    coachReason: "发球最常见的坑就是一上来就想发快，这条帮你先把节奏和稳定性建起来。",
     duration: "06:10",
     url: "https://www.bilibili.com/video/BV1q7411L7cD"
   },
@@ -68,7 +77,7 @@ export const contents: ContentItem[] = [
     summary: "适合反手动作还没固定下来的球员。",
     reason: "适合 3.0 球员做反手基础补课。",
     useCases: ["反手总不扎实", "反手动作不稳定"],
-    coachReason: "当反手问题还很泛时，先回到基础框架通常最有效。",
+    coachReason: "反手不扎实十有八九是击球点和拍面角度的问题，这条讲得很直接。",
     url: "https://www.bilibili.com/video/BV1YL411d7oX"
   },
   {
@@ -83,8 +92,10 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合二发不稳、节奏混乱的球员。",
     reason: "更适合 3.0–3.5 球员做发球节奏和信心修正。",
+    useCases: ["二发节奏总是断掉", "发球一发力动作就散"],
+    coachReason: "很多人发球散就是因为没有停顿，这条能帮你找到发力前的\"等一下\"。",
     duration: "06:00",
-    url: "https://placeholder.com/content/zlx-01"
+    url: "https://www.bilibili.com/video/BV123411H7u6"
   },
   {
     id: "content_zlx_02",
@@ -98,8 +109,10 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合发球时上下肢节奏脱节的球员。",
     reason: "适合作为发球节奏类问题的定向推荐内容。",
+    useCases: ["上步发球时总踩不顺", "发球上下肢节奏老是对不上"],
+    coachReason: "上步节奏对了发球自然顺，这条把脚步和抛球的配合拆得很细。",
     duration: "06:09",
-    url: "https://placeholder.com/content/zlx-02"
+    url: bilibiliSearchUrl("赵灵熙 发球 节奏 网球")
   },
   {
     id: "content_zlx_03",
@@ -113,7 +126,57 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合开始从能打向打得更合理过渡的球员。",
     reason: "适合作为 3.5 左右球员的细节提升样本。",
-    url: "https://placeholder.com/content/zlx-03"
+    useCases: ["反手和上网衔接不顺", "中前场处理总是慢半拍"],
+    coachReason: "反手打完不知道怎么跟进是3.0-3.5很典型的断层，这条专门解决衔接。",
+    url: xiaohongshuSearchUrl("赵灵熙 反手 网前 网球")
+  },
+  {
+    id: "content_ttt_01",
+    title: "Simple Tennis Serve Technique Masterclass for Beginners",
+    creatorId: "creator_top_tennis_training",
+    platform: "YouTube",
+    type: "video",
+    levels: ["3.0", "3.5", "4.0"],
+    skills: ["serve"],
+    problemTags: ["serve-toss-inconsistent", "serve-rhythm"],
+    language: "en",
+    summary: "适合发球抛球不稳、发球整体节奏还没固定下来的业余球员。",
+    reason: "这条覆盖了发球抛球、身体位置和整体节奏，适合补足抛球类问题的第三条推荐。",
+    useCases: ["发球抛球总偏左偏右", "抛球一乱发球动作就跟着散"],
+    coachReason: "抛球是发球的地基，这条从零开始讲抛球位置和节奏，讲解非常清晰。",
+    url: "https://www.youtube.com/watch?v=IiRGdagtOKE"
+  },
+  {
+    id: "content_et_01",
+    title: "How To Control Groundstroke Depth",
+    creatorId: "creator_essential_tennis",
+    platform: "YouTube",
+    type: "video",
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    skills: ["forehand", "backhand", "consistency"],
+    problemTags: ["balls-too-short"],
+    language: "en",
+    summary: "适合相持里总把球打浅、深度目标不明确的球员。",
+    reason: "这条专门讲底线深度控制，能直接补足“球太浅”这条规则的内容覆盖。",
+    useCases: ["相持里总落在发球线附近", "过网了但没有把对手压到底线后面"],
+    coachReason: "很多人只想着过网却忽略深度，这条教你用目标区域控制落点。",
+    url: "https://www.youtube.com/watch?v=rqvhgHDx-lE"
+  },
+  {
+    id: "content_it_01",
+    title: "Backhand Slice Tennis Lesson with 4.5 NTRP Student",
+    creatorId: "creator_intuitive_tennis",
+    platform: "YouTube",
+    type: "video",
+    levels: ["3.5", "4.0", "4.5"],
+    skills: ["backhand", "slice"],
+    problemTags: ["slice-too-high"],
+    language: "en",
+    summary: "适合反手切削弧线过高、落点飘、控制不住拍面的球员。",
+    reason: "这条直接围绕切削轨迹和稳定性修正，和“切削太高”问题匹配度很高。",
+    useCases: ["反手切削总是飘起来", "切削落点短且给对手舒服进攻球"],
+    coachReason: "这条用4.5学员实拍纠正，你能直接看到跟你水平接近的人怎么改。",
+    url: "https://www.youtube.com/watch?v=d-VvKDgoIew"
   },
 
   {
@@ -128,8 +191,10 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合反手下网频率高、越用力越乱的球员。",
     reason: "适合作为反手稳定性问题的直接入口。",
+    useCases: ["反手一发力就下网", "反手拍面总是控不住"],
+    coachReason: "反手下网先别想着提拍面，先看这条把击球点位置调对。",
     duration: "04:50",
-    url: "https://placeholder.com/content/cn-a-01"
+    url: bilibiliSearchUrl("赵周晓桥 反手 下网 网球")
   },
   {
     id: "content_cn_a_02",
@@ -143,8 +208,10 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合来不及准备、总被球顶住的球员。",
     reason: "适合与反手/正手晚点击球问题联动推荐。",
+    useCases: ["来球一快就慢半拍", "总在身体后侧才碰到球"],
+    coachReason: "准备慢不是反应慢，是启动时机不对，这条能帮你提前半拍。",
     duration: "05:20",
-    url: "https://placeholder.com/content/cn-a-02"
+    url: bilibiliSearchUrl("赵周晓桥 击球点 晚 准备 网球")
   },
   {
     id: "content_cn_a_03",
@@ -158,8 +225,10 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合击球前总找不到位置的球员。",
     reason: "可以和任何‘来不及’类问题搭配推荐。",
+    useCases: ["脚步总先卡住", "击球前总找不到舒服站位"],
+    coachReason: "手上动作再好脚步不到也白搭，这条练的是最基本的两步到位。",
     duration: "03:40",
-    url: "https://placeholder.com/content/cn-a-03"
+    url: bilibiliSearchUrl("赵周晓桥 脚步 移动 网球")
   },
 
   {
@@ -174,7 +243,9 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合双打时站上网前就紧张的球员。",
     reason: "更适合新手双打网前建立信心。",
-    url: "https://placeholder.com/content/cn-b-01"
+    useCases: ["双打站上网前就紧张", "网前只会硬挡不会处理"],
+    coachReason: "双打网前不需要你打出漂亮截击，先学会站稳和挡住就能赢很多分。",
+    url: xiaohongshuSearchUrl("全网球APP 双打 网前 截击")
   },
   {
     id: "content_cn_b_02",
@@ -188,7 +259,9 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合双打时总感觉不知该站哪的球员。",
     reason: "对双打初学者非常友好。",
-    url: "https://placeholder.com/content/cn-b-02"
+    useCases: ["双打里总不知道该站哪", "和搭档总撞位或漏位"],
+    coachReason: "双打输球很多时候不是技术差而是站位乱，这条把基础阵型讲透了。",
+    url: zhihuSearchUrl("全网球APP 双打 站位 配合")
   },
   {
     id: "content_cn_b_03",
@@ -202,7 +275,9 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合把截击打成大挥拍的球员。",
     reason: "直接对应网前失误和截击成功率低的问题。",
-    url: "https://placeholder.com/content/cn-b-03"
+    useCases: ["截击动作总是太大", "网前球总弹飞或下网"],
+    coachReason: "截击最怕动作大，这条教你缩小挥拍幅度，成功率马上能感觉到变化。",
+    url: xiaohongshuSearchUrl("全网球APP 截击 网前 成功率")
   },
 
   {
@@ -217,8 +292,10 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合总把球打浅、稳定性差的球员。",
     reason: "适合做高频通用推荐内容。",
+    useCases: ["相持里总把球打浅", "只顾过网没有深度目标"],
+    coachReason: "3.0-3.5最容易赢球的方式不是打得狠而是打得深，先看这条建立深度意识。",
     duration: "05:00",
-    url: "https://placeholder.com/content/cn-c-01"
+    url: bilibiliSearchUrl("网球之家 稳定性 打深 网球")
   },
   {
     id: "content_cn_c_02",
@@ -232,8 +309,10 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合移动慢、准备慢的球员。",
     reason: "适合与击球点晚、步伐慢等问题配对。",
+    useCases: ["启动总慢半拍", "分腿垫步时机总不对"],
+    coachReason: "分腿垫步是所有移动的起点，时机对了你会觉得球突然慢下来了。",
     duration: "04:15",
-    url: "https://placeholder.com/content/cn-c-02"
+    url: bilibiliSearchUrl("网球之家 分腿垫步 来不及 网球")
   },
   {
     id: "content_cn_c_03",
@@ -247,7 +326,9 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合上完课后不知道如何巩固的球员。",
     reason: "很适合教练给学生当课后阅读。",
-    url: "https://placeholder.com/content/cn-c-03"
+    useCases: ["上完课不知道怎么复习", "自己练球总是想到哪练到哪"],
+    coachReason: "很多人有教练课但课后不知道练什么，这条给你三个马上能用的自练套路。",
+    url: zhihuSearchUrl("网球之家 课后 自练 方法")
   },
 
   {
@@ -262,7 +343,9 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合正手一发力就乱飞的球员。",
     reason: "适合用来解释上旋和控制的关系。",
-    url: "https://placeholder.com/content/cn-d-01"
+    useCases: ["正手一发力就出界", "正手弧线太平压不住球"],
+    coachReason: "正手出界多数是弧线不够而不是力量太大，先看这条调整过网高度。",
+    url: xiaohongshuSearchUrl("爱奇艺体育网球 正手 出界 上旋")
   },
   {
     id: "content_cn_d_02",
@@ -276,7 +359,9 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合想发力但球速和质量都上不去的球员。",
     reason: "适合讲清楚发力顺序和身体参与。",
-    url: "https://placeholder.com/content/cn-d-02"
+    useCases: ["正手球速总起不来", "总觉得只有手臂在发力"],
+    coachReason: "正手没力不是手臂弱，是转体和蹬地没参与进来，这条帮你找到发力链。",
+    url: xiaohongshuSearchUrl("爱奇艺体育网球 正手 发力 顺序")
   },
   {
     id: "content_cn_d_03",
@@ -290,8 +375,10 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合正手控制弱、弧线不够的球员。",
     reason: "适合作为正手控制类问题的第二条推荐。",
+    useCases: ["正手上旋感不明显", "拉不出安全弧线"],
+    coachReason: "上旋不是刻意去刷球，而是挥拍路径自然带出来的，这条的体感描述很好。",
     duration: "05:48",
-    url: "https://placeholder.com/content/cn-d-03"
+    url: bilibiliSearchUrl("爱奇艺体育网球 正手 上旋 网球")
   },
 
   {
@@ -306,8 +393,10 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合接发总被顶住、来不及的球员。",
     reason: "适合作为接发球问题的第一条推荐。",
+    useCases: ["接发总被对手先压住", "接发准备总是不够早"],
+    coachReason: "接发被动大多不是反应慢而是准备姿势和站位不对，这条从根上解决。",
     duration: "06:20",
-    url: "https://placeholder.com/content/cn-e-01"
+    url: bilibiliSearchUrl("张奔斗 接发球 站位 准备 网球")
   },
   {
     id: "content_cn_e_02",
@@ -321,7 +410,9 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合比赛一开始就节奏乱的球员。",
     reason: "适合作为比赛心理和发接发专题的桥梁内容。",
-    url: "https://placeholder.com/content/cn-e-02"
+    useCases: ["比赛一开始就乱节奏", "发接发之间没有固定流程"],
+    coachReason: "比赛前几局建立节奏感特别重要，这条教你用固定流程稳住开局。",
+    url: xiaohongshuSearchUrl("张奔斗 发接发 流程 比赛 网球")
   },
   {
     id: "content_cn_e_03",
@@ -335,7 +426,9 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合接发质量低、总给对手机会的球员。",
     reason: "适合搭配接发球和深度不足类问题。",
-    url: "https://placeholder.com/content/cn-e-03"
+    useCases: ["接发回球总是太短", "接发后第一拍总给对手舒服进攻"],
+    coachReason: "接发不需要打出制胜球，送深就是最好的接发，这条帮你降低失误。",
+    url: zhihuSearchUrl("张奔斗 接发球 送深 网球")
   },
 
   {
@@ -350,7 +443,9 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合比赛里越打越紧、越想越乱的球员。",
     reason: "适合作为比赛心理问题的基础阅读。",
-    url: "https://placeholder.com/content/cn-f-01"
+    useCases: ["一记分就手紧", "比赛里越失误越不敢打"],
+    coachReason: "紧张的根源是盯着比分而不是盯着下一拍该做什么，这条帮你切换注意力。",
+    url: zhihuSearchUrl("孙甜甜网球课堂 比赛 紧张 执行")
   },
   {
     id: "content_cn_f_02",
@@ -364,7 +459,9 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合有教练课但课后练习混乱的球员。",
     reason: "适合作为训练计划模块的内容补充。",
-    url: "https://placeholder.com/content/cn-f-02"
+    useCases: ["每周训练没有结构", "有教练课但课后不知道练什么"],
+    coachReason: "练得多不如练得对，这条给你一个每周三练的现成结构，直接跟着安排。",
+    url: zhihuSearchUrl("孙甜甜网球课堂 每周 训练 计划")
   },
   {
     id: "content_cn_f_03",
@@ -378,8 +475,10 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合目标太多、动作越改越乱的球员。",
     reason: "适合和不会自练、比赛心态类问题联动。",
+    useCases: ["每次训练都改太多点", "练了很多但没有连续进步"],
+    coachReason: "每次只改一个点坚持两周比一次改五个点有效十倍，这条帮你学会聚焦。",
     duration: "04:35",
-    url: "https://placeholder.com/content/cn-f-03"
+    url: bilibiliSearchUrl("孙甜甜网球课堂 练得不少 没进步 网球")
   },
 
   {
@@ -394,8 +493,10 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合防守球路单一的球员。",
     reason: "为后续高球/防守专题预留。",
+    useCases: ["防守时只会平打回去", "不会用高球争取调整时间"],
+    coachReason: "高球是3.0-3.5最被低估的防守武器，学会了能帮你多撑住很多被动球。",
     duration: "05:12",
-    url: "https://placeholder.com/content/common-01"
+    url: bilibiliSearchUrl("网球之家 高球 弧线 落点 网球")
   },
   {
     id: "content_common_02",
@@ -409,8 +510,10 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合遇到下旋来球就动作变形的球员。",
     reason: "适合补足常见来球识别和应对。",
+    useCases: ["遇到下旋来球就仓促出手", "击球点总掉到身体后面"],
+    coachReason: "打下旋来球的关键是早准备和在前点迎球，这条把时机讲得很到位。",
     duration: "05:05",
-    url: "https://placeholder.com/content/common-02"
+    url: bilibiliSearchUrl("赵周晓桥 下旋 来球 击球点 网球")
   },
   {
     id: "content_common_03",
@@ -424,7 +527,9 @@ export const contents: ContentItem[] = [
     language: "zh",
     summary: "适合反手切削缺少控制和落点意识的球员。",
     reason: "适合作为 3.5 球员的专项问题内容。",
-    url: "https://placeholder.com/content/common-03"
+    useCases: ["反手切削总飘起来", "切削落点浅且没有压迫感"],
+    coachReason: "切削飘多数是送拍方向往上了，这条教你往前送而不是往下砍。",
+    url: xiaohongshuSearchUrl("爱奇艺体育网球 反手 切削 控制")
   },
   {
     id: "content_rb_01",
@@ -439,7 +544,7 @@ export const contents: ContentItem[] = [
     summary: "适合双打上网犹豫、网前出手不稳定的球员。",
     reason: "与网前信心不足和双打配合场景高度匹配。",
     useCases: ["双打网前不敢压", "截击时机总慢半拍"],
-    coachReason: "双打网前问题优先看站位与时机，改动快、收益高。",
+    coachReason: "封网时机是双打得分的关键，这条从站位和判断两个角度帮你敢压敢抢。",
     duration: "06:00",
     url: "https://www.bilibili.com/video/BV1954y147nF"
   },
@@ -456,7 +561,7 @@ export const contents: ContentItem[] = [
     summary: "适合接发总被顶住、第一拍缺少方向的球员。",
     reason: "与接发被压制、准备偏慢等问题直接对应。",
     useCases: ["接发球总被压制", "接发第一拍质量差"],
-    coachReason: "先把接发站位和第一拍目标固定，比赛质量会明显改善。",
+    coachReason: "接发被压不是因为对手发得好，多半是你站位太深或第一拍选择不对。",
     duration: "07:10",
     url: "https://www.bilibili.com/video/BV1Ep4y1W7kc"
   },
@@ -473,7 +578,7 @@ export const contents: ContentItem[] = [
     summary: "适合比赛中思路断档、执行波动大的球员。",
     reason: "可作为比赛心理与执行流程的实战补充。",
     useCases: ["比赛执行波动大", "双打配合总断档"],
-    coachReason: "执行稳定性是比赛表现上限的底层能力，这条内容适合先补流程。",
+    coachReason: "比赛不是拍拍都要赢，先稳住再找机会压，这条帮你建立比赛执行节奏。",
     duration: "05:45",
     url: "https://www.bilibili.com/video/BV1JN4y18792"
   },
@@ -490,7 +595,7 @@ export const contents: ContentItem[] = [
     summary: "适合反手总下网、击球点偏晚的球员。",
     reason: "与反手稳定性问题和准备时机问题匹配度高。",
     useCases: ["反手总下网", "反手击球点偏晚"],
-    coachReason: "反手先把前点击球和拍面稳定，能快速止损高频失误。",
+    coachReason: "这条从击球点和拍面两个维度拆解反手下网，适合对照自己的问题逐个排查。",
     duration: "06:12",
     url: "https://www.bilibili.com/video/BV1jm4y1X7yF"
   },
@@ -507,7 +612,7 @@ export const contents: ContentItem[] = [
     summary: "适合来不及准备、对抗中总被顶住的球员。",
     reason: "与击球点偏晚和移动到位问题直接对应。",
     useCases: ["准备总慢半拍", "击球点总在身后"],
-    coachReason: "比起盲目加力，先把准备和脚步到位更能提升击球质量。",
+    coachReason: "击球点晚不是手慢是脚慢，这条先帮你把脚步节奏调对，手自然就跟上了。",
     duration: "05:20",
     url: "https://www.bilibili.com/video/BV1SQ4y1M7y8"
   },
@@ -524,7 +629,7 @@ export const contents: ContentItem[] = [
     summary: "适合正手想发力却失误增多或球质不够的球员。",
     reason: "与正手发力链条和上旋控制需求匹配。",
     useCases: ["正手没力量", "正手发力后失误增多"],
-    coachReason: "发力链条问题要从节奏和重心入手，这条讲得很系统。",
+    coachReason: "先稳再快是正手进阶的正确顺序，这条教你在不丢稳定性的前提下加速。",
     duration: "05:55",
     url: "https://www.bilibili.com/video/BV1Zf4y1b7aW"
   }

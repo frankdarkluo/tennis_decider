@@ -68,7 +68,7 @@ export function LibraryFilters(props: LibraryFiltersProps) {
     { label: "文章", value: "article" }
   ];
 
-  const levelOptions: FilterOption[] = ["全部等级", "3.0", "3.5", "4.0"].map((item) => ({ label: item, value: item }));
+  const levelOptions: FilterOption[] = ["全部等级", "2.5", "3.0", "3.5", "4.0", "4.5"].map((item) => ({ label: item, value: item }));
 
   return (
     <div className="space-y-3 rounded-2xl border border-[var(--line)] bg-white p-4 shadow-soft">

@@ -1,10 +1,12 @@
 import { contents } from "@/data/contents";
 import { diagnosisRules } from "@/data/diagnosisRules";
+import { AssessmentResult } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
 import { DiagnosisConfidence, DiagnosisResult, DiagnosisRule } from "@/types/diagnosis";
 
 export type DiagnoseOptions = {
   level?: string;
+  assessmentResult?: AssessmentResult | null;
   maxRecommendations?: number;
   rules?: DiagnosisRule[];
   contentPool?: ContentItem[];
@@ -34,6 +36,44 @@ const DEFAULT_DRILLS = [
 ];
 
 const DEFAULT_CONTENT_IDS = ["content_cn_c_01", "content_cn_f_02", "content_gaiao_01"];
+
+const LEVEL_PREFERENCE_MAP: Record<string, string[]> = {
+  "2.5": ["2.5", "3.0"],
+  "3.0": ["2.5", "3.0"],
+  "3.5": ["3.0", "3.5"],
+  "4.0": ["3.5", "4.0", "4.5"],
+  "4.5": ["4.0", "4.5"]
+};
+
+const ASSESSMENT_DIMENSION_HINTS: Record<
+  AssessmentResult["dimensions"][number]["key"],
+  { skills: string[]; problemTags: string[] }
+> = {
+  forehand: {
+    skills: ["forehand", "topspin"],
+    problemTags: ["forehand-out", "forehand-no-power", "balls-too-short"]
+  },
+  backhand: {
+    skills: ["backhand", "slice"],
+    problemTags: ["backhand-into-net", "slice-too-high", "late-contact"]
+  },
+  serve: {
+    skills: ["serve"],
+    problemTags: ["second-serve-confidence", "serve-toss-inconsistent"]
+  },
+  net: {
+    skills: ["net", "doubles"],
+    problemTags: ["net-confidence"]
+  },
+  movement: {
+    skills: ["movement", "footwork"],
+    problemTags: ["late-contact", "balls-too-short"]
+  },
+  matchplay: {
+    skills: ["matchplay", "mental", "return"],
+    problemTags: ["match-anxiety", "return-under-pressure", "cant-self-practice"]
+  }
+};
 
 const TITLE_MAP: Record<string, string> = {
   "backhand-into-net": "你的问题更接近：反手稳定性不足",
@@ -119,6 +159,80 @@ export function findBestDiagnosisRule(
   };
 }
 
+function scoreContentAgainstLevel(item: ContentItem, preferredLevels: string[], level?: string): number {
+  if (!level) {
+    return 0;
+  }
+
+  let score = 0;
+
+  if (item.levels.includes(level)) {
+    score += 4;
+  }
+
+  for (const preferredLevel of preferredLevels) {
+    if (item.levels.includes(preferredLevel)) {
+      score += 2;
+    }
+  }
+
+  return score;
+}
+
+function prioritizeContentsByLevel(
+  items: ContentItem[],
+  maxRecommendations: number,
+  level?: string
+): ContentItem[] {
+  if (!level) {
+    return items.slice(0, maxRecommendations);
+  }
+
+  const preferredLevels = LEVEL_PREFERENCE_MAP[level] ?? [level];
+
+  return items
+    .map((item, index) => ({
+      item,
+      index,
+      score: scoreContentAgainstLevel(item, preferredLevels, level)
+    }))
+    .sort((a, b) => {
+      if (b.score !== a.score) {
+        return b.score - a.score;
+      }
+
+      return a.index - b.index;
+    })
+    .map(({ item }) => item)
+    .slice(0, maxRecommendations);
+}
+
+function getGenericFallbackContents(
+  contentPool: ContentItem[] = contents,
+  maxRecommendations = 3,
+  level?: string
+): ContentItem[] {
+  const genericContents = DEFAULT_CONTENT_IDS
+    .map((id) => contentPool.find((item) => item.id === id))
+    .filter((item): item is ContentItem => Boolean(item));
+
+  return prioritizeContentsByLevel(genericContents, maxRecommendations, level);
+}
+
+function getWeakestAssessmentDimension(assessmentResult?: AssessmentResult | null) {
+  if (!assessmentResult) {
+    return null;
+  }
+
+  const scoredDimensions = assessmentResult.dimensions.filter((dimension) => dimension.answeredCount > 0);
+
+  if (scoredDimensions.length === 0) {
+    return null;
+  }
+
+  return [...scoredDimensions].sort((a, b) => a.average - b.average)[0] ?? null;
+}
+
 export function getContentsByIds(
   ids: string[],
   contentPool: ContentItem[] = contents,
@@ -129,63 +243,33 @@ export function getContentsByIds(
     .map((id) => contentPool.find((item) => item.id === id))
     .filter((item): item is ContentItem => Boolean(item));
 
-  const filteredByLevel =
-    level && mapped.some((item) => item.levels.includes(level))
-      ? mapped.filter((item) => item.levels.includes(level))
-      : mapped;
-
-  return filteredByLevel.slice(0, maxRecommendations);
+  return prioritizeContentsByLevel(mapped, maxRecommendations, level);
 }
 
 export function getFallbackContents(
-  input: string,
+  _input: string,
   contentPool: ContentItem[] = contents,
   maxRecommendations = 3,
-  level?: string
+  level?: string,
+  assessmentResult?: AssessmentResult | null
 ): ContentItem[] {
-  const normalized = normalizeDiagnosisInput(input);
+  const weakestDimension = getWeakestAssessmentDimension(assessmentResult);
 
-  const byUseCases = contentPool.filter((item) =>
-    (item.useCases ?? []).some((useCase) => normalized.includes(normalizeDiagnosisInput(useCase)))
-  );
-  if (byUseCases.length > 0) {
-    const levelFiltered =
-      level && byUseCases.some((item) => item.levels.includes(level))
-        ? byUseCases.filter((item) => item.levels.includes(level))
-        : byUseCases;
-    return levelFiltered.slice(0, maxRecommendations);
+  if (weakestDimension) {
+    const hints = ASSESSMENT_DIMENSION_HINTS[weakestDimension.key];
+    const candidates = contentPool.filter((item) => {
+      const matchesProblemTag = item.problemTags.some((problemTag) => hints.problemTags.includes(problemTag));
+      const matchesSkill = item.skills.some((skill) => hints.skills.includes(skill));
+
+      return matchesProblemTag || matchesSkill;
+    });
+
+    if (candidates.length > 0) {
+      return prioritizeContentsByLevel(candidates, maxRecommendations, level);
+    }
   }
 
-  const skillHints = [
-    { key: "发球", skill: "serve" },
-    { key: "二发", skill: "serve" },
-    { key: "反手", skill: "backhand" },
-    { key: "正手", skill: "forehand" },
-    { key: "网前", skill: "net" },
-    { key: "截击", skill: "net" },
-    { key: "步伐", skill: "movement" },
-    { key: "移动", skill: "movement" },
-    { key: "比赛", skill: "matchplay" },
-    { key: "双打", skill: "doubles" }
-  ];
-
-  const hintedSkill = skillHints.find((item) => normalized.includes(item.key))?.skill;
-
-  let candidates = hintedSkill
-    ? contentPool.filter((item) => item.skills.includes(hintedSkill))
-    : contentPool;
-
-  if (level && candidates.some((item) => item.levels.includes(level))) {
-    candidates = candidates.filter((item) => item.levels.includes(level));
-  }
-
-  if (candidates.length === 0) {
-    candidates = DEFAULT_CONTENT_IDS
-      .map((id) => contentPool.find((item) => item.id === id))
-      .filter((item): item is ContentItem => Boolean(item));
-  }
-
-  return candidates.slice(0, maxRecommendations);
+  return getGenericFallbackContents(contentPool, maxRecommendations, level);
 }
 
 export function getDiagnosisTitle(problemTag: string): string {
@@ -208,6 +292,7 @@ export function buildDiagnosisSummary(
 export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): DiagnosisResult {
   const {
     level,
+    assessmentResult,
     maxRecommendations = 3,
     rules = diagnosisRules,
     contentPool = contents
@@ -226,8 +311,10 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
       normalizedInput,
       contentPool,
       maxRecommendations,
-      level
+      level,
+      assessmentResult
     );
+    const fallbackMode = assessmentResult ? "assessment" : "no-assessment";
 
     return {
       input,
@@ -239,13 +326,17 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
       confidence: "较低",
       category: ["general", "improvement"],
       problemTag: DEFAULT_PROBLEM_TAG,
-      title: getDiagnosisTitle(DEFAULT_PROBLEM_TAG),
-      summary: buildDiagnosisSummary(DEFAULT_CAUSES, DEFAULT_FIXES, true),
+      title: fallbackMode === "assessment" ? "我们先从你当前最值得补的一环开始" : "先给你一组通用提升方向",
+      summary:
+        fallbackMode === "assessment"
+          ? "我们暂时没有精确匹配到你的问题，但根据你的水平和当前短板，这些内容可能更适合你先看。"
+          : "试试先做一次 1 分钟评估，我们能给你更准的建议。先从这些通用提升内容开始也可以。",
       causes: DEFAULT_CAUSES,
       fixes: DEFAULT_FIXES,
       drills: DEFAULT_DRILLS,
       recommendedContents: fallbackContents,
       fallbackUsed: true,
+      fallbackMode,
       level
     };
   }
@@ -260,7 +351,12 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
   const finalContents =
     recommendedContents.length > 0
       ? recommendedContents
-      : getFallbackContents(normalizedInput, contentPool, maxRecommendations, level);
+      : getFallbackContents(normalizedInput, contentPool, maxRecommendations, level, assessmentResult);
+  const fallbackMode = recommendedContents.length === 0
+    ? assessmentResult
+      ? "assessment"
+      : "no-assessment"
+    : null;
 
   return {
     input,
@@ -279,6 +375,7 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     drills: rule.drills,
     recommendedContents: finalContents,
     fallbackUsed: recommendedContents.length === 0,
+    fallbackMode,
     level
   };
 }
@@ -312,6 +409,7 @@ export function getDefaultDiagnosisResult(
     drills: DEFAULT_DRILLS,
     recommendedContents,
     fallbackUsed: true,
+    fallbackMode: null,
     level
   };
 }

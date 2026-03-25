@@ -52,7 +52,7 @@ export default function RankingsPage() {
   const list = useMemo(() => {
     return creators.filter((creator) => {
       const hitRegion = creator.region === region;
-      const hitLevel = level === "全部等级" ? true : creator.levels.includes(level as "3.0" | "3.5" | "4.0");
+      const hitLevel = level === "全部等级" ? true : creator.levels.includes(level);
       const hitSpecialty = specialty === "全部方向" ? true : creator.specialties.includes(specialty as never);
       const hitLanguage = language === "全部语言" ? true : (language === "中文" ? creator.region === "domestic" : creator.region === "overseas");
       const hitStyle = style === "全部风格" ? true : creator.styleTags.includes(style as never);
@@ -74,7 +74,7 @@ export default function RankingsPage() {
         </div>
 
         <div className="grid gap-2 rounded-2xl border border-[var(--line)] bg-white p-4 md:grid-cols-4">
-          <FilterSelect value={level} setValue={setLevel} options={["全部等级", "3.0", "3.5", "4.0"].map((item) => ({ label: item, value: item }))} />
+          <FilterSelect value={level} setValue={setLevel} options={["全部等级", "2.5", "3.0", "3.5", "4.0", "4.5"].map((item) => ({ label: item, value: item }))} />
           <FilterSelect value={specialty} setValue={setSpecialty} options={specialtyOptions} />
           <FilterSelect value={language} setValue={setLanguage} options={["全部语言", "中文", "英文"].map((item) => ({ label: item, value: item }))} />
           <FilterSelect value={style} setValue={setStyle} options={["全部风格", "新手友好", "讲解清晰", "实战导向", "细节导向"].map((item) => ({ label: item, value: item }))} />

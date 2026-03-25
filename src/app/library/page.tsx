@@ -1,15 +1,20 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { contents } from "@/data/contents";
+import { addBookmark, getBookmarkedContentIds, removeBookmark } from "@/lib/userData";
 import { PageContainer } from "@/components/layout/PageContainer";
+import { useAuth } from "@/components/auth/AuthProvider";
+import { useAuthModal } from "@/components/auth/AuthModalProvider";
 import { LibraryFilters } from "@/components/library/LibraryFilters";
 import { ContentCard } from "@/components/library/ContentCard";
 import { Button } from "@/components/ui/Button";
 
 function LibraryPageContent() {
   const params = useSearchParams();
+  const { user, configured, loading } = useAuth();
+  const { openLoginModal } = useAuthModal();
   const [keyword, setKeyword] = useState("");
   const [level, setLevel] = useState(params.get("level") ?? "全部等级");
   const [skill, setSkill] = useState("全部技术");
@@ -17,13 +22,49 @@ function LibraryPageContent() {
   const [language, setLanguage] = useState("全部语言");
   const [type, setType] = useState("全部类型");
   const [creator, setCreator] = useState(params.get("creator") ?? "全部博主");
+  const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([]);
+  const [bookmarkPendingId, setBookmarkPendingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+
+    let active = true;
+
+    async function loadBookmarks() {
+      if (!user?.id || !configured) {
+        setBookmarkedIds([]);
+        return;
+      }
+
+      const response = await getBookmarkedContentIds(user.id);
+
+      if (!active) {
+        return;
+      }
+
+      if (response.error) {
+        console.error("[library] failed to load bookmarks", response.error);
+        return;
+      }
+
+      setBookmarkedIds(response.data);
+    }
+
+    void loadBookmarks();
+
+    return () => {
+      active = false;
+    };
+  }, [configured, loading, user?.id]);
 
   const filtered = useMemo(() => {
     return contents.filter((item) => {
       const hitKeyword = keyword
         ? [item.title, item.summary, item.reason, item.problemTags.join(" ")].join(" ").toLowerCase().includes(keyword.toLowerCase())
         : true;
-      const hitLevel = level === "全部等级" ? true : item.levels.includes(level as "3.0" | "3.5" | "4.0");
+      const hitLevel = level === "全部等级" ? true : item.levels.includes(level);
       const hitSkill = skill === "全部技术" ? true : item.skills.includes(skill as never);
       const hitPlatform = platform === "全部平台" ? true : item.platform === platform;
       const hitLanguage = language === "全部语言" ? true : item.language === language;
@@ -41,6 +82,31 @@ function LibraryPageContent() {
     setLanguage("全部语言");
     setType("全部类型");
     setCreator("全部博主");
+  };
+
+  const handleToggleBookmark = async (contentId: string) => {
+    if (!user?.id || !configured) {
+      openLoginModal("登录后可收藏内容");
+      return;
+    }
+
+    const isBookmarked = bookmarkedIds.includes(contentId);
+    setBookmarkPendingId(contentId);
+
+    const response = isBookmarked
+      ? await removeBookmark(user.id, contentId)
+      : await addBookmark(user.id, contentId);
+
+    if (response.error) {
+      console.error("[library] failed to toggle bookmark", response.error);
+      setBookmarkPendingId(null);
+      return;
+    }
+
+    setBookmarkedIds((prev) =>
+      isBookmarked ? prev.filter((id) => id !== contentId) : [...prev, contentId]
+    );
+    setBookmarkPendingId(null);
   };
 
   return (
@@ -71,7 +137,13 @@ function LibraryPageContent() {
         {filtered.length > 0 ? (
           <div className="grid gap-4 md:grid-cols-2">
             {filtered.map((item) => (
-              <ContentCard key={item.id} item={item} />
+              <ContentCard
+                key={item.id}
+                item={item}
+                bookmarked={bookmarkedIds.includes(item.id)}
+                bookmarkLoading={bookmarkPendingId === item.id}
+                onToggleBookmark={() => void handleToggleBookmark(item.id)}
+              />
             ))}
           </div>
         ) : (

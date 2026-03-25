@@ -15,7 +15,7 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_backhand_net",
     keywords: ["反手", "下网"],
-    synonyms: ["反手打不过网", "反手老挂网", "反手一加力就下网"],
+    synonyms: ["反手打不过网", "反手老挂网", "反手一加力就下网", "反手总下网", "反手过不了网", "backhand into the net"],
     category: ["backhand", "consistency"],
     problemTag: "backhand-into-net",
     causes: [
@@ -31,7 +31,7 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_forehand_out",
     keywords: ["正手", "出界"],
-    synonyms: ["正手老飞", "一发力就飞", "正手没有弧线"],
+    synonyms: ["正手老飞", "一发力就飞", "正手没有弧线", "正手总出底线", "正手一抡就飞", "forehand long"],
     category: ["forehand", "control"],
     problemTag: "forehand-out",
     causes: ["挥拍路径太平，缺少上旋", "击球点控制不稳，拍面偏开", "身体发力顺序混乱"],
@@ -43,7 +43,7 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_second_serve_confidence",
     keywords: ["二发", "没信心"],
-    synonyms: ["二发老双误", "二发不敢发", "第二发总想保守一推"],
+    synonyms: ["二发老双误", "二发不敢发", "第二发总想保守一推", "第二发没有底气", "二发一紧张就推球", "second serve double fault"],
     category: ["serve", "confidence"],
     problemTag: "second-serve-confidence",
     causes: ["只想发快，没有建立稳定节奏", "抛球位置不稳定", "没有先建立安全弧线意识"],
@@ -55,19 +55,19 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_serve_toss",
     keywords: ["抛球", "不稳"],
-    synonyms: ["抛球老歪", "发球抛球不稳", "一抛球就乱"],
+    synonyms: ["抛球老歪", "发球抛球不稳", "一抛球就乱", "抛球忽前忽后", "抛球老偏左", "serve toss inconsistent"],
     category: ["serve", "toss"],
     problemTag: "serve-toss-inconsistent",
     causes: ["抛球手臂路径不固定", "出手点不一致", "抛球前站姿和节奏变化太大"],
     fixes: ["先单独练抛球动作", "站姿固定后再抛", "每次抛球后停住观察落点"],
-    recommendedContentIds: ["content_gaiao_02", "content_zlx_01"],
+    recommendedContentIds: ["content_gaiao_02", "content_zlx_01", "content_ttt_01"],
     drills: ["不击球抛球 30 次", "抛球后接球并记录落点 20 次", "抛球+空挥 15 次"],
     fallbackLevel: ["3.0", "3.5"]
   },
   {
     id: "rule_late_contact",
     keywords: ["来不及", "准备慢", "击球点晚"],
-    synonyms: ["总慢半拍", "总被球顶住", "来球一快就没了"],
+    synonyms: ["总慢半拍", "总被球顶住", "来球一快就没了", "击球总在身后", "老是晚一点才碰到球", "late contact"],
     category: ["timing", "movement"],
     problemTag: "late-contact",
     causes: ["分腿垫步时机不对", "转肩和引拍开始太晚", "脚步没有先到位"],
@@ -79,7 +79,7 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_net_errors",
     keywords: ["网前", "失误"],
-    synonyms: ["截击老丢", "网前一紧张就乱", "双打网前很怕"],
+    synonyms: ["截击老丢", "网前一紧张就乱", "双打网前很怕", "网前老下网", "截击老冒高", "volley errors"],
     category: ["net", "confidence"],
     problemTag: "net-confidence",
     causes: ["站位过于僵硬", "拍头控制不稳定", "以大挥拍方式去打截击"],
@@ -91,7 +91,7 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_match_anxiety",
     keywords: ["比赛", "紧张"],
-    synonyms: ["一比赛就不敢打", "一记分就手硬", "平时能打比赛不行"],
+    synonyms: ["一比赛就不敢打", "一记分就手硬", "平时能打比赛不行", "比赛手紧", "一到记分就乱", "match nerves"],
     category: ["matchplay", "mental"],
     problemTag: "match-anxiety",
     causes: ["训练和比赛脱节", "没有固定发接发流程", "对失误容忍度过低"],
@@ -103,7 +103,7 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_forehand_no_power",
     keywords: ["正手", "没力量"],
-    synonyms: ["正手打不透", "正手很费劲但球不走", "怎么打都没穿透力"],
+    synonyms: ["正手打不透", "正手很费劲但球不走", "怎么打都没穿透力", "正手打不出去", "球不往前走", "forehand no power"],
     category: ["forehand", "power"],
     problemTag: "forehand-no-power",
     causes: ["只用手臂打球", "重心转换不足", "击球点不稳定导致不敢加速"],
@@ -115,19 +115,19 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_balls_too_short",
     keywords: ["打得太浅", "球太浅"],
-    synonyms: ["打不深", "球总落在发球线附近", "对抗里总是短球"],
+    synonyms: ["打不深", "球总落在发球线附近", "对抗里总是短球", "老给短球", "总压不深", "球都落中场"],
     category: ["depth", "consistency"],
     problemTag: "balls-too-short",
     causes: ["挥拍向前延伸不足", "只顾过网，没有明确深度目标", "脚步没跟上导致击球质量差"],
     fixes: ["先把目标区放到底线前 1 米", "击球后多想向前送拍", "不要站死，先到位再击球"],
-    recommendedContentIds: ["content_cn_c_01", "content_cn_e_03"],
+    recommendedContentIds: ["content_cn_c_01", "content_cn_e_03", "content_et_01"],
     drills: ["底线前目标区击球 20 球", "正反手交替深度练习 20 球", "发球后第一拍送深练习 15 球"],
     fallbackLevel: ["3.0", "3.5"]
   },
   {
     id: "rule_return_under_pressure",
     keywords: ["接发球", "被压制"],
-    synonyms: ["接发球总慢半拍", "接发球被顶住", "发接发总先丢分"],
+    synonyms: ["接发球总慢半拍", "接发球被顶住", "发接发总先丢分", "接发总是被压", "接发回球太短", "return gets jammed"],
     category: ["return", "matchplay"],
     problemTag: "return-under-pressure",
     causes: ["站位不合适", "准备过慢", "接发想太多，动作过大"],
@@ -139,19 +139,19 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_slice_too_high",
     keywords: ["切削", "太高"],
-    synonyms: ["切削飘起来", "切削没有压低", "反手切削总浮"],
+    synonyms: ["切削飘起来", "切削没有压低", "反手切削总浮", "切削总飘", "切削球飞起来", "slice floats"],
     category: ["backhand", "slice"],
     problemTag: "slice-too-high",
     causes: ["拍面太开", "切球方向过于向上", "击球点不在身体前侧"],
     fixes: ["先控制拍面角度", "切球方向更向前", "把击球点放在身体前侧"],
-    recommendedContentIds: ["content_common_03", "content_zlx_03"],
+    recommendedContentIds: ["content_common_03", "content_zlx_03", "content_it_01"],
     drills: ["无球切削挥拍 20 次", "中慢球切削送深 20 球", "切削落点控制底线前 2 米"],
     fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
     id: "rule_cant_self_practice",
     keywords: ["不会自己练", "不知道练什么"],
-    synonyms: ["训练没计划", "每次都乱练", "上完课不知道怎么复习"],
+    synonyms: ["训练没计划", "每次都乱练", "上完课不知道怎么复习", "自己练没章法", "练球没重点", "不知道怎么安排训练"],
     category: ["training", "planning"],
     problemTag: "cant-self-practice",
     causes: ["没有把问题拆小", "每次练的目标太多", "缺少固定训练模版"],

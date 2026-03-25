@@ -1,9 +1,10 @@
+import Link from "next/link";
 import { DiagnosisResult as DiagnosisResultType } from "@/types/diagnosis";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
 
 export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
-
   return (
     <Card className="space-y-4">
       <div className="space-y-2">
@@ -20,6 +21,22 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
           <p className="text-xs text-slate-500">
             命中：{[...result.matchedKeywords, ...result.matchedSynonyms].join(" / ")}
           </p>
+        ) : null}
+        {result.fallbackUsed && result.fallbackMode ? (
+          <div className="rounded-xl border border-brand-100 bg-brand-50/70 p-3 text-sm text-slate-700">
+            <p>
+              {result.fallbackMode === "assessment"
+                ? "这次先按你评估里最需要补的环节给你一组方向，后面你再把问题描述得更具体一点，我们会更准。"
+                : "这次先给你一组通用提升内容。做完 1 分钟评估后，我们能把推荐收得更准。"}
+            </p>
+            {result.fallbackMode === "no-assessment" ? (
+              <div className="mt-3">
+                <Link href="/assessment">
+                  <Button variant="secondary">先去做评估</Button>
+                </Link>
+              </div>
+            ) : null}
+          </div>
         ) : null}
       </div>
 
@@ -48,7 +65,9 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
             <div key={item.id} className="rounded-xl border border-[var(--line)] p-3 text-sm">
               <p className="font-semibold text-slate-900">{item.title}</p>
               <p className="text-slate-600">{item.reason}</p>
-              {item.coachReason ? <p className="mt-1 text-xs text-slate-500">教练视角：{item.coachReason}</p> : null}
+              {item.coachReason && !item.coachReason.includes("[待填写") ? (
+                <p className="mt-1 text-xs text-slate-500">教练视角：{item.coachReason}</p>
+              ) : null}
             </div>
           ))}
         </div>

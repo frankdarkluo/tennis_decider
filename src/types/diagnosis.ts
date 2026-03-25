@@ -32,5 +32,6 @@ export type DiagnosisResult = {
   drills: string[];
   recommendedContents: ContentItem[];
   fallbackUsed: boolean;
+  fallbackMode: "assessment" | "no-assessment" | null;
   level?: string;
 };

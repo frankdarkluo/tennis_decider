@@ -8,6 +8,11 @@ import {
   getDefaultDiagnosisResult,
   getProblemPreviewTags
 } from "@/lib/diagnosis";
+import {
+  readAssessmentResultFromStorage,
+  writeAssessmentResultToStorage
+} from "@/lib/assessmentStorage";
+import { getLatestAssessmentResult, saveDiagnosisHistory } from "@/lib/userData";
 import { AssessmentResult } from "@/types/assessment";
 import { DiagnosisResult } from "@/types/diagnosis";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -15,11 +20,14 @@ import { DiagnoseInput } from "@/components/diagnose/DiagnoseInput";
 import { DiagnoseResult as DiagnoseResultPanel } from "@/components/diagnose/DiagnoseResult";
 import { DrillSuggestions } from "@/components/diagnose/DrillSuggestions";
 import { Button } from "@/components/ui/Button";
+import { useAuth } from "@/components/auth/AuthProvider";
 
 function DiagnosePageContent() {
   const searchParams = useSearchParams();
+  const { user, configured, loading } = useAuth();
   const [text, setText] = useState("");
   const [currentLevel, setCurrentLevel] = useState<string | undefined>(undefined);
+  const [assessmentResult, setAssessmentResult] = useState<AssessmentResult | null>(null);
   const [result, setResult] = useState<DiagnosisResult>(getDefaultDiagnosisResult());
 
   const quickTags = getProblemPreviewTags();
@@ -30,26 +38,60 @@ function DiagnosePageContent() {
       setText(q);
     }
 
-    try {
-      const raw = localStorage.getItem("assessmentResult");
-      if (!raw) {
+    if (loading) {
+      return;
+    }
+
+    let active = true;
+
+    async function hydrateAssessmentContext() {
+      const localResult = readAssessmentResultFromStorage();
+      let nextLevel = localResult?.level;
+      let nextAssessmentResult = localResult ?? null;
+
+      if (user?.id && configured) {
+        const remoteResult = await getLatestAssessmentResult(user.id);
+
+        if (!active) {
+          return;
+        }
+
+        if (remoteResult.data) {
+          nextLevel = remoteResult.data.level;
+          nextAssessmentResult = remoteResult.data;
+          writeAssessmentResultToStorage(remoteResult.data);
+        }
+      }
+
+      if (!active) {
         return;
       }
-      const parsed = JSON.parse(raw) as AssessmentResult;
-      if (parsed.level) {
-        setCurrentLevel(parsed.level);
-        setResult(getDefaultDiagnosisResult(parsed.level));
-      }
-    } catch {
-      setCurrentLevel(undefined);
-    }
-  }, [searchParams]);
 
-  const onDiagnose = () => {
+      setCurrentLevel(nextLevel);
+      setAssessmentResult(nextAssessmentResult);
+      setResult(getDefaultDiagnosisResult(nextLevel));
+    }
+
+    void hydrateAssessmentContext();
+
+    return () => {
+      active = false;
+    };
+  }, [configured, loading, searchParams, user?.id]);
+
+  const onDiagnose = async () => {
     const diagnosisResult = diagnoseProblem(text, {
-      level: currentLevel
+      level: currentLevel,
+      assessmentResult
     });
     setResult(diagnosisResult);
+
+    if (user?.id && configured && text.trim()) {
+      const saveResult = await saveDiagnosisHistory(user.id, text.trim(), diagnosisResult);
+      if (saveResult.error) {
+        console.error("[diagnose] failed to save diagnosis history", saveResult.error);
+      }
+    }
   };
 
   const onClear = () => {
