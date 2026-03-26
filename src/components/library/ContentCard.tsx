@@ -94,7 +94,7 @@ export function ContentCard({
       </div>
       <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
       <p className="text-sm text-slate-600">{item.summary}</p>
-      <p className="text-sm text-slate-600">博主：{creator?.name ?? "未知"}</p>
+      <p className="text-sm text-slate-600">来源：{creator?.name ?? "未知"}</p>
       <p className="text-sm text-slate-600">技术标签：{item.skills.map((skill) => toChineseSkill(skill)).join(" / ")}</p>
       <p className="text-sm text-slate-700">推荐理由：{item.reason}</p>
       {shouldShowCoachReason ? <p className="text-sm text-slate-500">教练视角：{item.coachReason}</p> : null}

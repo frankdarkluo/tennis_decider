@@ -68,6 +68,15 @@ export function HeroSection() {
           想更精准？先花 1 分钟评估水平
         </Link>
       </div>
+      <div className="mt-4">
+        <Link
+          href="/video-diagnose"
+          className="text-sm font-medium text-slate-500 transition hover:text-brand-700"
+          onClick={() => logEvent("cta_click", { ctaLabel: "试试 AI 视频诊断", ctaLocation: "home_hero_video", targetPage: "/video-diagnose" })}
+        >
+          有练球视频？试试 AI 视频诊断 →
+        </Link>
+      </div>
     </section>
   );
 }

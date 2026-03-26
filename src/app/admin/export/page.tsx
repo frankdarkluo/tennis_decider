@@ -98,6 +98,9 @@ export default function AdminExportPage() {
               <Button variant="secondary" onClick={() => void handleRemoteExport("diagnosis_history")} disabled={pendingKey !== null}>
                 {pendingKey === "diagnosis_history" ? "导出中..." : "导出诊断历史"}
               </Button>
+              <Button variant="secondary" onClick={() => void handleRemoteExport("video_diagnosis_history")} disabled={pendingKey !== null}>
+                {pendingKey === "video_diagnosis_history" ? "导出中..." : "导出视频诊断"}
+              </Button>
             </div>
           </Card>
 

@@ -1,7 +1,11 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { clsx } from "clsx";
 
 type CreatorAvatarProps = {
   name: string;
+  avatarUrl?: string;
   size?: "sm" | "md";
   className?: string;
 };
@@ -21,17 +25,32 @@ function getCreatorInitial(name: string) {
   return initial;
 }
 
-export function CreatorAvatar({ name, size = "md", className }: CreatorAvatarProps) {
+export function CreatorAvatar({ name, avatarUrl, size = "md", className }: CreatorAvatarProps) {
+  const [imageFailed, setImageFailed] = useState(false);
+
+  useEffect(() => {
+    setImageFailed(false);
+  }, [avatarUrl]);
+
   return (
     <div
       className={clsx(
-        "flex shrink-0 items-center justify-center rounded-full bg-[#E1F5EE] font-bold text-[#085041]",
+        "flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#E1F5EE] font-bold text-[#085041]",
         sizeClasses[size],
         className
       )}
-      aria-hidden="true"
     >
-      {getCreatorInitial(name)}
+      {avatarUrl && !imageFailed ? (
+        <img
+          src={avatarUrl}
+          alt={name}
+          className="h-full w-full object-cover"
+          loading="lazy"
+          onError={() => setImageFailed(true)}
+        />
+      ) : (
+        getCreatorInitial(name)
+      )}
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { DiagnosisResult as DiagnosisResultType } from "@/types/diagnosis";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { PlatformVideoSearch } from "@/components/PlatformVideoSearch";
 import { logEvent } from "@/lib/eventLogger";
 
 export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
@@ -89,16 +90,31 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
           ))}
         </div>
         {canGeneratePlan ? (
-          <div className="mt-4">
+          <div className="mt-4 flex flex-wrap gap-2">
             <Link
               href={planHref}
               onClick={() => logEvent("cta_click", { ctaLabel: "根据这个问题生成 7 天训练计划", ctaLocation: "diagnosis_result", targetPage: "/plan" })}
             >
               <Button>根据这个问题生成 7 天训练计划</Button>
             </Link>
+            <Link
+              href="/video-diagnose"
+              onClick={() => logEvent("cta_click", { ctaLabel: "上传视频做更精准诊断", ctaLocation: "diagnosis_result", targetPage: "/video-diagnose" })}
+            >
+              <Button variant="secondary">上传视频做更精准诊断</Button>
+            </Link>
           </div>
         ) : null}
       </div>
+
+      {result.searchQueries ? (
+        <div className="border-t border-[var(--line)] pt-4">
+          <PlatformVideoSearch
+            queries={result.searchQueries}
+            title="在其他平台搜索更多"
+          />
+        </div>
+      ) : null}
     </Card>
   );
 }

@@ -1,7 +1,8 @@
 import { HTMLAttributes } from "react";
+import { CreatorPlatformName } from "@/types/creator";
 import { cn } from "@/lib/utils";
 
-type PlatformName = "Bilibili" | "YouTube" | "Xiaohongshu" | "Zhihu" | "Instagram";
+export type PlatformName = CreatorPlatformName;
 
 const platformStyles: Record<PlatformName, { wrapper: string; icon: string }> = {
   Bilibili: {
@@ -26,7 +27,7 @@ const platformStyles: Record<PlatformName, { wrapper: string; icon: string }> = 
   }
 };
 
-function PlatformIcon({ platform, className }: { platform: PlatformName; className?: string }) {
+export function PlatformIcon({ platform, className }: { platform: PlatformName; className?: string }) {
   if (platform === "Bilibili") {
     return (
       <svg viewBox="0 0 20 20" aria-hidden="true" className={cn("h-3.5 w-3.5", className)}>

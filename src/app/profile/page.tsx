@@ -9,11 +9,12 @@ import {
   getDiagnosisHistory,
   getLatestAssessmentResult,
   getSavedPlans,
+  getVideoDiagnosisHistory,
   removeBookmark
 } from "@/lib/userData";
 import { AssessmentResult } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
-import { DiagnosisHistoryRow, SavedPlanRow } from "@/types/userData";
+import { DiagnosisHistoryRow, SavedPlanRow, VideoDiagnosisHistoryRow } from "@/types/userData";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { useAuth } from "@/components/auth/AuthProvider";
@@ -80,11 +81,13 @@ export default function ProfilePage() {
 
   const [assessmentLoading, setAssessmentLoading] = useState(true);
   const [historyLoading, setHistoryLoading] = useState(true);
+  const [videoHistoryLoading, setVideoHistoryLoading] = useState(true);
   const [bookmarksLoading, setBookmarksLoading] = useState(true);
   const [plansLoading, setPlansLoading] = useState(true);
 
   const [assessmentResult, setAssessmentResult] = useState<AssessmentResult | null>(null);
   const [diagnosisHistory, setDiagnosisHistory] = useState<DiagnosisHistoryRow[]>([]);
+  const [videoDiagnosisHistory, setVideoDiagnosisHistory] = useState<VideoDiagnosisHistoryRow[]>([]);
   const [bookmarkedItems, setBookmarkedItems] = useState<ContentItem[]>([]);
   const [savedPlans, setSavedPlans] = useState<SavedPlanRow[]>([]);
   const [expandedPlanId, setExpandedPlanId] = useState<string | null>(null);
@@ -94,6 +97,7 @@ export default function ProfilePage() {
     if (loading || !user?.id || !configured) {
       setAssessmentLoading(false);
       setHistoryLoading(false);
+      setVideoHistoryLoading(false);
       setBookmarksLoading(false);
       setPlansLoading(false);
       return;
@@ -154,6 +158,22 @@ export default function ProfilePage() {
       setBookmarksLoading(false);
     }
 
+    async function loadVideoHistory() {
+      setVideoHistoryLoading(true);
+      const response = await getVideoDiagnosisHistory(userId, 5);
+
+      if (!active) {
+        return;
+      }
+
+      if (response.error) {
+        console.error("[profile] failed to load video diagnosis history", response.error);
+      }
+
+      setVideoDiagnosisHistory(response.data);
+      setVideoHistoryLoading(false);
+    }
+
     async function loadPlans() {
       setPlansLoading(true);
       const response = await getSavedPlans(userId, 10);
@@ -172,6 +192,7 @@ export default function ProfilePage() {
 
     void loadAssessment();
     void loadHistory();
+    void loadVideoHistory();
     void loadBookmarks();
     void loadPlans();
 
@@ -341,6 +362,42 @@ export default function ProfilePage() {
               description="还没有诊断记录。先把你最近最困扰的一个问题说出来，我们会帮你拆原因。"
               href="/diagnose"
               actionLabel="去诊断"
+            />
+          )}
+
+          {videoHistoryLoading ? (
+            <SectionSkeleton lines={5} />
+          ) : videoDiagnosisHistory.length > 0 ? (
+            <Card className="space-y-4">
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">视频诊断记录</h2>
+                <p className="mt-1 text-sm text-slate-600">这里会保留最近的视频诊断结果，方便你回头再拍、再比对。</p>
+              </div>
+              <div className="space-y-3">
+                {videoDiagnosisHistory.map((item) => (
+                  <Link
+                    key={item.id}
+                    href="/video-diagnose"
+                    className="block rounded-xl border border-[var(--line)] px-4 py-3 transition hover:border-brand-200 hover:bg-brand-50/40"
+                  >
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="font-semibold text-slate-900">{item.result.primaryProblem.label}</p>
+                      <Badge className="bg-slate-100 text-slate-700">
+                        置信度：{item.result.confidenceBand}
+                      </Badge>
+                    </div>
+                    <p className="mt-1 text-sm text-slate-600">{item.user_description || "未填写主观描述"}</p>
+                    <p className="mt-2 text-xs text-slate-500">{formatDateTime(item.created_at)}</p>
+                  </Link>
+                ))}
+              </div>
+            </Card>
+          ) : (
+            <EmptyState
+              title="视频诊断记录"
+              description="还没有视频诊断记录。上传一段视频后，这里会保留最近的分析结果。"
+              href="/video-diagnose"
+              actionLabel="去试试视频诊断"
             />
           )}
 

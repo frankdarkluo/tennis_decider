@@ -2,13 +2,16 @@ import { getSupabaseBrowserClient } from "@/lib/supabase";
 import { AssessmentResult } from "@/types/assessment";
 import { DiagnosisResult } from "@/types/diagnosis";
 import { GeneratedPlan } from "@/types/plan";
+import { VideoDiagnosisResult, VLMObservation } from "@/types/videoDiagnosis";
 import {
   AssessmentResultRow,
   BookmarkRow,
   DiagnosisHistoryRow,
   PersistedAssessmentScores,
   SavedPlanRow,
-  SavedPlanSource
+  SavedPlanSource,
+  VideoDiagnosisHistoryRow,
+  VideoUsageRow
 } from "@/types/userData";
 
 function getClient() {
@@ -270,5 +273,128 @@ export async function getSavedPlans(userId: string, limit = 10) {
 
   return {
     data: (data as SavedPlanRow[] | null) ?? []
+  };
+}
+
+export async function getVideoUsage(userId: string) {
+  const supabase = getClient();
+
+  if (!supabase) {
+    return {
+      data: { successCount: 0, failedCount: 0, isPro: false, maxFree: 3 },
+      error: "Supabase 尚未配置完成。"
+    };
+  }
+
+  const { data, error } = await supabase
+    .from("video_usage")
+    .select("*")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (error) {
+    return {
+      data: { successCount: 0, failedCount: 0, isPro: false, maxFree: 3 },
+      error: getErrorMessage(error, "读取视频诊断次数时发生未知错误。")
+    };
+  }
+
+  const row = data as VideoUsageRow | null;
+
+  return {
+    data: {
+      successCount: row?.success_count ?? 0,
+      failedCount: row?.failed_count ?? 0,
+      isPro: row?.is_pro ?? false,
+      maxFree: 3
+    }
+  };
+}
+
+export async function incrementVideoUsage(userId: string, type: "success" | "fail") {
+  const supabase = getClient();
+
+  if (!supabase) {
+    return { error: "Supabase 尚未配置完成，暂时无法记录视频诊断次数。" };
+  }
+
+  const usage = await getVideoUsage(userId);
+  if (usage.error) {
+    return { error: usage.error };
+  }
+
+  const { error } = await supabase.from("video_usage").upsert(
+    {
+      user_id: userId,
+      success_count: usage.data.successCount + (type === "success" ? 1 : 0),
+      failed_count: usage.data.failedCount + (type === "fail" ? 1 : 0),
+      is_pro: usage.data.isPro,
+      updated_at: new Date().toISOString()
+    },
+    {
+      onConflict: "user_id"
+    }
+  );
+
+  if (error) {
+    return { error: getErrorMessage(error, "更新视频诊断次数时发生未知错误。") };
+  }
+
+  return {};
+}
+
+export async function saveVideoDiagnosisHistory(
+  userId: string,
+  input: {
+    userDescription?: string;
+    selectedStroke?: string;
+    selectedScene?: string;
+    observation: VLMObservation;
+    result: VideoDiagnosisResult;
+  }
+) {
+  const supabase = getClient();
+
+  if (!supabase) {
+    return { error: "Supabase 尚未配置完成，暂时无法保存视频诊断记录。" };
+  }
+
+  const { error } = await supabase.from("video_diagnosis_history").insert({
+    user_id: userId,
+    user_description: input.userDescription ?? null,
+    selected_stroke: input.selectedStroke ?? null,
+    selected_scene: input.selectedScene ?? null,
+    observation: input.observation,
+    result: input.result,
+    confidence: input.result.confidence
+  });
+
+  if (error) {
+    return { error: getErrorMessage(error, "保存视频诊断记录时发生未知错误。") };
+  }
+
+  return {};
+}
+
+export async function getVideoDiagnosisHistory(userId: string, limit = 5) {
+  const supabase = getClient();
+
+  if (!supabase) {
+    return { data: [] as VideoDiagnosisHistoryRow[], error: "Supabase 尚未配置完成。" };
+  }
+
+  const { data, error } = await supabase
+    .from("video_diagnosis_history")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    return { data: [] as VideoDiagnosisHistoryRow[], error: getErrorMessage(error, "读取视频诊断历史时发生未知错误。") };
+  }
+
+  return {
+    data: (data as VideoDiagnosisHistoryRow[] | null) ?? []
   };
 }

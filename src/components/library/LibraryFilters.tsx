@@ -42,7 +42,9 @@ function SelectFilter({ value, setValue, options }: { value: string; setValue: (
 }
 
 export function LibraryFilters(props: LibraryFiltersProps) {
-  const creatorOptions: FilterOption[] = [{ label: "全部博主", value: "全部博主" }, ...creators.map((creator) => ({
+  const creatorOptions: FilterOption[] = [{ label: "全部博主", value: "全部博主" }, ...creators
+    .filter((creator) => creator.discoveryEligible !== false)
+    .map((creator) => ({
     label: creator.name,
     value: creator.id
   }))];
@@ -53,7 +55,7 @@ export function LibraryFilters(props: LibraryFiltersProps) {
     ...skillValues.map((skill) => ({ label: toChineseSkill(skill), value: skill }))
   ];
 
-  const platformOptions: FilterOption[] = ["全部平台", "YouTube", "Bilibili", "Xiaohongshu", "Zhihu", "Instagram"].map((item) => ({
+  const platformOptions: FilterOption[] = ["全部平台", "Bilibili", "YouTube"].map((item) => ({
     label: item,
     value: item
   }));
@@ -66,9 +68,7 @@ export function LibraryFilters(props: LibraryFiltersProps) {
 
   const typeOptions: FilterOption[] = [
     { label: "全部类型", value: "全部类型" },
-    { label: "视频", value: "video" },
-    { label: "图文", value: "post" },
-    { label: "文章", value: "article" }
+    { label: "视频", value: "video" }
   ];
 
   const levelOptions: FilterOption[] = ["全部等级", "2.5", "3.0", "3.5", "4.0", "4.5"].map((item) => ({ label: item, value: item }));

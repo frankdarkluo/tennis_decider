@@ -1,5 +1,10 @@
 import { ContentItem } from "@/types/content";
 
+export type DiagnosisSearchQueries = {
+  bilibili: string[];
+  youtube: string[];
+};
+
 export type DiagnosisRule = {
   id: string;
   keywords: string[];
@@ -10,6 +15,7 @@ export type DiagnosisRule = {
   fixes: string[];
   recommendedContentIds: string[];
   drills: string[];
+  searchQueries: DiagnosisSearchQueries;
   fallbackLevel?: string[];
 };
 
@@ -31,6 +37,7 @@ export type DiagnosisResult = {
   fixes: string[];
   drills: string[];
   recommendedContents: ContentItem[];
+  searchQueries: DiagnosisSearchQueries | null;
   fallbackUsed: boolean;
   fallbackMode: "assessment" | "no-assessment" | null;
   level?: string;

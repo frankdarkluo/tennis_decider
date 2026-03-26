@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import HomePage from "@/app/page";
 import AssessmentPage from "@/app/assessment/page";
 import DiagnosePage from "@/app/diagnose/page";
+import VideoDiagnosePage from "@/app/video-diagnose/page";
 import LibraryPage from "@/app/library/page";
 import RankingsPage from "@/app/rankings/page";
 import PlanPage from "@/app/plan/page";
@@ -116,6 +117,13 @@ describe("app smoke tests", () => {
 
     expect(await screen.findByText("内容库")).toBeInTheDocument();
     expect(screen.getByText("反手总下网：前点击球与拍面控制")).toBeInTheDocument();
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("renders video diagnose page without crashing", async () => {
+    render(React.createElement(VideoDiagnosePage));
+
+    expect(await screen.findByText("上传一段视频，让系统更像教练一样看你打球")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 

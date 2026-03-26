@@ -8,7 +8,7 @@ import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
 import { logEvent } from "@/lib/eventLogger";
 
-const featuredCreatorIds = ["creator_furao", "creator_racketbrothers"];
+const featuredCreatorIds = ["creator_gaiao", "creator_furao"];
 
 export function HotCreatorsSection() {
   const featuredCreators = featuredCreatorIds
@@ -39,11 +39,11 @@ export function HotCreatorsSection() {
           >
             <Card className="flex h-full flex-col justify-between p-4 transition hover:-translate-y-0.5 hover:border-brand-200">
               <div className="flex items-start gap-3">
-                <CreatorAvatar name={creator.name} size="sm" />
+                <CreatorAvatar name={creator.name} avatarUrl={creator.avatar} size="sm" />
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="font-semibold text-slate-900">{creator.name}</p>
-                    <PlatformBadge platform={creator.platforms[0] as "Bilibili" | "YouTube" | "Xiaohongshu" | "Zhihu" | "Instagram"} />
+                    <PlatformBadge platform={creator.platforms[0]} />
                   </div>
                   <p className="mt-2 text-sm leading-6 text-slate-600">{creator.bio}</p>
                   <div className="mt-3 flex flex-wrap gap-2">

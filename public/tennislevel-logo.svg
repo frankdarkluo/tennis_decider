@@ -1,0 +1,12 @@
+<svg width="640" height="180" viewBox="0 0 640 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="180" rx="30" fill="white"/>
+  <g transform="translate(36 16)">
+    <path d="M90 10H196L183 42H138V98L104 126V42H77L90 10Z" fill="#6B9376"/>
+    <path d="M152 106V56H186V124H245L230 154H136V106H152Z" fill="#6B9376"/>
+    <path d="M84 132C98 93 144 60 218 46C182 50 145 65 118 88C98 105 86 120 84 132Z" fill="#F1C40F"/>
+    <path d="M88 126C106 84 151 52 224 36C180 40 141 56 111 81C94 96 84 112 88 126Z" fill="#6B9376"/>
+    <circle cx="230" cy="33" r="16" fill="#F1C40F"/>
+  </g>
+  <text x="258" y="116" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, Arial, sans-serif" font-size="58" font-weight="700" fill="#6B9376">Tennis</text>
+  <text x="432" y="116" font-family="PingFang SC, Noto Sans SC, Microsoft YaHei, Arial, sans-serif" font-size="58" font-weight="700" fill="#F1C40F">Level</text>
+</svg>

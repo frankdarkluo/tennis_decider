@@ -4,11 +4,18 @@ export type ContentPlatform = "Bilibili" | "Xiaohongshu" | "Zhihu" | "YouTube" |
 const bilibiliSearchUrl = (query: string) =>
   `https://search.bilibili.com/all?keyword=${encodeURIComponent(query)}`;
 
-const xiaohongshuSearchUrl = (query: string) =>
-  `https://www.xiaohongshu.com/search_result?keyword=${encodeURIComponent(query)}`;
-
-const zhihuSearchUrl = (query: string) =>
-  `https://www.zhihu.com/search?type=content&q=${encodeURIComponent(query)}`;
+/*
+ * Search-entry curation rules:
+ * - We only upgrade a search URL to a direct Bilibili video when the page is public, topic-matched,
+ *   representative enough, and honestly attributable to a real Bilibili creator.
+ * - We never invent a Bilibili creator just to support a search-based recommendation.
+ * - Search-based items that do not belong to a real Bilibili creator use `creator_search_curated`.
+ * - Search URLs may still remain under real creators when:
+ *   1. the exact direct page is not yet stably verifiable,
+ *   2. the best direct candidate would duplicate an existing curated BV,
+ *   3. current direct candidates are usable but not representative enough yet.
+ * - Current audit snapshot: `docs/REMAINING_SEARCH_ENTRY_AUDIT.md`.
+ */
 
 export type ContentItem = {
   id: string;
@@ -83,7 +90,7 @@ export const contents: ContentItem[] = [
   {
     id: "content_zlx_01",
     title: "发球节奏：建立停顿感而不是乱发力",
-    creatorId: "creator_zhaolingxi",
+    creatorId: "creator_mouratoglou_cn",
     platform: "Bilibili",
     type: "video",
     levels: ["3.0", "3.5", "4.0"],
@@ -94,13 +101,12 @@ export const contents: ContentItem[] = [
     reason: "更适合 3.0–3.5 球员做发球节奏和信心修正。",
     useCases: ["二发节奏总是断掉", "发球一发力动作就散"],
     coachReason: "很多人发球散就是因为没有停顿，这条能帮你找到发力前的\"等一下\"。",
-    duration: "06:00",
-    url: "https://www.bilibili.com/video/BV123411H7u6"
+    url: "https://www.bilibili.com/video/BV1aN4y1f7NC"
   },
   {
     id: "content_zlx_02",
     title: "发球步伐：上步发球的正确节奏",
-    creatorId: "creator_zhaolingxi",
+    creatorId: "creator_austin_camp",
     platform: "Bilibili",
     type: "video",
     levels: ["3.0", "3.5"],
@@ -111,15 +117,14 @@ export const contents: ContentItem[] = [
     reason: "适合作为发球节奏类问题的定向推荐内容。",
     useCases: ["上步发球时总踩不顺", "发球上下肢节奏老是对不上"],
     coachReason: "上步节奏对了发球自然顺，这条把脚步和抛球的配合拆得很细。",
-    duration: "06:09",
-    url: bilibiliSearchUrl("赵灵熙 发球 节奏 网球")
+    url: bilibiliSearchUrl("奥斯汀-冬令营 上步发球 节奏 网球")
   },
   {
     id: "content_zlx_03",
     title: "基本功细节：反手与中前场连接",
-    creatorId: "creator_zhaolingxi",
-    platform: "Xiaohongshu",
-    type: "post",
+    creatorId: "creator_matsuo_yuki_cn",
+    platform: "Bilibili",
+    type: "video",
     levels: ["3.0", "3.5", "4.0"],
     skills: ["backhand", "net"],
     problemTags: ["backhand-into-net", "net-confidence"],
@@ -128,7 +133,7 @@ export const contents: ContentItem[] = [
     reason: "适合作为 3.5 左右球员的细节提升样本。",
     useCases: ["反手和上网衔接不顺", "中前场处理总是慢半拍"],
     coachReason: "反手打完不知道怎么跟进是3.0-3.5很典型的断层，这条专门解决衔接。",
-    url: xiaohongshuSearchUrl("赵灵熙 反手 网前 网球")
+    url: bilibiliSearchUrl("松尾友贵Pro 反手 上网 过渡 网球")
   },
   {
     id: "content_ttt_01",
@@ -194,7 +199,7 @@ export const contents: ContentItem[] = [
     useCases: ["反手一发力就下网", "反手拍面总是控不住"],
     coachReason: "反手下网先别想着提拍面，先看这条把击球点位置调对。",
     duration: "04:50",
-    url: bilibiliSearchUrl("赵周晓桥 反手 下网 网球")
+    url: bilibiliSearchUrl("是佩恩呀 反手 下网 网球")
   },
   {
     id: "content_cn_a_02",
@@ -211,12 +216,12 @@ export const contents: ContentItem[] = [
     useCases: ["来球一快就慢半拍", "总在身体后侧才碰到球"],
     coachReason: "准备慢不是反应慢，是启动时机不对，这条能帮你提前半拍。",
     duration: "05:20",
-    url: bilibiliSearchUrl("赵周晓桥 击球点 晚 准备 网球")
+    url: bilibiliSearchUrl("是佩恩呀 击球点 晚 准备 网球")
   },
   {
     id: "content_cn_a_03",
-    title: "脚步先到位：两点移动基础练习",
-    creatorId: "creator_cn_a",
+    title: "脚步又慢又乱：先把 4 个基础步伐练顺",
+    creatorId: "creator_pikachu",
     platform: "Bilibili",
     type: "video",
     levels: ["3.0", "3.5"],
@@ -224,19 +229,18 @@ export const contents: ContentItem[] = [
     problemTags: ["movement-slow", "late-contact"],
     language: "zh",
     summary: "适合击球前总找不到位置的球员。",
-    reason: "可以和任何‘来不及’类问题搭配推荐。",
+    reason: "适合和启动慢、站位乱、来不及到位等问题直接配对。",
     useCases: ["脚步总先卡住", "击球前总找不到舒服站位"],
-    coachReason: "手上动作再好脚步不到也白搭，这条练的是最基本的两步到位。",
-    duration: "03:40",
-    url: bilibiliSearchUrl("赵周晓桥 脚步 移动 网球")
+    coachReason: "脚步乱的时候先别上复杂组合，先把最基础的四个步伐练顺，场上马上会轻松很多。",
+    url: "https://www.bilibili.com/video/BV1SZ6qYFEVS/"
   },
 
   {
     id: "content_cn_b_01",
     title: "双打网前：先学会站住和挡住",
-    creatorId: "creator_cn_b",
-    platform: "Xiaohongshu",
-    type: "post",
+    creatorId: "creator_racketbrothers",
+    platform: "Bilibili",
+    type: "video",
     levels: ["3.0", "3.5"],
     skills: ["net", "doubles"],
     problemTags: ["net-confidence", "doubles-net-fear"],
@@ -245,14 +249,14 @@ export const contents: ContentItem[] = [
     reason: "更适合新手双打网前建立信心。",
     useCases: ["双打站上网前就紧张", "网前只会硬挡不会处理"],
     coachReason: "双打网前不需要你打出漂亮截击，先学会站稳和挡住就能赢很多分。",
-    url: xiaohongshuSearchUrl("全网球APP 双打 网前 截击")
+    url: bilibiliSearchUrl("RacketBrothers 双打 网前 封网 截击")
   },
   {
     id: "content_cn_b_02",
     title: "双打站位：搭档间最基础的配合",
-    creatorId: "creator_cn_b",
-    platform: "Zhihu",
-    type: "article",
+    creatorId: "creator_racketbrothers",
+    platform: "Bilibili",
+    type: "video",
     levels: ["3.0", "3.5"],
     skills: ["doubles", "matchplay"],
     problemTags: ["doubles-positioning", "match-anxiety"],
@@ -261,14 +265,14 @@ export const contents: ContentItem[] = [
     reason: "对双打初学者非常友好。",
     useCases: ["双打里总不知道该站哪", "和搭档总撞位或漏位"],
     coachReason: "双打输球很多时候不是技术差而是站位乱，这条把基础阵型讲透了。",
-    url: zhihuSearchUrl("全网球APP 双打 站位 配合")
+    url: bilibiliSearchUrl("RacketBrothers 双打 站位 轮转 配合")
   },
   {
     id: "content_cn_b_03",
     title: "截击动作：缩小动作提高成功率",
-    creatorId: "creator_cn_b",
-    platform: "Xiaohongshu",
-    type: "post",
+    creatorId: "creator_racketbrothers",
+    platform: "Bilibili",
+    type: "video",
     levels: ["3.0", "3.5"],
     skills: ["net"],
     problemTags: ["net-confidence", "volley-errors"],
@@ -277,13 +281,13 @@ export const contents: ContentItem[] = [
     reason: "直接对应网前失误和截击成功率低的问题。",
     useCases: ["截击动作总是太大", "网前球总弹飞或下网"],
     coachReason: "截击最怕动作大，这条教你缩小挥拍幅度，成功率马上能感觉到变化。",
-    url: xiaohongshuSearchUrl("全网球APP 截击 网前 成功率")
+    url: bilibiliSearchUrl("RacketBrothers 截击 动作 缩小 挥拍 网球")
   },
 
   {
     id: "content_cn_c_01",
     title: "稳定性优先：先把球打深再谈发力",
-    creatorId: "creator_cn_c",
+    creatorId: "creator_search_curated",
     platform: "Bilibili",
     type: "video",
     levels: ["2.5", "3.0", "3.5"],
@@ -295,12 +299,12 @@ export const contents: ContentItem[] = [
     useCases: ["相持里总把球打浅", "只顾过网没有深度目标"],
     coachReason: "3.0-3.5最容易赢球的方式不是打得狠而是打得深，先看这条建立深度意识。",
     duration: "05:00",
-    url: bilibiliSearchUrl("网球之家 稳定性 打深 网球")
+    url: bilibiliSearchUrl("网球 稳定性 打深 底线 深度")
   },
   {
     id: "content_cn_c_02",
     title: "分腿垫步：为什么你总来不及",
-    creatorId: "creator_cn_c",
+    creatorId: "creator_leontv_cn",
     platform: "Bilibili",
     type: "video",
     levels: ["3.0", "3.5"],
@@ -311,32 +315,31 @@ export const contents: ContentItem[] = [
     reason: "适合与击球点晚、步伐慢等问题配对。",
     useCases: ["启动总慢半拍", "分腿垫步时机总不对"],
     coachReason: "分腿垫步是所有移动的起点，时机对了你会觉得球突然慢下来了。",
-    duration: "04:15",
-    url: bilibiliSearchUrl("网球之家 分腿垫步 来不及 网球")
+    url: "https://www.bilibili.com/video/BV1PN4y1R7jL"
   },
   {
     id: "content_cn_c_03",
-    title: "课后不会自己练：3 个最基础的自练方法",
-    creatorId: "creator_cn_c",
-    platform: "Zhihu",
-    type: "article",
+    title: "没球搭子怎么练：5 个单人练习直接开练",
+    creatorId: "creator_pikachu",
+    platform: "Bilibili",
+    type: "video",
     levels: ["2.5", "3.0", "3.5"],
     skills: ["training"],
     problemTags: ["cant-self-practice", "no-clear-technique"],
     language: "zh",
-    summary: "适合上完课后不知道如何巩固的球员。",
-    reason: "很适合教练给学生当课后阅读。",
-    useCases: ["上完课不知道怎么复习", "自己练球总是想到哪练到哪"],
-    coachReason: "很多人有教练课但课后不知道练什么，这条给你三个马上能用的自练套路。",
-    url: zhihuSearchUrl("网球之家 课后 自练 方法")
+    summary: "适合没人陪练时就完全不知道怎么开始的球员。",
+    reason: "适合作为自练模块里最直接的单人练习入口。",
+    useCases: ["没有球搭子就不知道怎么练", "自己练球总是想到哪练到哪"],
+    coachReason: "很多人不是不想练，是一个人就不知道从哪开始，这条给的是马上能照着做的单人练法。",
+    url: "https://www.bilibili.com/video/BV1LvS3YWEnL/"
   },
 
   {
     id: "content_cn_d_01",
     title: "正手总出界：先把弧线拉起来",
-    creatorId: "creator_cn_d",
-    platform: "Xiaohongshu",
-    type: "post",
+    creatorId: "creator_mouratoglou_cn",
+    platform: "Bilibili",
+    type: "video",
     levels: ["3.0", "3.5", "4.0"],
     skills: ["forehand"],
     problemTags: ["forehand-out", "topspin-low"],
@@ -345,14 +348,14 @@ export const contents: ContentItem[] = [
     reason: "适合用来解释上旋和控制的关系。",
     useCases: ["正手一发力就出界", "正手弧线太平压不住球"],
     coachReason: "正手出界多数是弧线不够而不是力量太大，先看这条调整过网高度。",
-    url: xiaohongshuSearchUrl("爱奇艺体育网球 正手 出界 上旋")
+    url: "https://www.bilibili.com/video/av220842429"
   },
   {
     id: "content_cn_d_02",
     title: "正手没力量：别先怪手臂",
-    creatorId: "creator_cn_d",
-    platform: "Xiaohongshu",
-    type: "post",
+    creatorId: "creator_leontv_cn",
+    platform: "Bilibili",
+    type: "video",
     levels: ["3.0", "3.5"],
     skills: ["forehand"],
     problemTags: ["forehand-no-power", "timing-off"],
@@ -361,12 +364,12 @@ export const contents: ContentItem[] = [
     reason: "适合讲清楚发力顺序和身体参与。",
     useCases: ["正手球速总起不来", "总觉得只有手臂在发力"],
     coachReason: "正手没力不是手臂弱，是转体和蹬地没参与进来，这条帮你找到发力链。",
-    url: xiaohongshuSearchUrl("爱奇艺体育网球 正手 发力 顺序")
+    url: "https://www.bilibili.com/video/BV1h64y1D78J"
   },
   {
     id: "content_cn_d_03",
     title: "上旋感受：把球从拍后往上带",
-    creatorId: "creator_cn_d",
+    creatorId: "creator_leontv_cn",
     platform: "Bilibili",
     type: "video",
     levels: ["3.0", "3.5", "4.0"],
@@ -377,14 +380,13 @@ export const contents: ContentItem[] = [
     reason: "适合作为正手控制类问题的第二条推荐。",
     useCases: ["正手上旋感不明显", "拉不出安全弧线"],
     coachReason: "上旋不是刻意去刷球，而是挥拍路径自然带出来的，这条的体感描述很好。",
-    duration: "05:48",
-    url: bilibiliSearchUrl("爱奇艺体育网球 正手 上旋 网球")
+    url: "https://www.bilibili.com/video/BV1QRLizLEnv"
   },
 
   {
     id: "content_cn_e_01",
     title: "接发球太被动：先解决准备和站位",
-    creatorId: "creator_cn_e",
+    creatorId: "creator_search_curated",
     platform: "Bilibili",
     type: "video",
     levels: ["3.0", "3.5", "4.0"],
@@ -396,14 +398,14 @@ export const contents: ContentItem[] = [
     useCases: ["接发总被对手先压住", "接发准备总是不够早"],
     coachReason: "接发被动大多不是反应慢而是准备姿势和站位不对，这条从根上解决。",
     duration: "06:20",
-    url: bilibiliSearchUrl("张奔斗 接发球 站位 准备 网球")
+    url: bilibiliSearchUrl("网球 接发球 站位 准备")
   },
   {
     id: "content_cn_e_02",
-    title: "发接发流程：比赛开始先稳住",
-    creatorId: "creator_cn_e",
-    platform: "Xiaohongshu",
-    type: "post",
+    title: "比赛开局别乱：先把发接发流程固定住",
+    creatorId: "creator_search_curated",
+    platform: "Bilibili",
+    type: "video",
     levels: ["3.0", "3.5"],
     skills: ["serve", "return", "matchplay"],
     problemTags: ["match-anxiety", "return-under-pressure"],
@@ -412,14 +414,14 @@ export const contents: ContentItem[] = [
     reason: "适合作为比赛心理和发接发专题的桥梁内容。",
     useCases: ["比赛一开始就乱节奏", "发接发之间没有固定流程"],
     coachReason: "比赛前几局建立节奏感特别重要，这条教你用固定流程稳住开局。",
-    url: xiaohongshuSearchUrl("张奔斗 发接发 流程 比赛 网球")
+    url: bilibiliSearchUrl("网球 比赛 开局 发接发 流程")
   },
   {
     id: "content_cn_e_03",
-    title: "接发只做一件事：先把球送深",
-    creatorId: "creator_cn_e",
-    platform: "Zhihu",
-    type: "article",
+    title: "接发别抢着发力：先把第一拍稳稳送深",
+    creatorId: "creator_search_curated",
+    platform: "Bilibili",
+    type: "video",
     levels: ["3.0", "3.5"],
     skills: ["return"],
     problemTags: ["return-under-pressure", "balls-too-short"],
@@ -428,15 +430,15 @@ export const contents: ContentItem[] = [
     reason: "适合搭配接发球和深度不足类问题。",
     useCases: ["接发回球总是太短", "接发后第一拍总给对手舒服进攻"],
     coachReason: "接发不需要打出制胜球，送深就是最好的接发，这条帮你降低失误。",
-    url: zhihuSearchUrl("张奔斗 接发球 送深 网球")
+    url: bilibiliSearchUrl("网球 接发球 第一拍 送深")
   },
 
   {
     id: "content_cn_f_01",
-    title: "比赛紧张：把注意力从结果拉回执行",
-    creatorId: "creator_cn_f",
-    platform: "Zhihu",
-    type: "article",
+    title: "比赛紧张时别盯比分：把注意力拉回下一拍执行",
+    creatorId: "creator_search_curated",
+    platform: "Bilibili",
+    type: "video",
     levels: ["3.0", "3.5"],
     skills: ["mental", "matchplay"],
     problemTags: ["match-anxiety"],
@@ -445,28 +447,28 @@ export const contents: ContentItem[] = [
     reason: "适合作为比赛心理问题的基础阅读。",
     useCases: ["一记分就手紧", "比赛里越失误越不敢打"],
     coachReason: "紧张的根源是盯着比分而不是盯着下一拍该做什么，这条帮你切换注意力。",
-    url: zhihuSearchUrl("孙甜甜网球课堂 比赛 紧张 执行")
+    url: bilibiliSearchUrl("网球 比赛 紧张 执行 心态")
   },
   {
     id: "content_cn_f_02",
-    title: "不会安排训练：每周 3 次怎么练",
-    creatorId: "creator_cn_f",
-    platform: "Zhihu",
-    type: "article",
+    title: "训练总是乱：学练馆 11 种练法怎么搭更顺",
+    creatorId: "creator_pikachu",
+    platform: "Bilibili",
+    type: "video",
     levels: ["2.5", "3.0", "3.5"],
     skills: ["training"],
     problemTags: ["cant-self-practice", "no-clear-technique"],
     language: "zh",
-    summary: "适合有教练课但课后练习混乱的球员。",
-    reason: "适合作为训练计划模块的内容补充。",
-    useCases: ["每周训练没有结构", "有教练课但课后不知道练什么"],
-    coachReason: "练得多不如练得对，这条给你一个每周三练的现成结构，直接跟着安排。",
-    url: zhihuSearchUrl("孙甜甜网球课堂 每周 训练 计划")
+    summary: "适合去学练馆或自己练时总是练一会儿就乱掉的球员。",
+    reason: "适合作为训练计划模块的动作菜单和排练思路补充。",
+    useCases: ["到了球场不知道先练什么", "训练没有结构、越练越散"],
+    coachReason: "练习结构清楚以后，训练质量会比盲目多打提升得更快，这条很适合拿来做排练参考。",
+    url: "https://www.bilibili.com/video/BV16uHizBEp2/"
   },
   {
     id: "content_cn_f_03",
     title: "练得不少却没进步：先缩小目标",
-    creatorId: "creator_cn_f",
+    creatorId: "creator_search_curated",
     platform: "Bilibili",
     type: "video",
     levels: ["3.0", "3.5"],
@@ -478,13 +480,13 @@ export const contents: ContentItem[] = [
     useCases: ["每次训练都改太多点", "练了很多但没有连续进步"],
     coachReason: "每次只改一个点坚持两周比一次改五个点有效十倍，这条帮你学会聚焦。",
     duration: "04:35",
-    url: bilibiliSearchUrl("孙甜甜网球课堂 练得不少 没进步 网球")
+    url: bilibiliSearchUrl("网球 练了很多 没进步 训练 聚焦")
   },
 
   {
     id: "content_common_01",
     title: "不会打高球：先理解弧线和落点",
-    creatorId: "creator_cn_c",
+    creatorId: "creator_search_curated",
     platform: "Bilibili",
     type: "video",
     levels: ["3.0", "3.5"],
@@ -496,7 +498,7 @@ export const contents: ContentItem[] = [
     useCases: ["防守时只会平打回去", "不会用高球争取调整时间"],
     coachReason: "高球是3.0-3.5最被低估的防守武器，学会了能帮你多撑住很多被动球。",
     duration: "05:12",
-    url: bilibiliSearchUrl("网球之家 高球 弧线 落点 网球")
+    url: bilibiliSearchUrl("网球 高球 弧线 落点 防守")
   },
   {
     id: "content_common_02",
@@ -513,14 +515,14 @@ export const contents: ContentItem[] = [
     useCases: ["遇到下旋来球就仓促出手", "击球点总掉到身体后面"],
     coachReason: "打下旋来球的关键是早准备和在前点迎球，这条把时机讲得很到位。",
     duration: "05:05",
-    url: bilibiliSearchUrl("赵周晓桥 下旋 来球 击球点 网球")
+    url: bilibiliSearchUrl("是佩恩呀 下旋 来球 击球点 网球")
   },
   {
     id: "content_common_03",
     title: "反手切削总飘：拍面和送拍方向",
-    creatorId: "creator_cn_d",
-    platform: "Xiaohongshu",
-    type: "post",
+    creatorId: "creator_matsuo_yuki_cn",
+    platform: "Bilibili",
+    type: "video",
     levels: ["3.0", "3.5", "4.0"],
     skills: ["backhand", "slice"],
     problemTags: ["slice-too-high"],
@@ -529,7 +531,7 @@ export const contents: ContentItem[] = [
     reason: "适合作为 3.5 球员的专项问题内容。",
     useCases: ["反手切削总飘起来", "切削落点浅且没有压迫感"],
     coachReason: "切削飘多数是送拍方向往上了，这条教你往前送而不是往下砍。",
-    url: xiaohongshuSearchUrl("爱奇艺体育网球 反手 切削 控制")
+    url: bilibiliSearchUrl("松尾友贵Pro 反手 切削 控制 网球")
   },
   {
     id: "content_rb_01",

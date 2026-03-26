@@ -358,6 +358,7 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
       fixes: DEFAULT_FIXES,
       drills: DEFAULT_DRILLS,
       recommendedContents: fallbackContents,
+      searchQueries: null,
       fallbackUsed: true,
       fallbackMode,
       level
@@ -397,6 +398,7 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     fixes: rule.fixes,
     drills: rule.drills,
     recommendedContents: finalContents,
+    searchQueries: rule.searchQueries,
     fallbackUsed: recommendedContents.length === 0,
     fallbackMode,
     level
@@ -431,6 +433,7 @@ export function getDefaultDiagnosisResult(
     fixes: DEFAULT_FIXES,
     drills: DEFAULT_DRILLS,
     recommendedContents,
+    searchQueries: null,
     fallbackUsed: true,
     fallbackMode: null,
     level

@@ -29,3 +29,23 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+@keyframes platform-wiggle {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  35% {
+    transform: scale(1.08) rotate(-7deg);
+  }
+  65% {
+    transform: scale(1.1) rotate(6deg);
+  }
+  100% {
+    transform: scale(1.08) rotate(0deg);
+  }
+}
+
+.platform-link-wiggle:hover,
+.platform-link-wiggle:focus-visible {
+  animation: platform-wiggle 0.28s ease-in-out forwards;
+}

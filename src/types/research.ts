@@ -1,6 +1,18 @@
 export type EventType =
   | "page_enter"
   | "page_leave"
+  | "video_upload_start"
+  | "video_upload_success"
+  | "video_validation_fail"
+  | "video_analysis_start"
+  | "video_analysis_success"
+  | "video_analysis_fail"
+  | "video_limit_reached"
+  | "video_retry_recommended"
+  | "video_result_save"
+  | "platform_search"
+  | "platform_video_click"
+  | "video_plan_generate"
   | "assessment_start"
   | "assessment_answer"
   | "assessment_complete"
@@ -21,6 +33,7 @@ export type EventType =
   | "cta_click"
   | "login_trigger"
   | "login_complete"
+  | "logout_click"
   | "study_consent";
 
 export type EventLog = {
@@ -49,4 +62,5 @@ export type ResearchExportTable =
   | "event_logs"
   | "survey_responses"
   | "assessment_results"
-  | "diagnosis_history";
+  | "diagnosis_history"
+  | "video_diagnosis_history";

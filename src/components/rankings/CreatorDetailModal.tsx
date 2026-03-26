@@ -3,6 +3,9 @@ import { Creator } from "@/types/creator";
 import { Modal } from "@/components/ui/Modal";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
+import { CreatorPlatformLinks } from "@/components/ui/CreatorPlatformLinks";
+import { PlatformBadge } from "@/components/ui/PlatformBadge";
 
 export function CreatorDetailModal({ creator, open, onClose }: { creator: Creator | null; open: boolean; onClose: () => void }) {
   const creatorContents = creator ? contents.filter((item) => item.creatorId === creator.id) : [];
@@ -11,6 +14,17 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
     <Modal open={open} onClose={onClose} title={creator?.name ?? "博主详情"}>
       {creator ? (
         <>
+          <div className="flex items-start gap-3">
+            <CreatorAvatar name={creator.name} avatarUrl={creator.avatar} />
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap gap-2">
+                {creator.platforms.map((platform) => (
+                  <PlatformBadge key={platform} platform={platform} />
+                ))}
+              </div>
+              <CreatorPlatformLinks creator={creator} source="creator_modal_platform" className="mt-3" />
+            </div>
+          </div>
           <p className="text-sm text-slate-700">{creator.bio}</p>
           <div>
             <p className="text-sm font-semibold text-slate-900">适合谁</p>

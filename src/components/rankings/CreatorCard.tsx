@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
+import { CreatorPlatformLinks } from "@/components/ui/CreatorPlatformLinks";
 import { toChineseSkill } from "@/lib/utils";
 
 type CreatorCardProps = {
@@ -17,17 +18,18 @@ export function CreatorCard({ creator, onDetail, onViewLibrary }: CreatorCardPro
 
   return (
     <Card className="space-y-3">
-      <div className="flex items-center gap-3">
-        <CreatorAvatar name={creator.name} />
-        <div>
+      <div className="flex items-start gap-3">
+        <CreatorAvatar name={creator.name} avatarUrl={creator.avatar} />
+        <div className="min-w-0 flex-1">
           <h3 className="font-bold text-slate-900">{creator.name}</h3>
           <div className="mt-1 flex flex-wrap gap-2">
             {creator.platforms.map((platform) => (
-              <PlatformBadge
-                key={platform}
-                platform={platform as "Bilibili" | "YouTube" | "Xiaohongshu" | "Zhihu" | "Instagram"}
-              />
+              <PlatformBadge key={platform} platform={platform} />
             ))}
+          </div>
+          <div className="mt-3">
+            <p className="text-xs font-medium text-slate-500">主页入口</p>
+            <CreatorPlatformLinks creator={creator} source="creator_card_platform" className="mt-2" />
           </div>
         </div>
       </div>

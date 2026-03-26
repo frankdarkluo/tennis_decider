@@ -1,15 +1,83 @@
-export type DiagnosisRule = {
-  id: string;
-  keywords: string[];
-  synonyms: string[];
-  category: string[];
-  problemTag: string;
-  causes: string[];
-  fixes: string[];
-  recommendedContentIds: string[];
-  drills: string[];
-  fallbackLevel?: string[];
-};
+import { DiagnosisRule, DiagnosisSearchQueries } from "@/types/diagnosis";
+
+const searchQueriesByRule = {
+  rule_backhand_net: {
+    bilibili: ["是佩恩呀 反手 下网 网球", "网球工匠付饶 反手 下网", "反手击球点 拍面控制 网球"],
+    youtube: ["tennis backhand into net fix", "backhand contact point correction tennis", "backhand net error drill"]
+  },
+  rule_forehand_out: {
+    bilibili: ["盖奥网球 正手 出界 上旋", "网球工匠付饶 正手 弧线 网球", "正手出界 上旋 控制 网球"],
+    youtube: ["tennis forehand going long fix", "forehand topspin technique tennis", "forehand out control drill"]
+  },
+  rule_second_serve_confidence: {
+    bilibili: ["盖奥网球 二发 稳定性", "冠军教练-莫拉托格鲁 二发 网球", "二发没信心 发球稳定性 网球"],
+    youtube: ["tennis second serve confidence", "reliable second serve drill", "beginner second serve technique"]
+  },
+  rule_serve_toss: {
+    bilibili: ["发球抛球 不稳 纠正 网球", "冠军教练-莫拉托格鲁 发球 抛球", "盖奥网球 抛球 教学"],
+    youtube: ["tennis serve toss fix", "serve toss consistency drill", "tennis toss placement lesson"]
+  },
+  rule_late_contact: {
+    bilibili: ["是佩恩呀 击球点 晚 网球", "准备慢 击球点偏晚 纠正", "分腿垫步 提前准备 网球"],
+    youtube: ["tennis late contact point fix", "early preparation tennis", "tennis timing drill"]
+  },
+  rule_net_errors: {
+    bilibili: ["网球截击 动作太大 纠正", "网前截击 基础 教学", "双打网前 截击 稳定性"],
+    youtube: ["tennis volley technique beginner", "compact volley drill", "net play basics tennis"]
+  },
+  rule_match_anxiety: {
+    bilibili: ["网球比赛紧张 怎么办", "比赛心态 调整 网球", "比赛失误多 心态 网球"],
+    youtube: ["tennis match nerves tips", "how to stay calm tennis match", "tennis mental game beginner"]
+  },
+  rule_forehand_no_power: {
+    bilibili: ["正手没力量 发力链 网球", "盖奥网球 正手 发力", "正手转体发力 教学 网球"],
+    youtube: ["tennis forehand power technique", "forehand kinetic chain tennis", "generate power forehand"]
+  },
+  rule_balls_too_short: {
+    bilibili: ["网球打不深 怎么办", "击球深度 训练 网球", "网球 稳定性 打深 底线 深度"],
+    youtube: ["tennis hit deeper shots", "depth control tennis drill", "how to stop hitting short tennis"]
+  },
+  rule_return_under_pressure: {
+    bilibili: ["网球 接发球 站位 准备", "接发球被压制 怎么办", "接发回深 训练 网球"],
+    youtube: ["tennis return of serve tips", "return position beginner tennis", "deep return drill tennis"]
+  },
+  rule_slice_too_high: {
+    bilibili: ["反手切削 飘起来 纠正", "切削拍面控制 网球", "切削送不低 教学 网球"],
+    youtube: ["tennis slice backhand fix", "slice floats tennis correction", "backhand slice control drill"]
+  },
+  rule_topspin_low: {
+    bilibili: ["正手上旋 怎么打 网球", "盖奥网球 正手 上旋", "正手弧线不够 纠正 网球"],
+    youtube: ["tennis forehand topspin technique", "how to hit topspin forehand", "forehand spin drill"]
+  },
+  rule_serve_accuracy: {
+    bilibili: ["发球发不进 纠正 网球", "发球进区率 训练", "发球落点控制 教学 网球"],
+    youtube: ["tennis serve accuracy drill", "serve consistency targets tennis", "how to improve serve placement"]
+  },
+  rule_movement_slow: {
+    bilibili: ["六六网球 脚步 训练", "分腿垫步 教学 网球", "网球移动 基础 训练"],
+    youtube: ["tennis footwork drill beginner", "split step timing tennis", "tennis movement training"]
+  },
+  rule_doubles_positioning: {
+    bilibili: ["双打站位 基础 网球", "双打轮转 配合 教学", "一前一后 站位 网球"],
+    youtube: ["tennis doubles positioning basics", "doubles formation beginner", "doubles net play position"]
+  },
+  rule_trouble_with_slice: {
+    bilibili: ["是佩恩呀 下旋 来球 网球", "低球处理 教学 网球", "对方切球 怎么接 网球"],
+    youtube: ["how to hit against slice tennis", "tennis handle slice return", "low ball tennis technique"]
+  },
+  rule_cant_hit_lob: {
+    bilibili: ["网球高球 怎么打", "防守高球 教学 网球", "挑高球 训练 网球"],
+    youtube: ["tennis defensive lob technique", "how to hit a lob tennis", "lob shot drill beginner"]
+  },
+  rule_plateau_no_progress: {
+    bilibili: ["网球瓶颈期 怎么突破", "网球 练了很多 没进步 训练 聚焦", "网球进步 方法 训练"],
+    youtube: ["tennis plateau how to improve", "stuck at 3.0 tennis tips", "tennis improvement strategy"]
+  },
+  rule_cant_self_practice: {
+    bilibili: ["没有教练怎么练球 网球", "网球自己练 方法", "网球课后复习 训练"],
+    youtube: ["tennis solo practice drills", "how to practice tennis alone", "tennis self training routine"]
+  }
+} satisfies Record<string, DiagnosisSearchQueries>;
 
 export const diagnosisRules: DiagnosisRule[] = [
   {
@@ -26,6 +94,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["更早转肩，提前准备", "把击球点放到身体前侧", "先追求稳定过网，再谈发力"],
     recommendedContentIds: ["content_fr_01", "content_cn_a_01", "content_gaiao_03"],
     drills: ["影子挥拍 20 次，重点感受前点击球", "慢节奏喂球反手直线 30 球", "两点移动后反手过网练习 20 球"],
+    searchQueries: searchQueriesByRule.rule_backhand_net,
     fallbackLevel: ["3.0", "3.5"]
   },
   {
@@ -38,6 +107,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["先增加上旋弧线", "降低一次击球的发力欲望", "先保证稳定过网，再逐步加速"],
     recommendedContentIds: ["content_cn_d_01", "content_cn_d_03", "content_gaiao_01"],
     drills: ["正手对拉 30 球，只求高过网", "定点正手上旋练习 20 球", "正手落点控制在底线前 1 米区域"],
+    searchQueries: searchQueriesByRule.rule_forehand_out,
     fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
@@ -50,6 +120,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["先建立节奏感，再加力量", "先练稳定抛球和完整动作", "先接受安全二发，不急着追求球速"],
     recommendedContentIds: ["content_gaiao_02", "content_zlx_01", "content_zlx_02"],
     drills: ["抛球 30 次，不击球", "半动作发球 20 次，找上旋感", "二区安全二发 20 球，目标先全部进"],
+    searchQueries: searchQueriesByRule.rule_second_serve_confidence,
     fallbackLevel: ["3.0", "3.5"]
   },
   {
@@ -62,6 +133,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["先单独练抛球动作", "站姿固定后再抛", "每次抛球后停住观察落点"],
     recommendedContentIds: ["content_gaiao_02", "content_zlx_01", "content_ttt_01"],
     drills: ["不击球抛球 30 次", "抛球后接球并记录落点 20 次", "抛球+空挥 15 次"],
+    searchQueries: searchQueriesByRule.rule_serve_toss,
     fallbackLevel: ["3.0", "3.5"]
   },
   {
@@ -74,6 +146,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["先做更早的准备动作", "把注意力从挥拍改到到位", "先缩小动作，提升节奏匹配"],
     recommendedContentIds: ["content_fr_02", "content_cn_a_02", "content_cn_c_02"],
     drills: ["分腿垫步 + 侧身准备 20 组", "喂球后只做准备不击球 15 次", "小碎步找位后击球 20 球"],
+    searchQueries: searchQueriesByRule.rule_late_contact,
     fallbackLevel: ["3.0", "3.5"]
   },
   {
@@ -86,6 +159,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["缩小动作，先学会挡和送", "拍头保持稳定在身体前方", "先练简单高成功率截击"],
     recommendedContentIds: ["content_rb_01", "content_cn_b_01", "content_cn_b_03"],
     drills: ["近网挡球 20 次", "正反手截击各 15 球", "双打网前反应练习 10 组"],
+    searchQueries: searchQueriesByRule.rule_net_errors,
     fallbackLevel: ["3.0", "3.5"]
   },
   {
@@ -98,6 +172,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["给自己设定简化战术", "先稳定发接发流程", "把注意力放回每一分的执行"],
     recommendedContentIds: ["content_rb_03", "content_cn_f_01", "content_cn_e_02"],
     drills: ["发球前固定节奏 10 次", "一发一接对抗 10 分钟", "只打高成功率落点的练习赛"],
+    searchQueries: searchQueriesByRule.rule_match_anxiety,
     fallbackLevel: ["3.0", "3.5"]
   },
   {
@@ -110,6 +185,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["先保证击球点稳定", "把力量来源放回身体和节奏", "先用七成力量打实再提速"],
     recommendedContentIds: ["content_fr_03", "content_cn_d_02", "content_gaiao_01"],
     drills: ["无球转体挥拍 20 次", "定点正手七成力量 20 球", "正手击球后自然随挥 20 次"],
+    searchQueries: searchQueriesByRule.rule_forehand_no_power,
     fallbackLevel: ["3.0", "3.5"]
   },
   {
@@ -122,6 +198,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["先把目标区放到底线前 1 米", "击球后多想向前送拍", "不要站死，先到位再击球"],
     recommendedContentIds: ["content_cn_c_01", "content_cn_e_03", "content_et_01"],
     drills: ["底线前目标区击球 20 球", "正反手交替深度练习 20 球", "发球后第一拍送深练习 15 球"],
+    searchQueries: searchQueriesByRule.rule_balls_too_short,
     fallbackLevel: ["3.0", "3.5"]
   },
   {
@@ -134,6 +211,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["先把目标设为送深", "缩小动作，早点准备", "固定自己的接发站位和流程"],
     recommendedContentIds: ["content_rb_02", "content_cn_e_01", "content_cn_e_03"],
     drills: ["接发简化挥拍 20 球", "接发只打中路深区 20 球", "发接发一分起打 10 组"],
+    searchQueries: searchQueriesByRule.rule_return_under_pressure,
     fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
@@ -146,6 +224,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["先控制拍面角度", "切球方向更向前", "把击球点放在身体前侧"],
     recommendedContentIds: ["content_common_03", "content_zlx_03", "content_it_01"],
     drills: ["无球切削挥拍 20 次", "中慢球切削送深 20 球", "切削落点控制底线前 2 米"],
+    searchQueries: searchQueriesByRule.rule_slice_too_high,
     fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
@@ -158,6 +237,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["先把结束位置收到肩膀以上", "先接受更高的过网弧线，再谈球速", "多感受向上刷球，而不是平推出去"],
     recommendedContentIds: ["content_cn_d_03", "content_cn_d_01", "content_fr_03"],
     drills: ["无球刷拍 20 次，感受从下往上", "高弧线正手 20 球，只求过网高度", "底线前 1 米目标区正手 20 球"],
+    searchQueries: searchQueriesByRule.rule_topspin_low,
     fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
@@ -170,6 +250,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["先只盯一个发球目标区", "发力降到七成，先把进区率做出来", "把发球拆成抛球、节奏、落点三个单项分别练"],
     recommendedContentIds: ["content_gaiao_02", "content_zlx_01", "content_ttt_01"],
     drills: ["半动作发球 20 次，只求进区", "一区或二区单目标区发球 20 球", "连续 10 个进区后再换边"],
+    searchQueries: searchQueriesByRule.rule_serve_accuracy,
     fallbackLevel: ["2.5", "3.0", "3.5"]
   },
   {
@@ -182,6 +263,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["对方击球前先做一次分腿垫步", "把注意力先放到第一步启动", "先缩小挥拍动作，给脚步留时间"],
     recommendedContentIds: ["content_cn_c_02", "content_cn_a_03", "content_fr_02"],
     drills: ["分腿垫步 20 组", "两点启动移动 15 组", "喂球后先到位再击球 20 球"],
+    searchQueries: searchQueriesByRule.rule_movement_slow,
     fallbackLevel: ["2.5", "3.0", "3.5"]
   },
   {
@@ -194,6 +276,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["先只记住最常见的一前一后站位", "每打一拍先想自己下一步往哪补位", "和搭档约定最基础的轮转规则"],
     recommendedContentIds: ["content_cn_b_02", "content_rb_01", "content_rb_03"],
     drills: ["双打空位走位 10 组", "接发后第一步站位练习 15 组", "双打练习赛只记录站位失误"],
+    searchQueries: searchQueriesByRule.rule_doubles_positioning,
     fallbackLevel: ["3.0", "3.5"]
   },
   {
@@ -206,6 +289,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["看到对方切球时先多给自己半拍时间", "尽量在前点往上提拉，不要等球掉太低", "先用高过网弧线把这一拍处理过去"],
     recommendedContentIds: ["content_common_02", "content_cn_a_02", "content_fr_02"],
     drills: ["喂低球 20 球，只练前点击球", "低球上提 20 球，只记录过网高度", "切球来回 10 组，练判断和站位"],
+    searchQueries: searchQueriesByRule.rule_trouble_with_slice,
     fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
@@ -218,6 +302,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["被压住时默认先打一个高而深的高球", "别急着反攻，先把节奏拉回来", "出手时先想高度和深度，不要先想速度"],
     recommendedContentIds: ["content_common_01", "content_cn_c_01", "content_rb_03"],
     drills: ["底线防守高球 15 球", "被压到底线时只打高深球 10 组", "高球后恢复站位 10 组"],
+    searchQueries: searchQueriesByRule.rule_cant_hit_lob,
     fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
@@ -230,6 +315,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["先选一个最影响比赛的问题连续练两周", "训练后记录一个最常见失误，而不是泛泛复盘", "把计划从‘练很多’改成‘练一个最关键的问题’"],
     recommendedContentIds: ["content_cn_f_03", "content_cn_f_02", "content_cn_c_03"],
     drills: ["写下本周唯一主问题", "每次训练只记录一个指标", "连续两周只围绕同一个问题安排练习"],
+    searchQueries: searchQueriesByRule.rule_plateau_no_progress,
     fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
@@ -242,6 +328,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes: ["一次只解决一个问题", "先安排 20–30 分钟小练习", "每次练都要有记录项"],
     recommendedContentIds: ["content_cn_c_03", "content_cn_f_02", "content_cn_f_03"],
     drills: ["列出本周唯一主问题", "每次训练写 1 个目标 1 个记录项", "训练后记录成功率和感觉"],
+    searchQueries: searchQueriesByRule.rule_cant_self_practice,
     fallbackLevel: ["2.5", "3.0", "3.5"]
   }
 ];

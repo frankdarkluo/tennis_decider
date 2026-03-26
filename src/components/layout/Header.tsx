@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ const navItems = [
   { href: "/", label: "首页" },
   { href: "/assessment", label: "水平评估" },
   { href: "/diagnose", label: "问题诊断" },
+  { href: "/video-diagnose", label: "视频诊断" },
   { href: "/library", label: "内容库" },
   { href: "/rankings", label: "博主榜" },
   { href: "/plan", label: "训练计划" }
@@ -20,7 +22,7 @@ const navItems = [
 
 export function Header() {
   const pathname = usePathname();
-  const { user, loading } = useAuth();
+  const { user, loading, signOut } = useAuth();
   const { openLoginModal } = useAuthModal();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -28,17 +30,38 @@ export function Header() {
     setMobileNavOpen(false);
   }, [pathname]);
 
+  async function handleSignOut(source: "header" | "header_mobile") {
+    logEvent("logout_click", { source });
+    await signOut();
+    if (source === "header_mobile") {
+      setMobileNavOpen(false);
+    }
+  }
+
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-white/90 backdrop-blur">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 md:px-6">
-        <Link href="/" className="text-lg font-black tracking-tight text-slate-900">TennisLevel</Link>
+        <Link
+          href="/"
+          aria-label="返回 TennisLevel 首页"
+          className="inline-flex min-h-12 min-w-[220px] items-center justify-start rounded-2xl border border-transparent px-2 py-1 transition hover:border-brand-100 hover:bg-brand-50/50 md:min-w-[300px]"
+        >
+          <Image
+            src="/tennislevel-logo.svg"
+            alt="TennisLevel"
+            width={320}
+            height={90}
+            priority
+            className="h-12 w-auto max-w-[220px] object-contain md:h-14 md:max-w-[300px]"
+          />
+        </Link>
         <nav className="hidden gap-1 md:flex">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "rounded-lg px-3 py-2 text-sm font-medium transition",
+                "rounded-xl px-3.5 py-2.5 text-[15px] font-semibold transition",
                 pathname === item.href ? "bg-brand-50 text-brand-700" : "text-slate-700 hover:bg-slate-100"
               )}
             >
@@ -58,6 +81,9 @@ export function Header() {
               >
                 我的记录
               </Link>
+              <Button variant="ghost" onClick={() => handleSignOut("header")}>
+                退出登录
+              </Button>
             </>
           ) : (
             <Button variant="ghost" onClick={() => openLoginModal(undefined, "header")}>
@@ -107,7 +133,7 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex min-h-11 items-center rounded-xl px-4 text-sm font-medium transition",
+                    "flex min-h-11 items-center rounded-xl px-4 text-base font-semibold transition",
                     pathname === item.href ? "bg-brand-50 text-brand-700" : "text-slate-700 hover:bg-slate-100"
                   )}
                 >
@@ -125,6 +151,13 @@ export function Header() {
                   >
                     我的记录
                   </Link>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start px-4"
+                    onClick={() => handleSignOut("header_mobile")}
+                  >
+                    退出登录
+                  </Button>
                 </div>
               ) : (
                 <Button variant="ghost" className="w-full justify-start px-4" onClick={() => openLoginModal(undefined, "header")}>
