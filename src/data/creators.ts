@@ -1,5 +1,6 @@
 import { Creator } from "@/types/creator";
 
+const bilibiliAvatar = (id: string) => `/avatars/bilibili/${id}.jpg`;
 const youtubeAvatar = (handle: string) => `https://unavatar.io/youtube/${handle}`;
 
 export const creators: Creator[] = [
@@ -18,7 +19,7 @@ export const creators: Creator[] = [
     platformLinks: {
       Bilibili: "https://space.bilibili.com/1664596828?spm_id_from=333.337.0.0"
     },
-    avatar: "https://i1.hdslb.com/bfs/face/8f121471d34eddf7ddb0b8fbe76c4e4a617ae6e8.jpg",
+    avatar: bilibiliAvatar("creator_gaiao"),
     rankingSignals: {
       subscriberScore: 0.96,
       averageViewsScore: 0.95,
@@ -43,7 +44,7 @@ export const creators: Creator[] = [
     platformLinks: {
       Bilibili: "https://space.bilibili.com/1096810530?spm_id_from=333.337.search-card.all.click"
     },
-    avatar: "https://i0.hdslb.com/bfs/face/88397a39eb7651118542647c6c50c12b719414d9.jpg",
+    avatar: bilibiliAvatar("creator_mouratoglou_cn"),
     rankingSignals: {
       subscriberScore: 0.88,
       averageViewsScore: 0.9,
@@ -68,7 +69,7 @@ export const creators: Creator[] = [
     platformLinks: {
       Bilibili: "https://space.bilibili.com/370058962?spm_id_from=333.337.search-card.all.click"
     },
-    avatar: "https://i2.hdslb.com/bfs/face/997af23f6c406886720816f6e32485d93a5070a0.jpg",
+    avatar: bilibiliAvatar("creator_furao"),
     rankingSignals: {
       subscriberScore: 0.72,
       averageViewsScore: 0.78,
@@ -93,7 +94,7 @@ export const creators: Creator[] = [
     platformLinks: {
       Bilibili: "https://space.bilibili.com/6796357?spm_id_from=333.337.search-card.all.click"
     },
-    avatar: "https://i1.hdslb.com/bfs/face/7c5885a89534f14a8532d840a8c17e9054790f85.jpg",
+    avatar: bilibiliAvatar("creator_racketbrothers"),
     rankingSignals: {
       subscriberScore: 0.68,
       averageViewsScore: 0.74,
@@ -118,7 +119,7 @@ export const creators: Creator[] = [
     platformLinks: {
       Bilibili: "https://space.bilibili.com/551162560/upload/video"
     },
-    avatar: "https://i1.hdslb.com/bfs/face/f37a668038df8bc99c59cd6b9d3bb8036e27fbdb.jpg",
+    avatar: bilibiliAvatar("creator_cn_a"),
     rankingSignals: {
       subscriberScore: 0.54,
       averageViewsScore: 0.6,
@@ -144,7 +145,7 @@ export const creators: Creator[] = [
       Bilibili: "https://space.bilibili.com/431898127?spm_id_from=333.337.search-card.all.click",
       YouTube: "https://www.youtube.com/@LeonTV/videos"
     },
-    avatar: "https://i1.hdslb.com/bfs/face/ab24109dee11663e20c7839895383ea167bd15f9.jpg",
+    avatar: bilibiliAvatar("creator_leontv_cn"),
     rankingSignals: {
       subscriberScore: 0.5,
       averageViewsScore: 0.57,
@@ -170,7 +171,7 @@ export const creators: Creator[] = [
     platformLinks: {
       Bilibili: "https://space.bilibili.com/524583239?spm_id_from=333.337.search-card.all.click"
     },
-    avatar: "https://i2.hdslb.com/bfs/face/5ed781324197027d4a25d493ed9d15b5274edfc8.jpg",
+    avatar: bilibiliAvatar("creator_james"),
     rankingSignals: {
       subscriberScore: 0.5,
       averageViewsScore: 0.56,
@@ -196,7 +197,7 @@ export const creators: Creator[] = [
     platformLinks: {
       Bilibili: "https://space.bilibili.com/3546889345567354?spm_id_from=333.337.search-card.all.click"
     },
-    avatar: "https://i1.hdslb.com/bfs/face/50312ce5091d9e892291742155ba6bf7a4608b66.jpg",
+    avatar: bilibiliAvatar("creator_liuliu"),
     rankingSignals: {
       subscriberScore: 0.52,
       averageViewsScore: 0.6,
@@ -222,7 +223,7 @@ export const creators: Creator[] = [
     platformLinks: {
       Bilibili: "https://space.bilibili.com/477934059?spm_id_from=333.337.search-card.all.click"
     },
-    avatar: "https://i0.hdslb.com/bfs/face/89c345582f9edeb03d22f9c5f61275c215222aad.jpg",
+    avatar: bilibiliAvatar("creator_pikachu"),
     rankingSignals: {
       subscriberScore: 0.48,
       averageViewsScore: 0.58,
@@ -247,7 +248,7 @@ export const creators: Creator[] = [
     platformLinks: {
       Bilibili: "https://space.bilibili.com/3546822188468643?spm_id_from=333.337.search-card.all.click"
     },
-    avatar: "https://i0.hdslb.com/bfs/face/868f6452e61c2e895753fd7eb8f8bbf8341b4418.jpg",
+    avatar: bilibiliAvatar("creator_matsuo_yuki_cn"),
     rankingSignals: {
       subscriberScore: 0.57,
       averageViewsScore: 0.76,
@@ -272,7 +273,7 @@ export const creators: Creator[] = [
     platformLinks: {
       Bilibili: "https://space.bilibili.com/324446217?spm_id_from=333.337.search-card.all.click"
     },
-    avatar: "https://i0.hdslb.com/bfs/face/120c8b6f26f4bc134050ed84763e29eb28a18c9e.jpg",
+    avatar: bilibiliAvatar("creator_austin_camp"),
     rankingSignals: {
       subscriberScore: 0.45,
       averageViewsScore: 0.54,
