@@ -1,11 +1,11 @@
 # TennisLevel
 
-一个面向业余网球用户的训练决策型 MVP。当前版本已经具备：
+一个面向业余网球用户的训练决策型产品原型。当前版本已经具备：
 
 - 1 分钟水平评估
 - 一句话问题诊断
 - 真实内容推荐
-- AI 视频诊断（MVP）
+- AI 视频诊断（第一版）
 - 7 天训练计划
 - Supabase 邮箱登录与保存能力
 - 研究基础设施：事件日志、研究问卷、导出页、测试引导、知情同意
@@ -92,7 +92,7 @@ NEXT_PUBLIC_RESEARCH_CONTACT_EMAIL=your-email@example.com
 
 - [`docs/DEPLOY_VERCEL_SUPABASE.md`](/Users/gluo/Desktop/tennis_decider/docs/DEPLOY_VERCEL_SUPABASE.md)
 
-这条路径最适合当前 MVP，因为它同时支持：
+这条路径最适合当前版本，因为它同时支持：
 
 - App Router 页面
 - Next.js API routes
@@ -165,7 +165,7 @@ NEXT_PUBLIC_RESEARCH_CONTACT_EMAIL=your-email@example.com
 
 ## 说明
 
-当前版本仍然是前端驱动的 MVP：
+当前版本仍然是前端驱动的早期产品原型：
 
 - 内容推荐基于本地维护的真实内容和规则数据
 - 登录使用 Supabase magic link

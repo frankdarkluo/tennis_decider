@@ -1,264 +1,205 @@
-# TennisLevel 项目进度总结
+# Claude Review Progress
 
-更新时间：2026-03-24
+更新时间：2026-03-25
 
-## 1. 当前项目是什么
+适用范围：**仅主产品与研究原型进展，不包含 `SportsHCI_2026/` 相关 LaTeX/论文模板整理工作。**
 
-TennisLevel 是一个面向业余网球用户的训练决策型 MVP。核心路径已经形成一条完整闭环：
+## 1. 当前项目处于什么阶段
 
-1. 先做 1 分钟水平评估
-2. 再用一句话描述问题
-3. 系统给出问题诊断和推荐内容
-4. 最后生成 7 天训练计划
-5. 登录后可回看记录并保存自己的路径
+TennisLevel 目前已经不是只有首页和静态 demo 的状态，而是一个可运行的研究型原型。当前主闭环已经具备：
 
-当前版本不只是展示页，而是已经可以拿来做真实试跑和研究收数。
+1. `/assessment` 做 1 分钟水平评估
+2. `/diagnose` 做一句话问题诊断
+3. `/library` 和 `/rankings` 承接内容与创作者推荐
+4. `/plan` 生成 7 天训练计划
+5. `/profile` 聚合用户历史记录
+6. `/study` + `/survey` + `/admin/export` 承接研究流程、问卷和导出
 
----
+在这个基础上，本轮最主要的新进展是：**AI 视频诊断第一版已经落地到代码，并接入现有用户数据与研究数据体系。**
 
-## 2. 已完成的里程碑
+## 2. 本轮已落地的核心进展
 
-### P0：内容与数据层
+### 2.1 视频诊断第一版已实现
 
-- 清理了明显的 placeholder / mock 命名与链接
-- 每条诊断规则都已绑定真实内容
-- 每条内容都已补齐 `useCases` 和 `coachReason`
-- 教练推荐理由已经回填到内容数据中
+已新增：
 
-### P1：首页精简
+- `/video-diagnose` 页面
+- `/api/video-diagnose` API route
+- 浏览器本地视频校验与抽帧
+- provider-agnostic 的 `vlm.ts`
+- mock VLM fallback
+- 视频结果到既有诊断规则、内容、博主、训练计划的映射
 
-- Hero 已收敛为一句核心文案 + 输入框 + 标签 + 单主 CTA
-- 首页入口卡从 3 张缩成 2 张
-- 提升路径区做了压缩和扫读优化
-- 首页内容区 / 创作者区都做了减法
+当前视频诊断主链路：
 
-### P2：登录后的用户价值
+1. 用户上传 `<= 60s` 视频
+2. 前端校验格式、大小、时长
+3. 浏览器本地抽取关键帧
+4. POST 帧 + 用户描述 + 用户等级 + 击球类型 + 场景 到 `/api/video-diagnose`
+5. 后端调用 `analyzeVideoFrames`
+6. 将 VLM observation 映射为：
+   - primary problem
+   - secondary problems
+   - recommended contents
+   - recommended creators
+   - training plan
+   - search suggestions
+   - confidence / fallback reason
 
-- 已接入 Supabase magic link 登录
-- 已有登录弹窗、回调页、Header 登录态切换
-- 登录后会保存：
-  - 评估结果
-  - 诊断历史
-  - 收藏内容
-  - 保存训练计划
-- 对应 SQL：
-  - `supabase/p2_user_data.sql`
+### 2.2 免费次数与降级策略已接入
 
-### P3：推荐逻辑增强
+视频诊断已实现：
 
-- 诊断推荐已加入等级优先逻辑
-- 规则同义表达库已扩充
-- 无法命中规则时，支持按评估最弱维度做兜底推荐
-- 内容库和博主榜都已支持 `2.5 / 3.0 / 3.5 / 4.0 / 4.5`
-- 新增国内 Bilibili 创作者 `青蛙王子James`
+- 免费 3 次
+- 仅对 `chargeable = true` 的成功分析计次
+- 低置信度结果不扣次
+- 登录用户走远端 `video_usage`
+- 未登录用户走本地 `localStorage`
 
-### P4：工程化补强
+### 2.3 视频诊断记录已接入用户体系
 
-- 已增加数据一致性校验脚本：
-  - `scripts/validate-data.ts`
-- 已增加页面 smoke test
-- 已补充测试配置与运行脚本
+已新增：
 
-### P5：研究基础设施
+- `video_diagnosis_history` 持久化
+- 个人中心展示最近视频诊断记录
+- 管理员导出页支持导出视频诊断数据
+- 研究事件日志新增视频相关事件类型
 
-- 已接入事件日志系统，支持 localStorage + 登录后 Supabase 双写
-- 已覆盖关键埋点：
-  - 页面进入 / 离开
-  - 评估开始 / 回答 / 完成 / 放弃
-  - 诊断提交 / 命中结果 / 无匹配 / 标签点击
-  - 内容点击 / 外链打开 / 收藏
-  - 博主点击 / 筛选
-  - 训练计划生成 / 保存 / 查看某天
-  - CTA 点击 / 登录触发 / 登录完成
-- 已新增研究问卷页：
-  - `/survey`
-- 已新增管理员导出页：
-  - `/admin/export`
-- 已新增用户测试引导页与知情同意弹窗：
-  - `/study`
-- 研究 SQL 已整理到：
-  - `supabase/research_infra.sql`
+### 2.4 产品入口已补齐
 
----
+视频诊断入口已经接入：
 
-## 3. 当前数据规模
+- Header
+- 首页 Hero
+- 文字诊断结果页
+- 个人中心记录页
 
-截至当前代码版本：
+## 3. 相关数据与后端准备情况
+
+已新增 SQL：
+
+- `supabase/video_diagnosis.sql`
+
+这份 SQL 会创建：
+
+- `video_usage`
+- `video_diagnosis_history`
+
+并补齐：
+
+- user-level RLS
+- admin select policy
+- 视频次数与历史的索引
+
+环境变量示例也已补到：
+
+- `.env.example`
+
+当前支持：
+
+- `VLM_PROVIDER`
+- `VLM_API_KEY`
+- `VLM_MODEL`
+- `VLM_BASE_URL`
+
+默认仍是 `mock` provider，用来先跑通流程。
+
+## 4. 当前工程验证状态
+
+我刚刚重新在本地执行过以下校验，结果如下：
+
+- `npm run validate:data`：通过
+- `npm test`：11 / 11 通过
+- `npm run build`：通过
+
+最新校验数据：
 
 - 诊断规则：19 条
 - 内容条目：36 条
 - 创作者：17 位
 - 训练计划模板：9 套
-- 评估题：8 题
 
-这些数据已经足够支撑 MVP 演示、第一轮用户测试和论文前期数据收集。
+最新构建结果：
 
----
+- 成功生成 17 个 app routes
+- 已包含 `/video-diagnose`
+- 已包含 `/api/video-diagnose`
 
-## 4. 当前代码逻辑怎么运转
+## 5. 现在还没做完的部分
 
-### 页面层
+这轮并不是“视频诊断全部完成”，而是 **V1 已完成，真实上线前还有几个明确待办**：
 
-- `/`
-  首页，承接注意力并分发到评估 / 诊断 / 内容 / 博主
-- `/assessment`
-  问卷评估页，计算参考等级和维度分数
-- `/assessment/result`
-  展示评估结果，并支持登录后保存 / 回看
-- `/diagnose`
-  根据一句话输入做规则匹配、推荐内容和生成计划
-- `/library`
-  内容库，支持筛选、收藏和等级匹配提示
-- `/rankings`
-  博主榜，支持筛选和详情查看
-- `/plan`
-  根据评估或诊断上下文生成 7 天训练计划
-- `/profile`
-  集中查看评估、诊断、收藏和保存计划
-- `/study`
-  用户测试标准流程引导页
-- `/survey`
-  研究问卷页，自动计算 SUS 分数
-- `/admin/export`
-  管理员导出事件、问卷、评估和诊断数据
+- 还没有接支付
+- 还没有接服务端 ffmpeg
+- 还没有做原视频存储
+- 还没有做异步任务队列
+- 还没有做更严格的 provider 级容错与质量评估
+- 还没有用 5 到 10 段真实视频系统验证 prompt 稳定性
 
-### 核心业务逻辑
+如果要让远端持久化真正可用，还需要手动在 Supabase 执行：
 
-- `src/lib/assessment.ts`
-  负责评估分数计算、等级映射、维度总结
-- `src/lib/diagnosis.ts`
-  负责输入标准化、规则评分、同义匹配、等级优先推荐、兜底推荐
-- `src/lib/plans.ts`
-  负责根据问题标签和等级生成训练计划
+- `supabase/video_diagnosis.sql`
+
+如果要切到真实多模态模型，还需要在 `.env.local` 配置：
+
+- `VLM_PROVIDER`
+- `VLM_API_KEY`
+- `VLM_MODEL`
+- `VLM_BASE_URL`
+
+## 6. 建议 Claude 重点审核的地方
+
+请优先从“代码是否已经足够稳，能不能支持真实试跑”这个角度审核，而不是只看功能表面是否存在。
+
+建议重点看：
+
+1. `src/app/api/video-diagnose/route.ts`
+   - 请求校验是否足够
+   - 是否需要更严格的 payload / auth / abuse protection
+
+2. `src/lib/vlm.ts`
+   - remote provider 适配是否稳
+   - JSON 解析与 fallback 策略是否合理
+   - 当前错误时直接回退 mock 是否会掩盖真实问题
+
+3. `src/lib/videoDiagnosis.ts`
+   - VLM 结果映射到现有 diagnosis/content/creator/plan 的逻辑是否合理
+   - 低置信度输出是否够保守
+
+4. `src/app/video-diagnose/page.tsx`
+   - 上传、抽帧、状态切换、扣次逻辑是否有边界问题
+   - 登录态与游客态次数逻辑是否一致
+
+5. `src/lib/userData.ts`
+   - `video_usage` 的更新方式是否可能有并发竞争
+   - `video_diagnosis_history` 的结构是否适合后续研究导出与分析
+
+6. `supabase/video_diagnosis.sql`
+   - 表设计与 RLS 是否合理
+   - 管理员导出权限是否完整
+
+## 7. Claude 审核时可直接参考的关键文件
+
+- `src/app/video-diagnose/page.tsx`
+- `src/app/api/video-diagnose/route.ts`
+- `src/components/video/VideoUploader.tsx`
+- `src/components/video/VideoProcessingStatus.tsx`
+- `src/components/video/VideoAnalysisResult.tsx`
+- `src/components/video/UsageMeter.tsx`
+- `src/lib/videoFrames.ts`
+- `src/lib/videoUsage.ts`
+- `src/lib/videoDiagnosis.ts`
+- `src/lib/vlm.ts`
 - `src/lib/userData.ts`
-  负责和 Supabase 的用户数据读写
-- `src/lib/eventLogger.ts`
-  负责本地 / 远端事件日志双写
-- `src/lib/researchData.ts`
-  负责问卷保存与研究数据导出
+- `src/types/videoDiagnosis.ts`
+- `src/types/userData.ts`
+- `src/types/research.ts`
+- `src/app/profile/page.tsx`
+- `src/app/admin/export/page.tsx`
+- `supabase/video_diagnosis.sql`
+- `VIDEO_DIAGNOSIS_PLAN.md`
+- `VIDEO_DIAGNOSIS_TASKS.md`
 
-### 数据层
+## 8. 一句话总结
 
-- `src/data/assessmentQuestions.ts`
-- `src/data/diagnosisRules.ts`
-- `src/data/contents.ts`
-- `src/data/creators.ts`
-- `src/data/planTemplates.ts`
-- `src/data/surveyQuestions.ts`
-
-当前依然是“结构化本地数据 + Supabase 用户数据 + Supabase 研究数据”的架构，不是后台 CMS 驱动。
-
----
-
-## 5. 当前真实进度评价
-
-如果按 0 到 100 分粗略评估：
-
-- 产品闭环：90/100
-- 首页与体验：84/100
-- 内容可信度：78/100
-- 登录价值：88/100
-- 工程化能力：82/100
-- 研究准备度：86/100
-
-### 为什么已经明显高于早期 MVP
-
-- 产品主流程已经完整走通
-- 首页不再只是展示页，而是有效导流页
-- 内容推荐不再是纯占位
-- 登录不再只是“能登录”，而是已经有前台承接页
-- 已经有基础测试、数据校验和研究数据采集能力
-
-### 还没到更高分的原因
-
-- 内容量仍然不算厚，尤其是高质量中文内容和进阶内容
-- 推荐逻辑仍然是规则型 + 数据映射型
-- 还没有后台管理内容与研究数据的能力
-- 还没有正式跑出第一批真实受试者数据
-
----
-
-## 6. 当前最大的短板
-
-当前最大的短板已经不是首页，而是下面三件事：
-
-1. 内容规模还不够大
-2. 真实用户测试还没正式开始收数
-3. 管理后台和后续分析脚本还没补齐
-
-更具体一点说：
-
-- 内容是可信的，但还不够丰富
-- 登录价值已经显性化，但留存理由还可以继续加强
-- 研究基础设施已经具备，但还需要真实用户跑起来
-
----
-
-## 7. 下一阶段最建议优先做什么
-
-### 第一优先级：正式开始用户测试
-
-现在已经有：
-
-- 研究引导页
-- 知情同意
-- 事件日志
-- 问卷页
-- 导出页
-
-最值得做的是拉 5-10 个真实球友，完整跑一遍 `/study` 流程，把第一批数据收起来。
-
-### 第二优先级：继续补内容密度
-
-建议继续补这三类：
-
-- 高频问题对应的中文内容
-- 4.0 / 4.5 球员也能看得上的进阶内容
-- 更多训练计划模板
-
-### 第三优先级：把研究和产品分析做深
-
-包括：
-
-- 导出后的分析脚本
-- SUS 结果统计
-- 关键路径漏斗分析
-- 典型用户 journey 归纳
-
-### 第四优先级：补后台能力
-
-包括：
-
-- 内容维护后台
-- 研究数据查看面板
-- 错误监控
-- 部署流程
-
----
-
-## 8. 当前工程状态
-
-当前本地工程已经具备这几项基础保障：
-
-- `npm run validate:data` 可检查数据引用一致性
-- `npm test` 可跑 10 个核心页面 / 研究页面 smoke test
-- `npm run build` 可完成 Next.js 构建与类型检查
-- 本地开发环境使用 `npm run dev`
-
-这意味着当前仓库已经不只是“能写页面”，而是具备了基本可维护性和可研究性。
-
----
-
-## 9. 风险与注意点
-
-- Supabase 数据库能力依赖手动执行 SQL 初始化
-- `supabase/research_infra.sql` 里的管理员邮箱占位符还需要替换成你的真实邮箱
-- 如果没有配置 `NEXT_PUBLIC_ADMIN_EMAILS`，`/admin/export` 会因为邮箱不匹配而不可用
-- 内容和计划模板仍然主要靠代码手工维护
-- 研究数据虽然能收，但分析脚本和统计报告还没开始做
-
----
-
-## 10. 一句话总结
-
-**TennisLevel 已经从“可演示的 MVP”进入到“可试用、可收集研究数据、可支撑论文前期验证”的阶段。下一步最值得投入的，是正式拉用户试跑并开始收第一批真实数据。**
+当前主产品在原有“评估 -> 诊断 -> 内容 -> 训练计划 -> 研究导出”的闭环上，已经把 **视频诊断 V1** 真实接进去了，而且本地校验、测试和构建都通过。现在最值得 Claude 帮忙看的，不是“这个功能有没有”，而是“这版实现是否足够稳，能不能安全地进入真实用户试跑”。

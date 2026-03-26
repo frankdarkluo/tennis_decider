@@ -11,7 +11,7 @@ Why this setup:
 - Vercel supports this stack directly with the least configuration
 - Supabase remains the backend and does not need to be replaced
 
-## Recommended Free MVP Setup
+## Recommended Free Setup
 
 - `Vercel Hobby` for the web app
 - current `Supabase Free` project for auth + data
