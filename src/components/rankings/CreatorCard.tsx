@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
-import { CreatorPlatformLinks } from "@/components/ui/CreatorPlatformLinks";
+import { logEvent } from "@/lib/eventLogger";
 import { toChineseSkill } from "@/lib/utils";
 
 type CreatorCardProps = {
@@ -23,13 +23,27 @@ export function CreatorCard({ creator, onDetail, onViewLibrary }: CreatorCardPro
         <div className="min-w-0 flex-1">
           <h3 className="font-bold text-slate-900">{creator.name}</h3>
           <div className="mt-1 flex flex-wrap gap-2">
-            {creator.platforms.map((platform) => (
-              <PlatformBadge key={platform} platform={platform} />
-            ))}
-          </div>
-          <div className="mt-3">
-            <p className="text-xs font-medium text-slate-500">主页入口</p>
-            <CreatorPlatformLinks creator={creator} source="creator_card_platform" className="mt-2" />
+            {creator.platforms.map((platform) => {
+              const href = creator.platformLinks?.[platform] ?? (platform === creator.platforms[0] ? creator.profileUrl : undefined);
+
+              if (!href) {
+                return <PlatformBadge key={platform} platform={platform} />;
+              }
+
+              return (
+                <a
+                  key={platform}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`前往 ${creator.name} 的${platform}主页`}
+                  className="platform-link-wiggle inline-flex rounded-full transition-transform duration-200 hover:scale-[1.04] focus-visible:scale-[1.04]"
+                  onClick={() => logEvent("creator_click", { creatorId: creator.id, source: "creator_card_platform_badge", platform, targetUrl: href })}
+                >
+                  <PlatformBadge platform={platform} />
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>

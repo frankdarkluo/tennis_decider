@@ -4,8 +4,8 @@ import { Modal } from "@/components/ui/Modal";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
-import { CreatorPlatformLinks } from "@/components/ui/CreatorPlatformLinks";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
+import { logEvent } from "@/lib/eventLogger";
 
 export function CreatorDetailModal({ creator, open, onClose }: { creator: Creator | null; open: boolean; onClose: () => void }) {
   const creatorContents = creator ? contents.filter((item) => item.creatorId === creator.id) : [];
@@ -18,11 +18,28 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
             <CreatorAvatar name={creator.name} avatarUrl={creator.avatar} />
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap gap-2">
-                {creator.platforms.map((platform) => (
-                  <PlatformBadge key={platform} platform={platform} />
-                ))}
+                {creator.platforms.map((platform) => {
+                  const href = creator.platformLinks?.[platform] ?? (platform === creator.platforms[0] ? creator.profileUrl : undefined);
+
+                  if (!href) {
+                    return <PlatformBadge key={platform} platform={platform} />;
+                  }
+
+                  return (
+                    <a
+                      key={platform}
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`前往 ${creator.name} 的${platform}主页`}
+                      className="platform-link-wiggle inline-flex rounded-full transition-transform duration-200 hover:scale-[1.04] focus-visible:scale-[1.04]"
+                      onClick={() => logEvent("creator_click", { creatorId: creator.id, source: "creator_modal_platform_badge", platform, targetUrl: href })}
+                    >
+                      <PlatformBadge platform={platform} />
+                    </a>
+                  );
+                })}
               </div>
-              <CreatorPlatformLinks creator={creator} source="creator_modal_platform" className="mt-3" />
             </div>
           </div>
           <p className="text-sm text-slate-700">{creator.bio}</p>
