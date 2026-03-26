@@ -13,7 +13,7 @@ type CreatorCardProps = {
 };
 
 export function CreatorCard({ creator, onDetail, onViewLibrary }: CreatorCardProps) {
-  const recommendedCount = creator.recommendedCount ?? creator.featuredContentIds.length;
+  const recommendedCount = creator.featuredContentIds.length;
   const hasRecommendedContent = recommendedCount > 0;
 
   return (

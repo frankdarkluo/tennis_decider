@@ -49,7 +49,7 @@ export function LibraryFilters(props: LibraryFiltersProps) {
     value: creator.id
   }))];
 
-  const skillValues = ["forehand", "backhand", "serve", "net", "movement", "matchplay", "basics", "consistency", "topspin", "return", "training", "mental", "footwork", "slice", "defense", "doubles"];
+  const skillValues = ["forehand", "backhand", "serve", "net", "movement", "matchplay", "basics", "consistency", "topspin", "return", "training", "mental", "grip", "footwork", "slice", "defense", "doubles"];
   const skillOptions: FilterOption[] = [
     { label: "全部技术", value: "全部技术" },
     ...skillValues.map((skill) => ({ label: toChineseSkill(skill), value: skill }))

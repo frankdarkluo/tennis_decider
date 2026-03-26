@@ -21,6 +21,7 @@ export function toChineseSkill(skill: string): string {
     return: "接发球",
     training: "训练",
     mental: "心理",
+    grip: "握拍",
     footwork: "脚步",
     slice: "切削",
     defense: "防守",

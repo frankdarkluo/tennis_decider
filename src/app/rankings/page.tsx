@@ -26,6 +26,7 @@ const specialtyOptions = [
   { label: toChineseSkill("return"), value: "return" },
   { label: toChineseSkill("training"), value: "training" },
   { label: toChineseSkill("mental"), value: "mental" },
+  { label: toChineseSkill("grip"), value: "grip" },
   { label: toChineseSkill("basics"), value: "basics" },
   { label: toChineseSkill("consistency"), value: "consistency" },
   { label: toChineseSkill("topspin"), value: "topspin" },
@@ -141,7 +142,7 @@ export default function RankingsPage() {
       .map((creator) => ({
         creator,
         score: getCreatorSortScore(creator, targetLevel, specialty),
-        recommendedCount: creator.recommendedCount ?? creator.featuredContentIds.length
+        recommendedCount: creator.featuredContentIds.length
       }))
       .sort((a, b) => {
         if (b.score !== a.score) {
