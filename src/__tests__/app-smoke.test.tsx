@@ -148,7 +148,7 @@ describe("app smoke tests", () => {
   it("renders profile page login prompt when user is not signed in", () => {
     render(React.createElement(ProfilePage));
 
-    expect(screen.getByText("登录后查看你的评估、诊断、收藏和训练计划")).toBeInTheDocument();
+    expect(screen.getByText("登录后查看你的记录")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 

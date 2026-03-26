@@ -251,9 +251,9 @@ export default function ProfilePage() {
           <PageBreadcrumbs items={[{ href: "/", label: "← 回到首页" }]} />
           <div>
             <p className="text-sm font-semibold text-brand-700">我的记录</p>
-            <h1 className="mt-2 text-2xl font-black text-slate-900">登录后查看你的评估、诊断、收藏和训练计划</h1>
+            <h1 className="mt-2 text-2xl font-black text-slate-900">登录后查看你的记录</h1>
             <p className="mt-3 text-sm leading-6 text-slate-600">
-              你已经有评估、诊断和保存能力了，登录之后这些记录会集中展示在这里，方便随时回看。
+              评估、诊断、收藏和训练计划都会集中保存在这里，方便随时回看。
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-2">
@@ -281,7 +281,7 @@ export default function ProfilePage() {
               <Badge className="h-fit bg-slate-100 text-slate-700">还未评估</Badge>
             )}
           </div>
-          <p className="mt-3 text-sm text-slate-600">这里集中查看你最近的评估、诊断、收藏内容和已保存训练计划。</p>
+          <p className="mt-3 text-sm text-slate-600">这里集中查看你最近的评估、诊断、收藏和训练计划。</p>
         </div>
 
         <div className="grid gap-5 xl:grid-cols-2">
@@ -407,8 +407,8 @@ export default function ProfilePage() {
             <Card className="space-y-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <h2 className="text-lg font-bold text-slate-900">收藏内容</h2>
-                  <p className="mt-1 text-sm text-slate-600">你收藏过的内容会保留在这里，方便回头继续看。</p>
+                  <h2 className="text-lg font-bold text-slate-900">收藏</h2>
+                  <p className="mt-1 text-sm text-slate-600">想回头看的内容都在这里。</p>
                 </div>
                 <Link href="/library" className="text-sm font-medium text-slate-500 transition hover:text-slate-700">
                   去内容库 →
@@ -430,8 +430,8 @@ export default function ProfilePage() {
             </Card>
           ) : (
             <EmptyState
-              title="收藏内容"
-              description="还没有收藏内容。看到适合你的内容时先收藏，后面会更容易形成自己的训练路径。"
+              title="收藏"
+              description="还没有收藏内容。"
               href="/library"
               actionLabel="去内容库"
             />

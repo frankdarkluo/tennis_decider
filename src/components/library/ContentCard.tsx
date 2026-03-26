@@ -68,38 +68,48 @@ export function ContentCard({
   const creator = creators.find((c) => c.id === item.creatorId);
   const shouldShowCoachReason = item.coachReason && !item.coachReason.includes("[待填写");
   const levelFitMeta = getLevelFitMeta(item.levels, viewerLevel);
+  const isProfileCompact = source === "profile";
+  const bookmarkLabel = isProfileCompact
+    ? (bookmarkLoading ? "处理中..." : "移出收藏")
+    : (bookmarkLoading ? "处理中..." : bookmarked ? "已收藏" : "收藏");
 
   return (
-    <Card className="space-y-3">
+    <Card className={isProfileCompact ? "space-y-2.5" : "space-y-3"}>
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-wrap gap-2">
           <Badge>{item.platform}</Badge>
           <Badge>{item.language === "zh" ? "中文" : "英文"}</Badge>
-          <Badge>{item.type}</Badge>
+          {!isProfileCompact ? <Badge>{item.type}</Badge> : null}
           {levelFitMeta ? <Badge className={levelFitMeta.className}>{levelFitMeta.label}</Badge> : null}
         </div>
         {onToggleBookmark ? (
           <Button
             type="button"
-            variant="ghost"
-            className={bookmarked ? "h-9 px-3 text-brand-700" : "h-9 px-3 text-slate-500"}
+            variant={isProfileCompact ? "secondary" : "ghost"}
+            className={isProfileCompact
+              ? "h-9 px-3 text-slate-700"
+              : bookmarked ? "h-9 px-3 text-brand-700" : "h-9 px-3 text-slate-500"}
             onClick={onToggleBookmark}
             disabled={bookmarkLoading}
             aria-pressed={bookmarked}
           >
             <BookmarkIcon filled={bookmarked} />
-            <span className="ml-1">{bookmarkLoading ? "处理中..." : bookmarked ? "已收藏" : "收藏"}</span>
+            <span className="ml-1">{bookmarkLabel}</span>
           </Button>
         ) : null}
       </div>
       <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
-      <p className="text-sm text-slate-600">{item.summary}</p>
       <p className="text-sm text-slate-600">来源：{creator?.name ?? "未知"}</p>
-      <p className="text-sm text-slate-600">技术标签：{item.skills.map((skill) => toChineseSkill(skill)).join(" / ")}</p>
-      <p className="text-sm text-slate-700">推荐理由：{item.reason}</p>
-      {shouldShowCoachReason ? <p className="text-sm text-slate-500">教练视角：{item.coachReason}</p> : null}
-      {item.useCases.length > 0 ? (
-        <p className="text-xs text-slate-500">适用场景：{item.useCases.slice(0, 2).join(" / ")}</p>
+      <p className="text-sm text-slate-600">{isProfileCompact ? item.reason : item.summary}</p>
+      {!isProfileCompact ? (
+        <>
+          <p className="text-sm text-slate-600">技术标签：{item.skills.map((skill) => toChineseSkill(skill)).join(" / ")}</p>
+          <p className="text-sm text-slate-700">推荐理由：{item.reason}</p>
+          {shouldShowCoachReason ? <p className="text-sm text-slate-500">教练视角：{item.coachReason}</p> : null}
+          {item.useCases.length > 0 ? (
+            <p className="text-xs text-slate-500">适用场景：{item.useCases.slice(0, 2).join(" / ")}</p>
+          ) : null}
+        </>
       ) : null}
       <div className="flex flex-wrap gap-2">
         <a
@@ -111,7 +121,7 @@ export function ContentCard({
             logEvent("content_external", { contentId: item.id, platform: item.platform, url: item.url });
           }}
         >
-          <Button>查看</Button>
+          <Button>{isProfileCompact ? "去看" : "查看"}</Button>
         </a>
       </div>
     </Card>

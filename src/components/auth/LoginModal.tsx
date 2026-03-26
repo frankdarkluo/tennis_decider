@@ -13,7 +13,7 @@ type LoginModalProps = {
 };
 
 export function LoginModal({ open, onClose, contextMessage }: LoginModalProps) {
-  const { configured, user, sendMagicLink, signOut } = useAuth();
+  const { user, sendMagicLink, signOut } = useAuth();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -22,11 +22,8 @@ export function LoginModal({ open, onClose, contextMessage }: LoginModalProps) {
     if (user?.email) {
       return `当前已登录：${user.email}`;
     }
-    if (!configured) {
-      return "当前还没配置 Supabase，所以这里先把登录入口和流程搭好了。";
-    }
-    return "输入邮箱后，我们会给你发一封可直接登录的 magic link。";
-  }, [configured, user?.email]);
+    return "输入邮箱后，我们会给你发登录链接。";
+  }, [user?.email]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -89,12 +86,6 @@ export function LoginModal({ open, onClose, contextMessage }: LoginModalProps) {
               : "rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-700"}
           >
             {message}
-          </div>
-        ) : null}
-
-        {!configured ? (
-          <div className="rounded-xl border border-dashed border-[var(--line)] px-4 py-3 text-sm leading-6 text-slate-500">
-            配好 `NEXT_PUBLIC_SUPABASE_URL` 和 `NEXT_PUBLIC_SUPABASE_ANON_KEY` 之后，这个登录入口就能真的发出 magic link。
           </div>
         ) : null}
       </div>

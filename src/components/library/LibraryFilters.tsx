@@ -99,11 +99,8 @@ export function LibraryFilters(props: LibraryFiltersProps) {
             props.setShowBookmarkedOnly(!props.showBookmarkedOnly);
           }}
         >
-          我的收藏
+          只看收藏
         </button>
-        {!props.bookmarkFilterEnabled ? (
-          <p className="text-xs text-slate-500">登录后可使用收藏筛选</p>
-        ) : null}
       </div>
       <div className="grid gap-2 md:grid-cols-3">
         <SelectFilter value={props.level} setValue={props.setLevel} options={levelOptions} />
