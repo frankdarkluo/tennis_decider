@@ -18,5 +18,6 @@ export type ContentItem = {
   coachReason: string;
   thumbnail?: string;
   duration?: string;
+  viewCount?: number;
   url: string;
 };

@@ -34,6 +34,7 @@ export type ContentItem = {
   coachReason: string;
   thumbnail?: string;
   duration?: string;
+  viewCount?: number;
   url: string;
 };
 
@@ -211,6 +212,7 @@ export const contents: ContentItem[] = [
     useCases: ["发球抛球总偏左偏右", "抛球一乱发球动作就跟着散"],
     coachReason: "抛球是发球的地基，这条从零开始讲抛球位置和节奏，讲解非常清晰。",
     thumbnail: 'https://img.youtube.com/vi/IiRGdagtOKE/mqdefault.jpg',
+    viewCount: 1662697,
     duration: '16:42',
     url: "https://www.youtube.com/watch?v=IiRGdagtOKE"
   },
@@ -229,6 +231,7 @@ export const contents: ContentItem[] = [
     useCases: ["相持里总落在发球线附近", "过网了但没有把对手压到底线后面"],
     coachReason: "很多人只想着过网却忽略深度，这条教你用目标区域控制落点。",
     thumbnail: 'https://img.youtube.com/vi/rqvhgHDx-lE/mqdefault.jpg',
+    viewCount: 173776,
     duration: '6:43',
     url: "https://www.youtube.com/watch?v=rqvhgHDx-lE"
   },
@@ -247,6 +250,7 @@ export const contents: ContentItem[] = [
     useCases: ["反手切削总是飘起来", "切削落点短且给对手舒服进攻球"],
     coachReason: "这条用4.5学员实拍纠正，你能直接看到跟你水平接近的人怎么改。",
     thumbnail: 'https://img.youtube.com/vi/d-VvKDgoIew/mqdefault.jpg',
+    viewCount: 458190,
     duration: '11:13',
     url: "https://www.youtube.com/watch?v=d-VvKDgoIew"
   },
@@ -300,6 +304,7 @@ export const contents: ContentItem[] = [
     useCases: ["脚步总先卡住", "击球前总找不到舒服站位"],
     coachReason: "脚步乱的时候先别上复杂组合，先把最基础的四个步伐练顺，场上马上会轻松很多。",
     thumbnail: '/thumbnails/bilibili/95a16864f40364f032e3ffa7989717aa9ab9cf21.jpg',
+    viewCount: 20949,
     duration: '1:58',
     url: "https://www.bilibili.com/video/BV1SZ6qYFEVS/"
   },
@@ -403,6 +408,7 @@ export const contents: ContentItem[] = [
     useCases: ["没有球搭子就不知道怎么练", "自己练球总是想到哪练到哪"],
     coachReason: "很多人不是不想练，是一个人就不知道从哪开始，这条给的是马上能照着做的单人练法。",
     thumbnail: '/thumbnails/bilibili/49156c0240cb1bee00a0cda1498f18a984bf3527.jpg',
+    viewCount: 53846,
     duration: '1:06',
     url: "https://www.bilibili.com/video/BV1LvS3YWEnL/"
   },
@@ -541,6 +547,7 @@ export const contents: ContentItem[] = [
     useCases: ["到了球场不知道先练什么", "训练没有结构、越练越散"],
     coachReason: "练习结构清楚以后，训练质量会比盲目多打提升得更快，这条很适合拿来做排练参考。",
     thumbnail: '/thumbnails/bilibili/9b9d88aec4933ae8c7d31db2bec9ac08f114ba31.jpg',
+    viewCount: 24778,
     duration: '1:03',
     url: "https://www.bilibili.com/video/BV16uHizBEp2/"
   },

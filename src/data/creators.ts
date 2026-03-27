@@ -24,6 +24,7 @@ export const creators: Creator[] = [
         target: "正手框架总立不住",
         levels: ["2.5", "3.0"],
         thumbnail: '/thumbnails/bilibili/f141ebcafbe7565d32be6b26d6854fe6d3bf845c.jpg',
+    viewCount: 150977,
         duration: '1:14',
         url: "https://www.bilibili.com/video/BV1XM4y187mR/",
         platform: "Bilibili"
@@ -34,6 +35,7 @@ export const creators: Creator[] = [
         target: "反手总打不扎实",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/e4600b2ca3cd245f33ad97fb5d03cb74ccb2006e.jpg',
+    viewCount: 39525,
         duration: '1:03',
         url: "https://www.bilibili.com/video/BV1YL411d7oX/",
         platform: "Bilibili"
@@ -44,6 +46,7 @@ export const creators: Creator[] = [
         target: "脚步启动总慢半拍",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/040a19ed2bc864e2d9101347b15782f7e0e36bc4.jpg',
+    viewCount: 60771,
         duration: '1:27',
         url: "https://www.bilibili.com/video/BV1Tg4y1w7Xe/",
         platform: "Bilibili"
@@ -54,6 +57,7 @@ export const creators: Creator[] = [
         target: "侧旋发球总做不出来",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/51f03db09cb87e128474d2ece17fbbdf2ea2f057.jpg',
+    viewCount: 36915,
         duration: '0:32',
         url: "https://www.bilibili.com/video/BV1YA4y1D7YR/",
         platform: "Bilibili"
@@ -64,6 +68,7 @@ export const creators: Creator[] = [
         target: "相持球总打不深",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/96883140bb27637300a9b52f844000e25556ab57.jpg',
+    viewCount: 17182,
         duration: '0:48',
         url: "https://www.bilibili.com/video/BV1kp421d7od/",
         platform: "Bilibili"
@@ -103,6 +108,7 @@ export const creators: Creator[] = [
         target: "正手准备总是偏晚",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: '/thumbnails/bilibili/60f674fe6381eac7a5fc388bd4a9c21b5c74c12b.jpg',
+    viewCount: 26542,
         duration: '0:37',
         url: "https://www.bilibili.com/video/BV1zK411d7SW/",
         platform: "Bilibili"
@@ -113,6 +119,7 @@ export const creators: Creator[] = [
         target: "截击细节总是混乱",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: '/thumbnails/bilibili/12427e203edb27a230920f96083783deb633e228.jpg',
+    viewCount: 21688,
         duration: '1:12',
         url: "https://www.bilibili.com/video/BV1xm4y1K7KS/",
         platform: "Bilibili"
@@ -123,6 +130,7 @@ export const creators: Creator[] = [
         target: "发球动作总不流畅",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: '/thumbnails/bilibili/3824544837bd4bd47db704c163c91474e275a168.jpg',
+    viewCount: 8824,
         duration: '2:56',
         url: "https://www.bilibili.com/video/BV1aB4y1m7Nv/",
         platform: "Bilibili"
@@ -133,6 +141,7 @@ export const creators: Creator[] = [
         target: "开放式反手不会用",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: '/thumbnails/bilibili/fad09681d3b7e94b7838158060be2a30f42da685.jpg',
+    viewCount: 7708,
         duration: '1:31',
         url: "https://www.bilibili.com/video/BV1cb4y1P7su/",
         platform: "Bilibili"
@@ -143,6 +152,7 @@ export const creators: Creator[] = [
         target: "发力一大就失控",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: '/thumbnails/bilibili/48ccd4c24f6615da76ec5622beb45c0208da2e17.jpg',
+    viewCount: 4426,
         duration: '0:39',
         url: "https://www.bilibili.com/video/BV1i7AdeSEFf/",
         platform: "Bilibili"
@@ -182,6 +192,7 @@ export const creators: Creator[] = [
         target: "双反球速总起不来",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/d83e49d82698a0dcdb6d03c412af855dfbec9d47.jpg',
+    viewCount: 18358,
         duration: '7:23',
         url: "https://www.bilibili.com/video/BV1Ty4y1G7r6/",
         platform: "Bilibili"
@@ -192,6 +203,7 @@ export const creators: Creator[] = [
         target: "发球想加速却只抡手",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/01629ab79b28769850818e1c00ecb017fb69e228.jpg',
+    viewCount: 46997,
         duration: '5:39',
         url: "https://www.bilibili.com/video/BV123411H7u6/",
         platform: "Bilibili"
@@ -202,6 +214,7 @@ export const creators: Creator[] = [
         target: "正手引拍越做越大",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/7910cfd92081586293280ac5f6c4f0091ba4a6d7.jpg',
+    viewCount: 206893,
         duration: '9:22',
         url: "https://www.bilibili.com/video/BV1Zf4y1b7aW/",
         platform: "Bilibili"
@@ -212,6 +225,7 @@ export const creators: Creator[] = [
         target: "想看实战对抗细节",
         levels: ["3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/82d0351f649ba96ee628548caafa0ae057748b00.jpg',
+    viewCount: 10010,
         duration: '10:54',
         url: "https://www.bilibili.com/video/BV1jm4y1X7yF/",
         platform: "Bilibili"
@@ -222,6 +236,7 @@ export const creators: Creator[] = [
         target: "想看器材实测思路",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/f8d7620ee92779dc3700de4d009f8167d6e8cb89.jpg',
+    viewCount: 41994,
         duration: '5:05',
         url: "https://www.bilibili.com/video/BV1qz421i79v/",
         platform: "Bilibili"
@@ -261,6 +276,7 @@ export const creators: Creator[] = [
         target: "网前截击总不稳",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/8e9a2416bfa72356df1d9ce499d1221652b5c7ef.jpg',
+    viewCount: 138186,
         duration: '22:03',
         url: "https://www.bilibili.com/video/BV1954y147nF/",
         platform: "Bilibili"
@@ -271,6 +287,7 @@ export const creators: Creator[] = [
         target: "接发第一拍质量低",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/a7c193cdba7994f40ab95c947c618f94bb1f8973.jpg',
+    viewCount: 285931,
         duration: '30:38',
         url: "https://www.bilibili.com/video/BV1Ep4y1W7kc/",
         platform: "Bilibili"
@@ -281,6 +298,7 @@ export const creators: Creator[] = [
         target: "想看双打实战执行",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/d8bbdfd63f468624fd2530609984dbf8dea11039.jpg',
+    viewCount: 36442,
         duration: '7:41',
         url: "https://www.bilibili.com/video/BV1JN4y18792/",
         platform: "Bilibili"
@@ -291,6 +309,7 @@ export const creators: Creator[] = [
         target: "切削总飘不下压",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/a3bd03f8d1177ffb7fbb365b176d5ba11812ea1e.jpg',
+    viewCount: 189975,
         duration: '23:45',
         url: "https://www.bilibili.com/video/BV1TU4y187QS/",
         platform: "Bilibili"
@@ -301,6 +320,7 @@ export const creators: Creator[] = [
         target: "单反和截击衔接乱",
         levels: ["3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/5dd6a9934e4a546847ff8a53668f0830c12ebfb7.jpg',
+    viewCount: 50976,
         duration: '16:27',
         url: "https://www.bilibili.com/video/BV1Sj411r7Ka/",
         platform: "Bilibili"
@@ -340,6 +360,7 @@ export const creators: Creator[] = [
         target: "截击动作总是乱",
         levels: ["3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/f7740abefccf6743e36f9aeb5e6a6f2da7b85385.jpg',
+    viewCount: 82557,
         duration: '1:12',
         url: "https://www.bilibili.com/video/BV1b2UmBTEsV/",
         platform: "Bilibili"
@@ -350,6 +371,7 @@ export const creators: Creator[] = [
         target: "切削发球总转不起来",
         levels: ["3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/4d1163b793537b55bccf451ccc1a15ef27dd1c62.jpg',
+    viewCount: 33837,
         duration: '1:01',
         url: "https://www.bilibili.com/video/BV1Q8NWzmESF/",
         platform: "Bilibili"
@@ -360,6 +382,7 @@ export const creators: Creator[] = [
         target: "起跳反手总不会用",
         levels: ["3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/f34a8c49caa5ce8f855455c2bff586ae1a58d7b3.jpg',
+    viewCount: 7216,
         duration: '1:01',
         url: "https://www.bilibili.com/video/BV1TrwQe9E2A/",
         platform: "Bilibili"
@@ -370,6 +393,7 @@ export const creators: Creator[] = [
         target: "上场前总不会热身",
         levels: ["3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/5e3944513a109f027eb34e68c7b10754f9015e3f.jpg',
+    viewCount: 3969,
         duration: '1:17',
         url: "https://www.bilibili.com/video/BV1oaN9eEEpk/",
         platform: "Bilibili"
@@ -380,6 +404,7 @@ export const creators: Creator[] = [
         target: "总打不出稳定直线",
         levels: ["3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/521bc95fc6a86451bbb659fb31995cafc6611b4b.jpg',
+    viewCount: 11063,
         duration: '1:24',
         url: "https://www.bilibili.com/video/BV1i1sUzVEfW/",
         platform: "Bilibili"
@@ -419,6 +444,7 @@ export const creators: Creator[] = [
         target: "分腿垫步总慢半拍",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/bcd585e7eb1eb34b3f90ec584d18425635997e30.jpg',
+    viewCount: 25227,
         duration: '7:25',
         url: "https://www.bilibili.com/video/BV1PN4y1R7jL/",
         platform: "Bilibili"
@@ -429,6 +455,7 @@ export const creators: Creator[] = [
         target: "正手发力总靠手臂",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/8ec3416ebcfbb18422c57f72fa81f2acab2bb791.jpg',
+    viewCount: 309388,
         duration: '13:16',
         url: "https://www.bilibili.com/video/BV1h64y1D78J/",
         platform: "Bilibili"
@@ -439,6 +466,7 @@ export const creators: Creator[] = [
         target: "上旋弧线总拉不出",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/7e035fbef7f29ef5cff1dac5f7a84bcd72e8b445.jpg',
+    viewCount: 38860,
         duration: '8:06',
         url: "https://www.bilibili.com/video/BV1QRLizLEnv/",
         platform: "Bilibili"
@@ -449,6 +477,7 @@ export const creators: Creator[] = [
         target: "接发总被对手压住",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/1a11be43cdbb07be461fcbd702d3124d8e6d318c.jpg',
+    viewCount: 9247,
         duration: '15:38',
         url: "https://www.bilibili.com/video/BV1D7YfzDEfo/",
         platform: "Bilibili"
@@ -459,6 +488,7 @@ export const creators: Creator[] = [
         target: "脚步错误反复出现",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/1508293f4adf9fc8b3be7f0f2620e501e09b0cb5.jpg',
+    viewCount: 19149,
         duration: '7:24',
         url: "https://www.bilibili.com/video/BV1mF5KzmEgP/",
         platform: "Bilibili"
@@ -499,6 +529,7 @@ export const creators: Creator[] = [
         target: "想挑一把更顺手的拍",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/7ad92d40468500df06a1604a134c4e82ce2a2258.jpg',
+    viewCount: 25718,
         duration: '14:49',
         url: "https://www.bilibili.com/video/BV1FG4y1X7DA/",
         platform: "Bilibili"
@@ -509,6 +540,7 @@ export const creators: Creator[] = [
         target: "想知道上旋拍值不值",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/c67df583432d5a1dc79270adc969b04497018d06.jpg',
+    viewCount: 21904,
         duration: '18:17',
         url: "https://www.bilibili.com/video/BV1hV4y197oy/",
         platform: "Bilibili"
@@ -519,6 +551,7 @@ export const creators: Creator[] = [
         target: "穿线参数总是搞不清",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/6ec591018de6011a25392e54c6942de9022a568a.jpg',
+    viewCount: 16008,
         duration: '17:24',
         url: "https://www.bilibili.com/video/BV1bd1sYrEtc/",
         platform: "Bilibili"
@@ -529,6 +562,7 @@ export const creators: Creator[] = [
         target: "网前截击总打不死",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/a28acffb34993a9c85b236b7093f06f1b97ebc71.jpg',
+    viewCount: 7191,
         duration: '6:18',
         url: "https://www.bilibili.com/video/BV14J4m1x75K/",
         platform: "Bilibili"
@@ -539,6 +573,7 @@ export const creators: Creator[] = [
         target: "正手稳定性总上不去",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/fd9313de08983234979cb0c99ec8125ac8c54930.jpg',
+    viewCount: 3643,
         duration: '17:43',
         url: "https://www.bilibili.com/video/BV18t421p7Nr/",
         platform: "Bilibili"
@@ -579,6 +614,7 @@ export const creators: Creator[] = [
         target: "切削动作总做不顺",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/d897eed483ddc1e13475a1077a45223916e04094.jpg',
+    viewCount: 7900,
         duration: '0:27',
         url: "https://www.bilibili.com/video/BV1fxy3BgECv/",
         platform: "Bilibili"
@@ -589,6 +625,7 @@ export const creators: Creator[] = [
         target: "切削变化总是不会用",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/91bf4726be460a0ff2b38fae6565f1dc7cd84fc0.jpg',
+    viewCount: 9511,
         duration: '0:56',
         url: "https://www.bilibili.com/video/BV1wABXB1EtU/",
         platform: "Bilibili"
@@ -599,6 +636,7 @@ export const creators: Creator[] = [
         target: "练习总在瞎发力",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/54a3e9225691616a4a477ee0530c1db587cbb346.jpg',
+    viewCount: 10543,
         duration: '5:29',
         url: "https://www.bilibili.com/video/BV1jQZQBQECX/",
         platform: "Bilibili"
@@ -609,6 +647,7 @@ export const creators: Creator[] = [
         target: "上场前总不会热身",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/a137c39924d5a5ff433ad0047cede39d37503ca4.jpg',
+    viewCount: 2636,
         duration: '1:32',
         url: "https://www.bilibili.com/video/BV1PAq5BuE85/",
         platform: "Bilibili"
@@ -619,6 +658,7 @@ export const creators: Creator[] = [
         target: "训练结构总是乱练",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/bafac66bd018ebbe22d0aeb6923e26a8ff953b2e.jpg',
+    viewCount: 1568,
         duration: '0:33',
         url: "https://www.bilibili.com/video/BV13ywFzgE7D/",
         platform: "Bilibili"
@@ -659,6 +699,7 @@ export const creators: Creator[] = [
         target: "脚步又慢又乱",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/95a16864f40364f032e3ffa7989717aa9ab9cf21.jpg',
+    viewCount: 20949,
         duration: '1:58',
         url: "https://www.bilibili.com/video/BV1SZ6qYFEVS/",
         platform: "Bilibili"
@@ -669,6 +710,7 @@ export const creators: Creator[] = [
         target: "没人陪练就不会练",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/49156c0240cb1bee00a0cda1498f18a984bf3527.jpg',
+    viewCount: 53846,
         duration: '1:06',
         url: "https://www.bilibili.com/video/BV1LvS3YWEnL/",
         platform: "Bilibili"
@@ -679,6 +721,7 @@ export const creators: Creator[] = [
         target: "训练总是越练越乱",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/9b9d88aec4933ae8c7d31db2bec9ac08f114ba31.jpg',
+    viewCount: 24778,
         duration: '1:03',
         url: "https://www.bilibili.com/video/BV16uHizBEp2/",
         platform: "Bilibili"
@@ -689,6 +732,7 @@ export const creators: Creator[] = [
         target: "发球想有力却只抡手",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/d8f3fcf15bf12292a32cae5d5515157961691398.jpg',
+    viewCount: 764254,
         duration: '0:35',
         url: "https://www.bilibili.com/video/BV1ox421f7VX/",
         platform: "Bilibili"
@@ -699,6 +743,7 @@ export const creators: Creator[] = [
         target: "总搞不清该怎么握拍",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/158754b6b85286c29789c61f54394e8a29ffb7eb.jpg',
+    viewCount: 52134,
         duration: '2:34',
         url: "https://www.bilibili.com/video/BV1Dm421s7Rg/",
         platform: "Bilibili"
@@ -739,6 +784,7 @@ export const creators: Creator[] = [
         target: "发球缺少旋转变化",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: '/thumbnails/bilibili/c22922ade6408547499c57f016cefd54166cfd2a.jpg',
+    viewCount: 14678,
         duration: '12:42',
         url: "https://www.bilibili.com/video/BV1JT5wz4EJJ/",
         platform: "Bilibili"
@@ -749,6 +795,7 @@ export const creators: Creator[] = [
         target: "切削总飘不往前走",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: '/thumbnails/bilibili/5367bb69a6ce6b1c50e53b0a643bf64fccd5bc68.jpg',
+    viewCount: 7797,
         duration: '7:10',
         url: "https://www.bilibili.com/video/BV1aTaxzxENT/",
         platform: "Bilibili"
@@ -759,6 +806,7 @@ export const creators: Creator[] = [
         target: "高球和角度球不会用",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: '/thumbnails/bilibili/86554dbec03f66a72ddee9b2382552ab5feab606.jpg',
+    viewCount: 5658,
         duration: '14:38',
         url: "https://www.bilibili.com/video/BV1uJaTzvEVq/",
         platform: "Bilibili"
@@ -769,6 +817,7 @@ export const creators: Creator[] = [
         target: "接发总被发球压住",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/688c521b3a7e6cdb5d7e4c02d9ab45db0d8be0d3.jpg',
+    viewCount: 4406,
         duration: '9:33',
         url: "https://www.bilibili.com/video/BV18xXgYnEMA/",
         platform: "Bilibili"
@@ -779,6 +828,7 @@ export const creators: Creator[] = [
         target: "比赛一打就发挥失常",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: '/thumbnails/bilibili/8e3bce7037f4dccb467993ca3db9fab2eef66cd7.jpg',
+    viewCount: 3898,
         duration: '8:58',
         url: "https://www.bilibili.com/video/BV1tcNjzsEZi/",
         platform: "Bilibili"
@@ -818,6 +868,7 @@ export const creators: Creator[] = [
         target: "上旋发球总发不起来",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/02ec1b009f740466e241119ce1b0b61bb00eace3.jpg',
+    viewCount: 38913,
         duration: '2:13',
         url: "https://www.bilibili.com/video/BV1KG4y1x77a/",
         platform: "Bilibili"
@@ -828,6 +879,7 @@ export const creators: Creator[] = [
         target: "单反动作总不扎实",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/6a1fcdbf33864d830133ffb87f4e73f7cba50f0a.jpg',
+    viewCount: 27701,
         duration: '3:09',
         url: "https://www.bilibili.com/video/BV1UW4y1q7jB/",
         platform: "Bilibili"
@@ -838,6 +890,7 @@ export const creators: Creator[] = [
         target: "平击发球总没速度",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/f62ce04f74b98f58dc4b58db1d3d2bc2a991a12a.jpg',
+    viewCount: 19543,
         duration: '5:14',
         url: "https://www.bilibili.com/video/BV1dF4m1V7BS/",
         platform: "Bilibili"
@@ -848,6 +901,7 @@ export const creators: Creator[] = [
         target: "比赛战术总想不清",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/af95906662a153d3211a190b7659488aa09326ba.jpg',
+    viewCount: 24429,
         duration: '1:19',
         url: "https://www.bilibili.com/video/BV13u4y1e7Lx/",
         platform: "Bilibili"
@@ -858,6 +912,7 @@ export const creators: Creator[] = [
         target: "训练结构总是乱练",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/c9ea7db9c326e2fbd84fe629af0d0fbee834a394.jpg',
+    viewCount: 14197,
         duration: '1:38',
         url: "https://www.bilibili.com/video/BV1MW4y1e7KG/",
         platform: "Bilibili"
@@ -897,6 +952,7 @@ export const creators: Creator[] = [
         target: "练球总没计划和结构",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/1e157438275a1ef778836f6d00f51046f6f8717c.jpg',
+    viewCount: 12817,
         duration: '19:21',
         url: "https://www.bilibili.com/video/BV1HEyaBiEaW/",
         platform: "Bilibili"
@@ -907,6 +963,7 @@ export const creators: Creator[] = [
         target: "网前截击总没章法",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/62dd22f83ac821c12150956dd37acf0ab0899fa8.jpg',
+    viewCount: 11665,
         duration: '9:27',
         url: "https://www.bilibili.com/video/BV1EbkyB8EQx/",
         platform: "Bilibili"
@@ -917,6 +974,7 @@ export const creators: Creator[] = [
         target: "跑到位后总站不住",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: '/thumbnails/bilibili/0f25066c8bbd193224acd331e5077e5423f4ee2c.jpg',
+    viewCount: 15822,
         duration: '9:11',
         url: "https://www.bilibili.com/video/BV1vLcBzSE1P/",
         platform: "Bilibili"
@@ -927,6 +985,7 @@ export const creators: Creator[] = [
         target: "脚步路线总是乱",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/f8037ecf37217b779e729324c44125b210c33ecd.png',
+    viewCount: 38862,
         duration: '38:49',
         url: "https://www.bilibili.com/video/BV1tf421S7rt/",
         platform: "Bilibili"
@@ -937,6 +996,7 @@ export const creators: Creator[] = [
         target: "发球下肢发力总脱节",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: '/thumbnails/bilibili/333e09d33fd5a97df40ea6525232840c12f4d9ee.jpg',
+    viewCount: 25774,
         duration: '7:44',
         url: "https://www.bilibili.com/video/BV1h24qenEqf/",
         platform: "Bilibili"
@@ -977,6 +1037,7 @@ export const creators: Creator[] = [
         target: "发球入门总抓不到顺序",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: "/thumbnails/bilibili/ebfcb72c9928de678886101ea90d50fec71f848c.jpg",
+    viewCount: 110801,
         duration: "2:37",
         url: "https://www.bilibili.com/video/BV1jP4y187gD/",
         platform: "Bilibili"
@@ -987,6 +1048,7 @@ export const creators: Creator[] = [
         target: "发球抛球总不稳定",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: "/thumbnails/bilibili/2c042fee15c8db0fd921869c156e214ddc9df6a6.jpg",
+    viewCount: 56871,
         duration: "3:32",
         url: "https://www.bilibili.com/video/BV1Mf4y1v7Ub/",
         platform: "Bilibili"
@@ -997,6 +1059,7 @@ export const creators: Creator[] = [
         target: "发球内旋总找不到感觉",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: "/thumbnails/bilibili/000339229681b17217d4a591ec2357141e07d819.jpg",
+    viewCount: 60035,
         duration: "3:00",
         url: "https://www.bilibili.com/video/BV1bK4y1L7YE/",
         platform: "Bilibili"
@@ -1007,6 +1070,7 @@ export const creators: Creator[] = [
         target: "脚下启动总拖沓",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: "/thumbnails/bilibili/238e2d9bd910222c8e8e4980f667d3ea14c72b6b.jpg",
+    viewCount: 6025,
         duration: "1:27",
         url: "https://www.bilibili.com/video/BV13v421y7mq/",
         platform: "Bilibili"
@@ -1017,6 +1081,7 @@ export const creators: Creator[] = [
         target: "交叉步总跟不上球路",
         levels: ["2.5", "3.0", "3.5"],
         thumbnail: "/thumbnails/bilibili/82ff37c0ed048e2da20ced5679c33e50cb8a78b7.jpg",
+    viewCount: 14327,
         duration: "3:55",
         url: "https://www.bilibili.com/video/BV1WG411i7pP/",
         platform: "Bilibili"
@@ -1057,6 +1122,7 @@ export const creators: Creator[] = [
         target: "正手非持拍手总乱摆",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: "/thumbnails/bilibili/2afec3a3d44eb6e5bc2bb32298bba20e1c5c9aaf.jpg",
+    viewCount: 7519,
         duration: "3:16",
         url: "https://www.bilibili.com/video/BV1Ue4y1c7A1/",
         platform: "Bilibili"
@@ -1067,6 +1133,7 @@ export const creators: Creator[] = [
         target: "握拍站位总不顺",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: "/thumbnails/bilibili/bc5e2235a1bdd65ab35b246c6eb5aa17312475aa.jpg",
+    viewCount: 5532,
         duration: "3:26",
         url: "https://www.bilibili.com/video/BV1vV4y1o7fw/",
         platform: "Bilibili"
@@ -1077,6 +1144,7 @@ export const creators: Creator[] = [
         target: "双反握拍总别扭",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: "/thumbnails/bilibili/1ad5ce6f215e48590a50cff9480af870d4a236d9.jpg",
+    viewCount: 7443,
         duration: "4:32",
         url: "https://www.bilibili.com/video/BV1ML411Y7ar/",
         platform: "Bilibili"
@@ -1087,6 +1155,7 @@ export const creators: Creator[] = [
         target: "正手握拍总不稳定",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: "/thumbnails/bilibili/a251c020b28646ab6001f7f1c7224f1e92649851.jpg",
+    viewCount: 6948,
         duration: "4:01",
         url: "https://www.bilibili.com/video/BV1Fa4y1P7GG/",
         platform: "Bilibili"
@@ -1097,6 +1166,7 @@ export const creators: Creator[] = [
         target: "上旋总转不起来",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: "/thumbnails/bilibili/dbe3fd60814ebac76d39c27f850a2e29a386b61a.jpg",
+    viewCount: 11675,
         duration: "3:32",
         url: "https://www.bilibili.com/video/BV12s4y1Z7RZ/",
         platform: "Bilibili"
@@ -1169,6 +1239,7 @@ export const creators: Creator[] = [
         target: "发球总打不出全力",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/6HuaZ1kTTkM/mqdefault.jpg',
+    viewCount: 391731,
         duration: '10:46',
         url: "https://www.youtube.com/watch?v=6HuaZ1kTTkM",
         platform: "YouTube"
@@ -1179,6 +1250,7 @@ export const creators: Creator[] = [
         target: "接发启动总是偏慢",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/vPtNtNi8_NI/mqdefault.jpg',
+    viewCount: 1814794,
         duration: '20:52',
         url: "https://www.youtube.com/watch?v=vPtNtNi8_NI",
         platform: "YouTube"
@@ -1189,6 +1261,7 @@ export const creators: Creator[] = [
         target: "上网衔接总断节奏",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/pUb1fZ-f994/mqdefault.jpg',
+    viewCount: 219645,
         duration: '12:48',
         url: "https://www.youtube.com/watch?v=pUb1fZ-f994",
         platform: "YouTube"
@@ -1199,6 +1272,7 @@ export const creators: Creator[] = [
         target: "切削发球总找不到感觉",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/I3tyFvI17OE/mqdefault.jpg',
+    viewCount: 124928,
         duration: '12:13',
         url: "https://www.youtube.com/watch?v=I3tyFvI17OE",
         platform: "YouTube"
@@ -1209,6 +1283,7 @@ export const creators: Creator[] = [
         target: "二发双误总是偏多",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/6ko_0cjfP-0/mqdefault.jpg',
+    viewCount: 914143,
         duration: '11:27',
         url: "https://www.youtube.com/watch?v=6ko_0cjfP-0",
         platform: "YouTube"
@@ -1249,6 +1324,7 @@ export const creators: Creator[] = [
         target: "一发动作为何总不稳",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/bRCQwLgEs9M/mqdefault.jpg',
+    viewCount: 3079945,
         duration: '13:08',
         url: "https://www.youtube.com/watch?v=bRCQwLgEs9M",
         platform: "YouTube"
@@ -1259,6 +1335,7 @@ export const creators: Creator[] = [
         target: "二发总是不敢加转",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/3mhGN6KtjZg/mqdefault.jpg',
+    viewCount: 107532,
         duration: '5:47',
         url: "https://www.youtube.com/watch?v=3mhGN6KtjZg",
         platform: "YouTube"
@@ -1269,6 +1346,7 @@ export const creators: Creator[] = [
         target: "正手击球总不够扎实",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/mXy0jJl8Pnc/mqdefault.jpg',
+    viewCount: 782912,
         duration: '11:18',
         url: "https://www.youtube.com/watch?v=mXy0jJl8Pnc",
         platform: "YouTube"
@@ -1279,6 +1357,7 @@ export const creators: Creator[] = [
         target: "反手动作总不够顺",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/5M52JoEDtwY/mqdefault.jpg',
+    viewCount: 332086,
         duration: '9:25',
         url: "https://www.youtube.com/watch?v=5M52JoEDtwY",
         platform: "YouTube"
@@ -1289,6 +1368,7 @@ export const creators: Creator[] = [
         target: "脚步总跟不上节奏",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/PX6n7jvbCj0/mqdefault.jpg',
+    viewCount: 97753,
         duration: '9:10',
         url: "https://www.youtube.com/watch?v=PX6n7jvbCj0",
         platform: "YouTube"
@@ -1329,6 +1409,7 @@ export const creators: Creator[] = [
         target: "发球落点总控制不住",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/IzsqHxQ0AWM/mqdefault.jpg',
+    viewCount: 85451,
         duration: '6:28',
         url: "https://www.youtube.com/watch?v=IzsqHxQ0AWM",
         platform: "YouTube"
@@ -1339,6 +1420,7 @@ export const creators: Creator[] = [
         target: "kick serve一直发不起来",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/KSq5w6CT9tg/mqdefault.jpg',
+    viewCount: 56224,
         duration: '23:51',
         url: "https://www.youtube.com/watch?v=KSq5w6CT9tg",
         platform: "YouTube"
@@ -1349,6 +1431,7 @@ export const creators: Creator[] = [
         target: "发球动作总不够流畅",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/tws4espU65c/mqdefault.jpg',
+    viewCount: 5224,
         duration: '5:22',
         url: "https://www.youtube.com/watch?v=tws4espU65c",
         platform: "YouTube"
@@ -1359,6 +1442,7 @@ export const creators: Creator[] = [
         target: "脚步总慢一步",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/wE2NvPBezVo/mqdefault.jpg',
+    viewCount: 3467,
         duration: '5:05',
         url: "https://www.youtube.com/watch?v=wE2NvPBezVo",
         platform: "YouTube"
@@ -1369,6 +1453,7 @@ export const creators: Creator[] = [
         target: "小球手感总拿不准",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/qKWBcr1esUs/mqdefault.jpg',
+    viewCount: 39697,
         duration: '6:43',
         url: "https://www.youtube.com/watch?v=qKWBcr1esUs",
         platform: "YouTube"
@@ -1409,6 +1494,7 @@ export const creators: Creator[] = [
         target: "发球抛球总是不稳",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/IiRGdagtOKE/mqdefault.jpg',
+    viewCount: 1662697,
         duration: '16:42',
         url: "https://www.youtube.com/watch?v=IiRGdagtOKE",
         platform: "YouTube"
@@ -1419,6 +1505,7 @@ export const creators: Creator[] = [
         target: "正手总打不出速度",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/M5R8M6xsr74/mqdefault.jpg',
+    viewCount: 10554,
         duration: '0:34',
         url: "https://www.youtube.com/watch?v=M5R8M6xsr74",
         platform: "YouTube"
@@ -1429,6 +1516,7 @@ export const creators: Creator[] = [
         target: "想学现代正手发力",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/6lZHjJiALrY/mqdefault.jpg',
+    viewCount: 24506,
         duration: '0:34',
         url: "https://www.youtube.com/watch?v=6lZHjJiALrY",
         platform: "YouTube"
@@ -1439,6 +1527,7 @@ export const creators: Creator[] = [
         target: "正手动作想系统重建",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/pdiVTlAw87M/mqdefault.jpg',
+    viewCount: 43189,
         duration: '0:26',
         url: "https://www.youtube.com/watch?v=pdiVTlAw87M",
         platform: "YouTube"
@@ -1449,6 +1538,7 @@ export const creators: Creator[] = [
         target: "发球总缺少爆发力",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/ZFFKO5pRe4U/mqdefault.jpg',
+    viewCount: 35081,
         duration: '0:24',
         url: "https://www.youtube.com/watch?v=ZFFKO5pRe4U",
         platform: "YouTube"
@@ -1489,6 +1579,7 @@ export const creators: Creator[] = [
         target: "相持球总落在发球线",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/rqvhgHDx-lE/mqdefault.jpg',
+    viewCount: 173776,
         duration: '6:43',
         url: "https://www.youtube.com/watch?v=rqvhgHDx-lE",
         platform: "YouTube"
@@ -1499,6 +1590,7 @@ export const creators: Creator[] = [
         target: "发球练了很久没进步",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/9IcmG7vGE2A/mqdefault.jpg',
+    viewCount: 2691,
         duration: '1:16',
         url: "https://www.youtube.com/watch?v=9IcmG7vGE2A",
         platform: "YouTube"
@@ -1509,6 +1601,7 @@ export const creators: Creator[] = [
         target: "双打站位总是站错",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/EDCjPd41ipo/mqdefault.jpg',
+    viewCount: 20694,
         duration: '15:02',
         url: "https://www.youtube.com/watch?v=EDCjPd41ipo",
         platform: "YouTube"
@@ -1519,6 +1612,7 @@ export const creators: Creator[] = [
         target: "平击和切削发球分不清",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/a1ItdT8iPiE/mqdefault.jpg',
+    viewCount: 2507,
         duration: '0:49',
         url: "https://www.youtube.com/watch?v=a1ItdT8iPiE",
         platform: "YouTube"
@@ -1529,6 +1623,7 @@ export const creators: Creator[] = [
         target: "坏习惯怎么都改不掉",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/mk5FDsmiqWU/mqdefault.jpg',
+    viewCount: 4047,
         duration: '2:25',
         url: "https://www.youtube.com/watch?v=mk5FDsmiqWU",
         platform: "YouTube"
@@ -1569,6 +1664,7 @@ export const creators: Creator[] = [
         target: "正手力量总起不来",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/A4RcqEYAX_4/mqdefault.jpg',
+    viewCount: 1159,
         duration: '0:36',
         url: "https://www.youtube.com/watch?v=A4RcqEYAX_4",
         platform: "YouTube"
@@ -1579,6 +1675,7 @@ export const creators: Creator[] = [
         target: "发球想整体升级一档",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/sqTAN15wKPA/mqdefault.jpg',
+    viewCount: 798,
         duration: '0:37',
         url: "https://www.youtube.com/watch?v=sqTAN15wKPA",
         platform: "YouTube"
@@ -1589,6 +1686,7 @@ export const creators: Creator[] = [
         target: "正手总是过度转体",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/JEwzpFtz3f4/mqdefault.jpg',
+    viewCount: 978,
         duration: '1:43',
         url: "https://www.youtube.com/watch?v=JEwzpFtz3f4",
         platform: "YouTube"
@@ -1599,6 +1697,7 @@ export const creators: Creator[] = [
         target: "想学更流畅的正手",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/u6h56Fatgoo/mqdefault.jpg',
+    viewCount: 1491,
         duration: '0:52',
         url: "https://www.youtube.com/watch?v=u6h56Fatgoo",
         platform: "YouTube"
@@ -1609,6 +1708,7 @@ export const creators: Creator[] = [
         target: "击球点总是偏晚",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/_2gV8oLht7w/mqdefault.jpg',
+    viewCount: 815,
         duration: '1:29',
         url: "https://www.youtube.com/watch?v=_2gV8oLht7w",
         platform: "YouTube"
@@ -1649,6 +1749,7 @@ export const creators: Creator[] = [
         target: "正手基础总不成形",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/CFhKuNW8n4M/mqdefault.jpg',
+    viewCount: 25746,
         duration: '10:39',
         url: "https://www.youtube.com/watch?v=CFhKuNW8n4M",
         platform: "YouTube"
@@ -1659,6 +1760,7 @@ export const creators: Creator[] = [
         target: "正手脚步总站不稳",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/wJL_bF2vTR4/mqdefault.jpg',
+    viewCount: 3830,
         duration: '7:05',
         url: "https://www.youtube.com/watch?v=wJL_bF2vTR4",
         platform: "YouTube"
@@ -1669,6 +1771,7 @@ export const creators: Creator[] = [
         target: "网前截击总不稳定",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/CZieswXdzX8/mqdefault.jpg',
+    viewCount: 81796,
         duration: '7:44',
         url: "https://www.youtube.com/watch?v=CZieswXdzX8",
         platform: "YouTube"
@@ -1679,6 +1782,7 @@ export const creators: Creator[] = [
         target: "发球拍头下沉不够",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/EodEeytcd44/mqdefault.jpg',
+    viewCount: 13600,
         duration: '8:43',
         url: "https://www.youtube.com/watch?v=EodEeytcd44",
         platform: "YouTube"
@@ -1689,6 +1793,7 @@ export const creators: Creator[] = [
         target: "发球内旋总做不出来",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/CJlW6tOT4Ho/mqdefault.jpg',
+    viewCount: 57618,
         duration: '12:30',
         url: "https://www.youtube.com/watch?v=CJlW6tOT4Ho",
         platform: "YouTube"
@@ -1729,6 +1834,7 @@ export const creators: Creator[] = [
         target: "正手稳定性迟迟上不去",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/a5cQqfBOvRM/mqdefault.jpg',
+    viewCount: 420355,
         duration: '12:24',
         url: "https://www.youtube.com/watch?v=a5cQqfBOvRM",
         platform: "YouTube"
@@ -1739,6 +1845,7 @@ export const creators: Creator[] = [
         target: "拉球还是平击总拿不准",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/4gzgsVEs0Nc/mqdefault.jpg',
+    viewCount: 182763,
         duration: '16:18',
         url: "https://www.youtube.com/watch?v=4gzgsVEs0Nc",
         platform: "YouTube"
@@ -1749,6 +1856,7 @@ export const creators: Creator[] = [
         target: "双反细节总不够顺",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/7ZR7n-PWCUQ/mqdefault.jpg',
+    viewCount: 298426,
         duration: '22:56',
         url: "https://www.youtube.com/watch?v=7ZR7n-PWCUQ",
         platform: "YouTube"
@@ -1759,6 +1867,7 @@ export const creators: Creator[] = [
         target: "移动节奏总跟不上",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/qwHc-YqK3qw/mqdefault.jpg',
+    viewCount: 211029,
         duration: '24:37',
         url: "https://www.youtube.com/watch?v=qwHc-YqK3qw",
         platform: "YouTube"
@@ -1769,6 +1878,7 @@ export const creators: Creator[] = [
         target: "比赛选择总是太乱",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/G9wZ942dwJE/mqdefault.jpg',
+    viewCount: 139181,
         duration: '13:48',
         url: "https://www.youtube.com/watch?v=G9wZ942dwJE",
         platform: "YouTube"
@@ -1809,6 +1919,7 @@ export const creators: Creator[] = [
         target: "反手切削总飘太高",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/d-VvKDgoIew/mqdefault.jpg',
+    viewCount: 458190,
         duration: '11:13',
         url: "https://www.youtube.com/watch?v=d-VvKDgoIew",
         platform: "YouTube"
@@ -1819,6 +1930,7 @@ export const creators: Creator[] = [
         target: "kick serve总是做不出来",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/j6c1WPIsk_8/mqdefault.jpg',
+    viewCount: 345517,
         duration: '17:14',
         url: "https://www.youtube.com/watch?v=j6c1WPIsk_8",
         platform: "YouTube"
@@ -1829,6 +1941,7 @@ export const creators: Creator[] = [
         target: "kick serve发力路径不清",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/NPdd7vEVgjw/mqdefault.jpg',
+    viewCount: 34204,
         duration: '15:44',
         url: "https://www.youtube.com/watch?v=NPdd7vEVgjw",
         platform: "YouTube"
@@ -1839,6 +1952,7 @@ export const creators: Creator[] = [
         target: "kick和slice总是混掉",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/PXt7NbymwRw/mqdefault.jpg',
+    viewCount: 537907,
         duration: '7:49',
         url: "https://www.youtube.com/watch?v=PXt7NbymwRw",
         platform: "YouTube"
@@ -1849,6 +1963,7 @@ export const creators: Creator[] = [
         target: "学kick serve总走弯路",
         levels: ["3.5", "4.0", "4.5"],
         thumbnail: 'https://img.youtube.com/vi/UKco_SyQgeU/mqdefault.jpg',
+    viewCount: 83239,
         duration: '9:41',
         url: "https://www.youtube.com/watch?v=UKco_SyQgeU",
         platform: "YouTube"
@@ -1889,6 +2004,7 @@ export const creators: Creator[] = [
         target: "kick serve发力轨迹不清",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/yjdw6WToO80/mqdefault.jpg',
+    viewCount: 2329,
         duration: '6:37',
         url: "https://www.youtube.com/watch?v=yjdw6WToO80",
         platform: "YouTube"
@@ -1899,6 +2015,7 @@ export const creators: Creator[] = [
         target: "想提拍速却总发死力",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/uOcqkQgjtoU/mqdefault.jpg',
+    viewCount: 4182,
         duration: '5:22',
         url: "https://www.youtube.com/watch?v=uOcqkQgjtoU",
         platform: "YouTube"
@@ -1909,6 +2026,7 @@ export const creators: Creator[] = [
         target: "相持稳定性总是断档",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/xnMnNXALL-E/mqdefault.jpg',
+    viewCount: 51158,
         duration: '4:59',
         url: "https://www.youtube.com/watch?v=xnMnNXALL-E",
         platform: "YouTube"
@@ -1919,6 +2037,7 @@ export const creators: Creator[] = [
         target: "正手站位总选不对",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/lobiC9wUHLw/mqdefault.jpg',
+    viewCount: 2243,
         duration: '5:41',
         url: "https://www.youtube.com/watch?v=lobiC9wUHLw",
         platform: "YouTube"
@@ -1929,6 +2048,7 @@ export const creators: Creator[] = [
         target: "移动脚步总帮倒忙",
         levels: ["3.0", "3.5", "4.0"],
         thumbnail: 'https://img.youtube.com/vi/8a4QSG53ftc/mqdefault.jpg',
+    viewCount: 2010,
         duration: '6:41',
         url: "https://www.youtube.com/watch?v=8a4QSG53ftc",
         platform: "YouTube"
@@ -1969,6 +2089,7 @@ export const creators: Creator[] = [
         target: "网前总不敢主动上",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: "https://i.ytimg.com/vi/_dYUksHdM6k/mqdefault.jpg",
+    viewCount: 202189,
         duration: "9:04",
         url: "https://www.youtube.com/watch?v=_dYUksHdM6k",
         platform: "YouTube"
@@ -1979,6 +2100,7 @@ export const creators: Creator[] = [
         target: "反手高点击球总处理不好",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: "https://i.ytimg.com/vi/5_FWpma6BA4/mqdefault.jpg",
+    viewCount: 147271,
         duration: "6:54",
         url: "https://www.youtube.com/watch?v=5_FWpma6BA4",
         platform: "YouTube"
@@ -1989,6 +2111,7 @@ export const creators: Creator[] = [
         target: "上旋总是转不起来",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: "https://i.ytimg.com/vi/ekj5T9aBv6Y/mqdefault.jpg",
+    viewCount: 93002,
         duration: "5:22",
         url: "https://www.youtube.com/watch?v=ekj5T9aBv6Y",
         platform: "YouTube"
@@ -1999,6 +2122,7 @@ export const creators: Creator[] = [
         target: "接发总被发球压住",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: "https://i.ytimg.com/vi/SoHBjFOK5I0/mqdefault.jpg",
+    viewCount: 4651,
         duration: "8:43",
         url: "https://www.youtube.com/watch?v=SoHBjFOK5I0",
         platform: "YouTube"
@@ -2009,6 +2133,7 @@ export const creators: Creator[] = [
         target: "发球总缺少球速和顺畅度",
         levels: ["3.0", "3.5", "4.0", "4.5"],
         thumbnail: "https://i.ytimg.com/vi/ue0M7ki9G1w/mqdefault.jpg",
+    viewCount: 1602207,
         duration: "6:26",
         url: "https://www.youtube.com/watch?v=ue0M7ki9G1w",
         platform: "YouTube"
@@ -2049,6 +2174,7 @@ export const creators: Creator[] = [
         target: "正手动作总有明显漏洞",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: "https://i.ytimg.com/vi/0MeYx4hXm0Y/mqdefault.jpg",
+    viewCount: 42117,
         duration: "10:37",
         url: "https://www.youtube.com/watch?v=0MeYx4hXm0Y",
         platform: "YouTube"
@@ -2059,6 +2185,7 @@ export const creators: Creator[] = [
         target: "接发总是来不及准备",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: "https://i.ytimg.com/vi/fxQ6XFAn2gs/mqdefault.jpg",
+    viewCount: 355170,
         duration: "1:23",
         url: "https://www.youtube.com/watch?v=fxQ6XFAn2gs",
         platform: "YouTube"
@@ -2069,6 +2196,7 @@ export const creators: Creator[] = [
         target: "稳定性总是很难维持",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: "https://i.ytimg.com/vi/Gg4olIlr864/mqdefault.jpg",
+    viewCount: 26570,
         duration: "0:52",
         url: "https://www.youtube.com/watch?v=Gg4olIlr864",
         platform: "YouTube"
@@ -2079,6 +2207,7 @@ export const creators: Creator[] = [
         target: "反手站位和启动总不顺",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: "https://i.ytimg.com/vi/jvkfG7z5scE/mqdefault.jpg",
+    viewCount: 11819,
         duration: "1:06",
         url: "https://www.youtube.com/watch?v=jvkfG7z5scE",
         platform: "YouTube"
@@ -2089,6 +2218,7 @@ export const creators: Creator[] = [
         target: "脚步启动总慢半拍",
         levels: ["2.5", "3.0", "3.5", "4.0"],
         thumbnail: "https://i.ytimg.com/vi/UjRv-SbO6K8/mqdefault.jpg",
+    viewCount: 40049,
         duration: "14:06",
         url: "https://www.youtube.com/watch?v=UjRv-SbO6K8",
         platform: "YouTube"

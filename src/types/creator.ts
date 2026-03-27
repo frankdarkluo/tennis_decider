@@ -17,6 +17,7 @@ export type CreatorFeaturedVideo = {
   levels: string[];
   thumbnail?: string;
   duration?: string;
+  viewCount?: number;
   url: string;
   platform: Extract<CreatorPlatformName, "Bilibili" | "YouTube">;
 };

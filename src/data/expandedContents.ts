@@ -31,8 +31,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏训练营式内容和专项练习思路，适合想把发球、移动和训练结构串起来的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/600c2b8f18b6a715adf4c55c484b8ca114534ffa.jpg",
+    "thumbnail": "/thumbnails/bilibili/600c2b8f18b6a715adf4c55c484b8ca114534ffa.jpg",
     "duration": "0:52",
+    "viewCount": 8236,
     "url": "https://www.bilibili.com/video/BV1ewQ8YyEii/"
   },
   {
@@ -65,8 +66,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏训练营式内容和专项练习思路，适合想把发球、移动和训练结构串起来的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/cc45fd02899d37e0826bc2ae6e5117267fc00e9a.jpg",
+    "thumbnail": "/thumbnails/bilibili/cc45fd02899d37e0826bc2ae6e5117267fc00e9a.jpg",
     "duration": "1:21",
+    "viewCount": 11622,
     "url": "https://www.bilibili.com/video/BV1FtQzYUEm6/"
   },
   {
@@ -98,8 +100,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏握拍、站位、发力和击球原理拆解，适合想把基础动作细节重新理顺的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/c380b21b97d313fd693c9ae07eb4304a5845724a.jpg",
+    "thumbnail": "/thumbnails/bilibili/c380b21b97d313fd693c9ae07eb4304a5845724a.jpg",
     "duration": "1:29",
+    "viewCount": 5971,
     "url": "https://www.bilibili.com/video/BV19z4y117Qi/"
   },
   {
@@ -132,8 +135,9 @@ export const expandedContents: ContentItem[] = [
       "握拍总不稳定"
     ],
     "coachReason": "偏握拍、站位、发力和击球原理拆解，适合想把基础动作细节重新理顺的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/7a0d44d06baec18a532cb40ac5150e268d5765b5.jpg",
+    "thumbnail": "/thumbnails/bilibili/7a0d44d06baec18a532cb40ac5150e268d5765b5.jpg",
     "duration": "3:54",
+    "viewCount": 3683,
     "url": "https://www.bilibili.com/video/BV1e54y1c7T7/"
   },
   {
@@ -165,8 +169,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏握拍、站位、发力和击球原理拆解，适合想把基础动作细节重新理顺的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/8daca0d77d7bf109c62b71285eafc4ebc071ac1f.jpg",
+    "thumbnail": "/thumbnails/bilibili/8daca0d77d7bf109c62b71285eafc4ebc071ac1f.jpg",
     "duration": "2:17",
+    "viewCount": 7916,
     "url": "https://www.bilibili.com/video/BV1Eo4y1j7rw/"
   },
   {
@@ -199,8 +204,9 @@ export const expandedContents: ContentItem[] = [
       "握拍总不稳定"
     ],
     "coachReason": "偏握拍、站位、发力和击球原理拆解，适合想把基础动作细节重新理顺的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/da70473f5ad650112a7c90c2ac9b7f226824c045.jpg",
+    "thumbnail": "/thumbnails/bilibili/da70473f5ad650112a7c90c2ac9b7f226824c045.jpg",
     "duration": "13:02",
+    "viewCount": 35876,
     "url": "https://www.bilibili.com/video/BV1f3411s7Pb/"
   },
   {
@@ -230,8 +236,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏握拍、站位、发力和击球原理拆解，适合想把基础动作细节重新理顺的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/432fb1821b10ab7ce875b8de890db618e877395e.jpg",
+    "thumbnail": "/thumbnails/bilibili/432fb1821b10ab7ce875b8de890db618e877395e.jpg",
     "duration": "22:56",
+    "viewCount": 9503,
     "url": "https://www.bilibili.com/video/BV1hh411x7nR/"
   },
   {
@@ -263,8 +270,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏握拍、站位、发力和击球原理拆解，适合想把基础动作细节重新理顺的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/70c8eed49b21b8310d6504fe2fa569b93f4af83c.jpg",
+    "thumbnail": "/thumbnails/bilibili/70c8eed49b21b8310d6504fe2fa569b93f4af83c.jpg",
     "duration": "2:29",
+    "viewCount": 7866,
     "url": "https://www.bilibili.com/video/BV1jm4y127C2/"
   },
   {
@@ -294,8 +302,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏握拍、站位、发力和击球原理拆解，适合想把基础动作细节重新理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/40f85eea1dcf920bb2aa81f3e6116a787be577d5.jpg",
+    "thumbnail": "/thumbnails/bilibili/40f85eea1dcf920bb2aa81f3e6116a787be577d5.jpg",
     "duration": "2:45",
+    "viewCount": 9677,
     "url": "https://www.bilibili.com/video/BV1s54y1P79N/"
   },
   {
@@ -323,8 +332,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/f52e3ae35d94b09287d2021327ad22ae2ec22301.jpg",
+    "thumbnail": "/thumbnails/bilibili/f52e3ae35d94b09287d2021327ad22ae2ec22301.jpg",
     "duration": "1:33",
+    "viewCount": 17245,
     "url": "https://www.bilibili.com/video/BV11S421X7YC/"
   },
   {
@@ -352,8 +362,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/2e0eef053cc20d0369b669ff7025c2aae55d5e13.jpg",
+    "thumbnail": "/thumbnails/bilibili/2e0eef053cc20d0369b669ff7025c2aae55d5e13.jpg",
     "duration": "1:27",
+    "viewCount": 4538,
     "url": "https://www.bilibili.com/video/BV1384y1Q74o/"
   },
   {
@@ -383,8 +394,9 @@ export const expandedContents: ContentItem[] = [
       "网前总不敢主动上"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/d86a3426052a6e0eb96d010d4260a3dca1e623f3.jpg",
+    "thumbnail": "/thumbnails/bilibili/d86a3426052a6e0eb96d010d4260a3dca1e623f3.jpg",
     "duration": "1:53",
+    "viewCount": 3104,
     "url": "https://www.bilibili.com/video/BV16z4y1w7Ei/"
   },
   {
@@ -412,8 +424,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/4bf4e0a1d0d8f9eba40fe3a3da2b47ffb4184b8c.jpg",
+    "thumbnail": "/thumbnails/bilibili/4bf4e0a1d0d8f9eba40fe3a3da2b47ffb4184b8c.jpg",
     "duration": "1:25",
+    "viewCount": 3784,
     "url": "https://www.bilibili.com/video/BV18z4y1c7wY/"
   },
   {
@@ -441,8 +454,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/47f6e15364cd335eb9d2143f37d76f95d5bed1b5.jpg",
+    "thumbnail": "/thumbnails/bilibili/47f6e15364cd335eb9d2143f37d76f95d5bed1b5.jpg",
     "duration": "2:13",
+    "viewCount": 12851,
     "url": "https://www.bilibili.com/video/BV1Ei421a7Ks/"
   },
   {
@@ -470,8 +484,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/c897d1e9496c75fea51092f4459d3c189a3f8e99.jpg",
+    "thumbnail": "/thumbnails/bilibili/c897d1e9496c75fea51092f4459d3c189a3f8e99.jpg",
     "duration": "1:16",
+    "viewCount": 7766,
     "url": "https://www.bilibili.com/video/BV1hg4y1X7yD/"
   },
   {
@@ -499,8 +514,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/3c1e9ecc317f827fcec3d3675d2fdf98e9c776d7.jpg",
+    "thumbnail": "/thumbnails/bilibili/3c1e9ecc317f827fcec3d3675d2fdf98e9c776d7.jpg",
     "duration": "2:36",
+    "viewCount": 8713,
     "url": "https://www.bilibili.com/video/BV1ie411f7Y7/"
   },
   {
@@ -528,8 +544,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/4af26c457dd09c99de4b60bf0e8d08efcff88c3a.jpg",
+    "thumbnail": "/thumbnails/bilibili/4af26c457dd09c99de4b60bf0e8d08efcff88c3a.jpg",
     "duration": "1:35",
+    "viewCount": 1307,
     "url": "https://www.bilibili.com/video/BV1jK411f73B/"
   },
   {
@@ -557,8 +574,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/7ee66939d219acb8267231c04099dd51512847cf.jpg",
+    "thumbnail": "/thumbnails/bilibili/7ee66939d219acb8267231c04099dd51512847cf.jpg",
     "duration": "1:03",
+    "viewCount": 1471,
     "url": "https://www.bilibili.com/video/BV1JQ4y1H7LV/"
   },
   {
@@ -589,8 +607,9 @@ export const expandedContents: ContentItem[] = [
       "脚步启动总慢半拍"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/f18773e8c54beff2e5eac4be86a485f6e1f2c933.jpg",
+    "thumbnail": "/thumbnails/bilibili/f18773e8c54beff2e5eac4be86a485f6e1f2c933.jpg",
     "duration": "1:05",
+    "viewCount": 14059,
     "url": "https://www.bilibili.com/video/BV1Ms4y1M7Th/"
   },
   {
@@ -618,8 +637,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/ca1d2dbfdd55b15b16ced5f90729eac237e90fb8.jpg",
+    "thumbnail": "/thumbnails/bilibili/ca1d2dbfdd55b15b16ced5f90729eac237e90fb8.jpg",
     "duration": "1:59",
+    "viewCount": 10546,
     "url": "https://www.bilibili.com/video/BV1n1pCerE4Z/"
   },
   {
@@ -647,8 +667,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/6d7144117eeca4745b14c84fed657eea88b7feab.jpg",
+    "thumbnail": "/thumbnails/bilibili/6d7144117eeca4745b14c84fed657eea88b7feab.jpg",
     "duration": "2:40",
+    "viewCount": 4341,
     "url": "https://www.bilibili.com/video/BV1NC4y1m7km/"
   },
   {
@@ -678,8 +699,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/bd995d9b61b8cffda9586c417770dc8260e6fee7.jpg",
+    "thumbnail": "/thumbnails/bilibili/bd995d9b61b8cffda9586c417770dc8260e6fee7.jpg",
     "duration": "6:50",
+    "viewCount": 8418,
     "url": "https://www.bilibili.com/video/BV1pW42197y2/"
   },
   {
@@ -709,8 +731,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/26cfc464df8dadc4d30234700224c1fb80ceeee0.jpg",
+    "thumbnail": "/thumbnails/bilibili/26cfc464df8dadc4d30234700224c1fb80ceeee0.jpg",
     "duration": "1:48",
+    "viewCount": 16193,
     "url": "https://www.bilibili.com/video/BV1rz4y1P7Nf/"
   },
   {
@@ -738,8 +761,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/b7d58b3efb453b43159059506fe6043c069f2c51.jpg",
+    "thumbnail": "/thumbnails/bilibili/b7d58b3efb453b43159059506fe6043c069f2c51.jpg",
     "duration": "1:59",
+    "viewCount": 1955,
     "url": "https://www.bilibili.com/video/BV1tb4y1T7tj/"
   },
   {
@@ -769,8 +793,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/28cb372d4ef8d7c9c8b61a4ddbabab2c4edafd20.jpg",
+    "thumbnail": "/thumbnails/bilibili/28cb372d4ef8d7c9c8b61a4ddbabab2c4edafd20.jpg",
     "duration": "0:34",
+    "viewCount": 39694,
     "url": "https://www.bilibili.com/video/BV1TEH6ezEwj/"
   },
   {
@@ -798,8 +823,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/23b3ec2794f23058897a6d940cf224466115dd40.jpg",
+    "thumbnail": "/thumbnails/bilibili/23b3ec2794f23058897a6d940cf224466115dd40.jpg",
     "duration": "0:52",
+    "viewCount": 5779,
     "url": "https://www.bilibili.com/video/BV1uS42egEwo/"
   },
   {
@@ -829,8 +855,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/6838876e2bc0cded60b6c5f753bf70a58d43cd76.jpg",
+    "thumbnail": "/thumbnails/bilibili/6838876e2bc0cded60b6c5f753bf70a58d43cd76.jpg",
     "duration": "2:58",
+    "viewCount": 8094,
     "url": "https://www.bilibili.com/video/BV1V14jehEbD/"
   },
   {
@@ -858,8 +885,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/6a433eb9da47201b781647e094c68545db5b4813.jpg",
+    "thumbnail": "/thumbnails/bilibili/6a433eb9da47201b781647e094c68545db5b4813.jpg",
     "duration": "2:14",
+    "viewCount": 3069,
     "url": "https://www.bilibili.com/video/BV1vu4y1P7fk/"
   },
   {
@@ -887,8 +915,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础动作和击球准备拆解，适合想先把反手和脚步问题理顺的业余球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/a369af883589d207f647c473949c2ce24eccfddb.jpg",
+    "thumbnail": "/thumbnails/bilibili/a369af883589d207f647c473949c2ce24eccfddb.jpg",
     "duration": "1:05",
+    "viewCount": 5468,
     "url": "https://www.bilibili.com/video/BV1wC411h7Pm/"
   },
   {
@@ -920,8 +949,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/91bc56f127c08101a0ab92a03a29dcac5940a1e2.jpg",
+    "thumbnail": "/thumbnails/bilibili/91bc56f127c08101a0ab92a03a29dcac5940a1e2.jpg",
     "duration": "8:26",
+    "viewCount": 6652,
     "url": "https://www.bilibili.com/video/BV12q4y1S763/"
   },
   {
@@ -950,8 +980,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/8a427a8445ad79f3bef5679f3c846a97c7e7c47b.jpg",
+    "thumbnail": "/thumbnails/bilibili/8a427a8445ad79f3bef5679f3c846a97c7e7c47b.jpg",
     "duration": "3:44",
+    "viewCount": 13497,
     "url": "https://www.bilibili.com/video/BV16V411J7So/"
   },
   {
@@ -980,8 +1011,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/5583c62d918bd4ee2b7ae7354aab27cab0ca80e5.jpg",
+    "thumbnail": "/thumbnails/bilibili/5583c62d918bd4ee2b7ae7354aab27cab0ca80e5.jpg",
     "duration": "16:42",
+    "viewCount": 23777,
     "url": "https://www.bilibili.com/video/BV19R4y1x7aZ/"
   },
   {
@@ -1013,8 +1045,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/bcf6dc4ef15aa98c30aa50a6396112d5c257013e.jpg",
+    "thumbnail": "/thumbnails/bilibili/bcf6dc4ef15aa98c30aa50a6396112d5c257013e.jpg",
     "duration": "13:02",
+    "viewCount": 13372,
     "url": "https://www.bilibili.com/video/BV1fR4y1y7Lt/"
   },
   {
@@ -1046,8 +1079,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/2214786ce1ff1e254627247fd5ef33084b92ac86.jpg",
+    "thumbnail": "/thumbnails/bilibili/2214786ce1ff1e254627247fd5ef33084b92ac86.jpg",
     "duration": "12:10",
+    "viewCount": 30352,
     "url": "https://www.bilibili.com/video/BV1Fy4y1D7cQ/"
   },
   {
@@ -1079,8 +1113,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/46ee866e106cc44d34476da5eea604fd87749b5d.jpg",
+    "thumbnail": "/thumbnails/bilibili/46ee866e106cc44d34476da5eea604fd87749b5d.jpg",
     "duration": "7:27",
+    "viewCount": 13298,
     "url": "https://www.bilibili.com/video/BV1hh411i7yC/"
   },
   {
@@ -1109,8 +1144,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/d8f8a1b8025403815be272361b8660a503f1a3be.jpg",
+    "thumbnail": "/thumbnails/bilibili/d8f8a1b8025403815be272361b8660a503f1a3be.jpg",
     "duration": "12:58",
+    "viewCount": 30532,
     "url": "https://www.bilibili.com/video/BV1no4y1g7P7/"
   },
   {
@@ -1139,8 +1175,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/9549e35b1259e5eeeb6e21fd443eeecfc75710be.jpg",
+    "thumbnail": "/thumbnails/bilibili/9549e35b1259e5eeeb6e21fd443eeecfc75710be.jpg",
     "duration": "6:08",
+    "viewCount": 9335,
     "url": "https://www.bilibili.com/video/BV1qh411B7eB/"
   },
   {
@@ -1172,8 +1209,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/3258e95f2cdf3192cc727606cd7954daddfd0cd6.jpg",
+    "thumbnail": "/thumbnails/bilibili/3258e95f2cdf3192cc727606cd7954daddfd0cd6.jpg",
     "duration": "9:18",
+    "viewCount": 7529,
     "url": "https://www.bilibili.com/video/BV1Xm4y1i7Hr/"
   },
   {
@@ -1205,8 +1243,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/6aba50f1af785d5f8e0b5822be6e2b0f75c07b6f.jpg",
+    "thumbnail": "/thumbnails/bilibili/6aba50f1af785d5f8e0b5822be6e2b0f75c07b6f.jpg",
     "duration": "8:29",
+    "viewCount": 14259,
     "url": "https://www.bilibili.com/video/BV1yV411z71i/"
   },
   {
@@ -1237,8 +1276,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/85b96ac22ee84166455667b776d603e93a1f8416.jpg",
+    "thumbnail": "/thumbnails/bilibili/85b96ac22ee84166455667b776d603e93a1f8416.jpg",
     "duration": "11:53",
+    "viewCount": 21254,
     "url": "https://www.bilibili.com/video/BV1Zo4y1c71Y/"
   },
   {
@@ -1269,8 +1309,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/2fcb8ce235b589c097f6ebe3eaa7a1031999f9ed.jpg",
+    "thumbnail": "/thumbnails/bilibili/2fcb8ce235b589c097f6ebe3eaa7a1031999f9ed.jpg",
     "duration": "9:13",
+    "viewCount": 11744,
     "url": "https://www.bilibili.com/video/BV1zP4y1A7qf/"
   },
   {
@@ -1300,8 +1341,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/1610fd334344c5eb4dd1ca069301b6bd28da5909.jpg",
+    "thumbnail": "/thumbnails/bilibili/1610fd334344c5eb4dd1ca069301b6bd28da5909.jpg",
     "duration": "19:58",
+    "viewCount": 9196,
     "url": "https://www.bilibili.com/video/BV11U411o77S/"
   },
   {
@@ -1331,8 +1373,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/89fe9c9a7ee5685c3bbf0c01800c73118cee24ee.jpg",
+    "thumbnail": "/thumbnails/bilibili/89fe9c9a7ee5685c3bbf0c01800c73118cee24ee.jpg",
     "duration": "10:46",
+    "viewCount": 9216,
     "url": "https://www.bilibili.com/video/BV16M411b71J/"
   },
   {
@@ -1365,8 +1408,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/6a047bd1fa2930a70fff72f7a6ec571600d5c3f9.jpg",
+    "thumbnail": "/thumbnails/bilibili/6a047bd1fa2930a70fff72f7a6ec571600d5c3f9.jpg",
     "duration": "9:23",
+    "viewCount": 1856,
     "url": "https://www.bilibili.com/video/BV17H4y1g7U3/"
   },
   {
@@ -1397,8 +1441,9 @@ export const expandedContents: ContentItem[] = [
       "比赛思路总不够清楚"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/8b6b76538dddbab5196f12929146783e2637a3db.jpg",
+    "thumbnail": "/thumbnails/bilibili/8b6b76538dddbab5196f12929146783e2637a3db.jpg",
     "duration": "13:10",
+    "viewCount": 8064,
     "url": "https://www.bilibili.com/video/BV17T411C7xk/"
   },
   {
@@ -1430,8 +1475,9 @@ export const expandedContents: ContentItem[] = [
       "高球和防守总处理不好"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/ce671880f650fc9ad8888ee86e5f08b840d43d02.jpg",
+    "thumbnail": "/thumbnails/bilibili/ce671880f650fc9ad8888ee86e5f08b840d43d02.jpg",
     "duration": "10:29",
+    "viewCount": 5042,
     "url": "https://www.bilibili.com/video/BV1bJ4m137BL/"
   },
   {
@@ -1461,8 +1507,9 @@ export const expandedContents: ContentItem[] = [
       "比赛思路总不够清楚"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/f039e56df88f2cb4d1fbf4c5a629ff7f9b2f4271.jpg",
+    "thumbnail": "/thumbnails/bilibili/f039e56df88f2cb4d1fbf4c5a629ff7f9b2f4271.jpg",
     "duration": "14:40",
+    "viewCount": 7932,
     "url": "https://www.bilibili.com/video/BV1Bx4y1M7Th/"
   },
   {
@@ -1492,8 +1539,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/64254ddfc5208b0e091b09b189768c73ab44b608.jpg",
+    "thumbnail": "/thumbnails/bilibili/64254ddfc5208b0e091b09b189768c73ab44b608.jpg",
     "duration": "7:30",
+    "viewCount": 8463,
     "url": "https://www.bilibili.com/video/BV1C84y157f9/"
   },
   {
@@ -1523,8 +1571,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/a5410360476b222175038d04fbd039d48fe157bc.jpg",
+    "thumbnail": "/thumbnails/bilibili/a5410360476b222175038d04fbd039d48fe157bc.jpg",
     "duration": "7:19",
+    "viewCount": 4931,
     "url": "https://www.bilibili.com/video/BV1CA411d7v8/"
   },
   {
@@ -1554,8 +1603,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/de7c8f5e7e71343a05dbf0500f2a963a8f991eb0.jpg",
+    "thumbnail": "/thumbnails/bilibili/de7c8f5e7e71343a05dbf0500f2a963a8f991eb0.jpg",
     "duration": "11:02",
+    "viewCount": 479,
     "url": "https://www.bilibili.com/video/BV1CB8kzHEfZ/"
   },
   {
@@ -1585,8 +1635,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/b349b76535774f68db6bb16263b5fa24029f29ee.jpg",
+    "thumbnail": "/thumbnails/bilibili/b349b76535774f68db6bb16263b5fa24029f29ee.jpg",
     "duration": "9:11",
+    "viewCount": 9498,
     "url": "https://www.bilibili.com/video/BV1CD4y1H7NE/"
   },
   {
@@ -1618,8 +1669,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/f668834b8a5672e79b9eedbf95bed2d23ca27730.jpg",
+    "thumbnail": "/thumbnails/bilibili/f668834b8a5672e79b9eedbf95bed2d23ca27730.jpg",
     "duration": "18:42",
+    "viewCount": 19117,
     "url": "https://www.bilibili.com/video/BV1De411e7dU/"
   },
   {
@@ -1649,8 +1701,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/a3896ec17ca995631931d7d6b92344ba95a5fe6f.jpg",
+    "thumbnail": "/thumbnails/bilibili/a3896ec17ca995631931d7d6b92344ba95a5fe6f.jpg",
     "duration": "10:46",
+    "viewCount": 21622,
     "url": "https://www.bilibili.com/video/BV1GA411d7LC/"
   },
   {
@@ -1680,8 +1733,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/d55fdb6301aeab617c299fcbc1b4cef0fb69866a.jpg",
+    "thumbnail": "/thumbnails/bilibili/d55fdb6301aeab617c299fcbc1b4cef0fb69866a.jpg",
     "duration": "10:23",
+    "viewCount": 4455,
     "url": "https://www.bilibili.com/video/BV1hDMFzoERJ/"
   },
   {
@@ -1711,8 +1765,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/2dcc463ef1dc322c5e5b4bcad178afcb3c9c987a.jpg",
+    "thumbnail": "/thumbnails/bilibili/2dcc463ef1dc322c5e5b4bcad178afcb3c9c987a.jpg",
     "duration": "8:28",
+    "viewCount": 3868,
     "url": "https://www.bilibili.com/video/BV1huBVYZE9y/"
   },
   {
@@ -1745,8 +1800,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/3001d1ee70b36522cdf6ef154147d0acee4360e4.jpg",
+    "thumbnail": "/thumbnails/bilibili/3001d1ee70b36522cdf6ef154147d0acee4360e4.jpg",
     "duration": "0:12",
+    "viewCount": 4606,
     "url": "https://www.bilibili.com/video/BV1pX4y1f7qr/"
   },
   {
@@ -1776,8 +1832,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/9f7ae1c0932319989973090661dac131548afa2b.jpg",
+    "thumbnail": "/thumbnails/bilibili/9f7ae1c0932319989973090661dac131548afa2b.jpg",
     "duration": "7:06",
+    "viewCount": 3537,
     "url": "https://www.bilibili.com/video/BV1rWksYQEEX/"
   },
   {
@@ -1809,8 +1866,9 @@ export const expandedContents: ContentItem[] = [
       "比赛思路总不够清楚"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/70e0b3f2a5b36817fa1ed27eefb6abe340a97fc9.jpg",
+    "thumbnail": "/thumbnails/bilibili/70e0b3f2a5b36817fa1ed27eefb6abe340a97fc9.jpg",
     "duration": "17:38",
+    "viewCount": 1787,
     "url": "https://www.bilibili.com/video/BV1tT4y1t7jV/"
   },
   {
@@ -1843,8 +1901,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/f17ba623cfb201466d1d0884bf9aab0348d8eb5e.jpg",
+    "thumbnail": "/thumbnails/bilibili/f17ba623cfb201466d1d0884bf9aab0348d8eb5e.jpg",
     "duration": "17:18",
+    "viewCount": 10076,
     "url": "https://www.bilibili.com/video/BV1xn4y197kL/"
   },
   {
@@ -1876,8 +1935,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/b1b351d80b8e8106077472418f6932420ae986b5.jpg",
+    "thumbnail": "/thumbnails/bilibili/b1b351d80b8e8106077472418f6932420ae986b5.jpg",
     "duration": "9:45",
+    "viewCount": 2167,
     "url": "https://www.bilibili.com/video/BV1xwCwYaEMV/"
   },
   {
@@ -1907,8 +1967,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的动作拆解和打球思路整理，适合想把基础框架和实战理解一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/08256253b4a405dc4372be23d001280f396a4b0c.jpg",
+    "thumbnail": "/thumbnails/bilibili/08256253b4a405dc4372be23d001280f396a4b0c.jpg",
     "duration": "5:56",
+    "viewCount": 4082,
     "url": "https://www.bilibili.com/video/BV1XZ42127W7/"
   },
   {
@@ -1938,8 +1999,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/f7b092241fc57abad3159be3896dec6e6bf52513.jpg",
+    "thumbnail": "/thumbnails/bilibili/f7b092241fc57abad3159be3896dec6e6bf52513.jpg",
     "duration": "13:24",
+    "viewCount": 6352,
     "url": "https://www.bilibili.com/video/BV12gXnY3EPA/"
   },
   {
@@ -1971,8 +2033,9 @@ export const expandedContents: ContentItem[] = [
       "高球和防守总处理不好"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/a1ed2d400a0a932d0857f278aa2670f199eba6a0.jpg",
+    "thumbnail": "/thumbnails/bilibili/a1ed2d400a0a932d0857f278aa2670f199eba6a0.jpg",
     "duration": "8:48",
+    "viewCount": 1676,
     "url": "https://www.bilibili.com/video/BV18dAsepE4u/"
   },
   {
@@ -2005,8 +2068,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/66225a5f84129c95f9e6966e2396fbe33e8775d0.jpg",
+    "thumbnail": "/thumbnails/bilibili/66225a5f84129c95f9e6966e2396fbe33e8775d0.jpg",
     "duration": "6:00",
+    "viewCount": 2038,
     "url": "https://www.bilibili.com/video/BV1d2LizDEGU/"
   },
   {
@@ -2040,8 +2104,9 @@ export const expandedContents: ContentItem[] = [
       "脚步启动总慢半拍"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/a8be5c6c109572f91426c8f9d52a4bb64784bd52.jpg",
+    "thumbnail": "/thumbnails/bilibili/a8be5c6c109572f91426c8f9d52a4bb64784bd52.jpg",
     "duration": "6:55",
+    "viewCount": 3512,
     "url": "https://www.bilibili.com/video/BV1D3wje4Ew9/"
   },
   {
@@ -2071,8 +2136,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/f15141ae8c56a30a88b8b4230938cad006330ba8.jpg",
+    "thumbnail": "/thumbnails/bilibili/f15141ae8c56a30a88b8b4230938cad006330ba8.jpg",
     "duration": "4:59",
+    "viewCount": 1444,
     "url": "https://www.bilibili.com/video/BV1gZJ7zKE57/"
   },
   {
@@ -2105,8 +2171,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/11924587e06ad5f6d4411c473f15d27340b3a362.jpg",
+    "thumbnail": "/thumbnails/bilibili/11924587e06ad5f6d4411c473f15d27340b3a362.jpg",
     "duration": "5:45",
+    "viewCount": 3955,
     "url": "https://www.bilibili.com/video/BV1h4411p7eN/"
   },
   {
@@ -2139,8 +2206,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/6f98c4e1626f67edd11f981b7cc734ac94b2cc58.jpg",
+    "thumbnail": "/thumbnails/bilibili/6f98c4e1626f67edd11f981b7cc734ac94b2cc58.jpg",
     "duration": "6:00",
+    "viewCount": 4536,
     "url": "https://www.bilibili.com/video/BV1J4411H7My/"
   },
   {
@@ -2173,8 +2241,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/ee0f7205b4f53e5b2a03eadc6573d9fb9b27731b.jpg",
+    "thumbnail": "/thumbnails/bilibili/ee0f7205b4f53e5b2a03eadc6573d9fb9b27731b.jpg",
     "duration": "5:19",
+    "viewCount": 4547,
     "url": "https://www.bilibili.com/video/BV1m4411n7PC/"
   },
   {
@@ -2204,8 +2273,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/633e298275fd743407711b68b17d24a5f1b6334b.jpg",
+    "thumbnail": "/thumbnails/bilibili/633e298275fd743407711b68b17d24a5f1b6334b.jpg",
     "duration": "5:44",
+    "viewCount": 6453,
     "url": "https://www.bilibili.com/video/BV1N441157bd/"
   },
   {
@@ -2235,8 +2305,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/a0c65283cb66a3be962e23fda0819f3769b34569.jpg",
+    "thumbnail": "/thumbnails/bilibili/a0c65283cb66a3be962e23fda0819f3769b34569.jpg",
     "duration": "5:42",
+    "viewCount": 1207,
     "url": "https://www.bilibili.com/video/BV1PPXqYnEJk/"
   },
   {
@@ -2269,8 +2340,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/e44ae22d1e00ddee323a2c0d76765a57eed216a1.jpg",
+    "thumbnail": "/thumbnails/bilibili/e44ae22d1e00ddee323a2c0d76765a57eed216a1.jpg",
     "duration": "12:04",
+    "viewCount": 5798,
     "url": "https://www.bilibili.com/video/BV1q6AseYE63/"
   },
   {
@@ -2302,8 +2374,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/e791a7fc667232edb09b8f60a5484fb7c876e4b2.jpg",
+    "thumbnail": "/thumbnails/bilibili/e791a7fc667232edb09b8f60a5484fb7c876e4b2.jpg",
     "duration": "10:27",
+    "viewCount": 8015,
     "url": "https://www.bilibili.com/video/BV1ufJ7zvEnq/"
   },
   {
@@ -2333,8 +2406,9 @@ export const expandedContents: ContentItem[] = [
       "网前总不敢主动上"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/0121dad35e378906b650b86c09a21c3df1500a39.jpg",
+    "thumbnail": "/thumbnails/bilibili/0121dad35e378906b650b86c09a21c3df1500a39.jpg",
     "duration": "15:10",
+    "viewCount": 3349,
     "url": "https://www.bilibili.com/video/BV1um8uzTEzp/"
   },
   {
@@ -2366,8 +2440,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/9ae64fcbf358d12ca1ffaf55dc1b96f2327d8444.jpg",
+    "thumbnail": "/thumbnails/bilibili/9ae64fcbf358d12ca1ffaf55dc1b96f2327d8444.jpg",
     "duration": "6:08",
+    "viewCount": 1505,
     "url": "https://www.bilibili.com/video/BV1UWYfz2EHS/"
   },
   {
@@ -2400,8 +2475,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/73b58307a114a390db6ee43606fe8f9a387dcb33.jpg",
+    "thumbnail": "/thumbnails/bilibili/73b58307a114a390db6ee43606fe8f9a387dcb33.jpg",
     "duration": "5:42",
+    "viewCount": 3085,
     "url": "https://www.bilibili.com/video/BV1W4411N7RS/"
   },
   {
@@ -2434,8 +2510,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/798624a38cb0765d5241a72a588f4e31f39bcd82.jpg",
+    "thumbnail": "/thumbnails/bilibili/798624a38cb0765d5241a72a588f4e31f39bcd82.jpg",
     "duration": "5:44",
+    "viewCount": 2597,
     "url": "https://www.bilibili.com/video/BV1x4411G7p5/"
   },
   {
@@ -2467,8 +2544,9 @@ export const expandedContents: ContentItem[] = [
       "脚步启动总慢半拍"
     ],
     "coachReason": "偏基础训练组织和步伐稳定性，适合想把练习内容安排得更扎实的新手球友。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/95b7022a267e3b78d1600775415f45b5da392361.jpg",
+    "thumbnail": "/thumbnails/bilibili/95b7022a267e3b78d1600775415f45b5da392361.jpg",
     "duration": "0:56",
+    "viewCount": 2052,
     "url": "https://www.bilibili.com/video/BV11HFWzxEsA/"
   },
   {
@@ -2497,8 +2575,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏基础训练组织和步伐稳定性，适合想把练习内容安排得更扎实的新手球友。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/15a142ca734d26020ef06f7210ec9e1c47592e87.jpg",
+    "thumbnail": "/thumbnails/bilibili/15a142ca734d26020ef06f7210ec9e1c47592e87.jpg",
     "duration": "0:24",
+    "viewCount": 5529,
     "url": "https://www.bilibili.com/video/BV13LyMBnEY8/"
   },
   {
@@ -2529,8 +2608,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏基础训练组织和步伐稳定性，适合想把练习内容安排得更扎实的新手球友。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/16b90f3982f71c671935d44b4804ea7abc9547e6.jpg",
+    "thumbnail": "/thumbnails/bilibili/16b90f3982f71c671935d44b4804ea7abc9547e6.jpg",
     "duration": "0:23",
+    "viewCount": 592,
     "url": "https://www.bilibili.com/video/BV16VXsBNE1q/"
   },
   {
@@ -2559,8 +2639,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏基础训练组织和步伐稳定性，适合想把练习内容安排得更扎实的新手球友。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/d190d2c1355dcb9de80a1b43f27831e663452215.jpg",
+    "thumbnail": "/thumbnails/bilibili/d190d2c1355dcb9de80a1b43f27831e663452215.jpg",
     "duration": "0:25",
+    "viewCount": 1143,
     "url": "https://www.bilibili.com/video/BV18ZAczVEcs/"
   },
   {
@@ -2591,8 +2672,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏基础训练组织和步伐稳定性，适合想把练习内容安排得更扎实的新手球友。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/08d0fbef972e5f957aa1550cadc686565aa6768f.jpg",
+    "thumbnail": "/thumbnails/bilibili/08d0fbef972e5f957aa1550cadc686565aa6768f.jpg",
     "duration": "0:34",
+    "viewCount": 6122,
     "url": "https://www.bilibili.com/video/BV1dKCwBuE9j/"
   },
   {
@@ -2623,8 +2705,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏基础训练组织和步伐稳定性，适合想把练习内容安排得更扎实的新手球友。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/68778988e31536344d4a286826a732ef9dc09fd9.jpg",
+    "thumbnail": "/thumbnails/bilibili/68778988e31536344d4a286826a732ef9dc09fd9.jpg",
     "duration": "6:13",
+    "viewCount": 76732,
     "url": "https://www.bilibili.com/video/BV1F1xPzbEWs/"
   },
   {
@@ -2656,8 +2739,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏基础训练组织和步伐稳定性，适合想把练习内容安排得更扎实的新手球友。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/cc5a044c0b4222bfe623b5a46ac0e5cf9ceac566.jpg",
+    "thumbnail": "/thumbnails/bilibili/cc5a044c0b4222bfe623b5a46ac0e5cf9ceac566.jpg",
     "duration": "0:53",
+    "viewCount": 2614,
     "url": "https://www.bilibili.com/video/BV1mRqoBaEYw/"
   },
   {
@@ -2688,8 +2772,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏基础训练组织和步伐稳定性，适合想把练习内容安排得更扎实的新手球友。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/273bbca7c594e3c6c864238e0a55ab7a917692ba.jpg",
+    "thumbnail": "/thumbnails/bilibili/273bbca7c594e3c6c864238e0a55ab7a917692ba.jpg",
     "duration": "3:23",
+    "viewCount": 19459,
     "url": "https://www.bilibili.com/video/BV1na1YBzELQ/"
   },
   {
@@ -2720,8 +2805,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏基础训练组织和步伐稳定性，适合想把练习内容安排得更扎实的新手球友。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/94e89e39c26493bc3182a9128dfc01612c87d2f4.jpg",
+    "thumbnail": "/thumbnails/bilibili/94e89e39c26493bc3182a9128dfc01612c87d2f4.jpg",
     "duration": "5:40",
+    "viewCount": 21992,
     "url": "https://www.bilibili.com/video/BV1PxCuBzEc5/"
   },
   {
@@ -2754,8 +2840,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/29b8ab02251fc1e1761c14e3cbea991706ad7d33.jpg",
+    "thumbnail": "/thumbnails/bilibili/29b8ab02251fc1e1761c14e3cbea991706ad7d33.jpg",
     "duration": "17:03",
+    "viewCount": 11033,
     "url": "https://www.bilibili.com/video/BV15g1jBSEud/"
   },
   {
@@ -2787,8 +2874,9 @@ export const expandedContents: ContentItem[] = [
       "网前总不敢主动上"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/fd841ba68704b6d6836b9db6ea3fdb8f4fda382c.jpg",
+    "thumbnail": "/thumbnails/bilibili/fd841ba68704b6d6836b9db6ea3fdb8f4fda382c.jpg",
     "duration": "14:01",
+    "viewCount": 8999,
     "url": "https://www.bilibili.com/video/BV17zWMzwE7y/"
   },
   {
@@ -2821,8 +2909,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/4dc054b4989049b09425de19b2be630cd7f4ccdb.jpg",
+    "thumbnail": "/thumbnails/bilibili/4dc054b4989049b09425de19b2be630cd7f4ccdb.jpg",
     "duration": "8:38",
+    "viewCount": 3469,
     "url": "https://www.bilibili.com/video/BV1bD5vzKExJ/"
   },
   {
@@ -2854,8 +2943,9 @@ export const expandedContents: ContentItem[] = [
       "切削总飘不压低"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/facd5da826d3b81b7dc7088eea1c5bbac584345e.jpg",
+    "thumbnail": "/thumbnails/bilibili/facd5da826d3b81b7dc7088eea1c5bbac584345e.jpg",
     "duration": "8:32",
+    "viewCount": 5877,
     "url": "https://www.bilibili.com/video/BV1DJRCYnEKb/"
   },
   {
@@ -2885,8 +2975,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/b45b0c8662bd6f4ae4499f877b5e39b6ff873e09.jpg",
+    "thumbnail": "/thumbnails/bilibili/b45b0c8662bd6f4ae4499f877b5e39b6ff873e09.jpg",
     "duration": "10:40",
+    "viewCount": 20705,
     "url": "https://www.bilibili.com/video/BV1DkXnYJEq7/"
   },
   {
@@ -2919,8 +3010,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/7a67bba087c0a69e990ae6a249695f265d04ffc6.jpg",
+    "thumbnail": "/thumbnails/bilibili/7a67bba087c0a69e990ae6a249695f265d04ffc6.jpg",
     "duration": "25:17",
+    "viewCount": 13166,
     "url": "https://www.bilibili.com/video/BV1EddyYzEp1/"
   },
   {
@@ -2950,8 +3042,9 @@ export const expandedContents: ContentItem[] = [
       "比赛思路总不够清楚"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/439b31848c203759e528bc4da9a7f7a72e2b0572.jpg",
+    "thumbnail": "/thumbnails/bilibili/439b31848c203759e528bc4da9a7f7a72e2b0572.jpg",
     "duration": "24:56",
+    "viewCount": 5452,
     "url": "https://www.bilibili.com/video/BV1FU4vzQELk/"
   },
   {
@@ -2984,8 +3077,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/f632abcee9783164fb4df085615830693bdade50.jpg",
+    "thumbnail": "/thumbnails/bilibili/f632abcee9783164fb4df085615830693bdade50.jpg",
     "duration": "8:18",
+    "viewCount": 8824,
     "url": "https://www.bilibili.com/video/BV1fuRVY1EeJ/"
   },
   {
@@ -3017,8 +3111,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/535e55d7df532199071e698abeba3f6aaa05e320.jpg",
+    "thumbnail": "/thumbnails/bilibili/535e55d7df532199071e698abeba3f6aaa05e320.jpg",
     "duration": "8:09",
+    "viewCount": 11425,
     "url": "https://www.bilibili.com/video/BV1hv9sYeEZb/"
   },
   {
@@ -3050,8 +3145,9 @@ export const expandedContents: ContentItem[] = [
       "网前总不敢主动上"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/3a54704edff1cfd6b28c573a0fc01a33abfaa9bc.jpg",
+    "thumbnail": "/thumbnails/bilibili/3a54704edff1cfd6b28c573a0fc01a33abfaa9bc.jpg",
     "duration": "10:51",
+    "viewCount": 5718,
     "url": "https://www.bilibili.com/video/BV1iE8WzpEHu/"
   },
   {
@@ -3083,8 +3179,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/35576c6843bee5abddb70651ddaa82b4c7fd2136.jpg",
+    "thumbnail": "/thumbnails/bilibili/35576c6843bee5abddb70651ddaa82b4c7fd2136.jpg",
     "duration": "10:04",
+    "viewCount": 4195,
     "url": "https://www.bilibili.com/video/BV1ja9KY9EtS/"
   },
   {
@@ -3116,8 +3213,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/68cdb222b511df00043f0e558a6f0685e74a7162.jpg",
+    "thumbnail": "/thumbnails/bilibili/68cdb222b511df00043f0e558a6f0685e74a7162.jpg",
     "duration": "12:45",
+    "viewCount": 18121,
     "url": "https://www.bilibili.com/video/BV1jAQCYHEyd/"
   },
   {
@@ -3149,8 +3247,9 @@ export const expandedContents: ContentItem[] = [
       "切削总飘不压低"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/6e88e799404a1283b3b7fbc424ff02eae4b7266f.jpg",
+    "thumbnail": "/thumbnails/bilibili/6e88e799404a1283b3b7fbc424ff02eae4b7266f.jpg",
     "duration": "12:23",
+    "viewCount": 10087,
     "url": "https://www.bilibili.com/video/BV1kBsXzeE8z/"
   },
   {
@@ -3180,8 +3279,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/70cf015d586f7491e102619ba9abefeeca28c3d7.jpg",
+    "thumbnail": "/thumbnails/bilibili/70cf015d586f7491e102619ba9abefeeca28c3d7.jpg",
     "duration": "9:17",
+    "viewCount": 28199,
     "url": "https://www.bilibili.com/video/BV1mMRcYZEr1/"
   },
   {
@@ -3213,8 +3313,9 @@ export const expandedContents: ContentItem[] = [
       "比赛思路总不够清楚"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/0261b86e12eea63ca829b8c591a670c77fb6ab08.jpg",
+    "thumbnail": "/thumbnails/bilibili/0261b86e12eea63ca829b8c591a670c77fb6ab08.jpg",
     "duration": "23:14",
+    "viewCount": 5634,
     "url": "https://www.bilibili.com/video/BV1n5EYzoE3s/"
   },
   {
@@ -3246,8 +3347,9 @@ export const expandedContents: ContentItem[] = [
       "相持球总不够稳"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/2390b0f2ac89fe761acf39ec41b4cfd66e82b0b4.jpg",
+    "thumbnail": "/thumbnails/bilibili/2390b0f2ac89fe761acf39ec41b4cfd66e82b0b4.jpg",
     "duration": "8:51",
+    "viewCount": 3900,
     "url": "https://www.bilibili.com/video/BV1P8ZjY6EGi/"
   },
   {
@@ -3280,8 +3382,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/a6e8ae3ee9b90eed39c15be14591a406844ed8eb.jpg",
+    "thumbnail": "/thumbnails/bilibili/a6e8ae3ee9b90eed39c15be14591a406844ed8eb.jpg",
     "duration": "10:15",
+    "viewCount": 8221,
     "url": "https://www.bilibili.com/video/BV1TBQJYgEqF/"
   },
   {
@@ -3311,8 +3414,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/18c18b4afa197737d04d9f9d38d0ee4facf766a9.jpg",
+    "thumbnail": "/thumbnails/bilibili/18c18b4afa197737d04d9f9d38d0ee4facf766a9.jpg",
     "duration": "14:42",
+    "viewCount": 6664,
     "url": "https://www.bilibili.com/video/BV1X9KweKEN8/"
   },
   {
@@ -3342,8 +3446,9 @@ export const expandedContents: ContentItem[] = [
       "握拍总不稳定"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/344904a635fdd7f10c5f4f5e378691a8a6523ea2.jpg",
+    "thumbnail": "/thumbnails/bilibili/344904a635fdd7f10c5f4f5e378691a8a6523ea2.jpg",
     "duration": "15:41",
+    "viewCount": 3603,
     "url": "https://www.bilibili.com/video/BV1Y7PwzWEXM/"
   },
   {
@@ -3375,8 +3480,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业选手/教练级动作拆解，适合想看更精细技术要点的进阶球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/b56df85f182416e516e577a589d5dc98ef38f649.jpg",
+    "thumbnail": "/thumbnails/bilibili/b56df85f182416e516e577a589d5dc98ef38f649.jpg",
     "duration": "10:04",
+    "viewCount": 18811,
     "url": "https://www.bilibili.com/video/BV1ZNVqzDEjX/"
   },
   {
@@ -3409,8 +3515,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/cd9aeba6a2a8c1cc22bea5a4acc3c698c1ab3de3.jpg",
+    "thumbnail": "/thumbnails/bilibili/cd9aeba6a2a8c1cc22bea5a4acc3c698c1ab3de3.jpg",
     "duration": "0:45",
+    "viewCount": 14525,
     "url": "https://www.bilibili.com/video/BV14F41197H7/"
   },
   {
@@ -3443,8 +3550,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/35cf8b8315a91a80272d9982caa73aa485317981.jpg",
+    "thumbnail": "/thumbnails/bilibili/35cf8b8315a91a80272d9982caa73aa485317981.jpg",
     "duration": "1:15",
+    "viewCount": 4221,
     "url": "https://www.bilibili.com/video/BV18G41187wy/"
   },
   {
@@ -3474,8 +3582,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/6804dd49c68b1c9baec0ef2ecd55ac2bb098309b.jpg",
+    "thumbnail": "/thumbnails/bilibili/6804dd49c68b1c9baec0ef2ecd55ac2bb098309b.jpg",
     "duration": "0:50",
+    "viewCount": 44840,
     "url": "https://www.bilibili.com/video/BV18M4y1H71H/"
   },
   {
@@ -3505,8 +3614,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/4a6089cadfbd2979460fb3d7fa1fa26a50714013.jpg",
+    "thumbnail": "/thumbnails/bilibili/4a6089cadfbd2979460fb3d7fa1fa26a50714013.jpg",
     "duration": "0:42",
+    "viewCount": 24240,
     "url": "https://www.bilibili.com/video/BV1ax4y1R7mS/"
   },
   {
@@ -3536,8 +3646,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/be78d27a7fc6ff2a5d87dc6ea55c2a30e0194c1a.jpg",
+    "thumbnail": "/thumbnails/bilibili/be78d27a7fc6ff2a5d87dc6ea55c2a30e0194c1a.jpg",
     "duration": "0:57",
+    "viewCount": 15719,
     "url": "https://www.bilibili.com/video/BV1CX4y1J7bP/"
   },
   {
@@ -3570,8 +3681,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/1f2359e0673609dccf01b98493ebbfc9e1f0f1aa.jpg",
+    "thumbnail": "/thumbnails/bilibili/1f2359e0673609dccf01b98493ebbfc9e1f0f1aa.jpg",
     "duration": "1:00",
+    "viewCount": 13242,
     "url": "https://www.bilibili.com/video/BV1dS4y1t7eD/"
   },
   {
@@ -3604,8 +3716,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/afb0f6a1a5325261644407efaf047e4fa3de0add.jpg",
+    "thumbnail": "/thumbnails/bilibili/afb0f6a1a5325261644407efaf047e4fa3de0add.jpg",
     "duration": "0:56",
+    "viewCount": 57191,
     "url": "https://www.bilibili.com/video/BV1fg4y1w7Vi/"
   },
   {
@@ -3638,8 +3751,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/e27113ae2000b8f1df27a5bb67d63527474d1774.jpg",
+    "thumbnail": "/thumbnails/bilibili/e27113ae2000b8f1df27a5bb67d63527474d1774.jpg",
     "duration": "1:17",
+    "viewCount": 19004,
     "url": "https://www.bilibili.com/video/BV1Fu411G7yE/"
   },
   {
@@ -3672,8 +3786,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/b9604ab4793a581aaa8ec4fecbf829a3c2b10edf.jpg",
+    "thumbnail": "/thumbnails/bilibili/b9604ab4793a581aaa8ec4fecbf829a3c2b10edf.jpg",
     "duration": "7:49",
+    "viewCount": 3034,
     "url": "https://www.bilibili.com/video/BV1ihzWBoEE7/"
   },
   {
@@ -3706,8 +3821,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/8eab6e9a7ad4046513717cee3cf2fb553a251a41.jpg",
+    "thumbnail": "/thumbnails/bilibili/8eab6e9a7ad4046513717cee3cf2fb553a251a41.jpg",
     "duration": "1:40",
+    "viewCount": 9003,
     "url": "https://www.bilibili.com/video/BV1iN4y1F7KE/"
   },
   {
@@ -3740,8 +3856,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/23a2a2010b2982be79e225202d823262a01ad7b0.jpg",
+    "thumbnail": "/thumbnails/bilibili/23a2a2010b2982be79e225202d823262a01ad7b0.jpg",
     "duration": "1:43",
+    "viewCount": 13695,
     "url": "https://www.bilibili.com/video/BV1KU4y1k7Na/"
   },
   {
@@ -3771,8 +3888,9 @@ export const expandedContents: ContentItem[] = [
       "网前总不敢主动上"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/1388d4db16f28be186c5872ec292f2612576f0d8.jpg",
+    "thumbnail": "/thumbnails/bilibili/1388d4db16f28be186c5872ec292f2612576f0d8.jpg",
     "duration": "0:31",
+    "viewCount": 16460,
     "url": "https://www.bilibili.com/video/BV1LX4y177AM/"
   },
   {
@@ -3802,8 +3920,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/4ff0eb0681d1b3f84483ffa33e9eea36f86e8788.jpg",
+    "thumbnail": "/thumbnails/bilibili/4ff0eb0681d1b3f84483ffa33e9eea36f86e8788.jpg",
     "duration": "1:17",
+    "viewCount": 5157,
     "url": "https://www.bilibili.com/video/BV1Rd4y1N7qf/"
   },
   {
@@ -3836,8 +3955,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/bc6f388890c18f459e979f7654415247ff9f3555.jpg",
+    "thumbnail": "/thumbnails/bilibili/bc6f388890c18f459e979f7654415247ff9f3555.jpg",
     "duration": "1:01",
+    "viewCount": 14599,
     "url": "https://www.bilibili.com/video/BV1rN41127gL/"
   },
   {
@@ -3869,8 +3989,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/9b8af2e1c85f8cc685ffa1558b63b1330bb6150a.jpg",
+    "thumbnail": "/thumbnails/bilibili/9b8af2e1c85f8cc685ffa1558b63b1330bb6150a.jpg",
     "duration": "0:40",
+    "viewCount": 9148,
     "url": "https://www.bilibili.com/video/BV1Yg411H7wF/"
   },
   {
@@ -3902,8 +4023,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/9ebae4fece5ab671add3dcbb28ee058d4af502b5.jpg",
+    "thumbnail": "/thumbnails/bilibili/9ebae4fece5ab671add3dcbb28ee058d4af502b5.jpg",
     "duration": "1:00",
+    "viewCount": 15545,
     "url": "https://www.bilibili.com/video/BV1yV411V78f/"
   },
   {
@@ -3936,8 +4058,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/05532b37eb952183963e2be21ed3b01aa7c5bb00.jpg",
+    "thumbnail": "/thumbnails/bilibili/05532b37eb952183963e2be21ed3b01aa7c5bb00.jpg",
     "duration": "0:51",
+    "viewCount": 162266,
     "url": "https://www.bilibili.com/video/BV1Zu411V7WZ/"
   },
   {
@@ -3968,8 +4091,9 @@ export const expandedContents: ContentItem[] = [
       "握拍总不稳定"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/fd5ed3396171b3be3eb82668cc57fbe81be62c3c.jpg",
+    "thumbnail": "/thumbnails/bilibili/fd5ed3396171b3be3eb82668cc57fbe81be62c3c.jpg",
     "duration": "1:14",
+    "viewCount": 16405,
     "url": "https://www.bilibili.com/video/BV11m421V7Jn/"
   },
   {
@@ -3998,8 +4122,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/588d35ea44ac69d577d649dcd537a04f220dcd69.jpg",
+    "thumbnail": "/thumbnails/bilibili/588d35ea44ac69d577d649dcd537a04f220dcd69.jpg",
     "duration": "1:23",
+    "viewCount": 29038,
     "url": "https://www.bilibili.com/video/BV1B2SdYXEfx/"
   },
   {
@@ -4030,8 +4155,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/6c32dedf3aa7db46132b6b1380bf0e9e222f1330.jpg",
+    "thumbnail": "/thumbnails/bilibili/6c32dedf3aa7db46132b6b1380bf0e9e222f1330.jpg",
     "duration": "0:35",
+    "viewCount": 13896,
     "url": "https://www.bilibili.com/video/BV1bkZSY6Eiz/"
   },
   {
@@ -4060,8 +4186,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/2b1a777cfb0ce2d5618f966429c427f013a06bb1.jpg",
+    "thumbnail": "/thumbnails/bilibili/2b1a777cfb0ce2d5618f966429c427f013a06bb1.jpg",
     "duration": "0:26",
+    "viewCount": 10797,
     "url": "https://www.bilibili.com/video/BV1cmFCzgET1/"
   },
   {
@@ -4092,8 +4219,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/cf856c7cf648a6d639d4ffdf56e7224a553f34bf.jpg",
+    "thumbnail": "/thumbnails/bilibili/cf856c7cf648a6d639d4ffdf56e7224a553f34bf.jpg",
     "duration": "0:28",
+    "viewCount": 12528,
     "url": "https://www.bilibili.com/video/BV1dvGuzYEWD/"
   },
   {
@@ -4122,8 +4250,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/23e569d0036d55d194640aed0e00a7da75e3758e.jpg",
+    "thumbnail": "/thumbnails/bilibili/23e569d0036d55d194640aed0e00a7da75e3758e.jpg",
     "duration": "0:36",
+    "viewCount": 26666,
     "url": "https://www.bilibili.com/video/BV1g6UxYnEX7/"
   },
   {
@@ -4154,8 +4283,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/35b010d0b43e6b863c1d183c96b0034932b7373e.jpg",
+    "thumbnail": "/thumbnails/bilibili/35b010d0b43e6b863c1d183c96b0034932b7373e.jpg",
     "duration": "1:57",
+    "viewCount": 18431,
     "url": "https://www.bilibili.com/video/BV1gcsuehEhE/"
   },
   {
@@ -4184,8 +4314,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/05ecc274b8d96183e49b20e6fed45d185e801245.jpg",
+    "thumbnail": "/thumbnails/bilibili/05ecc274b8d96183e49b20e6fed45d185e801245.jpg",
     "duration": "1:15",
+    "viewCount": 23385,
     "url": "https://www.bilibili.com/video/BV1ki421Q7F5/"
   },
   {
@@ -4217,8 +4348,9 @@ export const expandedContents: ContentItem[] = [
       "脚步启动总慢半拍"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/00dadd7f4c874af4ee584642c1637769157763d8.jpg",
+    "thumbnail": "/thumbnails/bilibili/00dadd7f4c874af4ee584642c1637769157763d8.jpg",
     "duration": "0:46",
+    "viewCount": 7691,
     "url": "https://www.bilibili.com/video/BV1LM411C7sv/"
   },
   {
@@ -4249,8 +4381,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/c5400d888109dcf2f6e00501c24a49b9c941880f.jpg",
+    "thumbnail": "/thumbnails/bilibili/c5400d888109dcf2f6e00501c24a49b9c941880f.jpg",
     "duration": "0:25",
+    "viewCount": 41001,
     "url": "https://www.bilibili.com/video/BV1MJ3uzDEC6/"
   },
   {
@@ -4279,8 +4412,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/2aaf1121e9834563b15d7e6fd6b001669563c3c3.jpg",
+    "thumbnail": "/thumbnails/bilibili/2aaf1121e9834563b15d7e6fd6b001669563c3c3.jpg",
     "duration": "0:27",
+    "viewCount": 17432,
     "url": "https://www.bilibili.com/video/BV1nRWXzfEpw/"
   },
   {
@@ -4309,8 +4443,9 @@ export const expandedContents: ContentItem[] = [
       "练球总没结构"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/00bafc864f95ced3c452dff1c87e45d55f740fdf.jpg",
+    "thumbnail": "/thumbnails/bilibili/00bafc864f95ced3c452dff1c87e45d55f740fdf.jpg",
     "duration": "0:53",
+    "viewCount": 63717,
     "url": "https://www.bilibili.com/video/BV1NYUPYmEr4/"
   },
   {
@@ -4340,8 +4475,9 @@ export const expandedContents: ContentItem[] = [
       "脚步启动总慢半拍"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/7ddf61ecefd8c9666512ea068e1da2dc9cdde2cb.jpg",
+    "thumbnail": "/thumbnails/bilibili/7ddf61ecefd8c9666512ea068e1da2dc9cdde2cb.jpg",
     "duration": "1:04",
+    "viewCount": 13420,
     "url": "https://www.bilibili.com/video/BV1QtqBYZE5v/"
   },
   {
@@ -4370,8 +4506,9 @@ export const expandedContents: ContentItem[] = [
       "双打站位总发乱"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/6ee2a8034bbee48359b79617097feae1c6e0aba2.jpg",
+    "thumbnail": "/thumbnails/bilibili/6ee2a8034bbee48359b79617097feae1c6e0aba2.jpg",
     "duration": "1:41",
+    "viewCount": 11280,
     "url": "https://www.bilibili.com/video/BV1SYspzxEgG/"
   },
   {
@@ -4400,8 +4537,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/a88c5fcd74bccb29be0db04a18e8334955ee0eef.jpg",
+    "thumbnail": "/thumbnails/bilibili/a88c5fcd74bccb29be0db04a18e8334955ee0eef.jpg",
     "duration": "1:11",
+    "viewCount": 24116,
     "url": "https://www.bilibili.com/video/BV1vy411q7q9/"
   },
   {
@@ -4432,8 +4570,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/58d6928f3bb71a15812d00c1d33294db94831ca8.jpg",
+    "thumbnail": "/thumbnails/bilibili/58d6928f3bb71a15812d00c1d33294db94831ca8.jpg",
     "duration": "0:51",
+    "viewCount": 14736,
     "url": "https://www.bilibili.com/video/BV1WM4m127Us/"
   },
   {
@@ -4464,8 +4603,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/602847585fd23a55c07d3c85527fab7665265426.jpg",
+    "thumbnail": "/thumbnails/bilibili/602847585fd23a55c07d3c85527fab7665265426.jpg",
     "duration": "1:00",
+    "viewCount": 30715,
     "url": "https://www.bilibili.com/video/BV1x4421D728/"
   },
   {
@@ -4494,8 +4634,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/f277686d7d87a3d49d0b3509f49cb0b864e944ad.jpg",
+    "thumbnail": "/thumbnails/bilibili/f277686d7d87a3d49d0b3509f49cb0b864e944ad.jpg",
     "duration": "0:29",
+    "viewCount": 213272,
     "url": "https://www.bilibili.com/video/BV1XQGmzKEx1/"
   },
   {
@@ -4524,8 +4665,9 @@ export const expandedContents: ContentItem[] = [
       "双打站位总发乱"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/5d570028c0334909bee8574a401e295d8b3737d0.jpg",
+    "thumbnail": "/thumbnails/bilibili/5d570028c0334909bee8574a401e295d8b3737d0.jpg",
     "duration": "9:52",
+    "viewCount": 14664,
     "url": "https://www.bilibili.com/video/BV1xqspzXEZT/"
   },
   {
@@ -4556,8 +4698,9 @@ export const expandedContents: ContentItem[] = [
       "切削总飘不压低"
     ],
     "coachReason": "偏业余球友视角的练球和实战记录，适合想从真实练习过程里获得启发的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/4f4598af759d541432e3152e3fb4feec68dadcfc.jpg",
+    "thumbnail": "/thumbnails/bilibili/4f4598af759d541432e3152e3fb4feec68dadcfc.jpg",
     "duration": "0:27",
+    "viewCount": 15585,
     "url": "https://www.bilibili.com/video/BV1YQtdzAEGB/"
   },
   {
@@ -4586,8 +4729,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/9cbd4fe0f145d0ff7a9923dcab3eb37f1d0f80e0.jpg",
+    "thumbnail": "/thumbnails/bilibili/9cbd4fe0f145d0ff7a9923dcab3eb37f1d0f80e0.jpg",
     "duration": "10:27",
+    "viewCount": 57305,
     "url": "https://www.bilibili.com/video/BV15G411i7AY/"
   },
   {
@@ -4619,8 +4763,9 @@ export const expandedContents: ContentItem[] = [
       "双打站位总发乱"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/af2065267a9c8305de0113148b6ca867842efb9a.jpg",
+    "thumbnail": "/thumbnails/bilibili/af2065267a9c8305de0113148b6ca867842efb9a.jpg",
     "duration": "10:00",
+    "viewCount": 51977,
     "url": "https://www.bilibili.com/video/BV1asJdzGEap/"
   },
   {
@@ -4652,8 +4797,9 @@ export const expandedContents: ContentItem[] = [
       "双打站位总发乱"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/27c032b57e331d529235624a35e659000538e6a1.jpg",
+    "thumbnail": "/thumbnails/bilibili/27c032b57e331d529235624a35e659000538e6a1.jpg",
     "duration": "15:36",
+    "viewCount": 12136,
     "url": "https://www.bilibili.com/video/BV1hdMezHE6z/"
   },
   {
@@ -4682,8 +4828,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/a2773dd36f1f8b5ee41433a251d8444e539ccdff.jpg",
+    "thumbnail": "/thumbnails/bilibili/a2773dd36f1f8b5ee41433a251d8444e539ccdff.jpg",
     "duration": "11:59",
+    "viewCount": 47866,
     "url": "https://www.bilibili.com/video/BV1Ji4y1h7YY/"
   },
   {
@@ -4715,8 +4862,9 @@ export const expandedContents: ContentItem[] = [
       "双打站位总发乱"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/e4556510a4072b1eca634a52aaf7e5339589cac7.jpg",
+    "thumbnail": "/thumbnails/bilibili/e4556510a4072b1eca634a52aaf7e5339589cac7.jpg",
     "duration": "9:28",
+    "viewCount": 190592,
     "url": "https://www.bilibili.com/video/BV1Jie7zHE1U/"
   },
   {
@@ -4747,8 +4895,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/b104675b93a01de4ef79900b0b39f0d05bcdd3ae.jpg",
+    "thumbnail": "/thumbnails/bilibili/b104675b93a01de4ef79900b0b39f0d05bcdd3ae.jpg",
     "duration": "14:23",
+    "viewCount": 56356,
     "url": "https://www.bilibili.com/video/BV1k5411y7Q3/"
   },
   {
@@ -4780,8 +4929,9 @@ export const expandedContents: ContentItem[] = [
       "双打站位总发乱"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/c7779d50f7045a28baec44dbc624b4302529d38e.jpg",
+    "thumbnail": "/thumbnails/bilibili/c7779d50f7045a28baec44dbc624b4302529d38e.jpg",
     "duration": "15:50",
+    "viewCount": 260251,
     "url": "https://www.bilibili.com/video/BV1q94y1N7kH/"
   },
   {
@@ -4813,8 +4963,9 @@ export const expandedContents: ContentItem[] = [
       "双打站位总发乱"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/582d1c23ccba3a2628e7702f2ffc478a67d53b5b.jpg",
+    "thumbnail": "/thumbnails/bilibili/582d1c23ccba3a2628e7702f2ffc478a67d53b5b.jpg",
     "duration": "21:55",
+    "viewCount": 98841,
     "url": "https://www.bilibili.com/video/BV1qk4y1E79a/"
   },
   {
@@ -4846,8 +4997,9 @@ export const expandedContents: ContentItem[] = [
       "双打站位总发乱"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/8fbfb682d26bf5e3927f95389917250b2d79007d.jpg",
+    "thumbnail": "/thumbnails/bilibili/8fbfb682d26bf5e3927f95389917250b2d79007d.jpg",
     "duration": "13:14",
+    "viewCount": 59462,
     "url": "https://www.bilibili.com/video/BV1Rp421U7jx/"
   },
   {
@@ -4878,8 +5030,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/0efb0ac23fe27b2b00f8c36ce5ce272775c08186.jpg",
+    "thumbnail": "/thumbnails/bilibili/0efb0ac23fe27b2b00f8c36ce5ce272775c08186.jpg",
     "duration": "16:04",
+    "viewCount": 56727,
     "url": "https://www.bilibili.com/video/BV1SUGCzQEvB/"
   },
   {
@@ -4912,8 +5065,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/9bdaf9bdcb64df28fafab2d1aefa755d2c70de28.jpg",
+    "thumbnail": "/thumbnails/bilibili/9bdaf9bdcb64df28fafab2d1aefa755d2c70de28.jpg",
     "duration": "9:46",
+    "viewCount": 65169,
     "url": "https://www.bilibili.com/video/BV1Wu411E7wZ/"
   },
   {
@@ -4945,8 +5099,9 @@ export const expandedContents: ContentItem[] = [
       "双打站位总发乱"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/8e2ef38361c21aee8894ed8b0dc7892c1e6118a2.jpg",
+    "thumbnail": "/thumbnails/bilibili/8e2ef38361c21aee8894ed8b0dc7892c1e6118a2.jpg",
     "duration": "14:39",
+    "viewCount": 96029,
     "url": "https://www.bilibili.com/video/BV1Xn4y1X73D/"
   },
   {
@@ -4975,8 +5130,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏实战与双打场景，适合希望提升网前处理、接发和比赛执行的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/850e248a94e4e96791a8bc949a47c16c5dd80c41.jpg",
+    "thumbnail": "/thumbnails/bilibili/850e248a94e4e96791a8bc949a47c16c5dd80c41.jpg",
     "duration": "10:32",
+    "viewCount": 34966,
     "url": "https://www.bilibili.com/video/BV1YF4m1j7wi/"
   },
   {
@@ -5006,8 +5162,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/1f515e11db5f5917864871f31098398701e96d95.jpg",
+    "thumbnail": "/thumbnails/bilibili/1f515e11db5f5917864871f31098398701e96d95.jpg",
     "duration": "30:00",
+    "viewCount": 54102,
     "url": "https://www.bilibili.com/video/BV12f421Z7Wn/"
   },
   {
@@ -5037,8 +5194,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/4e37d9c0de16c0d871b154bf5f00d415f010b743.png",
+    "thumbnail": "/thumbnails/bilibili/4e37d9c0de16c0d871b154bf5f00d415f010b743.png",
     "duration": "19:06",
+    "viewCount": 11236,
     "url": "https://www.bilibili.com/video/BV14i42117h6/"
   },
   {
@@ -5070,8 +5228,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/a41914d5e5d4eca131571652ffa599f04b144be6.jpg",
+    "thumbnail": "/thumbnails/bilibili/a41914d5e5d4eca131571652ffa599f04b144be6.jpg",
     "duration": "47:55",
+    "viewCount": 12755,
     "url": "https://www.bilibili.com/video/BV1Bm421575k/"
   },
   {
@@ -5103,8 +5262,9 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/69a624365a20103ffb7d1d22e194a3a49f67fd8c.png",
+    "thumbnail": "/thumbnails/bilibili/69a624365a20103ffb7d1d22e194a3a49f67fd8c.png",
     "duration": "4:25",
+    "viewCount": 33752,
     "url": "https://www.bilibili.com/video/BV1fp421S7BM/"
   },
   {
@@ -5137,8 +5297,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/0d1552d3077ec7bb966fbcdcf5a39b93d651c116.jpg",
+    "thumbnail": "/thumbnails/bilibili/0d1552d3077ec7bb966fbcdcf5a39b93d651c116.jpg",
     "duration": "24:55",
+    "viewCount": 6932,
     "url": "https://www.bilibili.com/video/BV1gi421Y7fV/"
   },
   {
@@ -5168,8 +5329,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/0b5173a9673c14a3ae1e6b09ff46df9cf4c4a693.png",
+    "thumbnail": "/thumbnails/bilibili/0b5173a9673c14a3ae1e6b09ff46df9cf4c4a693.png",
     "duration": "32:02",
+    "viewCount": 21276,
     "url": "https://www.bilibili.com/video/BV1Kp421X77N/"
   },
   {
@@ -5202,8 +5364,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/a617bb3ccab6b62c883d29ca7dd2a4048a5b19fa.jpg",
+    "thumbnail": "/thumbnails/bilibili/a617bb3ccab6b62c883d29ca7dd2a4048a5b19fa.jpg",
     "duration": "32:22",
+    "viewCount": 7279,
     "url": "https://www.bilibili.com/video/BV1m3411A7Bc/"
   },
   {
@@ -5236,8 +5399,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/c64361ecd3d6594ad1382b97b0669b8510d98bd2.jpg",
+    "thumbnail": "/thumbnails/bilibili/c64361ecd3d6594ad1382b97b0669b8510d98bd2.jpg",
     "duration": "12:44",
+    "viewCount": 12345,
     "url": "https://www.bilibili.com/video/BV1mB4y127E6/"
   },
   {
@@ -5269,8 +5433,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/ce6670f2bce9e03d5c14e5ed767517f646e4c226.jpg",
+    "thumbnail": "/thumbnails/bilibili/ce6670f2bce9e03d5c14e5ed767517f646e4c226.jpg",
     "duration": "9:26",
+    "viewCount": 7947,
     "url": "https://www.bilibili.com/video/BV1qr4y1j7th/"
   },
   {
@@ -5300,8 +5465,9 @@ export const expandedContents: ContentItem[] = [
       "比赛思路总不够清楚"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/a4efa43fd5cf3dea1cf1c4027dc40db4b81eb3cd.jpg",
+    "thumbnail": "/thumbnails/bilibili/a4efa43fd5cf3dea1cf1c4027dc40db4b81eb3cd.jpg",
     "duration": "13:45",
+    "viewCount": 2534,
     "url": "https://www.bilibili.com/video/BV1ra411z7gA/"
   },
   {
@@ -5331,8 +5497,9 @@ export const expandedContents: ContentItem[] = [
       "发球动作总不顺"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/926922c6c82269a5ddb96975135910d57225d463.jpg",
+    "thumbnail": "/thumbnails/bilibili/926922c6c82269a5ddb96975135910d57225d463.jpg",
     "duration": "48:29",
+    "viewCount": 9593,
     "url": "https://www.bilibili.com/video/BV1rA4m1w7AL/"
   },
   {
@@ -5362,8 +5529,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/ffcfff8ec1cd31fed9f7482b111cbee68fe985c7.png",
+    "thumbnail": "/thumbnails/bilibili/ffcfff8ec1cd31fed9f7482b111cbee68fe985c7.png",
     "duration": "25:14",
+    "viewCount": 27988,
     "url": "https://www.bilibili.com/video/BV1Rp421X7qM/"
   },
   {
@@ -5393,8 +5561,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/c1be08da8167f107b233d7c6562ed99897eef2c3.jpg",
+    "thumbnail": "/thumbnails/bilibili/c1be08da8167f107b233d7c6562ed99897eef2c3.jpg",
     "duration": "6:43",
+    "viewCount": 18999,
     "url": "https://www.bilibili.com/video/BV1rt421g7KE/"
   },
   {
@@ -5427,8 +5596,9 @@ export const expandedContents: ContentItem[] = [
       "基础动作总立不住"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/002696b3eafd23b379badbc860e4fbf82ab2c098.jpg",
+    "thumbnail": "/thumbnails/bilibili/002696b3eafd23b379badbc860e4fbf82ab2c098.jpg",
     "duration": "12:12",
+    "viewCount": 7343,
     "url": "https://www.bilibili.com/video/BV1t3411P7Ej/"
   },
   {
@@ -5458,8 +5628,9 @@ export const expandedContents: ContentItem[] = [
       "比赛思路总不够清楚"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/af599743b8873eda35ea58a3341d3174101f1122.jpg",
+    "thumbnail": "/thumbnails/bilibili/af599743b8873eda35ea58a3341d3174101f1122.jpg",
     "duration": "19:03",
+    "viewCount": 987,
     "url": "https://www.bilibili.com/video/BV1tP4y1E7Qw/"
   },
   {
@@ -5489,8 +5660,9 @@ export const expandedContents: ContentItem[] = [
       "比赛思路总不够清楚"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/ef5a3e8b896e4d337580d074be8b5280ba74d4ba.jpg",
+    "thumbnail": "/thumbnails/bilibili/ef5a3e8b896e4d337580d074be8b5280ba74d4ba.jpg",
     "duration": "18:10",
+    "viewCount": 9655,
     "url": "https://www.bilibili.com/video/BV1V3411e73K/"
   },
   {
@@ -5522,8 +5694,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i0.hdslb.com/bfs/archive/58b6fd6fd01c7b687e20f60639b707e78306eecc.jpg",
+    "thumbnail": "/thumbnails/bilibili/58b6fd6fd01c7b687e20f60639b707e78306eecc.jpg",
     "duration": "13:40",
+    "viewCount": 6302,
     "url": "https://www.bilibili.com/video/BV1vV4y177nh/"
   },
   {
@@ -5555,8 +5728,9 @@ export const expandedContents: ContentItem[] = [
       "正手总发不上力"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/73fc9bb1e4cbb59ea36681da3328e35e667bce52.png",
+    "thumbnail": "/thumbnails/bilibili/73fc9bb1e4cbb59ea36681da3328e35e667bce52.png",
     "duration": "6:59",
+    "viewCount": 66010,
     "url": "https://www.bilibili.com/video/BV1WZ421n7tt/"
   },
   {
@@ -5586,8 +5760,9 @@ export const expandedContents: ContentItem[] = [
       "比赛思路总不够清楚"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i2.hdslb.com/bfs/archive/5a65920eccc75ca56cbccf7e8e8234a7f651b4dc.jpg",
+    "thumbnail": "/thumbnails/bilibili/5a65920eccc75ca56cbccf7e8e8234a7f651b4dc.jpg",
     "duration": "8:02",
+    "viewCount": 2954,
     "url": "https://www.bilibili.com/video/BV1xb4y1e75t/"
   },
   {
@@ -5619,8 +5794,9 @@ export const expandedContents: ContentItem[] = [
       "网前总不敢主动上"
     ],
     "coachReason": "偏从零自习课和训练组织，适合想把脚步、网前和日常练习框架搭起来的球员。",
-    "thumbnail": "https://i1.hdslb.com/bfs/archive/cb79537ab1e6236be113458710ea7e5ad7cbe8ac.png",
+    "thumbnail": "/thumbnails/bilibili/cb79537ab1e6236be113458710ea7e5ad7cbe8ac.png",
     "duration": "9:51",
+    "viewCount": 21823,
     "url": "https://www.bilibili.com/video/BV1zJ4m1A7Sc/"
   },
   {
@@ -5654,6 +5830,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/_GdMN1XZLis/mqdefault.jpg",
     "duration": "13:01",
+    "viewCount": 14063,
     "url": "https://www.youtube.com/watch?v=_GdMN1XZLis"
   },
   {
@@ -5685,6 +5862,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/_oFsTxgXc5g/mqdefault.jpg",
     "duration": "8:25",
+    "viewCount": 5157,
     "url": "https://www.youtube.com/watch?v=_oFsTxgXc5g"
   },
   {
@@ -5716,6 +5894,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/-C5Bk_OR99I/mqdefault.jpg",
     "duration": "0:52",
+    "viewCount": 29691,
     "url": "https://www.youtube.com/watch?v=-C5Bk_OR99I"
   },
   {
@@ -5748,6 +5927,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/17fRPzo90tY/mqdefault.jpg",
     "duration": "17:42",
+    "viewCount": 45712,
     "url": "https://www.youtube.com/watch?v=17fRPzo90tY"
   },
   {
@@ -5779,6 +5959,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/35YOrWJbiCo/mqdefault.jpg",
     "duration": "10:14",
+    "viewCount": 18567,
     "url": "https://www.youtube.com/watch?v=35YOrWJbiCo"
   },
   {
@@ -5810,6 +5991,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/37_ixSxH9Jc/mqdefault.jpg",
     "duration": "8:02",
+    "viewCount": 7532,
     "url": "https://www.youtube.com/watch?v=37_ixSxH9Jc"
   },
   {
@@ -5843,6 +6025,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/4m3sqwXX9KE/mqdefault.jpg",
     "duration": "9:31",
+    "viewCount": 6033,
     "url": "https://www.youtube.com/watch?v=4m3sqwXX9KE"
   },
   {
@@ -5874,6 +6057,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/7eyfebG1AeE/mqdefault.jpg",
     "duration": "7:36",
+    "viewCount": 43045,
     "url": "https://www.youtube.com/watch?v=7eyfebG1AeE"
   },
   {
@@ -5905,6 +6089,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/buZYSdnMneI/mqdefault.jpg",
     "duration": "10:22",
+    "viewCount": 38103,
     "url": "https://www.youtube.com/watch?v=buZYSdnMneI"
   },
   {
@@ -5936,6 +6121,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/DHpI-MzemW4/mqdefault.jpg",
     "duration": "9:58",
+    "viewCount": 20685,
     "url": "https://www.youtube.com/watch?v=DHpI-MzemW4"
   },
   {
@@ -5967,6 +6153,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/drdaBvtGUVY/mqdefault.jpg",
     "duration": "8:17",
+    "viewCount": 13634,
     "url": "https://www.youtube.com/watch?v=drdaBvtGUVY"
   },
   {
@@ -5998,6 +6185,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/ioabvIpFUHw/mqdefault.jpg",
     "duration": "10:46",
+    "viewCount": 17745,
     "url": "https://www.youtube.com/watch?v=ioabvIpFUHw"
   },
   {
@@ -6029,6 +6217,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/KRorR5oBFLY/mqdefault.jpg",
     "duration": "10:38",
+    "viewCount": 4942,
     "url": "https://www.youtube.com/watch?v=KRorR5oBFLY"
   },
   {
@@ -6061,6 +6250,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/LQvsolevkJU/mqdefault.jpg",
     "duration": "7:13",
+    "viewCount": 22552,
     "url": "https://www.youtube.com/watch?v=LQvsolevkJU"
   },
   {
@@ -6094,6 +6284,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/mCstXteCxV8/mqdefault.jpg",
     "duration": "0:59",
+    "viewCount": 12024,
     "url": "https://www.youtube.com/watch?v=mCstXteCxV8"
   },
   {
@@ -6127,6 +6318,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/mWnJ2JqNM5w/mqdefault.jpg",
     "duration": "10:37",
+    "viewCount": 14932,
     "url": "https://www.youtube.com/watch?v=mWnJ2JqNM5w"
   },
   {
@@ -6158,6 +6350,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/sRuoonqdxLY/mqdefault.jpg",
     "duration": "19:54",
+    "viewCount": 21240,
     "url": "https://www.youtube.com/watch?v=sRuoonqdxLY"
   },
   {
@@ -6191,6 +6384,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/v2NGEiLzcMU/mqdefault.jpg",
     "duration": "2:40",
+    "viewCount": 47992,
     "url": "https://www.youtube.com/watch?v=v2NGEiLzcMU"
   },
   {
@@ -6222,6 +6416,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/YLy1tX0zvBU/mqdefault.jpg",
     "duration": "19:53",
+    "viewCount": 17606,
     "url": "https://www.youtube.com/watch?v=YLy1tX0zvBU"
   },
   {
@@ -6256,6 +6451,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏业余球员高频问题教学，适合补相持深度、稳定性和比赛执行的基础认知。",
     "thumbnail": "https://i.ytimg.com/vi/yYQiWMcUAzI/mqdefault.jpg",
     "duration": "0:55",
+    "viewCount": 4252,
     "url": "https://www.youtube.com/watch?v=yYQiWMcUAzI"
   },
   {
@@ -6289,6 +6485,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/-srcCXohFrg/mqdefault.jpg",
     "duration": "2:02",
+    "viewCount": 24787,
     "url": "https://www.youtube.com/watch?v=-srcCXohFrg"
   },
   {
@@ -6319,6 +6516,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/8hG18ws1Tc0/mqdefault.jpg",
     "duration": "0:24",
+    "viewCount": 7409,
     "url": "https://www.youtube.com/watch?v=8hG18ws1Tc0"
   },
   {
@@ -6349,6 +6547,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/9zAIkGOTACQ/mqdefault.jpg",
     "duration": "0:12",
+    "viewCount": 54891,
     "url": "https://www.youtube.com/watch?v=9zAIkGOTACQ"
   },
   {
@@ -6379,6 +6578,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/B7QXVjApOhI/mqdefault.jpg",
     "duration": "0:18",
+    "viewCount": 27061,
     "url": "https://www.youtube.com/watch?v=B7QXVjApOhI"
   },
   {
@@ -6411,6 +6611,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/CCB683qIszA/mqdefault.jpg",
     "duration": "0:38",
+    "viewCount": 8414,
     "url": "https://www.youtube.com/watch?v=CCB683qIszA"
   },
   {
@@ -6441,6 +6642,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/cUIVRwJ-3aU/mqdefault.jpg",
     "duration": "12:59",
+    "viewCount": 21673,
     "url": "https://www.youtube.com/watch?v=cUIVRwJ-3aU"
   },
   {
@@ -6474,6 +6676,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/FELn1Se71V8/mqdefault.jpg",
     "duration": "0:50",
+    "viewCount": 19268,
     "url": "https://www.youtube.com/watch?v=FELn1Se71V8"
   },
   {
@@ -6506,6 +6709,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/gGLGyCRXIDg/mqdefault.jpg",
     "duration": "13:07",
+    "viewCount": 6031,
     "url": "https://www.youtube.com/watch?v=gGLGyCRXIDg"
   },
   {
@@ -6538,6 +6742,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/H1AeBqRxhFg/mqdefault.jpg",
     "duration": "0:19",
+    "viewCount": 18509,
     "url": "https://www.youtube.com/watch?v=H1AeBqRxhFg"
   },
   {
@@ -6568,6 +6773,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/Hqoi1bEarUE/mqdefault.jpg",
     "duration": "0:22",
+    "viewCount": 31938,
     "url": "https://www.youtube.com/watch?v=Hqoi1bEarUE"
   },
   {
@@ -6600,6 +6806,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/i_s9rHXTrxQ/mqdefault.jpg",
     "duration": "15:12",
+    "viewCount": 30522,
     "url": "https://www.youtube.com/watch?v=i_s9rHXTrxQ"
   },
   {
@@ -6630,6 +6837,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/j5Yzt2LOS2M/mqdefault.jpg",
     "duration": "0:11",
+    "viewCount": 28183,
     "url": "https://www.youtube.com/watch?v=j5Yzt2LOS2M"
   },
   {
@@ -6662,6 +6870,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/Ns4HGEFdqZE/mqdefault.jpg",
     "duration": "8:35",
+    "viewCount": 40227,
     "url": "https://www.youtube.com/watch?v=Ns4HGEFdqZE"
   },
   {
@@ -6692,6 +6901,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/Nz_4z4jDxg8/mqdefault.jpg",
     "duration": "8:41",
+    "viewCount": 32331,
     "url": "https://www.youtube.com/watch?v=Nz_4z4jDxg8"
   },
   {
@@ -6722,6 +6932,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/oeZOrv1um_8/mqdefault.jpg",
     "duration": "1:15",
+    "viewCount": 12226,
     "url": "https://www.youtube.com/watch?v=oeZOrv1um_8"
   },
   {
@@ -6754,6 +6965,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/RbrLQIvuXls/mqdefault.jpg",
     "duration": "7:28",
+    "viewCount": 25028,
     "url": "https://www.youtube.com/watch?v=RbrLQIvuXls"
   },
   {
@@ -6784,6 +6996,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/vSn3g6ktqxA/mqdefault.jpg",
     "duration": "0:17",
+    "viewCount": 25898,
     "url": "https://www.youtube.com/watch?v=vSn3g6ktqxA"
   },
   {
@@ -6814,6 +7027,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/xJXrG_dXAbQ/mqdefault.jpg",
     "duration": "0:12",
+    "viewCount": 29239,
     "url": "https://www.youtube.com/watch?v=xJXrG_dXAbQ"
   },
   {
@@ -6844,6 +7058,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/y4EW9MXzivM/mqdefault.jpg",
     "duration": "5:35",
+    "viewCount": 24148,
     "url": "https://www.youtube.com/watch?v=y4EW9MXzivM"
   },
   {
@@ -6878,6 +7093,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和击球细节纠错，适合想看切削、发球和击球轨迹修正的球员。",
     "thumbnail": "https://i.ytimg.com/vi/zhh-4jnHF0M/mqdefault.jpg",
     "duration": "18:10",
+    "viewCount": 18672,
     "url": "https://www.youtube.com/watch?v=zhh-4jnHF0M"
   },
   {
@@ -6908,6 +7124,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/5-Ax5trYbKk/mqdefault.jpg",
     "duration": "0:09",
+    "viewCount": 86498,
     "url": "https://www.youtube.com/watch?v=5-Ax5trYbKk"
   },
   {
@@ -6938,6 +7155,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/bm1FoiHQ1Kg/mqdefault.jpg",
     "duration": "0:48",
+    "viewCount": 111978,
     "url": "https://www.youtube.com/watch?v=bm1FoiHQ1Kg"
   },
   {
@@ -6968,6 +7186,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/C9wH-0YMCsM/mqdefault.jpg",
     "duration": "0:41",
+    "viewCount": 88575,
     "url": "https://www.youtube.com/watch?v=C9wH-0YMCsM"
   },
   {
@@ -6998,6 +7217,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/EuUJM8Bpm4M/mqdefault.jpg",
     "duration": "0:17",
+    "viewCount": 126926,
     "url": "https://www.youtube.com/watch?v=EuUJM8Bpm4M"
   },
   {
@@ -7028,6 +7248,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/Haq3YZrTcH8/mqdefault.jpg",
     "duration": "38:13",
+    "viewCount": 107197,
     "url": "https://www.youtube.com/watch?v=Haq3YZrTcH8"
   },
   {
@@ -7058,6 +7279,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/hERA-pHZEpo/mqdefault.jpg",
     "duration": "0:16",
+    "viewCount": 62843,
     "url": "https://www.youtube.com/watch?v=hERA-pHZEpo"
   },
   {
@@ -7088,6 +7310,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/i85G8IGSj7E/mqdefault.jpg",
     "duration": "1:12",
+    "viewCount": 282796,
     "url": "https://www.youtube.com/watch?v=i85G8IGSj7E"
   },
   {
@@ -7120,6 +7343,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/ib33hGLtmCc/mqdefault.jpg",
     "duration": "0:23",
+    "viewCount": 136524,
     "url": "https://www.youtube.com/watch?v=ib33hGLtmCc"
   },
   {
@@ -7153,6 +7377,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/IlqXjgOoxUA/mqdefault.jpg",
     "duration": "13:31",
+    "viewCount": 49148,
     "url": "https://www.youtube.com/watch?v=IlqXjgOoxUA"
   },
   {
@@ -7183,6 +7408,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/iuSRwDF8V6g/mqdefault.jpg",
     "duration": "10:31",
+    "viewCount": 45102,
     "url": "https://www.youtube.com/watch?v=iuSRwDF8V6g"
   },
   {
@@ -7213,6 +7439,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/IyXoSxm5IX8/mqdefault.jpg",
     "duration": "0:42",
+    "viewCount": 35954,
     "url": "https://www.youtube.com/watch?v=IyXoSxm5IX8"
   },
   {
@@ -7245,6 +7472,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/J7Fv1vKim3s/mqdefault.jpg",
     "duration": "1:09",
+    "viewCount": 59176,
     "url": "https://www.youtube.com/watch?v=J7Fv1vKim3s"
   },
   {
@@ -7275,6 +7503,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/K5JkxlMY0IU/mqdefault.jpg",
     "duration": "1:24",
+    "viewCount": 6719,
     "url": "https://www.youtube.com/watch?v=K5JkxlMY0IU"
   },
   {
@@ -7307,6 +7536,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/NRx3dOLbgy0/mqdefault.jpg",
     "duration": "0:26",
+    "viewCount": 113329,
     "url": "https://www.youtube.com/watch?v=NRx3dOLbgy0"
   },
   {
@@ -7337,6 +7567,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/SpBIQuAWfSI/mqdefault.jpg",
     "duration": "0:30",
+    "viewCount": 38433,
     "url": "https://www.youtube.com/watch?v=SpBIQuAWfSI"
   },
   {
@@ -7367,6 +7598,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/sqPql9kVMCg/mqdefault.jpg",
     "duration": "0:23",
+    "viewCount": 85094,
     "url": "https://www.youtube.com/watch?v=sqPql9kVMCg"
   },
   {
@@ -7397,6 +7629,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/tiTf9RtsG-A/mqdefault.jpg",
     "duration": "1:11",
+    "viewCount": 77828,
     "url": "https://www.youtube.com/watch?v=tiTf9RtsG-A"
   },
   {
@@ -7427,6 +7660,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/TlQsBJaaI_c/mqdefault.jpg",
     "duration": "1:09",
+    "viewCount": 34728,
     "url": "https://www.youtube.com/watch?v=TlQsBJaaI_c"
   },
   {
@@ -7460,6 +7694,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/Uo87gWpL4lI/mqdefault.jpg",
     "duration": "0:29",
+    "viewCount": 21223,
     "url": "https://www.youtube.com/watch?v=Uo87gWpL4lI"
   },
   {
@@ -7490,6 +7725,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏现代击球和职业训练视角，适合想看高质量击球细节与实战决策的球员。",
     "thumbnail": "https://i.ytimg.com/vi/VKCVpCmNnIE/mqdefault.jpg",
     "duration": "0:29",
+    "viewCount": 153441,
     "url": "https://www.youtube.com/watch?v=VKCVpCmNnIE"
   },
   {
@@ -7524,6 +7760,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/7m0hh099M-Q/mqdefault.jpg",
     "duration": "10:14",
+    "viewCount": 21534,
     "url": "https://www.youtube.com/watch?v=7m0hh099M-Q"
   },
   {
@@ -7555,6 +7792,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/aY-yuo3sK4o/mqdefault.jpg",
     "duration": "0:37",
+    "viewCount": 6663,
     "url": "https://www.youtube.com/watch?v=aY-yuo3sK4o"
   },
   {
@@ -7587,6 +7825,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/CgmCnP_9U7s/mqdefault.jpg",
     "duration": "11:21",
+    "viewCount": 12003,
     "url": "https://www.youtube.com/watch?v=CgmCnP_9U7s"
   },
   {
@@ -7618,6 +7857,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/HTqDPSPmMDA/mqdefault.jpg",
     "duration": "1:27",
+    "viewCount": 634,
     "url": "https://www.youtube.com/watch?v=HTqDPSPmMDA"
   },
   {
@@ -7651,6 +7891,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/IXN2hxL1QoQ/mqdefault.jpg",
     "duration": "0:58",
+    "viewCount": 4963,
     "url": "https://www.youtube.com/watch?v=IXN2hxL1QoQ"
   },
   {
@@ -7682,6 +7923,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/jsrk5OyyEQE/mqdefault.jpg",
     "duration": "0:57",
+    "viewCount": 3927,
     "url": "https://www.youtube.com/watch?v=jsrk5OyyEQE"
   },
   {
@@ -7713,6 +7955,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/q-xDPaabTBc/mqdefault.jpg",
     "duration": "10:18",
+    "viewCount": 10116,
     "url": "https://www.youtube.com/watch?v=q-xDPaabTBc"
   },
   {
@@ -7744,6 +7987,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/QmCxcIntTL4/mqdefault.jpg",
     "duration": "0:36",
+    "viewCount": 2068,
     "url": "https://www.youtube.com/watch?v=QmCxcIntTL4"
   },
   {
@@ -7775,6 +8019,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/s_z-opeJAx4/mqdefault.jpg",
     "duration": "0:56",
+    "viewCount": 2043,
     "url": "https://www.youtube.com/watch?v=s_z-opeJAx4"
   },
   {
@@ -7806,6 +8051,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/sLyJpyCC0z4/mqdefault.jpg",
     "duration": "0:53",
+    "viewCount": 1111,
     "url": "https://www.youtube.com/watch?v=sLyJpyCC0z4"
   },
   {
@@ -7839,6 +8085,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/t2kru_RA5MU/mqdefault.jpg",
     "duration": "0:57",
+    "viewCount": 2269,
     "url": "https://www.youtube.com/watch?v=t2kru_RA5MU"
   },
   {
@@ -7870,6 +8117,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/T6q280yT_A8/mqdefault.jpg",
     "duration": "0:43",
+    "viewCount": 1927,
     "url": "https://www.youtube.com/watch?v=T6q280yT_A8"
   },
   {
@@ -7904,6 +8152,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/uoGTbDMHaTY/mqdefault.jpg",
     "duration": "12:30",
+    "viewCount": 23312,
     "url": "https://www.youtube.com/watch?v=uoGTbDMHaTY"
   },
   {
@@ -7935,6 +8184,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/uR-92g_idXg/mqdefault.jpg",
     "duration": "8:39",
+    "viewCount": 23737,
     "url": "https://www.youtube.com/watch?v=uR-92g_idXg"
   },
   {
@@ -7966,6 +8216,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/vfUCw9Q4Rjw/mqdefault.jpg",
     "duration": "13:12",
+    "viewCount": 7028,
     "url": "https://www.youtube.com/watch?v=vfUCw9Q4Rjw"
   },
   {
@@ -7997,6 +8248,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/VxWDC5OsQWY/mqdefault.jpg",
     "duration": "1:19",
+    "viewCount": 1134,
     "url": "https://www.youtube.com/watch?v=VxWDC5OsQWY"
   },
   {
@@ -8028,6 +8280,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/vzuu7Rjmmf8/mqdefault.jpg",
     "duration": "0:33",
+    "viewCount": 2163,
     "url": "https://www.youtube.com/watch?v=vzuu7Rjmmf8"
   },
   {
@@ -8059,6 +8312,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/X2TAYFCpJgY/mqdefault.jpg",
     "duration": "1:47",
+    "viewCount": 858,
     "url": "https://www.youtube.com/watch?v=X2TAYFCpJgY"
   },
   {
@@ -8090,6 +8344,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/YSV5pE_b1bc/mqdefault.jpg",
     "duration": "0:36",
+    "viewCount": 891,
     "url": "https://www.youtube.com/watch?v=YSV5pE_b1bc"
   },
   {
@@ -8124,6 +8379,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     "thumbnail": "https://i.ytimg.com/vi/ZMts-Ggo6tI/mqdefault.jpg",
     "duration": "13:46",
+    "viewCount": 23494,
     "url": "https://www.youtube.com/watch?v=ZMts-Ggo6tI"
   },
   {
@@ -8155,6 +8411,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/0_Qhow1PxoA/mqdefault.jpg",
     "duration": "0:46",
+    "viewCount": 52472,
     "url": "https://www.youtube.com/watch?v=0_Qhow1PxoA"
   },
   {
@@ -8186,6 +8443,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/2z47-cjz-Y8/mqdefault.jpg",
     "duration": "0:30",
+    "viewCount": 65616,
     "url": "https://www.youtube.com/watch?v=2z47-cjz-Y8"
   },
   {
@@ -8217,6 +8475,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/3T0h9f1ttf8/mqdefault.jpg",
     "duration": "1:01",
+    "viewCount": 51065,
     "url": "https://www.youtube.com/watch?v=3T0h9f1ttf8"
   },
   {
@@ -8248,6 +8507,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/47s4SUke6sE/mqdefault.jpg",
     "duration": "0:55",
+    "viewCount": 789351,
     "url": "https://www.youtube.com/watch?v=47s4SUke6sE"
   },
   {
@@ -8279,6 +8539,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/8zldQt6Lk10/mqdefault.jpg",
     "duration": "0:30",
+    "viewCount": 27348,
     "url": "https://www.youtube.com/watch?v=8zldQt6Lk10"
   },
   {
@@ -8311,6 +8572,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/92FZTlxGFoE/mqdefault.jpg",
     "duration": "0:38",
+    "viewCount": 116538,
     "url": "https://www.youtube.com/watch?v=92FZTlxGFoE"
   },
   {
@@ -8342,6 +8604,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/a70rDML4268/mqdefault.jpg",
     "duration": "0:58",
+    "viewCount": 37382,
     "url": "https://www.youtube.com/watch?v=a70rDML4268"
   },
   {
@@ -8373,6 +8636,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/CoHhXUohskQ/mqdefault.jpg",
     "duration": "1:29",
+    "viewCount": 94110,
     "url": "https://www.youtube.com/watch?v=CoHhXUohskQ"
   },
   {
@@ -8404,6 +8668,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/e6A9DPOfDsQ/mqdefault.jpg",
     "duration": "0:41",
+    "viewCount": 184080,
     "url": "https://www.youtube.com/watch?v=e6A9DPOfDsQ"
   },
   {
@@ -8435,6 +8700,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/JfRXKlHM_mE/mqdefault.jpg",
     "duration": "0:51",
+    "viewCount": 49425,
     "url": "https://www.youtube.com/watch?v=JfRXKlHM_mE"
   },
   {
@@ -8468,6 +8734,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/MvkWiCvCGGI/mqdefault.jpg",
     "duration": "0:34",
+    "viewCount": 206739,
     "url": "https://www.youtube.com/watch?v=MvkWiCvCGGI"
   },
   {
@@ -8499,6 +8766,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/NtGIdw6_ULo/mqdefault.jpg",
     "duration": "1:18",
+    "viewCount": 119220,
     "url": "https://www.youtube.com/watch?v=NtGIdw6_ULo"
   },
   {
@@ -8530,6 +8798,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/ODV1rJYjmxs/mqdefault.jpg",
     "duration": "0:37",
+    "viewCount": 41076,
     "url": "https://www.youtube.com/watch?v=ODV1rJYjmxs"
   },
   {
@@ -8561,6 +8830,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/v6bl1-0qGS8/mqdefault.jpg",
     "duration": "0:28",
+    "viewCount": 123073,
     "url": "https://www.youtube.com/watch?v=v6bl1-0qGS8"
   },
   {
@@ -8592,6 +8862,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/vaOdB4hnJ5Y/mqdefault.jpg",
     "duration": "0:45",
+    "viewCount": 49241,
     "url": "https://www.youtube.com/watch?v=vaOdB4hnJ5Y"
   },
   {
@@ -8623,6 +8894,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/W3FnbafV2ik/mqdefault.jpg",
     "duration": "1:09",
+    "viewCount": 96411,
     "url": "https://www.youtube.com/watch?v=W3FnbafV2ik"
   },
   {
@@ -8656,6 +8928,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/WRqhiM5TSzM/mqdefault.jpg",
     "duration": "0:38",
+    "viewCount": 500946,
     "url": "https://www.youtube.com/watch?v=WRqhiM5TSzM"
   },
   {
@@ -8687,6 +8960,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/XdHQ5qSXZhc/mqdefault.jpg",
     "duration": "1:38",
+    "viewCount": 78244,
     "url": "https://www.youtube.com/watch?v=XdHQ5qSXZhc"
   },
   {
@@ -8718,6 +8992,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/xUYFeESQHRw/mqdefault.jpg",
     "duration": "1:00",
+    "viewCount": 337608,
     "url": "https://www.youtube.com/watch?v=xUYFeESQHRw"
   },
   {
@@ -8751,6 +9026,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏世界级教练视角和职业训练逻辑，适合想理解高水平技术框架与比赛思维的球员。",
     "thumbnail": "https://i.ytimg.com/vi/YiRxalihUeo/mqdefault.jpg",
     "duration": "0:53",
+    "viewCount": 103140,
     "url": "https://www.youtube.com/watch?v=YiRxalihUeo"
   },
   {
@@ -8782,6 +9058,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/_8xM_XTs6Xg/mqdefault.jpg",
     "duration": "0:22",
+    "viewCount": 26356,
     "url": "https://www.youtube.com/watch?v=_8xM_XTs6Xg"
   },
   {
@@ -8816,6 +9093,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/1OTaCZuMgRY/mqdefault.jpg",
     "duration": "0:19",
+    "viewCount": 15910,
     "url": "https://www.youtube.com/watch?v=1OTaCZuMgRY"
   },
   {
@@ -8847,6 +9125,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/4d55ClzFQCc/mqdefault.jpg",
     "duration": "0:35",
+    "viewCount": 3216,
     "url": "https://www.youtube.com/watch?v=4d55ClzFQCc"
   },
   {
@@ -8878,6 +9157,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/5mhYT3ruxfI/mqdefault.jpg",
     "duration": "0:57",
+    "viewCount": 43202,
     "url": "https://www.youtube.com/watch?v=5mhYT3ruxfI"
   },
   {
@@ -8909,6 +9189,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/8G0wKduNsUw/mqdefault.jpg",
     "duration": "1:00",
+    "viewCount": 9143,
     "url": "https://www.youtube.com/watch?v=8G0wKduNsUw"
   },
   {
@@ -8940,6 +9221,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/9v_k1FUx2q8/mqdefault.jpg",
     "duration": "0:22",
+    "viewCount": 23425,
     "url": "https://www.youtube.com/watch?v=9v_k1FUx2q8"
   },
   {
@@ -8971,6 +9253,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/EgHqV_qZMWk/mqdefault.jpg",
     "duration": "0:37",
+    "viewCount": 8723,
     "url": "https://www.youtube.com/watch?v=EgHqV_qZMWk"
   },
   {
@@ -9002,6 +9285,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/GDLjj84CA0A/mqdefault.jpg",
     "duration": "2:50",
+    "viewCount": 3407,
     "url": "https://www.youtube.com/watch?v=GDLjj84CA0A"
   },
   {
@@ -9033,6 +9317,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/GlAs-WlJRZE/mqdefault.jpg",
     "duration": "0:31",
+    "viewCount": 1265,
     "url": "https://www.youtube.com/watch?v=GlAs-WlJRZE"
   },
   {
@@ -9066,6 +9351,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/IFRqEj97GjE/mqdefault.jpg",
     "duration": "1:00",
+    "viewCount": 3865,
     "url": "https://www.youtube.com/watch?v=IFRqEj97GjE"
   },
   {
@@ -9097,6 +9383,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/m7SQRzLFn4w/mqdefault.jpg",
     "duration": "1:04",
+    "viewCount": 3989,
     "url": "https://www.youtube.com/watch?v=m7SQRzLFn4w"
   },
   {
@@ -9128,6 +9415,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/Mj2_dEgphqk/mqdefault.jpg",
     "duration": "1:01",
+    "viewCount": 29789,
     "url": "https://www.youtube.com/watch?v=Mj2_dEgphqk"
   },
   {
@@ -9159,6 +9447,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/mVC1-Udfaz8/mqdefault.jpg",
     "duration": "1:03",
+    "viewCount": 3982,
     "url": "https://www.youtube.com/watch?v=mVC1-Udfaz8"
   },
   {
@@ -9190,6 +9479,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/PXmRPYYtkyQ/mqdefault.jpg",
     "duration": "0:30",
+    "viewCount": 2599,
     "url": "https://www.youtube.com/watch?v=PXmRPYYtkyQ"
   },
   {
@@ -9221,6 +9511,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/RY7FF2UaF_I/mqdefault.jpg",
     "duration": "0:13",
+    "viewCount": 136124,
     "url": "https://www.youtube.com/watch?v=RY7FF2UaF_I"
   },
   {
@@ -9252,6 +9543,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/sJDPyQP85_E/mqdefault.jpg",
     "duration": "1:43",
+    "viewCount": 119361,
     "url": "https://www.youtube.com/watch?v=sJDPyQP85_E"
   },
   {
@@ -9283,6 +9575,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/SOB8UyyiKSk/mqdefault.jpg",
     "duration": "0:20",
+    "viewCount": 21974,
     "url": "https://www.youtube.com/watch?v=SOB8UyyiKSk"
   },
   {
@@ -9314,6 +9607,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/wf90Jq6_NRQ/mqdefault.jpg",
     "duration": "1:09",
+    "viewCount": 937,
     "url": "https://www.youtube.com/watch?v=wf90Jq6_NRQ"
   },
   {
@@ -9345,6 +9639,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/X60zvLzQ5Vw/mqdefault.jpg",
     "duration": "0:32",
+    "viewCount": 12361,
     "url": "https://www.youtube.com/watch?v=X60zvLzQ5Vw"
   },
   {
@@ -9376,6 +9671,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏长线技术框架和专项细节讲解，适合想系统补基础动作的球员。",
     "thumbnail": "https://i.ytimg.com/vi/ZdGGCqjW2vY/mqdefault.jpg",
     "duration": "46:27",
+    "viewCount": 1155,
     "url": "https://www.youtube.com/watch?v=ZdGGCqjW2vY"
   },
   {
@@ -9409,6 +9705,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/-NmymAG1WUI/mqdefault.jpg",
     "duration": "0:13",
+    "viewCount": 5547,
     "url": "https://www.youtube.com/watch?v=-NmymAG1WUI"
   },
   {
@@ -9442,6 +9739,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/1t2mjyLUYiQ/mqdefault.jpg",
     "duration": "4:16",
+    "viewCount": 10437,
     "url": "https://www.youtube.com/watch?v=1t2mjyLUYiQ"
   },
   {
@@ -9473,6 +9771,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/6-NUzkGjO98/mqdefault.jpg",
     "duration": "0:45",
+    "viewCount": 45444,
     "url": "https://www.youtube.com/watch?v=6-NUzkGjO98"
   },
   {
@@ -9504,6 +9803,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/7_hwW-RY2qQ/mqdefault.jpg",
     "duration": "0:44",
+    "viewCount": 29712,
     "url": "https://www.youtube.com/watch?v=7_hwW-RY2qQ"
   },
   {
@@ -9535,6 +9835,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/8U759QxJRe0/mqdefault.jpg",
     "duration": "0:06",
+    "viewCount": 6426,
     "url": "https://www.youtube.com/watch?v=8U759QxJRe0"
   },
   {
@@ -9566,6 +9867,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/cZiSXtUQuKU/mqdefault.jpg",
     "duration": "0:12",
+    "viewCount": 40539,
     "url": "https://www.youtube.com/watch?v=cZiSXtUQuKU"
   },
   {
@@ -9597,6 +9899,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/fCNvzTJDfAA/mqdefault.jpg",
     "duration": "0:45",
+    "viewCount": 35215,
     "url": "https://www.youtube.com/watch?v=fCNvzTJDfAA"
   },
   {
@@ -9628,6 +9931,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/i4atW2M0IuA/mqdefault.jpg",
     "duration": "0:38",
+    "viewCount": 10932,
     "url": "https://www.youtube.com/watch?v=i4atW2M0IuA"
   },
   {
@@ -9659,6 +9963,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/icqC73ehNdo/mqdefault.jpg",
     "duration": "8:17",
+    "viewCount": 3696,
     "url": "https://www.youtube.com/watch?v=icqC73ehNdo"
   },
   {
@@ -9690,6 +9995,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/IjyTwsVOcM4/mqdefault.jpg",
     "duration": "0:54",
+    "viewCount": 7781,
     "url": "https://www.youtube.com/watch?v=IjyTwsVOcM4"
   },
   {
@@ -9724,6 +10030,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/IZPRlLLVCWY/mqdefault.jpg",
     "duration": "12:54",
+    "viewCount": 58995,
     "url": "https://www.youtube.com/watch?v=IZPRlLLVCWY"
   },
   {
@@ -9755,6 +10062,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/jXVEK8JDW_c/mqdefault.jpg",
     "duration": "8:16",
+    "viewCount": 18823,
     "url": "https://www.youtube.com/watch?v=jXVEK8JDW_c"
   },
   {
@@ -9786,6 +10094,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/l2J-3jd70wc/mqdefault.jpg",
     "duration": "6:46",
+    "viewCount": 33582,
     "url": "https://www.youtube.com/watch?v=l2J-3jd70wc"
   },
   {
@@ -9817,6 +10126,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/LZIWrgZQO4Y/mqdefault.jpg",
     "duration": "0:50",
+    "viewCount": 3567,
     "url": "https://www.youtube.com/watch?v=LZIWrgZQO4Y"
   },
   {
@@ -9848,6 +10158,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/N3XiEG0pnVI/mqdefault.jpg",
     "duration": "0:50",
+    "viewCount": 6281,
     "url": "https://www.youtube.com/watch?v=N3XiEG0pnVI"
   },
   {
@@ -9879,6 +10190,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/QT7tDxHT4T4/mqdefault.jpg",
     "duration": "9:45",
+    "viewCount": 12735,
     "url": "https://www.youtube.com/watch?v=QT7tDxHT4T4"
   },
   {
@@ -9910,6 +10222,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/RSlZywev3Ss/mqdefault.jpg",
     "duration": "0:22",
+    "viewCount": 1716,
     "url": "https://www.youtube.com/watch?v=RSlZywev3Ss"
   },
   {
@@ -9940,6 +10253,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/tcdpS8uTvdw/mqdefault.jpg",
     "duration": "19:46",
+    "viewCount": 3062,
     "url": "https://www.youtube.com/watch?v=tcdpS8uTvdw"
   },
   {
@@ -9971,6 +10285,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/UeOzxNFJ86Y/mqdefault.jpg",
     "duration": "36:05",
+    "viewCount": 28601,
     "url": "https://www.youtube.com/watch?v=UeOzxNFJ86Y"
   },
   {
@@ -10002,6 +10317,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏动作修正和训练细节，适合想把击球和移动基础做扎实的球员。",
     "thumbnail": "https://i.ytimg.com/vi/z3JhS56A444/mqdefault.jpg",
     "duration": "12:33",
+    "viewCount": 24765,
     "url": "https://www.youtube.com/watch?v=z3JhS56A444"
   },
   {
@@ -10032,6 +10348,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/2Qxy3YxPb1g/mqdefault.jpg",
     "duration": "1:00",
+    "viewCount": 22560,
     "url": "https://www.youtube.com/watch?v=2Qxy3YxPb1g"
   },
   {
@@ -10062,6 +10379,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/2TfVDjGJJGY/mqdefault.jpg",
     "duration": "1:00",
+    "viewCount": 14988,
     "url": "https://www.youtube.com/watch?v=2TfVDjGJJGY"
   },
   {
@@ -10092,6 +10410,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/3yP94FkJbDc/mqdefault.jpg",
     "duration": "20:10",
+    "viewCount": 28965,
     "url": "https://www.youtube.com/watch?v=3yP94FkJbDc"
   },
   {
@@ -10124,6 +10443,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/8kDLHFtVT5c/mqdefault.jpg",
     "duration": "17:07",
+    "viewCount": 45497,
     "url": "https://www.youtube.com/watch?v=8kDLHFtVT5c"
   },
   {
@@ -10154,6 +10474,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/DlfQzuYt074/mqdefault.jpg",
     "duration": "0:23",
+    "viewCount": 17368,
     "url": "https://www.youtube.com/watch?v=DlfQzuYt074"
   },
   {
@@ -10184,6 +10505,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/fdx8coaMilA/mqdefault.jpg",
     "duration": "3:16",
+    "viewCount": 2307,
     "url": "https://www.youtube.com/watch?v=fdx8coaMilA"
   },
   {
@@ -10216,6 +10538,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/g618wouJSCo/mqdefault.jpg",
     "duration": "14:58",
+    "viewCount": 26432,
     "url": "https://www.youtube.com/watch?v=g618wouJSCo"
   },
   {
@@ -10248,6 +10571,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/hWFKx3FBgYI/mqdefault.jpg",
     "duration": "8:39",
+    "viewCount": 38419,
     "url": "https://www.youtube.com/watch?v=hWFKx3FBgYI"
   },
   {
@@ -10280,6 +10604,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/ix6N6XrDO_M/mqdefault.jpg",
     "duration": "4:49",
+    "viewCount": 11001,
     "url": "https://www.youtube.com/watch?v=ix6N6XrDO_M"
   },
   {
@@ -10310,6 +10635,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/jTXDrAjxFJA/mqdefault.jpg",
     "duration": "0:54",
+    "viewCount": 128891,
     "url": "https://www.youtube.com/watch?v=jTXDrAjxFJA"
   },
   {
@@ -10340,6 +10666,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/K_N-HOt6c6w/mqdefault.jpg",
     "duration": "0:18",
+    "viewCount": 17521,
     "url": "https://www.youtube.com/watch?v=K_N-HOt6c6w"
   },
   {
@@ -10370,6 +10697,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/KZVZnUblujY/mqdefault.jpg",
     "duration": "12:30",
+    "viewCount": 26612,
     "url": "https://www.youtube.com/watch?v=KZVZnUblujY"
   },
   {
@@ -10402,6 +10730,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/LDDc3CoDA3Q/mqdefault.jpg",
     "duration": "13:49",
+    "viewCount": 12006,
     "url": "https://www.youtube.com/watch?v=LDDc3CoDA3Q"
   },
   {
@@ -10432,6 +10761,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/MDLnO_v5afM/mqdefault.jpg",
     "duration": "0:58",
+    "viewCount": 22324,
     "url": "https://www.youtube.com/watch?v=MDLnO_v5afM"
   },
   {
@@ -10464,6 +10794,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/NhNNs6ieUOo/mqdefault.jpg",
     "duration": "12:01",
+    "viewCount": 8201,
     "url": "https://www.youtube.com/watch?v=NhNNs6ieUOo"
   },
   {
@@ -10494,6 +10825,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/pTKMlIknblM/mqdefault.jpg",
     "duration": "19:32",
+    "viewCount": 27737,
     "url": "https://www.youtube.com/watch?v=pTKMlIknblM"
   },
   {
@@ -10524,6 +10856,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/q77wbJ-O91k/mqdefault.jpg",
     "duration": "8:31",
+    "viewCount": 29989,
     "url": "https://www.youtube.com/watch?v=q77wbJ-O91k"
   },
   {
@@ -10554,6 +10887,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/SSfC4yluF9I/mqdefault.jpg",
     "duration": "0:54",
+    "viewCount": 5723,
     "url": "https://www.youtube.com/watch?v=SSfC4yluF9I"
   },
   {
@@ -10586,6 +10920,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/Yojxki2zHkM/mqdefault.jpg",
     "duration": "0:20",
+    "viewCount": 7823,
     "url": "https://www.youtube.com/watch?v=Yojxki2zHkM"
   },
   {
@@ -10618,6 +10953,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化技术教学，适合想补正反手、发球和基础动作框架的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/ZBv-VzMoAos/mqdefault.jpg",
     "duration": "0:30",
+    "viewCount": 28658,
     "url": "https://www.youtube.com/watch?v=ZBv-VzMoAos"
   },
   {
@@ -10648,6 +10984,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/_Cdlfuv65Eo/mqdefault.jpg",
     "duration": "0:20",
+    "viewCount": 46430,
     "url": "https://www.youtube.com/watch?v=_Cdlfuv65Eo"
   },
   {
@@ -10678,6 +11015,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/4ICkN6nprcE/mqdefault.jpg",
     "duration": "17:30",
+    "viewCount": 18760,
     "url": "https://www.youtube.com/watch?v=4ICkN6nprcE"
   },
   {
@@ -10710,6 +11048,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/78dnpAX7mXI/mqdefault.jpg",
     "duration": "0:38",
+    "viewCount": 39148,
     "url": "https://www.youtube.com/watch?v=78dnpAX7mXI"
   },
   {
@@ -10740,6 +11079,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/94O8kwM6ISk/mqdefault.jpg",
     "duration": "0:19",
+    "viewCount": 221221,
     "url": "https://www.youtube.com/watch?v=94O8kwM6ISk"
   },
   {
@@ -10773,6 +11113,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/cbRgm1KXftc/mqdefault.jpg",
     "duration": "0:55",
+    "viewCount": 25845,
     "url": "https://www.youtube.com/watch?v=cbRgm1KXftc"
   },
   {
@@ -10803,6 +11144,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/DyGoQSxJeYc/mqdefault.jpg",
     "duration": "0:31",
+    "viewCount": 17454,
     "url": "https://www.youtube.com/watch?v=DyGoQSxJeYc"
   },
   {
@@ -10833,6 +11175,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/fpRzxMDloVE/mqdefault.jpg",
     "duration": "0:20",
+    "viewCount": 16047,
     "url": "https://www.youtube.com/watch?v=fpRzxMDloVE"
   },
   {
@@ -10865,6 +11208,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/I_aGvReG-8o/mqdefault.jpg",
     "duration": "0:59",
+    "viewCount": 21486,
     "url": "https://www.youtube.com/watch?v=I_aGvReG-8o"
   },
   {
@@ -10897,6 +11241,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/l_yRpjaFZs8/mqdefault.jpg",
     "duration": "0:20",
+    "viewCount": 30247,
     "url": "https://www.youtube.com/watch?v=l_yRpjaFZs8"
   },
   {
@@ -10929,6 +11274,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/M_CgDg2PazM/mqdefault.jpg",
     "duration": "1:42",
+    "viewCount": 31835,
     "url": "https://www.youtube.com/watch?v=M_CgDg2PazM"
   },
   {
@@ -10959,6 +11305,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/n7I7M6xV3_g/mqdefault.jpg",
     "duration": "0:29",
+    "viewCount": 26487,
     "url": "https://www.youtube.com/watch?v=n7I7M6xV3_g"
   },
   {
@@ -10989,6 +11336,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/PYJlz_Q5g3c/mqdefault.jpg",
     "duration": "0:25",
+    "viewCount": 21252,
     "url": "https://www.youtube.com/watch?v=PYJlz_Q5g3c"
   },
   {
@@ -11019,6 +11367,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/QTLH1vwC_nM/mqdefault.jpg",
     "duration": "0:31",
+    "viewCount": 26660,
     "url": "https://www.youtube.com/watch?v=QTLH1vwC_nM"
   },
   {
@@ -11049,6 +11398,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/riHvZR_E7Io/mqdefault.jpg",
     "duration": "0:12",
+    "viewCount": 15923,
     "url": "https://www.youtube.com/watch?v=riHvZR_E7Io"
   },
   {
@@ -11081,6 +11431,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/SIjCyK1hfXs/mqdefault.jpg",
     "duration": "0:19",
+    "viewCount": 16886,
     "url": "https://www.youtube.com/watch?v=SIjCyK1hfXs"
   },
   {
@@ -11111,6 +11462,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/uexbiKRvY_4/mqdefault.jpg",
     "duration": "0:19",
+    "viewCount": 28834,
     "url": "https://www.youtube.com/watch?v=uexbiKRvY_4"
   },
   {
@@ -11143,6 +11495,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/Vbmjruq6BRQ/mqdefault.jpg",
     "duration": "1:28",
+    "viewCount": 6780,
     "url": "https://www.youtube.com/watch?v=Vbmjruq6BRQ"
   },
   {
@@ -11175,6 +11528,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/x20Fm8I_3JY/mqdefault.jpg",
     "duration": "0:59",
+    "viewCount": 8567,
     "url": "https://www.youtube.com/watch?v=x20Fm8I_3JY"
   },
   {
@@ -11205,6 +11559,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/Zdv4qoseltc/mqdefault.jpg",
     "duration": "0:15",
+    "viewCount": 19013,
     "url": "https://www.youtube.com/watch?v=Zdv4qoseltc"
   },
   {
@@ -11235,40 +11590,8 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员与教练视角，适合想加强发球、步伐和实战训练思路的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/zNO8VjbjQ4Q/mqdefault.jpg",
     "duration": "0:21",
+    "viewCount": 3057,
     "url": "https://www.youtube.com/watch?v=zNO8VjbjQ4Q"
-  },
-  {
-    "id": "content_expanded_youtube_creator_the_tennis_mentor_0meyx4hxm0y",
-    "title": "5 BIGGEST Forehand Mistakes (& How To Fix Them)",
-    "sourceTitle": "5 BIGGEST Forehand Mistakes (& How To Fix Them)",
-    "creatorId": "creator_the_tennis_mentor",
-    "platform": "YouTube",
-    "type": "video",
-    "levels": [
-      "2.5",
-      "3.0",
-      "3.5",
-      "4.0"
-    ],
-    "skills": [
-      "forehand",
-      "basics"
-    ],
-    "problemTags": [
-      "forehand-no-power",
-      "forehand-out",
-      "no-clear-technique"
-    ],
-    "language": "en",
-    "summary": "基础动作和训练逻辑讲得扎实",
-    "reason": "正手总发不上力",
-    "useCases": [
-      "正手总发不上力"
-    ],
-    "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
-    "thumbnail": "https://i.ytimg.com/vi/0MeYx4hXm0Y/mqdefault.jpg",
-    "duration": "10:37",
-    "url": "https://www.youtube.com/watch?v=0MeYx4hXm0Y"
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_blyalc1gjrq",
@@ -11301,69 +11624,8 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/BLyalC1gjrQ/mqdefault.jpg",
     "duration": "8:05",
+    "viewCount": 138378,
     "url": "https://www.youtube.com/watch?v=BLyalC1gjrQ"
-  },
-  {
-    "id": "content_expanded_youtube_creator_the_tennis_mentor_fxq6xfan2gs",
-    "title": "Andy Murray Has 3 Return Tips For You",
-    "sourceTitle": "Andy Murray Has 3 Return Tips For You",
-    "creatorId": "creator_the_tennis_mentor",
-    "platform": "YouTube",
-    "type": "video",
-    "levels": [
-      "2.5",
-      "3.0",
-      "3.5",
-      "4.0"
-    ],
-    "skills": [
-      "return"
-    ],
-    "problemTags": [
-      "return-under-pressure",
-      "late-contact"
-    ],
-    "language": "en",
-    "summary": "基础动作和训练逻辑讲得扎实",
-    "reason": "接发总被对手压住",
-    "useCases": [
-      "接发总被对手压住"
-    ],
-    "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
-    "thumbnail": "https://i.ytimg.com/vi/fxQ6XFAn2gs/mqdefault.jpg",
-    "duration": "1:23",
-    "url": "https://www.youtube.com/watch?v=fxQ6XFAn2gs"
-  },
-  {
-    "id": "content_expanded_youtube_creator_the_tennis_mentor_gg4olilr864",
-    "title": "How To MISS LESS Tennis Balls",
-    "sourceTitle": "How To MISS LESS Tennis Balls",
-    "creatorId": "creator_the_tennis_mentor",
-    "platform": "YouTube",
-    "type": "video",
-    "levels": [
-      "2.5",
-      "3.0",
-      "3.5",
-      "4.0"
-    ],
-    "skills": [
-      "basics"
-    ],
-    "problemTags": [
-      "no-clear-technique",
-      "late-contact"
-    ],
-    "language": "en",
-    "summary": "基础动作和训练逻辑讲得扎实",
-    "reason": "基础动作总立不住",
-    "useCases": [
-      "基础动作总立不住"
-    ],
-    "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
-    "thumbnail": "https://i.ytimg.com/vi/Gg4olIlr864/mqdefault.jpg",
-    "duration": "0:52",
-    "url": "https://www.youtube.com/watch?v=Gg4olIlr864"
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_ijqjq29hjgq",
@@ -11394,38 +11656,8 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/IjqJQ29HJGQ/mqdefault.jpg",
     "duration": "0:47",
+    "viewCount": 13914,
     "url": "https://www.youtube.com/watch?v=IjqJQ29HJGQ"
-  },
-  {
-    "id": "content_expanded_youtube_creator_the_tennis_mentor_jvkfg7z5sce",
-    "title": "Open Stance Backhand Lesson",
-    "sourceTitle": "Open Stance Backhand Lesson",
-    "creatorId": "creator_the_tennis_mentor",
-    "platform": "YouTube",
-    "type": "video",
-    "levels": [
-      "2.5",
-      "3.0",
-      "3.5",
-      "4.0"
-    ],
-    "skills": [
-      "backhand"
-    ],
-    "problemTags": [
-      "backhand-into-net",
-      "late-contact"
-    ],
-    "language": "en",
-    "summary": "基础动作和训练逻辑讲得扎实",
-    "reason": "反手总打不扎实",
-    "useCases": [
-      "反手总打不扎实"
-    ],
-    "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
-    "thumbnail": "https://i.ytimg.com/vi/jvkfG7z5scE/mqdefault.jpg",
-    "duration": "1:06",
-    "url": "https://www.youtube.com/watch?v=jvkfG7z5scE"
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_jwz9cppqjtq",
@@ -11456,7 +11688,72 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/Jwz9cPpqJtQ/mqdefault.jpg",
     "duration": "0:22",
+    "viewCount": 30778,
     "url": "https://www.youtube.com/watch?v=Jwz9cPpqJtQ"
+  },
+  {
+    "id": "content_expanded_youtube_creator_the_tennis_mentor_k189lfo3syw",
+    "title": "How to Change Direction with ACCURACY",
+    "sourceTitle": "How to Change Direction with ACCURACY",
+    "creatorId": "creator_the_tennis_mentor",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    "skills": [
+      "basics"
+    ],
+    "problemTags": [
+      "no-clear-technique",
+      "late-contact"
+    ],
+    "language": "en",
+    "summary": "基础动作和训练逻辑讲得扎实",
+    "reason": "基础动作总立不住",
+    "useCases": [
+      "基础动作总立不住"
+    ],
+    "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
+    "thumbnail": "https://i.ytimg.com/vi/k189lFo3SYw/mqdefault.jpg",
+    "duration": "1:23",
+    "viewCount": 19169,
+    "url": "https://www.youtube.com/watch?v=k189lFo3SYw"
+  },
+  {
+    "id": "content_expanded_youtube_creator_the_tennis_mentor_laslbgo3evi",
+    "title": "5 Reasons You're Double Faulting (& HOW TO FIX THEM)",
+    "sourceTitle": "5 Reasons You're Double Faulting (& HOW TO FIX THEM)",
+    "creatorId": "creator_the_tennis_mentor",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    "skills": [
+      "basics"
+    ],
+    "problemTags": [
+      "no-clear-technique",
+      "late-contact"
+    ],
+    "language": "en",
+    "summary": "基础动作和训练逻辑讲得扎实",
+    "reason": "基础动作总立不住",
+    "useCases": [
+      "基础动作总立不住"
+    ],
+    "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
+    "thumbnail": "https://i.ytimg.com/vi/LASlbgo3evI/mqdefault.jpg",
+    "duration": "12:58",
+    "viewCount": 8841,
+    "url": "https://www.youtube.com/watch?v=LASlbgo3evI"
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_lsj_lwgzbwe",
@@ -11487,6 +11784,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/lsJ_LwGzbwE/mqdefault.jpg",
     "duration": "0:19",
+    "viewCount": 30063,
     "url": "https://www.youtube.com/watch?v=lsJ_LwGzbwE"
   },
   {
@@ -11518,6 +11816,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/mj2HFltYtKI/mqdefault.jpg",
     "duration": "0:44",
+    "viewCount": 5282,
     "url": "https://www.youtube.com/watch?v=mj2HFltYtKI"
   },
   {
@@ -11551,7 +11850,40 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/Nm1nfu15Swk/mqdefault.jpg",
     "duration": "29:14",
+    "viewCount": 11699,
     "url": "https://www.youtube.com/watch?v=Nm1nfu15Swk"
+  },
+  {
+    "id": "content_expanded_youtube_creator_the_tennis_mentor_omfejuwwoys",
+    "title": "I Hit With Andy Murray: Plus His 3 Return Tips",
+    "sourceTitle": "I Hit With Andy Murray: Plus His 3 Return Tips",
+    "creatorId": "creator_the_tennis_mentor",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    "skills": [
+      "return"
+    ],
+    "problemTags": [
+      "return-under-pressure",
+      "late-contact"
+    ],
+    "language": "en",
+    "summary": "基础动作和训练逻辑讲得扎实",
+    "reason": "接发总被对手压住",
+    "useCases": [
+      "接发总被对手压住"
+    ],
+    "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
+    "thumbnail": "https://i.ytimg.com/vi/oMFEJUWwOYs/mqdefault.jpg",
+    "duration": "8:10",
+    "viewCount": 23994,
+    "url": "https://www.youtube.com/watch?v=oMFEJUWwOYs"
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_pdcdbmiv5qy",
@@ -11582,6 +11914,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/pDCdBMiV5qY/mqdefault.jpg",
     "duration": "0:28",
+    "viewCount": 30116,
     "url": "https://www.youtube.com/watch?v=pDCdBMiV5qY"
   },
   {
@@ -11617,6 +11950,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/r71g4FZKrNk/mqdefault.jpg",
     "duration": "1:30",
+    "viewCount": 22046,
     "url": "https://www.youtube.com/watch?v=r71g4FZKrNk"
   },
   {
@@ -11647,6 +11981,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/tE-K5eAqB8k/mqdefault.jpg",
     "duration": "0:50",
+    "viewCount": 5048,
     "url": "https://www.youtube.com/watch?v=tE-K5eAqB8k"
   },
   {
@@ -11680,7 +12015,40 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/trlTanFyB-A/mqdefault.jpg",
     "duration": "0:35",
+    "viewCount": 82018,
     "url": "https://www.youtube.com/watch?v=trlTanFyB-A"
+  },
+  {
+    "id": "content_expanded_youtube_creator_the_tennis_mentor_tsqu_c-tgtu",
+    "title": "Training For The Next $1M One Point Slam!",
+    "sourceTitle": "Training For The Next $1M One Point Slam!",
+    "creatorId": "creator_the_tennis_mentor",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    "skills": [
+      "training"
+    ],
+    "problemTags": [
+      "cant-self-practice",
+      "no-clear-technique"
+    ],
+    "language": "en",
+    "summary": "基础动作和训练逻辑讲得扎实",
+    "reason": "练球总没结构",
+    "useCases": [
+      "练球总没结构"
+    ],
+    "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
+    "thumbnail": "https://i.ytimg.com/vi/TsqU_c-tgTU/mqdefault.jpg",
+    "duration": "0:11",
+    "viewCount": 21951,
+    "url": "https://www.youtube.com/watch?v=TsqU_c-tgTU"
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_u40lwl3tutq",
@@ -11711,42 +12079,8 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/u40lWL3TuTQ/mqdefault.jpg",
     "duration": "9:13",
+    "viewCount": 33039,
     "url": "https://www.youtube.com/watch?v=u40lWL3TuTQ"
-  },
-  {
-    "id": "content_expanded_youtube_creator_the_tennis_mentor_ujrv-sbo6k8",
-    "title": "The 5 Footwork Fundamentals Every Tennis Player Needs",
-    "sourceTitle": "The 5 Footwork Fundamentals Every Tennis Player Needs",
-    "creatorId": "creator_the_tennis_mentor",
-    "platform": "YouTube",
-    "type": "video",
-    "levels": [
-      "2.5",
-      "3.0",
-      "3.5",
-      "4.0"
-    ],
-    "skills": [
-      "movement",
-      "footwork",
-      "mental",
-      "basics"
-    ],
-    "problemTags": [
-      "movement-slow",
-      "late-contact",
-      "match-anxiety"
-    ],
-    "language": "en",
-    "summary": "基础动作和训练逻辑讲得扎实",
-    "reason": "脚步启动总慢半拍",
-    "useCases": [
-      "脚步启动总慢半拍"
-    ],
-    "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
-    "thumbnail": "https://i.ytimg.com/vi/UjRv-SbO6K8/mqdefault.jpg",
-    "duration": "14:06",
-    "url": "https://www.youtube.com/watch?v=UjRv-SbO6K8"
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_vjwoov3kgqe",
@@ -11777,7 +12111,40 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/VJwoOv3kGqE/mqdefault.jpg",
     "duration": "1:30",
+    "viewCount": 11533,
     "url": "https://www.youtube.com/watch?v=VJwoOv3kGqE"
+  },
+  {
+    "id": "content_expanded_youtube_creator_the_tennis_mentor_w5i5chnif6q",
+    "title": "Don’t Hit TOO MANY 1st Serves IN",
+    "sourceTitle": "Don’t Hit TOO MANY 1st Serves IN",
+    "creatorId": "creator_the_tennis_mentor",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    "skills": [
+      "serve"
+    ],
+    "problemTags": [
+      "serve-basics",
+      "serve-rhythm"
+    ],
+    "language": "en",
+    "summary": "基础动作和训练逻辑讲得扎实",
+    "reason": "发球动作总不顺",
+    "useCases": [
+      "发球动作总不顺"
+    ],
+    "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
+    "thumbnail": "https://i.ytimg.com/vi/W5I5CHniF6Q/mqdefault.jpg",
+    "duration": "1:07",
+    "viewCount": 94747,
+    "url": "https://www.youtube.com/watch?v=W5I5CHniF6Q"
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_wk4cgaktcd0",
@@ -11808,6 +12175,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/WK4cGAKtcD0/mqdefault.jpg",
     "duration": "0:57",
+    "viewCount": 123036,
     "url": "https://www.youtube.com/watch?v=WK4cGAKtcD0"
   },
   {
@@ -11841,6 +12209,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/YnlpjLSvSpw/mqdefault.jpg",
     "duration": "1:00",
+    "viewCount": 2198327,
     "url": "https://www.youtube.com/watch?v=YnlpjLSvSpw"
   },
   {
@@ -11872,43 +12241,13 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
     "thumbnail": "https://i.ytimg.com/vi/Zt1cSDwkbkE/mqdefault.jpg",
     "duration": "1:06",
+    "viewCount": 26314,
     "url": "https://www.youtube.com/watch?v=Zt1cSDwkbkE"
   },
   {
-    "id": "content_expanded_youtube_creator_time_value_of_tennis__dyukshdm6k",
-    "title": "To Make Every Volley In Against Anyone , Do This",
-    "sourceTitle": "To Make Every Volley In Against Anyone , Do This",
-    "creatorId": "creator_time_value_of_tennis",
-    "platform": "YouTube",
-    "type": "video",
-    "levels": [
-      "3.0",
-      "3.5",
-      "4.0",
-      "4.5"
-    ],
-    "skills": [
-      "net"
-    ],
-    "problemTags": [
-      "net-confidence",
-      "volley-errors"
-    ],
-    "language": "en",
-    "summary": "技术细节和比赛理解并重",
-    "reason": "网前总不敢主动上",
-    "useCases": [
-      "网前总不敢主动上"
-    ],
-    "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
-    "thumbnail": "https://i.ytimg.com/vi/_dYUksHdM6k/mqdefault.jpg",
-    "duration": "9:04",
-    "url": "https://www.youtube.com/watch?v=_dYUksHdM6k"
-  },
-  {
-    "id": "content_expanded_youtube_creator_time_value_of_tennis_5_fwpma6ba4",
-    "title": "How To Handle High Balls With A One Handed Backhand!",
-    "sourceTitle": "How To Handle High Balls With A One Handed Backhand!",
+    "id": "content_expanded_youtube_creator_time_value_of_tennis_aq5bmpwcbra",
+    "title": "How To Hit The Perfect One Handed Backhand All The Time!",
+    "sourceTitle": "How To Hit The Perfect One Handed Backhand All The Time!",
     "creatorId": "creator_time_value_of_tennis",
     "platform": "YouTube",
     "type": "video",
@@ -11934,9 +12273,10 @@ export const expandedContents: ContentItem[] = [
       "反手总打不扎实"
     ],
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
-    "thumbnail": "https://i.ytimg.com/vi/5_FWpma6BA4/mqdefault.jpg",
-    "duration": "6:54",
-    "url": "https://www.youtube.com/watch?v=5_FWpma6BA4"
+    "thumbnail": "https://i.ytimg.com/vi/AQ5BmPwCBRA/mqdefault.jpg",
+    "duration": "7:51",
+    "viewCount": 117470,
+    "url": "https://www.youtube.com/watch?v=AQ5BmPwCBRA"
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_bzh-ie1rxkm",
@@ -11967,38 +12307,8 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/BZh-iE1RXKM/mqdefault.jpg",
     "duration": "6:27",
+    "viewCount": 5196,
     "url": "https://www.youtube.com/watch?v=BZh-iE1RXKM"
-  },
-  {
-    "id": "content_expanded_youtube_creator_time_value_of_tennis_ekj5t9abv6y",
-    "title": "Avoid the MOST COMMON MISTAKE trying to generate TOPSPIN! Learn what the tennis Pro's do.",
-    "sourceTitle": "Avoid the MOST COMMON MISTAKE trying to generate TOPSPIN! Learn what the tennis Pro's do.",
-    "creatorId": "creator_time_value_of_tennis",
-    "platform": "YouTube",
-    "type": "video",
-    "levels": [
-      "3.0",
-      "3.5",
-      "4.0",
-      "4.5"
-    ],
-    "skills": [
-      "topspin"
-    ],
-    "problemTags": [
-      "topspin-low",
-      "forehand-out"
-    ],
-    "language": "en",
-    "summary": "技术细节和比赛理解并重",
-    "reason": "上旋总转不起来",
-    "useCases": [
-      "上旋总转不起来"
-    ],
-    "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
-    "thumbnail": "https://i.ytimg.com/vi/ekj5T9aBv6Y/mqdefault.jpg",
-    "duration": "5:22",
-    "url": "https://www.youtube.com/watch?v=ekj5T9aBv6Y"
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_gklnsxdef3u",
@@ -12029,7 +12339,74 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/GKlNsxdEf3U/mqdefault.jpg",
     "duration": "6:30",
+    "viewCount": 387677,
     "url": "https://www.youtube.com/watch?v=GKlNsxdEf3U"
+  },
+  {
+    "id": "content_expanded_youtube_creator_time_value_of_tennis_gq0kkg8lfow",
+    "title": "Hit your SLICE SERVE like the Pro's! Tennis secret revealed",
+    "sourceTitle": "Hit your SLICE SERVE like the Pro's! Tennis secret revealed",
+    "creatorId": "creator_time_value_of_tennis",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    "skills": [
+      "serve",
+      "slice"
+    ],
+    "problemTags": [
+      "serve-basics",
+      "serve-rhythm",
+      "slice-too-high"
+    ],
+    "language": "en",
+    "summary": "技术细节和比赛理解并重",
+    "reason": "发球动作总不顺",
+    "useCases": [
+      "发球动作总不顺"
+    ],
+    "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
+    "thumbnail": "https://i.ytimg.com/vi/Gq0kKG8LFOw/mqdefault.jpg",
+    "duration": "8:04",
+    "viewCount": 161290,
+    "url": "https://www.youtube.com/watch?v=Gq0kKG8LFOw"
+  },
+  {
+    "id": "content_expanded_youtube_creator_time_value_of_tennis_ho5zz-zewkk",
+    "title": "MASSIVE POWER INCREASE on your FOREHAND with this quick fix! Learn to hit your forehand harder",
+    "sourceTitle": "MASSIVE POWER INCREASE on your FOREHAND with this quick fix! Learn to hit your forehand harder",
+    "creatorId": "creator_time_value_of_tennis",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    "skills": [
+      "forehand"
+    ],
+    "problemTags": [
+      "forehand-no-power",
+      "forehand-out"
+    ],
+    "language": "en",
+    "summary": "技术细节和比赛理解并重",
+    "reason": "正手总发不上力",
+    "useCases": [
+      "正手总发不上力"
+    ],
+    "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
+    "thumbnail": "https://i.ytimg.com/vi/hO5zz-zeWkk/mqdefault.jpg",
+    "duration": "7:33",
+    "viewCount": 177213,
+    "url": "https://www.youtube.com/watch?v=hO5zz-zeWkk"
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_kdeqoflr4_c",
@@ -12060,6 +12437,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/kdeqofLr4_c/mqdefault.jpg",
     "duration": "5:32",
+    "viewCount": 2637,
     "url": "https://www.youtube.com/watch?v=kdeqofLr4_c"
   },
   {
@@ -12091,6 +12469,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/Mnbazff6a3I/mqdefault.jpg",
     "duration": "17:39",
+    "viewCount": 24644,
     "url": "https://www.youtube.com/watch?v=Mnbazff6a3I"
   },
   {
@@ -12124,12 +12503,13 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/PhFN_MMnbzY/mqdefault.jpg",
     "duration": "10:49",
+    "viewCount": 13182,
     "url": "https://www.youtube.com/watch?v=PhFN_MMnbzY"
   },
   {
-    "id": "content_expanded_youtube_creator_time_value_of_tennis_sohbjfok5i0",
-    "title": "How To Hit The PERFECT RETURN!",
-    "sourceTitle": "How To Hit The PERFECT RETURN!",
+    "id": "content_expanded_youtube_creator_time_value_of_tennis_sjc5k9dv0um",
+    "title": "Pro Secret For Easy Put Away Volleys In Tennis!",
+    "sourceTitle": "Pro Secret For Easy Put Away Volleys In Tennis!",
     "creatorId": "creator_time_value_of_tennis",
     "platform": "YouTube",
     "type": "video",
@@ -12140,24 +12520,23 @@ export const expandedContents: ContentItem[] = [
       "4.5"
     ],
     "skills": [
-      "return",
-      "basics"
+      "net"
     ],
     "problemTags": [
-      "return-under-pressure",
-      "late-contact",
-      "no-clear-technique"
+      "net-confidence",
+      "volley-errors"
     ],
     "language": "en",
     "summary": "技术细节和比赛理解并重",
-    "reason": "接发总被对手压住",
+    "reason": "网前总不敢主动上",
     "useCases": [
-      "接发总被对手压住"
+      "网前总不敢主动上"
     ],
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
-    "thumbnail": "https://i.ytimg.com/vi/SoHBjFOK5I0/mqdefault.jpg",
-    "duration": "8:43",
-    "url": "https://www.youtube.com/watch?v=SoHBjFOK5I0"
+    "thumbnail": "https://i.ytimg.com/vi/SJC5k9DV0UM/mqdefault.jpg",
+    "duration": "5:07",
+    "viewCount": 5693,
+    "url": "https://www.youtube.com/watch?v=SJC5k9DV0UM"
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_t-nn_kj_718",
@@ -12191,6 +12570,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/t-nN_KJ_718/mqdefault.jpg",
     "duration": "8:47",
+    "viewCount": 403187,
     "url": "https://www.youtube.com/watch?v=t-nN_KJ_718"
   },
   {
@@ -12222,6 +12602,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/tfkAm2IGGnU/mqdefault.jpg",
     "duration": "9:07",
+    "viewCount": 8728,
     "url": "https://www.youtube.com/watch?v=tfkAm2IGGnU"
   },
   {
@@ -12256,38 +12637,8 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/Uajf-yH17Ww/mqdefault.jpg",
     "duration": "8:43",
+    "viewCount": 240812,
     "url": "https://www.youtube.com/watch?v=Uajf-yH17Ww"
-  },
-  {
-    "id": "content_expanded_youtube_creator_time_value_of_tennis_ue0m7ki9g1w",
-    "title": "This will TRANSFORM YOUR SERVE and add up to 20 MPH to it! Serve technique lesson",
-    "sourceTitle": "This will TRANSFORM YOUR SERVE and add up to 20 MPH to it! Serve technique lesson",
-    "creatorId": "creator_time_value_of_tennis",
-    "platform": "YouTube",
-    "type": "video",
-    "levels": [
-      "3.0",
-      "3.5",
-      "4.0",
-      "4.5"
-    ],
-    "skills": [
-      "serve"
-    ],
-    "problemTags": [
-      "serve-basics",
-      "serve-rhythm"
-    ],
-    "language": "en",
-    "summary": "技术细节和比赛理解并重",
-    "reason": "发球动作总不顺",
-    "useCases": [
-      "发球动作总不顺"
-    ],
-    "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
-    "thumbnail": "https://i.ytimg.com/vi/ue0M7ki9G1w/mqdefault.jpg",
-    "duration": "6:26",
-    "url": "https://www.youtube.com/watch?v=ue0M7ki9G1w"
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_ukyrxoplbaa",
@@ -12318,6 +12669,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/uKYrxOpLbAA/mqdefault.jpg",
     "duration": "6:53",
+    "viewCount": 24280,
     "url": "https://www.youtube.com/watch?v=uKYrxOpLbAA"
   },
   {
@@ -12351,6 +12703,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/USsGqcQqcAg/mqdefault.jpg",
     "duration": "7:39",
+    "viewCount": 7548,
     "url": "https://www.youtube.com/watch?v=USsGqcQqcAg"
   },
   {
@@ -12382,6 +12735,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/vhCF4vmtEow/mqdefault.jpg",
     "duration": "5:43",
+    "viewCount": 11830,
     "url": "https://www.youtube.com/watch?v=vhCF4vmtEow"
   },
   {
@@ -12413,6 +12767,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/ViJNDiPQ6aM/mqdefault.jpg",
     "duration": "12:46",
+    "viewCount": 52409,
     "url": "https://www.youtube.com/watch?v=ViJNDiPQ6aM"
   },
   {
@@ -12446,6 +12801,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/VU5JWzFn6PE/mqdefault.jpg",
     "duration": "10:30",
+    "viewCount": 634947,
     "url": "https://www.youtube.com/watch?v=VU5JWzFn6PE"
   },
   {
@@ -12477,7 +12833,40 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/zLZTA8BcEOA/mqdefault.jpg",
     "duration": "6:34",
+    "viewCount": 9344,
     "url": "https://www.youtube.com/watch?v=zLZTA8BcEOA"
+  },
+  {
+    "id": "content_expanded_youtube_creator_time_value_of_tennis_zuwozaknejw",
+    "title": "This is KILLING your SERVE SPEED! Avoid this common serve mistake.",
+    "sourceTitle": "This is KILLING your SERVE SPEED! Avoid this common serve mistake.",
+    "creatorId": "creator_time_value_of_tennis",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    "skills": [
+      "serve"
+    ],
+    "problemTags": [
+      "serve-basics",
+      "serve-rhythm"
+    ],
+    "language": "en",
+    "summary": "技术细节和比赛理解并重",
+    "reason": "发球动作总不顺",
+    "useCases": [
+      "发球动作总不顺"
+    ],
+    "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
+    "thumbnail": "https://i.ytimg.com/vi/ZUwOzaKnejw/mqdefault.jpg",
+    "duration": "6:08",
+    "viewCount": 137968,
+    "url": "https://www.youtube.com/watch?v=ZUwOzaKnejw"
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_zvw2vx7hqg8",
@@ -12508,6 +12897,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
     "thumbnail": "https://i.ytimg.com/vi/zVw2vx7hQg8/mqdefault.jpg",
     "duration": "9:46",
+    "viewCount": 41494,
     "url": "https://www.youtube.com/watch?v=zVw2vx7hQg8"
   },
   {
@@ -12538,6 +12928,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/4j8eQ3Yz0hU/mqdefault.jpg",
     "duration": "0:08",
+    "viewCount": 158682,
     "url": "https://www.youtube.com/watch?v=4j8eQ3Yz0hU"
   },
   {
@@ -12570,6 +12961,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/4NI3IExugX8/mqdefault.jpg",
     "duration": "0:15",
+    "viewCount": 189020,
     "url": "https://www.youtube.com/watch?v=4NI3IExugX8"
   },
   {
@@ -12600,6 +12992,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/9sSBdC-cDEs/mqdefault.jpg",
     "duration": "17:00",
+    "viewCount": 18405,
     "url": "https://www.youtube.com/watch?v=9sSBdC-cDEs"
   },
   {
@@ -12630,6 +13023,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/euNmfjm5Ywo/mqdefault.jpg",
     "duration": "0:12",
+    "viewCount": 123615,
     "url": "https://www.youtube.com/watch?v=euNmfjm5Ywo"
   },
   {
@@ -12660,6 +13054,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/H4Ez7sHmRWE/mqdefault.jpg",
     "duration": "0:12",
+    "viewCount": 327117,
     "url": "https://www.youtube.com/watch?v=H4Ez7sHmRWE"
   },
   {
@@ -12692,6 +13087,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/i0PGzddJzh4/mqdefault.jpg",
     "duration": "0:07",
+    "viewCount": 313112,
     "url": "https://www.youtube.com/watch?v=i0PGzddJzh4"
   },
   {
@@ -12722,6 +13118,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/jeZj_8BOLJw/mqdefault.jpg",
     "duration": "0:26",
+    "viewCount": 61429,
     "url": "https://www.youtube.com/watch?v=jeZj_8BOLJw"
   },
   {
@@ -12754,6 +13151,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/K-YRjbZ1kdQ/mqdefault.jpg",
     "duration": "0:25",
+    "viewCount": 143822,
     "url": "https://www.youtube.com/watch?v=K-YRjbZ1kdQ"
   },
   {
@@ -12784,6 +13182,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/M_6AdXECJ74/mqdefault.jpg",
     "duration": "0:39",
+    "viewCount": 70711,
     "url": "https://www.youtube.com/watch?v=M_6AdXECJ74"
   },
   {
@@ -12817,6 +13216,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/MPfZ7qvoSgM/mqdefault.jpg",
     "duration": "0:43",
+    "viewCount": 48179,
     "url": "https://www.youtube.com/watch?v=MPfZ7qvoSgM"
   },
   {
@@ -12847,6 +13247,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/pVlFcYI5KDY/mqdefault.jpg",
     "duration": "0:11",
+    "viewCount": 40705,
     "url": "https://www.youtube.com/watch?v=pVlFcYI5KDY"
   },
   {
@@ -12877,6 +13278,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/q-sGY5qZs5E/mqdefault.jpg",
     "duration": "0:28",
+    "viewCount": 47088,
     "url": "https://www.youtube.com/watch?v=q-sGY5qZs5E"
   },
   {
@@ -12907,6 +13309,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/QBZsyOAA0ig/mqdefault.jpg",
     "duration": "0:46",
+    "viewCount": 268081,
     "url": "https://www.youtube.com/watch?v=QBZsyOAA0ig"
   },
   {
@@ -12937,6 +13340,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/qqvJGE8NlLg/mqdefault.jpg",
     "duration": "0:23",
+    "viewCount": 177590,
     "url": "https://www.youtube.com/watch?v=qqvJGE8NlLg"
   },
   {
@@ -12970,6 +13374,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/ScF9Lpuk-8g/mqdefault.jpg",
     "duration": "0:45",
+    "viewCount": 27836,
     "url": "https://www.youtube.com/watch?v=ScF9Lpuk-8g"
   },
   {
@@ -13000,6 +13405,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/St_RhLdtgy4/mqdefault.jpg",
     "duration": "0:38",
+    "viewCount": 71017,
     "url": "https://www.youtube.com/watch?v=St_RhLdtgy4"
   },
   {
@@ -13030,6 +13436,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/xsG0S6zpp2Y/mqdefault.jpg",
     "duration": "0:14",
+    "viewCount": 134342,
     "url": "https://www.youtube.com/watch?v=xsG0S6zpp2Y"
   },
   {
@@ -13060,6 +13467,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/z0aa4SSywd4/mqdefault.jpg",
     "duration": "0:17",
+    "viewCount": 86505,
     "url": "https://www.youtube.com/watch?v=z0aa4SSywd4"
   },
   {
@@ -13090,6 +13498,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/ZGUL7aVieWM/mqdefault.jpg",
     "duration": "0:57",
+    "viewCount": 826044,
     "url": "https://www.youtube.com/watch?v=ZGUL7aVieWM"
   },
   {
@@ -13122,6 +13531,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏系统化基础教学，适合需要把发球和整体动作框架重新理顺的业余球员。",
     "thumbnail": "https://i.ytimg.com/vi/Zj3h89ajYcU/mqdefault.jpg",
     "duration": "0:27",
+    "viewCount": 396930,
     "url": "https://www.youtube.com/watch?v=Zj3h89ajYcU"
   },
   {
@@ -13152,6 +13562,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/2YXrv7MPUMY/mqdefault.jpg",
     "duration": "0:53",
+    "viewCount": 36191,
     "url": "https://www.youtube.com/watch?v=2YXrv7MPUMY"
   },
   {
@@ -13182,6 +13593,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/5PenKN_eGPo/mqdefault.jpg",
     "duration": "10:23",
+    "viewCount": 93765,
     "url": "https://www.youtube.com/watch?v=5PenKN_eGPo"
   },
   {
@@ -13212,6 +13624,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/6ditkEMCtvg/mqdefault.jpg",
     "duration": "5:41",
+    "viewCount": 86454,
     "url": "https://www.youtube.com/watch?v=6ditkEMCtvg"
   },
   {
@@ -13245,6 +13658,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/84qBYS239Bc/mqdefault.jpg",
     "duration": "0:41",
+    "viewCount": 6148,
     "url": "https://www.youtube.com/watch?v=84qBYS239Bc"
   },
   {
@@ -13278,6 +13692,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/8EipCfNfvbQ/mqdefault.jpg",
     "duration": "0:22",
+    "viewCount": 6186,
     "url": "https://www.youtube.com/watch?v=8EipCfNfvbQ"
   },
   {
@@ -13308,6 +13723,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/8W5idYn_K_8/mqdefault.jpg",
     "duration": "10:49",
+    "viewCount": 70557,
     "url": "https://www.youtube.com/watch?v=8W5idYn_K_8"
   },
   {
@@ -13338,6 +13754,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/DlzqyY0VtdI/mqdefault.jpg",
     "duration": "0:21",
+    "viewCount": 12027,
     "url": "https://www.youtube.com/watch?v=DlzqyY0VtdI"
   },
   {
@@ -13368,6 +13785,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/e4mJW0eck14/mqdefault.jpg",
     "duration": "0:16",
+    "viewCount": 1263201,
     "url": "https://www.youtube.com/watch?v=e4mJW0eck14"
   },
   {
@@ -13400,6 +13818,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/EohlptOTXgk/mqdefault.jpg",
     "duration": "10:37",
+    "viewCount": 28854,
     "url": "https://www.youtube.com/watch?v=EohlptOTXgk"
   },
   {
@@ -13432,6 +13851,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/GuJbJqk92WY/mqdefault.jpg",
     "duration": "16:09",
+    "viewCount": 30346,
     "url": "https://www.youtube.com/watch?v=GuJbJqk92WY"
   },
   {
@@ -13466,6 +13886,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/JvJekNAy8Gc/mqdefault.jpg",
     "duration": "0:24",
+    "viewCount": 20232,
     "url": "https://www.youtube.com/watch?v=JvJekNAy8Gc"
   },
   {
@@ -13498,6 +13919,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/l6dHDippPJU/mqdefault.jpg",
     "duration": "0:16",
+    "viewCount": 5642,
     "url": "https://www.youtube.com/watch?v=l6dHDippPJU"
   },
   {
@@ -13531,6 +13953,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/MKPn0dQJZmc/mqdefault.jpg",
     "duration": "12:08",
+    "viewCount": 891460,
     "url": "https://www.youtube.com/watch?v=MKPn0dQJZmc"
   },
   {
@@ -13561,6 +13984,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/OgZ-o1QHKo8/mqdefault.jpg",
     "duration": "2:06",
+    "viewCount": 88521,
     "url": "https://www.youtube.com/watch?v=OgZ-o1QHKo8"
   },
   {
@@ -13591,6 +14015,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/ovUy-FeoCv8/mqdefault.jpg",
     "duration": "18:45",
+    "viewCount": 103734,
     "url": "https://www.youtube.com/watch?v=ovUy-FeoCv8"
   },
   {
@@ -13623,6 +14048,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/pSuTy3funNs/mqdefault.jpg",
     "duration": "12:08",
+    "viewCount": 10483,
     "url": "https://www.youtube.com/watch?v=pSuTy3funNs"
   },
   {
@@ -13653,6 +14079,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/R5wDbDoUwxs/mqdefault.jpg",
     "duration": "0:14",
+    "viewCount": 15574,
     "url": "https://www.youtube.com/watch?v=R5wDbDoUwxs"
   },
   {
@@ -13683,6 +14110,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/tTt9kb-zazE/mqdefault.jpg",
     "duration": "9:07",
+    "viewCount": 229186,
     "url": "https://www.youtube.com/watch?v=tTt9kb-zazE"
   },
   {
@@ -13713,6 +14141,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/uEwV6qsImaY/mqdefault.jpg",
     "duration": "0:29",
+    "viewCount": 13041,
     "url": "https://www.youtube.com/watch?v=uEwV6qsImaY"
   },
   {
@@ -13743,6 +14172,7 @@ export const expandedContents: ContentItem[] = [
     "coachReason": "偏职业球员视角和比赛经验分享，适合想从顶级选手经验中理解训练与比赛心态的球员。",
     "thumbnail": "https://i.ytimg.com/vi/ZcCcvBV1NmI/mqdefault.jpg",
     "duration": "0:23",
+    "viewCount": 20256,
     "url": "https://www.youtube.com/watch?v=ZcCcvBV1NmI"
   }
 ];

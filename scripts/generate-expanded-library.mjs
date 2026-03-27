@@ -538,6 +538,7 @@ function buildBilibiliContentItem(creator, video) {
     coachReason: creator.bio,
     thumbnail: video.thumbnail,
     duration: video.duration,
+    viewCount: video.viewCount,
     url: video.url,
     __meta: {
       score: video.score,
@@ -567,6 +568,7 @@ function buildYouTubeContentItem(creator, video) {
     coachReason: creator.bio,
     thumbnail: video.thumbnail,
     duration: video.duration,
+    viewCount: video.viewCount,
     url: video.url,
     __meta: {
       score: video.score,
@@ -620,12 +622,14 @@ async function main() {
       .map((item) => {
         const title = htmlDecode(item.title ?? "");
         const { strong, weak } = classifyBilibiliTitle(title);
+        const viewCount = Number(item.stat?.view) || 0;
         return {
           id: item.bvid,
           title,
           strong,
           weak,
-          score: scoreByStats(Number(item.stat?.view) || 0, Number(item.stat?.danmaku) || 0),
+          score: scoreByStats(viewCount, Number(item.stat?.danmaku) || 0),
+          viewCount,
           url: `https://www.bilibili.com/video/${item.bvid}/`,
           thumbnail: String(item.pic).startsWith("//")
             ? `https:${item.pic}`
@@ -727,6 +731,7 @@ async function main() {
         title,
         strong,
         score: scoreByStats(viewCount, commentCount),
+        viewCount,
         url,
         thumbnail,
         duration,

@@ -22,22 +22,33 @@ function normalizeUrl(url: string) {
   return url.replace(/\/+$/, "");
 }
 
+function mergeLibraryItem(existing: ContentItem, candidate: ContentItem): ContentItem {
+  return {
+    ...existing,
+    sourceTitle: existing.sourceTitle ?? candidate.sourceTitle,
+    useCases: existing.useCases.length > 0 ? existing.useCases : candidate.useCases,
+    coachReason: existing.coachReason || candidate.coachReason,
+    thumbnail: candidate.thumbnail ?? existing.thumbnail,
+    duration: candidate.duration ?? existing.duration,
+    viewCount: candidate.viewCount ?? existing.viewCount
+  };
+}
+
 function buildLibraryItems(): ContentItem[] {
-  const baseItems = [...contents, ...expandedContents];
-  const seenUrls = new Set(baseItems.map((item) => normalizeUrl(item.url)));
-  const derivedItems: ContentItem[] = [];
+  const itemsByUrl = new Map<string, ContentItem>();
+
+  const upsert = (item: ContentItem) => {
+    const normalizedUrl = normalizeUrl(item.url);
+    const existing = itemsByUrl.get(normalizedUrl);
+    itemsByUrl.set(normalizedUrl, existing ? mergeLibraryItem(existing, item) : item);
+  };
+
+  contents.forEach(upsert);
+  expandedContents.forEach(upsert);
 
   creators.forEach((creator) => {
     (creator.featuredVideos ?? []).forEach((video, index) => {
-      const normalizedUrl = normalizeUrl(video.url);
-
-      if (seenUrls.has(normalizedUrl)) {
-        return;
-      }
-
-      seenUrls.add(normalizedUrl);
-
-      derivedItems.push({
+      upsert({
         id: `content_featured_${creator.id}_${index + 1}`,
         title: video.title,
         sourceTitle: video.title,
@@ -54,12 +65,13 @@ function buildLibraryItems(): ContentItem[] {
         coachReason: creator.bio,
         thumbnail: video.thumbnail,
         duration: video.duration,
+        viewCount: video.viewCount,
         url: video.url
       });
     });
   });
 
-  return [...baseItems, ...derivedItems];
+  return Array.from(itemsByUrl.values());
 }
 
 const libraryItems = buildLibraryItems();
