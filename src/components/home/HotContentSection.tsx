@@ -20,7 +20,7 @@ export function HotContentSection() {
     <section className="flex h-full flex-col space-y-4">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-xl font-bold text-slate-900">从这些内容开始练，更像真的有人在带你</h3>
+          <h3 className="text-xl font-bold text-slate-900">关注这些内容</h3>
         </div>
         <Link
           href="/library"

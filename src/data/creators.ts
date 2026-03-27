@@ -16,7 +16,7 @@ export const creators: Creator[] = [
     styleTags: ["新手友好", "讲解清晰", "基础导向", "动作拆解"],
     bio: "内容全面清晰，适合基础入门和自学提升。",
     suitableFor: ["零基础", "正手框架建立", "发球入门"],
-    featuredContentIds: ["content_gaiao_01", "content_gaiao_02", "content_gaiao_03", "content_gaiao_04", "content_gaiao_05", "content_gaiao_06"],
+    featuredContentIds: ["content_gaiao_01", "content_gaiao_03", "content_gaiao_05", "content_gaiao_06"],
     featuredVideos: [
       {
         id: "creator_gaiao_video_01",
@@ -100,7 +100,7 @@ export const creators: Creator[] = [
     styleTags: ["职业视角", "系统化", "动作拆解"],
     bio: "偏职业教练视角和高质量技术拆解，适合想看更系统训练逻辑与动作框架的球员。",
     suitableFor: ["进阶动作框架", "职业训练视角", "比赛执行"],
-    featuredContentIds: ["content_zlx_01", "content_cn_d_01"],
+    featuredContentIds: ["content_cn_d_01"],
     featuredVideos: [
       {
         id: "creator_mouratoglou_cn_video_01",
@@ -184,7 +184,7 @@ export const creators: Creator[] = [
     styleTags: ["细节导向", "讲解清晰", "动作拆解"],
     bio: "偏技术细节和动作修正，适合处理反手稳定性、击球点和脚步问题。",
     suitableFor: ["反手下网", "击球点偏晚", "基础动作修正"],
-    featuredContentIds: ["content_fr_01", "content_fr_02", "content_fr_03"],
+    featuredContentIds: ["content_fr_01", "content_fr_03"],
     featuredVideos: [
       {
         id: "creator_furao_video_01",
@@ -436,7 +436,7 @@ export const creators: Creator[] = [
     styleTags: ["讲解清晰", "新手友好", "系统化"],
     bio: "偏系统化教学和练习框架，适合想把正反手、基础节奏和实战思路一起理顺的球员。",
     suitableFor: ["基础动作", "正反手稳定性", "实战理解"],
-    featuredContentIds: ["content_cn_c_02", "content_cn_d_02", "content_cn_d_03"],
+    featuredContentIds: ["content_cn_c_02", "content_cn_d_02", "content_cn_d_03", "content_gaiao_02", "content_fr_02"],
     featuredVideos: [
       {
         id: "creator_leontv_cn_video_01",
@@ -1185,6 +1185,1036 @@ export const creators: Creator[] = [
       catalogScore: 0.62,
       authorityScore: 0.61,
       curatorBoost: 0.62
+    }
+  },
+  {
+    id: "creator_topspin_zhixuan",
+    name: "TOPSPIN致旋网球",
+    shortDescription: "训练营视角，偏脚步和发球体系",
+    tags: [
+      "基础导向",
+      "脚步移动",
+      "发球专项"
+    ],
+    region: "domestic",
+    platforms: [
+      "Bilibili"
+    ],
+    levels: [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    specialties: [
+      "footwork",
+      "serve",
+      "backhand",
+      "training",
+      "forehand"
+    ],
+    styleTags: [
+      "训练营视角",
+      "系统化",
+      "动作拆解"
+    ],
+    bio: "偏原创训练和课程化输出，常见脚步、对墙训练、发球组织和单反拆解，适合想把练习结构搭起来的球员。",
+    suitableFor: [
+      "脚步训练",
+      "单反进阶",
+      "发球组织"
+    ],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_topspin_zhixuan_video_01",
+        title: "【TOPSPIN ALONE】一个人的网球脚步训练（从新手到大师）",
+        sourceTitle: "【TOPSPIN ALONE】一个人的网球脚步训练（从新手到大师）",
+        target: "一个人练脚步总没方向",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/9823ff6549ca0e6c57c53d7059b9865775347c86.jpg",
+        viewCount: 60462,
+        duration: "12:13",
+        url: "https://www.bilibili.com/video/BV1Wa41187vu/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_topspin_zhixuan_video_02",
+        title: "【TOPSPIN DETAIL】最全网球单反技术详解（上）",
+        sourceTitle: "【TOPSPIN DETAIL】最全网球单反技术详解（上）",
+        target: "单反框架总不稳定",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/74d45e990a57290d1c1c43c5f6a71efb8bf8c669.jpg",
+        viewCount: 25678,
+        duration: "11:32",
+        url: "https://www.bilibili.com/video/BV1mR4y1f7WE/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_topspin_zhixuan_video_03",
+        title: "【TOPSPIN ALONE】真の墙裂推荐！一个人网球对墙练习大全！",
+        sourceTitle: "【TOPSPIN ALONE】真の墙裂推荐！一个人网球对墙练习大全！",
+        target: "一个人练球总没结构",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/70693ceff7283517c06ba34be5d820cf8a235b69.jpg",
+        viewCount: 22706,
+        duration: "10:18",
+        url: "https://www.bilibili.com/video/BV1RP4y1T7Ge/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_topspin_zhixuan_video_04",
+        title: "【TOPSPIN BIG 4】网球单打发球方“四拍原则”",
+        sourceTitle: "【TOPSPIN BIG 4】网球单打发球方“四拍原则”",
+        target: "发球局总不知道怎么组织",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/98727b5607ba26520b17ac50b10de016a0a2957e.jpg",
+        viewCount: 17275,
+        duration: "9:23",
+        url: "https://www.bilibili.com/video/BV1rG4y1W79Q/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_topspin_zhixuan_video_05",
+        title: "【TOPSPIN CLINIC】网球新手/初学者正手技术诊断",
+        sourceTitle: "【TOPSPIN CLINIC】网球新手/初学者正手技术诊断",
+        target: "正手动作总找不到问题",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5"
+        ],
+        thumbnail: "/thumbnails/bilibili/a404319d175fa8d5907930de4114acbb4f1608dc.jpg",
+        viewCount: 11236,
+        duration: "8:24",
+        url: "https://www.bilibili.com/video/BV1GT4y1U7go/",
+        platform: "Bilibili"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://space.bilibili.com/4742158/",
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/4742158/"
+    },
+    avatar: bilibiliAvatar("creator_topspin_zhixuan"),
+    rankingSignals: {
+      subscriberScore: 0.62,
+      averageViewsScore: 0.56,
+      activityScore: 0.44,
+      catalogScore: 0.58,
+      authorityScore: 0.67,
+      curatorBoost: 0.6
+    }
+  },
+  {
+    id: "creator_yang_xiaohan",
+    name: "网球羊小涵",
+    shortDescription: "真人示范型教学，偏正反手和截击",
+    tags: [
+      "新手友好",
+      "正手专项",
+      "讲解清晰"
+    ],
+    region: "domestic",
+    platforms: [
+      "Bilibili"
+    ],
+    levels: [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    specialties: [
+      "forehand",
+      "backhand",
+      "net",
+      "serve",
+      "training"
+    ],
+    styleTags: [
+      "真人示范",
+      "直接上手",
+      "教学短课"
+    ],
+    bio: "前省队背景，偏本人示范式教学，常见正手上旋、反手基础、网前截击和训练课程片段，适合喜欢看真人动作的人。",
+    suitableFor: [
+      "正手上旋",
+      "反手基础",
+      "网前截击"
+    ],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_yang_xiaohan_video_01",
+        title: "【网球教学】02 三步教会你打网球正手上旋！！",
+        sourceTitle: "【网球教学】02 三步教会你打网球正手上旋！！",
+        target: "正手上旋总转不起来",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5"
+        ],
+        thumbnail: "/thumbnails/bilibili/a5e8d94000b98c90da31649ee8328d9344436cd6.jpg",
+        viewCount: 39798,
+        duration: "3:34",
+        url: "https://www.bilibili.com/video/BV1wE411h75b/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_yang_xiaohan_video_02",
+        title: "【网球教学】01 反手基础教学 网球教学 网球基础 反手训练",
+        sourceTitle: "【网球教学】01 反手基础教学 网球教学 网球基础 反手训练",
+        target: "反手基础总不扎实",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5"
+        ],
+        thumbnail: "/thumbnails/bilibili/0fd16c34991634956ca3fd27f6ff2e426a7f01f2.jpg",
+        viewCount: 19569,
+        duration: "3:56",
+        url: "https://www.bilibili.com/video/BV1jE411f7t7/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_yang_xiaohan_video_03",
+        title: "【网球教学】 03 正手截击没你想的那么难",
+        sourceTitle: "【网球教学】 03 正手截击没你想的那么难",
+        target: "网前截击总不敢做动作",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/b10aa6257b8bdd02a61f5a1c9bdc8a2d1dbc586c.jpg",
+        viewCount: 15656,
+        duration: "3:35",
+        url: "https://www.bilibili.com/video/BV1rJ411S7ny/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_yang_xiaohan_video_04",
+        title: "【网球课程】04 为什么运动的人都那么纤细呢？",
+        sourceTitle: "【网球课程】04 为什么运动的人都那么纤细呢？",
+        target: "训练结构和体能总没概念",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5"
+        ],
+        thumbnail: "/thumbnails/bilibili/1d198c6596ec17d27adc4e5c36d0f192891b5618.jpg",
+        viewCount: 4769,
+        duration: "6:37",
+        url: "https://www.bilibili.com/video/BV1mJ411R7JR/",
+        platform: "Bilibili"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://space.bilibili.com/279722876/",
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/279722876/"
+    },
+    avatar: bilibiliAvatar("creator_yang_xiaohan"),
+    rankingSignals: {
+      subscriberScore: 0.46,
+      averageViewsScore: 0.45,
+      activityScore: 0.25,
+      catalogScore: 0.32,
+      authorityScore: 0.66,
+      curatorBoost: 0.52
+    }
+  },
+  {
+    id: "creator_bugu_tennis",
+    name: "布谷网球",
+    shortDescription: "零基础到进阶的慢节奏讲解",
+    tags: [
+      "基础导向",
+      "讲解清晰",
+      "脚步移动"
+    ],
+    region: "domestic",
+    platforms: [
+      "Bilibili"
+    ],
+    levels: [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    specialties: [
+      "basics",
+      "forehand",
+      "footwork",
+      "training",
+      "consistency"
+    ],
+    styleTags: [
+      "循序渐进",
+      "零基础友好",
+      "课程化"
+    ],
+    bio: "偏原创干货和循序渐进讲解，当前公开合集里更偏站位、重心和基础技术搭建，适合慢慢打基础的人。",
+    suitableFor: [
+      "击球站位",
+      "零基础进阶",
+      "节奏建立"
+    ],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_bugu_tennis_video_01",
+        title: "网球必会的四种击球站位，你用对了吗？",
+        sourceTitle: "网球必会的四种击球站位，你用对了吗？",
+        target: "击球站位总拿不准",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/6f8c08c5308a905fa9fe70bfeeb659e4250d6f4a.jpg",
+        viewCount: 610,
+        duration: "2:17",
+        url: "https://www.bilibili.com/video/BV12YAEzWEqJ/",
+        platform: "Bilibili"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://space.bilibili.com/3461580186454605/",
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/3461580186454605/"
+    },
+    avatar: bilibiliAvatar("creator_bugu_tennis"),
+    rankingSignals: {
+      subscriberScore: 0.3,
+      averageViewsScore: 0.22,
+      activityScore: 0.18,
+      catalogScore: 0.25,
+      authorityScore: 0.44,
+      curatorBoost: 0.48
+    }
+  },
+  {
+    id: "creator_wangdong_tennis",
+    name: "网动网球",
+    shortDescription: "课后复盘型内容，偏动力链和训练",
+    tags: [
+      "基础导向",
+      "脚步移动",
+      "细节导向"
+    ],
+    region: "domestic",
+    platforms: [
+      "Bilibili"
+    ],
+    levels: [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    specialties: [
+      "training",
+      "forehand",
+      "movement",
+      "topspin",
+      "serve"
+    ],
+    styleTags: [
+      "教练团队",
+      "课后复盘",
+      "训练导向"
+    ],
+    bio: "培训机构 / 教练团队型账号，公开内容偏正手动力链、上旋入门、盯球与在家训练，适合当练习清单和课后复盘。",
+    suitableFor: [
+      "正手动力链",
+      "在家训练",
+      "上旋入门"
+    ],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_wangdong_tennis_video_01",
+        title: "网球正手动力链",
+        sourceTitle: "网球正手动力链",
+        target: "正手发力总是断链",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/d2f0412b45973408be4326f9cc407bf4e7b31033.jpg",
+        viewCount: 3700,
+        duration: "6:29",
+        url: "https://www.bilibili.com/video/BV1f4ijBvExB/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_wangdong_tennis_video_02",
+        title: "上旋球怎么打？新手一开始先别学！！",
+        sourceTitle: "上旋球怎么打？新手一开始先别学！！",
+        target: "上旋练太早反而越打越乱",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5"
+        ],
+        thumbnail: "/thumbnails/bilibili/8582c282431aa375ed56ed4b191a9125872d1d8b.jpg",
+        viewCount: 2793,
+        duration: "4:29",
+        url: "https://www.bilibili.com/video/BV1cGiyBSEpT/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_wangdong_tennis_video_03",
+        title: "网球 2.5 自救！盯球差 = 打不准？这组训练练到眼到手到👀",
+        sourceTitle: "网球 2.5 自救！盯球差 = 打不准？这组训练练到眼到手到👀",
+        target: "盯球差总导致打不准",
+        levels: [
+          "2.5",
+          "3.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/0aae152446e579674a4b87074e22884e5780c731.jpg",
+        viewCount: 2708,
+        duration: "4:19",
+        url: "https://www.bilibili.com/video/BV1XJqGBmEjH/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_wangdong_tennis_video_04",
+        title: "在家就能提升球技的八个小训练！",
+        sourceTitle: "在家就能提升球技的八个小训练！",
+        target: "在家练球总没方法",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5"
+        ],
+        thumbnail: "/thumbnails/bilibili/a6b6fd6c705a947a6d9b1b29e6400c20f66375c3.jpg",
+        viewCount: 1719,
+        duration: "3:10",
+        url: "https://www.bilibili.com/video/BV12WB5B2EhY/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_wangdong_tennis_video_05",
+        title: "“今天才知道发球不止平击、上旋、侧旋， 岳教练掏出第4种：逆旋发球！",
+        sourceTitle: "“今天才知道发球不止平击、上旋、侧旋， 岳教练掏出第4种：逆旋发球！",
+        target: "发球旋转总分不清楚",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/6e0f6c941642adee76ad5898b0b31e4809af8338.jpg",
+        viewCount: 4870,
+        duration: "1:40",
+        url: "https://www.bilibili.com/video/BV1Z2rZBaEkb/",
+        platform: "Bilibili"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://space.bilibili.com/3546976958286341/",
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/3546976958286341/"
+    },
+    avatar: bilibiliAvatar("creator_wangdong_tennis"),
+    rankingSignals: {
+      subscriberScore: 0.28,
+      averageViewsScore: 0.2,
+      activityScore: 0.35,
+      catalogScore: 0.3,
+      authorityScore: 0.46,
+      curatorBoost: 0.44
+    }
+  },
+  {
+    id: "creator_yin_coach_tennis",
+    name: "教网球的尹教练",
+    shortDescription: "偏训练方法和青少年课堂",
+    tags: [
+      "基础导向",
+      "脚步移动",
+      "进阶提升"
+    ],
+    region: "domestic",
+    platforms: [
+      "Bilibili"
+    ],
+    levels: [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    specialties: [
+      "training",
+      "movement",
+      "basics",
+      "consistency",
+      "mental"
+    ],
+    styleTags: [
+      "青少年训练",
+      "训练方法",
+      "课堂型"
+    ],
+    bio: "更偏青少年训练、身体素质和训练方法集合。当前公开检索到的直达教学视频不稳定，先纳入博主榜，内容库后续再补。",
+    suitableFor: [
+      "青少年训练",
+      "训练方法",
+      "课堂复盘"
+    ],
+    featuredContentIds: [],
+    featuredVideos: [],
+    recommendedCount: 0,
+    profileUrl: "https://space.bilibili.com/2060499993/",
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/2060499993/"
+    },
+    avatar: bilibiliAvatar("creator_yin_coach_tennis"),
+    rankingSignals: {
+      subscriberScore: 0.22,
+      averageViewsScore: 0.18,
+      activityScore: 0.24,
+      catalogScore: 0.32,
+      authorityScore: 0.45,
+      curatorBoost: 0.42
+    }
+  },
+  {
+    id: "creator_yi_laoshi_sport",
+    name: "一老师运动版",
+    shortDescription: "短平快纠错，偏小技巧和细节",
+    tags: [
+      "细节导向",
+      "发球专项",
+      "脚步移动"
+    ],
+    region: "domestic",
+    platforms: [
+      "Bilibili"
+    ],
+    levels: [
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    specialties: [
+      "grip",
+      "serve",
+      "movement",
+      "forehand",
+      "basics"
+    ],
+    styleTags: [
+      "碎片纠错",
+      "短平快",
+      "细节提示"
+    ],
+    bio: "风格偏一分钟动作纠错、小技巧和发球细节。当前公开检索到的稳定直达视频较少，先纳入博主榜，内容库后续再补。",
+    suitableFor: [
+      "碎片纠错",
+      "发球小技巧",
+      "脚步细节"
+    ],
+    featuredContentIds: [],
+    featuredVideos: [],
+    recommendedCount: 0,
+    profileUrl: "https://space.bilibili.com/180255509/",
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/180255509/"
+    },
+    avatar: bilibiliAvatar("creator_yi_laoshi_sport"),
+    rankingSignals: {
+      subscriberScore: 0.36,
+      averageViewsScore: 0.34,
+      activityScore: 0.22,
+      catalogScore: 0.24,
+      authorityScore: 0.4,
+      curatorBoost: 0.41
+    }
+  },
+  {
+    id: "creator_qingying_tennis",
+    name: "轻盈网球",
+    shortDescription: "中文字幕整理型资料库，基础内容全",
+    tags: [
+      "讲解清晰",
+      "基础导向",
+      "发球专项"
+    ],
+    region: "domestic",
+    platforms: [
+      "Bilibili"
+    ],
+    levels: [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    specialties: [
+      "basics",
+      "serve",
+      "forehand",
+      "backhand",
+      "doubles"
+    ],
+    styleTags: [
+      "中文字幕整理",
+      "资料库型",
+      "系统入门"
+    ],
+    bio: "以海外优质网球教学的中文字幕整理为主，不是中文原创拍摄型账号，但作为中文资料库非常实用，尤其适合入门系统看。",
+    suitableFor: [
+      "中文字幕教学",
+      "基础入门",
+      "发球与正手"
+    ],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_qingying_tennis_video_01",
+        title: "网球零基础入门必看！第一课 正手、反手和发球",
+        sourceTitle: "网球零基础入门必看！第一课 正手、反手和发球",
+        target: "零基础总不知道先学什么",
+        levels: [
+          "2.5",
+          "3.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/529b919020eb9553036e14723e093625c656b98a.jpg",
+        viewCount: 370252,
+        duration: "18:50",
+        url: "https://www.bilibili.com/video/BV1iW4y1W7Mf/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_qingying_tennis_video_02",
+        title: "吐血推荐！改正5个最常见的网球正手错误",
+        sourceTitle: "吐血推荐！改正5个最常见的网球正手错误",
+        target: "正手总有老毛病改不掉",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5"
+        ],
+        thumbnail: "/thumbnails/bilibili/f50a0153b368b02f0aef2cd0c63f8b0c842319d3.jpg",
+        viewCount: 158046,
+        duration: "13:53",
+        url: "https://www.bilibili.com/video/BV1sv4y1m7uu/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_qingying_tennis_video_03",
+        title: "网球入门必看！讲的最清楚的网球握拍方式",
+        sourceTitle: "网球入门必看！讲的最清楚的网球握拍方式",
+        target: "握拍总拿不准到底怎么握",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5"
+        ],
+        thumbnail: "/thumbnails/bilibili/c0f6c62b46e3b4c24c64800485b852540022185a.jpg",
+        viewCount: 94665,
+        duration: "4:09",
+        url: "https://www.bilibili.com/video/BV1rW4y1H7fQ/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_qingying_tennis_video_04",
+        title: "网球发球必看！5个步骤学会发球",
+        sourceTitle: "网球发球必看！5个步骤学会发球",
+        target: "发球总不知道该怎么起步",
+        levels: [
+          "2.5",
+          "3.0",
+          "3.5"
+        ],
+        thumbnail: "/thumbnails/bilibili/36ff9bf3604ce7f0902474b9401c076ce3b45ab1.jpg",
+        viewCount: 59944,
+        duration: "16:38",
+        url: "https://www.bilibili.com/video/BV18R4y1Q7N3/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_qingying_tennis_video_05",
+        title: "强烈推荐！网球上旋发球终极课",
+        sourceTitle: "强烈推荐！网球上旋发球终极课",
+        target: "上旋发球总练不出来",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/46c533ac23860d11fbe828d6beedd0381db5954a.jpg",
+        viewCount: 54372,
+        duration: "12:02",
+        url: "https://www.bilibili.com/video/BV1Td4y1b734/",
+        platform: "Bilibili"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://space.bilibili.com/3461582428309696/",
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/3461582428309696/"
+    },
+    avatar: bilibiliAvatar("creator_qingying_tennis"),
+    rankingSignals: {
+      subscriberScore: 0.74,
+      averageViewsScore: 0.82,
+      activityScore: 0.61,
+      catalogScore: 0.76,
+      authorityScore: 0.48,
+      curatorBoost: 0.52
+    }
+  },
+  {
+    id: "creator_weiwei_tennis",
+    name: "维维网球",
+    shortDescription: "中文字幕教学整理，偏发球和击球点",
+    tags: [
+      "细节导向",
+      "反手专项",
+      "发球专项"
+    ],
+    region: "domestic",
+    platforms: [
+      "Bilibili"
+    ],
+    levels: [
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    specialties: [
+      "forehand",
+      "serve",
+      "backhand",
+      "slice",
+      "movement"
+    ],
+    styleTags: [
+      "中文字幕整理",
+      "击球点细化",
+      "发球拆解"
+    ],
+    bio: "核心是国外优质教学的中文字幕 / 中英双字整理，偏击球点、发球和反手处理，更适合想把国外优质教学当中文资料库来用的人。",
+    suitableFor: [
+      "中文字幕教学",
+      "击球点优化",
+      "发球与反手"
+    ],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_weiwei_tennis_video_01",
+        title: "「维维网球」R-Flex教学之5步掌握完美正拍击球点（中文字幕）",
+        sourceTitle: "「维维网球」R-Flex教学之5步掌握完美正拍击球点（中文字幕）",
+        target: "正拍击球点总找不准",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/e8409f656790a99009cd6489b3e5b30e7b9c0926.jpg",
+        viewCount: 23517,
+        duration: "13:50",
+        url: "https://www.bilibili.com/video/BV1ir1YBYE46/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_weiwei_tennis_video_02",
+        title: "「维维网球」PPT网球教学：为什么所有网球职业选手都这样发球——含训练方法（中文字幕）",
+        sourceTitle: "「维维网球」PPT网球教学：为什么所有网球职业选手都这样发球——含训练方法（中文字幕）",
+        target: "发球总抓不住职业动作关键",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0",
+          "4.5"
+        ],
+        thumbnail: "/thumbnails/bilibili/77b93b578821ed54cf5a7c6ceea9529f9f065bcc.jpg",
+        viewCount: 10661,
+        duration: "9:33",
+        url: "https://www.bilibili.com/video/BV1rAj2zRENd/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_weiwei_tennis_video_03",
+        title: "「维维网球」TTT系列网球教学：停止击球过晚——三步找到你的最佳击球点（中文字幕）",
+        sourceTitle: "「维维网球」TTT系列网球教学：停止击球过晚——三步找到你的最佳击球点（中文字幕）",
+        target: "击球总是来不及",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/bd1183a97dbf0d5ef98ca1d373fc714a439b6b3d.jpg",
+        viewCount: 5934,
+        duration: "9:37",
+        url: "https://www.bilibili.com/video/BV18fiFBzEVF/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_weiwei_tennis_video_04",
+        title: "「维维网球」皮隆科娃系列教学：如何发球——平击发球、上旋发球与切削发球（中文字幕）",
+        sourceTitle: "「维维网球」皮隆科娃系列教学：如何发球——平击发球、上旋发球与切削发球（中文字幕）",
+        target: "发球类型总分不清",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/727b72465b9ecd9f9c1b059ea19a9626fe903edb.jpg",
+        viewCount: 5837,
+        duration: "8:51",
+        url: "https://www.bilibili.com/video/BV1mSahzwEf3/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_weiwei_tennis_video_05",
+        title: "「维维网球」TH网球教学：不解决这个问题——比赛中永远打不出利落的正手击球（中文字幕）",
+        sourceTitle: "「维维网球」TH网球教学：不解决这个问题——比赛中永远打不出利落的正手击球（中文字幕）",
+        target: "比赛里正手总打不利索",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/012d51e653cc153ca765a69c41d02cdb7c2c329b.jpg",
+        viewCount: 5761,
+        duration: "8:40",
+        url: "https://www.bilibili.com/video/BV18qeDzfEbD/",
+        platform: "Bilibili"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://space.bilibili.com/668228879/",
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/668228879/"
+    },
+    avatar: bilibiliAvatar("creator_weiwei_tennis"),
+    rankingSignals: {
+      subscriberScore: 0.5,
+      averageViewsScore: 0.43,
+      activityScore: 0.39,
+      catalogScore: 0.48,
+      authorityScore: 0.46,
+      curatorBoost: 0.49
+    }
+  },
+  {
+    id: "creator_mt_tennis_cn",
+    name: "MT_TENNIS",
+    shortDescription: "慢动作与中字整理，适合看动作模板",
+    tags: [
+      "进阶提升",
+      "正手专项",
+      "发球专项"
+    ],
+    region: "domestic",
+    platforms: [
+      "Bilibili"
+    ],
+    levels: [
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    specialties: [
+      "forehand",
+      "serve",
+      "training",
+      "backhand",
+      "basics"
+    ],
+    styleTags: [
+      "中字整理",
+      "慢动作观察",
+      "动作模板"
+    ],
+    bio: "以海外教学中字整理、慢动作赏析和动作模板观察为主，不属于中文原创教学，但适合拿来研究正手发力和动作范式。",
+    suitableFor: [
+      "慢动作观察",
+      "中字整理",
+      "动作模板赏析"
+    ],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_mt_tennis_cn_video_01",
+        title: "【TTT-西蒙网球教学/中字】正手发力的3个训练方法！",
+        sourceTitle: "【TTT-西蒙网球教学/中字】正手发力的3个训练方法！",
+        target: "正手发力总找不到训练法",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/cd5b2a578b3dbbaad1fa208896b016b40aa5514b.jpg",
+        viewCount: 17779,
+        duration: "10:00",
+        url: "https://www.bilibili.com/video/BV1JE411v7gY/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_mt_tennis_cn_video_02",
+        title: "【TTT-西蒙网球教学/中字】西蒙分析德尔波特罗的超级正手！",
+        sourceTitle: "【TTT-西蒙网球教学/中字】西蒙分析德尔波特罗的超级正手！",
+        target: "想看高质量正手模板",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0",
+          "4.5"
+        ],
+        thumbnail: "/thumbnails/bilibili/c53bbb9489b2fdf9f62902aee83da507e96825fd.jpg",
+        viewCount: 9863,
+        duration: "12:26",
+        url: "https://www.bilibili.com/video/BV197411d72L/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_mt_tennis_cn_video_03",
+        title: "【TTT-网球训练】看看西蒙17岁学生的高强度网球训练！",
+        sourceTitle: "【TTT-网球训练】看看西蒙17岁学生的高强度网球训练！",
+        target: "想看高强度训练怎么练",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/8b0f25a4167fb2d54e2439afd6022d2b0c1987a9.jpg",
+        viewCount: 9575,
+        duration: "10:54",
+        url: "https://www.bilibili.com/video/BV1FE41147BZ/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_mt_tennis_cn_video_04",
+        title: "【TTT-网球训练】Top Tennis Training西蒙职业网球训练方法速览！值得借鉴与学习！",
+        sourceTitle: "【TTT-网球训练】Top Tennis Training西蒙职业网球训练方法速览！值得借鉴与学习！",
+        target: "职业训练结构总没概念",
+        levels: [
+          "3.0",
+          "3.5",
+          "4.0"
+        ],
+        thumbnail: "/thumbnails/bilibili/d22f7f19eac42ecb3037172bd205800f49d15366.jpg",
+        viewCount: 8710,
+        duration: "3:09",
+        url: "https://www.bilibili.com/video/BV11E411N7GE/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_mt_tennis_cn_video_05",
+        title: "【网坛三巨头-正手对比/镜像处理】三巨头正手慢动作比对 & 后附正手常速训练视频！",
+        sourceTitle: "【网坛三巨头-正手对比/镜像处理】三巨头正手慢动作比对 & 后附正手常速训练视频！",
+        target: "想对比高水平正手差异",
+        levels: [
+          "3.5",
+          "4.0",
+          "4.5"
+        ],
+        thumbnail: "/thumbnails/bilibili/15c471847c8e1c6bc4bb9fd8e3c357e87fce7987.jpg",
+        viewCount: 14372,
+        duration: "5:22",
+        url: "https://www.bilibili.com/video/BV1TJ411h7p1/",
+        platform: "Bilibili"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://space.bilibili.com/454770507/",
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/454770507/"
+    },
+    avatar: bilibiliAvatar("creator_mt_tennis_cn"),
+    rankingSignals: {
+      subscriberScore: 0.64,
+      averageViewsScore: 0.58,
+      activityScore: 0.2,
+      catalogScore: 0.4,
+      authorityScore: 0.41,
+      curatorBoost: 0.38
+    }
+  },
+  {
+    id: "creator_topspinpro_hidden",
+    name: "topspinpro",
+    shortDescription: "真实上传源，暂不参与博主榜",
+    tags: ["训练器材", "上旋专项", "教学短课"],
+    region: "domestic",
+    platforms: ["Bilibili"],
+    levels: ["2.5", "3.0", "3.5", "4.0"],
+    specialties: ["topspin", "forehand", "training"],
+    styleTags: ["真实上传源", "非榜单博主", "短课"],
+    bio: "用于承载真实视频上传源，保证内容库中的博主名与源视频一致，不参与博主榜展示。",
+    suitableFor: ["真实上传源"],
+    featuredContentIds: ["content_gaiao_04"],
+    rankingEligible: false,
+    discoveryEligible: false,
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/495270797/"
+    },
+    rankingSignals: {
+      subscriberScore: 0,
+      averageViewsScore: 0,
+      activityScore: 0,
+      catalogScore: 0,
+      authorityScore: 0,
+      curatorBoost: 0
+    }
+  },
+  {
+    id: "creator_quanshui_hanshansi_hidden",
+    name: "泉水叮咚寒山寺",
+    shortDescription: "真实上传源，暂不参与博主榜",
+    tags: ["翻译整理", "发球专项", "教学短课"],
+    region: "domestic",
+    platforms: ["Bilibili"],
+    levels: ["3.0", "3.5", "4.0"],
+    specialties: ["serve", "training", "matchplay"],
+    styleTags: ["真实上传源", "非榜单博主", "搬运整理"],
+    bio: "用于承载真实视频上传源，保证内容库中的博主名与源视频一致，不参与博主榜展示。",
+    suitableFor: ["真实上传源"],
+    featuredContentIds: ["content_zlx_01"],
+    rankingEligible: false,
+    discoveryEligible: false,
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/522611110/"
+    },
+    rankingSignals: {
+      subscriberScore: 0,
+      averageViewsScore: 0,
+      activityScore: 0,
+      catalogScore: 0,
+      authorityScore: 0,
+      curatorBoost: 0
     }
   },
   {
@@ -2239,4 +3269,1690 @@ export const creators: Creator[] = [
       curatorBoost: 0.7
     }
   }
+,
+  {
+    id: "creator_2minute_tennis",
+    name: "2MinuteTennis",
+    shortDescription: "短平快讲清实战细节",
+    tags: ["讲解清晰", "实战导向", "正手专项"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["forehand", "serve", "matchplay", "net", "topspin"],
+    styleTags: ["短平快", "动作拆解", "实战导向"],
+    bio: "偏短平快教学和实战纠错，适合想快速修正常见动作问题并提升单打执行的球员。",
+    suitableFor: ["正手发力", "单打策略", "网前处理"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_2minute_tennis_video_01",
+        title: "This Boring Tip Gives You TONS of Forehand Power",
+        target: "正手发力总提不上来",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/7-N5BjFDb74/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=7-N5BjFDb74",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_2minute_tennis_video_02",
+        title: "99% of Tennis Players Refuse To Do This",
+        target: "基础动作总练不到点上",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/4vckXuoN3Vs/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=4vckXuoN3Vs",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_2minute_tennis_video_03",
+        title: "Singles Strategies That Easily Help You Win",
+        target: "单打思路总不够清楚",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/KvfUhGc2D9c/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=KvfUhGc2D9c",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_2minute_tennis_video_04",
+        title: "Only 10% of Players Use This Secret Forehand Technique",
+        target: "正手细节总差一点感觉",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/dLRs1kly8tg/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=dLRs1kly8tg",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_2minute_tennis_video_05",
+        title: "The 6 Forehand Fundamentals That Change Everything",
+        target: "正手基础总是搭不稳",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/o8oVYHYxmDY/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=o8oVYHYxmDY",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_2minute_tennis_video_06",
+        title: "The Low Volley Mistake Every Singles Player Makes",
+        target: "低位截击总处理不好",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/xDobUsDaaUg/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=xDobUsDaaUg",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_2minute_tennis_video_07",
+        title: "Subscriber Serve vs Federer's Technique | What's Different?",
+        target: "发球动作总不够顺",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/Ir2NMQP7HlA/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=Ir2NMQP7HlA",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_2minute_tennis_video_08",
+        title: "Your Topspin Is About To Get So Much Better",
+        target: "上旋总拉不起来",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/nwdCoNHpmn8/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=nwdCoNHpmn8",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_2minute_tennis_video_09",
+        title: "80% of Players Screw THIS UP About The Pinpoint Stance",
+        target: "发球站位总不稳定",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/CcydVlPSUWI/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=CcydVlPSUWI",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_2minute_tennis_video_10",
+        title: "Do THIS When Your Opponent Hits a Drop Shot",
+        target: "遇到小球总反应偏慢",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/ZivIaErJArg/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=ZivIaErJArg",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@2MinuteTennis",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@2MinuteTennis"
+    },
+    avatar: youtubeAvatar("UCQVakLjtBUGlQOThqRZ7uhw"),
+    rankingSignals: {
+      subscriberScore: 0.74,
+      averageViewsScore: 0.76,
+      activityScore: 0.73,
+      catalogScore: 0.72,
+      authorityScore: 0.7,
+      curatorBoost: 0.74
+    }
+  },
+  {
+    id: "creator_feel_tennis_instruction",
+    name: "Feel Tennis Instruction",
+    shortDescription: "细节拆解扎实，讲得很透",
+    tags: ["细节导向", "讲解清晰", "进阶提升"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["forehand", "serve", "topspin", "basics", "return"],
+    styleTags: ["细节导向", "动作原理", "系统化"],
+    bio: "偏动作原理和击球感觉拆解，适合想把发力、上旋和提前击球真正弄懂的球员。",
+    suitableFor: ["上旋理解", "发力原理", "提前击球"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_feel_tennis_instruction_video_01",
+        title: "How to Hit Smoother Tennis Strokes (And Unlock Easy Power)",
+        target: "动作总是发不上力",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/o7WQrfk318s/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=o7WQrfk318s",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_feel_tennis_instruction_video_02",
+        title: "Why Topspin Pro Can Teach the Wrong Swing Path",
+        target: "挥拍路径总找不准",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/BJKo7LgVhys/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=BJKo7LgVhys",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_feel_tennis_instruction_video_03",
+        title: "Why Do My Tennis Shots Go Long? (And How to Fix It for Good)",
+        target: "球总容易打飞出界",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/I9h_rZKaIzQ/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=I9h_rZKaIzQ",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_feel_tennis_instruction_video_04",
+        title: "The Biggest Topspin Pro Mistake",
+        target: "上旋练法总容易跑偏",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/pONexB78lK4/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=pONexB78lK4",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_feel_tennis_instruction_video_05",
+        title: "Tennis Coiling and Uncoiling Explained | The Corkscrew Principle",
+        target: "转体和发力总脱节",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/CilZcMuZXZ0/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=CilZcMuZXZ0",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_feel_tennis_instruction_video_06",
+        title: "How to Serve With the Sun in Your Face",
+        target: "发球受环境影响太大",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/jy5Z4tm4OZY/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=jy5Z4tm4OZY",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_feel_tennis_instruction_video_07",
+        title: "Why Taking the Ball Early in Tennis Is So Difficult",
+        target: "提前击球总做不到",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/bWHoOGcYph0/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=bWHoOGcYph0",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_feel_tennis_instruction_video_08",
+        title: "Open Stance Forehand for Adult Tennis Players",
+        target: "开放式正手总不顺",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/7CwbFPR7OvA/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=7CwbFPR7OvA",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_feel_tennis_instruction_video_09",
+        title: "Topspin in Tennis Works — If You Can Hit the Sweet Spot",
+        target: "甜点击球总抓不准",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/-1VnQj6SmSw/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=-1VnQj6SmSw",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_feel_tennis_instruction_video_10",
+        title: "Why There Is No Free Power in Tennis",
+        target: "总想轻松发力却越打越乱",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/bZFw2UpybNc/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=bZFw2UpybNc",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@feeltennis",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@feeltennis"
+    },
+    avatar: youtubeAvatar("UCTK9oKMGU0XIQpLJYDs45fw"),
+    rankingSignals: {
+      subscriberScore: 0.68,
+      averageViewsScore: 0.72,
+      activityScore: 0.67,
+      catalogScore: 0.7,
+      authorityScore: 0.72,
+      curatorBoost: 0.73
+    }
+  },
+  {
+    id: "creator_total_tennis_domination",
+    name: "Total Tennis Domination",
+    shortDescription: "发力和实战连接讲得很强",
+    tags: ["细节导向", "进阶提升", "实战导向"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["forehand", "backhand", "serve", "net", "matchplay"],
+    styleTags: ["发力原理", "实战导向", "进阶提升"],
+    bio: "偏发力链条、击球质量和实战执行，适合想把旋转、力量和落点真正串起来的球员。",
+    suitableFor: ["发力链条", "网前处理", "比赛执行"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_total_tennis_domination_video_01",
+        title: "Start Using Rotation Instead...(drills included)",
+        target: "击球发力总靠手臂",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/XMh1ZOaq4mc/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=XMh1ZOaq4mc",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_total_tennis_domination_video_02",
+        title: "You’ll Keep Losing… Even With “Perfect” Technique",
+        target: "动作不错但比赛总输",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/HRU1F0kIeOo/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=HRU1F0kIeOo",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_total_tennis_domination_video_03",
+        title: "How to Freeze Your Opponent Without Hitting Harder...",
+        target: "不发力时总压不住对手",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/Y6bPX0u9Ylo/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=Y6bPX0u9Ylo",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_total_tennis_domination_video_04",
+        title: "Tennis Forehand and Backhand Power Starts HERE(It’s NOT Your Arm)..",
+        target: "正反手力量总出不来",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/wEVP73YFOdM/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=wEVP73YFOdM",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_total_tennis_domination_video_05",
+        title: "How The Best Tennis Pro Create Forehand Racquet Whip…(drills included)",
+        target: "正手鞭打感总打不出",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/LVJ94ZfGU3I/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=LVJ94ZfGU3I",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_total_tennis_domination_video_06",
+        title: "The One Moment That Decides Every Volley",
+        target: "截击时机总抓不准",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/L0RPjWB5h_E/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=L0RPjWB5h_E",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_total_tennis_domination_video_07",
+        title: "Stop \"Steering\" The Ball! (Do THIS For Elite Accuracy)",
+        target: "击球总容易发飘",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/_7Vr-cCdyCs/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=_7Vr-cCdyCs",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_total_tennis_domination_video_08",
+        title: "Why Swinging Harder Is Killing Your Forehand Power (Drills included...)",
+        target: "越发力正手越散",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/MUyD8xSXpjw/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=MUyD8xSXpjw",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_total_tennis_domination_video_09",
+        title: "This One Hidden Move can Unlock up to 40% More Serve Power...",
+        target: "发球总差那一点爆发",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/7Bis27k-8Ss/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=7Bis27k-8Ss",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_total_tennis_domination_video_10",
+        title: "Stop Using Your Arm To Serve! (Do THIS For Easy Power)",
+        target: "发球总是手臂主导",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/B9SY86GLBSQ/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=B9SY86GLBSQ",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/c/totaltennisdomination",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/c/totaltennisdomination"
+    },
+    avatar: youtubeAvatar("UCTO3dlkLx9CrLNFgMpOqpAA"),
+    rankingSignals: {
+      subscriberScore: 0.6,
+      averageViewsScore: 0.63,
+      activityScore: 0.7,
+      catalogScore: 0.68,
+      authorityScore: 0.69,
+      curatorBoost: 0.72
+    }
+  },
+  {
+    id: "creator_fuzzy_yellow_balls",
+    name: "Fuzzy Yellow Balls",
+    shortDescription: "比赛拆解清楚，策略含金量高",
+    tags: ["实战导向", "讲解清晰", "进阶提升"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["matchplay", "serve", "doubles", "forehand", "return"],
+    styleTags: ["比赛拆解", "策略导向", "讲解清晰"],
+    bio: "偏比赛模式拆解和关键分处理，适合想看高水平思路如何落到实战执行里的球员。",
+    suitableFor: ["比赛思路", "关键分处理", "双打策略"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_fuzzy_yellow_balls_video_01",
+        title: "This point is a perfect example of how Federer broke Nadal's game",
+        target: "高水平破局思路看不懂",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/yhQhNvWY0Io/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=yhQhNvWY0Io",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_fuzzy_yellow_balls_video_02",
+        title: "The weirdest Federer vs Nadal rally you missed",
+        target: "拉锯战里总抓不到关键",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/EQ3xE_xNKxA/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=EQ3xE_xNKxA",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_fuzzy_yellow_balls_video_03",
+        title: "After Federer did this, Nadal never beat him again",
+        target: "比赛调整总慢半拍",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/M7lZ4lC6Amo/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=M7lZ4lC6Amo",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_fuzzy_yellow_balls_video_04",
+        title: "If you can pick up the 3rd ball, you can serve 100 mph",
+        target: "发球后三拍总接不上",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/cB72-9r4P7I/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=cB72-9r4P7I",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_fuzzy_yellow_balls_video_05",
+        title: "This point is a perfect example of how Federer broke Nadal's game",
+        target: "如何用战术拆解强点",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/6knSeTr9Hv4/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=6knSeTr9Hv4",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_fuzzy_yellow_balls_video_06",
+        title: "Are you losing to doubles teams you should beat?",
+        target: "双打配合总打不顺",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/Rbi2lBDh_Zg/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=Rbi2lBDh_Zg",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_fuzzy_yellow_balls_video_07",
+        title: "This point is a perfect example of how Djokovic broke Federer's game",
+        target: "看不清高手怎么抢节奏",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/C6-1wrRKvjU/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=C6-1wrRKvjU",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_fuzzy_yellow_balls_video_08",
+        title: "Did this play make Djokovic the GOAT? 🐐",
+        target: "关键分选择总犹豫",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/Fs2Y371h3VU/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=Fs2Y371h3VU",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_fuzzy_yellow_balls_video_09",
+        title: "Medvedev beat Alcaraz with a shot pros almost never hit",
+        target: "防守反击总少变化",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/6rX4i5d5ux0/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=6rX4i5d5ux0",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_fuzzy_yellow_balls_video_10",
+        title: "How Federer won points against PRIME Novak Djokovic",
+        target: "强强对抗的落点思路不清",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/6GbVb659Q0o/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=6GbVb659Q0o",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/fuzzyyellowballs",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/fuzzyyellowballs"
+    },
+    avatar: youtubeAvatar("UCXQ-a9jN5DkWtSYKjVXqsew"),
+    rankingSignals: {
+      subscriberScore: 0.86,
+      averageViewsScore: 0.88,
+      activityScore: 0.62,
+      catalogScore: 0.74,
+      authorityScore: 0.92,
+      curatorBoost: 0.78
+    }
+  },
+  {
+    id: "creator_daily_tennis_lesson",
+    name: "Daily Tennis Lesson",
+    shortDescription: "分主题教学，基础动作很系统",
+    tags: ["基础导向", "讲解清晰", "新手友好"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["2.5", "3.0", "3.5", "4.0"],
+    specialties: ["net", "serve", "return", "basics", "training"],
+    styleTags: ["分主题教学", "基础导向", "讲解清晰"],
+    bio: "偏单项技术拆分练习，适合想把高压、截击、接发等具体环节逐项补强的球员。",
+    suitableFor: ["高压球", "网前处理", "接发基础"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_daily_tennis_lesson_video_01",
+        title: "Expectation vs Reality",
+        target: "练球预期总和实际差太多",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/Hi8nBXg7N-A/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=Hi8nBXg7N-A",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_daily_tennis_lesson_video_02",
+        title: "Top 3 Overhead Mistakes | OVERHEAD",
+        target: "高压球总处理不好",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/K_EexG6l7E8/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=K_EexG6l7E8",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_daily_tennis_lesson_video_03",
+        title: "Bounce vs Out Of The Air | OVERHEAD",
+        target: "高压该等落地还是截击总拿不准",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/ikEqU3049nE/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=ikEqU3049nE",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_daily_tennis_lesson_video_04",
+        title: "Overhead Technique | OVERHEAD",
+        target: "高压动作总不连贯",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/ssDipBYDZFo/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=ssDipBYDZFo",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_daily_tennis_lesson_video_05",
+        title: "Overhead Positioning | OVERHEAD",
+        target: "高压站位总走不对",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/p5hX_oLsGDg/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=p5hX_oLsGDg",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_daily_tennis_lesson_video_06",
+        title: "Overhead Prep | OVERHEAD",
+        target: "高压准备总偏慢",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/iSXlWbkgFXM/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=iSXlWbkgFXM",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_daily_tennis_lesson_video_07",
+        title: "Swing Volley | PUNISH SLOW BALLS",
+        target: "慢球进攻总抓不住",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/tfop5rWlHNo/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=tfop5rWlHNo",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_daily_tennis_lesson_video_08",
+        title: "Drop Shot | PUNISH SLOW BALLS",
+        target: "放小球总没有质量",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/0OAOFp0YN-M/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=0OAOFp0YN-M",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_daily_tennis_lesson_video_09",
+        title: "Volley | PUNISH SLOW BALLS",
+        target: "截击总是做得太大",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/axmqay5GN8o/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=axmqay5GN8o",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_daily_tennis_lesson_video_10",
+        title: "Serve Return | PUNISH SLOW BALLS",
+        target: "接发球总抢不到主动",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/hv6R6frWmb4/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=hv6R6frWmb4",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/c/DailyTennisLesson",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/c/DailyTennisLesson"
+    },
+    avatar: youtubeAvatar("UCOau_eZu2kaRoqjR4xcA-Hg"),
+    rankingSignals: {
+      subscriberScore: 0.55,
+      averageViewsScore: 0.58,
+      activityScore: 0.61,
+      catalogScore: 0.66,
+      authorityScore: 0.62,
+      curatorBoost: 0.66
+    }
+  },
+  {
+    id: "creator_tennis_hacker",
+    name: "Tennis Hacker",
+    shortDescription: "成人球友视角，纠错很直接",
+    tags: ["新手友好", "讲解清晰", "细节导向"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["2.5", "3.0", "3.5", "4.0"],
+    specialties: ["forehand", "backhand", "net", "training", "matchplay"],
+    styleTags: ["成人球友", "纠错直接", "讲解清晰"],
+    bio: "偏成人球友常见问题纠正，适合想在较短时间里把正手、反手、截击和练习习惯理顺的球员。",
+    suitableFor: ["成人自学", "反手纠错", "练习方法"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_tennis_hacker_video_01",
+        title: "The fastest way to improve volley consistency!",
+        target: "截击稳定性总上不来",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/XXXNM70iQkU/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=XXXNM70iQkU",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tennis_hacker_video_02",
+        title: "Develop a rock solid forehand after 40!",
+        target: "成年人正手总不够稳",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/XDcu37q9TuY/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=XDcu37q9TuY",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tennis_hacker_video_03",
+        title: "Make your forehand better this week!",
+        target: "正手想尽快有提升",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/cS7TLFK_xjI/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=cS7TLFK_xjI",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tennis_hacker_video_04",
+        title: "These 4 practice mistakes are killing your progress!",
+        target: "练了很多却没进步",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/18tPSkQnQ4Y/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=18tPSkQnQ4Y",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tennis_hacker_video_05",
+        title: "How to meet the ball out in front every time!",
+        target: "击球点总卡在身后",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/BtKsuVbBmV8/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=BtKsuVbBmV8",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tennis_hacker_video_06",
+        title: "You'll never have a RELAXED one handed backhand until you fix this!",
+        target: "单反总打得太紧",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/vKaa3Gsuq5E/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=vKaa3Gsuq5E",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tennis_hacker_video_07",
+        title: "How to hit through the ball on your forehand!",
+        target: "正手总吃不透球",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/16EUwOPq8tE/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=16EUwOPq8tE",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tennis_hacker_video_08",
+        title: "Start winning more matches today!",
+        target: "比赛总差最后一步",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/zGrqSbliB1s/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=zGrqSbliB1s",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tennis_hacker_video_09",
+        title: "Fix your ball tracking to fix your error count!",
+        target: "盯球总不够清楚",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/gGLbTyw0NDo/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=gGLbTyw0NDo",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tennis_hacker_video_10",
+        title: "The skill is the secret to rapid tennis improvement!",
+        target: "想更快建立进步节奏",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/5QGQUF08CpI/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=5QGQUF08CpI",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/c/TennisHacker",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/c/TennisHacker"
+    },
+    avatar: youtubeAvatar("UCSiizATUv3qKHRS6UG2C2tQ"),
+    rankingSignals: {
+      subscriberScore: 0.58,
+      averageViewsScore: 0.61,
+      activityScore: 0.72,
+      catalogScore: 0.68,
+      authorityScore: 0.66,
+      curatorBoost: 0.69
+    }
+  },
+  {
+    id: "creator_meike_babel_tennis",
+    name: "Meike Babel Tennis",
+    shortDescription: "比赛模式拆解细，双打也强",
+    tags: ["实战导向", "进阶提升", "讲解清晰"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["matchplay", "doubles", "serve", "forehand", "return"],
+    styleTags: ["模式拆解", "比赛导向", "双打意识"],
+    bio: "偏比赛模式、左手球员应对和双打/接发细节，适合想把策略和动作选择结合起来的球员。",
+    suitableFor: ["左手对策", "双打上网", "接发站位"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_meike_babel_tennis_video_01",
+        title: "Break left-handed #tennisplayer preferred pattern with these plays",
+        target: "打左手球员总不适应",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/6K2rS5UKutM/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=6K2rS5UKutM",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_meike_babel_tennis_video_02",
+        title: "SIMPLE pattern to serve when playing against a left-handed #tennisplayer",
+        target: "对左手发球线路总读不清",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/P0kF2r9MydM/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=P0kF2r9MydM",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_meike_babel_tennis_video_03",
+        title: "Change your return position #tennisreturn",
+        target: "接发站位总找不准",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/sIN3ZYEkzSE/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=sIN3ZYEkzSE",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_meike_babel_tennis_video_04",
+        title: "How to Beat Left-Handed Tennis Players (Simple Winning Patterns)",
+        target: "遇到左手球员总吃亏",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/btj7A_8No7Y/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=btj7A_8No7Y",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_meike_babel_tennis_video_05",
+        title: "Madison Keys' #tennisserve",
+        target: "发球发力节奏总不顺",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/6gtADCKZEJg/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=6gtADCKZEJg",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_meike_babel_tennis_video_06",
+        title: "Work on your first two \"touches\" with this #tennisdrill",
+        target: "前两拍总接不上",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/ITAZy6nYUlw/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=ITAZy6nYUlw",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_meike_babel_tennis_video_07",
+        title: "When to close to net #tennis #tennisdoubles",
+        target: "双打上网时机总偏晚",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/TeqnptfIGcw/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=TeqnptfIGcw",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_meike_babel_tennis_video_08",
+        title: "How to prevent errors #tennis",
+        target: "非受迫失误总太多",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/4MQwOsbxrv0/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=4MQwOsbxrv0",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_meike_babel_tennis_video_09",
+        title: "C-shaped motion on #tennisforehand",
+        target: "正手轨迹总不顺",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/9QHERqM1lzM/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=9QHERqM1lzM",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_meike_babel_tennis_video_10",
+        title: "How Alex Eala fixes mistakes IMMEDIATELY!",
+        target: "比赛中临场调整总太慢",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/2Qs_p-spxXs/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=2Qs_p-spxXs",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/channel/UCOGFaeAM9YZya2GUgtT10qQ",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/channel/UCOGFaeAM9YZya2GUgtT10qQ"
+    },
+    avatar: youtubeAvatar("UCOGFaeAM9YZya2GUgtT10qQ"),
+    rankingSignals: {
+      subscriberScore: 0.52,
+      averageViewsScore: 0.6,
+      activityScore: 0.69,
+      catalogScore: 0.63,
+      authorityScore: 0.7,
+      curatorBoost: 0.68
+    }
+  }
+,
+  {
+    id: "creator_racquetflex",
+    name: "RacquetFlex",
+    shortDescription: "发球和击球原理拆得很细",
+    tags: ["发球专项", "细节导向", "讲解清晰"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["serve", "forehand", "matchplay", "net", "topspin"],
+    styleTags: ["动作原理", "讲解清晰", "实战导向"],
+    bio: "偏发球、击球触点和比赛里真正能用上的技术细节，适合想把发球和进攻衔接练扎实的球员。",
+    suitableFor: ["发球提速", "双误控制", "上网压迫"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_racquetflex_video_01",
+        title: "How To Find The Perfect Forehand Contact In 5 Simple Steps",
+        target: "正手击球点总找不准",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/xs6P8YKMlCA/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=xs6P8YKMlCA",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_racquetflex_video_02",
+        title: "Why Swinging HARDER Makes Your Serve SLOWER (Real Case Studies)",
+        target: "发球越抡越没速度",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/ebZRRsB1XWI/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=ebZRRsB1XWI",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_racquetflex_video_03",
+        title: "The Perfect Kick Serve Wrist Action in 3 Steps (Science Explained)",
+        target: "Kick发球腕部动作不对",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/Rn4IOsBXFv8/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=Rn4IOsBXFv8",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_racquetflex_video_04",
+        title: "The Fastest Way To Stop Double-Faulting (Even Under Pressure)",
+        target: "双误总是压不住",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/jy4PgM0TY34/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=jy4PgM0TY34",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_racquetflex_video_05",
+        title: "The Perfect Kick Serve Contact (STOP ACCIDENTAL SLICE)",
+        target: "Kick发球总变成侧旋",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/g1ADa7Etpa0/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=g1ADa7Etpa0",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_racquetflex_video_06",
+        title: "Your elbow position is killing your serve power 😳",
+        target: "发球肘位总跑偏",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/Sh9sK0k6l9Y/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=Sh9sK0k6l9Y",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_racquetflex_video_07",
+        title: "Nadal's Deadly Serve + Forehand Combo",
+        target: "发球加正手衔接总断",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/dfSq_NTwr-E/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=dfSq_NTwr-E",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_racquetflex_video_08",
+        title: "Attacking the Net Makes Tennis So Much Easier",
+        target: "上网压迫总不坚决",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/bkeCxUehlsI/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=bkeCxUehlsI",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_racquetflex_video_09",
+        title: "Never Aim Your Serve Here on Deuce",
+        target: "Deuce区发球落点总选错",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/TEOT6AxCkgE/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=TEOT6AxCkgE",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_racquetflex_video_10",
+        title: "How to Improve Your Serve Confidence in Matches",
+        target: "比赛里发球总没信心",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/_rrU0R-IjW0/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=_rrU0R-IjW0",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/racquetflex",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/racquetflex"
+    },
+    avatar: youtubeAvatar("UCtzuS4wcMk7vl9q-vgnTu4g"),
+    rankingSignals: {
+      subscriberScore: 0.62,
+      averageViewsScore: 0.66,
+      activityScore: 0.74,
+      catalogScore: 0.69,
+      authorityScore: 0.69,
+      curatorBoost: 0.72
+    }
+  },
+  {
+    id: "creator_tpa_tennis",
+    name: "TPA tennis",
+    shortDescription: "现代正手和发球讲得很实用",
+    tags: ["正手专项", "进阶提升", "讲解清晰"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["forehand", "serve", "footwork", "matchplay", "topspin"],
+    styleTags: ["现代技术", "动作拆解", "进阶提升"],
+    bio: "偏现代正手、发球和击球间距处理，适合想把正手发力和来球空间感练顺的球员。",
+    suitableFor: ["现代正手", "来球间距", "发球提速"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_tpa_tennis_video_01",
+        title: "How to Get a Deeper Racket Drop for a Powerful Serve",
+        target: "发球拍头下垂不够",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/aw55_LTiMRM/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=aw55_LTiMRM",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tpa_tennis_video_02",
+        title: "How to Set Up for a Short Ball",
+        target: "短球上步总慢",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/1OHgNk_Lg8A/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=1OHgNk_Lg8A",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tpa_tennis_video_03",
+        title: "Master Spin, Win More Matches",
+        target: "上旋质量总不够",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/JvBZqVgTTrw/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=JvBZqVgTTrw",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tpa_tennis_video_04",
+        title: "The Forehand Technique Nobody Teaches",
+        target: "现代正手动作总别扭",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/ral2cHTFcdY/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=ral2cHTFcdY",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tpa_tennis_video_05",
+        title: "The Right Way To Jump Into Your Forehand",
+        target: "正手起跳发力总乱",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/IhLcK-ScJ1k/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=IhLcK-ScJ1k",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tpa_tennis_video_06",
+        title: "This One Move Instantly Improves Your Forehand",
+        target: "正手总打不透",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/1-g1OD8gh-I/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=1-g1OD8gh-I",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tpa_tennis_video_07",
+        title: "Getting Jammed? Here’s The Fix #tennis #technique #spacing #tennistips",
+        target: "总被来球顶住",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/LwY03Lm9L5g/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=LwY03Lm9L5g",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tpa_tennis_video_08",
+        title: "Stop Getting Jammed on Your Groundstrokes",
+        target: "底线击球总被挤压",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/r7YqEMWFf5g/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=r7YqEMWFf5g",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tpa_tennis_video_09",
+        title: "Great Forehand Technique Demo - Max Purcell",
+        target: "想学职业正手细节",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/HHo2ViXTXRA/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=HHo2ViXTXRA",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_tpa_tennis_video_10",
+        title: "Serve Speed Tips - TPA Video Analysis #serve #tennis #technique",
+        target: "发球速度总卡住",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/OKcCniahFXY/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=OKcCniahFXY",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@TomAllsopp",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@TomAllsopp"
+    },
+    avatar: youtubeAvatar("UCxr1cQMWsMhVlqXLJo62OMg"),
+    rankingSignals: {
+      subscriberScore: 0.57,
+      averageViewsScore: 0.62,
+      activityScore: 0.78,
+      catalogScore: 0.66,
+      authorityScore: 0.67,
+      curatorBoost: 0.7
+    }
+  },
+  {
+    id: "creator_edgar_giffenig_tennis",
+    name: "Edgar Giffenig Tennis",
+    shortDescription: "战术和基本功拆解很扎实",
+    tags: ["实战导向", "讲解清晰", "基础导向"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["matchplay", "basics", "serve", "footwork", "consistency"],
+    styleTags: ["系统化", "战术拆解", "基础训练"],
+    bio: "偏单打战术、基础动作和墙练体系，适合想把训练组织和比赛思路一起搭起来的球员。",
+    suitableFor: ["单打战术", "抛球稳定", "墙练方法"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_edgar_giffenig_tennis_video_01",
+        title: "Tennis Instruction: Practical Mental Training",
+        target: "比赛心态总容易乱",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/v8nKZ2gWgn8/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=v8nKZ2gWgn8",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_edgar_giffenig_tennis_video_02",
+        title: "Tennis Instruction Singles Tactic  Rally Ideas",
+        target: "相持思路总不清楚",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/ZzMmaJdbs6c/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=ZzMmaJdbs6c",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_edgar_giffenig_tennis_video_03",
+        title: "Tennis Instruction - How to Beat a \"Pusher\"",
+        target: "遇到磨球型对手总没办法",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/yOKK0vG2RaA/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=yOKK0vG2RaA",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_edgar_giffenig_tennis_video_04",
+        title: "Tennis Instruction - Rush your Opponent and Gain Time for Yourself",
+        target: "总抢不到主动时间",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/CiPVLm60Vfo/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=CiPVLm60Vfo",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_edgar_giffenig_tennis_video_05",
+        title: "Tennis Instruction - Singles Tactics - The Passing Shot",
+        target: "穿越球总打不好",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/asbIqzJzhxU/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=asbIqzJzhxU",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_edgar_giffenig_tennis_video_06",
+        title: "Tennis Instruction: Optimize your Technique",
+        target: "技术动作总是效率不高",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/h8KmzxdNkfs/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=h8KmzxdNkfs",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_edgar_giffenig_tennis_video_07",
+        title: "Tennis Drill: Progressive Groundstroke Wall Drills Vol  2 Advanced",
+        target: "想系统练高级墙练",
+        levels: ["3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/h3KlEBrN9gs/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=h3KlEBrN9gs",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_edgar_giffenig_tennis_video_08",
+        title: "Tennis Drills: Progressive Groundstroke Wall Drills Volume 1",
+        target: "想用墙练打基础",
+        levels: ["3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/87jYKXuY4jk/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=87jYKXuY4jk",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_edgar_giffenig_tennis_video_09",
+        title: "Tennis Instruction – Develop a Consistent and Dependable Toss",
+        target: "抛球总是不稳定",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/4DN0Hj2yoMk/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=4DN0Hj2yoMk",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_edgar_giffenig_tennis_video_10",
+        title: "Tennis Instruction:  The Ideal Stances on your Groundstrokes –Open - Closed?",
+        target: "击球站位总选不对",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/IOprLbVRArI/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=IOprLbVRArI",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/channel/UCd_QKuxjUqriwJ7dw7KMrAQ",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/channel/UCd_QKuxjUqriwJ7dw7KMrAQ"
+    },
+    avatar: youtubeAvatar("UCd_QKuxjUqriwJ7dw7KMrAQ"),
+    rankingSignals: {
+      subscriberScore: 0.46,
+      averageViewsScore: 0.52,
+      activityScore: 0.43,
+      catalogScore: 0.72,
+      authorityScore: 0.7,
+      curatorBoost: 0.66
+    }
+  },
+  {
+    id: "creator_patrick_smith_tennis_coaching",
+    name: "Patrick Smith Tennis Coaching",
+    shortDescription: "双打和时机处理很有干货",
+    tags: ["讲解清晰", "双打专项", "实战导向"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["doubles", "timing", "topspin", "serve", "matchplay"],
+    styleTags: ["讲解清晰", "实战导向", "双打策略"],
+    bio: "偏双打站位、时机调整和上旋理解，适合想把比赛里站位和击球选择理顺的球员。",
+    suitableFor: ["双打站位", "时机调整", "上旋理解"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_patrick_smith_tennis_coaching_video_01",
+        title: "3 Most Important Drills To Actually Improve As A Beginner Tennis Player ",
+        target: "练了很多却没真进步",
+        levels: ["2.5", "3.0", "3.5"],
+        thumbnail: "https://img.youtube.com/vi/6HSHMqxcG2Q/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=6HSHMqxcG2Q",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_patrick_smith_tennis_coaching_video_02",
+        title: "Copy This To Have More Success At The Net In Doubles Tennis ",
+        target: "双打网前总不够稳",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/gLigylEFxaA/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=gLigylEFxaA",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_patrick_smith_tennis_coaching_video_03",
+        title: "Master These Moves To Fix Your Timing In Tennis - Beginner To Pro ",
+        target: "击球时机总对不上",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/qxGDHaADrto/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=qxGDHaADrto",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_patrick_smith_tennis_coaching_video_04",
+        title: "The Simple Doubles Strategy To Always Be In Right Position - The Pros Know This But Do You? ",
+        target: "双打站位总站不对",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/227hFGyVUe8/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=227hFGyVUe8",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_patrick_smith_tennis_coaching_video_05",
+        title: "How Topspin Is Actually Created In Tennis - Low To High Myth? ",
+        target: "上旋原理总理解偏了",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/ZcT69D02CfE/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=ZcT69D02CfE",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_patrick_smith_tennis_coaching_video_06",
+        title: "#1 Solution To Fix Your 'Waiter's Tray' And Hit Bigger Serves",
+        target: "托盘式发球总改不掉",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/PhqmeSTE8ME/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=PhqmeSTE8ME",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_patrick_smith_tennis_coaching_video_07",
+        title: "How The Pros Win Points Without Sacrificing Consistency ",
+        target: "想进攻又怕失误太多",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/QRPSRGwwAwM/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=QRPSRGwwAwM",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_patrick_smith_tennis_coaching_video_08",
+        title: "Secret To More Speed On The Forehand - How To Accelerate The Racket ",
+        target: "正手拍头加速总不够",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/uUqSMyaLu-4/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=uUqSMyaLu-4",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_patrick_smith_tennis_coaching_video_09",
+        title: "How To Hit Perfect Half Volleys (Advanced Tennis Technique) ",
+        target: "半截击总处理不好",
+        levels: ["3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/GJxeLhNSRTI/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=GJxeLhNSRTI",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_patrick_smith_tennis_coaching_video_10",
+        title: "Singles Tennis Strategy And Shot Selection - The Four Zones ",
+        target: "单打选球总没章法",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/sYXF77vwRzE/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=sYXF77vwRzE",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/channel/UCQbv0dgYyCb_MzKvEjiIzFQ",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/channel/UCQbv0dgYyCb_MzKvEjiIzFQ"
+    },
+    avatar: youtubeAvatar("UCQbv0dgYyCb_MzKvEjiIzFQ"),
+    rankingSignals: {
+      subscriberScore: 0.58,
+      averageViewsScore: 0.63,
+      activityScore: 0.73,
+      catalogScore: 0.69,
+      authorityScore: 0.68,
+      curatorBoost: 0.7
+    }
+  },
+  {
+    id: "creator_one_minute_tennis",
+    name: "One Minute Tennis",
+    shortDescription: "短视频密度高，技术点很准",
+    tags: ["细节导向", "讲解清晰", "脚步移动"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["forehand", "footwork", "serve", "topspin", "basics"],
+    styleTags: ["短平快", "技术细节", "动作感觉"],
+    bio: "偏一分钟内讲清一个技术细节，适合想快速修正击球感觉、脚步和发力链条的球员。",
+    suitableFor: ["脚步细节", "正手发力", "Kick发球"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_one_minute_tennis_video_01",
+        title: "Why You Trust Your Backhand More Than Your Forehand",
+        target: "正手总不如反手放心",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/-lgiop01S4w/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=-lgiop01S4w",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_one_minute_tennis_video_02",
+        title: "Forehand - Topspin and Flat Swing Path",
+        target: "正手上旋和平击总分不清",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/V8sq1WpAxfc/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=V8sq1WpAxfc",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_one_minute_tennis_video_03",
+        title: "The Evolution of the Split Step - Why Pros Use a Double Split",
+        target: "分腿垫步节奏总不对",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/IDcMWkMQd9U/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=IDcMWkMQd9U",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_one_minute_tennis_video_04",
+        title: "FOREHAND KINETIC CHAIN TRICK",
+        target: "正手动力链总接不上",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/SmKRBbMQnW4/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=SmKRBbMQnW4",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_one_minute_tennis_video_05",
+        title: "The Hidden Detail in Tennis: 3 Different Ready Positions",
+        target: "准备姿势总太单一",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/ZGtcFncG3YA/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=ZGtcFncG3YA",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_one_minute_tennis_video_06",
+        title: "How to attack deep balls",
+        target: "深球来了总只能被动顶",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/lkRonnp2ZOs/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=lkRonnp2ZOs",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_one_minute_tennis_video_07",
+        title: "“Fix Your Kick Serve With This Simple Throwing Drill”",
+        target: "Kick发球总找不到感觉",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/AyRFWwpJXOA/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=AyRFWwpJXOA",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_one_minute_tennis_video_08",
+        title: "Burst and Glide",
+        target: "启动和制动总衔接不好",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/xgwjutiSS3s/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=xgwjutiSS3s",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_one_minute_tennis_video_09",
+        title: "Why Pros Have Effortless Power (The Racket Lag Test)",
+        target: "想发力却总很费劲",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/VUnQfUcK2hU/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=VUnQfUcK2hU",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_one_minute_tennis_video_10",
+        title: "Instant Forehand Speed",
+        target: "正手球速总起不来",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/WpnCEw8MWFQ/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=WpnCEw8MWFQ",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@OneMinuteTennis",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@OneMinuteTennis"
+    },
+    avatar: youtubeAvatar("UCbmBx0-ZS9V7KSbyhrZcYqw"),
+    rankingSignals: {
+      subscriberScore: 0.5,
+      averageViewsScore: 0.61,
+      activityScore: 0.69,
+      catalogScore: 0.65,
+      authorityScore: 0.64,
+      curatorBoost: 0.67
+    }
+  },
+  {
+    id: "creator_your_online_tennis_coach",
+    name: "Your Online Tennis Coach",
+    shortDescription: "时机、眼睛和截击讲得很透",
+    tags: ["讲解清晰", "细节导向", "基础导向"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["2.5", "3.0", "3.5", "4.0"],
+    specialties: ["timing", "volley", "basics", "serve", "consistency"],
+    styleTags: ["讲解清晰", "动作感觉", "基础训练"],
+    bio: "偏时机、视线和截击这些经常被忽略的细节，适合想把基础击球感觉重新校准的球员。",
+    suitableFor: ["时机问题", "视线跟球", "截击基础"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_your_online_tennis_coach_video_01",
+        title: "Volleys Missing? Here's What's Actually Happening",
+        target: "截击总是失误太多",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/hq-1YxRqyQI/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=hq-1YxRqyQI",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_your_online_tennis_coach_video_02",
+        title: "Your Head Is Ruining Your Tennis Timing",
+        target: "击球时机总差半拍",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/ZrhpSf35ttE/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=ZrhpSf35ttE",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_your_online_tennis_coach_video_03",
+        title: "Mini Tennis Practice That Actually Works #tennis #tutorial",
+        target: "小场热身总练不到点",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/XnFRRFdILyU/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=XnFRRFdILyU",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_your_online_tennis_coach_video_04",
+        title: "How to Become One With the Ball in Tennis",
+        target: "总是吃不准来球",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/X2iRyYf2IBU/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=X2iRyYf2IBU",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_your_online_tennis_coach_video_05",
+        title: "The Volley Technique That Separates Good From Great",
+        target: "截击动作总不稳定",
+        levels: ["3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/t1sC3sAguHA/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=t1sC3sAguHA",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_your_online_tennis_coach_video_06",
+        title: "Turn Your Weakest Stroke Into Your Weapon",
+        target: "弱项总是练不成强项",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/Ilw9SK0JIRQ/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=Ilw9SK0JIRQ",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_your_online_tennis_coach_video_07",
+        title: "Why You're Losing Power on Every Shot (Timing)",
+        target: "每拍击球都发不上力",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/PNvw8FpdsKc/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=PNvw8FpdsKc",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_your_online_tennis_coach_video_08",
+        title: "Where Your Eyes Should Be on Every Single Point",
+        target: "眼睛总跟不住球",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/3YnfpMAkMAU/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=3YnfpMAkMAU",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_your_online_tennis_coach_video_09",
+        title: "Bounce Your Eyes With the Ball to Fix Timing",
+        target: "迎球节奏总不稳定",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/qE6rfm1IRZo/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=qE6rfm1IRZo",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_your_online_tennis_coach_video_10",
+        title: "The Serve Timing Secret Nobody Talks About",
+        target: "发球节奏总卡住",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/J6ENsoZCBwU/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=J6ENsoZCBwU",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@youronlinetenniscoach",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@youronlinetenniscoach"
+    },
+    avatar: youtubeAvatar("UC4OdGlldLhLqe7TEw1I8DVw"),
+    rankingSignals: {
+      subscriberScore: 0.51,
+      averageViewsScore: 0.58,
+      activityScore: 0.74,
+      catalogScore: 0.63,
+      authorityScore: 0.65,
+      curatorBoost: 0.67
+    }
+  },
+  {
+    id: "creator_crunch_time_coaching",
+    name: "Crunch Time Coaching",
+    shortDescription: "lesson实拍多，发球和正手干货密",
+    tags: ["讲解清晰", "发球专项", "进阶提升"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["2.5", "3.0", "3.5", "4.0", "4.5"],
+    specialties: ["serve", "forehand", "footwork", "volley", "topspin"],
+    styleTags: ["lesson实拍", "训练导向", "讲解清晰"],
+    bio: "偏 lesson 实拍和训练拆解，尤其适合想补发球、正手和脚步逻辑的俱乐部球员。",
+    suitableFor: ["发球训练", "正手纠正", "脚步与lesson实拍"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_crunch_time_coaching_video_01",
+        title: "10X Your Slice Serve in 10 Minutes (This Drill Is Ridiculous)",
+        target: "Slice发球总做不出弧线",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/x35WrkLXmWU/mqdefault.jpg",
+        viewCount: 30670,
+        url: "https://www.youtube.com/watch?v=x35WrkLXmWU",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_crunch_time_coaching_video_02",
+        title: "Quick Tips: 2 Secrets to Consistent Forehands",
+        target: "正手总不够稳定",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/d83v5BmewWo/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=d83v5BmewWo",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_crunch_time_coaching_video_03",
+        title: "Develop Perfect Forehand Technique 100% by yourself",
+        target: "想自己把正手框架练顺",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/1es8pfYRHbk/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=1es8pfYRHbk",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_crunch_time_coaching_video_04",
+        title: "Forehand Deadly Accuracy: Tennis Lesson",
+        target: "正手落点总控不住",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/tMpTJxc0Jh0/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=tMpTJxc0Jh0",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_crunch_time_coaching_video_05",
+        title: "5 Ways to Instantly Improve your Forehand",
+        target: "想快速修正正手动作",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://img.youtube.com/vi/QrHA1p2YoeI/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=QrHA1p2YoeI",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_crunch_time_coaching_video_06",
+        title: "Massive Topspin Forehands in 3 Simple Steps",
+        target: "正手上旋总拉不出来",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/CIfArOyZGug/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=CIfArOyZGug",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_crunch_time_coaching_video_07",
+        title: "Forehand Lesson: 5 Massive Forehand Power Drills",
+        target: "正手想发力却发不出来",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/d-d5Jq45RC4/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=d-d5Jq45RC4",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_crunch_time_coaching_video_08",
+        title: "Tennis Volley Lesson: Best Forehand Volley Tip Ever",
+        target: "网前截击总没把握",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://img.youtube.com/vi/jbE0Dkf1JHI/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=jbE0Dkf1JHI",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_crunch_time_coaching_video_09",
+        title: "Top 10 Beginner Tennis Drills for Jan 2022",
+        target: "刚入门不知道怎么练",
+        levels: ["2.5", "3.0", "3.5"],
+        thumbnail: "https://img.youtube.com/vi/7mzcbyqw_J4/mqdefault.jpg",
+        url: "https://www.youtube.com/watch?v=7mzcbyqw_J4",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_crunch_time_coaching_video_10",
+        title: "Anna learns topspin and footwork in her 2nd tennis lesson",
+        target: "脚步和上旋总连不起来",
+        levels: ["2.5", "3.0", "3.5"],
+        thumbnail: "https://img.youtube.com/vi/IM65pLjZgxQ/mqdefault.jpg",
+        viewCount: 2944,
+        url: "https://www.youtube.com/watch?v=IM65pLjZgxQ",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@PeterFreemanTennis",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@PeterFreemanTennis"
+    },
+    avatar: youtubeAvatar("UCwDXnQWw5E83CF1Dai79M8A"),
+    rankingSignals: {
+      subscriberScore: 0.53,
+      averageViewsScore: 0.57,
+      activityScore: 0.73,
+      catalogScore: 0.66,
+      authorityScore: 0.66,
+      curatorBoost: 0.68
+    }
+  }
+
+
 ];

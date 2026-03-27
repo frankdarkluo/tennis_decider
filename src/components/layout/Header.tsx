@@ -47,7 +47,7 @@ export function Header() {
           className="inline-flex min-h-14 w-[150px] shrink-0 items-center justify-start rounded-2xl border border-transparent px-2 py-1.5 transition hover:border-brand-100 hover:bg-brand-50/50 sm:w-[180px] md:w-[235px] lg:w-[290px]"
         >
           <Image
-            src="/brand/tennislevel-logo-header.jpg"
+            src="/brand/tennislevel-logo-header.png"
             alt="TennisLevel"
             width={994}
             height={256}

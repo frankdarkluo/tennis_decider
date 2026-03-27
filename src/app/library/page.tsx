@@ -22,6 +22,43 @@ function normalizeUrl(url: string) {
   return url.replace(/\/+$/, "");
 }
 
+function hashString(value: string) {
+  let hash = 2166136261;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0) / 4294967295;
+}
+
+function sortByMixedPriority(items: ContentItem[], seed: string) {
+  if (items.length <= 1) {
+    return items;
+  }
+
+  const maxLogViews = items.reduce((currentMax, item) => {
+    const nextValue = item.viewCount ? Math.log10(item.viewCount + 10) : 0;
+    return Math.max(currentMax, nextValue);
+  }, 0);
+
+  return [...items].sort((left, right) => {
+    const leftViewScore = left.viewCount ? Math.log10(left.viewCount + 10) / (maxLogViews || 1) : 0;
+    const rightViewScore = right.viewCount ? Math.log10(right.viewCount + 10) / (maxLogViews || 1) : 0;
+
+    const leftRandom = hashString(`${seed}:${left.id}`);
+    const rightRandom = hashString(`${seed}:${right.id}`);
+
+    const leftScore = leftRandom * 0.65 + leftViewScore * 0.35;
+    const rightScore = rightRandom * 0.65 + rightViewScore * 0.35;
+
+    if (rightScore !== leftScore) {
+      return rightScore - leftScore;
+    }
+
+    return left.title.localeCompare(right.title, "zh-Hans-CN");
+  });
+}
+
 function mergeLibraryItem(existing: ContentItem, candidate: ContentItem): ContentItem {
   return {
     ...existing,
@@ -51,7 +88,7 @@ function buildLibraryItems(): ContentItem[] {
       upsert({
         id: `content_featured_${creator.id}_${index + 1}`,
         title: video.title,
-        sourceTitle: video.title,
+        sourceTitle: video.sourceTitle ?? video.title,
         creatorId: creator.id,
         platform: video.platform,
         type: "video",
@@ -86,6 +123,7 @@ function LibraryPageContent() {
   const [showBookmarkedOnly, setShowBookmarkedOnly] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const previousFiltersRef = useRef<Record<string, string | boolean> | null>(null);
+  const shuffleSeed = useMemo(() => new Date().toLocaleDateString("en-CA"), []);
   const creatorNameById = useMemo(
     () => new Map(creators.map((creator) => [creator.id, creator.name])),
     []
@@ -171,10 +209,16 @@ function LibraryPageContent() {
       return hitKeyword && hitPlatform && hitBookmark;
     });
 
-    const withThumbnail = matchedItems.filter((item) => Boolean(getThumbnail(item)));
-    const withoutThumbnail = matchedItems.filter((item) => !getThumbnail(item));
+    const withThumbnail = sortByMixedPriority(
+      matchedItems.filter((item) => Boolean(getThumbnail(item))),
+      `${shuffleSeed}:with-thumb`
+    );
+    const withoutThumbnail = sortByMixedPriority(
+      matchedItems.filter((item) => !getThumbnail(item)),
+      `${shuffleSeed}:no-thumb`
+    );
     return [...withThumbnail, ...withoutThumbnail];
-  }, [bookmarkedIds, creatorNameById, keyword, selectedPlatform, showBookmarkedOnly]);
+  }, [bookmarkedIds, creatorNameById, keyword, selectedPlatform, showBookmarkedOnly, shuffleSeed]);
   const visibleItems = useMemo(
     () => filtered.slice(0, visibleCount),
     [filtered, visibleCount]
@@ -259,9 +303,11 @@ function LibraryPageContent() {
             ) : null}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-[var(--line)] bg-white p-8 text-center">
-            <p className="text-slate-700">没找到，换个词试试。</p>
-            <Button className="mt-3" variant="secondary" onClick={clearAll}>清空搜索</Button>
+          <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-6 py-10 text-center text-slate-500 shadow-soft">
+            还没找到符合条件的内容。
+            <div className="mt-4">
+              <Button variant="secondary" onClick={clearAll}>清空筛选</Button>
+            </div>
           </div>
         )}
       </div>
@@ -271,7 +317,7 @@ function LibraryPageContent() {
 
 export default function LibraryPage() {
   return (
-    <Suspense fallback={<PageContainer><p className="text-slate-600">正在加载内容库...</p></PageContainer>}>
+    <Suspense fallback={<PageContainer>加载中...</PageContainer>}>
       <LibraryPageContent />
     </Suspense>
   );

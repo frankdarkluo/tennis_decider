@@ -413,7 +413,7 @@ export default function VideoDiagnosePage() {
               <p className="text-sm font-semibold text-brand-700">结果会在这里</p>
               <h2 className="text-xl font-bold text-slate-900">先上传视频，我会给你问题、内容和计划</h2>
               <div className="space-y-3 text-sm leading-6 text-slate-600">
-                <p>这次会先回答：</p>
+                <p>回答要点:</p>
                 <ul className="list-disc space-y-1 pl-5">
                   <li>最先要改什么</li>
                   <li>更像击球点、准备、脚步还是节奏</li>

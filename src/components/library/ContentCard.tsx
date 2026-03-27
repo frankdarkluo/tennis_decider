@@ -64,6 +64,38 @@ function clampText(value: string, maxLength = 20) {
   return `${normalized.slice(0, maxLength)}…`;
 }
 
+
+function normalizeBilibiliTitle(value: string) {
+  return value
+    .replace(/[|｜]\s*LeonTV(?:网球频道|频道)?\s*[|｜]?/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getDisplayTitle(item: ContentItem) {
+  const rawTitle = (item.platform === "Bilibili" && item.language === "zh"
+    ? normalizeBilibiliTitle(item.sourceTitle ?? item.title)
+    : item.title)
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const strippedTitle = rawTitle.replace(/[＃#].*$/, "").trim();
+  if (strippedTitle.length > 1) {
+    return strippedTitle;
+  }
+
+  const afterFirstTag = rawTitle
+    .replace(/^[＃#][^\s＃#]+\s*/, "")
+    .replace(/[＃#].*$/, "")
+    .trim();
+
+  if (afterFirstTag.length > 1) {
+    return afterFirstTag;
+  }
+
+  return rawTitle;
+}
+
 function getDisplayReason(item: ContentItem) {
   const useCase = item.useCases[0]?.trim();
   if (useCase) {
@@ -129,6 +161,7 @@ export function ContentCard({
 }: ContentCardProps) {
   const creator = creators.find((c) => c.id === item.creatorId);
   const isProfileCompact = source === "profile";
+  const displayTitle = getDisplayTitle(item);
   const displayReason = getDisplayReason(item);
   const thumbnail = getThumbnail(item);
   const viewCountLabel = formatChineseViewCount(item.viewCount);
@@ -141,7 +174,7 @@ export function ContentCard({
         href={item.url}
         target="_blank"
         rel="noreferrer"
-        aria-label={`打开视频：${item.title}`}
+        aria-label={`打开视频：${displayTitle}`}
         className="absolute inset-0 z-0 rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/70"
         onClick={() => {
           logEvent("content_click", { contentId: item.id, source, target: "card" });
@@ -153,13 +186,13 @@ export function ContentCard({
           {showThumbnail ? (
             <img
               src={thumbnail ?? undefined}
-              alt={item.title}
+              alt={displayTitle}
               className="absolute inset-0 h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.02]"
               loading="lazy"
               onError={() => setThumbnailFailed(true)}
             />
           ) : (
-            <ThumbnailFallback title={item.title} platform={item.platform} />
+            <ThumbnailFallback title={displayTitle} platform={item.platform} />
           )}
           <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-slate-200/70" />
           {viewCountLabel ? (
@@ -174,25 +207,29 @@ export function ContentCard({
             </span>
           ) : null}
         </div>
-        <div className="flex flex-1 flex-col space-y-2.5 p-5">
-          <div className="flex flex-wrap gap-2">
-            <Badge className="px-5 py-2 text-base font-semibold leading-none">{item.platform}</Badge>
-            <Badge className="bg-slate-100 px-5 py-2 text-base font-semibold leading-none text-slate-700">{item.levels.join("/")}</Badge>
+        <div className="flex flex-1 flex-col px-5 pt-5 pb-0">
+          <div className="space-y-2.5">
+            <div className="flex flex-wrap gap-2">
+              <Badge className="px-5 py-2 text-base font-semibold leading-none">{item.platform}</Badge>
+              <Badge className="bg-slate-100 px-5 py-2 text-base font-semibold leading-none text-slate-700">{item.levels.join("/")}</Badge>
+            </div>
+            <div className="space-y-1">
+              <h3 className="line-clamp-2 text-[0.96rem] font-bold leading-[1.35] text-slate-900 sm:text-[1rem]">
+                {displayTitle}
+              </h3>
+              <p className="text-sm leading-6 text-slate-600">{creator?.name ?? "未知"}</p>
+            </div>
           </div>
-          <h3 className="line-clamp-2 min-h-[3rem] text-[0.96rem] font-bold leading-6 text-slate-900 sm:text-[1rem]">
-            {item.title}
-          </h3>
-          <p className="text-sm text-slate-600">{creator?.name ?? "未知"}</p>
-          <div className="mt-auto flex items-center gap-3">
-            <p className="min-w-0 flex-1 text-sm leading-6 text-slate-600">{displayReason}</p>
+          <div className="relative mt-0.5 pr-10">
+            <p className="min-w-0 text-sm leading-6 text-slate-600">{displayReason}</p>
             {onToggleBookmark ? (
               <button
                 type="button"
                 className={isProfileCompact
                   ? "pointer-events-auto text-sm font-semibold text-slate-500 transition hover:text-slate-700"
                   : bookmarked
-                    ? "pointer-events-auto relative z-20 -mr-5 inline-flex h-12 w-12 items-center justify-end rounded-full text-brand-700 transition duration-200 hover:scale-[1.03] hover:bg-brand-50 hover:text-brand-800"
-                    : "pointer-events-auto relative z-20 -mr-5 inline-flex h-12 w-12 items-center justify-end rounded-full text-slate-400 transition duration-200 hover:scale-[1.03] hover:bg-slate-100 hover:text-slate-600"}
+                    ? "pointer-events-auto absolute right-[-4px] top-1/2 z-20 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center text-brand-700 transition duration-200 hover:scale-[1.03] hover:text-brand-800"
+                    : "pointer-events-auto absolute right-[-4px] top-1/2 z-20 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center text-slate-400 transition duration-200 hover:scale-[1.03] hover:text-slate-600"}
                 onClick={(event) => {
                   event.stopPropagation();
                   onToggleBookmark();
@@ -204,7 +241,7 @@ export function ContentCard({
                 {isProfileCompact ? (
                   <span>{bookmarkLoading ? "处理中..." : "移出收藏"}</span>
                 ) : (
-                  <BookmarkIcon filled={bookmarked} />
+                  <BookmarkIcon filled={bookmarked} className="h-[1.6rem] w-[1.6rem]" />
                 )}
               </button>
             ) : null}

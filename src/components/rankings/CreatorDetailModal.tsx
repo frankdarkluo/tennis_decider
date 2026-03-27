@@ -243,7 +243,7 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
               <p className="text-sm text-slate-600">暂无收录内容</p>
             )}
           </div>
-          <a href={creator.profileUrl} target="_blank" rel="noreferrer"><Button>前往主页</Button></a>
+          <a href={creator.profileUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex"><Button>前往主页</Button></a>
         </>
       ) : null}
     </Modal>

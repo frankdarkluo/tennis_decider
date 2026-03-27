@@ -54,13 +54,15 @@ export const contents: ContentItem[] = [
     useCases: ["正手动作还没有固定下来", "正手总觉得不顺手"],
     coachReason: "正手框架没定下来之前改细节都白搭，先看这条把轨迹跑顺。",
     thumbnail: '/thumbnails/bilibili/f141ebcafbe7565d32be6b26d6854fe6d3bf845c.jpg',
+    viewCount: 150980,
     duration: '1:14',
     url: "https://www.bilibili.com/video/BV1XM4y187mR"
   },
   {
     id: "content_gaiao_02",
     title: "发球入门：先别急着发力",
-    creatorId: "creator_gaiao",
+    sourceTitle: "【网球发球】如何用脚发力增加球速，三种技巧帮你“跳”进发球｜球友质疑系列｜ Leon教网球｜ LeonTV",
+    creatorId: "creator_leontv_cn",
     platform: "Bilibili",
     type: "video",
     levels: ["2.5", "3.0"],
@@ -72,6 +74,7 @@ export const contents: ContentItem[] = [
     useCases: ["发球经常发不进去", "二发没有信心"],
     coachReason: "发球最常见的坑就是一上来就想发快，这条帮你先把节奏和稳定性建起来。",
     thumbnail: '/thumbnails/bilibili/2f68ad0409688f7462d23fc37751422bf036b0f1.jpg',
+    viewCount: 8640,
     duration: '9:24',
     url: "https://www.bilibili.com/video/BV1q7411L7cD"
   },
@@ -90,13 +93,15 @@ export const contents: ContentItem[] = [
     useCases: ["反手总不扎实", "反手动作不稳定"],
     coachReason: "反手不扎实十有八九是击球点和拍面角度的问题，这条讲得很直接。",
     thumbnail: '/thumbnails/bilibili/e4600b2ca3cd245f33ad97fb5d03cb74ccb2006e.jpg',
+    viewCount: 39526,
     duration: '1:03',
     url: "https://www.bilibili.com/video/BV1YL411d7oX"
   },
   {
     id: "content_gaiao_04",
     title: "正手上旋：先用合适握拍把弧线打出来",
-    creatorId: "creator_gaiao",
+    sourceTitle: "盖奥教练教你上旋球",
+    creatorId: "creator_topspinpro_hidden",
     platform: "Bilibili",
     type: "video",
     levels: ["2.5", "3.0", "3.5"],
@@ -108,6 +113,7 @@ export const contents: ContentItem[] = [
     useCases: ["正手弧线太平容易飞", "想学上旋但握拍和发力总拧巴"],
     coachReason: "很多人上旋打不出来，其实是握拍和挥拍方向没先对上，这条适合从底层体感开始补。",
     thumbnail: '/thumbnails/bilibili/7c278f743d09ee825fcf31ce9dd1bef8d018e60f.jpg',
+    viewCount: 2908,
     duration: '1:00',
     url: "https://www.bilibili.com/video/BV1qM4y1k7Lo"
   },
@@ -126,6 +132,7 @@ export const contents: ContentItem[] = [
     useCases: ["分腿垫步时机不对", "总在击球前最后一步乱掉"],
     coachReason: "业余球员的移动问题往往不是跑不快，而是启动和到位节奏乱，这条很适合补脚下框架。",
     thumbnail: '/thumbnails/bilibili/040a19ed2bc864e2d9101347b15782f7e0e36bc4.jpg',
+    viewCount: 60772,
     duration: '1:27',
     url: "https://www.bilibili.com/video/BV1Tg4y1w7Xe"
   },
@@ -144,13 +151,15 @@ export const contents: ContentItem[] = [
     useCases: ["想学侧旋发球", "发球旋转变化总是做不出来"],
     coachReason: "发球变化的门槛不只是刷球，更是握拍和拍头路径先理顺，这条适合做进阶补充。",
     thumbnail: '/thumbnails/bilibili/51f03db09cb87e128474d2ece17fbbdf2ea2f057.jpg',
+    viewCount: 36917,
     duration: '0:32',
     url: "https://www.bilibili.com/video/BV1YA4y1D7YR"
   },
   {
     id: "content_zlx_01",
     title: "发球节奏：建立停顿感而不是乱发力",
-    creatorId: "creator_mouratoglou_cn",
+    sourceTitle: "网球 找到合适的发球节奏 冠军教练-莫拉托格鲁Finding a proper RHYTHM ON THE SERVE w⧸ Milan Tyson",
+    creatorId: "creator_quanshui_hanshansi_hidden",
     platform: "Bilibili",
     type: "video",
     levels: ["3.0", "3.5", "4.0"],
@@ -162,6 +171,7 @@ export const contents: ContentItem[] = [
     useCases: ["二发节奏总是断掉", "发球一发力动作就散"],
     coachReason: "很多人发球散就是因为没有停顿，这条能帮你找到发力前的\"等一下\"。",
     thumbnail: '/thumbnails/bilibili/aa0f06a058fe455eb6058d42862de5f3a0ff7295.jpg',
+    viewCount: 364,
     duration: '0:54',
     url: "https://www.bilibili.com/video/BV1aN4y1f7NC"
   },
@@ -390,6 +400,7 @@ export const contents: ContentItem[] = [
     useCases: ["启动总慢半拍", "分腿垫步时机总不对"],
     coachReason: "分腿垫步是所有移动的起点，时机对了你会觉得球突然慢下来了。",
     thumbnail: '/thumbnails/bilibili/bcd585e7eb1eb34b3f90ec584d18425635997e30.jpg',
+    viewCount: 25228,
     duration: '7:25',
     url: "https://www.bilibili.com/video/BV1PN4y1R7jL"
   },
@@ -444,6 +455,7 @@ export const contents: ContentItem[] = [
     useCases: ["正手球速总起不来", "总觉得只有手臂在发力"],
     coachReason: "正手没力不是手臂弱，是转体和蹬地没参与进来，这条帮你找到发力链。",
     thumbnail: '/thumbnails/bilibili/8ec3416ebcfbb18422c57f72fa81f2acab2bb791.jpg',
+    viewCount: 309390,
     duration: '13:16',
     url: "https://www.bilibili.com/video/BV1h64y1D78J"
   },
@@ -462,6 +474,7 @@ export const contents: ContentItem[] = [
     useCases: ["正手上旋感不明显", "拉不出安全弧线"],
     coachReason: "上旋不是刻意去刷球，而是挥拍路径自然带出来的，这条的体感描述很好。",
     thumbnail: '/thumbnails/bilibili/7e035fbef7f29ef5cff1dac5f7a84bcd72e8b445.jpg',
+    viewCount: 38862,
     duration: '8:06',
     url: "https://www.bilibili.com/video/BV1QRLizLEnv"
   },
@@ -634,6 +647,7 @@ export const contents: ContentItem[] = [
     useCases: ["双打网前不敢压", "截击时机总慢半拍"],
     coachReason: "封网时机是双打得分的关键，这条从站位和判断两个角度帮你敢压敢抢。",
     thumbnail: '/thumbnails/bilibili/8e9a2416bfa72356df1d9ce499d1221652b5c7ef.jpg',
+    viewCount: 138187,
     duration: '22:03',
     url: "https://www.bilibili.com/video/BV1954y147nF"
   },
@@ -652,6 +666,7 @@ export const contents: ContentItem[] = [
     useCases: ["接发球总被压制", "接发第一拍质量差"],
     coachReason: "接发被压不是因为对手发得好，多半是你站位太深或第一拍选择不对。",
     thumbnail: '/thumbnails/bilibili/a7c193cdba7994f40ab95c947c618f94bb1f8973.jpg',
+    viewCount: 285935,
     duration: '30:38',
     url: "https://www.bilibili.com/video/BV1Ep4y1W7kc"
   },
@@ -670,6 +685,7 @@ export const contents: ContentItem[] = [
     useCases: ["比赛执行波动大", "双打配合总断档"],
     coachReason: "比赛不是拍拍都要赢，先稳住再找机会压，这条帮你建立比赛执行节奏。",
     thumbnail: '/thumbnails/bilibili/d8bbdfd63f468624fd2530609984dbf8dea11039.jpg',
+    viewCount: 36443,
     duration: '7:41',
     url: "https://www.bilibili.com/video/BV1JN4y18792"
   },
@@ -688,13 +704,15 @@ export const contents: ContentItem[] = [
     useCases: ["反手总下网", "反手击球点偏晚"],
     coachReason: "这条从击球点和拍面两个维度拆解反手下网，适合对照自己的问题逐个排查。",
     thumbnail: '/thumbnails/bilibili/82d0351f649ba96ee628548caafa0ae057748b00.jpg',
+    viewCount: 10010,
     duration: '10:54',
     url: "https://www.bilibili.com/video/BV1jm4y1X7yF"
   },
   {
     id: "content_fr_02",
     title: "击球点偏晚：准备节奏与脚步到位",
-    creatorId: "creator_furao",
+    sourceTitle: "【网球 教学】简单的脚步技巧 让脚步更专业灵活｜LeonTV｜网球训练",
+    creatorId: "creator_leontv_cn",
     platform: "Bilibili",
     type: "video",
     levels: ["3.0", "3.5", "4.0"],
@@ -706,6 +724,7 @@ export const contents: ContentItem[] = [
     useCases: ["准备总慢半拍", "击球点总在身后"],
     coachReason: "击球点晚不是手慢是脚慢，这条先帮你把脚步节奏调对，手自然就跟上了。",
     thumbnail: '/thumbnails/bilibili/97f31cc41477bc4c154cffde5a5206c6fb71cc83.jpg',
+    viewCount: 12916,
     duration: '7:56',
     url: "https://www.bilibili.com/video/BV1SQ4y1M7y8"
   },

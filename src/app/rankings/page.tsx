@@ -13,6 +13,7 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { logEvent } from "@/lib/eventLogger";
 
 const LEVEL_ORDER = ["2.5", "3.0", "3.5", "4.0", "4.0+", "4.5"] as const;
+const INITIAL_VISIBLE_CREATORS = 20;
 
 function clamp01(value: number) {
   return Math.max(0, Math.min(1, value));
@@ -95,6 +96,7 @@ export default function RankingsPage() {
   const [query, setQuery] = useState("");
   const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
   const [viewerLevel, setViewerLevel] = useState<string | undefined>(undefined);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_CREATORS);
 
   const list = useMemo(() => {
     return creators
@@ -119,6 +121,12 @@ export default function RankingsPage() {
       })
       .map(({ creator }) => creator);
   }, [query, region, viewerLevel]);
+
+  const visibleList = useMemo(() => list.slice(0, visibleCount), [list, visibleCount]);
+
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE_CREATORS);
+  }, [query, region]);
 
   useEffect(() => {
     if (loading) {
@@ -159,16 +167,12 @@ export default function RankingsPage() {
   }, [configured, loading, user?.id]);
 
   const pageTitle = "博主榜";
-  const pageDescription = region === "domestic"
-    ? "先搜名字，再挑中文博主。"
-    : "先搜名字，再挑英文博主。";
 
   return (
     <PageContainer>
       <div className="space-y-5">
         <div>
           <h1 className="text-3xl font-black text-slate-900">{pageTitle}</h1>
-          <p className="mt-2 text-slate-600">{pageDescription}</p>
         </div>
 
         <div className="flex gap-2">
@@ -194,8 +198,9 @@ export default function RankingsPage() {
         </div>
 
         {list.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2">
-            {list.map((creator) => (
+          <div className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+            {visibleList.map((creator) => (
               <CreatorCard
                 key={creator.id}
                 creator={creator}
@@ -205,6 +210,18 @@ export default function RankingsPage() {
                 }}
               />
             ))}
+            </div>
+            {visibleCount < list.length ? (
+              <div className="flex justify-center pt-2">
+                <button
+                  type="button"
+                  onClick={() => setVisibleCount((count) => Math.min(count + INITIAL_VISIBLE_CREATORS, list.length))}
+                  className="rounded-2xl border border-[var(--line)] bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700"
+                >
+                  查看更多
+                </button>
+              </div>
+            ) : null}
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-[var(--line)] bg-white p-6 text-slate-600">没找到，换个关键词试试。</div>

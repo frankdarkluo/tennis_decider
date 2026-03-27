@@ -145,7 +145,7 @@ describe("app smoke tests", () => {
     render(React.createElement(LibraryPage));
 
     expect(await screen.findByText("找内容")).toBeInTheDocument();
-    expect(screen.getByText("正手基础：先建立挥拍框架")).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /打开视频：/i }).length).toBeGreaterThan(0);
     expect(screen.getByText("查看更多")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });

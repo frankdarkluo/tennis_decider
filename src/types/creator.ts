@@ -13,6 +13,7 @@ export type CreatorRankingSignals = {
 export type CreatorFeaturedVideo = {
   id: string;
   title: string;
+  sourceTitle?: string;
   target: string;
   levels: string[];
   thumbnail?: string;
