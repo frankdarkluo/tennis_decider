@@ -162,7 +162,7 @@ function LibraryPageContent() {
 
         {filtered.length > 0 ? (
           <div className="space-y-6">
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid items-start gap-4 md:grid-cols-2">
               {visibleItems.map((item) => (
                 <ContentCard
                   key={item.id}

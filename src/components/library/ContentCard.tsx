@@ -79,7 +79,7 @@ export function ContentCard({
   const thumbnail = getThumbnail(item);
 
   return (
-    <Card className="overflow-hidden p-0">
+    <Card className="self-start overflow-hidden p-0">
       <div className="relative aspect-video bg-slate-100">
         {thumbnail ? (
           <img
@@ -99,7 +99,7 @@ export function ContentCard({
           </span>
         ) : null}
       </div>
-      <div className="space-y-3 p-5">
+      <div className="space-y-2.5 p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="flex flex-wrap gap-2">
             <Badge className="px-3.5 py-1.5 text-sm">{item.platform}</Badge>
@@ -128,13 +128,13 @@ export function ContentCard({
         </div>
         <h3 className="line-clamp-2 text-lg font-bold leading-7 text-slate-900">{item.title}</h3>
         <p className="text-sm text-slate-600">来源：{creator?.name ?? "未知"}</p>
-        <p className="text-sm leading-6 text-slate-600">{displayReason}</p>
-        <div className="flex justify-end">
+        <div className="flex items-center justify-between gap-3">
+          <p className="min-w-0 flex-1 text-sm leading-6 text-slate-600">{displayReason}</p>
           <a
             href={item.url}
             target="_blank"
             rel="noreferrer"
-            className="text-sm font-semibold text-slate-500 transition hover:text-slate-700"
+            className="shrink-0 text-sm font-semibold text-slate-500 transition hover:text-slate-700"
             onClick={() => {
               logEvent("content_click", { contentId: item.id, source });
               logEvent("content_external", { contentId: item.id, platform: item.platform, url: item.url });

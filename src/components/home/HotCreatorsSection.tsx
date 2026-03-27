@@ -48,7 +48,7 @@ export function HotCreatorsSection() {
                   </div>
                   <p className="mt-2 text-sm leading-6 text-slate-600">{creator.bio}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
-                    {creator.styleTags.slice(0, 2).map((tag) => (
+                    {creator.tags.slice(0, 3).map((tag) => (
                       <Badge key={tag}>{tag}</Badge>
                     ))}
                   </div>

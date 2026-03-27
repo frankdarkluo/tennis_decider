@@ -3,6 +3,7 @@ node_modules/
 
 # build outputs
 .next/
+.next-dev/
 out/
 dist/
 build/
@@ -10,6 +11,7 @@ build/
 # caches
 .cache/
 *.tsbuildinfo
+scripts/thumbnail-results.json
 
 # logs
 npm-debug.log*

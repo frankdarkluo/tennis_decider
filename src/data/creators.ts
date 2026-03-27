@@ -7,14 +7,14 @@ export const creators: Creator[] = [
   {
     id: "creator_gaiao",
     name: "盖奥网球",
-    shortDescription: "适合零基础到 4.0 球员",
+    shortDescription: "内容全面清晰，适合打基础和自学入门",
     tags: ["新手友好", "基础导向", "讲解清晰"],
     region: "domestic",
     platforms: ["Bilibili"],
     levels: ["2.5", "3.0", "3.5", "4.0"],
     specialties: ["basics", "forehand", "serve", "grip", "footwork", "topspin"],
     styleTags: ["新手友好", "讲解清晰", "基础导向", "动作拆解"],
-    bio: "适合零基础到 4.0 左右球员，偏基础动作建立和启蒙教学。",
+    bio: "内容全面清晰，适合基础入门和自学提升。",
     suitableFor: ["零基础", "正手框架建立", "发球入门"],
     featuredContentIds: ["content_gaiao_01", "content_gaiao_02", "content_gaiao_03", "content_gaiao_04", "content_gaiao_05", "content_gaiao_06"],
     featuredVideos: [
@@ -23,7 +23,7 @@ export const creators: Creator[] = [
         title: "详细版 网球正手零基础教学",
         target: "正手框架总立不住",
         levels: ["2.5", "3.0"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/f141ebcafbe7565d32be6b26d6854fe6d3bf845c.jpg',
+        thumbnail: '/thumbnails/bilibili/f141ebcafbe7565d32be6b26d6854fe6d3bf845c.jpg',
         duration: '1:14',
         url: "https://www.bilibili.com/video/BV1XM4y187mR/",
         platform: "Bilibili"
@@ -33,7 +33,7 @@ export const creators: Creator[] = [
         title: "网球反手零基础教学",
         target: "反手总打不扎实",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/e4600b2ca3cd245f33ad97fb5d03cb74ccb2006e.jpg',
+        thumbnail: '/thumbnails/bilibili/e4600b2ca3cd245f33ad97fb5d03cb74ccb2006e.jpg',
         duration: '1:03',
         url: "https://www.bilibili.com/video/BV1YL411d7oX/",
         platform: "Bilibili"
@@ -43,7 +43,7 @@ export const creators: Creator[] = [
         title: "网球步伐训练合集",
         target: "脚步启动总慢半拍",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/040a19ed2bc864e2d9101347b15782f7e0e36bc4.jpg',
+        thumbnail: '/thumbnails/bilibili/040a19ed2bc864e2d9101347b15782f7e0e36bc4.jpg',
         duration: '1:27',
         url: "https://www.bilibili.com/video/BV1Tg4y1w7Xe/",
         platform: "Bilibili"
@@ -53,7 +53,7 @@ export const creators: Creator[] = [
         title: "#网球 如何练会拐弯的侧旋发球 #网球发球#网球教学#网球盖奥",
         target: "侧旋发球总做不出来",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/51f03db09cb87e128474d2ece17fbbdf2ea2f057.jpg',
+        thumbnail: '/thumbnails/bilibili/51f03db09cb87e128474d2ece17fbbdf2ea2f057.jpg',
         duration: '0:32',
         url: "https://www.bilibili.com/video/BV1YA4y1D7YR/",
         platform: "Bilibili"
@@ -63,7 +63,7 @@ export const creators: Creator[] = [
         title: "球打不深怎么办",
         target: "相持球总打不深",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i1.hdslb.com/bfs/archive/96883140bb27637300a9b52f844000e25556ab57.jpg',
+        thumbnail: '/thumbnails/bilibili/96883140bb27637300a9b52f844000e25556ab57.jpg',
         duration: '0:48',
         url: "https://www.bilibili.com/video/BV1kp421d7od/",
         platform: "Bilibili"
@@ -102,7 +102,7 @@ export const creators: Creator[] = [
         title: "网球技巧| 正手击球，提前开拍",
         target: "正手准备总是偏晚",
         levels: ["3.0", "3.5", "4.0", "4.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/60f674fe6381eac7a5fc388bd4a9c21b5c74c12b.jpg',
+        thumbnail: '/thumbnails/bilibili/60f674fe6381eac7a5fc388bd4a9c21b5c74c12b.jpg',
         duration: '0:37',
         url: "https://www.bilibili.com/video/BV1zK411d7SW/",
         platform: "Bilibili"
@@ -112,7 +112,7 @@ export const creators: Creator[] = [
         title: "网球截击五部曲",
         target: "截击细节总是混乱",
         levels: ["3.0", "3.5", "4.0", "4.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/12427e203edb27a230920f96083783deb633e228.jpg',
+        thumbnail: '/thumbnails/bilibili/12427e203edb27a230920f96083783deb633e228.jpg',
         duration: '1:12',
         url: "https://www.bilibili.com/video/BV1xm4y1K7KS/",
         platform: "Bilibili"
@@ -122,7 +122,7 @@ export const creators: Creator[] = [
         title: "大师讲堂|莫拉托格鲁教练教你一步一步让发球更流畅！",
         target: "发球动作总不流畅",
         levels: ["3.0", "3.5", "4.0", "4.5"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/3824544837bd4bd47db704c163c91474e275a168.jpg',
+        thumbnail: '/thumbnails/bilibili/3824544837bd4bd47db704c163c91474e275a168.jpg',
         duration: '2:56',
         url: "https://www.bilibili.com/video/BV1aB4y1m7Nv/",
         platform: "Bilibili"
@@ -132,7 +132,7 @@ export const creators: Creator[] = [
         title: "网球教学：开放式反手击球",
         target: "开放式反手不会用",
         levels: ["3.5", "4.0", "4.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/fad09681d3b7e94b7838158060be2a30f42da685.jpg',
+        thumbnail: '/thumbnails/bilibili/fad09681d3b7e94b7838158060be2a30f42da685.jpg',
         duration: '1:31',
         url: "https://www.bilibili.com/video/BV1cb4y1P7su/",
         platform: "Bilibili"
@@ -142,7 +142,7 @@ export const creators: Creator[] = [
         title: "砰！莫式力量控制黄金法则！",
         target: "发力一大就失控",
         levels: ["3.5", "4.0", "4.5"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/48ccd4c24f6615da76ec5622beb45c0208da2e17.jpg',
+        thumbnail: '/thumbnails/bilibili/48ccd4c24f6615da76ec5622beb45c0208da2e17.jpg',
         duration: '0:39',
         url: "https://www.bilibili.com/video/BV1i7AdeSEFf/",
         platform: "Bilibili"
@@ -181,7 +181,7 @@ export const creators: Creator[] = [
         title: "干货and硬货｜双反球速提升不能错过的两个训练方法",
         target: "双反球速总起不来",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/d83e49d82698a0dcdb6d03c412af855dfbec9d47.jpg',
+        thumbnail: '/thumbnails/bilibili/d83e49d82698a0dcdb6d03c412af855dfbec9d47.jpg',
         duration: '7:23',
         url: "https://www.bilibili.com/video/BV1Ty4y1G7r6/",
         platform: "Bilibili"
@@ -191,7 +191,7 @@ export const creators: Creator[] = [
         title: "发球加速不是靠手臂，而是用手腕｜《跟职业一起训练》第四集",
         target: "发球想加速却只抡手",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/01629ab79b28769850818e1c00ecb017fb69e228.jpg',
+        thumbnail: '/thumbnails/bilibili/01629ab79b28769850818e1c00ecb017fb69e228.jpg',
         duration: '5:39',
         url: "https://www.bilibili.com/video/BV123411H7u6/",
         platform: "Bilibili"
@@ -201,7 +201,7 @@ export const creators: Creator[] = [
         title: "正！手！千！万！别！引！拍！",
         target: "正手引拍越做越大",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/7910cfd92081586293280ac5f6c4f0091ba4a6d7.jpg',
+        thumbnail: '/thumbnails/bilibili/7910cfd92081586293280ac5f6c4f0091ba4a6d7.jpg',
         duration: '9:22',
         url: "https://www.bilibili.com/video/BV1Zf4y1b7aW/",
         platform: "Bilibili"
@@ -211,7 +211,7 @@ export const creators: Creator[] = [
         title: "新年首战：网球工匠付饶4.5vs智利纳达尔Camilo5.0（2022继续向5.0攀登）",
         target: "想看实战对抗细节",
         levels: ["3.5", "4.0"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/82d0351f649ba96ee628548caafa0ae057748b00.jpg',
+        thumbnail: '/thumbnails/bilibili/82d0351f649ba96ee628548caafa0ae057748b00.jpg',
         duration: '10:54',
         url: "https://www.bilibili.com/video/BV1jm4y1X7yF/",
         platform: "Bilibili"
@@ -221,7 +221,7 @@ export const creators: Creator[] = [
         title: "【网球工匠付饶】测评Vcore米白色款网球拍",
         target: "想看器材实测思路",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/f8d7620ee92779dc3700de4d009f8167d6e8cb89.jpg',
+        thumbnail: '/thumbnails/bilibili/f8d7620ee92779dc3700de4d009f8167d6e8cb89.jpg',
         duration: '5:05',
         url: "https://www.bilibili.com/video/BV1qz421i79v/",
         platform: "Bilibili"
@@ -260,7 +260,7 @@ export const creators: Creator[] = [
         title: "【网球教学-言之有理】5.0大佬教我如何让截击更SIX",
         target: "网前截击总不稳",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i1.hdslb.com/bfs/archive/8e9a2416bfa72356df1d9ce499d1221652b5c7ef.jpg',
+        thumbnail: '/thumbnails/bilibili/8e9a2416bfa72356df1d9ce499d1221652b5c7ef.jpg',
         duration: '22:03',
         url: "https://www.bilibili.com/video/BV1954y147nF/",
         platform: "Bilibili"
@@ -270,7 +270,7 @@ export const creators: Creator[] = [
         title: "【网球教学-言之有理】5.0大佬教我如何让发球和接发球更GOOD",
         target: "接发第一拍质量低",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i1.hdslb.com/bfs/archive/a7c193cdba7994f40ab95c947c618f94bb1f8973.jpg',
+        thumbnail: '/thumbnails/bilibili/a7c193cdba7994f40ab95c947c618f94bb1f8973.jpg',
         duration: '30:38',
         url: "https://www.bilibili.com/video/BV1Ep4y1W7kc/",
         platform: "Bilibili"
@@ -280,7 +280,7 @@ export const creators: Creator[] = [
         title: "【网球比赛】2023天天有网球年终总决赛周柏言/赵子昂HL",
         target: "想看双打实战执行",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i1.hdslb.com/bfs/archive/d8bbdfd63f468624fd2530609984dbf8dea11039.jpg',
+        thumbnail: '/thumbnails/bilibili/d8bbdfd63f468624fd2530609984dbf8dea11039.jpg',
         duration: '7:41',
         url: "https://www.bilibili.com/video/BV1JN4y18792/",
         platform: "Bilibili"
@@ -290,7 +290,7 @@ export const creators: Creator[] = [
         title: "【网球教学-言之有理】5.0大佬教我如何让切削更UP",
         target: "切削总飘不下压",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i1.hdslb.com/bfs/archive/a3bd03f8d1177ffb7fbb365b176d5ba11812ea1e.jpg',
+        thumbnail: '/thumbnails/bilibili/a3bd03f8d1177ffb7fbb365b176d5ba11812ea1e.jpg',
         duration: '23:45',
         url: "https://www.bilibili.com/video/BV1TU4y187QS/",
         platform: "Bilibili"
@@ -300,7 +300,7 @@ export const creators: Creator[] = [
         title: "【网球教学-言之讲理】5.0大佬教“全国U14年终第一”怎样打好单手反拍&截击（上）",
         target: "单反和截击衔接乱",
         levels: ["3.5", "4.0"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/5dd6a9934e4a546847ff8a53668f0830c12ebfb7.jpg',
+        thumbnail: '/thumbnails/bilibili/5dd6a9934e4a546847ff8a53668f0830c12ebfb7.jpg',
         duration: '16:27',
         url: "https://www.bilibili.com/video/BV1Sj411r7Ka/",
         platform: "Bilibili"
@@ -339,7 +339,7 @@ export const creators: Creator[] = [
         title: "网球技术｜新手｜一种简单易练的截击✨",
         target: "截击动作总是乱",
         levels: ["3.0", "3.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/f7740abefccf6743e36f9aeb5e6a6f2da7b85385.jpg',
+        thumbnail: '/thumbnails/bilibili/f7740abefccf6743e36f9aeb5e6a6f2da7b85385.jpg',
         duration: '1:12',
         url: "https://www.bilibili.com/video/BV1b2UmBTEsV/",
         platform: "Bilibili"
@@ -349,7 +349,7 @@ export const creators: Creator[] = [
         title: "网球新手｜切削发球一分钟速成✅3步",
         target: "切削发球总转不起来",
         levels: ["3.0", "3.5"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/4d1163b793537b55bccf451ccc1a15ef27dd1c62.jpg',
+        thumbnail: '/thumbnails/bilibili/4d1163b793537b55bccf451ccc1a15ef27dd1c62.jpg',
         duration: '1:01',
         url: "https://www.bilibili.com/video/BV1Q8NWzmESF/",
         platform: "Bilibili"
@@ -359,7 +359,7 @@ export const creators: Creator[] = [
         title: "网球技术｜一分钟✅｜跟着德约学起跳反手‼️➡️",
         target: "起跳反手总不会用",
         levels: ["3.0", "3.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/f34a8c49caa5ce8f855455c2bff586ae1a58d7b3.jpg',
+        thumbnail: '/thumbnails/bilibili/f34a8c49caa5ce8f855455c2bff586ae1a58d7b3.jpg',
         duration: '1:01',
         url: "https://www.bilibili.com/video/BV1TrwQe9E2A/",
         platform: "Bilibili"
@@ -369,7 +369,7 @@ export const creators: Creator[] = [
         title: "网球热身｜5组动作提升状态🎾新手必练‼️",
         target: "上场前总不会热身",
         levels: ["3.0", "3.5"],
-        thumbnail: 'http://i1.hdslb.com/bfs/archive/5e3944513a109f027eb34e68c7b10754f9015e3f.jpg',
+        thumbnail: '/thumbnails/bilibili/5e3944513a109f027eb34e68c7b10754f9015e3f.jpg',
         duration: '1:17',
         url: "https://www.bilibili.com/video/BV1oaN9eEEpk/",
         platform: "Bilibili"
@@ -379,7 +379,7 @@ export const creators: Creator[] = [
         title: "网球必练｜一键模式✅新手也能打直球❗️",
         target: "总打不出稳定直线",
         levels: ["3.0", "3.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/521bc95fc6a86451bbb659fb31995cafc6611b4b.jpg',
+        thumbnail: '/thumbnails/bilibili/521bc95fc6a86451bbb659fb31995cafc6611b4b.jpg',
         duration: '1:24',
         url: "https://www.bilibili.com/video/BV1i1sUzVEfW/",
         platform: "Bilibili"
@@ -418,7 +418,7 @@ export const creators: Creator[] = [
         title: "职业选手分腿垫步的三大步骤｜LeonTV｜网球教学",
         target: "分腿垫步总慢半拍",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/bcd585e7eb1eb34b3f90ec584d18425635997e30.jpg',
+        thumbnail: '/thumbnails/bilibili/bcd585e7eb1eb34b3f90ec584d18425635997e30.jpg',
         duration: '7:25',
         url: "https://www.bilibili.com/video/BV1PN4y1R7jL/",
         platform: "Bilibili"
@@ -428,7 +428,7 @@ export const creators: Creator[] = [
         title: "【网球教学】正拍打出力并能保持稳定性的三个步骤｜ LeonTV ｜网球基础",
         target: "正手发力总靠手臂",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/8ec3416ebcfbb18422c57f72fa81f2acab2bb791.jpg',
+        thumbnail: '/thumbnails/bilibili/8ec3416ebcfbb18422c57f72fa81f2acab2bb791.jpg',
         duration: '13:16',
         url: "https://www.bilibili.com/video/BV1h64y1D78J/",
         platform: "Bilibili"
@@ -438,7 +438,7 @@ export const creators: Creator[] = [
         title: "【网球 教学】平击上旋 vs 重上旋｜正拍 打出压制力的关键！｜LeonTV",
         target: "上旋弧线总拉不出",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i1.hdslb.com/bfs/archive/7e035fbef7f29ef5cff1dac5f7a84bcd72e8b445.jpg',
+        thumbnail: '/thumbnails/bilibili/7e035fbef7f29ef5cff1dac5f7a84bcd72e8b445.jpg',
         duration: '8:06',
         url: "https://www.bilibili.com/video/BV1QRLizLEnv/",
         platform: "Bilibili"
@@ -448,7 +448,7 @@ export const creators: Creator[] = [
         title: "【网球教学】接发球完整教学｜任何层级都适用的必学技巧｜LeonTV",
         target: "接发总被对手压住",
         levels: ["2.5", "3.0", "3.5", "4.0"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/1a11be43cdbb07be461fcbd702d3124d8e6d318c.jpg',
+        thumbnail: '/thumbnails/bilibili/1a11be43cdbb07be461fcbd702d3124d8e6d318c.jpg',
         duration: '15:38',
         url: "https://www.bilibili.com/video/BV1D7YfzDEfo/",
         platform: "Bilibili"
@@ -458,7 +458,7 @@ export const creators: Creator[] = [
         title: "90%业余球员都曾犯的三大脚步错误！实战修正｜网球脚步｜LeonTV",
         target: "脚步错误反复出现",
         levels: ["2.5", "3.0", "3.5", "4.0"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/1508293f4adf9fc8b3be7f0f2620e501e09b0cb5.jpg',
+        thumbnail: '/thumbnails/bilibili/1508293f4adf9fc8b3be7f0f2620e501e09b0cb5.jpg',
         duration: '7:24',
         url: "https://www.bilibili.com/video/BV1mF5KzmEgP/",
         platform: "Bilibili"
@@ -498,7 +498,7 @@ export const creators: Creator[] = [
         title: "【留学网球日常】浅浅的谈一下第七代vcore的使用感受吧",
         target: "想挑一把更顺手的拍",
         levels: ["2.5", "3.0", "3.5", "4.0"],
-        thumbnail: 'http://i1.hdslb.com/bfs/archive/7ad92d40468500df06a1604a134c4e82ce2a2258.jpg',
+        thumbnail: '/thumbnails/bilibili/7ad92d40468500df06a1604a134c4e82ce2a2258.jpg',
         duration: '14:49',
         url: "https://www.bilibili.com/video/BV1FG4y1X7DA/",
         platform: "Bilibili"
@@ -508,7 +508,7 @@ export const creators: Creator[] = [
         title: "【网球拍测评】Wilson shift是工业垃圾还是上旋福音？",
         target: "想知道上旋拍值不值",
         levels: ["2.5", "3.0", "3.5", "4.0"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/c67df583432d5a1dc79270adc969b04497018d06.jpg',
+        thumbnail: '/thumbnails/bilibili/c67df583432d5a1dc79270adc969b04497018d06.jpg',
         duration: '18:17',
         url: "https://www.bilibili.com/video/BV1hV4y197oy/",
         platform: "Bilibili"
@@ -518,7 +518,7 @@ export const creators: Creator[] = [
         title: "【网球vlog日常】对话职业穿线师第一期！｜磅数，线径，材料？！！一个视频带你看清楚",
         target: "穿线参数总是搞不清",
         levels: ["2.5", "3.0", "3.5", "4.0"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/6ec591018de6011a25392e54c6942de9022a568a.jpg',
+        thumbnail: '/thumbnails/bilibili/6ec591018de6011a25392e54c6942de9022a568a.jpg',
         duration: '17:24',
         url: "https://www.bilibili.com/video/BV1bd1sYrEtc/",
         platform: "Bilibili"
@@ -528,7 +528,7 @@ export const creators: Creator[] = [
         title: "【网球教学日常】跟着前ATP双打180的球员来学习截击！｜让你在网前变得更加充满侵略性！！！",
         target: "网前截击总打不死",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/a28acffb34993a9c85b236b7093f06f1b97ebc71.jpg',
+        thumbnail: '/thumbnails/bilibili/a28acffb34993a9c85b236b7093f06f1b97ebc71.jpg',
         duration: '6:18',
         url: "https://www.bilibili.com/video/BV14J4m1x75K/",
         platform: "Bilibili"
@@ -538,7 +538,7 @@ export const creators: Creator[] = [
         title: "【网球教学日常】ATP职业大佬提高你的正手稳定性｜让你的正手成为你的得分利器！！！",
         target: "正手稳定性总上不去",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/fd9313de08983234979cb0c99ec8125ac8c54930.jpg',
+        thumbnail: '/thumbnails/bilibili/fd9313de08983234979cb0c99ec8125ac8c54930.jpg',
         duration: '17:43',
         url: "https://www.bilibili.com/video/BV18t421p7Nr/",
         platform: "Bilibili"
@@ -578,7 +578,7 @@ export const creators: Creator[] = [
         title: "网球切削慢动作教学丨细节拆解",
         target: "切削动作总做不顺",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/d897eed483ddc1e13475a1077a45223916e04094.jpg',
+        thumbnail: '/thumbnails/bilibili/d897eed483ddc1e13475a1077a45223916e04094.jpg',
         duration: '0:27',
         url: "https://www.bilibili.com/video/BV1fxy3BgECv/",
         platform: "Bilibili"
@@ -588,7 +588,7 @@ export const creators: Creator[] = [
         title: "一个视频学会8种网球切削技术",
         target: "切削变化总是不会用",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/91bf4726be460a0ff2b38fae6565f1dc7cd84fc0.jpg',
+        thumbnail: '/thumbnails/bilibili/91bf4726be460a0ff2b38fae6565f1dc7cd84fc0.jpg',
         duration: '0:56',
         url: "https://www.bilibili.com/video/BV1wABXB1EtU/",
         platform: "Bilibili"
@@ -598,7 +598,7 @@ export const creators: Creator[] = [
         title: "网球底层逻辑：稳定大于一切！",
         target: "练习总在瞎发力",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/54a3e9225691616a4a477ee0530c1db587cbb346.jpg',
+        thumbnail: '/thumbnails/bilibili/54a3e9225691616a4a477ee0530c1db587cbb346.jpg',
         duration: '5:29',
         url: "https://www.bilibili.com/video/BV1jQZQBQECX/",
         platform: "Bilibili"
@@ -608,7 +608,7 @@ export const creators: Creator[] = [
         title: "打网球必学的10个热身动作",
         target: "上场前总不会热身",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/a137c39924d5a5ff433ad0047cede39d37503ca4.jpg',
+        thumbnail: '/thumbnails/bilibili/a137c39924d5a5ff433ad0047cede39d37503ca4.jpg',
         duration: '1:32',
         url: "https://www.bilibili.com/video/BV1PAq5BuE85/",
         platform: "Bilibili"
@@ -618,7 +618,7 @@ export const creators: Creator[] = [
         title: "打网球必做的手眼协调性训练！",
         target: "训练结构总是乱练",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/bafac66bd018ebbe22d0aeb6923e26a8ff953b2e.jpg',
+        thumbnail: '/thumbnails/bilibili/bafac66bd018ebbe22d0aeb6923e26a8ff953b2e.jpg',
         duration: '0:33',
         url: "https://www.bilibili.com/video/BV13ywFzgE7D/",
         platform: "Bilibili"
@@ -658,7 +658,7 @@ export const creators: Creator[] = [
         title: "打球脚步又慢又乱❓四个基础步伐要掌握",
         target: "脚步又慢又乱",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/95a16864f40364f032e3ffa7989717aa9ab9cf21.jpg',
+        thumbnail: '/thumbnails/bilibili/95a16864f40364f032e3ffa7989717aa9ab9cf21.jpg',
         duration: '1:58',
         url: "https://www.bilibili.com/video/BV1SZ6qYFEVS/",
         platform: "Bilibili"
@@ -668,7 +668,7 @@ export const creators: Creator[] = [
         title: "5个练习🎾没有球搭子，一个人也能默默涨球!",
         target: "没人陪练就不会练",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/49156c0240cb1bee00a0cda1498f18a984bf3527.jpg',
+        thumbnail: '/thumbnails/bilibili/49156c0240cb1bee00a0cda1498f18a984bf3527.jpg',
         duration: '1:06',
         url: "https://www.bilibili.com/video/BV1LvS3YWEnL/",
         platform: "Bilibili"
@@ -678,7 +678,7 @@ export const creators: Creator[] = [
         title: "网球学练馆的11种练法🎾方法用得对，训练不枯燥",
         target: "训练总是越练越乱",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/9b9d88aec4933ae8c7d31db2bec9ac08f114ba31.jpg',
+        thumbnail: '/thumbnails/bilibili/9b9d88aec4933ae8c7d31db2bec9ac08f114ba31.jpg',
         duration: '1:03',
         url: "https://www.bilibili.com/video/BV16uHizBEp2/",
         platform: "Bilibili"
@@ -688,7 +688,7 @@ export const creators: Creator[] = [
         title: "🎾网球发球力量从哪来？身体像弹弓一样弹射❗",
         target: "发球想有力却只抡手",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/d8f3fcf15bf12292a32cae5d5515157961691398.jpg',
+        thumbnail: '/thumbnails/bilibili/d8f3fcf15bf12292a32cae5d5515157961691398.jpg',
         duration: '0:35',
         url: "https://www.bilibili.com/video/BV1ox421f7VX/",
         platform: "Bilibili"
@@ -698,7 +698,7 @@ export const creators: Creator[] = [
         title: "网球新手必看❗五种网球握拍全解析",
         target: "总搞不清该怎么握拍",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/158754b6b85286c29789c61f54394e8a29ffb7eb.jpg',
+        thumbnail: '/thumbnails/bilibili/158754b6b85286c29789c61f54394e8a29ffb7eb.jpg',
         duration: '2:34',
         url: "https://www.bilibili.com/video/BV1Dm421s7Rg/",
         platform: "Bilibili"
@@ -738,7 +738,7 @@ export const creators: Creator[] = [
         title: "【觉醒】只用15分钟就掌握切削发球！松尾教练也惊呆了！【松尾友贵Proの网球教学】",
         target: "发球缺少旋转变化",
         levels: ["3.0", "3.5", "4.0", "4.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/c22922ade6408547499c57f016cefd54166cfd2a.jpg',
+        thumbnail: '/thumbnails/bilibili/c22922ade6408547499c57f016cefd54166cfd2a.jpg',
         duration: '12:42',
         url: "https://www.bilibili.com/video/BV1JT5wz4EJJ/",
         platform: "Bilibili"
@@ -748,7 +748,7 @@ export const creators: Creator[] = [
         title: "让对手讨厌的有穿透力的切削球！简单易懂的3个要点！【松尾友贵Proの网球教学】",
         target: "切削总飘不往前走",
         levels: ["3.0", "3.5", "4.0", "4.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/5367bb69a6ce6b1c50e53b0a643bf64fccd5bc68.jpg',
+        thumbnail: '/thumbnails/bilibili/5367bb69a6ce6b1c50e53b0a643bf64fccd5bc68.jpg',
         duration: '7:10',
         url: "https://www.bilibili.com/video/BV1aTaxzxENT/",
         platform: "Bilibili"
@@ -758,7 +758,7 @@ export const creators: Creator[] = [
         title: "战术大师！伊藤葵选手的挑高球和角度球击球方式学习！",
         target: "高球和角度球不会用",
         levels: ["3.5", "4.0", "4.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/86554dbec03f66a72ddee9b2382552ab5feab606.jpg',
+        thumbnail: '/thumbnails/bilibili/86554dbec03f66a72ddee9b2382552ab5feab606.jpg',
         duration: '14:38',
         url: "https://www.bilibili.com/video/BV1uJaTzvEVq/",
         platform: "Bilibili"
@@ -768,7 +768,7 @@ export const creators: Creator[] = [
         title: "【初学必见】只用20分钟就可以掌握挡击接发回球！【松尾友贵Proの网球教学】",
         target: "接发总被发球压住",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/688c521b3a7e6cdb5d7e4c02d9ab45db0d8be0d3.jpg',
+        thumbnail: '/thumbnails/bilibili/688c521b3a7e6cdb5d7e4c02d9ab45db0d8be0d3.jpg',
         duration: '9:33',
         url: "https://www.bilibili.com/video/BV18xXgYnEMA/",
         platform: "Bilibili"
@@ -778,7 +778,7 @@ export const creators: Creator[] = [
         title: "【害怕比赛】练习很好比赛无法正常发挥！一定要看！【松尾友贵Proの网球教学】",
         target: "比赛一打就发挥失常",
         levels: ["3.0", "3.5", "4.0", "4.5"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/8e3bce7037f4dccb467993ca3db9fab2eef66cd7.jpg',
+        thumbnail: '/thumbnails/bilibili/8e3bce7037f4dccb467993ca3db9fab2eef66cd7.jpg',
         duration: '8:58',
         url: "https://www.bilibili.com/video/BV1tcNjzsEZi/",
         platform: "Bilibili"
@@ -817,7 +817,7 @@ export const creators: Creator[] = [
         title: "上旋发球零基础教学",
         target: "上旋发球总发不起来",
         levels: ["2.5", "3.0", "3.5", "4.0"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/02ec1b009f740466e241119ce1b0b61bb00eace3.jpg',
+        thumbnail: '/thumbnails/bilibili/02ec1b009f740466e241119ce1b0b61bb00eace3.jpg',
         duration: '2:13',
         url: "https://www.bilibili.com/video/BV1KG4y1x77a/",
         platform: "Bilibili"
@@ -827,7 +827,7 @@ export const creators: Creator[] = [
         title: "不会单反的看完就会了，单反不好的看完狂涨1个水平",
         target: "单反动作总不扎实",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i1.hdslb.com/bfs/archive/6a1fcdbf33864d830133ffb87f4e73f7cba50f0a.jpg',
+        thumbnail: '/thumbnails/bilibili/6a1fcdbf33864d830133ffb87f4e73f7cba50f0a.jpg',
         duration: '3:09',
         url: "https://www.bilibili.com/video/BV1UW4y1q7jB/",
         platform: "Bilibili"
@@ -837,7 +837,7 @@ export const creators: Creator[] = [
         title: "网球平击发球零基础教学",
         target: "平击发球总没速度",
         levels: ["2.5", "3.0", "3.5", "4.0"],
-        thumbnail: 'http://i1.hdslb.com/bfs/archive/f62ce04f74b98f58dc4b58db1d3d2bc2a991a12a.jpg',
+        thumbnail: '/thumbnails/bilibili/f62ce04f74b98f58dc4b58db1d3d2bc2a991a12a.jpg',
         duration: '5:14',
         url: "https://www.bilibili.com/video/BV1dF4m1V7BS/",
         platform: "Bilibili"
@@ -847,7 +847,7 @@ export const creators: Creator[] = [
         title: "网球无脑战术？练好这个就已经吃遍天了",
         target: "比赛战术总想不清",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/af95906662a153d3211a190b7659488aa09326ba.jpg',
+        thumbnail: '/thumbnails/bilibili/af95906662a153d3211a190b7659488aa09326ba.jpg',
         duration: '1:19',
         url: "https://www.bilibili.com/video/BV13u4y1e7Lx/",
         platform: "Bilibili"
@@ -857,7 +857,7 @@ export const creators: Creator[] = [
         title: "球感练好，训练比事半功倍",
         target: "训练结构总是乱练",
         levels: ["2.5", "3.0", "3.5", "4.0"],
-        thumbnail: 'http://i1.hdslb.com/bfs/archive/c9ea7db9c326e2fbd84fe629af0d0fbee834a394.jpg',
+        thumbnail: '/thumbnails/bilibili/c9ea7db9c326e2fbd84fe629af0d0fbee834a394.jpg',
         duration: '1:38',
         url: "https://www.bilibili.com/video/BV1MW4y1e7KG/",
         platform: "Bilibili"
@@ -896,7 +896,7 @@ export const creators: Creator[] = [
         title: "从零开始的网球自习系列课-训练计划制定篇",
         target: "练球总没计划和结构",
         levels: ["2.5", "3.0", "3.5", "4.0"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/1e157438275a1ef778836f6d00f51046f6f8717c.jpg',
+        thumbnail: '/thumbnails/bilibili/1e157438275a1ef778836f6d00f51046f6f8717c.jpg',
         duration: '19:21',
         url: "https://www.bilibili.com/video/BV1HEyaBiEaW/",
         platform: "Bilibili"
@@ -906,7 +906,7 @@ export const creators: Creator[] = [
         title: "从零开始的网球自习系列课-双打截击篇",
         target: "网前截击总没章法",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/62dd22f83ac821c12150956dd37acf0ab0899fa8.jpg',
+        thumbnail: '/thumbnails/bilibili/62dd22f83ac821c12150956dd37acf0ab0899fa8.jpg',
         duration: '9:27',
         url: "https://www.bilibili.com/video/BV1EbkyB8EQx/",
         platform: "Bilibili"
@@ -916,7 +916,7 @@ export const creators: Creator[] = [
         title: "如何减速站定击球",
         target: "跑到位后总站不住",
         levels: ["2.5", "3.0", "3.5"],
-        thumbnail: 'http://i1.hdslb.com/bfs/archive/0f25066c8bbd193224acd331e5077e5423f4ee2c.jpg',
+        thumbnail: '/thumbnails/bilibili/0f25066c8bbd193224acd331e5077e5423f4ee2c.jpg',
         duration: '9:11',
         url: "https://www.bilibili.com/video/BV1vLcBzSE1P/",
         platform: "Bilibili"
@@ -926,7 +926,7 @@ export const creators: Creator[] = [
         title: "从零开始的网球自习系列课-脚下篇",
         target: "脚步路线总是乱",
         levels: ["2.5", "3.0", "3.5", "4.0"],
-        thumbnail: 'http://i2.hdslb.com/bfs/archive/f8037ecf37217b779e729324c44125b210c33ecd.png',
+        thumbnail: '/thumbnails/bilibili/f8037ecf37217b779e729324c44125b210c33ecd.png',
         duration: '38:49',
         url: "https://www.bilibili.com/video/BV1tf421S7rt/",
         platform: "Bilibili"
@@ -936,7 +936,7 @@ export const creators: Creator[] = [
         title: "从零开始的网球自习系列课-发球下肢篇",
         target: "发球下肢发力总脱节",
         levels: ["3.0", "3.5", "4.0"],
-        thumbnail: 'http://i0.hdslb.com/bfs/archive/333e09d33fd5a97df40ea6525232840c12f4d9ee.jpg',
+        thumbnail: '/thumbnails/bilibili/333e09d33fd5a97df40ea6525232840c12f4d9ee.jpg',
         duration: '7:44',
         url: "https://www.bilibili.com/video/BV1h24qenEqf/",
         platform: "Bilibili"

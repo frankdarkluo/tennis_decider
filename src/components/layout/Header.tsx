@@ -40,28 +40,28 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-white/90 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 md:px-6">
+      <div className="mx-auto flex w-full max-w-[1480px] items-center justify-between gap-2 px-4 py-3 md:px-6">
         <Link
           href="/"
           aria-label="返回 TennisLevel 首页"
-          className="inline-flex min-h-12 min-w-[220px] items-center justify-start rounded-2xl border border-transparent px-2 py-1 transition hover:border-brand-100 hover:bg-brand-50/50 md:min-w-[300px]"
+          className="inline-flex min-h-14 w-[150px] shrink-0 items-center justify-start rounded-2xl border border-transparent px-2 py-1.5 transition hover:border-brand-100 hover:bg-brand-50/50 sm:w-[180px] md:w-[235px] lg:w-[290px]"
         >
           <Image
-            src="/tennislevel-logo.svg"
+            src="/brand/tennislevel-logo-header.png"
             alt="TennisLevel"
-            width={320}
-            height={90}
+            width={994}
+            height={256}
             priority
-            className="h-12 w-auto max-w-[220px] object-contain md:h-14 md:max-w-[300px]"
+            className="h-[2rem] w-auto max-w-full object-contain md:h-[2.4rem] lg:h-[2.8rem]"
           />
         </Link>
-        <nav className="hidden gap-1 md:flex">
+        <nav className="hidden min-w-0 flex-1 justify-start gap-1 md:flex">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "rounded-xl px-3.5 py-2.5 text-[15px] font-semibold transition",
+                "whitespace-nowrap rounded-xl px-3.5 py-2.5 text-[15px] font-semibold transition",
                 pathname === item.href ? "bg-brand-50 text-brand-700" : "text-slate-700 hover:bg-slate-100"
               )}
             >
@@ -69,10 +69,10 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden shrink-0 items-center gap-2 md:flex">
           {user?.email ? (
             <>
-              <span className="hidden max-w-[160px] truncate text-sm text-slate-500 lg:inline">
+              <span className="hidden max-w-[160px] truncate text-sm text-slate-500 xl:inline">
                 {user.email}
               </span>
               <Link
