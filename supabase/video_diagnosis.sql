@@ -57,10 +57,9 @@ create policy "video_diagnosis_history_insert_own"
 drop policy if exists "video_diagnosis_history_admin_select" on video_diagnosis_history;
 create policy "video_diagnosis_history_admin_select"
   on video_diagnosis_history for select
-  using ((auth.jwt() ->> 'email') in ('your-email.com'));
+  using ((auth.jwt() ->> 'email') in ('your-email@example.com'));
 
 drop policy if exists "video_usage_admin_select" on video_usage;
 create policy "video_usage_admin_select"
   on video_usage for select
-  using ((auth.jwt() ->> 'email') in ('your-email.com'));
-
+  using ((auth.jwt() ->> 'email') in ('your-email@example.com'));

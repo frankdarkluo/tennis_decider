@@ -52,19 +52,19 @@ create policy "survey_responses_insert_authenticated"
 drop policy if exists "event_logs_admin_select" on event_logs;
 create policy "event_logs_admin_select"
   on event_logs for select
-  using ((auth.jwt() ->> 'email') in ('your-email.com'));
+  using ((auth.jwt() ->> 'email') in ('your-email@example.com'));
 
 drop policy if exists "survey_responses_admin_select" on survey_responses;
 create policy "survey_responses_admin_select"
   on survey_responses for select
-  using ((auth.jwt() ->> 'email') in ('your-email.com'));
+  using ((auth.jwt() ->> 'email') in ('your-email@example.com'));
 
 drop policy if exists "assessment_results_admin_select" on assessment_results;
 create policy "assessment_results_admin_select"
   on assessment_results for select
-  using ((auth.jwt() ->> 'email') in ('your-email.com'));
+  using ((auth.jwt() ->> 'email') in ('your-email@example.com'));
 
 drop policy if exists "diagnosis_history_admin_select" on diagnosis_history;
 create policy "diagnosis_history_admin_select"
   on diagnosis_history for select
-  using ((auth.jwt() ->> 'email') in ('your-email.com'));
+  using ((auth.jwt() ->> 'email') in ('your-email@example.com'));
