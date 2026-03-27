@@ -153,7 +153,7 @@ describe("app smoke tests", () => {
   it("renders video diagnose page without crashing", async () => {
     render(React.createElement(VideoDiagnosePage));
 
-    expect(await screen.findByText("上传一段视频，我来帮你看问题")).toBeInTheDocument();
+    expect(await screen.findByText("上传视频，我来帮你看问题")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 

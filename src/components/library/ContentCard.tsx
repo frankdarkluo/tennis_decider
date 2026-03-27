@@ -102,8 +102,8 @@ export function ContentCard({
       <div className="space-y-2.5 p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="flex flex-wrap gap-2">
-            <Badge className="px-3.5 py-1.5 text-sm">{item.platform}</Badge>
-            <Badge className="bg-slate-100 px-3.5 py-1.5 text-sm text-slate-700">{item.levels.join("/")}</Badge>
+            <Badge className="px-5 py-2 text-base font-semibold leading-none">{item.platform}</Badge>
+            <Badge className="bg-slate-100 px-5 py-2 text-base font-semibold leading-none text-slate-700">{item.levels.join("/")}</Badge>
           </div>
           {onToggleBookmark ? (
             <button

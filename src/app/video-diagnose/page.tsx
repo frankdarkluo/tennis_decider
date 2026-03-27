@@ -269,8 +269,8 @@ export default function VideoDiagnosePage() {
       });
 
       setStatusMessage(nextResult.chargeable
-        ? "视频诊断已完成，这次分析已计入免费视频次数。"
-        : "这次分析建议你重拍，不会扣除免费视频次数。");
+        ? "诊断完成，已计入次数。"
+        : "建议重拍，这次不扣次数。");
     } catch (error) {
       const message = error instanceof Error ? error.message : "视频诊断失败，请稍后再试。";
       setSubmitError(message);
@@ -288,22 +288,22 @@ export default function VideoDiagnosePage() {
         <Card className="space-y-4">
           <div className="space-y-2">
             <p className="text-sm font-semibold text-brand-700">AI 视频诊断</p>
-            <h1 className="text-3xl font-black text-slate-900">上传一段视频，我来帮你看问题</h1>
-            <p className="max-w-3xl text-sm leading-6 text-slate-600">1 分钟内的练球或比赛片段都可以。</p>
+            <h1 className="text-3xl font-black text-slate-900">上传视频，我来帮你看问题</h1>
+            <p className="max-w-3xl text-sm leading-6 text-slate-600">1 分钟内的片段都可以。</p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-2xl bg-slate-50 px-4 py-3">
-              <p className="text-sm font-semibold text-slate-900">更适合怎么拍</p>
-              <p className="mt-1 text-sm text-slate-600">横屏、侧后方、连续 3-5 个完整击球。</p>
+              <p className="text-sm font-semibold text-slate-900">怎么拍更准</p>
+              <p className="mt-1 text-sm text-slate-600">横屏、侧后方、连续 3-5 拍。</p>
             </div>
             <div className="rounded-2xl bg-slate-50 px-4 py-3">
-              <p className="text-sm font-semibold text-slate-900">适合什么视频</p>
-              <p className="mt-1 text-sm text-slate-600">喂球、对拉、发球或比赛片段都行。</p>
+              <p className="text-sm font-semibold text-slate-900">拍什么都行</p>
+              <p className="mt-1 text-sm text-slate-600">喂球、对拉、发球、比赛都行。</p>
             </div>
             <div className="rounded-2xl bg-slate-50 px-4 py-3">
-              <p className="text-sm font-semibold text-slate-900">当前能看什么</p>
-              <p className="mt-1 text-sm text-slate-600">重点看动作问题和下一步训练方向。</p>
+              <p className="text-sm font-semibold text-slate-900">这次能看什么</p>
+              <p className="mt-1 text-sm text-slate-600">重点看动作问题和下一步。</p>
             </div>
           </div>
         </Card>
@@ -315,7 +315,7 @@ export default function VideoDiagnosePage() {
             <div>
               <h2 className="text-lg font-bold text-slate-900">上传视频</h2>
               <p className="mt-1 text-sm text-slate-600">
-                不超过 {limits.maxVideoDurationSeconds} 秒，建议小于 {limits.maxVideoSizeMb}MB。
+                建议 {limits.maxVideoDurationSeconds} 秒内、{limits.maxVideoSizeMb}MB 内。
               </p>
             </div>
 
@@ -350,9 +350,9 @@ export default function VideoDiagnosePage() {
             </div>
 
             <label className="space-y-2">
-              <span className="text-sm font-semibold text-slate-900">可选：补一句你的感觉</span>
+              <span className="text-sm font-semibold text-slate-900">可选：补一句感觉</span>
               <Input
-                placeholder="例如：我感觉正手总晚点，越发力越容易飞"
+                placeholder="例如：正手总晚点，越发力越容易飞"
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
                 disabled={Boolean(processingStep)}
@@ -360,14 +360,14 @@ export default function VideoDiagnosePage() {
             </label>
 
             <div className="rounded-2xl border border-brand-100 bg-brand-50/70 px-4 py-4 text-sm leading-6 text-slate-700">
-              <p>系统会参考你的水平评估。</p>
+              <p>会参考你的评估结果。</p>
               <p className="mt-1">
-                当前识别到的等级：{currentLevel ?? "尚未评估"}。
-                {currentLevel ? "" : "如果你先做 1 分钟评估，推荐会更准。"}
+                当前等级：{currentLevel ?? "尚未评估"}。
+                {currentLevel ? "" : "先做 1 分钟评估会更准。"}
               </p>
               {!currentLevel ? (
                 <div className="mt-3">
-                  <Link href="/assessment"><Button variant="secondary">先做 1 分钟评估</Button></Link>
+                  <Link href="/assessment"><Button variant="secondary">先做评估</Button></Link>
                 </div>
               ) : null}
             </div>
@@ -382,7 +382,7 @@ export default function VideoDiagnosePage() {
                   className="text-sm font-medium text-slate-500 transition hover:text-brand-700"
                   onClick={() => openLoginModal("登录后可同步保存视频诊断记录", "profile")}
                 >
-                  登录后可自动保存视频诊断记录
+                  登录后自动保存记录
                 </button>
               ) : null}
             </div>
@@ -411,14 +411,14 @@ export default function VideoDiagnosePage() {
           ) : (
             <Card className="space-y-4">
               <p className="text-sm font-semibold text-brand-700">结果会在这里</p>
-              <h2 className="text-xl font-bold text-slate-900">先上传视频，我会帮你拆成问题、内容和计划</h2>
+              <h2 className="text-xl font-bold text-slate-900">先上传视频，我会给你问题、内容和计划</h2>
               <div className="space-y-3 text-sm leading-6 text-slate-600">
-                <p>这次会先回答这几件事：</p>
+                <p>这次会先回答：</p>
                 <ul className="list-disc space-y-1 pl-5">
                   <li>最先要改什么</li>
-                  <li>更像击球点、准备、脚步还是节奏问题</li>
-                  <li>先看哪几条内容、先跟谁学</li>
-                  <li>接下来 7 天怎么练</li>
+                  <li>更像击球点、准备、脚步还是节奏</li>
+                  <li>先看什么、先跟谁学</li>
+                  <li>接下来怎么练</li>
                 </ul>
               </div>
             </Card>

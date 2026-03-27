@@ -5,18 +5,18 @@ type VideoProcessingStep = "extracting" | "analyzing" | "matching";
 const steps: Array<{ key: VideoProcessingStep; title: string; description: string }> = [
   {
     key: "extracting",
-    title: "正在整理关键帧",
-    description: "先从视频里抽出最关键的几个动作瞬间。"
+    title: "正在取关键帧",
+    description: "先取几个关键动作。"
   },
   {
     key: "analyzing",
-    title: "正在分析动作",
-    description: "AI 在看击球点、身体姿态、脚步和挥拍路径。"
+    title: "正在看动作",
+    description: "重点看击球点、脚步和挥拍。"
   },
   {
     key: "matching",
-    title: "正在匹配内容和训练计划",
-    description: "把视频观察结果映射到现有的规则、内容和训练计划。"
+    title: "正在配内容和计划",
+    description: "把结果映射到内容和计划。"
   }
 ];
 
@@ -26,8 +26,8 @@ export function VideoProcessingStatus({ step }: { step: VideoProcessingStep }) {
   return (
     <Card className="space-y-4">
       <div>
-        <p className="text-sm font-semibold text-brand-700">AI 视频诊断中</p>
-        <h2 className="mt-1 text-xl font-bold text-slate-900">预计需要 10-20 秒</h2>
+        <p className="text-sm font-semibold text-brand-700">视频诊断中</p>
+        <h2 className="mt-1 text-xl font-bold text-slate-900">大约 10-20 秒</h2>
       </div>
 
       <div className="space-y-3">
@@ -53,4 +53,3 @@ export function VideoProcessingStatus({ step }: { step: VideoProcessingStep }) {
     </Card>
   );
 }
-

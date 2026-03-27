@@ -60,7 +60,7 @@ function RecommendationCard({
           <p className="mt-2 font-semibold text-slate-900">{item.title}</p>
           <p className="mt-1 text-sm text-slate-600">针对：{item.useCases[0] ?? item.reason}</p>
           {item.coachReason ? (
-            <p className="mt-2 text-xs leading-5 text-slate-500">教练视角：{item.coachReason}</p>
+            <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">教练建议：{item.coachReason}</p>
           ) : null}
         </div>
       </div>
@@ -97,22 +97,20 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
       <div className="space-y-3">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="text-sm font-semibold text-brand-700">视频诊断结果</p>
+            <p className="text-sm font-semibold text-brand-700">诊断结果</p>
             <h2 className="mt-1 text-2xl font-black text-slate-900">先改这一个：{result.primaryProblem.label}</h2>
           </div>
-          <Badge className={getConfidenceTone(result.confidenceBand)}>
-            置信度：{result.confidenceBand}
-          </Badge>
+          <Badge className={getConfidenceTone(result.confidenceBand)}>{result.confidenceBand}</Badge>
         </div>
 
         <div className="rounded-2xl bg-[var(--surface-soft)] p-4">
-          <p className="text-sm font-semibold text-slate-700">今天先记住一件事：</p>
+          <p className="text-sm font-semibold text-slate-700">先记这一点：</p>
           <p className="mt-2 text-base font-medium text-slate-900">{primaryFix}</p>
         </div>
 
         {!result.chargeable && result.fallbackReason ? (
           <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm text-amber-800">
-            <p className="font-semibold">这次先别下太重的动作结论</p>
+            <p className="font-semibold">这次先别下重结论</p>
             <p className="mt-1 leading-6">{result.fallbackReason}</p>
           </div>
         ) : null}
@@ -123,7 +121,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
             className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
             onClick={() => setLayer(2)}
           >
-            展开看更多 ↓
+            看细一点 ↓
           </button>
         ) : null}
       </div>
@@ -132,7 +130,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
         <div className="space-y-4 border-t border-[var(--line)] pt-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl bg-slate-50 px-4 py-4">
-              <p className="text-sm font-semibold text-slate-900">AI 观察到了什么</p>
+              <p className="text-sm font-semibold text-slate-900">AI 看到了什么</p>
               <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-600">
                 <li>身体姿态：{result.observation.bodyPosture}</li>
                 <li>击球点：{result.observation.contactPoint}</li>
@@ -154,7 +152,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
 
           {featuredContent ? (
             <div>
-              <p className="mb-2 text-sm font-semibold text-slate-900">推荐先看这条：</p>
+              <p className="mb-2 text-sm font-semibold text-slate-900">先看这条</p>
               <RecommendationCard item={featuredContent} source="video_diagnosis_featured" />
             </div>
           ) : null}
@@ -164,7 +162,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
               href={planHref}
               onClick={() => logEvent("video_plan_generate", { problemTag: result.trainingPlan.problemTag, level: result.trainingPlan.level })}
             >
-              <Button>{result.chargeable ? "根据这个问题生成 7 天训练计划" : "先看看这份训练方向"}</Button>
+              <Button>{result.chargeable ? "生成 7 天训练计划" : "先看训练方向"}</Button>
             </Link>
           </div>
 
@@ -174,7 +172,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
               className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
               onClick={() => setLayer(3)}
             >
-              展开搜索更多 ↓
+              再看更多 ↓
             </button>
           ) : null}
         </div>
@@ -184,7 +182,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
         <div className="space-y-4 border-t border-[var(--line)] pt-4">
           {moreContents.length > 0 ? (
             <div className="space-y-3">
-              <p className="text-sm font-semibold text-slate-900">更多推荐内容</p>
+              <p className="text-sm font-semibold text-slate-900">更多内容</p>
               {moreContents.map((item) => (
                 <RecommendationCard key={item.id} item={item} source="video_diagnosis_more" />
               ))}
@@ -219,7 +217,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
                             rel="noreferrer"
                             onClick={() => logEvent("creator_click", { creatorId: creator.id, source: "video_diagnosis" })}
                           >
-                            <Button variant="ghost">去看这位博主</Button>
+                            <Button variant="ghost">去看 TA</Button>
                           </a>
                         </div>
                       ) : null}
@@ -232,7 +230,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
 
           {result.searchSuggestions.length > 0 ? (
             <Card className="space-y-3">
-              <p className="text-sm font-semibold text-brand-700">你还可以这样搜</p>
+              <p className="text-sm font-semibold text-brand-700">还可以这样搜</p>
               <div className="space-y-2">
                 {result.searchSuggestions.map((item) => (
                   <div key={`${item.platform}-${item.keyword}`} className="rounded-2xl border border-[var(--line)] px-4 py-3">
