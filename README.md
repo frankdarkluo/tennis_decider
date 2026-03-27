@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="public/brand/tennislevel-logo-vertical.png" width="260" alt="TennisLevel logo" />
+  <img src="public/brand/tennislevel-logo-vertical.png" width="175" alt="TennisLevel logo on white background" />
 </p>
-
-<h1 align="center">TennisLevel</h1>
 
 <p align="center">
   为业余网球用户提供更清晰的下一步训练决策。
@@ -13,9 +11,6 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Next.js-14-111827?style=flat-square" alt="Next.js 14" />
-  <img src="https://img.shields.io/badge/React-18-0F172A?style=flat-square" alt="React 18" />
-  <img src="https://img.shields.io/badge/TypeScript-5-1D4ED8?style=flat-square" alt="TypeScript 5" />
   <img src="https://img.shields.io/badge/Supabase-Auth%20%26%20Data-10B981?style=flat-square" alt="Supabase" />
   <img src="https://img.shields.io/badge/Content-475%20videos-0F766E?style=flat-square" alt="475 videos" />
   <img src="https://img.shields.io/badge/Creators-27-CA8A04?style=flat-square" alt="27 creators" />
