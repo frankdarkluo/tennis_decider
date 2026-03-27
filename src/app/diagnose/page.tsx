@@ -160,14 +160,14 @@ function DiagnosePageContent() {
           ]} />
         ) : null}
         <div>
-          <h1 className="text-3xl font-black text-slate-900">直接描述你的问题</h1>
-          <p className="mt-2 text-slate-600">用一句话说出你的困惑，我们帮你定位原因</p>
+          <h1 className="text-3xl font-black text-slate-900">说一句你的问题</h1>
+          <p className="mt-2 text-slate-600">我来帮你判断先改什么。</p>
         </div>
 
         <DiagnoseInput
           value={text}
           quickTags={quickTags}
-          quickTagsLabel="猜你想问，也可以直接点一个常见问题："
+          quickTagsLabel="也可以直接点："
           onChange={setText}
           onDiagnose={onDiagnose}
           onClear={onClear}

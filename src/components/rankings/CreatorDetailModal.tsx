@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import { logEvent } from "@/lib/eventLogger";
+import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
 
 type CreatorModalItem = {
   id: string;
@@ -15,6 +16,8 @@ type CreatorModalItem = {
   summary: string;
   url: string;
   platform: "Bilibili" | "YouTube";
+  thumbnail?: string;
+  duration?: string;
   contentId?: string;
   logSource?: string;
 };
@@ -124,6 +127,8 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
           summary: getConciseDescription(item),
           url: item.url,
           platform: item.platform === "Bilibili" ? "Bilibili" : "YouTube",
+          thumbnail: item.thumbnail,
+          duration: item.duration,
           contentId: item.id,
           logSource: "creator_modal_content"
         }))
@@ -136,6 +141,8 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
       summary: item.target,
       url: item.url,
       platform: item.platform,
+      thumbnail: item.thumbnail,
+      duration: item.duration,
       logSource: "creator_modal_featured_video"
     }))
     : [];
@@ -202,11 +209,34 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
                     }
                   }}
                 >
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className="font-semibold text-slate-900">{item.title}</p>
-                    <Badge className="bg-slate-100 px-3.5 py-1.5 text-sm text-slate-700">{item.levels.join("/")}</Badge>
+                  <div className="flex gap-3">
+                    <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+                      {getThumbnail(item) ? (
+                        <img
+                          src={getThumbnail(item)!}
+                          alt={item.title}
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center">
+                          <span className="text-lg font-medium text-slate-300">{getVideoInitial(item.title)}</span>
+                        </div>
+                      )}
+                      {item.duration ? (
+                        <span className="absolute bottom-1.5 right-1.5 rounded bg-black/75 px-1 py-0.5 text-[11px] font-medium text-white">
+                          {item.duration}
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="font-semibold text-slate-900">{item.title}</p>
+                        <Badge className="bg-slate-100 px-3.5 py-1.5 text-sm text-slate-700">{item.levels.join("/")}</Badge>
+                      </div>
+                      <p className="mt-2 text-sm text-slate-600">{formatTargetSummary(item.summary)}</p>
+                    </div>
                   </div>
-                  <p className="mt-2 text-sm text-slate-600">{formatTargetSummary(item.summary)}</p>
                 </a>
               ))
             ) : (

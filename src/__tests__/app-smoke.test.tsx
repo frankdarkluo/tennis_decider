@@ -86,7 +86,7 @@ describe("app smoke tests", () => {
     render(React.createElement(AssessmentPage));
 
     expect(assessmentQuestions).toHaveLength(14);
-    expect(screen.getByText("30 秒快速了解你的网球水平")).toBeInTheDocument();
+    expect(screen.getByText("1 分钟测一下你的水平")).toBeInTheDocument();
     expect(screen.getByText("你的性别？")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "男" }));
@@ -137,14 +137,14 @@ describe("app smoke tests", () => {
   it("renders diagnose page with input box", async () => {
     render(React.createElement(DiagnosePage));
 
-    expect(await screen.findByPlaceholderText(/我反手总是下网/)).toBeInTheDocument();
+    expect(await screen.findByPlaceholderText(/我反手总下网/)).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
   it("renders library page and shows non-empty content list", async () => {
     render(React.createElement(LibraryPage));
 
-    expect(await screen.findByText("内容库")).toBeInTheDocument();
+    expect(await screen.findByText("找内容")).toBeInTheDocument();
     expect(screen.getByText("正手基础：先建立挥拍框架")).toBeInTheDocument();
     expect(screen.getByText("查看更多")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
@@ -153,14 +153,14 @@ describe("app smoke tests", () => {
   it("renders video diagnose page without crashing", async () => {
     render(React.createElement(VideoDiagnosePage));
 
-    expect(await screen.findByText("上传一段视频，让系统更像教练一样看你打球")).toBeInTheDocument();
+    expect(await screen.findByText("上传一段视频，我来帮你看问题")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
   it("renders rankings page without crashing", () => {
     render(React.createElement(RankingsPage));
 
-    expect(screen.getByText("教学博主榜")).toBeInTheDocument();
+    expect(screen.getByText("博主榜")).toBeInTheDocument();
     expect(screen.getByText("盖奥网球")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
@@ -171,7 +171,8 @@ describe("app smoke tests", () => {
     render(React.createElement(PlanPage));
 
     expect(await screen.findByText("你的 7 天提升计划")).toBeInTheDocument();
-    expect(screen.getByText("问题摘要")).toBeInTheDocument();
+    expect(screen.getByText("这 7 天先练这一件事")).toBeInTheDocument();
+    expect(screen.getByText("Day 1 · 今天")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 

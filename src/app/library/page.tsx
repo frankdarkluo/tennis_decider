@@ -148,8 +148,8 @@ function LibraryPageContent() {
     <PageContainer>
       <div className="space-y-5">
         <div>
-          <h1 className="text-3xl font-black text-slate-900">内容库</h1>
-          <p className="mt-2 text-slate-600">搜技术、博主或场景，直接找能看的内容。</p>
+          <h1 className="text-3xl font-black text-slate-900">找内容</h1>
+          <p className="mt-2 text-slate-600">搜技术、博主或场景。</p>
         </div>
 
         <LibraryFilters
@@ -189,7 +189,7 @@ function LibraryPageContent() {
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-[var(--line)] bg-white p-8 text-center">
-            <p className="text-slate-700">暂无匹配内容，换个关键词试试。</p>
+            <p className="text-slate-700">没找到，换个词试试。</p>
             <Button className="mt-3" variant="secondary" onClick={clearAll}>清空搜索</Button>
           </div>
         )}

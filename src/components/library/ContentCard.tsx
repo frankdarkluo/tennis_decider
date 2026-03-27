@@ -3,6 +3,7 @@ import { ContentItem } from "@/types/content";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { logEvent } from "@/lib/eventLogger";
+import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
 
 type ContentCardProps = {
   item: ContentItem;
@@ -75,51 +76,73 @@ export function ContentCard({
   const creator = creators.find((c) => c.id === item.creatorId);
   const isProfileCompact = source === "profile";
   const displayReason = getDisplayReason(item);
+  const thumbnail = getThumbnail(item);
 
   return (
-    <Card className="space-y-3">
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex flex-wrap gap-2">
-          <Badge className="px-3.5 py-1.5 text-sm">{item.platform}</Badge>
-          <Badge className="bg-slate-100 px-3.5 py-1.5 text-sm text-slate-700">{item.levels.join("/")}</Badge>
-        </div>
-        {onToggleBookmark ? (
-          <button
-            type="button"
-            className={isProfileCompact
-              ? "text-sm font-semibold text-slate-500 transition hover:text-slate-700"
-              : bookmarked
-                ? "inline-flex h-9 w-9 items-center justify-center rounded-full text-brand-700 transition hover:bg-brand-50"
-                : "inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"}
-            onClick={onToggleBookmark}
-            disabled={bookmarkLoading}
-            aria-pressed={bookmarked}
-            aria-label={isProfileCompact ? "移出收藏" : bookmarked ? "取消收藏" : "加入收藏"}
-          >
-            {isProfileCompact ? (
-              <span>{bookmarkLoading ? "处理中..." : "移出收藏"}</span>
-            ) : (
-              <BookmarkIcon filled={bookmarked} />
-            )}
-          </button>
+    <Card className="overflow-hidden p-0">
+      <div className="relative aspect-video bg-slate-100">
+        {thumbnail ? (
+          <img
+            src={thumbnail}
+            alt={item.title}
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <span className="text-4xl font-semibold text-slate-300">{getVideoInitial(item.title)}</span>
+          </div>
+        )}
+        {item.duration ? (
+          <span className="absolute bottom-2 right-2 rounded bg-black/75 px-1.5 py-0.5 text-xs font-medium text-white">
+            {item.duration}
+          </span>
         ) : null}
       </div>
-      <h3 className="text-lg font-bold leading-7 text-slate-900">{item.title}</h3>
-      <p className="text-sm text-slate-600">来源：{creator?.name ?? "未知"}</p>
-      <p className="text-sm leading-6 text-slate-600">{displayReason}</p>
-      <div className="flex justify-end">
-        <a
-          href={item.url}
-          target="_blank"
-          rel="noreferrer"
-          className="text-sm font-semibold text-slate-500 transition hover:text-slate-700"
-          onClick={() => {
-            logEvent("content_click", { contentId: item.id, source });
-            logEvent("content_external", { contentId: item.id, platform: item.platform, url: item.url });
-          }}
-        >
-          点击观看 →
-        </a>
+      <div className="space-y-3 p-5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex flex-wrap gap-2">
+            <Badge className="px-3.5 py-1.5 text-sm">{item.platform}</Badge>
+            <Badge className="bg-slate-100 px-3.5 py-1.5 text-sm text-slate-700">{item.levels.join("/")}</Badge>
+          </div>
+          {onToggleBookmark ? (
+            <button
+              type="button"
+              className={isProfileCompact
+                ? "text-sm font-semibold text-slate-500 transition hover:text-slate-700"
+                : bookmarked
+                  ? "inline-flex h-9 w-9 items-center justify-center rounded-full text-brand-700 transition hover:bg-brand-50"
+                  : "inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"}
+              onClick={onToggleBookmark}
+              disabled={bookmarkLoading}
+              aria-pressed={bookmarked}
+              aria-label={isProfileCompact ? "移出收藏" : bookmarked ? "取消收藏" : "加入收藏"}
+            >
+              {isProfileCompact ? (
+                <span>{bookmarkLoading ? "处理中..." : "移出收藏"}</span>
+              ) : (
+                <BookmarkIcon filled={bookmarked} />
+              )}
+            </button>
+          ) : null}
+        </div>
+        <h3 className="line-clamp-2 text-lg font-bold leading-7 text-slate-900">{item.title}</h3>
+        <p className="text-sm text-slate-600">来源：{creator?.name ?? "未知"}</p>
+        <p className="text-sm leading-6 text-slate-600">{displayReason}</p>
+        <div className="flex justify-end">
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm font-semibold text-slate-500 transition hover:text-slate-700"
+            onClick={() => {
+              logEvent("content_click", { contentId: item.id, source });
+              logEvent("content_external", { contentId: item.id, platform: item.platform, url: item.url });
+            }}
+          >
+            点击观看 →
+          </a>
+        </div>
       </div>
     </Card>
   );

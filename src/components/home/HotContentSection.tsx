@@ -13,7 +13,8 @@ const featuredContentIds = ["content_fr_01", "content_gaiao_02"];
 export function HotContentSection() {
   const featuredContents = featuredContentIds
     .map((id) => contents.find((item) => item.id === id))
-    .filter((item): item is (typeof contents)[number] => Boolean(item));
+    .filter((item): item is (typeof contents)[number] => Boolean(item))
+    .slice(0, 1);
 
   return (
     <section className="flex h-full flex-col space-y-4">

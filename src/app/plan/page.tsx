@@ -38,6 +38,8 @@ function PlanPageContent() {
   const [saveMessage, setSaveMessage] = useState("");
 
   const plan = useMemo(() => getPlanTemplate(problemTag, level), [problemTag, level]);
+  const todayPlan = plan.days[0];
+  const laterPlans = plan.days.slice(1);
   const sourceType: SavedPlanSource = params.get("problemTag")
     ? "diagnosis"
     : params.get("level")
@@ -86,7 +88,7 @@ function PlanPageContent() {
     }
 
     setSaveStatus("saved");
-    setSaveMessage("这份训练计划已经保存到你的账号。");
+      setSaveMessage("已保存到你的账号。");
     logEvent("plan_save", { planId: `${plan.problemTag}:${plan.level}` });
   };
 
@@ -99,7 +101,7 @@ function PlanPageContent() {
             { href: "/", label: "回到首页" }
           ]} />
           <div className="rounded-2xl border border-dashed border-[var(--line)] bg-white p-8 text-center">
-            <p className="text-slate-700">暂无可用来源数据，请先完成水平评估或问题诊断。</p>
+            <p className="text-slate-700">先做评估或诊断，再生成计划。</p>
             <div className="mt-4 flex justify-center gap-2">
               <Link href="/assessment"><Button>去水平评估</Button></Link>
               <Link href="/diagnose"><Button variant="secondary">去问题诊断</Button></Link>
@@ -119,20 +121,36 @@ function PlanPageContent() {
         ]} />
         <div>
           <h1 className="text-3xl font-black text-slate-900">你的 7 天提升计划</h1>
-          <p className="mt-2 text-slate-600">根据你的问题自动生成练习路径</p>
+          <p className="mt-2 text-slate-600">先练今天，再往后推。</p>
         </div>
 
-        <PlanSummary level={toChineseLevel(plan.level)} problem={plan.problemTag} target={plan.target} />
+        <PlanSummary
+          headline={plan.summary ?? plan.target}
+          supportingText={`当前等级参考：${toChineseLevel(plan.level)}`}
+        />
 
-        <div className="grid gap-4 md:grid-cols-2">
-          {plan.days.map((day) => (
-            <DayPlanCard
-              key={day.day}
-              day={day}
-              onViewDetails={(dayNumber) => logEvent("plan_view_day", { dayNumber })}
-            />
-          ))}
-        </div>
+        {todayPlan ? (
+          <DayPlanCard
+            day={todayPlan}
+            isToday
+            onViewDetails={(dayNumber) => logEvent("plan_view_day", { dayNumber })}
+          />
+        ) : null}
+
+        {laterPlans.length > 0 ? (
+          <div className="space-y-3">
+            <p className="text-sm font-semibold text-slate-900">后续安排</p>
+            <div className="space-y-3">
+              {laterPlans.map((day) => (
+                <DayPlanCard
+                  key={day.day}
+                  day={day}
+                  onViewDetails={(dayNumber) => logEvent("plan_view_day", { dayNumber })}
+                />
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         <div className="flex flex-wrap gap-2">
           <Button onClick={() => void handleSavePlan()} disabled={saveStatus === "saving" || saveStatus === "saved"}>

@@ -32,9 +32,9 @@ export type ContentItem = {
   reason: string;
   useCases: string[];
   coachReason: string;
+  thumbnail?: string;
   duration?: string;
   url: string;
-  cover?: string;
 };
 
 export const contents: ContentItem[] = [
@@ -52,7 +52,8 @@ export const contents: ContentItem[] = [
     reason: "适合作为正手动作框架的第一步内容。",
     useCases: ["正手动作还没有固定下来", "正手总觉得不顺手"],
     coachReason: "正手框架没定下来之前改细节都白搭，先看这条把轨迹跑顺。",
-    duration: "05:30",
+    thumbnail: 'http://i2.hdslb.com/bfs/archive/f141ebcafbe7565d32be6b26d6854fe6d3bf845c.jpg',
+    duration: '1:14',
     url: "https://www.bilibili.com/video/BV1XM4y187mR"
   },
   {
@@ -69,7 +70,8 @@ export const contents: ContentItem[] = [
     reason: "适合作为发球入门内容和二发焦虑的降难度入口。",
     useCases: ["发球经常发不进去", "二发没有信心"],
     coachReason: "发球最常见的坑就是一上来就想发快，这条帮你先把节奏和稳定性建起来。",
-    duration: "06:10",
+    thumbnail: 'http://i2.hdslb.com/bfs/archive/2f68ad0409688f7462d23fc37751422bf036b0f1.jpg',
+    duration: '9:24',
     url: "https://www.bilibili.com/video/BV1q7411L7cD"
   },
   {
@@ -86,6 +88,8 @@ export const contents: ContentItem[] = [
     reason: "适合 3.0 球员做反手基础补课。",
     useCases: ["反手总不扎实", "反手动作不稳定"],
     coachReason: "反手不扎实十有八九是击球点和拍面角度的问题，这条讲得很直接。",
+    thumbnail: 'http://i2.hdslb.com/bfs/archive/e4600b2ca3cd245f33ad97fb5d03cb74ccb2006e.jpg',
+    duration: '1:03',
     url: "https://www.bilibili.com/video/BV1YL411d7oX"
   },
   {
@@ -102,6 +106,8 @@ export const contents: ContentItem[] = [
     reason: "适合作为正手上旋和握拍入门的一条高频补课内容。",
     useCases: ["正手弧线太平容易飞", "想学上旋但握拍和发力总拧巴"],
     coachReason: "很多人上旋打不出来，其实是握拍和挥拍方向没先对上，这条适合从底层体感开始补。",
+    thumbnail: 'http://i2.hdslb.com/bfs/archive/7c278f743d09ee825fcf31ce9dd1bef8d018e60f.jpg',
+    duration: '1:00',
     url: "https://www.bilibili.com/video/BV1qM4y1k7Lo"
   },
   {
@@ -118,6 +124,8 @@ export const contents: ContentItem[] = [
     reason: "适合作为脚步和到位节奏问题的基础推荐。",
     useCases: ["分腿垫步时机不对", "总在击球前最后一步乱掉"],
     coachReason: "业余球员的移动问题往往不是跑不快，而是启动和到位节奏乱，这条很适合补脚下框架。",
+    thumbnail: 'http://i0.hdslb.com/bfs/archive/040a19ed2bc864e2d9101347b15782f7e0e36bc4.jpg',
+    duration: '1:27',
     url: "https://www.bilibili.com/video/BV1Tg4y1w7Xe"
   },
   {
@@ -134,6 +142,8 @@ export const contents: ContentItem[] = [
     reason: "适合作为发球变化、刷球感觉和握拍延伸的一条进阶内容。",
     useCases: ["想学侧旋发球", "发球旋转变化总是做不出来"],
     coachReason: "发球变化的门槛不只是刷球，更是握拍和拍头路径先理顺，这条适合做进阶补充。",
+    thumbnail: 'http://i2.hdslb.com/bfs/archive/51f03db09cb87e128474d2ece17fbbdf2ea2f057.jpg',
+    duration: '0:32',
     url: "https://www.bilibili.com/video/BV1YA4y1D7YR"
   },
   {
@@ -150,6 +160,8 @@ export const contents: ContentItem[] = [
     reason: "更适合 3.0–3.5 球员做发球节奏和信心修正。",
     useCases: ["二发节奏总是断掉", "发球一发力动作就散"],
     coachReason: "很多人发球散就是因为没有停顿，这条能帮你找到发力前的\"等一下\"。",
+    thumbnail: 'http://i0.hdslb.com/bfs/archive/aa0f06a058fe455eb6058d42862de5f3a0ff7295.jpg',
+    duration: '0:54',
     url: "https://www.bilibili.com/video/BV1aN4y1f7NC"
   },
   {
@@ -198,6 +210,8 @@ export const contents: ContentItem[] = [
     reason: "这条覆盖了发球抛球、身体位置和整体节奏，适合补足抛球类问题的第三条推荐。",
     useCases: ["发球抛球总偏左偏右", "抛球一乱发球动作就跟着散"],
     coachReason: "抛球是发球的地基，这条从零开始讲抛球位置和节奏，讲解非常清晰。",
+    thumbnail: 'https://img.youtube.com/vi/IiRGdagtOKE/mqdefault.jpg',
+    duration: '16:42',
     url: "https://www.youtube.com/watch?v=IiRGdagtOKE"
   },
   {
@@ -214,6 +228,8 @@ export const contents: ContentItem[] = [
     reason: "这条专门讲底线深度控制，能直接补足“球太浅”这条规则的内容覆盖。",
     useCases: ["相持里总落在发球线附近", "过网了但没有把对手压到底线后面"],
     coachReason: "很多人只想着过网却忽略深度，这条教你用目标区域控制落点。",
+    thumbnail: 'https://img.youtube.com/vi/rqvhgHDx-lE/mqdefault.jpg',
+    duration: '6:43',
     url: "https://www.youtube.com/watch?v=rqvhgHDx-lE"
   },
   {
@@ -230,6 +246,8 @@ export const contents: ContentItem[] = [
     reason: "这条直接围绕切削轨迹和稳定性修正，和“切削太高”问题匹配度很高。",
     useCases: ["反手切削总是飘起来", "切削落点短且给对手舒服进攻球"],
     coachReason: "这条用4.5学员实拍纠正，你能直接看到跟你水平接近的人怎么改。",
+    thumbnail: 'https://img.youtube.com/vi/d-VvKDgoIew/mqdefault.jpg',
+    duration: '11:13',
     url: "https://www.youtube.com/watch?v=d-VvKDgoIew"
   },
 
@@ -281,6 +299,8 @@ export const contents: ContentItem[] = [
     reason: "适合和启动慢、站位乱、来不及到位等问题直接配对。",
     useCases: ["脚步总先卡住", "击球前总找不到舒服站位"],
     coachReason: "脚步乱的时候先别上复杂组合，先把最基础的四个步伐练顺，场上马上会轻松很多。",
+    thumbnail: 'http://i2.hdslb.com/bfs/archive/95a16864f40364f032e3ffa7989717aa9ab9cf21.jpg',
+    duration: '1:58',
     url: "https://www.bilibili.com/video/BV1SZ6qYFEVS/"
   },
 
@@ -364,6 +384,8 @@ export const contents: ContentItem[] = [
     reason: "适合与击球点晚、步伐慢等问题配对。",
     useCases: ["启动总慢半拍", "分腿垫步时机总不对"],
     coachReason: "分腿垫步是所有移动的起点，时机对了你会觉得球突然慢下来了。",
+    thumbnail: 'http://i2.hdslb.com/bfs/archive/bcd585e7eb1eb34b3f90ec584d18425635997e30.jpg',
+    duration: '7:25',
     url: "https://www.bilibili.com/video/BV1PN4y1R7jL"
   },
   {
@@ -380,6 +402,8 @@ export const contents: ContentItem[] = [
     reason: "适合作为自练模块里最直接的单人练习入口。",
     useCases: ["没有球搭子就不知道怎么练", "自己练球总是想到哪练到哪"],
     coachReason: "很多人不是不想练，是一个人就不知道从哪开始，这条给的是马上能照着做的单人练法。",
+    thumbnail: 'http://i0.hdslb.com/bfs/archive/49156c0240cb1bee00a0cda1498f18a984bf3527.jpg',
+    duration: '1:06',
     url: "https://www.bilibili.com/video/BV1LvS3YWEnL/"
   },
 
@@ -413,6 +437,8 @@ export const contents: ContentItem[] = [
     reason: "适合讲清楚发力顺序和身体参与。",
     useCases: ["正手球速总起不来", "总觉得只有手臂在发力"],
     coachReason: "正手没力不是手臂弱，是转体和蹬地没参与进来，这条帮你找到发力链。",
+    thumbnail: 'http://i2.hdslb.com/bfs/archive/8ec3416ebcfbb18422c57f72fa81f2acab2bb791.jpg',
+    duration: '13:16',
     url: "https://www.bilibili.com/video/BV1h64y1D78J"
   },
   {
@@ -429,6 +455,8 @@ export const contents: ContentItem[] = [
     reason: "适合作为正手控制类问题的第二条推荐。",
     useCases: ["正手上旋感不明显", "拉不出安全弧线"],
     coachReason: "上旋不是刻意去刷球，而是挥拍路径自然带出来的，这条的体感描述很好。",
+    thumbnail: 'http://i1.hdslb.com/bfs/archive/7e035fbef7f29ef5cff1dac5f7a84bcd72e8b445.jpg',
+    duration: '8:06',
     url: "https://www.bilibili.com/video/BV1QRLizLEnv"
   },
 
@@ -512,6 +540,8 @@ export const contents: ContentItem[] = [
     reason: "适合作为训练计划模块的动作菜单和排练思路补充。",
     useCases: ["到了球场不知道先练什么", "训练没有结构、越练越散"],
     coachReason: "练习结构清楚以后，训练质量会比盲目多打提升得更快，这条很适合拿来做排练参考。",
+    thumbnail: 'http://i0.hdslb.com/bfs/archive/9b9d88aec4933ae8c7d31db2bec9ac08f114ba31.jpg',
+    duration: '1:03',
     url: "https://www.bilibili.com/video/BV16uHizBEp2/"
   },
   {
@@ -596,7 +626,8 @@ export const contents: ContentItem[] = [
     reason: "与网前信心不足和双打配合场景高度匹配。",
     useCases: ["双打网前不敢压", "截击时机总慢半拍"],
     coachReason: "封网时机是双打得分的关键，这条从站位和判断两个角度帮你敢压敢抢。",
-    duration: "06:00",
+    thumbnail: 'http://i1.hdslb.com/bfs/archive/8e9a2416bfa72356df1d9ce499d1221652b5c7ef.jpg',
+    duration: '22:03',
     url: "https://www.bilibili.com/video/BV1954y147nF"
   },
   {
@@ -613,7 +644,8 @@ export const contents: ContentItem[] = [
     reason: "与接发被压制、准备偏慢等问题直接对应。",
     useCases: ["接发球总被压制", "接发第一拍质量差"],
     coachReason: "接发被压不是因为对手发得好，多半是你站位太深或第一拍选择不对。",
-    duration: "07:10",
+    thumbnail: 'http://i1.hdslb.com/bfs/archive/a7c193cdba7994f40ab95c947c618f94bb1f8973.jpg',
+    duration: '30:38',
     url: "https://www.bilibili.com/video/BV1Ep4y1W7kc"
   },
   {
@@ -630,7 +662,8 @@ export const contents: ContentItem[] = [
     reason: "可作为比赛心理与执行流程的实战补充。",
     useCases: ["比赛执行波动大", "双打配合总断档"],
     coachReason: "比赛不是拍拍都要赢，先稳住再找机会压，这条帮你建立比赛执行节奏。",
-    duration: "05:45",
+    thumbnail: 'http://i1.hdslb.com/bfs/archive/d8bbdfd63f468624fd2530609984dbf8dea11039.jpg',
+    duration: '7:41',
     url: "https://www.bilibili.com/video/BV1JN4y18792"
   },
   {
@@ -647,7 +680,8 @@ export const contents: ContentItem[] = [
     reason: "与反手稳定性问题和准备时机问题匹配度高。",
     useCases: ["反手总下网", "反手击球点偏晚"],
     coachReason: "这条从击球点和拍面两个维度拆解反手下网，适合对照自己的问题逐个排查。",
-    duration: "06:12",
+    thumbnail: 'http://i2.hdslb.com/bfs/archive/82d0351f649ba96ee628548caafa0ae057748b00.jpg',
+    duration: '10:54',
     url: "https://www.bilibili.com/video/BV1jm4y1X7yF"
   },
   {
@@ -664,7 +698,8 @@ export const contents: ContentItem[] = [
     reason: "与击球点偏晚和移动到位问题直接对应。",
     useCases: ["准备总慢半拍", "击球点总在身后"],
     coachReason: "击球点晚不是手慢是脚慢，这条先帮你把脚步节奏调对，手自然就跟上了。",
-    duration: "05:20",
+    thumbnail: 'http://i2.hdslb.com/bfs/archive/97f31cc41477bc4c154cffde5a5206c6fb71cc83.jpg',
+    duration: '7:56',
     url: "https://www.bilibili.com/video/BV1SQ4y1M7y8"
   },
   {
@@ -681,7 +716,8 @@ export const contents: ContentItem[] = [
     reason: "与正手发力链条和上旋控制需求匹配。",
     useCases: ["正手没力量", "正手发力后失误增多"],
     coachReason: "先稳再快是正手进阶的正确顺序，这条教你在不丢稳定性的前提下加速。",
-    duration: "05:55",
+    thumbnail: 'http://i2.hdslb.com/bfs/archive/7910cfd92081586293280ac5f6c4f0091ba4a6d7.jpg',
+    duration: '9:22',
     url: "https://www.bilibili.com/video/BV1Zf4y1b7aW"
   }
 ];

@@ -288,24 +288,22 @@ export default function VideoDiagnosePage() {
         <Card className="space-y-4">
           <div className="space-y-2">
             <p className="text-sm font-semibold text-brand-700">AI 视频诊断</p>
-            <h1 className="text-3xl font-black text-slate-900">上传一段视频，让系统更像教练一样看你打球</h1>
-            <p className="max-w-3xl text-sm leading-6 text-slate-600">
-              你可以上传 1 分钟以内的练球或比赛片段。系统会先看关键帧，再结合你的文字描述和当前水平，给出更具体的问题判断、内容推荐和训练方向。
-            </p>
+            <h1 className="text-3xl font-black text-slate-900">上传一段视频，我来帮你看问题</h1>
+            <p className="max-w-3xl text-sm leading-6 text-slate-600">1 分钟内的练球或比赛片段都可以。</p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-2xl bg-slate-50 px-4 py-3">
-              <p className="text-sm font-semibold text-slate-900">更适合的拍法</p>
+              <p className="text-sm font-semibold text-slate-900">更适合怎么拍</p>
               <p className="mt-1 text-sm text-slate-600">横屏、侧后方、连续 3-5 个完整击球。</p>
             </div>
             <div className="rounded-2xl bg-slate-50 px-4 py-3">
-              <p className="text-sm font-semibold text-slate-900">适合什么内容</p>
-              <p className="mt-1 text-sm text-slate-600">喂球训练、对拉、发球练习或短比赛片段都可以。</p>
+              <p className="text-sm font-semibold text-slate-900">适合什么视频</p>
+              <p className="mt-1 text-sm text-slate-600">喂球、对拉、发球或比赛片段都行。</p>
             </div>
             <div className="rounded-2xl bg-slate-50 px-4 py-3">
-              <p className="text-sm font-semibold text-slate-900">当前识别边界</p>
-              <p className="mt-1 text-sm text-slate-600">第一版重点看动作问题和下一步训练方向，不做逐帧动作评分。</p>
+              <p className="text-sm font-semibold text-slate-900">当前能看什么</p>
+              <p className="mt-1 text-sm text-slate-600">重点看动作问题和下一步训练方向。</p>
             </div>
           </div>
         </Card>
@@ -315,9 +313,9 @@ export default function VideoDiagnosePage() {
         <div className="grid gap-5 xl:grid-cols-[0.95fr_1.05fr]">
           <Card className="space-y-5">
             <div>
-              <h2 className="text-lg font-bold text-slate-900">上传视频并补一点上下文</h2>
+              <h2 className="text-lg font-bold text-slate-900">上传视频</h2>
               <p className="mt-1 text-sm text-slate-600">
-                当前限制：视频不超过 {limits.maxVideoDurationSeconds} 秒，建议文件控制在 {limits.maxVideoSizeMb}MB 以内。
+                不超过 {limits.maxVideoDurationSeconds} 秒，建议小于 {limits.maxVideoSizeMb}MB。
               </p>
             </div>
 
@@ -325,7 +323,7 @@ export default function VideoDiagnosePage() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="space-y-2">
-                <span className="text-sm font-semibold text-slate-900">你主要想看哪一拍？</span>
+                <span className="text-sm font-semibold text-slate-900">想看哪一拍？</span>
                 <select
                   className="min-h-11 w-full rounded-xl border border-[var(--line)] bg-white px-4 py-2 text-sm"
                   value={selectedStroke}
@@ -338,7 +336,7 @@ export default function VideoDiagnosePage() {
               </label>
 
               <label className="space-y-2">
-                <span className="text-sm font-semibold text-slate-900">这段视频更像什么场景？</span>
+                <span className="text-sm font-semibold text-slate-900">这是什么场景？</span>
                 <select
                   className="min-h-11 w-full rounded-xl border border-[var(--line)] bg-white px-4 py-2 text-sm"
                   value={selectedScene}
@@ -352,9 +350,9 @@ export default function VideoDiagnosePage() {
             </div>
 
             <label className="space-y-2">
-              <span className="text-sm font-semibold text-slate-900">可选：再补一句你的主观感受</span>
+              <span className="text-sm font-semibold text-slate-900">可选：补一句你的感觉</span>
               <Input
-                placeholder="例如：我感觉正手总是晚点，越发力越容易飞"
+                placeholder="例如：我感觉正手总晚点，越发力越容易飞"
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
                 disabled={Boolean(processingStep)}
@@ -362,7 +360,7 @@ export default function VideoDiagnosePage() {
             </label>
 
             <div className="rounded-2xl border border-brand-100 bg-brand-50/70 px-4 py-4 text-sm leading-6 text-slate-700">
-              <p>系统会优先参考你已经做过的水平评估。</p>
+              <p>系统会参考你的水平评估。</p>
               <p className="mt-1">
                 当前识别到的等级：{currentLevel ?? "尚未评估"}。
                 {currentLevel ? "" : "如果你先做 1 分钟评估，推荐会更准。"}
@@ -376,7 +374,7 @@ export default function VideoDiagnosePage() {
 
             <div className="flex flex-wrap items-center gap-3">
               <Button type="button" onClick={() => void handleAnalyze()} disabled={!file || Boolean(processingStep)}>
-                {processingStep ? "诊断中..." : "开始 AI 视频诊断"}
+                {processingStep ? "诊断中..." : "开始视频诊断"}
               </Button>
               {!user ? (
                 <button
@@ -412,15 +410,15 @@ export default function VideoDiagnosePage() {
             <VideoAnalysisResult result={result} />
           ) : (
             <Card className="space-y-4">
-              <p className="text-sm font-semibold text-brand-700">结果会出现在这里</p>
-              <h2 className="text-xl font-bold text-slate-900">先上传一段视频，我们会帮你拆成“问题 - 内容 - 训练计划”</h2>
+              <p className="text-sm font-semibold text-brand-700">结果会在这里</p>
+              <h2 className="text-xl font-bold text-slate-900">先上传视频，我会帮你拆成问题、内容和计划</h2>
               <div className="space-y-3 text-sm leading-6 text-slate-600">
-                <p>第一版视频诊断会重点回答这几个问题：</p>
+                <p>这次会先回答这几件事：</p>
                 <ul className="list-disc space-y-1 pl-5">
-                  <li>视频里最优先要改的动作问题是什么</li>
-                  <li>这个问题更像是击球点、准备、脚步还是挥拍节奏的问题</li>
-                  <li>你应该先看哪几条内容、先跟哪几位博主学</li>
-                  <li>接下来 7 天先怎么练</li>
+                  <li>最先要改什么</li>
+                  <li>更像击球点、准备、脚步还是节奏问题</li>
+                  <li>先看哪几条内容、先跟谁学</li>
+                  <li>接下来 7 天怎么练</li>
                 </ul>
               </div>
             </Card>
@@ -430,4 +428,3 @@ export default function VideoDiagnosePage() {
     </PageContainer>
   );
 }
-

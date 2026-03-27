@@ -158,10 +158,10 @@ export default function RankingsPage() {
     };
   }, [configured, loading, user?.id]);
 
-  const pageTitle = "教学博主榜";
+  const pageTitle = "博主榜";
   const pageDescription = region === "domestic"
-    ? "先搜名字，再挑适合你的中文博主。"
-    : "先搜名字，再挑适合你的英文博主。";
+    ? "先搜名字，再挑中文博主。"
+    : "先搜名字，再挑英文博主。";
 
   return (
     <PageContainer>
@@ -187,7 +187,7 @@ export default function RankingsPage() {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="搜索博主..."
+            placeholder="搜索博主或标签..."
             className="min-h-11 w-full rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-2 text-sm outline-none transition focus:border-brand-300 focus:bg-white"
             aria-label="搜索博主"
           />

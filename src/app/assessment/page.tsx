@@ -240,8 +240,8 @@ export default function AssessmentPage() {
     <PageContainer>
       <div className="mx-auto max-w-2xl space-y-5">
         <div className="space-y-2">
-          <h1 className="text-3xl font-black text-slate-900">30 秒快速了解你的网球水平</h1>
-          <p className="text-slate-600">先回答几个小问题，我们给你一个参考区间。</p>
+          <h1 className="text-3xl font-black text-slate-900">1 分钟测一下你的水平</h1>
+          <p className="text-slate-600">答几个小问题，先给你一个区间。</p>
         </div>
 
         <AssessmentProgress
@@ -266,7 +266,7 @@ export default function AssessmentPage() {
         ) : null}
 
         <div className="flex items-center justify-between gap-3">
-          <div className="text-sm text-slate-400">轻点一下就会继续</div>
+          <div className="text-sm text-slate-400">点一下就继续</div>
           {stepIndex > 0 ? (
             <Button
               variant="ghost"

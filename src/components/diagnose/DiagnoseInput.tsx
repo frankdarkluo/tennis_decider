@@ -15,7 +15,7 @@ type DiagnoseInputProps = {
 export function DiagnoseInput({
   value,
   quickTags,
-  quickTagsLabel = "猜你想问：",
+  quickTagsLabel = "也可以直接点：",
   variant = "default",
   onChange,
   onDiagnose,
@@ -29,7 +29,7 @@ export function DiagnoseInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={variant === "compact" ? "min-h-[120px]" : undefined}
-        placeholder="我反手总是下网 / 我的二发没有信心 / 正手一发力就容易出界 / 比赛里总觉得来不及准备"
+        placeholder="我反手总下网 / 二发没信心 / 正手一发力就出界 / 比赛里总来不及准备"
       />
       {quickTagsLabel ? <p className="text-sm text-slate-500">{quickTagsLabel}</p> : null}
       <div className="flex flex-wrap gap-2">

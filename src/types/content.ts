@@ -16,7 +16,7 @@ export type ContentItem = {
   reason: string;
   useCases: string[];
   coachReason: string;
+  thumbnail?: string;
   duration?: string;
   url: string;
-  cover?: string;
 };

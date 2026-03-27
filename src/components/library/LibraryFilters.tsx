@@ -12,7 +12,7 @@ export function LibraryFilters(props: LibraryFiltersProps) {
   return (
     <div className="space-y-3 rounded-2xl border border-[var(--line)] bg-white p-4 shadow-soft">
       <Input
-        placeholder="搜索内容（输入技术、博主名...）"
+        placeholder="搜索技术、博主或场景"
         value={props.keyword}
         onChange={(e) => props.setKeyword(e.target.value)}
       />

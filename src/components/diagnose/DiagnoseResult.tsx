@@ -7,6 +7,73 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { PlatformVideoSearch } from "@/components/PlatformVideoSearch";
 import { logEvent } from "@/lib/eventLogger";
+import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
+
+function getRecommendationTarget(useCases: string[], fallback: string) {
+  const primaryUseCase = useCases[0]?.trim();
+  if (primaryUseCase) {
+    return `针对：${primaryUseCase}`;
+  }
+
+  return `针对：${fallback.replace(/^针对[:：]\s*/, "").trim()}`;
+}
+
+function RecommendationCard({
+  item,
+  source
+}: {
+  item: DiagnosisResultType["recommendedContents"][number];
+  source: "diagnosis_featured" | "diagnosis_more";
+}) {
+  const thumbnail = getThumbnail(item);
+  const targetLabel = getRecommendationTarget(item.useCases, item.reason);
+
+  return (
+    <div className="rounded-xl border border-[var(--line)] p-4 text-sm">
+      <div className="flex gap-3">
+        <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+          {thumbnail ? (
+            <img
+              src={thumbnail}
+              alt={item.title}
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <span className="text-lg font-medium text-slate-300">{getVideoInitial(item.title)}</span>
+            </div>
+          )}
+          {item.duration ? (
+            <span className="absolute bottom-1.5 right-1.5 rounded bg-black/75 px-1 py-0.5 text-[11px] font-medium text-white">
+              {item.duration}
+            </span>
+          ) : null}
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="font-semibold text-slate-900">{item.title}</p>
+          <p className="mt-1 text-sm text-slate-600">{targetLabel}</p>
+          {item.coachReason && !item.coachReason.includes("[待填写") ? (
+            <p className="mt-2 text-xs text-slate-500">教练视角：{item.coachReason}</p>
+          ) : null}
+        </div>
+      </div>
+      <div className="mt-3">
+        <a
+          href={item.url}
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => {
+            logEvent("content_click", { contentId: item.id, source });
+            logEvent("content_external", { contentId: item.id, platform: item.platform, url: item.url });
+          }}
+        >
+          <Button variant="secondary">点击观看</Button>
+        </a>
+      </div>
+    </div>
+  );
+}
 
 export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
   const planHref = `/plan?problemTag=${encodeURIComponent(result.problemTag)}${result.level ? `&level=${encodeURIComponent(result.level)}` : ""}`;
@@ -74,26 +141,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
           {featuredContent ? (
             <div>
               <p className="mb-2 text-sm font-semibold text-slate-900">推荐先看这条：</p>
-              <div className="rounded-xl border border-[var(--line)] p-4 text-sm">
-                <p className="font-semibold text-slate-900">{featuredContent.title}</p>
-                <p className="mt-1 text-slate-600">{featuredContent.reason}</p>
-                {featuredContent.coachReason && !featuredContent.coachReason.includes("[待填写") ? (
-                  <p className="mt-2 text-xs text-slate-500">教练视角：{featuredContent.coachReason}</p>
-                ) : null}
-                <div className="mt-3">
-                  <a
-                    href={featuredContent.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => {
-                      logEvent("content_click", { contentId: featuredContent.id, source: "diagnosis_featured" });
-                      logEvent("content_external", { contentId: featuredContent.id, platform: featuredContent.platform, url: featuredContent.url });
-                    }}
-                  >
-                    <Button variant="secondary">去看这条内容</Button>
-                  </a>
-                </div>
-              </div>
+              <RecommendationCard item={featuredContent} source="diagnosis_featured" />
             </div>
           ) : null}
 
@@ -124,23 +172,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
             <div className="space-y-2">
               <p className="text-sm font-semibold text-slate-900">更多推荐内容</p>
               {moreContents.map((item) => (
-                <div key={item.id} className="rounded-xl border border-[var(--line)] p-3 text-sm">
-                  <p className="font-semibold text-slate-900">{item.title}</p>
-                  <p className="mt-1 text-slate-600">{item.reason}</p>
-                  <div className="mt-3">
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={() => {
-                        logEvent("content_click", { contentId: item.id, source: "diagnosis_more" });
-                        logEvent("content_external", { contentId: item.id, platform: item.platform, url: item.url });
-                      }}
-                    >
-                      <Button variant="secondary">去看 →</Button>
-                    </a>
-                  </div>
-                </div>
+                <RecommendationCard key={item.id} item={item} source="diagnosis_more" />
               ))}
             </div>
           ) : null}

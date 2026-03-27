@@ -13,7 +13,8 @@ const featuredCreatorIds = ["creator_gaiao", "creator_furao"];
 export function HotCreatorsSection() {
   const featuredCreators = featuredCreatorIds
     .map((id) => creators.find((creator) => creator.id === id))
-    .filter((creator): creator is (typeof creators)[number] => Boolean(creator));
+    .filter((creator): creator is (typeof creators)[number] => Boolean(creator))
+    .slice(0, 1);
 
   return (
     <section className="flex h-full flex-col space-y-4">
