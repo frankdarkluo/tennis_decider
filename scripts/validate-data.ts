@@ -1,4 +1,5 @@
 import { contents } from "../src/data/contents";
+import { expandedContents } from "../src/data/expandedContents";
 import { creators } from "../src/data/creators";
 import { diagnosisRules } from "../src/data/diagnosisRules";
 import { planTemplates } from "../src/data/planTemplates";
@@ -10,7 +11,8 @@ type ValidationIssue = {
 
 const issues: ValidationIssue[] = [];
 
-const contentIds = new Set(contents.map((item) => item.id));
+const allContents = [...contents, ...expandedContents];
+const contentIds = new Set(allContents.map((item) => item.id));
 const creatorIds = new Set(creators.map((creator) => creator.id));
 const problemTags = new Set(diagnosisRules.map((rule) => rule.problemTag));
 
@@ -25,17 +27,17 @@ for (const rule of diagnosisRules) {
   }
 }
 
-for (const item of contents) {
+for (const item of allContents) {
   if (!creatorIds.has(item.creatorId)) {
     issues.push({
-      scope: `contents:${item.id}`,
+      scope: `content:${item.id}`,
       message: `creatorId "${item.creatorId}" 在 creators.ts 中不存在`
     });
   }
 
   if (!item.url.trim()) {
     issues.push({
-      scope: `contents:${item.id}`,
+      scope: `content:${item.id}`,
       message: "url 为空"
     });
   }
@@ -52,7 +54,9 @@ for (const template of planTemplates) {
 
 const summaryLines = [
   `诊断规则: ${diagnosisRules.length} 条`,
-  `内容条目: ${contents.length} 条`,
+  `静态内容: ${contents.length} 条`,
+  `扩展内容: ${expandedContents.length} 条`,
+  `总内容条目: ${allContents.length} 条`,
   `博主数量: ${creators.length} 位`,
   `训练计划: ${planTemplates.length} 套`
 ];

@@ -2,23 +2,73 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { contents } from "@/data/contents";
+import { expandedContents } from "@/data/expandedContents";
 import { creators } from "@/data/creators";
+import { ContentItem } from "@/types/content";
 import { logEvent } from "@/lib/eventLogger";
 import { addBookmark, getBookmarkedContentIds, removeBookmark } from "@/lib/userData";
+import { getThumbnail } from "@/lib/thumbnail";
 import { toChineseSkill } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
-import { LibraryFilters } from "@/components/library/LibraryFilters";
+import { LibraryFilters, LibraryPlatformFilter } from "@/components/library/LibraryFilters";
 import { ContentCard } from "@/components/library/ContentCard";
 import { Button } from "@/components/ui/Button";
 
 const PAGE_SIZE = 20;
 
+function normalizeUrl(url: string) {
+  return url.replace(/\/+$/, "");
+}
+
+function buildLibraryItems(): ContentItem[] {
+  const baseItems = [...contents, ...expandedContents];
+  const seenUrls = new Set(baseItems.map((item) => normalizeUrl(item.url)));
+  const derivedItems: ContentItem[] = [];
+
+  creators.forEach((creator) => {
+    (creator.featuredVideos ?? []).forEach((video, index) => {
+      const normalizedUrl = normalizeUrl(video.url);
+
+      if (seenUrls.has(normalizedUrl)) {
+        return;
+      }
+
+      seenUrls.add(normalizedUrl);
+
+      derivedItems.push({
+        id: `content_featured_${creator.id}_${index + 1}`,
+        title: video.title,
+        sourceTitle: video.title,
+        creatorId: creator.id,
+        platform: video.platform,
+        type: "video",
+        levels: video.levels,
+        skills: creator.specialties,
+        problemTags: [],
+        language: creator.region === "domestic" ? "zh" : "en",
+        summary: creator.shortDescription,
+        reason: video.target,
+        useCases: [video.target],
+        coachReason: creator.bio,
+        thumbnail: video.thumbnail,
+        duration: video.duration,
+        url: video.url
+      });
+    });
+  });
+
+  return [...baseItems, ...derivedItems];
+}
+
+const libraryItems = buildLibraryItems();
+
 function LibraryPageContent() {
   const { user, configured, loading } = useAuth();
   const { openLoginModal } = useAuthModal();
   const [keyword, setKeyword] = useState("");
+  const [selectedPlatform, setSelectedPlatform] = useState<LibraryPlatformFilter>("all");
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([]);
   const [bookmarkPendingId, setBookmarkPendingId] = useState<string | null>(null);
   const [showBookmarkedOnly, setShowBookmarkedOnly] = useState(false);
@@ -66,6 +116,7 @@ function LibraryPageContent() {
   useEffect(() => {
     const currentFilters: Record<string, string | boolean> = {
       keyword,
+      platform: selectedPlatform,
       bookmarked: showBookmarkedOnly
     };
 
@@ -81,16 +132,16 @@ function LibraryPageContent() {
     }
 
     previousFiltersRef.current = currentFilters;
-  }, [keyword, showBookmarkedOnly]);
+  }, [keyword, selectedPlatform, showBookmarkedOnly]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [keyword, showBookmarkedOnly]);
+  }, [keyword, selectedPlatform, showBookmarkedOnly]);
 
   const filtered = useMemo(() => {
     const query = keyword.trim().toLowerCase();
 
-    return contents.filter((item) => {
+    const matchedItems = libraryItems.filter((item) => {
       const searchableFields = [
         item.title,
         item.sourceTitle ?? "",
@@ -103,10 +154,15 @@ function LibraryPageContent() {
       ].join(" ").toLowerCase();
 
       const hitKeyword = query ? searchableFields.includes(query) : true;
+      const hitPlatform = selectedPlatform === "all" ? true : item.platform === selectedPlatform;
       const hitBookmark = showBookmarkedOnly ? bookmarkedIds.includes(item.id) : true;
-      return hitKeyword && hitBookmark;
+      return hitKeyword && hitPlatform && hitBookmark;
     });
-  }, [bookmarkedIds, creatorNameById, keyword, showBookmarkedOnly]);
+
+    const withThumbnail = matchedItems.filter((item) => Boolean(getThumbnail(item)));
+    const withoutThumbnail = matchedItems.filter((item) => !getThumbnail(item));
+    return [...withThumbnail, ...withoutThumbnail];
+  }, [bookmarkedIds, creatorNameById, keyword, selectedPlatform, showBookmarkedOnly]);
   const visibleItems = useMemo(
     () => filtered.slice(0, visibleCount),
     [filtered, visibleCount]
@@ -115,6 +171,7 @@ function LibraryPageContent() {
 
   const clearAll = () => {
     setKeyword("");
+    setSelectedPlatform("all");
     setShowBookmarkedOnly(false);
   };
 
@@ -155,6 +212,8 @@ function LibraryPageContent() {
         <LibraryFilters
           keyword={keyword}
           setKeyword={setKeyword}
+          selectedPlatform={selectedPlatform}
+          setSelectedPlatform={setSelectedPlatform}
           showBookmarkedOnly={showBookmarkedOnly}
           setShowBookmarkedOnly={setShowBookmarkedOnly}
           bookmarkFilterEnabled={Boolean(user?.id && configured)}
@@ -162,7 +221,7 @@ function LibraryPageContent() {
 
         {filtered.length > 0 ? (
           <div className="space-y-6">
-            <div className="grid items-start gap-4 md:grid-cols-2">
+            <div className="grid items-stretch gap-4 md:grid-cols-2">
               {visibleItems.map((item) => (
                 <ContentCard
                   key={item.id}

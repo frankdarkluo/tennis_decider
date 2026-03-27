@@ -8,10 +8,11 @@ const projectRoot = path.resolve(__dirname, "..");
 const outputDir = path.join(projectRoot, "public", "thumbnails", "bilibili");
 const targets = [
   path.join(projectRoot, "src", "data", "contents.ts"),
+  path.join(projectRoot, "src", "data", "expandedContents.ts"),
   path.join(projectRoot, "src", "data", "creators.ts")
 ];
 
-const thumbnailPattern = /thumbnail:\s*'(https?:\/\/i\d\.hdslb\.com\/bfs\/archive\/[^']+)'/g;
+const thumbnailPattern = /["']?thumbnail["']?\s*:\s*(['"])(https?:\/\/i\d\.hdslb\.com\/bfs\/archive\/[^'"]+)\1/g;
 
 async function ensureDir(dir) {
   await fs.mkdir(dir, { recursive: true });
@@ -44,7 +45,7 @@ async function main() {
 
   for (const [, source] of fileContents) {
     for (const match of source.matchAll(thumbnailPattern)) {
-      const remoteUrl = match[1];
+      const remoteUrl = match[2];
       if (urlToLocalPath.has(remoteUrl)) {
         continue;
       }

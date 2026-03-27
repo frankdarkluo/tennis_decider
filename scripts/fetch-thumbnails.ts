@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { contents } from "../src/data/contents";
+import { expandedContents } from "../src/data/expandedContents";
 import { creators } from "../src/data/creators";
 import {
   extractBilibiliBvid,
@@ -146,6 +147,7 @@ async function getBilibiliInfo(url: string): Promise<{ thumbnail: string | null;
 
 function collectTargets(): TargetItem[] {
   const contentTargets: TargetItem[] = contents
+    .concat(expandedContents)
     .filter(isSupportedContentItem)
     .map((item) => ({
       scope: "content",

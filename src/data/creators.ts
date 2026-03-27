@@ -958,6 +958,166 @@ export const creators: Creator[] = [
     }
   },
   {
+    id: "creator_sara_airehan",
+    name: "Sara爱热汗",
+    shortDescription: "前职业球员视角，发球和脚步讲得清楚",
+    tags: ["讲解清晰", "发球专项", "脚步移动"],
+    region: "domestic",
+    platforms: ["Bilibili"],
+    levels: ["2.5", "3.0", "3.5", "4.0"],
+    specialties: ["serve", "movement", "footwork", "training", "basics"],
+    styleTags: ["前职业球员", "讲解清晰", "训练导向"],
+    bio: "偏前职业球员视角的发球、热身和脚步训练，适合想把动作顺序和训练感觉建立起来的球员。",
+    suitableFor: ["发球入门", "脚步训练", "热身跟练"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_sara_airehan_video_01",
+        title: "【网球】职业选手3分钟教会你发球｜超详细讲解",
+        target: "发球入门总抓不到顺序",
+        levels: ["2.5", "3.0", "3.5"],
+        thumbnail: "/thumbnails/bilibili/ebfcb72c9928de678886101ea90d50fec71f848c.jpg",
+        duration: "2:37",
+        url: "https://www.bilibili.com/video/BV1jP4y187gD/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_sara_airehan_video_02",
+        title: "网球发球提升｜想要发好球，必须要学会抛球",
+        target: "发球抛球总不稳定",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "/thumbnails/bilibili/2c042fee15c8db0fd921869c156e214ddc9df6a6.jpg",
+        duration: "3:32",
+        url: "https://www.bilibili.com/video/BV1Mf4y1v7Ub/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_sara_airehan_video_03",
+        title: "职业选手的发球训练｜5步教会你手臂内旋Pronation",
+        target: "发球内旋总找不到感觉",
+        levels: ["3.0", "3.5", "4.0"],
+        thumbnail: "/thumbnails/bilibili/000339229681b17217d4a591ec2357141e07d819.jpg",
+        duration: "3:00",
+        url: "https://www.bilibili.com/video/BV1bK4y1L7YE/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_sara_airehan_video_04",
+        title: "吐血整理！10个网球折返跑训练｜加强脚下",
+        target: "脚下启动总拖沓",
+        levels: ["2.5", "3.0", "3.5"],
+        thumbnail: "/thumbnails/bilibili/238e2d9bd910222c8e8e4980f667d3ea14c72b6b.jpg",
+        duration: "1:27",
+        url: "https://www.bilibili.com/video/BV13v421y7mq/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_sara_airehan_video_05",
+        title: "4分钟网球交叉步跟练｜提升步伐",
+        target: "交叉步总跟不上球路",
+        levels: ["2.5", "3.0", "3.5"],
+        thumbnail: "/thumbnails/bilibili/82ff37c0ed048e2da20ced5679c33e50cb8a78b7.jpg",
+        duration: "3:55",
+        url: "https://www.bilibili.com/video/BV1WG411i7pP/",
+        platform: "Bilibili"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://space.bilibili.com/358241838?spm_id_from=333.788.upinfo.detail.click",
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/358241838?spm_id_from=333.788.upinfo.detail.click"
+    },
+    avatar: bilibiliAvatar("creator_sara_airehan"),
+    rankingSignals: {
+      subscriberScore: 0.56,
+      averageViewsScore: 0.58,
+      activityScore: 0.63,
+      catalogScore: 0.54,
+      authorityScore: 0.72,
+      curatorBoost: 0.66
+    }
+  },
+  {
+    id: "creator_braden_tennis_academy",
+    name: "布雷登网球学院",
+    shortDescription: "握拍、站位和发力讲得细",
+    tags: ["基础导向", "细节导向", "讲解清晰"],
+    region: "domestic",
+    platforms: ["Bilibili"],
+    levels: ["2.5", "3.0", "3.5", "4.0"],
+    specialties: ["grip", "forehand", "backhand", "topspin", "basics"],
+    styleTags: ["基础导向", "动作拆解", "细节导向"],
+    bio: "偏握拍、站位、发力和击球原理拆解，适合想把基础动作细节重新理顺的球员。",
+    suitableFor: ["握拍重建", "基础站位", "发力理解"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_braden_tennis_academy_video_01",
+        title: "网球正手击球非持拍手的另一个关键性作用",
+        target: "正手非持拍手总乱摆",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "/thumbnails/bilibili/2afec3a3d44eb6e5bc2bb32298bba20e1c5c9aaf.jpg",
+        duration: "3:16",
+        url: "https://www.bilibili.com/video/BV1Ue4y1c7A1/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_braden_tennis_academy_video_02",
+        title: "全网最系统最全面的握拍、站位与发力方式教程6",
+        target: "握拍站位总不顺",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "/thumbnails/bilibili/bc5e2235a1bdd65ab35b246c6eb5aa17312475aa.jpg",
+        duration: "3:26",
+        url: "https://www.bilibili.com/video/BV1vV4y1o7fw/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_braden_tennis_academy_video_03",
+        title: "全网最系统最全面的握拍、站位与发力方式教程（五）双反握拍",
+        target: "双反握拍总别扭",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "/thumbnails/bilibili/1ad5ce6f215e48590a50cff9480af870d4a236d9.jpg",
+        duration: "4:32",
+        url: "https://www.bilibili.com/video/BV1ML411Y7ar/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_braden_tennis_academy_video_04",
+        title: "全网最系统最全面的握拍、站位与发力方式教程（四）正手握拍4",
+        target: "正手握拍总不稳定",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "/thumbnails/bilibili/a251c020b28646ab6001f7f1c7224f1e92649851.jpg",
+        duration: "4:01",
+        url: "https://www.bilibili.com/video/BV1Fa4y1P7GG/",
+        platform: "Bilibili"
+      },
+      {
+        id: "creator_braden_tennis_academy_video_05",
+        title: "打上旋球真的是击球的下部吗？",
+        target: "上旋总转不起来",
+        levels: ["3.0", "3.5", "4.0"],
+        thumbnail: "/thumbnails/bilibili/dbe3fd60814ebac76d39c27f850a2e29a386b61a.jpg",
+        duration: "3:32",
+        url: "https://www.bilibili.com/video/BV12s4y1Z7RZ/",
+        platform: "Bilibili"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://space.bilibili.com/506356125/upload/video",
+    platformLinks: {
+      Bilibili: "https://space.bilibili.com/506356125/upload/video"
+    },
+    avatar: bilibiliAvatar("creator_braden_tennis_academy"),
+    rankingSignals: {
+      subscriberScore: 0.47,
+      averageViewsScore: 0.57,
+      activityScore: 0.52,
+      catalogScore: 0.62,
+      authorityScore: 0.61,
+      curatorBoost: 0.62
+    }
+  },
+  {
     id: "creator_search_curated",
     name: "教练整理搜索入口",
     shortDescription: "暂未绑定单一博主",
@@ -1787,6 +1947,166 @@ export const creators: Creator[] = [
       catalogScore: 0.76,
       authorityScore: 0.68,
       curatorBoost: 0.68
+    }
+  },
+  {
+    id: "creator_time_value_of_tennis",
+    name: "Time Value of Tennis",
+    shortDescription: "技术细节和比赛理解并重",
+    tags: ["细节导向", "进阶提升", "实战导向"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["forehand", "backhand", "matchplay", "basics", "consistency"],
+    styleTags: ["细节导向", "比赛导向", "讲解清晰"],
+    bio: "偏技术细节和比赛决策拆解，适合想同时理解动作质量和回合思路的球员。",
+    suitableFor: ["技术细节", "回合思路", "进阶提升"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_time_value_of_tennis_video_01",
+        title: "To Make Every Volley In Against Anyone , Do This",
+        target: "网前总不敢主动上",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://i.ytimg.com/vi/_dYUksHdM6k/mqdefault.jpg",
+        duration: "9:04",
+        url: "https://www.youtube.com/watch?v=_dYUksHdM6k",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_time_value_of_tennis_video_02",
+        title: "How To Handle High Balls With A One Handed Backhand!",
+        target: "反手高点击球总处理不好",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://i.ytimg.com/vi/5_FWpma6BA4/mqdefault.jpg",
+        duration: "6:54",
+        url: "https://www.youtube.com/watch?v=5_FWpma6BA4",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_time_value_of_tennis_video_03",
+        title: "Avoid the MOST COMMON MISTAKE trying to generate TOPSPIN! Learn what the tennis Pro's do.",
+        target: "上旋总是转不起来",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://i.ytimg.com/vi/ekj5T9aBv6Y/mqdefault.jpg",
+        duration: "5:22",
+        url: "https://www.youtube.com/watch?v=ekj5T9aBv6Y",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_time_value_of_tennis_video_04",
+        title: "How To Hit The PERFECT RETURN!",
+        target: "接发总被发球压住",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://i.ytimg.com/vi/SoHBjFOK5I0/mqdefault.jpg",
+        duration: "8:43",
+        url: "https://www.youtube.com/watch?v=SoHBjFOK5I0",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_time_value_of_tennis_video_05",
+        title: "This will TRANSFORM YOUR SERVE and add up to 20 MPH to it! Serve technique lesson",
+        target: "发球总缺少球速和顺畅度",
+        levels: ["3.0", "3.5", "4.0", "4.5"],
+        thumbnail: "https://i.ytimg.com/vi/ue0M7ki9G1w/mqdefault.jpg",
+        duration: "6:26",
+        url: "https://www.youtube.com/watch?v=ue0M7ki9G1w",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@timevalueoftennis2866",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@timevalueoftennis2866"
+    },
+    avatar: youtubeAvatar("@timevalueoftennis2866"),
+    rankingSignals: {
+      subscriberScore: 0.62,
+      averageViewsScore: 0.64,
+      activityScore: 0.58,
+      catalogScore: 0.7,
+      authorityScore: 0.7,
+      curatorBoost: 0.68
+    }
+  },
+  {
+    id: "creator_the_tennis_mentor",
+    name: "The Tennis Mentor",
+    shortDescription: "基础动作和训练逻辑讲得扎实",
+    tags: ["基础导向", "讲解清晰", "节奏训练"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["2.5", "3.0", "3.5", "4.0"],
+    specialties: ["serve", "forehand", "backhand", "basics", "training"],
+    styleTags: ["讲解清晰", "系统化", "新手友好"],
+    bio: "偏基础动作和训练逻辑，适合想用更清楚的方法建立正反手、发球和训练节奏的球员。",
+    suitableFor: ["基础动作", "训练节奏", "发球入门"],
+    featuredContentIds: [],
+    featuredVideos: [
+      {
+        id: "creator_the_tennis_mentor_video_01",
+        title: "5 BIGGEST Forehand Mistakes (& How To Fix Them)",
+        target: "正手动作总有明显漏洞",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://i.ytimg.com/vi/0MeYx4hXm0Y/mqdefault.jpg",
+        duration: "10:37",
+        url: "https://www.youtube.com/watch?v=0MeYx4hXm0Y",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_the_tennis_mentor_video_02",
+        title: "Andy Murray Has 3 Return Tips For You",
+        target: "接发总是来不及准备",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://i.ytimg.com/vi/fxQ6XFAn2gs/mqdefault.jpg",
+        duration: "1:23",
+        url: "https://www.youtube.com/watch?v=fxQ6XFAn2gs",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_the_tennis_mentor_video_03",
+        title: "How To MISS LESS Tennis Balls",
+        target: "稳定性总是很难维持",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://i.ytimg.com/vi/Gg4olIlr864/mqdefault.jpg",
+        duration: "0:52",
+        url: "https://www.youtube.com/watch?v=Gg4olIlr864",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_the_tennis_mentor_video_04",
+        title: "Open Stance Backhand Lesson",
+        target: "反手站位和启动总不顺",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://i.ytimg.com/vi/jvkfG7z5scE/mqdefault.jpg",
+        duration: "1:06",
+        url: "https://www.youtube.com/watch?v=jvkfG7z5scE",
+        platform: "YouTube"
+      },
+      {
+        id: "creator_the_tennis_mentor_video_05",
+        title: "The 5 Footwork Fundamentals Every Tennis Player Needs",
+        target: "脚步启动总慢半拍",
+        levels: ["2.5", "3.0", "3.5", "4.0"],
+        thumbnail: "https://i.ytimg.com/vi/UjRv-SbO6K8/mqdefault.jpg",
+        duration: "14:06",
+        url: "https://www.youtube.com/watch?v=UjRv-SbO6K8",
+        platform: "YouTube"
+      }
+    ],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@TheTennisMentor/videos",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@TheTennisMentor/videos"
+    },
+    avatar: youtubeAvatar("@TheTennisMentor"),
+    rankingSignals: {
+      subscriberScore: 0.6,
+      averageViewsScore: 0.62,
+      activityScore: 0.72,
+      catalogScore: 0.74,
+      authorityScore: 0.66,
+      curatorBoost: 0.7
     }
   }
 ];

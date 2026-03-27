@@ -79,7 +79,7 @@ export function ContentCard({
   const thumbnail = getThumbnail(item);
 
   return (
-    <Card className="self-start overflow-hidden p-0">
+    <Card className="flex h-full flex-col overflow-hidden p-0">
       <div className="relative aspect-video bg-slate-100">
         {thumbnail ? (
           <img
@@ -99,7 +99,7 @@ export function ContentCard({
           </span>
         ) : null}
       </div>
-      <div className="space-y-2.5 p-5">
+      <div className="flex flex-1 flex-col space-y-2.5 p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="flex flex-wrap gap-2">
             <Badge className="px-5 py-2 text-base font-semibold leading-none">{item.platform}</Badge>
@@ -126,9 +126,11 @@ export function ContentCard({
             </button>
           ) : null}
         </div>
-        <h3 className="line-clamp-2 text-lg font-bold leading-7 text-slate-900">{item.title}</h3>
+        <h3 className="line-clamp-2 min-h-[3rem] text-[0.96rem] font-bold leading-6 text-slate-900 sm:text-[1rem]">
+          {item.title}
+        </h3>
         <p className="text-sm text-slate-600">来源：{creator?.name ?? "未知"}</p>
-        <div className="flex items-center justify-between gap-3">
+        <div className="mt-auto flex items-center justify-between gap-3">
           <p className="min-w-0 flex-1 text-sm leading-6 text-slate-600">{displayReason}</p>
           <a
             href={item.url}
