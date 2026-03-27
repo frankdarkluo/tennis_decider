@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/brand/tennislevel-logo-vertical.png" width="175" alt="TennisLevel logo on white background" />
+  <img src="public/brand/tennislevel-logo-vertical-white.jpg" width="175" alt="TennisLevel logo on white background" />
 </p>
 
 <p align="center">
@@ -28,15 +28,6 @@
 - Supabase 邮箱登录与保存能力
 - 研究基础设施：事件日志、研究问卷、导出页、测试引导、知情同意
 
-## 技术栈
-
-- Next.js 14
-- React 18
-- TypeScript
-- Tailwind CSS
-- Supabase
-- Vitest + Testing Library
-
 ## 当前数据规模
 
 - 评估题：8 道
@@ -54,18 +45,6 @@ npm run dev
 ```
 
 打开 `http://localhost:3000`
-
-## 工程校验
-
-```bash
-npm run validate:data
-npm test
-npm run build
-```
-
-- `validate:data`：检查规则、内容、博主和训练计划的引用一致性
-- `test`：运行核心页面和研究页面的 smoke test
-- `build`：确认 Next.js 构建、类型检查和静态页面生成正常
 
 ## Supabase 配置
 
@@ -99,78 +78,18 @@ NEXT_PUBLIC_ADMIN_EMAILS=your-email@example.com
 NEXT_PUBLIC_RESEARCH_CONTACT_EMAIL=your-email@example.com
 ```
 
-## 部署到公网
-
-推荐方案：
-
-- `Vercel` 部署 Next.js 网站
-- 继续使用现有 `Supabase` 做登录和数据存储
-
-详细步骤见：
-
-- `docs/DEPLOY_VERCEL_SUPABASE.md`
-
-这条路径最适合当前版本，因为它同时支持：
-
-- App Router 页面
-- Next.js API routes
-- Supabase magic link 登录
-- 环境变量保管（如 `YOUTUBE_API_KEY`）
-
 ## Supabase SQL
 
-### 用户数据表
+按需执行以下 SQL：
 
-执行：
+- `supabase/p2_user_data.sql`
+  创建：`assessment_results`、`diagnosis_history`、`bookmarks`、`saved_plans`
+- `supabase/research_infra.sql`
+  创建：`event_logs`、`survey_responses`
+- `supabase/video_diagnosis.sql`
+  创建：`video_usage`、`video_diagnosis_history`
 
-`supabase/p2_user_data.sql`
-
-这会创建：
-
-- `assessment_results`
-- `diagnosis_history`
-- `bookmarks`
-- `saved_plans`
-
-### 研究数据表
-
-执行：
-
-`supabase/research_infra.sql`
-
-执行前请先把 SQL 里的管理员邮箱占位符 `your-email@example.com` 改成你自己的邮箱。  
-这会创建：
-
-- `event_logs`
-- `survey_responses`
-
-同时会给已有的 `assessment_results` 和 `diagnosis_history` 补管理员导出策略。
-
-### 视频诊断数据表
-
-执行：
-
-`supabase/video_diagnosis.sql`
-
-这会创建：
-
-- `video_usage`
-- `video_diagnosis_history`
-
-## 主要页面
-
-- `/`
-- `/assessment`
-- `/assessment/result`
-- `/diagnose`
-- `/library`
-- `/rankings`
-- `/plan`
-- `/video-diagnose`
-- `/profile`
-- `/study`
-- `/survey`
-- `/admin/export`
+执行前如果涉及管理员邮箱占位符，请先改成你自己的邮箱。
 
 ## 目录说明
 
