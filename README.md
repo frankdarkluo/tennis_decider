@@ -1,11 +1,34 @@
-# TennisLevel
+<p align="center">
+  <img src="public/brand/tennislevel-logo-vertical.png" width="260" alt="TennisLevel logo" />
+</p>
 
-一个面向业余网球用户的训练决策型产品原型。当前版本已经具备：
+<h1 align="center">TennisLevel</h1>
+
+<p align="center">
+  为业余网球用户提供更清晰的下一步训练决策。
+</p>
+
+<p align="center">
+  水平评估 · 问题诊断 · 内容推荐 · 视频诊断 · 训练计划
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-14-111827?style=flat-square" alt="Next.js 14" />
+  <img src="https://img.shields.io/badge/React-18-0F172A?style=flat-square" alt="React 18" />
+  <img src="https://img.shields.io/badge/TypeScript-5-1D4ED8?style=flat-square" alt="TypeScript 5" />
+  <img src="https://img.shields.io/badge/Supabase-Auth%20%26%20Data-10B981?style=flat-square" alt="Supabase" />
+  <img src="https://img.shields.io/badge/Content-475%20videos-0F766E?style=flat-square" alt="475 videos" />
+  <img src="https://img.shields.io/badge/Creators-27-CA8A04?style=flat-square" alt="27 creators" />
+</p>
+
+---
+
+一个面向业余网球用户的训练决策型产品。当前版本已经具备：
 
 - 1 分钟水平评估
 - 一句话问题诊断
 - 真实内容推荐
-- AI 视频诊断（第一版）
+- AI 视频诊断
 - 7 天训练计划
 - Supabase 邮箱登录与保存能力
 - 研究基础设施：事件日志、研究问卷、导出页、测试引导、知情同意
@@ -23,8 +46,8 @@
 
 - 评估题：8 道
 - 诊断规则：19 条
-- 内容条目：39 条
-- 创作者：22 位
+- 内容条目：475 条
+- 创作者：27 位
 - 训练计划模板：9 套
 - 视频诊断：前端抽帧 + VLM 接口适配 + 次数限制
 
@@ -90,7 +113,7 @@ NEXT_PUBLIC_RESEARCH_CONTACT_EMAIL=your-email@example.com
 
 详细步骤见：
 
-- [`docs/DEPLOY_VERCEL_SUPABASE.md`](/Users/gluo/Desktop/tennis_decider/docs/DEPLOY_VERCEL_SUPABASE.md)
+- `docs/DEPLOY_VERCEL_SUPABASE.md`
 
 这条路径最适合当前版本，因为它同时支持：
 
@@ -165,7 +188,7 @@ NEXT_PUBLIC_RESEARCH_CONTACT_EMAIL=your-email@example.com
 
 ## 说明
 
-当前版本仍然是前端驱动的早期产品原型：
+当前版本仍然是前端驱动的产品原型：
 
 - 内容推荐基于本地维护的真实内容和规则数据
 - 登录使用 Supabase magic link
