@@ -4,6 +4,7 @@ export type ContentPlatform = "Bilibili" | "Xiaohongshu" | "Zhihu" | "YouTube" |
 export type ContentItem = {
   id: string;
   title: string;
+  sourceTitle?: string;
   creatorId: string;
   platform: ContentPlatform;
   type: ContentType;

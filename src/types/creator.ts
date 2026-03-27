@@ -10,9 +10,20 @@ export type CreatorRankingSignals = {
   curatorBoost: number;
 };
 
+export type CreatorFeaturedVideo = {
+  id: string;
+  title: string;
+  target: string;
+  levels: string[];
+  url: string;
+  platform: Extract<CreatorPlatformName, "Bilibili" | "YouTube">;
+};
+
 export type Creator = {
   id: string;
   name: string;
+  shortDescription: string;
+  tags: string[];
   region: CreatorRegion;
   platforms: CreatorPlatformName[];
   levels: string[];
@@ -21,6 +32,7 @@ export type Creator = {
   bio: string;
   suitableFor: string[];
   featuredContentIds: string[];
+  featuredVideos?: CreatorFeaturedVideo[];
   recommendedCount?: number;
   profileUrl?: string;
   platformLinks?: Partial<Record<CreatorPlatformName, string>>;

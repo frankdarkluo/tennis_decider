@@ -1,3 +1,5 @@
+export type PlanLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.0+";
+
 export type DayPlan = {
   day: number;
   focus: string;
@@ -16,7 +18,7 @@ export type PlanTemplate = {
 
 export type GeneratedPlan = {
   source: "template" | "fallback";
-  level: "3.0" | "3.5" | "4.0";
+  level: PlanLevel;
   problemTag: string;
   title: string;
   target: string;

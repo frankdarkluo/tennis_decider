@@ -15,16 +15,25 @@ import { PlanSummary } from "@/components/plan/PlanSummary";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
 import { Button } from "@/components/ui/Button";
 import { SavedPlanSource } from "@/types/userData";
+import { PlanLevel } from "@/types/plan";
+
+function normalizeLevelParam(level: string | null): PlanLevel {
+  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.0+") {
+    return level;
+  }
+
+  return "3.0";
+}
 
 function PlanPageContent() {
   const params = useSearchParams();
   const { user, configured } = useAuth();
   const { openLoginModal } = useAuthModal();
   const defaultProblemTag = params.get("problemTag") ?? "no-plan";
-  const defaultLevel = (params.get("level") as "3.0" | "3.5" | "4.0") ?? "3.0";
+  const defaultLevel = normalizeLevelParam(params.get("level"));
 
   const [problemTag, setProblemTag] = useState(defaultProblemTag);
-  const [level, setLevel] = useState<"3.0" | "3.5" | "4.0">(defaultLevel);
+  const [level, setLevel] = useState<PlanLevel>(defaultLevel);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [saveMessage, setSaveMessage] = useState("");
 
@@ -37,7 +46,7 @@ function PlanPageContent() {
   const sourceLabel = params.get("problemTag") ?? params.get("level") ?? `${problemTag}:${level}`;
 
   const regenerate = () => {
-    setLevel((prev) => (prev === "3.0" ? "3.5" : prev === "3.5" ? "4.0" : "3.0"));
+    setLevel((prev) => (prev === "2.5" ? "3.0" : prev === "3.0" ? "3.5" : prev === "3.5" ? "4.0" : prev === "4.0" ? "4.0+" : "2.5"));
   };
 
   const hasSource = Boolean(params.get("problemTag") || params.get("level"));

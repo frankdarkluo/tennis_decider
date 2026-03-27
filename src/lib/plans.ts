@@ -1,5 +1,5 @@
 import { planTemplates } from "@/data/planTemplates";
-import { GeneratedPlan, PlanTemplate } from "@/types/plan";
+import { GeneratedPlan, PlanLevel, PlanTemplate } from "@/types/plan";
 
 const defaultDays = [1, 2, 3, 4, 5, 6, 7].map((day) => ({
   day,
@@ -20,15 +20,34 @@ function toGenerated(template: PlanTemplate): GeneratedPlan {
   };
 }
 
-export function getPlanTemplate(problemTag: string, level: "3.0" | "3.5" | "4.0"): GeneratedPlan {
-  const exact = planTemplates.find((item) => item.problemTag === problemTag && item.level === level);
+function normalizePlanLevel(level: PlanLevel): PlanTemplate["level"] {
+  if (level === "2.5") {
+    return "3.0";
+  }
+
+  if (level === "4.0+") {
+    return "4.0";
+  }
+
+  return level;
+}
+
+export function getPlanTemplate(problemTag: string, level: PlanLevel): GeneratedPlan {
+  const templateLevel = normalizePlanLevel(level);
+  const exact = planTemplates.find((item) => item.problemTag === problemTag && item.level === templateLevel);
   if (exact) {
-    return toGenerated(exact);
+    return {
+      ...toGenerated(exact),
+      level
+    };
   }
 
   const sameTag = planTemplates.find((item) => item.problemTag === problemTag);
   if (sameTag) {
-    return toGenerated(sameTag);
+    return {
+      ...toGenerated(sameTag),
+      level
+    };
   }
 
   return {
@@ -52,7 +71,7 @@ const DIMENSION_TO_PROBLEM_TAG: Record<string, string> = {
 };
 
 export function getPlanFromDiagnosis(input: {
-  level?: "3.0" | "3.5" | "4.0";
+  level?: PlanLevel;
   problemTag?: string;
   title?: string;
   fixes?: string[];
@@ -70,7 +89,7 @@ export function getPlanFromDiagnosis(input: {
 }
 
 export function getPlanFromAssessment(input: {
-  level?: "3.0" | "3.5" | "4.0";
+  level?: PlanLevel;
   weaknesses?: string[];
   observationNeeded?: string[];
 }): GeneratedPlan {

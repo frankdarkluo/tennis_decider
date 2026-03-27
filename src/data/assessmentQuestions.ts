@@ -2,108 +2,197 @@ import { AssessmentQuestion } from "@/types/assessment";
 
 export const assessmentQuestions: AssessmentQuestion[] = [
   {
-    id: "fh_01",
-    dimension: "forehand",
-    question: "你的正手在中等来球下通常是什么状态？",
+    id: "gender",
+    phase: "profile",
+    type: "gender",
+    question: "你的性别？",
     options: [
-      { label: "经常失误，只能勉强把球回过去", score: 1 },
-      { label: "偶尔能连续回合，但稳定性一般", score: 2 },
-      { label: "大多数时候能稳定回过去，偶尔能控制方向", score: 3 },
-      { label: "比较稳定，能有意识控制方向和落点", score: 4 },
-      { label: "不仅稳定，还能主动用正手制造压迫", score: 5 },
-      { label: "我不太确定，需要再观察", score: 0 }
+      { label: "男", value: 1 },
+      { label: "女", value: 2 }
     ]
   },
   {
-    id: "fh_02",
-    dimension: "forehand",
-    question: "当你想用正手发力时，最常见的结果是什么？",
-    options: [
-      { label: "一发力就容易出界或动作变形", score: 1 },
-      { label: "偶尔能打出力量，但失误明显增多", score: 2 },
-      { label: "能适度加力，但还不太敢持续这么打", score: 3 },
-      { label: "能在一定强度下保持稳定和方向", score: 4 },
-      { label: "能稳定加速，并根据来球调整节奏", score: 5 },
-      { label: "我不太确定，需要再观察", score: 0 }
-    ]
+    id: "years",
+    phase: "profile",
+    type: "slider",
+    question: "打了多久网球？",
+    sliderConfig: {
+      min: 0,
+      max: 10,
+      step: 0.5,
+      default: 2,
+      displayLabels: [
+        { value: 0, label: "0" },
+        { value: 2, label: "2年" },
+        { value: 5, label: "5年" },
+        { value: 10, label: "10年+" }
+      ]
+    }
   },
   {
-    id: "bh_01",
-    dimension: "backhand",
-    question: "你的反手在对抗中通常表现如何？",
+    id: "coarse_rally",
+    phase: "coarse",
+    type: "choice",
+    question: "你和朋友对打，通常能连续打多少拍？",
     options: [
-      { label: "经常下网或打不实，很怕被打到反手", score: 1 },
-      { label: "能回过去一些球，但不太稳定", score: 2 },
-      { label: "基本能参与相持，但质量一般", score: 3 },
-      { label: "比较稳定，能控制基本方向", score: 4 },
-      { label: "反手已经是可靠武器，不容易被针对", score: 5 },
-      { label: "我不太确定，需要再观察", score: 0 }
-    ]
+      { label: "3 拍以内", value: 1 },
+      { label: "3-10 拍", value: 2 },
+      { label: "10-20 拍", value: 3 },
+      { label: "20 拍以上不太会主动失误", value: 4 }
+    ],
+    dimension: "rally"
   },
   {
-    id: "bh_02",
-    dimension: "backhand",
-    question: "面对稍快一点的来球时，你的反手最常出现什么问题？",
+    id: "coarse_serve",
+    phase: "coarse",
+    type: "choice",
+    question: "你的发球大概什么状态？",
     options: [
-      { label: "经常来不及准备，击球点很晚", score: 1 },
-      { label: "准备经常偏慢，容易下网或回浅", score: 2 },
-      { label: "偶尔会晚，但多数时候还能处理", score: 3 },
-      { label: "准备比较及时，能保持基本稳定", score: 4 },
-      { label: "准备很自然，能主动应对不同节奏", score: 5 },
-      { label: "我不太确定，需要再观察", score: 0 }
-    ]
+      { label: "还在练，经常发不进", value: 1 },
+      { label: "能发进但没什么旋转", value: 2 },
+      { label: "有一定旋转和落点控制", value: 3 },
+      { label: "一发有攻击性，二发也比较稳", value: 4 }
+    ],
+    dimension: "serve"
   },
   {
-    id: "sv_01",
-    dimension: "serve",
-    question: "你对自己发球整体的感受更接近哪一项？",
+    id: "coarse_awareness",
+    phase: "coarse",
+    type: "choice",
+    question: "你对打或比赛时脑子里在想什么？",
     options: [
-      { label: "动作还没建立，发球经常发不进去", score: 1 },
-      { label: "偶尔能发进，但稳定性和节奏都一般", score: 2 },
-      { label: "一发有时不错，但整体还不够可靠", score: 3 },
-      { label: "发球比较稳定，比赛里能正常使用", score: 4 },
-      { label: "发球已经有一定威胁，能主动拿优势", score: 5 },
-      { label: "我不太确定，需要再观察", score: 0 }
-    ]
+      { label: "先把球打过去就行", value: 1 },
+      { label: "会想打方向但经常做不到", value: 2 },
+      { label: "能有意识地调动对手", value: 3 },
+      { label: "能根据对手弱点组织战术", value: 4 }
+    ],
+    dimension: "awareness"
   },
   {
-    id: "sv_02",
-    dimension: "serve",
-    question: "你对二发的信心通常如何？",
+    id: "fine_a_grip",
+    phase: "fine",
+    branch: "A",
+    type: "choice",
+    question: "打球时你的握拍和准备动作？",
     options: [
-      { label: "没有信心，常常担心双误", score: 1 },
-      { label: "能发进去一些，但比赛里不敢放手发", score: 2 },
-      { label: "基本能发进，但质量不高、节奏不稳", score: 3 },
-      { label: "比较稳定，比赛里敢正常使用", score: 4 },
-      { label: "二发稳定且有策略，不只是保守把球发进", score: 5 },
-      { label: "我不太确定，需要再观察", score: 0 }
-    ]
+      { label: "还不太确定怎么握", value: 1 },
+      { label: "知道怎么握但经常忘", value: 2 },
+      { label: "基本固定，偶尔会乱", value: 3 },
+      { label: "已经很自然不用想了", value: 4 }
+    ],
+    dimension: "fundamentals"
   },
   {
-    id: "mv_01",
-    dimension: "movement",
-    question: "在底线相持中，你对自己移动和到位的评价更接近哪一项？",
+    id: "fine_a_fast",
+    phase: "fine",
+    branch: "A",
+    type: "choice",
+    question: "对方来球速度稍快时？",
     options: [
-      { label: "经常赶不上球，击球点总是很别扭", score: 1 },
-      { label: "能追到球，但经常来不及完全到位", score: 2 },
-      { label: "多数时候能到位，但脚步调整还不够细", score: 3 },
-      { label: "移动比较到位，击球准备较稳定", score: 4 },
-      { label: "移动积极且高效，能很好适应不同来球", score: 5 },
-      { label: "我不太确定，需要再观察", score: 0 }
-    ]
+      { label: "经常反应不过来", value: 1 },
+      { label: "能碰到但方向控不住", value: 2 },
+      { label: "大多能回过去", value: 3 },
+      { label: "能回过去而且有一定质量", value: 4 }
+    ],
+    dimension: "receiving"
   },
   {
-    id: "mp_01",
-    dimension: "matchplay",
-    question: "在比赛或对抗中，你通常有多清楚自己应该怎么打？",
+    id: "fine_a_issue",
+    phase: "fine",
+    branch: "A",
+    type: "choice",
+    question: "你目前打球最大的困扰是？",
     options: [
-      { label: "基本没有思路，主要靠把球回过去", score: 1 },
-      { label: "偶尔有想法，但一紧张就乱了", score: 2 },
-      { label: "有一些基本思路，比如多打对手弱点", score: 3 },
-      { label: "能根据对手和比分调整基本策略", score: 4 },
-      { label: "比赛中思路清晰，能主动执行和调整战术", score: 5 },
-      { label: "我不太确定，需要再观察", score: 0 }
-    ]
+      { label: "动作还没有固定下来", value: 1 },
+      { label: "动作有了但失误太多", value: 2 },
+      { label: "稳定性时好时坏", value: 3 },
+      { label: "能打稳但想要更多变化", value: 4 }
+    ],
+    dimension: "consistency"
+  },
+  {
+    id: "fine_b_both_sides",
+    phase: "fine",
+    branch: "B",
+    type: "choice",
+    question: "你正手和反手的差距大吗？",
+    options: [
+      { label: "反手明显比正手弱很多", value: 1 },
+      { label: "反手能打但不敢主动用", value: 2 },
+      { label: "差距不大，都还比较稳", value: 3 },
+      { label: "两边都能主动打出质量", value: 4 }
+    ],
+    dimension: "both_sides"
+  },
+  {
+    id: "fine_b_direction",
+    phase: "fine",
+    branch: "B",
+    type: "choice",
+    question: "你能有意识地控制球的方向吗？",
+    options: [
+      { label: "基本控制不了", value: 1 },
+      { label: "偶尔能打到想要的方向", value: 2 },
+      { label: "大部分时候能控制", value: 3 },
+      { label: "能稳定地打出直线和斜线", value: 4 }
+    ],
+    dimension: "direction"
+  },
+  {
+    id: "fine_b_rhythm",
+    phase: "fine",
+    branch: "B",
+    type: "choice",
+    question: "对方突然变节奏或加旋转时？",
+    options: [
+      { label: "很容易被打崩", value: 1 },
+      { label: "能撑住但回球质量明显下降", value: 2 },
+      { label: "能适应，回球质量还行", value: 3 },
+      { label: "基本不受影响", value: 4 }
+    ],
+    dimension: "rhythm"
+  },
+  {
+    id: "fine_c_net",
+    phase: "fine",
+    branch: "C",
+    type: "choice",
+    question: "你上网时的状态？",
+    options: [
+      { label: "基本不上网", value: 1 },
+      { label: "偶尔上网，简单球能处理", value: 2 },
+      { label: "会主动上网，截击比较有信心", value: 3 },
+      { label: "网前是我的得分手段之一", value: 4 }
+    ],
+    dimension: "net_play"
+  },
+  {
+    id: "fine_c_depth",
+    phase: "fine",
+    branch: "C",
+    type: "choice",
+    question: "你的击球有深度和变化吗？",
+    options: [
+      { label: "球经常落在发球线附近", value: 1 },
+      { label: "能打深但变化不多", value: 2 },
+      { label: "能控制深度也能变方向", value: 3 },
+      { label: "能用深度、角度和旋转组合变化", value: 4 }
+    ],
+    dimension: "depth_variety"
+  },
+  {
+    id: "fine_c_forcing",
+    phase: "fine",
+    branch: "C",
+    type: "choice",
+    question: "你能主动让对手失误吗？",
+    options: [
+      { label: "主要靠对手自己失误", value: 1 },
+      { label: "偶尔能打出压迫性的球", value: 2 },
+      { label: "能比较稳定地逼迫对手失误", value: 3 },
+      { label: "能通过组合球主动创造得分机会", value: 4 }
+    ],
+    dimension: "forcing"
   }
 ];
 

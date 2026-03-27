@@ -419,7 +419,6 @@ export default function ProfilePage() {
                   <ContentCard
                     key={item.id}
                     item={item}
-                    viewerLevel={assessmentResult?.level}
                     source="profile"
                     bookmarked
                     bookmarkLoading={bookmarkPendingId === item.id}

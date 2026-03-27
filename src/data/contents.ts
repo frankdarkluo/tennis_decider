@@ -20,6 +20,7 @@ const bilibiliSearchUrl = (query: string) =>
 export type ContentItem = {
   id: string;
   title: string;
+  sourceTitle?: string;
   creatorId: string;
   platform: ContentPlatform;
   type: ContentType;

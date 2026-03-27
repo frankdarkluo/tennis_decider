@@ -58,13 +58,15 @@ const LEVEL_PREFERENCE_MAP: Record<string, string[]> = {
   "3.0": ["2.5", "3.0"],
   "3.5": ["3.0", "3.5"],
   "4.0": ["3.5", "4.0", "4.5"],
+  "4.0+": ["4.0", "4.5"],
   "4.5": ["4.0", "4.5"]
 };
 
-const ASSESSMENT_DIMENSION_HINTS: Record<
-  AssessmentResult["dimensions"][number]["key"],
-  { skills: string[]; problemTags: string[] }
-> = {
+const ASSESSMENT_DIMENSION_HINTS: Record<string, { skills: string[]; problemTags: string[] }> = {
+  basics: {
+    skills: ["basics", "forehand", "backhand"],
+    problemTags: ["general-improvement", "cant-self-practice", "plateau-no-progress", "late-contact"]
+  },
   forehand: {
     skills: ["forehand", "topspin"],
     problemTags: ["forehand-out", "forehand-no-power", "balls-too-short", "topspin-low"]
@@ -88,6 +90,54 @@ const ASSESSMENT_DIMENSION_HINTS: Record<
   matchplay: {
     skills: ["matchplay", "mental", "return"],
     problemTags: ["match-anxiety", "return-under-pressure", "cant-self-practice", "cant-hit-lob", "plateau-no-progress"]
+  },
+  rally: {
+    skills: ["basics", "consistency", "forehand", "backhand"],
+    problemTags: ["general-improvement", "plateau-no-progress", "backhand-into-net", "forehand-out"]
+  },
+  awareness: {
+    skills: ["matchplay", "mental", "training"],
+    problemTags: ["match-anxiety", "cant-self-practice", "plateau-no-progress"]
+  },
+  fundamentals: {
+    skills: ["basics", "grip", "forehand", "backhand"],
+    problemTags: ["general-improvement", "late-contact", "cant-self-practice"]
+  },
+  receiving: {
+    skills: ["return", "backhand", "defense", "footwork"],
+    problemTags: ["late-contact", "return-under-pressure", "backhand-into-net", "movement-slow"]
+  },
+  consistency: {
+    skills: ["consistency", "basics", "training"],
+    problemTags: ["general-improvement", "plateau-no-progress", "balls-too-short"]
+  },
+  both_sides: {
+    skills: ["forehand", "backhand", "consistency"],
+    problemTags: ["backhand-into-net", "forehand-out", "general-improvement"]
+  },
+  direction: {
+    skills: ["forehand", "backhand", "training"],
+    problemTags: ["forehand-out", "balls-too-short", "general-improvement"]
+  },
+  rhythm: {
+    skills: ["movement", "footwork", "backhand"],
+    problemTags: ["movement-slow", "late-contact", "trouble-with-slice"]
+  },
+  net_play: {
+    skills: ["net", "doubles"],
+    problemTags: ["net-confidence", "doubles-positioning"]
+  },
+  depth_variety: {
+    skills: ["forehand", "topspin", "training"],
+    problemTags: ["balls-too-short", "topspin-low", "forehand-no-power"]
+  },
+  forcing: {
+    skills: ["forehand", "topspin", "matchplay"],
+    problemTags: ["forehand-no-power", "balls-too-short", "general-improvement"]
+  },
+  tactics: {
+    skills: ["matchplay", "mental", "doubles"],
+    problemTags: ["match-anxiety", "doubles-positioning", "cant-self-practice"]
   }
 };
 

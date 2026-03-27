@@ -39,7 +39,11 @@ function serializeAssessmentResult(result: AssessmentResult) {
     uncertainCount: result.uncertainCount,
     totalQuestions: result.totalQuestions,
     confidence: result.confidence,
-    dimensions: result.dimensions
+    dimensions: result.dimensions,
+    profile: result.profile,
+    branch: result.branch,
+    coarseScore: result.coarseScore,
+    fineScore: result.fineScore
   };
 
   return {
@@ -66,7 +70,11 @@ export function hydrateAssessmentResult(row: AssessmentResultRow): AssessmentRes
     strengths: row.strengths ?? [],
     weaknesses: row.weaknesses ?? [],
     observationNeeded: row.uncertain ?? [],
-    summary: row.summary ?? ""
+    summary: row.summary ?? "",
+    profile: row.scores.profile,
+    branch: row.scores.branch,
+    coarseScore: row.scores.coarseScore,
+    fineScore: row.scores.fineScore
   };
 }
 

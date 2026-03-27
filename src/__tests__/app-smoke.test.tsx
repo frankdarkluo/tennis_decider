@@ -82,20 +82,49 @@ describe("app smoke tests", () => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("renders assessment page and allows stepping through all 8 questions", async () => {
+  it("renders assessment page and allows stepping through the simplified flow", async () => {
     render(React.createElement(AssessmentPage));
 
-    expect(assessmentQuestions).toHaveLength(8);
-    expect(screen.getByText("1 分钟快速了解你的网球能力区间")).toBeInTheDocument();
+    expect(assessmentQuestions).toHaveLength(14);
+    expect(screen.getByText("30 秒快速了解你的网球水平")).toBeInTheDocument();
+    expect(screen.getByText("你的性别？")).toBeInTheDocument();
 
-    for (const [index, question] of assessmentQuestions.entries()) {
-      expect(screen.getByText(question.question)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "男" }));
+    await waitFor(() => {
+      expect(screen.getByText("打了多久网球？")).toBeInTheDocument();
+    });
+
+    const experienceSlider = screen.getByLabelText("打了多久网球？");
+    fireEvent.change(experienceSlider, { target: { value: "3" } });
+    fireEvent.mouseUp(experienceSlider);
+    await waitFor(() => {
+      expect(screen.getByText("你和朋友对打，通常能连续打多少拍？")).toBeInTheDocument();
+    });
+
+    const branchAFlow = [
+      "你和朋友对打，通常能连续打多少拍？",
+      "你的发球大概什么状态？",
+      "你对打或比赛时脑子里在想什么？",
+      "打球时你的握拍和准备动作？",
+      "对方来球速度稍快时？",
+      "你目前打球最大的困扰是？"
+    ];
+
+    for (const [index, title] of branchAFlow.entries()) {
+      const question = assessmentQuestions.find((item) => item.question === title);
+
+      expect(question).toBeTruthy();
+      expect(screen.getByText(title)).toBeInTheDocument();
+      if (!question || question.type === "slider") {
+        throw new Error(`Expected choice question for ${title}`);
+      }
+
       fireEvent.click(screen.getByText(question.options[0].label));
-
-      if (index < assessmentQuestions.length - 1) {
-        fireEvent.click(screen.getByRole("button", { name: "下一题" }));
-      } else {
-        fireEvent.click(screen.getByRole("button", { name: "提交评估" }));
+      if (index < branchAFlow.length - 1) {
+        const nextTitle = branchAFlow[index + 1];
+        await waitFor(() => {
+          expect(screen.getByText(nextTitle)).toBeInTheDocument();
+        });
       }
     }
 
@@ -116,7 +145,8 @@ describe("app smoke tests", () => {
     render(React.createElement(LibraryPage));
 
     expect(await screen.findByText("内容库")).toBeInTheDocument();
-    expect(screen.getByText("反手总下网：前点击球与拍面控制")).toBeInTheDocument();
+    expect(screen.getByText("正手基础：先建立挥拍框架")).toBeInTheDocument();
+    expect(screen.getByText("查看更多")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 

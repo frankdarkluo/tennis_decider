@@ -11,8 +11,8 @@ type CreatorAvatarProps = {
 };
 
 const sizeClasses = {
-  sm: "h-11 w-11 text-sm",
-  md: "h-12 w-12 text-base"
+  sm: "h-12 w-12 text-sm",
+  md: "h-[3.25rem] w-[3.25rem] text-[1.05rem]"
 };
 
 function getCreatorInitial(name: string) {

@@ -11,6 +11,10 @@ export type PersistedAssessmentScores = {
   totalQuestions: number;
   confidence: AssessmentResult["confidence"];
   dimensions: AssessmentResult["dimensions"];
+  profile?: AssessmentResult["profile"];
+  branch?: AssessmentResult["branch"];
+  coarseScore?: AssessmentResult["coarseScore"];
+  fineScore?: AssessmentResult["fineScore"];
 };
 
 export type AssessmentResultRow = {

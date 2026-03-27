@@ -1,11 +1,11 @@
 "use client";
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { contents } from "@/data/contents";
-import { readAssessmentResultFromStorage, writeAssessmentResultToStorage } from "@/lib/assessmentStorage";
+import { creators } from "@/data/creators";
 import { logEvent } from "@/lib/eventLogger";
-import { addBookmark, getBookmarkedContentIds, getLatestAssessmentResult, removeBookmark } from "@/lib/userData";
+import { addBookmark, getBookmarkedContentIds, removeBookmark } from "@/lib/userData";
+import { toChineseSkill } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
@@ -13,22 +13,21 @@ import { LibraryFilters } from "@/components/library/LibraryFilters";
 import { ContentCard } from "@/components/library/ContentCard";
 import { Button } from "@/components/ui/Button";
 
+const PAGE_SIZE = 20;
+
 function LibraryPageContent() {
-  const params = useSearchParams();
   const { user, configured, loading } = useAuth();
   const { openLoginModal } = useAuthModal();
   const [keyword, setKeyword] = useState("");
-  const [level, setLevel] = useState(params.get("level") ?? "全部等级");
-  const [skill, setSkill] = useState("全部技术");
-  const [platform, setPlatform] = useState("全部平台");
-  const [language, setLanguage] = useState("全部语言");
-  const [type, setType] = useState("全部类型");
-  const [creator, setCreator] = useState(params.get("creator") ?? "全部博主");
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([]);
   const [bookmarkPendingId, setBookmarkPendingId] = useState<string | null>(null);
   const [showBookmarkedOnly, setShowBookmarkedOnly] = useState(false);
-  const [viewerLevel, setViewerLevel] = useState<string | undefined>(undefined);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const previousFiltersRef = useRef<Record<string, string | boolean> | null>(null);
+  const creatorNameById = useMemo(
+    () => new Map(creators.map((creator) => [creator.id, creator.name])),
+    []
+  );
 
   useEffect(() => {
     if (loading) {
@@ -67,12 +66,6 @@ function LibraryPageContent() {
   useEffect(() => {
     const currentFilters: Record<string, string | boolean> = {
       keyword,
-      level,
-      skill,
-      platform,
-      language,
-      type,
-      creator,
       bookmarked: showBookmarkedOnly
     };
 
@@ -88,70 +81,40 @@ function LibraryPageContent() {
     }
 
     previousFiltersRef.current = currentFilters;
-  }, [creator, keyword, language, level, platform, showBookmarkedOnly, skill, type]);
+  }, [keyword, showBookmarkedOnly]);
 
   useEffect(() => {
-    if (loading) {
-      return;
-    }
-
-    let active = true;
-
-    async function hydrateViewerLevel() {
-      const localResult = readAssessmentResultFromStorage();
-      let nextLevel = localResult?.level;
-
-      if (user?.id && configured) {
-        const remoteResult = await getLatestAssessmentResult(user.id);
-
-        if (!active) {
-          return;
-        }
-
-        if (remoteResult.data) {
-          nextLevel = remoteResult.data.level;
-          writeAssessmentResultToStorage(remoteResult.data);
-        }
-      }
-
-      if (!active) {
-        return;
-      }
-
-      setViewerLevel(nextLevel);
-    }
-
-    void hydrateViewerLevel();
-
-    return () => {
-      active = false;
-    };
-  }, [configured, loading, user?.id]);
+    setVisibleCount(PAGE_SIZE);
+  }, [keyword, showBookmarkedOnly]);
 
   const filtered = useMemo(() => {
+    const query = keyword.trim().toLowerCase();
+
     return contents.filter((item) => {
-      const hitKeyword = keyword
-        ? [item.title, item.summary, item.reason, item.problemTags.join(" ")].join(" ").toLowerCase().includes(keyword.toLowerCase())
-        : true;
-      const hitLevel = level === "全部等级" ? true : item.levels.includes(level);
-      const hitSkill = skill === "全部技术" ? true : item.skills.includes(skill as never);
-      const hitPlatform = platform === "全部平台" ? true : item.platform === platform;
-      const hitLanguage = language === "全部语言" ? true : item.language === language;
-      const hitType = type === "全部类型" ? true : item.type === type;
-      const hitCreator = creator === "全部博主" ? true : item.creatorId === creator;
+      const searchableFields = [
+        item.title,
+        item.sourceTitle ?? "",
+        creatorNameById.get(item.creatorId) ?? "",
+        item.coachReason ?? "",
+        item.reason,
+        ...item.skills,
+        ...item.skills.map((skill) => toChineseSkill(skill)),
+        ...item.useCases
+      ].join(" ").toLowerCase();
+
+      const hitKeyword = query ? searchableFields.includes(query) : true;
       const hitBookmark = showBookmarkedOnly ? bookmarkedIds.includes(item.id) : true;
-      return hitKeyword && hitLevel && hitSkill && hitPlatform && hitLanguage && hitType && hitCreator && hitBookmark;
+      return hitKeyword && hitBookmark;
     });
-  }, [keyword, level, skill, platform, language, type, creator, showBookmarkedOnly, bookmarkedIds]);
+  }, [bookmarkedIds, creatorNameById, keyword, showBookmarkedOnly]);
+  const visibleItems = useMemo(
+    () => filtered.slice(0, visibleCount),
+    [filtered, visibleCount]
+  );
+  const hasMore = visibleItems.length < filtered.length;
 
   const clearAll = () => {
     setKeyword("");
-    setLevel("全部等级");
-    setSkill("全部技术");
-    setPlatform("全部平台");
-    setLanguage("全部语言");
-    setType("全部类型");
-    setCreator("全部博主");
     setShowBookmarkedOnly(false);
   };
 
@@ -186,47 +149,48 @@ function LibraryPageContent() {
       <div className="space-y-5">
         <div>
           <h1 className="text-3xl font-black text-slate-900">内容库</h1>
-          <p className="mt-2 text-slate-600">按等级、技术项和问题类型筛选适合你的网球学习内容</p>
+          <p className="mt-2 text-slate-600">搜技术、博主或场景，直接找能看的内容。</p>
         </div>
 
         <LibraryFilters
           keyword={keyword}
           setKeyword={setKeyword}
-          level={level}
-          setLevel={setLevel}
-          skill={skill}
-          setSkill={setSkill}
-          platform={platform}
-          setPlatform={setPlatform}
-          language={language}
-          setLanguage={setLanguage}
-          type={type}
-          setType={setType}
-          creator={creator}
-          setCreator={setCreator}
           showBookmarkedOnly={showBookmarkedOnly}
           setShowBookmarkedOnly={setShowBookmarkedOnly}
           bookmarkFilterEnabled={Boolean(user?.id && configured)}
         />
 
         {filtered.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2">
-            {filtered.map((item) => (
-              <ContentCard
-                key={item.id}
-                item={item}
-                viewerLevel={viewerLevel}
-                source="library"
-                bookmarked={bookmarkedIds.includes(item.id)}
-                bookmarkLoading={bookmarkPendingId === item.id}
-                onToggleBookmark={() => void handleToggleBookmark(item.id)}
-              />
-            ))}
+          <div className="space-y-6">
+            <div className="grid gap-4 md:grid-cols-2">
+              {visibleItems.map((item) => (
+                <ContentCard
+                  key={item.id}
+                  item={item}
+                  source="library"
+                  bookmarked={bookmarkedIds.includes(item.id)}
+                  bookmarkLoading={bookmarkPendingId === item.id}
+                  onToggleBookmark={() => void handleToggleBookmark(item.id)}
+                />
+              ))}
+            </div>
+
+            {hasMore ? (
+              <div className="flex justify-center">
+                <Button
+                  variant="secondary"
+                  className="min-w-32 rounded-xl border border-slate-200 px-5 text-slate-700 shadow-sm"
+                  onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+                >
+                  查看更多
+                </Button>
+              </div>
+            ) : null}
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-[var(--line)] bg-white p-8 text-center">
-            <p className="text-slate-700">暂无匹配内容，请调整筛选条件。</p>
-            <Button className="mt-3" variant="secondary" onClick={clearAll}>清空筛选</Button>
+            <p className="text-slate-700">暂无匹配内容，换个关键词试试。</p>
+            <Button className="mt-3" variant="secondary" onClick={clearAll}>清空搜索</Button>
           </div>
         )}
       </div>

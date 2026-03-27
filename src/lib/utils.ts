@@ -14,9 +14,20 @@ export function toChineseSkill(skill: string): string {
     net: "网前",
     movement: "步伐",
     matchplay: "比赛意识",
+    rally: "对拉稳定性",
+    awareness: "比赛意识",
+    fundamentals: "基础动作",
+    receiving: "接球能力",
     doubles: "双打",
     basics: "基础",
     consistency: "稳定性",
+    both_sides: "正反手均衡",
+    direction: "方向控制",
+    rhythm: "节奏适应",
+    "net_play": "网前",
+    "depth_variety": "深度和变化",
+    forcing: "施压能力",
+    tactics: "策略执行",
     topspin: "上旋",
     return: "接发球",
     training: "训练",
@@ -31,7 +42,7 @@ export function toChineseSkill(skill: string): string {
 }
 
 export function toChineseLevel(level: string): string {
-  if (["2.5", "3.0", "3.5", "4.0", "4.5"].includes(level)) {
+  if (["2.5", "3.0", "3.5", "4.0", "4.0+", "4.5"].includes(level)) {
     return level;
   }
   return "3.0";
