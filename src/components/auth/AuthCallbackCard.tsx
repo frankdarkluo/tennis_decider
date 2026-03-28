@@ -6,13 +6,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { EmailOtpType } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { useI18n } from "@/lib/i18n/config";
 import { getSupabaseBrowserClient } from "@/lib/supabase";
 
 export function AuthCallbackCard() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useI18n();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
-  const [message, setMessage] = useState("正在确认你的登录链接...");
+  const [message, setMessage] = useState(t("auth.callback.confirming"));
 
   useEffect(() => {
     async function resolveAuth() {
@@ -20,7 +22,7 @@ export function AuthCallbackCard() {
 
       if (!supabase) {
         setStatus("error");
-        setMessage("还没配置 Supabase 环境变量，所以暂时无法完成登录。");
+        setMessage(t("auth.callback.missingSupabase"));
         return;
       }
 
@@ -49,25 +51,25 @@ export function AuthCallbackCard() {
       }
 
       setStatus("success");
-      setMessage("登录成功，正在回到首页...");
+      setMessage(t("auth.callback.successBody"));
       window.setTimeout(() => {
         router.replace("/");
       }, 900);
     }
 
     resolveAuth();
-  }, [router, searchParams]);
+  }, [router, searchParams, t]);
 
   return (
     <Card className="mx-auto max-w-xl space-y-4">
-      <p className="text-sm font-semibold text-brand-700">邮箱登录</p>
+      <p className="text-sm font-semibold text-brand-700">{t("auth.callback.badge")}</p>
       <h1 className="text-2xl font-bold text-slate-900">
-        {status === "loading" ? "正在验证登录" : status === "success" ? "登录完成" : "登录失败"}
+        {status === "loading" ? t("auth.callback.loadingTitle") : status === "success" ? t("auth.callback.successTitle") : t("auth.callback.errorTitle")}
       </h1>
       <p className="text-sm leading-6 text-slate-600">{message}</p>
       {status === "error" ? (
         <Link href="/">
-          <Button variant="secondary">返回首页</Button>
+          <Button variant="secondary">{t("auth.callback.backHome")}</Button>
         </Link>
       ) : null}
     </Card>

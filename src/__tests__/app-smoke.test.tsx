@@ -31,6 +31,7 @@ const { mockPush, mockRedirect, translationMap } = vi.hoisted(() => ({
     "plan.title": "你的 7 天提升计划",
     "plan.supporting": "这 7 天先练这一件事",
     "plan.day.today": "今天",
+    "plan.day.label": "Day {day}",
     "profile.loginTitle": "登录后查看你的记录",
     "survey.title": "TennisLevel 使用体验问卷",
     "survey.part.sus.title": "Part 2：SUS 系统可用性量表",
@@ -101,7 +102,16 @@ vi.mock("@/lib/i18n/config", () => ({
   useI18n: () => ({
     language: "zh",
     studyMode: false,
-    t: (key: string) => translationMap[key] ?? key
+    t: (key: string, replacements?: Record<string, string | number>) => {
+      const template = translationMap[key] ?? key;
+      if (!replacements) {
+        return template;
+      }
+
+      return Object.entries(replacements).reduce((current, [token, value]) => {
+        return current.replace(new RegExp(`\\{${token}\\}`, "g"), String(value));
+      }, template);
+    }
   }),
   I18nProvider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children)
 }));

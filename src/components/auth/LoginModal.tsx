@@ -5,6 +5,7 @@ import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useI18n } from "@/lib/i18n/config";
 
 type LoginModalProps = {
   open: boolean;
@@ -14,16 +15,17 @@ type LoginModalProps = {
 
 export function LoginModal({ open, onClose, contextMessage }: LoginModalProps) {
   const { user, sendMagicLink, signOut } = useAuth();
+  const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [message, setMessage] = useState("");
 
   const helperText = useMemo(() => {
     if (user?.email) {
-      return `当前已登录：${user.email}`;
+      return t("auth.modal.loggedInAs", { value: user.email });
     }
-    return "输入邮箱后，我们会给你发登录链接。";
-  }, [user?.email]);
+    return t("auth.modal.helper");
+  }, [t, user?.email]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -39,17 +41,17 @@ export function LoginModal({ open, onClose, contextMessage }: LoginModalProps) {
     }
 
     setStatus("sent");
-    setMessage("登录链接已经发出，去邮箱里点开就能完成登录。");
+    setMessage(t("auth.modal.linkSent"));
   }
 
   async function handleSignOut() {
     await signOut();
     setStatus("idle");
-    setMessage("你已经退出登录。");
+    setMessage(t("auth.modal.signedOut"));
   }
 
   return (
-    <Modal open={open} onClose={onClose} title={user ? "账号信息" : "邮箱登录"}>
+    <Modal open={open} onClose={onClose} title={user ? t("auth.modal.accountTitle") : t("auth.modal.emailTitle")}>
       <div className="space-y-4">
         {contextMessage && !user ? (
           <div className="rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-700">
@@ -60,7 +62,7 @@ export function LoginModal({ open, onClose, contextMessage }: LoginModalProps) {
 
         {user ? (
           <div className="flex flex-wrap gap-2">
-            <Button onClick={handleSignOut}>退出登录</Button>
+            <Button onClick={handleSignOut}>{t("auth.modal.signOut")}</Button>
           </div>
         ) : (
           <form className="space-y-3" onSubmit={handleSubmit}>
@@ -73,7 +75,7 @@ export function LoginModal({ open, onClose, contextMessage }: LoginModalProps) {
             />
             <div className="flex flex-wrap gap-2">
               <Button type="submit" disabled={!email || status === "sending"}>
-                {status === "sending" ? "发送中..." : "发送登录链接"}
+                {status === "sending" ? t("auth.modal.sending") : t("auth.modal.send")}
               </Button>
             </div>
           </form>

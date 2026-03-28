@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { formatCompactViewCount } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
+import { formatLocalizedDate } from "@/lib/i18n/format";
 import { SearchPlatform, SearchVideoResult, SearchVideosResponse } from "@/types/platformSearch";
 import { DiagnosisSearchQueries } from "@/types/diagnosis";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
@@ -16,35 +19,6 @@ const platformLabels: Record<SearchPlatform, "Bilibili" | "YouTube"> = {
   bilibili: "Bilibili",
   youtube: "YouTube"
 };
-
-function formatViewCount(viewCount: number | null) {
-  if (viewCount == null) {
-    return "播放量未知";
-  }
-
-  if (viewCount >= 10000) {
-    return `${(viewCount / 10000).toFixed(viewCount >= 100000 ? 0 : 1)}万播放`;
-  }
-
-  return `${viewCount}播放`;
-}
-
-function formatPublishedAt(value: string | null) {
-  if (!value) {
-    return null;
-  }
-
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return null;
-  }
-
-  return date.toLocaleDateString("zh-CN", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric"
-  });
-}
 
 function LoadingCard() {
   return (
@@ -61,8 +35,9 @@ function LoadingCard() {
 
 export function PlatformVideoSearch({
   queries,
-  title = "更多相关视频"
+  title
 }: PlatformVideoSearchProps) {
+  const { language, t } = useI18n();
   const [activePlatform, setActivePlatform] = useState<SearchPlatform>("bilibili");
   const [queryIndexes, setQueryIndexes] = useState<Record<SearchPlatform, number>>({
     bilibili: 0,
@@ -109,7 +84,7 @@ export function PlatformVideoSearch({
 
         const data = await response.json() as Partial<SearchVideosResponse> & { error?: string };
         if (!response.ok) {
-          throw new Error(typeof data.error === "string" ? data.error : "平台搜索失败，请稍后重试。");
+          throw new Error(typeof data.error === "string" ? data.error : t("platform.search.failed"));
         }
 
         if (!active) {
@@ -131,7 +106,7 @@ export function PlatformVideoSearch({
 
         setResults([]);
         setCached(false);
-        setError(searchError instanceof Error ? searchError.message : "平台搜索失败，请稍后重试。");
+        setError(searchError instanceof Error ? searchError.message : t("platform.search.failed"));
       } finally {
         if (active) {
           setLoading(false);
@@ -144,7 +119,7 @@ export function PlatformVideoSearch({
     return () => {
       active = false;
     };
-  }, [activePlatform, activeQuery]);
+  }, [activePlatform, activeQuery, t]);
 
   const handleSwitchPlatform = (nextPlatform: SearchPlatform) => {
     setActivePlatform(nextPlatform);
@@ -165,18 +140,18 @@ export function PlatformVideoSearch({
     }));
   };
 
+  const sectionTitle = title ?? t("platform.search.title");
+
   return (
     <div className="space-y-4">
       <div className="space-y-2">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-base font-bold text-slate-900">{title}</p>
+          <p className="text-base font-bold text-slate-900">{sectionTitle}</p>
           {cached ? (
-            <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-500">24h 缓存命中</span>
+            <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-500">{t("platform.search.cache")}</span>
           ) : null}
         </div>
-        <p className="text-sm text-slate-500">
-          以下视频来自 Bilibili / YouTube 实时搜索，未经教练筛选，仅供参考。
-        </p>
+        <p className="text-sm text-slate-500">{t("platform.search.subtitle")}</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -208,12 +183,14 @@ export function PlatformVideoSearch({
         </div>
       ) : results.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-[var(--line)] bg-slate-50 px-4 py-6 text-sm text-slate-600">
-          暂未搜索到相关视频，可以换一个搜索词再试。
+          {t("platform.search.empty")}
         </div>
       ) : (
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {results.map((item) => {
-            const publishedAt = formatPublishedAt(item.publishedAt);
+            const compactViews = formatCompactViewCount(item.viewCount ?? undefined, language);
+            const publishedAt = item.publishedAt ? formatLocalizedDate(item.publishedAt, language) : null;
+            const viewCountLabel = compactViews ? t("platform.search.views", { value: compactViews }) : t("platform.search.unknownViews");
 
             return (
               <a
@@ -237,7 +214,7 @@ export function PlatformVideoSearch({
                   </div>
                 ) : (
                   <div className="flex aspect-video items-center justify-center bg-slate-100 text-sm text-slate-400">
-                    无缩略图
+                    {t("platform.search.noThumbnail")}
                   </div>
                 )}
 
@@ -259,14 +236,14 @@ export function PlatformVideoSearch({
                   </p>
 
                   <div className="space-y-1 text-xs text-slate-500">
-                    <p>{item.author || "作者未知"}</p>
+                    <p>{item.author || t("platform.search.unknownAuthor")}</p>
                     <p>
-                      {[formatViewCount(item.viewCount), item.duration, publishedAt].filter(Boolean).join(" · ")}
+                      {[viewCountLabel, item.duration, publishedAt].filter(Boolean).join(" · ")}
                     </p>
                   </div>
 
                   <p className="text-xs font-medium text-brand-700">
-                    在 {platformLabels[item.platform]} 打开
+                    {t("platform.search.open", { platform: platformLabels[item.platform] })}
                   </p>
                 </div>
               </a>
@@ -276,14 +253,14 @@ export function PlatformVideoSearch({
       )}
 
       <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
-        <span>搜索词：{activeQuery || "暂无"}</span>
+        <span>{t("platform.search.query")}: {activeQuery || t("platform.search.none")}</span>
         {activeQueries.length > 1 ? (
           <button
             type="button"
             className="font-medium text-slate-500 transition hover:text-brand-700"
             onClick={handleRotateQuery}
           >
-            换一批
+            {t("platform.search.rotate")}
           </button>
         ) : null}
       </div>

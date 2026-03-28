@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { useI18n } from "@/lib/i18n/config";
 
 type VideoUploaderProps = {
   file: File | null;
@@ -28,6 +29,7 @@ function formatDuration(seconds?: number) {
 }
 
 export function VideoUploader({ file, error, disabled, meta, onFileChange }: VideoUploaderProps) {
+  const { t } = useI18n();
   const inputId = useId();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -60,12 +62,12 @@ export function VideoUploader({ file, error, disabled, meta, onFileChange }: Vid
         htmlFor={inputId}
         className="flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--line)] bg-slate-50 px-6 py-8 text-center transition hover:border-brand-300 hover:bg-brand-50/30"
       >
-        <p className="text-sm font-semibold text-slate-900">拖进来或点击上传 1 分钟以内的视频</p>
+        <p className="text-sm font-semibold text-slate-900">{t("video.upload.dropTitle")}</p>
         <p className="mt-2 max-w-md text-sm leading-6 text-slate-600">
-          推荐拍法：横屏、侧后方机位、让击球点和全身步伐尽量都进画面。
+          {t("video.upload.dropBody")}
         </p>
         <span className="mt-4 inline-flex rounded-full border border-[var(--line)] bg-white px-3 py-1 text-xs text-slate-500">
-          支持 mp4 / mov / webm，建议 50MB 以内
+          {t("video.upload.dropFormats")}
         </span>
       </label>
 
@@ -80,15 +82,15 @@ export function VideoUploader({ file, error, disabled, meta, onFileChange }: Vid
           ) : null}
 
           <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-            <span>文件：{file.name}</span>
-            {typeof meta?.sizeMb === "number" ? <span>大小：{meta.sizeMb}MB</span> : null}
-            {typeof meta?.durationSeconds === "number" ? <span>时长：{formatDuration(meta.durationSeconds)}</span> : null}
-            {meta?.width && meta?.height ? <span>分辨率：{meta.width} × {meta.height}</span> : null}
+            <span>{t("video.upload.file")}: {file.name}</span>
+            {typeof meta?.sizeMb === "number" ? <span>{t("video.upload.size")}: {meta.sizeMb}MB</span> : null}
+            {typeof meta?.durationSeconds === "number" ? <span>{t("video.upload.durationLabel")}: {formatDuration(meta.durationSeconds)}</span> : null}
+            {meta?.width && meta?.height ? <span>{t("video.upload.resolution")}: {meta.width} × {meta.height}</span> : null}
           </div>
 
           <div className="mt-4">
             <Button type="button" variant="secondary" onClick={() => onFileChange(null)} disabled={disabled}>
-              重新选择
+              {t("video.upload.reselect")}
             </Button>
           </div>
         </div>
@@ -102,4 +104,3 @@ export function VideoUploader({ file, error, disabled, meta, onFileChange }: Vid
     </div>
   );
 }
-

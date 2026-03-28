@@ -6,7 +6,12 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
-import { getCreatorBio, getCreatorTags } from "@/lib/content/display";
+import {
+  getCreatorBio,
+  getCreatorPrimaryName,
+  getCreatorSecondaryName,
+  getCreatorTags
+} from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 
@@ -36,6 +41,8 @@ export function HotCreatorsSection() {
       <div className="grid flex-1 auto-rows-fr gap-3">
         {featuredCreators.map((creator) => {
           const translatedTags = getCreatorTags(creator.tags.slice(0, 3), language);
+          const primaryName = getCreatorPrimaryName(creator, language);
+          const secondaryName = getCreatorSecondaryName(creator, language);
 
           return (
           <Link
@@ -46,10 +53,15 @@ export function HotCreatorsSection() {
           >
             <Card className="flex h-full flex-col justify-between p-4 transition hover:-translate-y-0.5 hover:border-brand-200">
               <div className="flex items-start gap-3">
-                <CreatorAvatar name={creator.name} avatarUrl={creator.avatar} size="sm" />
+                <CreatorAvatar name={primaryName} avatarUrl={creator.avatar} size="sm" />
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="font-semibold text-slate-900">{creator.name}</p>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-slate-900">{primaryName}</p>
+                      {secondaryName ? (
+                        <p className="text-xs text-slate-400">{secondaryName}</p>
+                      ) : null}
+                    </div>
                     <PlatformBadge platform={creator.platforms[0]} />
                   </div>
                   <p className="mt-2 text-sm leading-6 text-slate-600">{getCreatorBio(creator, language)}</p>

@@ -8,6 +8,7 @@ import { useI18n } from "@/lib/i18n/config";
 import { persistStudyArtifact } from "@/lib/study/client";
 import { updateLocalStudyProgress } from "@/lib/study/localData";
 import { sanitizeVideoDiagnosisArtifact } from "@/lib/study/privacy";
+import { formatLocalizedDateTime } from "@/lib/i18n/format";
 import { extractFramesInBrowser, getVideoLimits, validateVideoFile } from "@/lib/videoFrames";
 import { getFreeVideoLimit, getRemainingVideoTrials, incrementLocalVideoUsage, readLocalVideoUsage } from "@/lib/videoUsage";
 import { logEvent } from "@/lib/eventLogger";
@@ -85,6 +86,7 @@ export default function VideoDiagnosePage() {
     let active = true;
 
     async function hydrateContext() {
+      setHistoryHint("");
       const localResult = readAssessmentResultFromStorage();
       if (localResult && active) {
         setCurrentLevel(localResult.level);
@@ -111,9 +113,9 @@ export default function VideoDiagnosePage() {
         }
 
         if (remoteHistory.data.length > 0) {
-          setHistoryHint(language === "en"
-            ? `Your most recent video diagnosis was completed on ${new Date(remoteHistory.data[0].created_at).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}.`
-            : `你最近一次视频诊断是在 ${new Date(remoteHistory.data[0].created_at).toLocaleString("zh-CN")} 完成的。`);
+          setHistoryHint(t("video.history.latest", {
+            value: formatLocalizedDateTime(remoteHistory.data[0].created_at, language)
+          }));
         }
 
         return;
@@ -129,7 +131,7 @@ export default function VideoDiagnosePage() {
     return () => {
       active = false;
     };
-  }, [configured, loading, user?.id]);
+  }, [configured, language, loading, studyMode, t, user?.id]);
 
   const handleFileChange = async (nextFile: File | null) => {
     setFile(nextFile);
@@ -153,7 +155,7 @@ export default function VideoDiagnosePage() {
       });
       setFile(null);
       setMeta(null);
-      setFileError(validation.error ?? (language === "en" ? "Video validation failed." : "视频校验失败。"));
+      setFileError(validation.error ?? t("video.error.validate"));
       return;
     }
 
@@ -195,15 +197,13 @@ export default function VideoDiagnosePage() {
     setResult(null);
 
     if (!file) {
-      setFileError(language === "en" ? "Please upload a video first." : "请先上传一段视频。");
+      setFileError(t("video.error.noFile"));
       return;
     }
 
     if (!usage.isPro && remainingTrials !== Number.POSITIVE_INFINITY && remainingTrials <= 0) {
       logEvent("video_limit_reached", { source: user?.id ? "authenticated" : "guest" });
-      setSubmitError(language === "en"
-        ? "You have used all 3 free video diagnoses. Upgrade to Pro, or continue using free text diagnosis in the meantime."
-        : "你已用完 3 次免费视频诊断。后续可以升级 Pro，或先继续使用免费的文字诊断。");
+      setSubmitError(t("video.error.limitReached"));
       return;
     }
 
@@ -212,9 +212,7 @@ export default function VideoDiagnosePage() {
       const frames = await extractFramesInBrowser(file, { frameCount: limits.defaultFrameCount, locale: language });
 
       if (frames.length === 0) {
-        throw new Error(language === "en"
-          ? "Frame extraction failed. Try a clearer or more standard video file."
-          : "视频抽帧失败，请换一段更清晰的视频后重试。");
+        throw new Error(t("video.error.frameExtract"));
       }
 
       setProcessingStep("analyzing");
@@ -243,7 +241,7 @@ export default function VideoDiagnosePage() {
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(typeof data?.message === "string" ? data.message : (language === "en" ? "Video diagnosis failed. Please try again." : "视频诊断失败，请稍后重试。"));
+        throw new Error(typeof data?.message === "string" ? data.message : t("video.error.failed"));
       }
 
       setProcessingStep("matching");
@@ -288,11 +286,9 @@ export default function VideoDiagnosePage() {
         problemTag: nextResult.diagnosis.problemTag
       });
 
-      setStatusMessage(nextResult.chargeable
-        ? (language === "en" ? "Diagnosis complete. This attempt has been counted." : "诊断完成，已计入次数。")
-        : (language === "en" ? "Please retake the clip. This attempt has not been counted." : "建议重拍，这次不扣次数。"));
+      setStatusMessage(nextResult.chargeable ? t("video.status.counted") : t("video.status.retryNoCount"));
     } catch (error) {
-      const message = error instanceof Error ? error.message : (language === "en" ? "Video diagnosis failed. Please try again." : "视频诊断失败，请稍后再试。");
+      const message = error instanceof Error ? error.message : t("video.error.failed");
       setSubmitError(message);
       logEvent("video_analysis_fail", { message });
     } finally {
@@ -303,8 +299,7 @@ export default function VideoDiagnosePage() {
   return (
     <PageContainer>
       <div className="space-y-5">
-        <PageBreadcrumbs items={[{ href: "/", label: language === "en" ? "← Home" : "← 回到首页" }]} />
-        
+        <PageBreadcrumbs items={[{ href: "/", label: t("video.backHome") }]} />
 
         <Card className="space-y-4">
           <div className="space-y-2">
@@ -383,8 +378,8 @@ export default function VideoDiagnosePage() {
             <div className="rounded-2xl border border-brand-100 bg-brand-50/70 px-4 py-4 text-sm leading-6 text-slate-700">
               <p>{t("video.assessment.title")}</p>
               <p className="mt-1">
-                {t("video.assessment.level", { value: currentLevel ?? (language === "en" ? "Not assessed yet" : "尚未评估") })}
-                {!currentLevel ? (language === "en" ? " Taking the assessment first will make this more precise." : "先做 1 分钟评估会更准。") : ""}
+                {t("video.assessment.level", { value: currentLevel ?? t("video.notAssessed") })}
+                {!currentLevel ? ` ${t("video.assessment.morePrecise")}` : ""}
               </p>
               {!currentLevel ? (
                 <div className="mt-3">
@@ -401,7 +396,7 @@ export default function VideoDiagnosePage() {
                 <button
                   type="button"
                   className="text-sm font-medium text-slate-500 transition hover:text-brand-700"
-                  onClick={() => openLoginModal(language === "en" ? "Sign in to save your video diagnosis records" : "登录后可同步保存视频诊断记录", "profile")}
+                  onClick={() => openLoginModal(t("video.loginPrompt"), "profile")}
                 >
                   {t("video.loginHint")}
                 </button>
@@ -436,21 +431,10 @@ export default function VideoDiagnosePage() {
               <div className="space-y-3 text-sm leading-6 text-slate-600">
                 <p>{t("video.empty.bullets")}</p>
                 <ul className="list-disc space-y-1 pl-5">
-                  {language === "en" ? (
-                    <>
-                      <li>What to fix first</li>
-                      <li>Whether it looks more like contact, preparation, footwork, or timing</li>
-                      <li>What to watch next and who to learn from</li>
-                      <li>What to practice next</li>
-                    </>
-                  ) : (
-                    <>
-                      <li>最先要改什么</li>
-                      <li>更像击球点、准备、脚步还是节奏</li>
-                      <li>先看什么、先跟谁学</li>
-                      <li>接下来怎么练</li>
-                    </>
-                  )}
+                  <li>{t("video.empty.item1")}</li>
+                  <li>{t("video.empty.item2")}</li>
+                  <li>{t("video.empty.item3")}</li>
+                  <li>{t("video.empty.item4")}</li>
                 </ul>
               </div>
             </Card>

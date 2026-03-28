@@ -12,8 +12,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Supabase-Auth%20%26%20Data-10B981?style=flat-square" alt="Supabase" />
-  <img src="https://img.shields.io/badge/Content-475%20videos-0F766E?style=flat-square" alt="475 videos" />
-  <img src="https://img.shields.io/badge/Creators-27-CA8A04?style=flat-square" alt="27 creators" />
+  <img src="https://img.shields.io/badge/Content-673%20items-0F766E?style=flat-square" alt="673 content items" />
+  <img src="https://img.shields.io/badge/Creators-52-CA8A04?style=flat-square" alt="52 creators" />
 </p>
 
 ---

@@ -221,7 +221,7 @@ export const CREATOR_ENGLISH_OVERRIDES: Record<string, CreatorEnglishOverride> =
     }
   },
   creator_mouratoglou_cn: {
-    nameEn: "Coach Mouratoglou (CN)",
+    nameEn: "Coach Mouratoglou",
     shortDescriptionEn: "Pro-level serve framework breakdowns",
     bioEn: "A professional-coach perspective with high-quality technical breakdowns, great for players who want more systematic training logic and stroke structure.",
     suitableForEn: ["Advanced technique structure", "Pro training perspective", "Match execution"],

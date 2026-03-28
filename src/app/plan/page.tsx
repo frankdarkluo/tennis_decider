@@ -110,19 +110,19 @@ function PlanPageContent() {
     ).then(() => {
       logEvent("study_artifact_save", { artifactType: "plan" });
       setSaveStatus("saved");
-      setSaveMessage(language === "en" ? "Recorded in this study session." : "已记录到本轮研究会话。");
+      setSaveMessage(t("plan.saveRecorded"));
     });
-  }, [hasSource, language, plan, session, sourceLabel, sourceType, studyMode]);
+  }, [hasSource, plan, session, sourceLabel, sourceType, studyMode, t]);
 
   const handleSavePlan = async () => {
     if (studyMode && session) {
       setSaveStatus("saved");
-      setSaveMessage(language === "en" ? "Already recorded in this study session." : "这份计划已经记录到本轮研究会话。");
+      setSaveMessage(t("plan.saveAlreadyRecorded"));
       return;
     }
 
     if (!user?.id || !configured) {
-      openLoginModal(language === "en" ? "Sign in to save this plan" : "登录后可保存训练计划", "save_plan");
+      openLoginModal(t("plan.saveLogin"), "save_plan");
       return;
     }
 
@@ -138,7 +138,7 @@ function PlanPageContent() {
     }
 
     setSaveStatus("saved");
-      setSaveMessage(language === "en" ? "Saved to your account." : "已保存到你的账号。");
+    setSaveMessage(t("plan.saveAccount"));
     logEvent("plan_save", { planId: `${plan.problemTag}:${plan.level}` });
   };
 
@@ -147,8 +147,8 @@ function PlanPageContent() {
       <PageContainer>
         <div className="space-y-5">
           <PageBreadcrumbs items={[
-            { href: "/diagnose", label: language === "en" ? "← Back to diagnosis" : "← 回到诊断" },
-            { href: "/", label: language === "en" ? "Back home" : "回到首页" }
+            { href: "/diagnose", label: t("plan.backDiagnosis") },
+            { href: "/", label: t("plan.backHome") }
           ]} />
           <div className="rounded-2xl border border-dashed border-[var(--line)] bg-white p-8 text-center">
             <p className="text-slate-700">{t("plan.empty")}</p>
@@ -166,8 +166,8 @@ function PlanPageContent() {
     <PageContainer>
       <div className="space-y-5">
         <PageBreadcrumbs items={[
-          { href: "/diagnose", label: language === "en" ? "← Back to diagnosis" : "← 回到诊断" },
-          { href: "/", label: language === "en" ? "Back home" : "回到首页" }
+          { href: "/diagnose", label: t("plan.backDiagnosis") },
+          { href: "/", label: t("plan.backHome") }
         ]} />
         <div>
           <h1 className="text-3xl font-black text-slate-900">{t("plan.title")}</h1>
@@ -222,8 +222,10 @@ function PlanPageContent() {
 }
 
 export default function PlanPage() {
+  const { t } = useI18n();
+
   return (
-    <Suspense fallback={<PageContainer><p className="text-slate-600">Loading...</p></PageContainer>}>
+    <Suspense fallback={<PageContainer><p className="text-slate-600">{t("plan.loading")}</p></PageContainer>}>
       <PlanPageContent />
     </Suspense>
   );

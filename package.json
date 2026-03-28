@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "validate:data": "ts-node --project tsconfig.scripts.json scripts/validate-data.ts"
+    "validate:data": "ts-node --project tsconfig.scripts.json scripts/validate-data.ts",
+    "generate:translation-backlog": "ts-node --project tsconfig.scripts.json scripts/generate-content-translation-backlog.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.100.0",

@@ -65,7 +65,7 @@ export function LibraryFilters(props: LibraryFiltersProps) {
           type="button"
           aria-pressed={props.showBookmarkedOnly}
           aria-disabled={!props.bookmarkFilterEnabled}
-          title={props.bookmarkFilterEnabled ? "只看你收藏过的内容" : "登录后可使用收藏功能"}
+          title={props.bookmarkFilterEnabled ? t("library.bookmarkOnlyTitle") : t("library.bookmarkDisabledTitle")}
           className={props.bookmarkFilterEnabled
             ? props.showBookmarkedOnly
               ? "inline-flex min-h-11 items-center rounded-full bg-brand-500 px-4 text-sm font-semibold text-white"

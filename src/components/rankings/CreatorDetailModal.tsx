@@ -8,12 +8,14 @@ import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import {
   getContentFocusLine,
-  getContentPrimaryTitle,
-  getContentSecondaryTitle,
-  getCreatorBio,
-  getCreatorSuitableFor,
-  getFeaturedVideoPrimaryTitle,
-  getFeaturedVideoSecondaryTitle,
+    getContentPrimaryTitle,
+    getContentSecondaryTitle,
+    getCreatorBio,
+    getCreatorPrimaryName,
+    getCreatorSecondaryName,
+    getCreatorSuitableFor,
+    getFeaturedVideoPrimaryTitle,
+    getFeaturedVideoSecondaryTitle,
   getFeaturedVideoTarget
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
@@ -72,6 +74,8 @@ const TAG_TO_SKILL_MAP: Record<string, string[]> = {
 export function CreatorDetailModal({ creator, open, onClose }: { creator: Creator | null; open: boolean; onClose: () => void }) {
   const { language, t } = useI18n();
   const isEn = language === "en";
+  const primaryName = creator ? getCreatorPrimaryName(creator, language) : null;
+  const secondaryName = creator ? getCreatorSecondaryName(creator, language) : null;
 
   function formatTargetSummary(summary: string) {
     const prefix = t("creator.targetPrefix");
@@ -163,12 +167,15 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
     : [...creatorContents, ...fallbackItems].slice(0, 5);
 
   return (
-    <Modal open={open} onClose={onClose} title={creator?.name ?? t("creator.modalTitle")}>
+    <Modal open={open} onClose={onClose} title={primaryName ?? t("creator.modalTitle")}>
       {creator ? (
         <>
           <div className="flex items-start gap-3">
-            <CreatorAvatar name={creator.name} avatarUrl={creator.avatar} />
+            <CreatorAvatar name={primaryName ?? creator.name} avatarUrl={creator.avatar} />
             <div className="min-w-0 flex-1">
+              {secondaryName ? (
+                <p className="mb-2 text-xs text-slate-400">{secondaryName}</p>
+              ) : null}
               <div className="flex flex-wrap gap-2">
                 {creator.platforms.map((platform) => {
                   const href = creator.platformLinks?.[platform] ?? (platform === creator.platforms[0] ? creator.profileUrl : undefined);
@@ -183,7 +190,7 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
                       href={href}
                       target="_blank"
                       rel="noreferrer"
-                      aria-label={t("creator.platformAria", { name: creator.name, platform })}
+                      aria-label={t("creator.platformAria", { name: primaryName ?? creator.name, platform })}
                       className="platform-link-wiggle inline-flex rounded-full transition-transform duration-200 hover:scale-[1.04] focus-visible:scale-[1.04]"
                       onClick={() => logEvent("creator_click", { creatorId: creator.id, source: "creator_modal_platform_badge", platform, targetUrl: href })}
                     >

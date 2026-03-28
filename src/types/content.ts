@@ -9,6 +9,7 @@ export type ContentItem = {
   sourceTitle?: string;
   originalTitle?: string;
   displayTitleZh?: string;
+  secondaryTitleZh?: string;
   displayTitleEn?: string;
   focusLineEn?: string;
   creatorId: string;

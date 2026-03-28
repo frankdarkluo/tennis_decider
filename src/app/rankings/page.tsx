@@ -5,7 +5,10 @@ import { readAssessmentResultFromStorage, writeAssessmentResultToStorage } from 
 import { creators } from "@/data/creators";
 import {
   getCreatorBio,
+  getCreatorPrimaryName,
+  getCreatorSecondaryName,
   getCreatorShortDescription,
+  getCreatorSuitableFor,
   getCreatorTags
 } from "@/lib/content/display";
 import { useI18n } from "@/lib/i18n/config";
@@ -92,12 +95,11 @@ function matchesSearch(creator: Creator, query: string, locale: "zh" | "en") {
 
   return (
     [
-      creator.name,
-      creator.shortDescription,
+      getCreatorPrimaryName(creator, locale),
+      getCreatorSecondaryName(creator, locale) ?? "",
       getCreatorShortDescription(creator, locale),
-      creator.bio,
       getCreatorBio(creator, locale),
-      ...creator.suitableFor,
+      ...getCreatorSuitableFor(creator, locale),
       ...translatedTags
     ].some((value) => value.toLowerCase().includes(normalizedQuery))
   );

@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { contents } from "@/data/contents";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
+import { formatLocalizedDateTime } from "@/lib/i18n/format";
 import { readLocalStudyArtifacts, readLocalStudyBookmarks, readLocalStudyProgress } from "@/lib/study/localData";
 import {
   getBookmarkedContentIds,
@@ -76,27 +77,11 @@ function EmptyState({
   );
 }
 
-function formatDateTime(value: string) {
-  return new Date(value).toLocaleString("zh-CN", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-}
-
-function toPlanSourceLabel(sourceType: SavedPlanRow["source_type"]) {
-  if (sourceType === "diagnosis") return "来自问题诊断";
-  if (sourceType === "assessment") return "来自水平评估";
-  return "通用生成";
-}
-
 export default function ProfilePage() {
   const { user, loading, configured } = useAuth();
   const { openLoginModal } = useAuthModal();
   const { session, studyMode } = useStudy();
-  const { t } = useI18n();
+  const { language, t } = useI18n();
 
   const [assessmentLoading, setAssessmentLoading] = useState(true);
   const [historyLoading, setHistoryLoading] = useState(true);
@@ -244,9 +229,17 @@ export default function ProfilePage() {
       .slice(0, 3);
   }, [assessmentResult]);
 
+  const formatDateTime = (value: string) => formatLocalizedDateTime(value, language);
+
+  const toPlanSourceLabel = (sourceType: SavedPlanRow["source_type"]) => {
+    if (sourceType === "diagnosis") return t("profile.planSource.diagnosis");
+    if (sourceType === "assessment") return t("profile.planSource.assessment");
+    return t("profile.planSource.default");
+  };
+
   const handleRemoveBookmark = async (contentId: string) => {
     if (!user?.id || !configured) {
-      openLoginModal("登录后可管理收藏内容", "bookmark");
+      openLoginModal(t("profile.bookmarkManageLogin"), "bookmark");
       return;
     }
 
@@ -285,7 +278,7 @@ export default function ProfilePage() {
     return (
       <PageContainer>
         <div className="space-y-5">
-          <PageBreadcrumbs items={[{ href: "/", label: session.language === "en" ? "← Back home" : "← 回到首页" }]} />
+          <PageBreadcrumbs items={[{ href: "/", label: t("profile.backHome") }]} />
           <div className="rounded-3xl border border-[var(--line)] bg-white p-6 shadow-soft">
             <div className="flex flex-wrap items-center gap-3">
               <div>
@@ -305,7 +298,7 @@ export default function ProfilePage() {
                   <p className="mt-1 text-sm text-slate-600">{session.participantId}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">Session ID</p>
+                  <p className="text-sm font-semibold text-slate-900">{t("profile.studySessionId")}</p>
                   <p className="mt-1 break-all text-sm text-slate-600">{session.sessionId}</p>
                 </div>
                 <div>
@@ -393,17 +386,17 @@ export default function ProfilePage() {
     return (
       <PageContainer>
         <Card className="mx-auto max-w-2xl space-y-4 text-center">
-          <PageBreadcrumbs items={[{ href: "/", label: "← 回到首页" }]} />
+          <PageBreadcrumbs items={[{ href: "/", label: t("profile.backHome") }]} />
           <div>
-            <p className="text-sm font-semibold text-brand-700">我的记录</p>
-            <h1 className="mt-2 text-2xl font-black text-slate-900">登录后查看你的记录</h1>
+            <p className="text-sm font-semibold text-brand-700">{t("profile.title")}</p>
+            <h1 className="mt-2 text-2xl font-black text-slate-900">{t("profile.loginTitle")}</h1>
             <p className="mt-3 text-sm leading-6 text-slate-600">
-              评估、诊断、收藏和训练计划都会集中保存在这里，方便随时回看。
+              {t("profile.loginSubtitle")}
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-2">
-            <Button onClick={() => openLoginModal("登录后查看我的记录", "profile")}>立即登录</Button>
-            <Link href="/"><Button variant="secondary">回到首页</Button></Link>
+            <Button onClick={() => openLoginModal(t("profile.loginTitle"), "profile")}>{t("profile.loginButton")}</Button>
+            <Link href="/"><Button variant="secondary">{t("plan.backHome")}</Button></Link>
           </div>
         </Card>
       </PageContainer>
@@ -413,20 +406,20 @@ export default function ProfilePage() {
   return (
     <PageContainer>
       <div className="space-y-5">
-        <PageBreadcrumbs items={[{ href: "/", label: "← 回到首页" }]} />
+        <PageBreadcrumbs items={[{ href: "/", label: t("profile.backHome") }]} />
         <div className="rounded-3xl border border-[var(--line)] bg-white p-6 shadow-soft">
           <div className="flex flex-wrap items-center gap-3">
             <div>
-              <p className="text-sm font-semibold text-brand-700">我的记录</p>
+              <p className="text-sm font-semibold text-brand-700">{t("profile.title")}</p>
               <h1 className="mt-1 text-2xl font-black text-slate-900">{user.email}</h1>
             </div>
             {assessmentResult?.level ? (
-              <Badge className="h-fit">参考等级：{assessmentResult.level}</Badge>
+              <Badge className="h-fit">{t("profile.levelBadge", { value: assessmentResult.level })}</Badge>
             ) : (
-              <Badge className="h-fit bg-slate-100 text-slate-700">还未评估</Badge>
+              <Badge className="h-fit bg-slate-100 text-slate-700">{t("profile.notAssessed")}</Badge>
             )}
           </div>
-          <p className="mt-3 text-sm text-slate-600">这里集中查看你最近的评估、诊断、收藏和训练计划。</p>
+          <p className="mt-3 text-sm text-slate-600">{t("profile.headerSubtitle")}</p>
         </div>
 
         <div className="grid gap-5 xl:grid-cols-2">
@@ -436,22 +429,22 @@ export default function ProfilePage() {
             <Card className="space-y-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <h2 className="text-lg font-bold text-slate-900">最近评估结果</h2>
+                  <h2 className="text-lg font-bold text-slate-900">{t("profile.assessment.title")}</h2>
                   <p className="mt-1 text-sm text-slate-600">{assessmentResult.summary}</p>
                 </div>
-                <Badge>等级：{assessmentResult.level}</Badge>
+                <Badge>{t("profile.levelBadge", { value: assessmentResult.level })}</Badge>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">相对强项</p>
+                  <p className="text-sm font-semibold text-slate-900">{t("profile.assessment.strong")}</p>
                   <p className="mt-1 text-sm text-slate-600">
-                    {assessmentResult.strengths.length > 0 ? assessmentResult.strengths.join(" / ") : "暂无"}
+                    {assessmentResult.strengths.length > 0 ? assessmentResult.strengths.join(" / ") : t("profile.none")}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">优先补强</p>
+                  <p className="text-sm font-semibold text-slate-900">{t("profile.assessment.weak")}</p>
                   <p className="mt-1 text-sm text-slate-600">
-                    {assessmentResult.weaknesses.length > 0 ? assessmentResult.weaknesses.join(" / ") : "暂无"}
+                    {assessmentResult.weaknesses.length > 0 ? assessmentResult.weaknesses.join(" / ") : t("profile.none")}
                   </p>
                 </div>
               </div>
@@ -466,16 +459,16 @@ export default function ProfilePage() {
                 ))}
               </div>
               <div className="flex flex-wrap gap-2">
-                <Link href="/assessment"><Button variant="secondary">重新评估</Button></Link>
-                <Link href={`/library?level=${assessmentResult.level}`}><Button variant="ghost">去看推荐内容</Button></Link>
+                <Link href="/assessment"><Button variant="secondary">{t("assessment.result.retry")}</Button></Link>
+                <Link href={`/library?level=${assessmentResult.level}`}><Button variant="ghost">{t("profile.assessment.openLibrary")}</Button></Link>
               </div>
             </Card>
           ) : (
             <EmptyState
-              title="最近评估结果"
-              description="还没有评估记录，先做一次 1 分钟评估，我们才能更准确地推荐内容和训练方向。"
+              title={t("profile.assessment.title")}
+              description={t("profile.assessment.emptyDescription")}
               href="/assessment"
-              actionLabel="去评估"
+              actionLabel={t("plan.assessment")}
             />
           )}
 
@@ -484,8 +477,8 @@ export default function ProfilePage() {
           ) : diagnosisHistory.length > 0 ? (
             <Card className="space-y-4">
               <div>
-                <h2 className="text-lg font-bold text-slate-900">诊断历史</h2>
-                <p className="mt-1 text-sm text-slate-600">最近 5 条问题记录，点开后会带着原问题回到诊断页。</p>
+                <h2 className="text-lg font-bold text-slate-900">{t("profile.diagnosis.title")}</h2>
+                <p className="mt-1 text-sm text-slate-600">{t("profile.diagnosis.subtitle")}</p>
               </div>
               <div className="space-y-3">
                 {diagnosisHistory.map((item) => (
@@ -495,7 +488,7 @@ export default function ProfilePage() {
                     className="block rounded-xl border border-[var(--line)] px-4 py-3 transition hover:border-brand-200 hover:bg-brand-50/40"
                   >
                     <p className="font-semibold text-slate-900">{item.input_text}</p>
-                    <p className="mt-1 text-sm text-slate-600">{item.problem_label ?? "暂未匹配到明确标签"}</p>
+                    <p className="mt-1 text-sm text-slate-600">{item.problem_label ?? t("profile.diagnosis.unmatched")}</p>
                     <p className="mt-2 text-xs text-slate-500">{formatDateTime(item.created_at)}</p>
                   </Link>
                 ))}
@@ -503,10 +496,10 @@ export default function ProfilePage() {
             </Card>
           ) : (
             <EmptyState
-              title="诊断历史"
-              description="还没有诊断记录。先把你最近最困扰的一个问题说出来，我们会帮你拆原因。"
+              title={t("profile.diagnosis.title")}
+              description={t("profile.diagnosis.emptyDescription")}
               href="/diagnose"
-              actionLabel="去诊断"
+              actionLabel={t("plan.diagnose")}
             />
           )}
 
@@ -515,8 +508,8 @@ export default function ProfilePage() {
           ) : videoDiagnosisHistory.length > 0 ? (
             <Card className="space-y-4">
               <div>
-                <h2 className="text-lg font-bold text-slate-900">视频诊断记录</h2>
-                <p className="mt-1 text-sm text-slate-600">这里会保留最近的视频诊断结果，方便你回头再拍、再比对。</p>
+                <h2 className="text-lg font-bold text-slate-900">{t("profile.videoHistory.title")}</h2>
+                <p className="mt-1 text-sm text-slate-600">{t("profile.videoHistory.subtitle")}</p>
               </div>
               <div className="space-y-3">
                 {videoDiagnosisHistory.map((item) => (
@@ -528,10 +521,10 @@ export default function ProfilePage() {
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-semibold text-slate-900">{item.result.primaryProblem.label}</p>
                       <Badge className="bg-slate-100 text-slate-700">
-                        置信度：{item.result.confidenceBand}
+                        {t("profile.videoHistory.confidence", { value: item.result.confidenceBand })}
                       </Badge>
                     </div>
-                    <p className="mt-1 text-sm text-slate-600">{item.user_description || "未填写主观描述"}</p>
+                    <p className="mt-1 text-sm text-slate-600">{item.user_description || t("profile.videoHistory.noDescription")}</p>
                     <p className="mt-2 text-xs text-slate-500">{formatDateTime(item.created_at)}</p>
                   </Link>
                 ))}
@@ -539,10 +532,10 @@ export default function ProfilePage() {
             </Card>
           ) : (
             <EmptyState
-              title="视频诊断记录"
-              description="还没有视频诊断记录。上传一段视频后，这里会保留最近的分析结果。"
+              title={t("profile.videoHistory.title")}
+              description={t("profile.videoHistory.emptyDescription")}
               href="/video-diagnose"
-              actionLabel="去试试视频诊断"
+              actionLabel={t("profile.videoHistory.try")}
             />
           )}
 
@@ -552,11 +545,11 @@ export default function ProfilePage() {
             <Card className="space-y-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <h2 className="text-lg font-bold text-slate-900">收藏</h2>
-                  <p className="mt-1 text-sm text-slate-600">想回头看的内容都在这里。</p>
+                  <h2 className="text-lg font-bold text-slate-900">{t("profile.bookmarks.title")}</h2>
+                  <p className="mt-1 text-sm text-slate-600">{t("profile.bookmarks.subtitle")}</p>
                 </div>
                 <Link href="/library" className="text-sm font-medium text-slate-500 transition hover:text-slate-700">
-                  去内容库 →
+                  {t("profile.bookmarks.link")} →
                 </Link>
               </div>
               <div className="space-y-4">
@@ -574,10 +567,10 @@ export default function ProfilePage() {
             </Card>
           ) : (
             <EmptyState
-              title="收藏"
-              description="还没有收藏内容。"
+              title={t("profile.bookmarks.title")}
+              description={t("profile.bookmarks.emptyDescription")}
               href="/library"
-              actionLabel="去内容库"
+              actionLabel={t("profile.bookmarks.link")}
             />
           )}
 
@@ -586,8 +579,8 @@ export default function ProfilePage() {
           ) : savedPlans.length > 0 ? (
             <Card className="space-y-4">
               <div>
-                <h2 className="text-lg font-bold text-slate-900">已保存的训练计划</h2>
-                <p className="mt-1 text-sm text-slate-600">最近保存的计划都会留在这里，展开后可以直接查看 7 天安排。</p>
+                <h2 className="text-lg font-bold text-slate-900">{t("profile.plans.title")}</h2>
+                <p className="mt-1 text-sm text-slate-600">{t("profile.plans.subtitle")}</p>
               </div>
               <div className="space-y-3">
                 {savedPlans.map((item) => {
@@ -606,16 +599,20 @@ export default function ProfilePage() {
                           variant="secondary"
                           onClick={() => setExpandedPlanId(expanded ? null : item.id)}
                         >
-                          {expanded ? "收起" : "查看计划"}
+                          {expanded ? t("profile.plans.toggleCollapse") : t("profile.plans.toggleExpand")}
                         </Button>
                       </div>
                       {expanded ? (
                         <div className="mt-4 space-y-3">
                           {item.plan_data.days.map((day) => (
                             <div key={day.day} className="rounded-xl bg-slate-50 px-3 py-3">
-                              <p className="text-sm font-semibold text-slate-900">Day {day.day} · {day.focus}</p>
-                              <p className="mt-1 text-sm text-slate-600">时长：{day.duration}</p>
-                              <p className="mt-1 text-sm text-slate-600">练习：{day.drills.join(" / ")}</p>
+                              <p className="text-sm font-semibold text-slate-900">{t("plan.day.label", { day: day.day })} · {day.focus}</p>
+                              <p className="mt-1 text-sm text-slate-600">
+                                <span className="font-medium text-slate-700">{t("plan.day.duration")}</span> {day.duration}
+                              </p>
+                              <p className="mt-1 text-sm text-slate-600">
+                                <span className="font-medium text-slate-700">{t("profile.planDrills")}</span> {day.drills.join(" / ")}
+                              </p>
                             </div>
                           ))}
                         </div>
@@ -627,10 +624,10 @@ export default function ProfilePage() {
             </Card>
           ) : (
             <EmptyState
-              title="已保存的训练计划"
-              description="还没有训练计划。做完评估或诊断后生成一份计划，后面会在这里集中保留。"
+              title={t("profile.plans.title")}
+              description={t("profile.plans.emptyDescription")}
               href="/diagnose"
-              actionLabel="去生成"
+              actionLabel={t("profile.plans.generate")}
             />
           )}
         </div>

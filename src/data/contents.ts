@@ -1,5 +1,4 @@
-export type ContentType = "video" | "article" | "post";
-export type ContentPlatform = "Bilibili" | "Xiaohongshu" | "Zhihu" | "YouTube" | "Instagram";
+import type { ContentItem } from "@/types/content";
 
 const bilibiliSearchUrl = (query: string) =>
   `https://search.bilibili.com/all?keyword=${encodeURIComponent(query)}`;
@@ -16,27 +15,6 @@ const bilibiliSearchUrl = (query: string) =>
  *   3. current direct candidates are usable but not representative enough yet.
  * - Current audit snapshot: `docs/REMAINING_SEARCH_ENTRY_AUDIT.md`.
  */
-
-export type ContentItem = {
-  id: string;
-  title: string;
-  sourceTitle?: string;
-  creatorId: string;
-  platform: ContentPlatform;
-  type: ContentType;
-  levels: string[];
-  skills: string[];
-  problemTags: string[];
-  language: "zh" | "en";
-  summary: string;
-  reason: string;
-  useCases: string[];
-  coachReason: string;
-  thumbnail?: string;
-  duration?: string;
-  viewCount?: number;
-  url: string;
-};
 
 export const contents: ContentItem[] = [
   {
@@ -210,6 +188,7 @@ export const contents: ContentItem[] = [
   {
     id: "content_ttt_01",
     title: "Simple Tennis Serve Technique Masterclass for Beginners",
+    secondaryTitleZh: "网球发球入门精讲",
     creatorId: "creator_top_tennis_training",
     platform: "YouTube",
     type: "video",
@@ -229,6 +208,7 @@ export const contents: ContentItem[] = [
   {
     id: "content_et_01",
     title: "How To Control Groundstroke Depth",
+    secondaryTitleZh: "如何把底线球打得更深：深度控制讲解",
     creatorId: "creator_essential_tennis",
     platform: "YouTube",
     type: "video",
@@ -248,6 +228,7 @@ export const contents: ContentItem[] = [
   {
     id: "content_it_01",
     title: "Backhand Slice Tennis Lesson with 4.5 NTRP Student",
+    secondaryTitleZh: "结合4.5水平学员案例讲反手切削",
     creatorId: "creator_intuitive_tennis",
     platform: "YouTube",
     type: "video",

@@ -10,6 +10,7 @@ import {
   getContentLanguageTag,
   getContentPrimaryTitle,
   getContentSecondaryTitle,
+  getCreatorPrimaryName,
   getSubtitleAvailability
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
@@ -100,6 +101,7 @@ export function ContentCard({
   const contentLanguage = getContentLanguageTag(item);
   const subtitleAvailability = getSubtitleAvailability(item);
   const showResearchMetadata = studyMode;
+  const creatorName = creator ? getCreatorPrimaryName(creator, language) : t("content.unknownCreator");
 
   const subtitleLabel = subtitleAvailability === "english"
     ? t("content.subtitle.yes")
@@ -173,7 +175,7 @@ export function ContentCard({
                   {secondaryTitle}
                 </p>
               ) : null}
-              <p className="text-sm leading-6 text-slate-600">{creator?.name ?? t("content.unknownCreator")}</p>
+              <p className="text-sm leading-6 text-slate-600">{creatorName}</p>
             </div>
           </div>
           <div className="relative mt-0.5 pr-10">
@@ -196,10 +198,10 @@ export function ContentCard({
                 }}
                 disabled={bookmarkLoading}
                 aria-pressed={bookmarked}
-                aria-label={isProfileCompact ? (language === "en" ? "Remove bookmark" : "移出收藏") : bookmarked ? (language === "en" ? "Remove bookmark" : "取消收藏") : (language === "en" ? "Add bookmark" : "加入收藏")}
+                aria-label={isProfileCompact ? t("content.bookmark.removeSaved") : bookmarked ? t("content.bookmark.remove") : t("content.bookmark.add")}
               >
                 {isProfileCompact ? (
-                  <span>{bookmarkLoading ? (language === "en" ? "Working..." : "处理中...") : (language === "en" ? "Remove bookmark" : "移出收藏")}</span>
+                  <span>{bookmarkLoading ? t("content.bookmark.working") : t("content.bookmark.removeSaved")}</span>
                 ) : (
                   <BookmarkIcon filled={bookmarked} className="h-[1.6rem] w-[1.6rem]" />
                 )}

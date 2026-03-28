@@ -57,7 +57,7 @@ export function DayPlanCard({
     return (
       <Card className="space-y-4 border-brand-200 bg-brand-50/40">
         <div>
-          <p className="text-sm font-semibold text-brand-700">Day {day.day} · {t("plan.day.today")}</p>
+          <p className="text-sm font-semibold text-brand-700">{t("plan.day.label", { day: day.day })} · {t("plan.day.today")}</p>
           <h3 className="mt-1 text-xl font-bold text-slate-900">{day.focus}</h3>
         </div>
 
@@ -128,7 +128,7 @@ export function DayPlanCard({
     <Card className="space-y-0">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold text-slate-900">Day {day.day}</p>
+          <p className="text-sm font-semibold text-slate-900">{t("plan.day.label", { day: day.day })}</p>
           <p className="mt-1 text-sm text-slate-600">{compactFocus(day.focus)}</p>
         </div>
         <Button variant="ghost" className="px-3 text-sm" onClick={toggleExpanded}>
@@ -138,7 +138,9 @@ export function DayPlanCard({
 
       {displayExpanded ? (
         <div className="mt-4 space-y-3 border-t border-[var(--line)] pt-4">
-          <p className="text-sm text-slate-600">{t("plan.day.duration")}：{day.duration}</p>
+          <p className="text-sm text-slate-600">
+            <span className="font-medium text-slate-700">{t("plan.day.duration")}</span> {day.duration}
+          </p>
           <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
             {day.drills.map((drill) => (
               <li key={drill}>{drill}</li>

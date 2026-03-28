@@ -5,7 +5,7 @@ type PlanLocale = "zh" | "en";
 
 const defaultDaysZh = [1, 2, 3, 4, 5, 6, 7].map((day) => ({
   day,
-  focus: `Day ${day} 稳定性训练`,
+  focus: `第 ${day} 天稳定性训练`,
   contentIds: [],
   drills: ["基础挥拍 20 次", "稳定过网练习 20 球"],
   duration: "20 分钟"
