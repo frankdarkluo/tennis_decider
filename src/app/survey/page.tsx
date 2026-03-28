@@ -3,35 +3,29 @@
 import { FormEvent, useMemo, useState } from "react";
 import { surveyQuestions, susLikertLabels } from "@/data/surveyQuestions";
 import { getEventSessionId, logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
 import { saveSurveyResponse } from "@/lib/researchData";
+import { persistStudyArtifact } from "@/lib/study/client";
+import { sanitizeSurveyArtifact } from "@/lib/study/privacy";
 import { calculateSUS } from "@/lib/survey";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useStudy } from "@/components/study/StudyProvider";
 
-const partMeta = {
-  basic: {
-    title: "Part 1：基本信息",
-    description: "先用 5 个问题了解你的打球背景。"
-  },
-  sus: {
-    title: "Part 2：SUS 系统可用性量表",
-    description: "请按 1-5 分作答，1=非常不同意，5=非常同意。"
-  },
-  product: {
-    title: "Part 3：产品专项评价",
-    description: "继续按 1-5 分作答，看看哪些环节最打动你。"
-  },
-  open: {
-    title: "Part 4：开放式问题",
-    description: "最后请尽量用自己的话说说真实感受。"
-  }
+const partTranslationKeys = {
+  basic: { title: "survey.part.basic.title", body: "survey.part.basic.body" },
+  sus: { title: "survey.part.sus.title", body: "survey.part.sus.body" },
+  product: { title: "survey.part.product.title", body: "survey.part.product.body" },
+  open: { title: "survey.part.open.title", body: "survey.part.open.body" }
 } as const;
 
 export default function SurveyPage() {
   const { user } = useAuth();
+  const { studyMode, session } = useStudy();
+  const { language, t } = useI18n();
   const [responses, setResponses] = useState<Record<string, string | number>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "submitted" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -68,12 +62,17 @@ export default function SurveyPage() {
     setStatus("submitting");
     setMessage("");
 
-    const saveResult = await saveSurveyResponse({
-      sessionId: getEventSessionId(),
-      userId: user?.id ?? null,
-      responses,
-      susScore
-    });
+    const saveResult = studyMode && session
+      ? await persistStudyArtifact(session, "survey", {
+        responses: sanitizeSurveyArtifact(responses),
+        susScore
+      })
+      : await saveSurveyResponse({
+        sessionId: getEventSessionId(),
+        userId: user?.id ?? null,
+        responses,
+        susScore
+      });
 
     if (saveResult.error) {
       setStatus("error");
@@ -81,9 +80,12 @@ export default function SurveyPage() {
       return;
     }
 
-    logEvent("cta_click", { ctaLabel: "提交问卷", ctaLocation: "survey", targetPage: "/survey" });
+    logEvent("cta_click", { ctaLabel: t("cta.submitSurvey"), ctaLocation: "survey", targetPage: "/survey" });
+    if (studyMode) {
+      logEvent("study_artifact_save", { artifactType: "survey" });
+    }
     setStatus("submitted");
-    setMessage("感谢你的反馈！你的意见会帮助我们把产品做得更好。");
+    setMessage(t("survey.thanks.body"));
   }
 
   const renderQuestion = (question: (typeof surveyQuestions)[number], index: number) => {
@@ -92,12 +94,12 @@ export default function SurveyPage() {
     if (question.type === "text") {
       return (
         <div key={question.id} className="space-y-2">
-          <p className="font-semibold text-slate-900">Q{displayIndex}. {question.prompt}</p>
+          <p className="font-semibold text-slate-900">Q{displayIndex}. {language === "en" && question.prompt_en ? question.prompt_en : question.prompt}</p>
           <Textarea
             rows={5}
             value={typeof responses[question.id] === "string" ? (responses[question.id] as string) : ""}
             onChange={(event) => setResponses((prev) => ({ ...prev, [question.id]: event.target.value }))}
-            placeholder="请尽量具体描述你的想法"
+            placeholder={t("survey.placeholder")}
           />
         </div>
       );
@@ -106,7 +108,7 @@ export default function SurveyPage() {
     if (question.type === "likert") {
       return (
         <div key={question.id} className="space-y-3">
-          <p className="font-semibold text-slate-900">Q{displayIndex}. {question.prompt}</p>
+          <p className="font-semibold text-slate-900">Q{displayIndex}. {language === "en" && question.prompt_en ? question.prompt_en : question.prompt}</p>
           <div className="grid gap-2 sm:grid-cols-5">
             {susLikertLabels.map((label, optionIndex) => {
               const score = optionIndex + 1;
@@ -135,9 +137,9 @@ export default function SurveyPage() {
 
     return (
       <div key={question.id} className="space-y-3">
-        <p className="font-semibold text-slate-900">Q{displayIndex}. {question.prompt}</p>
+        <p className="font-semibold text-slate-900">Q{displayIndex}. {language === "en" && question.prompt_en ? question.prompt_en : question.prompt}</p>
         <div className="space-y-2">
-          {question.options?.map((option) => {
+          {(language === "en" && question.options_en ? question.options_en : question.options)?.map((option) => {
             const active = responses[question.id] === option;
 
             return (
@@ -165,8 +167,9 @@ export default function SurveyPage() {
     return (
       <PageContainer>
         <Card className="mx-auto max-w-3xl space-y-4 text-center">
-          <p className="text-sm font-semibold text-brand-700">问卷已提交</p>
-          <h1 className="text-3xl font-black text-slate-900">感谢你的反馈！</h1>
+          <p className="text-sm font-semibold text-brand-700">{t("survey.completedBadge")}</p>
+          <p className="text-sm font-semibold text-brand-700">{t("survey.thanks.badge")}</p>
+          <h1 className="text-3xl font-black text-slate-900">{t("survey.thanks.title")}</h1>
           <p className="text-sm leading-6 text-slate-600">{message}</p>
         </Card>
       </PageContainer>
@@ -177,10 +180,10 @@ export default function SurveyPage() {
     <PageContainer>
       <div className="space-y-6">
         <Card className="space-y-3">
-          <p className="text-sm font-semibold text-brand-700">研究问卷</p>
-          <h1 className="text-3xl font-black text-slate-900">TennisLevel 使用体验问卷</h1>
+          <p className="text-sm font-semibold text-brand-700">{t("survey.badge")}</p>
+          <h1 className="text-3xl font-black text-slate-900">{t("survey.title")}</h1>
           <p className="text-sm leading-6 text-slate-600">
-            这是一份匿名研究问卷，用于了解你对 TennisLevel 的使用体验。大约需要 5 分钟。
+            {t("survey.subtitle")}
           </p>
         </Card>
 
@@ -188,8 +191,8 @@ export default function SurveyPage() {
           {(["basic", "sus", "product", "open"] as const).map((partKey) => (
             <Card key={partKey} className="space-y-5">
               <div>
-                <h2 className="text-xl font-bold text-slate-900">{partMeta[partKey].title}</h2>
-                <p className="mt-1 text-sm text-slate-600">{partMeta[partKey].description}</p>
+                <h2 className="text-xl font-bold text-slate-900">{t(partTranslationKeys[partKey].title)}</h2>
+                <p className="mt-1 text-sm text-slate-600">{t(partTranslationKeys[partKey].body)}</p>
               </div>
               <div className="space-y-5">
                 {groupedQuestions[partKey].map((question, index) => renderQuestion(question, index))}
@@ -199,9 +202,9 @@ export default function SurveyPage() {
 
           <div className="flex flex-wrap items-center gap-3">
             <Button type="submit" disabled={!allAnswered || status === "submitting"}>
-              {status === "submitting" ? "提交中..." : "提交问卷"}
+              {status === "submitting" ? t("survey.submitting") : t("survey.submit")}
             </Button>
-            {!allAnswered ? <p className="text-sm text-slate-500">请先完成全部 25 题。</p> : null}
+            {!allAnswered ? <p className="text-sm text-slate-500">{t("survey.answerAll")}</p> : null}
           </div>
         </form>
 

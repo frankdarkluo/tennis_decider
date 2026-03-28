@@ -11,7 +11,9 @@ import {
   DimensionSummary
 } from "@/types/assessment";
 
-const DIMENSION_LABELS: Record<AssessmentDimension, string> = {
+type AssessmentLocale = "zh" | "en";
+
+const DIMENSION_LABELS_ZH: Record<AssessmentDimension, string> = {
   basics: "基础稳定性",
   forehand: "正手",
   backhand: "反手",
@@ -33,7 +35,29 @@ const DIMENSION_LABELS: Record<AssessmentDimension, string> = {
   tactics: "策略执行"
 };
 
-const SUMMARY_TEMPLATES: Record<AssessmentLevel, string> = {
+const DIMENSION_LABELS_EN: Record<AssessmentDimension, string> = {
+  basics: "baseline stability",
+  forehand: "forehand",
+  backhand: "backhand",
+  serve: "serve",
+  net: "net play",
+  movement: "movement",
+  matchplay: "match play",
+  rally: "rally stability",
+  awareness: "match awareness",
+  fundamentals: "fundamentals",
+  receiving: "receiving skills",
+  consistency: "consistency",
+  both_sides: "forehand-backhand balance",
+  direction: "direction control",
+  rhythm: "timing",
+  net_play: "net play",
+  depth_variety: "depth and variation",
+  forcing: "pressure skills",
+  tactics: "tactical execution"
+};
+
+const SUMMARY_TEMPLATES_ZH: Record<AssessmentLevel, string> = {
   "2.5": "你目前处于入门阶段，动作还在成型中。建议先稳定基础动作，不急着加力。",
   "3.0": "你已经能打起来了，但稳定性和控制力还有空间。建议先减少失误，再想变化。",
   "3.5": "你的基本功比较扎实，下一步可以开始练方向控制和节奏变化。",
@@ -41,8 +65,103 @@ const SUMMARY_TEMPLATES: Record<AssessmentLevel, string> = {
   "4.0+": "你的水平已经比较高了，建议针对比赛中的薄弱环节做专项强化。"
 };
 
-export function getDimensionLabel(key: DimensionKey): string {
-  return DIMENSION_LABELS[key] ?? key;
+const SUMMARY_TEMPLATES_EN: Record<AssessmentLevel, string> = {
+  "2.5": "You are still in the early stage. Build a steadier basic swing first before adding pace.",
+  "3.0": "You can already rally, but stability and control still need work. Clean up errors before adding variety.",
+  "3.5": "Your fundamentals are taking shape. The next step is direction control and better rhythm changes.",
+  "4.0": "You already have solid all-court foundations. It is worth sharpening net play and tactical execution next.",
+  "4.0+": "You are already playing at a strong level. The next gains will come from targeted match-specific refinement."
+};
+
+const CONFIDENCE_LABELS = {
+  zh: {
+    low: "较低",
+    medium: "中等",
+    high: "较高"
+  },
+  en: {
+    low: "Lower confidence",
+    medium: "Medium confidence",
+    high: "Higher confidence"
+  }
+} as const;
+
+const STATUS_LABELS = {
+  zh: {
+    normal: "正常",
+    watch: "待观察"
+  },
+  en: {
+    normal: "solid",
+    watch: "watch next"
+  }
+} as const;
+
+function resolveDimensionKey(label: string): AssessmentDimension | null {
+  const foundZh = (Object.entries(DIMENSION_LABELS_ZH) as Array<[AssessmentDimension, string]>)
+    .find(([, value]) => value === label)?.[0];
+  if (foundZh) {
+    return foundZh;
+  }
+
+  const foundEn = (Object.entries(DIMENSION_LABELS_EN) as Array<[AssessmentDimension, string]>)
+    .find(([, value]) => value === label)?.[0];
+  return foundEn ?? null;
+}
+
+export function getDimensionLabel(key: DimensionKey, locale: AssessmentLocale = "zh"): string {
+  const dictionary = locale === "en" ? DIMENSION_LABELS_EN : DIMENSION_LABELS_ZH;
+  return dictionary[key] ?? key;
+}
+
+export function translateAssessmentLabel(label: string, locale: AssessmentLocale = "zh"): string {
+  const key = resolveDimensionKey(label);
+  if (!key) {
+    return label;
+  }
+
+  return getDimensionLabel(key, locale);
+}
+
+export function getAssessmentConfidenceLabel(
+  confidence: AssessmentResult["confidence"],
+  locale: AssessmentLocale = "zh"
+) {
+  if (confidence === "较高") {
+    return CONFIDENCE_LABELS[locale].high;
+  }
+
+  if (confidence === "中等") {
+    return CONFIDENCE_LABELS[locale].medium;
+  }
+
+  return CONFIDENCE_LABELS[locale].low;
+}
+
+export function getAssessmentStatusLabel(status: DimensionSummary["status"], locale: AssessmentLocale = "zh") {
+  if (status === "待观察") {
+    return STATUS_LABELS[locale].watch;
+  }
+
+  return STATUS_LABELS[locale].normal;
+}
+
+export function getAssessmentSummary(level: AssessmentLevel, locale: AssessmentLocale = "zh") {
+  return (locale === "en" ? SUMMARY_TEMPLATES_EN : SUMMARY_TEMPLATES_ZH)[level];
+}
+
+export function getAssessmentDefaultSummary(locale: AssessmentLocale = "zh") {
+  return locale === "en"
+    ? "Complete the assessment first, then we will estimate your current range."
+    : "请先完成评估题目，再查看你的参考能力区间。";
+}
+
+export function getAssessmentFallbackStrength(locale: AssessmentLocale = "zh") {
+  return locale === "en" ? "baseline stability" : "基础稳定性";
+}
+
+export function getAssessmentFallbackWeakness(locale: AssessmentLocale = "zh") {
+  return locale === "en" ? "the next ball under pressure" : "比赛中的下一拍处理";
 }
 
 export function getCoarseQuestions(questions: AssessmentQuestion[] = assessmentQuestions) {
@@ -105,7 +224,8 @@ function getConfidence(answeredCount: number, totalQuestions: number): Assessmen
 function buildDimensionSummaries(
   questions: AssessmentQuestion[],
   answers: AssessmentAnswers,
-  level: AssessmentLevel
+  level: AssessmentLevel,
+  locale: AssessmentLocale = "zh"
 ): DimensionSummary[] {
   return questions.reduce<DimensionSummary[]>((acc, question) => {
     if (!question.dimension) {
@@ -121,7 +241,7 @@ function buildDimensionSummaries(
 
     acc.push({
       key: question.dimension,
-      label: getDimensionLabel(question.dimension),
+      label: getDimensionLabel(question.dimension, locale),
       score,
       maxScore: 4,
       average: score,
@@ -143,14 +263,15 @@ function buildWeaknesses(dimensions: DimensionSummary[]) {
   return dimensions.filter((dimension) => dimension.score === 1).map((dimension) => dimension.label);
 }
 
-function buildSummary(level: AssessmentLevel): string {
-  return SUMMARY_TEMPLATES[level];
+function buildSummary(level: AssessmentLevel, locale: AssessmentLocale = "zh"): string {
+  return (locale === "en" ? SUMMARY_TEMPLATES_EN : SUMMARY_TEMPLATES_ZH)[level];
 }
 
 export function calculateAssessmentResult(
   answers: AssessmentAnswers,
   questions: AssessmentQuestion[] = assessmentQuestions,
-  profile?: AssessmentProfile
+  profile?: AssessmentProfile,
+  locale: AssessmentLocale = "zh"
 ): AssessmentResult {
   const coarseQuestions = getCoarseQuestions(questions);
   const coarseScore = coarseQuestions.reduce((sum, question) => sum + Number(answers[question.id] ?? 0), 0);
@@ -159,7 +280,7 @@ export function calculateAssessmentResult(
   const fineScore = fineQuestions.reduce((sum, question) => sum + Number(answers[question.id] ?? 0), 0);
   const level = calculateLevel(coarseScore, fineScore);
   const scoredQuestions = [...coarseQuestions, ...fineQuestions];
-  const dimensions = buildDimensionSummaries(scoredQuestions, answers, level);
+  const dimensions = buildDimensionSummaries(scoredQuestions, answers, level, locale);
   const strengths = buildStrengths(dimensions);
   const weaknesses = buildWeaknesses(dimensions);
   const answeredCount = scoredQuestions.filter((question) => Number(answers[question.id] ?? 0) > 0).length;
@@ -180,7 +301,7 @@ export function calculateAssessmentResult(
     strengths,
     weaknesses,
     observationNeeded: [],
-    summary: buildSummary(level),
+    summary: buildSummary(level, locale),
     profile,
     branch,
     coarseScore,
@@ -188,7 +309,7 @@ export function calculateAssessmentResult(
   };
 }
 
-export function getDefaultAssessmentResult(): AssessmentResult {
+export function getDefaultAssessmentResult(locale: AssessmentLocale = "zh"): AssessmentResult {
   return {
     totalScore: 0,
     maxScore: 24,
@@ -202,6 +323,8 @@ export function getDefaultAssessmentResult(): AssessmentResult {
     strengths: [],
     weaknesses: [],
     observationNeeded: [],
-    summary: "请先完成评估题目，再查看你的参考能力区间。"
+    summary: locale === "en"
+      ? "Complete the assessment first, then we will estimate your current range."
+      : "请先完成评估题目，再查看你的参考能力区间。"
   };
 }

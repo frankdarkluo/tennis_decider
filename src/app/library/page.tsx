@@ -5,16 +5,34 @@ import { contents } from "@/data/contents";
 import { expandedContents } from "@/data/expandedContents";
 import { creators } from "@/data/creators";
 import { ContentItem } from "@/types/content";
+import {
+  getContentFocusLine,
+  getContentLanguageTag,
+  getContentPrimaryTitle,
+  getFeaturedVideoPrimaryTitle,
+  getFeaturedVideoTarget,
+  getSubtitleAvailability
+} from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
+import { persistStudyArtifact } from "@/lib/study/client";
+import { readLocalStudyBookmarks, toggleLocalStudyBookmark } from "@/lib/study/localData";
+import { seededSort } from "@/lib/study/seededSort";
 import { addBookmark, getBookmarkedContentIds, removeBookmark } from "@/lib/userData";
 import { getThumbnail } from "@/lib/thumbnail";
 import { toChineseSkill } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
-import { LibraryFilters, LibraryPlatformFilter } from "@/components/library/LibraryFilters";
+import {
+  LibraryContentLanguageFilter,
+  LibraryFilters,
+  LibraryPlatformFilter,
+  LibrarySubtitleFilter
+} from "@/components/library/LibraryFilters";
 import { ContentCard } from "@/components/library/ContentCard";
 import { Button } from "@/components/ui/Button";
+import { useStudy } from "@/components/study/StudyProvider";
 
 const PAGE_SIZE = 20;
 
@@ -59,10 +77,39 @@ function sortByMixedPriority(items: ContentItem[], seed: string) {
   });
 }
 
+function sortByStudyPriority(items: ContentItem[], seed: string) {
+  if (items.length <= 1) {
+    return items;
+  }
+
+  const maxLogViews = items.reduce((currentMax, item) => {
+    const nextValue = item.viewCount ? Math.log10(item.viewCount + 10) : 0;
+    return Math.max(currentMax, nextValue);
+  }, 0);
+
+  return seededSort(
+    items,
+    seed,
+    (item) => item.id,
+    (item) => {
+      const thumbBoost = getThumbnail(item) ? 0.15 : 0;
+      const viewScore = item.viewCount ? Math.log10(item.viewCount + 10) / (maxLogViews || 1) : 0;
+      return thumbBoost + viewScore;
+    },
+    (left, right) => left.title.localeCompare(right.title, "zh-Hans-CN")
+  );
+}
+
 function mergeLibraryItem(existing: ContentItem, candidate: ContentItem): ContentItem {
   return {
     ...existing,
+    originalTitle: existing.originalTitle ?? candidate.originalTitle,
     sourceTitle: existing.sourceTitle ?? candidate.sourceTitle,
+    displayTitleZh: existing.displayTitleZh ?? candidate.displayTitleZh,
+    displayTitleEn: existing.displayTitleEn ?? candidate.displayTitleEn,
+    focusLineEn: existing.focusLineEn ?? candidate.focusLineEn,
+    contentLanguage: existing.contentLanguage ?? candidate.contentLanguage,
+    subtitleAvailability: existing.subtitleAvailability ?? candidate.subtitleAvailability,
     useCases: existing.useCases.length > 0 ? existing.useCases : candidate.useCases,
     coachReason: existing.coachReason || candidate.coachReason,
     thumbnail: candidate.thumbnail ?? existing.thumbnail,
@@ -89,6 +136,14 @@ function buildLibraryItems(): ContentItem[] {
         id: `content_featured_${creator.id}_${index + 1}`,
         title: video.title,
         sourceTitle: video.sourceTitle ?? video.title,
+        originalTitle: video.originalTitle ?? video.sourceTitle ?? video.title,
+        displayTitleZh: video.displayTitleZh ?? (creator.region === "domestic" ? (video.sourceTitle ?? video.title) : undefined),
+        displayTitleEn: creator.region === "domestic"
+          ? getFeaturedVideoPrimaryTitle(video, "en", creator)
+          : video.displayTitleEn ?? video.title,
+        focusLineEn: creator.region === "domestic"
+          ? getFeaturedVideoTarget(video, "en", creator)
+          : video.targetEn,
         creatorId: creator.id,
         platform: video.platform,
         type: "video",
@@ -96,6 +151,8 @@ function buildLibraryItems(): ContentItem[] {
         skills: creator.specialties,
         problemTags: [],
         language: creator.region === "domestic" ? "zh" : "en",
+        contentLanguage: video.contentLanguage ?? (creator.region === "domestic" ? "zh" : "en"),
+        subtitleAvailability: video.subtitleAvailability ?? (creator.region === "overseas" ? "not_needed" : video.platform === "Bilibili" ? "none" : "unknown"),
         summary: creator.shortDescription,
         reason: video.target,
         useCases: [video.target],
@@ -116,14 +173,18 @@ const libraryItems = buildLibraryItems();
 function LibraryPageContent() {
   const { user, configured, loading } = useAuth();
   const { openLoginModal } = useAuthModal();
+  const { session, studyMode } = useStudy();
+  const { t } = useI18n();
   const [keyword, setKeyword] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState<LibraryPlatformFilter>("all");
+  const [selectedContentLanguage, setSelectedContentLanguage] = useState<LibraryContentLanguageFilter>("all");
+  const [selectedSubtitleAvailability, setSelectedSubtitleAvailability] = useState<LibrarySubtitleFilter>("all");
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([]);
   const [bookmarkPendingId, setBookmarkPendingId] = useState<string | null>(null);
   const [showBookmarkedOnly, setShowBookmarkedOnly] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const previousFiltersRef = useRef<Record<string, string | boolean> | null>(null);
-  const shuffleSeed = useMemo(() => new Date().toLocaleDateString("en-CA"), []);
+  const productSeed = useMemo(() => new Date().toLocaleDateString("en-CA"), []);
   const creatorNameById = useMemo(
     () => new Map(creators.map((creator) => [creator.id, creator.name])),
     []
@@ -137,6 +198,11 @@ function LibraryPageContent() {
     let active = true;
 
     async function loadBookmarks() {
+      if (studyMode) {
+        setBookmarkedIds(readLocalStudyBookmarks().contentIds);
+        return;
+      }
+
       if (!user?.id || !configured) {
         setBookmarkedIds([]);
         return;
@@ -161,12 +227,14 @@ function LibraryPageContent() {
     return () => {
       active = false;
     };
-  }, [configured, loading, user?.id]);
+  }, [configured, loading, studyMode, user?.id]);
 
   useEffect(() => {
     const currentFilters: Record<string, string | boolean> = {
       keyword,
       platform: selectedPlatform,
+      contentLanguage: selectedContentLanguage,
+      subtitleAvailability: selectedSubtitleAvailability,
       bookmarked: showBookmarkedOnly
     };
 
@@ -182,11 +250,11 @@ function LibraryPageContent() {
     }
 
     previousFiltersRef.current = currentFilters;
-  }, [keyword, selectedPlatform, showBookmarkedOnly]);
+  }, [keyword, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, showBookmarkedOnly]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [keyword, selectedPlatform, showBookmarkedOnly]);
+  }, [keyword, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, showBookmarkedOnly]);
 
   const filtered = useMemo(() => {
     const query = keyword.trim().toLowerCase();
@@ -195,6 +263,9 @@ function LibraryPageContent() {
       const searchableFields = [
         item.title,
         item.sourceTitle ?? "",
+        getContentPrimaryTitle(item, "en"),
+        getContentFocusLine(item, "en"),
+        getContentFocusLine(item, "zh"),
         creatorNameById.get(item.creatorId) ?? "",
         item.coachReason ?? "",
         item.reason,
@@ -205,20 +276,24 @@ function LibraryPageContent() {
 
       const hitKeyword = query ? searchableFields.includes(query) : true;
       const hitPlatform = selectedPlatform === "all" ? true : item.platform === selectedPlatform;
+      const itemLanguage = getContentLanguageTag(item);
+      const itemSubtitleAvailability = getSubtitleAvailability(item);
+      const hitContentLanguage = selectedContentLanguage === "all" ? true : itemLanguage === selectedContentLanguage;
+      const hitSubtitle = selectedSubtitleAvailability === "all"
+        ? true
+        : selectedSubtitleAvailability === "english"
+          ? itemSubtitleAvailability === "english" || itemSubtitleAvailability === "not_needed"
+          : itemSubtitleAvailability === "none";
       const hitBookmark = showBookmarkedOnly ? bookmarkedIds.includes(item.id) : true;
-      return hitKeyword && hitPlatform && hitBookmark;
+      return hitKeyword && hitPlatform && hitContentLanguage && hitSubtitle && hitBookmark;
     });
 
-    const withThumbnail = sortByMixedPriority(
-      matchedItems.filter((item) => Boolean(getThumbnail(item))),
-      `${shuffleSeed}:with-thumb`
-    );
-    const withoutThumbnail = sortByMixedPriority(
-      matchedItems.filter((item) => !getThumbnail(item)),
-      `${shuffleSeed}:no-thumb`
-    );
+    const sorter = studyMode && session ? sortByStudyPriority : sortByMixedPriority;
+    const activeSeed = studyMode && session ? session.snapshotSeed : productSeed;
+    const withThumbnail = sorter(matchedItems.filter((item) => Boolean(getThumbnail(item))), `${activeSeed}:with-thumb`);
+    const withoutThumbnail = sorter(matchedItems.filter((item) => !getThumbnail(item)), `${activeSeed}:no-thumb`);
     return [...withThumbnail, ...withoutThumbnail];
-  }, [bookmarkedIds, creatorNameById, keyword, selectedPlatform, showBookmarkedOnly, shuffleSeed]);
+  }, [bookmarkedIds, creatorNameById, keyword, productSeed, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, session, showBookmarkedOnly, studyMode]);
   const visibleItems = useMemo(
     () => filtered.slice(0, visibleCount),
     [filtered, visibleCount]
@@ -228,12 +303,24 @@ function LibraryPageContent() {
   const clearAll = () => {
     setKeyword("");
     setSelectedPlatform("all");
+    setSelectedContentLanguage("all");
+    setSelectedSubtitleAvailability("all");
     setShowBookmarkedOnly(false);
   };
 
   const handleToggleBookmark = async (contentId: string) => {
+    if (studyMode && session) {
+      const nextIds = toggleLocalStudyBookmark(contentId);
+      setBookmarkedIds(nextIds);
+      const action = nextIds.includes(contentId) ? "add" : "remove";
+      logEvent("content_bookmark", { contentId, action });
+      await persistStudyArtifact(session, "bookmark", { contentId, action, contentIds: nextIds });
+      logEvent("study_artifact_save", { artifactType: "bookmark" });
+      return;
+    }
+
     if (!user?.id || !configured) {
-      openLoginModal("登录后可收藏内容", "bookmark");
+      openLoginModal(t("library.bookmarkLogin"), "bookmark");
       return;
     }
 
@@ -261,8 +348,8 @@ function LibraryPageContent() {
     <PageContainer>
       <div className="space-y-5">
         <div>
-          <h1 className="text-3xl font-black text-slate-900">找内容</h1>
-          <p className="mt-2 text-slate-600">搜技术、博主或场景。</p>
+          <h1 className="text-3xl font-black text-slate-900">{t("library.title")}</h1>
+          <p className="mt-2 text-slate-600">{t("library.subtitle")}</p>
         </div>
 
         <LibraryFilters
@@ -270,9 +357,13 @@ function LibraryPageContent() {
           setKeyword={setKeyword}
           selectedPlatform={selectedPlatform}
           setSelectedPlatform={setSelectedPlatform}
+          selectedContentLanguage={selectedContentLanguage}
+          setSelectedContentLanguage={setSelectedContentLanguage}
+          selectedSubtitleAvailability={selectedSubtitleAvailability}
+          setSelectedSubtitleAvailability={setSelectedSubtitleAvailability}
           showBookmarkedOnly={showBookmarkedOnly}
           setShowBookmarkedOnly={setShowBookmarkedOnly}
-          bookmarkFilterEnabled={Boolean(user?.id && configured)}
+          bookmarkFilterEnabled={studyMode || Boolean(user?.id && configured)}
         />
 
         {filtered.length > 0 ? (
@@ -297,16 +388,16 @@ function LibraryPageContent() {
                   className="min-w-32 rounded-xl border border-slate-200 px-5 text-slate-700 shadow-sm"
                   onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
                 >
-                  查看更多
+                  {t("library.more")}
                 </Button>
               </div>
             ) : null}
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-6 py-10 text-center text-slate-500 shadow-soft">
-            还没找到符合条件的内容。
+            {t("library.empty")}
             <div className="mt-4">
-              <Button variant="secondary" onClick={clearAll}>清空筛选</Button>
+              <Button variant="secondary" onClick={clearAll}>{t("library.clear")}</Button>
             </div>
           </div>
         )}
@@ -317,8 +408,14 @@ function LibraryPageContent() {
 
 export default function LibraryPage() {
   return (
-    <Suspense fallback={<PageContainer>加载中...</PageContainer>}>
+    <Suspense fallback={<LibraryLoadingFallback />}>
       <LibraryPageContent />
     </Suspense>
   );
+}
+
+function LibraryLoadingFallback() {
+  const { t } = useI18n();
+
+  return <PageContainer>{t("library.loading")}</PageContainer>;
 }

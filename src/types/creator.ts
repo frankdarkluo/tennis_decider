@@ -14,6 +14,12 @@ export type CreatorFeaturedVideo = {
   id: string;
   title: string;
   sourceTitle?: string;
+  originalTitle?: string;
+  displayTitleZh?: string;
+  displayTitleEn?: string;
+  targetEn?: string;
+  contentLanguage?: "zh" | "en";
+  subtitleAvailability?: "english" | "none" | "unknown" | "not_needed";
   target: string;
   levels: string[];
   thumbnail?: string;
@@ -26,7 +32,10 @@ export type CreatorFeaturedVideo = {
 export type Creator = {
   id: string;
   name: string;
+  nameEn?: string;
+  nameZh?: string;
   shortDescription: string;
+  shortDescriptionEn?: string;
   tags: string[];
   region: CreatorRegion;
   platforms: CreatorPlatformName[];
@@ -34,7 +43,9 @@ export type Creator = {
   specialties: string[];
   styleTags: string[];
   bio: string;
+  bioEn?: string;
   suitableFor: string[];
+  suitableForEn?: string[];
   featuredContentIds: string[];
   featuredVideos?: CreatorFeaturedVideo[];
   recommendedCount?: number;

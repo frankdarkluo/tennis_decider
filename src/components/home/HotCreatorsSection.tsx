@@ -6,11 +6,14 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
+import { getCreatorBio, getCreatorTags } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
 
 const featuredCreatorIds = ["creator_gaiao", "creator_furao"];
 
 export function HotCreatorsSection() {
+  const { language, t } = useI18n();
   const featuredCreators = featuredCreatorIds
     .map((id) => creators.find((creator) => creator.id === id))
     .filter((creator): creator is (typeof creators)[number] => Boolean(creator))
@@ -20,18 +23,21 @@ export function HotCreatorsSection() {
     <section className="flex h-full flex-col space-y-4">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-xl font-bold text-slate-900">网球博主</h3>
+          <h3 className="text-xl font-bold text-slate-900">{t("home.hotCreators.title")}</h3>
         </div>
         <Link
           href="/rankings"
           className="shrink-0 pt-1 text-sm font-medium text-slate-500 transition hover:text-slate-700"
-          onClick={() => logEvent("cta_click", { ctaLabel: "查看更多博主", ctaLocation: "home_hot_creators", targetPage: "/rankings" })}
+          onClick={() => logEvent("cta_click", { ctaLabel: t("cta.moreCreators"), ctaLocation: "home_hot_creators", targetPage: "/rankings" })}
         >
-          查看更多 →
+          {t("home.more")}
         </Link>
       </div>
       <div className="grid flex-1 auto-rows-fr gap-3">
-        {featuredCreators.map((creator) => (
+        {featuredCreators.map((creator) => {
+          const translatedTags = getCreatorTags(creator.tags.slice(0, 3), language);
+
+          return (
           <Link
             key={creator.id}
             href="/rankings"
@@ -46,17 +52,18 @@ export function HotCreatorsSection() {
                     <p className="font-semibold text-slate-900">{creator.name}</p>
                     <PlatformBadge platform={creator.platforms[0]} />
                   </div>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{creator.bio}</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{getCreatorBio(creator, language)}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
-                    {creator.tags.slice(0, 3).map((tag) => (
-                      <Badge key={tag}>{tag}</Badge>
+                    {translatedTags.map((tag, index) => (
+                      <Badge key={`${creator.id}:${index}`}>{tag}</Badge>
                     ))}
                   </div>
                 </div>
               </div>
             </Card>
           </Link>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

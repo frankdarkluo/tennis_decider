@@ -6,14 +6,26 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
+import {
+  getContentFocusLine,
+  getContentPrimaryTitle,
+  getContentSecondaryTitle,
+  getCreatorBio,
+  getCreatorSuitableFor,
+  getFeaturedVideoPrimaryTitle,
+  getFeaturedVideoSecondaryTitle,
+  getFeaturedVideoTarget
+} from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
 
 type CreatorModalItem = {
   id: string;
   title: string;
+  secondaryTitle?: string | null;
   levels: string[];
-  summary: string;
+  focusLine: string;
   url: string;
   platform: "Bilibili" | "YouTube";
   thumbnail?: string;
@@ -22,97 +34,94 @@ type CreatorModalItem = {
   logSource?: string;
 };
 
-const SKILL_CARD_MAP: Record<string, { title: string; summary: string; query: string }> = {
-  basics: { title: "基础框架：先把动作理顺", summary: "先把基础框架理顺", query: "基础 动作" },
-  forehand: { title: "正手基础：先把挥拍做顺", summary: "正手框架先稳定", query: "正手" },
-  backhand: { title: "反手基础：先把击球做实", summary: "反手击球先稳定", query: "反手" },
-  serve: { title: "发球节奏：先别急着发力", summary: "先把发球节奏理顺", query: "发球" },
-  movement: { title: "脚步移动：先学会提前到位", summary: "先把脚步节奏理顺", query: "脚步 移动" },
-  footwork: { title: "脚步移动：先学会提前到位", summary: "先把脚步节奏理顺", query: "脚步 移动" },
-  matchplay: { title: "比赛思路：先学会打深", summary: "比赛执行先清晰", query: "比赛 实战" },
-  doubles: { title: "双打站位：先看基础配合", summary: "双打配合先清楚", query: "双打 站位" },
-  net: { title: "网前处理：先缩小动作", summary: "网前动作先稳住", query: "网前 截击" },
-  return: { title: "接发准备：先稳住第一拍", summary: "接发第一拍先稳", query: "接发球" },
-  consistency: { title: "稳定性：先把球送深", summary: "先把相持稳定住", query: "稳定性" },
-  training: { title: "训练结构：先把内容排顺", summary: "练习结构先理顺", query: "训练" },
-  grip: { title: "握拍调整：先找到顺手感觉", summary: "握拍感觉先顺住", query: "握拍" },
-  slice: { title: "切削处理：先控住拍面", summary: "切削拍面先稳住", query: "切削" },
-  topspin: { title: "上旋感觉：先把弧线拉起", summary: "上旋弧线先打出", query: "上旋" },
-  mental: { title: "比赛心态：先盯下一拍", summary: "比赛注意力拉回", query: "比赛 心态" },
-  defense: { title: "防守处理：先把高球送回", summary: "防守选择先清楚", query: "防守 高球" }
+const SKILL_CARD_MAP: Record<string, { title: string; title_en: string; summary: string; summary_en: string; query: string }> = {
+  basics: { title: "基础框架：先把动作理顺", title_en: "Fundamentals: build a clean swing", summary: "先把基础框架理顺", summary_en: "Start with a solid foundation", query: "基础 动作" },
+  forehand: { title: "正手基础：先把挥拍做顺", title_en: "Forehand: stabilize the swing", summary: "正手框架先稳定", summary_en: "Lock in forehand form first", query: "正手" },
+  backhand: { title: "反手基础：先把击球做实", title_en: "Backhand: solidify contact", summary: "反手击球先稳定", summary_en: "Get clean backhand contact", query: "反手" },
+  serve: { title: "发球节奏：先别急着发力", title_en: "Serve: rhythm before power", summary: "先把发球节奏理顺", summary_en: "Build serve rhythm first", query: "发球" },
+  movement: { title: "脚步移动：先学会提前到位", title_en: "Footwork: get there early", summary: "先把脚步节奏理顺", summary_en: "Work on footwork timing", query: "脚步 移动" },
+  footwork: { title: "脚步移动：先学会提前到位", title_en: "Footwork: get there early", summary: "先把脚步节奏理顺", summary_en: "Work on footwork timing", query: "脚步 移动" },
+  matchplay: { title: "比赛思路：先学会打深", title_en: "Match play: hit deep first", summary: "比赛执行先清晰", summary_en: "Sharpen match execution", query: "比赛 实战" },
+  doubles: { title: "双打站位：先看基础配合", title_en: "Doubles: learn basic formation", summary: "双打配合先清楚", summary_en: "Start with basic doubles positioning", query: "双打 站位" },
+  net: { title: "网前处理：先缩小动作", title_en: "Net play: keep it compact", summary: "网前动作先稳住", summary_en: "Stabilize volley mechanics", query: "网前 截击" },
+  return: { title: "接发准备：先稳住第一拍", title_en: "Return: stabilize the first ball", summary: "接发第一拍先稳", summary_en: "Get the return in play first", query: "接发球" },
+  consistency: { title: "稳定性：先把球送深", title_en: "Consistency: hit deep and steady", summary: "先把相持稳定住", summary_en: "Build rally consistency", query: "稳定性" },
+  training: { title: "训练结构：先把内容排顺", title_en: "Training: structure your sessions", summary: "练习结构先理顺", summary_en: "Organize your practice plan", query: "训练" },
+  grip: { title: "握拍调整：先找到顺手感觉", title_en: "Grip: find a comfortable feel", summary: "握拍感觉先顺住", summary_en: "Get the grip feeling right", query: "握拍" },
+  slice: { title: "切削处理：先控住拍面", title_en: "Slice: control the racquet face", summary: "切削拍面先稳住", summary_en: "Stabilize slice angle", query: "切削" },
+  topspin: { title: "上旋感觉：先把弧线拉起", title_en: "Topspin: lift the arc", summary: "上旋弧线先打出", summary_en: "Build topspin arc first", query: "上旋" },
+  mental: { title: "比赛心态：先盯下一拍", title_en: "Mental game: focus on the next ball", summary: "比赛注意力拉回", summary_en: "Stay present in the match", query: "比赛 心态" },
+  defense: { title: "防守处理：先把高球送回", title_en: "Defense: get the lob back deep", summary: "防守选择先清楚", summary_en: "Improve defensive lob choices", query: "防守 高球" }
 };
 
 const TAG_TO_SKILL_MAP: Record<string, string[]> = {
-  新手友好: ["basics"],
-  细节导向: ["grip", "backhand"],
-  讲解清晰: ["basics"],
-  实战导向: ["matchplay"],
-  基础导向: ["basics"],
-  进阶提升: ["topspin", "matchplay"],
-  双打专项: ["doubles"],
-  节奏训练: ["serve"],
-  发球专项: ["serve"],
-  正手专项: ["forehand"],
-  反手专项: ["backhand"],
-  脚步移动: ["movement"]
+  "新手友好": ["basics"],
+  "细节导向": ["grip", "backhand"],
+  "讲解清晰": ["basics"],
+  "实战导向": ["matchplay"],
+  "基础导向": ["basics"],
+  "进阶提升": ["topspin", "matchplay"],
+  "双打专项": ["doubles"],
+  "节奏训练": ["serve"],
+  "发球专项": ["serve"],
+  "正手专项": ["forehand"],
+  "反手专项": ["backhand"],
+  "脚步移动": ["movement"]
 };
 
-function clampText(value: string, maxLength = 12) {
-  if (value.length <= maxLength) {
-    return value;
-  }
-
-  return `${value.slice(0, maxLength)}…`;
-}
-
-function getConciseDescription(item: ContentItem) {
-  const source = item.useCases[0] || item.summary || item.reason;
-  return clampText(source.replace(/\s+/g, " ").trim(), 12);
-}
-
-function formatTargetSummary(summary: string) {
-  const normalized = summary.replace(/^针对：/, "").trim();
-  return `针对：${normalized}`;
-}
-
-function buildSearchUrl(creator: Creator, query: string) {
-  const fullQuery = `${creator.name} ${query}`.trim();
-
-  if (creator.platforms.includes("Bilibili")) {
-    return `https://search.bilibili.com/all?keyword=${encodeURIComponent(fullQuery)}`;
-  }
-
-  return `https://www.youtube.com/results?search_query=${encodeURIComponent(fullQuery)}`;
-}
-
-function buildFallbackItems(creator: Creator, existingIds: Set<string>) {
-  const topics = [
-    ...creator.specialties,
-    ...creator.tags.flatMap((tag) => TAG_TO_SKILL_MAP[tag] ?? [])
-  ].filter((topic, index, array) => array.indexOf(topic) === index);
-
-  return topics
-    .map((topic) => {
-      const template = SKILL_CARD_MAP[topic];
-
-      if (!template) {
-        return null;
-      }
-
-      return {
-        id: `fallback_${creator.id}_${topic}`,
-        title: template.title,
-        levels: creator.levels.slice(0, 3),
-        summary: template.summary,
-        url: buildSearchUrl(creator, template.query),
-        platform: creator.platforms.includes("Bilibili") ? "Bilibili" : "YouTube"
-      } satisfies CreatorModalItem;
-    })
-    .filter((item): item is CreatorModalItem => Boolean(item) && !existingIds.has(item!.id))
-    .slice(0, 5);
-}
-
 export function CreatorDetailModal({ creator, open, onClose }: { creator: Creator | null; open: boolean; onClose: () => void }) {
+  const { language, t } = useI18n();
+  const isEn = language === "en";
+
+  function formatTargetSummary(summary: string) {
+    const prefix = t("creator.targetPrefix");
+    const normalized = summary.replace(/^针对[：:]/, "").replace(/^Focus:\s*/i, "").trim();
+    return `${prefix} ${normalized}`;
+  }
+
+  function buildSearchUrl(c: Creator, query: string) {
+    const fullQuery = `${c.name} ${query}`.trim();
+
+    if (c.platforms.includes("Bilibili")) {
+      return `https://search.bilibili.com/all?keyword=${encodeURIComponent(fullQuery)}`;
+    }
+
+    return `https://www.youtube.com/results?search_query=${encodeURIComponent(fullQuery)}`;
+  }
+
+  function buildFallbackItems(c: Creator, existingIds: Set<string>) {
+    const topics = [
+      ...c.specialties,
+      ...c.tags.flatMap((tag) => TAG_TO_SKILL_MAP[tag] ?? [])
+    ].filter((topic, index, array) => array.indexOf(topic) === index);
+
+    return topics
+      .map((topic) => {
+        const template = SKILL_CARD_MAP[topic];
+
+        if (!template) {
+          return null;
+        }
+
+        return {
+          id: `fallback_${c.id}_${topic}`,
+          title: isEn ? template.title_en : template.title,
+          levels: c.levels.slice(0, 3),
+          focusLine: isEn ? template.summary_en : template.summary,
+          url: buildSearchUrl(c, template.query),
+          platform: c.platforms.includes("Bilibili") ? "Bilibili" : "YouTube"
+        } satisfies CreatorModalItem;
+      })
+      .filter((item): item is CreatorModalItem => {
+        if (!item) {
+          return false;
+        }
+
+        return !existingIds.has(item.id);
+      })
+      .slice(0, 5);
+  }
+
   const creatorContents: CreatorModalItem[] = creator
     ? (creator.featuredContentIds.length > 0
       ? creator.featuredContentIds
@@ -122,9 +131,10 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
         .slice(0, 5)
         .map((item) => ({
           id: item.id,
-          title: item.sourceTitle || item.title,
+          title: getContentPrimaryTitle(item, language),
+          secondaryTitle: getContentSecondaryTitle(item, language),
           levels: item.levels,
-          summary: getConciseDescription(item),
+          focusLine: getContentFocusLine(item, language),
           url: item.url,
           platform: item.platform === "Bilibili" ? "Bilibili" : "YouTube",
           thumbnail: item.thumbnail,
@@ -136,9 +146,10 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
   const creatorFeaturedVideos: CreatorModalItem[] = creator
     ? (creator.featuredVideos ?? []).slice(0, 5).map((item: CreatorFeaturedVideo) => ({
       id: item.id,
-      title: item.title,
+      title: getFeaturedVideoPrimaryTitle(item, language, creator),
+      secondaryTitle: getFeaturedVideoSecondaryTitle(item, language, creator),
       levels: item.levels,
-      summary: item.target,
+      focusLine: getFeaturedVideoTarget(item, language, creator),
       url: item.url,
       platform: item.platform,
       thumbnail: item.thumbnail,
@@ -152,7 +163,7 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
     : [...creatorContents, ...fallbackItems].slice(0, 5);
 
   return (
-    <Modal open={open} onClose={onClose} title={creator?.name ?? "博主详情"}>
+    <Modal open={open} onClose={onClose} title={creator?.name ?? t("creator.modalTitle")}>
       {creator ? (
         <>
           <div className="flex items-start gap-3">
@@ -172,7 +183,7 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
                       href={href}
                       target="_blank"
                       rel="noreferrer"
-                      aria-label={`前往 ${creator.name} 的${platform}主页`}
+                      aria-label={t("creator.platformAria", { name: creator.name, platform })}
                       className="platform-link-wiggle inline-flex rounded-full transition-transform duration-200 hover:scale-[1.04] focus-visible:scale-[1.04]"
                       onClick={() => logEvent("creator_click", { creatorId: creator.id, source: "creator_modal_platform_badge", platform, targetUrl: href })}
                     >
@@ -183,13 +194,13 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
               </div>
             </div>
           </div>
-          <p className="text-sm text-slate-700">{creator.bio}</p>
+          <p className="text-sm text-slate-700">{getCreatorBio(creator, language)}</p>
           <div>
-            <p className="text-sm font-semibold text-slate-900">适合谁</p>
-            <p className="text-sm text-slate-700">{creator.suitableFor.join(" / ")}</p>
+            <p className="text-sm font-semibold text-slate-900">{t("creator.suitableFor")}</p>
+            <p className="text-sm text-slate-700">{getCreatorSuitableFor(creator, language).join(" / ")}</p>
           </div>
           <div>
-            <p className="text-sm font-semibold text-slate-900">ta 的内容</p>
+            <p className="text-sm font-semibold text-slate-900">{t("creator.theirContent")}</p>
           </div>
           <div className="space-y-3">
             {modalItems.length > 0 ? (
@@ -234,16 +245,21 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
                         <p className="font-semibold text-slate-900">{item.title}</p>
                         <Badge className="bg-slate-100 px-3.5 py-1.5 text-sm text-slate-700">{item.levels.join("/")}</Badge>
                       </div>
-                      <p className="mt-2 text-sm text-slate-600">{formatTargetSummary(item.summary)}</p>
+                      {item.secondaryTitle ? (
+                        <p className="mt-1 text-xs leading-5 text-slate-400">{item.secondaryTitle}</p>
+                      ) : null}
+                      {item.focusLine && item.focusLine !== item.title ? (
+                        <p className="mt-2 text-sm text-slate-600">{formatTargetSummary(item.focusLine)}</p>
+                      ) : null}
                     </div>
                   </div>
                 </a>
               ))
             ) : (
-              <p className="text-sm text-slate-600">暂无收录内容</p>
+              <p className="text-sm text-slate-600">{t("creator.noContent")}</p>
             )}
           </div>
-          <a href={creator.profileUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex"><Button>前往主页</Button></a>
+          <a href={creator.profileUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex"><Button>{t("creator.goHome")}</Button></a>
         </>
       ) : null}
     </Modal>

@@ -10,18 +10,23 @@ import {
 } from "@/lib/assessmentStorage";
 import { logEvent } from "@/lib/eventLogger";
 import { getLatestAssessmentResult, saveAssessmentResult } from "@/lib/userData";
+import { useI18n } from "@/lib/i18n/config";
+import { updateLocalStudyProgress } from "@/lib/study/localData";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useStudy } from "@/components/study/StudyProvider";
 
 type AssessmentResultSource = "loading" | "remote" | "synced" | "local";
 
 export default function AssessmentResultPage() {
   const { user, configured, loading } = useAuth();
-  const [result, setResult] = useState<AssessmentResult>(getDefaultAssessmentResult());
+  const { studyMode } = useStudy();
+  const { language, t } = useI18n();
+  const [result, setResult] = useState<AssessmentResult>(getDefaultAssessmentResult(language));
   const [source, setSource] = useState<AssessmentResultSource>("loading");
 
   useEffect(() => {
@@ -33,9 +38,9 @@ export default function AssessmentResultPage() {
 
     async function loadResult() {
       const localResult = readAssessmentResultFromStorage();
-      const fallbackResult = localResult ?? getDefaultAssessmentResult();
+      const fallbackResult = localResult ?? getDefaultAssessmentResult(language);
 
-      if (user?.id && configured) {
+      if (!studyMode && user?.id && configured) {
         const remoteResult = await getLatestAssessmentResult(user.id);
 
         if (!active) {
@@ -86,30 +91,43 @@ export default function AssessmentResultPage() {
     });
   }, [result, source]);
 
+  useEffect(() => {
+    if (!studyMode || result.answeredCount === 0) {
+      return;
+    }
+
+    updateLocalStudyProgress({
+      lastVisitedPath: "/assessment/result",
+      lastAssessmentPath: "/assessment/result",
+      lastAssessmentLevel: result.level,
+      lastAssessmentCompletedAt: new Date().toISOString()
+    });
+  }, [result, studyMode]);
+
   return (
     <PageContainer>
       <div className="space-y-5">
         <PageBreadcrumbs items={[
-          { href: "/assessment", label: "← 重新评估" },
-          { href: "/", label: "回到首页" }
+          { href: "/assessment", label: t("assessment.result.retry") },
+          { href: "/", label: t("assessment.result.home") }
         ]} />
         {source === "loading" ? (
-          <Card className="text-sm text-slate-600">正在同步你的评估记录...</Card>
+          <Card className="text-sm text-slate-600">{t("assessment.loading")}</Card>
         ) : null}
         <ResultSummary result={result} />
         {source !== "loading" ? (
           result.answeredCount > 0 ? (
             <div className="flex flex-wrap gap-3">
-              <Link href="/diagnose" onClick={() => logEvent("cta_click", { ctaLabel: "去诊断一个具体问题", ctaLocation: "assessment_result", targetPage: "/diagnose" })}>
-                <Button>去诊断一个具体问题 →</Button>
+              <Link href="/diagnose" onClick={() => logEvent("cta_click", { ctaLabel: t("cta.diagnoseResult"), ctaLocation: "assessment_result", targetPage: "/diagnose" })}>
+                <Button>{t("assessment.result.ctaDiagnose")}</Button>
               </Link>
-              <Link href={`/library?level=${result.level}`} onClick={() => logEvent("cta_click", { ctaLabel: "查看适合你的内容", ctaLocation: "assessment_result", targetPage: "/library" })}>
-                <Button variant="secondary">查看适合你的内容 →</Button>
+              <Link href={`/library?level=${result.level}`} onClick={() => logEvent("cta_click", { ctaLabel: t("cta.viewContent"), ctaLocation: "assessment_result", targetPage: "/library" })}>
+                <Button variant="secondary">{t("assessment.result.ctaLibrary")}</Button>
               </Link>
             </div>
           ) : (
-            <Link href="/assessment" onClick={() => logEvent("cta_click", { ctaLabel: "去完成水平评估", ctaLocation: "assessment_result", targetPage: "/assessment" })}>
-              <Button>去完成水平评估 →</Button>
+            <Link href="/assessment" onClick={() => logEvent("cta_click", { ctaLabel: t("cta.completeAssessment"), ctaLocation: "assessment_result", targetPage: "/assessment" })}>
+              <Button>{t("assessment.result.ctaStart")}</Button>
             </Link>
           )
         ) : null}

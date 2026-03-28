@@ -3,13 +3,15 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { exportLocalLogs, logEvent } from "@/lib/eventLogger";
-import { downloadJsonFile, fetchAllExportRows } from "@/lib/researchData";
+import { buildStudyExportBundle, downloadJsonFile, fetchAllExportRows } from "@/lib/researchData";
 import { ADMIN_EMAILS, isAdminEmail } from "@/lib/researchConfig";
 import { ResearchExportTable } from "@/types/research";
+import { getStudySnapshot } from "@/lib/study/snapshot";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { useAuth } from "@/components/auth/AuthProvider";
 
 function getExportFileName(type: string) {
@@ -22,6 +24,9 @@ export default function AdminExportPage() {
   const { user, loading } = useAuth();
   const [statusMessage, setStatusMessage] = useState("");
   const [pendingKey, setPendingKey] = useState<string | null>(null);
+  const [participantId, setParticipantId] = useState("");
+  const [sessionId, setSessionId] = useState("");
+  const [snapshotId, setSnapshotId] = useState(getStudySnapshot().id);
 
   const allowed = isAdminEmail(user?.email ?? null);
 
@@ -57,6 +62,41 @@ export default function AdminExportPage() {
     downloadJsonFile(getExportFileName("local_events"), exportLocalLogs());
     logEvent("cta_click", { ctaLabel: "导出本地日志", ctaLocation: "admin_export", targetPage: "/admin/export#local_events" });
     setStatusMessage("本地日志已导出。");
+  };
+
+  const handleStudyBundleExport = async () => {
+    setPendingKey("study_bundle");
+    setStatusMessage("");
+
+    const [sessions, artifacts, events] = await Promise.all([
+      fetchAllExportRows("study_sessions"),
+      fetchAllExportRows("study_artifacts"),
+      fetchAllExportRows("event_logs")
+    ]);
+
+    const failed = [sessions, artifacts, events].find((result) => result.error);
+    if (failed?.error) {
+      setPendingKey(null);
+      setStatusMessage(failed.error);
+      return;
+    }
+
+    const bundle = buildStudyExportBundle({
+      snapshot: getStudySnapshot(),
+      sessions: sessions.data,
+      artifacts: artifacts.data,
+      events: events.data,
+      participantId,
+      sessionId,
+      snapshotId
+    });
+
+    downloadJsonFile(
+      getExportFileName("study_bundle"),
+      JSON.stringify(bundle, null, 2)
+    );
+    setPendingKey(null);
+    setStatusMessage("study bundle 已导出。");
   };
 
   if (loading || !allowed) {
@@ -101,6 +141,12 @@ export default function AdminExportPage() {
               <Button variant="secondary" onClick={() => void handleRemoteExport("video_diagnosis_history")} disabled={pendingKey !== null}>
                 {pendingKey === "video_diagnosis_history" ? "导出中..." : "导出视频诊断"}
               </Button>
+              <Button variant="secondary" onClick={() => void handleRemoteExport("study_sessions")} disabled={pendingKey !== null}>
+                {pendingKey === "study_sessions" ? "导出中..." : "导出 study sessions"}
+              </Button>
+              <Button variant="secondary" onClick={() => void handleRemoteExport("study_artifacts")} disabled={pendingKey !== null}>
+                {pendingKey === "study_artifacts" ? "导出中..." : "导出 study artifacts"}
+              </Button>
             </div>
           </Card>
 
@@ -112,6 +158,23 @@ export default function AdminExportPage() {
             </div>
           </Card>
         </div>
+
+        <Card className="space-y-4">
+          <div>
+            <h2 className="text-lg font-bold text-slate-900">研究 bundle 导出</h2>
+            <p className="mt-1 text-sm text-slate-600">按 participant/session/snapshot 聚合导出 study sessions、artifacts 和 events。</p>
+          </div>
+          <div className="grid gap-3 md:grid-cols-3">
+            <Input placeholder="participantId（可选）" value={participantId} onChange={(event) => setParticipantId(event.target.value)} />
+            <Input placeholder="sessionId（可选）" value={sessionId} onChange={(event) => setSessionId(event.target.value)} />
+            <Input placeholder="snapshotId（可选）" value={snapshotId} onChange={(event) => setSnapshotId(event.target.value)} />
+          </div>
+          <div>
+            <Button variant="secondary" onClick={() => void handleStudyBundleExport()} disabled={pendingKey !== null}>
+              {pendingKey === "study_bundle" ? "导出中..." : "导出 study bundle"}
+            </Button>
+          </div>
+        </Card>
 
         {statusMessage ? (
           <div className="rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-700">

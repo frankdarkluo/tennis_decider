@@ -4,6 +4,10 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { getLatestAssessmentResult, getVideoDiagnosisHistory, getVideoUsage, incrementVideoUsage, saveVideoDiagnosisHistory } from "@/lib/userData";
 import { readAssessmentResultFromStorage, writeAssessmentResultToStorage } from "@/lib/assessmentStorage";
+import { useI18n } from "@/lib/i18n/config";
+import { persistStudyArtifact } from "@/lib/study/client";
+import { updateLocalStudyProgress } from "@/lib/study/localData";
+import { sanitizeVideoDiagnosisArtifact } from "@/lib/study/privacy";
 import { extractFramesInBrowser, getVideoLimits, validateVideoFile } from "@/lib/videoFrames";
 import { getFreeVideoLimit, getRemainingVideoTrials, incrementLocalVideoUsage, readLocalVideoUsage } from "@/lib/videoUsage";
 import { logEvent } from "@/lib/eventLogger";
@@ -19,6 +23,7 @@ import { VideoProcessingStatus } from "@/components/video/VideoProcessingStatus"
 import { VideoAnalysisResult } from "@/components/video/VideoAnalysisResult";
 import { UsageMeter } from "@/components/video/UsageMeter";
 import { VideoDiagnosisResult, VideoSceneType, VideoStrokeType } from "@/types/videoDiagnosis";
+import { useStudy } from "@/components/study/StudyProvider";
 
 type UsageState = {
   successCount: number;
@@ -26,22 +31,6 @@ type UsageState = {
   isPro: boolean;
   maxFree: number;
 };
-
-const strokeOptions: Array<{ label: string; value: VideoStrokeType }> = [
-  { label: "不确定", value: "other" },
-  { label: "正手", value: "forehand" },
-  { label: "反手", value: "backhand" },
-  { label: "发球", value: "serve" },
-  { label: "网前 / 截击", value: "volley" }
-];
-
-const sceneOptions: Array<{ label: string; value: VideoSceneType }> = [
-  { label: "不确定", value: "unknown" },
-  { label: "喂球训练", value: "drill" },
-  { label: "对拉 / 相持", value: "rally" },
-  { label: "发球练习", value: "serve_practice" },
-  { label: "比赛片段", value: "match" }
-];
 
 function initialUsageState(): UsageState {
   return {
@@ -55,6 +44,8 @@ function initialUsageState(): UsageState {
 export default function VideoDiagnosePage() {
   const { user, configured, loading } = useAuth();
   const { openLoginModal } = useAuthModal();
+  const { studyMode, session } = useStudy();
+  const { t, language } = useI18n();
   const [file, setFile] = useState<File | null>(null);
   const [description, setDescription] = useState("");
   const [selectedStroke, setSelectedStroke] = useState<VideoStrokeType>("other");
@@ -71,6 +62,20 @@ export default function VideoDiagnosePage() {
 
   const remainingTrials = useMemo(() => getRemainingVideoTrials(usage), [usage]);
   const limits = getVideoLimits();
+  const strokeOptions: Array<{ label: string; value: VideoStrokeType }> = [
+    { label: t("video.option.unknown"), value: "other" },
+    { label: t("video.option.forehand"), value: "forehand" },
+    { label: t("video.option.backhand"), value: "backhand" },
+    { label: t("video.option.serve"), value: "serve" },
+    { label: t("video.option.volley"), value: "volley" }
+  ];
+  const sceneOptions: Array<{ label: string; value: VideoSceneType }> = [
+    { label: t("video.option.scene_unknown"), value: "unknown" },
+    { label: t("video.option.drill"), value: "drill" },
+    { label: t("video.option.rally"), value: "rally" },
+    { label: t("video.option.serve_practice"), value: "serve_practice" },
+    { label: t("video.option.match"), value: "match" }
+  ];
 
   useEffect(() => {
     if (loading) {
@@ -85,7 +90,7 @@ export default function VideoDiagnosePage() {
         setCurrentLevel(localResult.level);
       }
 
-      if (user?.id && configured) {
+      if (!studyMode && user?.id && configured) {
         const [remoteAssessment, remoteUsage, remoteHistory] = await Promise.all([
           getLatestAssessmentResult(user.id),
           getVideoUsage(user.id),
@@ -106,7 +111,9 @@ export default function VideoDiagnosePage() {
         }
 
         if (remoteHistory.data.length > 0) {
-          setHistoryHint(`你最近一次视频诊断是在 ${new Date(remoteHistory.data[0].created_at).toLocaleString("zh-CN")} 完成的。`);
+          setHistoryHint(language === "en"
+            ? `Your most recent video diagnosis was completed on ${new Date(remoteHistory.data[0].created_at).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}.`
+            : `你最近一次视频诊断是在 ${new Date(remoteHistory.data[0].created_at).toLocaleString("zh-CN")} 完成的。`);
         }
 
         return;
@@ -137,7 +144,7 @@ export default function VideoDiagnosePage() {
     }
 
     logEvent("video_upload_start", { fileName: nextFile.name, fileSizeBytes: nextFile.size });
-    const validation = await validateVideoFile(nextFile);
+    const validation = await validateVideoFile(nextFile, language);
 
     if (!validation.ok) {
       logEvent("video_validation_fail", {
@@ -146,7 +153,7 @@ export default function VideoDiagnosePage() {
       });
       setFile(null);
       setMeta(null);
-      setFileError(validation.error ?? "视频校验失败。");
+      setFileError(validation.error ?? (language === "en" ? "Video validation failed." : "视频校验失败。"));
       return;
     }
 
@@ -165,7 +172,7 @@ export default function VideoDiagnosePage() {
   };
 
   const refreshUsage = async (type: "success" | "fail") => {
-    if (user?.id && configured) {
+    if (!studyMode && user?.id && configured) {
       const updateResult = await incrementVideoUsage(user.id, type);
       if (updateResult.error) {
         console.error("[video-diagnose] failed to update usage", updateResult.error);
@@ -188,22 +195,26 @@ export default function VideoDiagnosePage() {
     setResult(null);
 
     if (!file) {
-      setFileError("请先上传一段视频。");
+      setFileError(language === "en" ? "Please upload a video first." : "请先上传一段视频。");
       return;
     }
 
     if (!usage.isPro && remainingTrials !== Number.POSITIVE_INFINITY && remainingTrials <= 0) {
       logEvent("video_limit_reached", { source: user?.id ? "authenticated" : "guest" });
-      setSubmitError("你已用完 3 次免费视频诊断。后续可以升级 Pro，或先继续使用免费的文字诊断。");
+      setSubmitError(language === "en"
+        ? "You have used all 3 free video diagnoses. Upgrade to Pro, or continue using free text diagnosis in the meantime."
+        : "你已用完 3 次免费视频诊断。后续可以升级 Pro，或先继续使用免费的文字诊断。");
       return;
     }
 
     try {
       setProcessingStep("extracting");
-      const frames = await extractFramesInBrowser(file, { frameCount: limits.defaultFrameCount });
+      const frames = await extractFramesInBrowser(file, { frameCount: limits.defaultFrameCount, locale: language });
 
       if (frames.length === 0) {
-        throw new Error("视频抽帧失败，请换一段更清晰的视频后重试。");
+        throw new Error(language === "en"
+          ? "Frame extraction failed. Try a clearer or more standard video file."
+          : "视频抽帧失败，请换一段更清晰的视频后重试。");
       }
 
       setProcessingStep("analyzing");
@@ -232,7 +243,7 @@ export default function VideoDiagnosePage() {
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(typeof data?.message === "string" ? data.message : "视频诊断失败，请稍后重试。");
+        throw new Error(typeof data?.message === "string" ? data.message : (language === "en" ? "Video diagnosis failed. Please try again." : "视频诊断失败，请稍后重试。"));
       }
 
       setProcessingStep("matching");
@@ -246,7 +257,16 @@ export default function VideoDiagnosePage() {
         logEvent("video_retry_recommended", { confidence: nextResult.confidence, reason: nextResult.fallbackReason ?? null });
       }
 
-      if (user?.id && configured) {
+      if (studyMode && session) {
+        await persistStudyArtifact(session, "video_diagnosis", sanitizeVideoDiagnosisArtifact({
+          description,
+          selectedStroke,
+          selectedScene,
+          result: nextResult
+        }));
+        logEvent("study_artifact_save", { artifactType: "video_diagnosis" });
+        updateLocalStudyProgress({ lastVisitedPath: "/video-diagnose" });
+      } else if (user?.id && configured) {
         const saveResult = await saveVideoDiagnosisHistory(user.id, {
           userDescription: description.trim(),
           selectedStroke,
@@ -269,10 +289,10 @@ export default function VideoDiagnosePage() {
       });
 
       setStatusMessage(nextResult.chargeable
-        ? "诊断完成，已计入次数。"
-        : "建议重拍，这次不扣次数。");
+        ? (language === "en" ? "Diagnosis complete. This attempt has been counted." : "诊断完成，已计入次数。")
+        : (language === "en" ? "Please retake the clip. This attempt has not been counted." : "建议重拍，这次不扣次数。"));
     } catch (error) {
-      const message = error instanceof Error ? error.message : "视频诊断失败，请稍后再试。";
+      const message = error instanceof Error ? error.message : (language === "en" ? "Video diagnosis failed. Please try again." : "视频诊断失败，请稍后再试。");
       setSubmitError(message);
       logEvent("video_analysis_fail", { message });
     } finally {
@@ -283,27 +303,28 @@ export default function VideoDiagnosePage() {
   return (
     <PageContainer>
       <div className="space-y-5">
-        <PageBreadcrumbs items={[{ href: "/", label: "← 回到首页" }]} />
+        <PageBreadcrumbs items={[{ href: "/", label: language === "en" ? "← Home" : "← 回到首页" }]} />
+        
 
         <Card className="space-y-4">
           <div className="space-y-2">
-            <p className="text-sm font-semibold text-brand-700">AI 视频诊断</p>
-            <h1 className="text-3xl font-black text-slate-900">上传视频，我来帮你看问题</h1>
-            <p className="max-w-3xl text-sm leading-6 text-slate-600">1 分钟内的片段都可以。</p>
+            <p className="text-sm font-semibold text-brand-700">{t("video.badge")}</p>
+            <h1 className="text-3xl font-black text-slate-900">{t("video.title")}</h1>
+            <p className="max-w-3xl text-sm leading-6 text-slate-600">{t("video.subtitle")}</p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-2xl bg-slate-50 px-4 py-3">
-              <p className="text-sm font-semibold text-slate-900">怎么拍更准</p>
-              <p className="mt-1 text-sm text-slate-600">横屏、侧后方、连续 3-5 拍。</p>
+              <p className="text-sm font-semibold text-slate-900">{t("video.tip.shootTitle")}</p>
+              <p className="mt-1 text-sm text-slate-600">{t("video.tip.shootBody")}</p>
             </div>
             <div className="rounded-2xl bg-slate-50 px-4 py-3">
-              <p className="text-sm font-semibold text-slate-900">拍什么都行</p>
-              <p className="mt-1 text-sm text-slate-600">喂球、对拉、发球、比赛都行。</p>
+              <p className="text-sm font-semibold text-slate-900">{t("video.tip.sceneTitle")}</p>
+              <p className="mt-1 text-sm text-slate-600">{t("video.tip.sceneBody")}</p>
             </div>
             <div className="rounded-2xl bg-slate-50 px-4 py-3">
-              <p className="text-sm font-semibold text-slate-900">这次能看什么</p>
-              <p className="mt-1 text-sm text-slate-600">重点看动作问题和下一步。</p>
+              <p className="text-sm font-semibold text-slate-900">{t("video.tip.resultTitle")}</p>
+              <p className="mt-1 text-sm text-slate-600">{t("video.tip.resultBody")}</p>
             </div>
           </div>
         </Card>
@@ -313,9 +334,9 @@ export default function VideoDiagnosePage() {
         <div className="grid gap-5 xl:grid-cols-[0.95fr_1.05fr]">
           <Card className="space-y-5">
             <div>
-              <h2 className="text-lg font-bold text-slate-900">上传视频</h2>
+              <h2 className="text-lg font-bold text-slate-900">{t("video.upload.title")}</h2>
               <p className="mt-1 text-sm text-slate-600">
-                建议 {limits.maxVideoDurationSeconds} 秒内、{limits.maxVideoSizeMb}MB 内。
+                {t("video.upload.subtitle", { duration: limits.maxVideoDurationSeconds, size: limits.maxVideoSizeMb })}
               </p>
             </div>
 
@@ -323,7 +344,7 @@ export default function VideoDiagnosePage() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="space-y-2">
-                <span className="text-sm font-semibold text-slate-900">想看哪一拍？</span>
+                <span className="text-sm font-semibold text-slate-900">{t("video.stroke")}</span>
                 <select
                   className="min-h-11 w-full rounded-xl border border-[var(--line)] bg-white px-4 py-2 text-sm"
                   value={selectedStroke}
@@ -336,7 +357,7 @@ export default function VideoDiagnosePage() {
               </label>
 
               <label className="space-y-2">
-                <span className="text-sm font-semibold text-slate-900">这是什么场景？</span>
+                <span className="text-sm font-semibold text-slate-900">{t("video.scene")}</span>
                 <select
                   className="min-h-11 w-full rounded-xl border border-[var(--line)] bg-white px-4 py-2 text-sm"
                   value={selectedScene}
@@ -350,9 +371,9 @@ export default function VideoDiagnosePage() {
             </div>
 
             <label className="space-y-2">
-              <span className="text-sm font-semibold text-slate-900">可选：补一句感觉</span>
+              <span className="text-sm font-semibold text-slate-900">{t("video.description")}</span>
               <Input
-                placeholder="例如：正手总晚点，越发力越容易飞"
+                placeholder={t("video.descriptionPlaceholder")}
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
                 disabled={Boolean(processingStep)}
@@ -360,29 +381,29 @@ export default function VideoDiagnosePage() {
             </label>
 
             <div className="rounded-2xl border border-brand-100 bg-brand-50/70 px-4 py-4 text-sm leading-6 text-slate-700">
-              <p>会参考你的评估结果。</p>
+              <p>{t("video.assessment.title")}</p>
               <p className="mt-1">
-                当前等级：{currentLevel ?? "尚未评估"}。
-                {currentLevel ? "" : "先做 1 分钟评估会更准。"}
+                {t("video.assessment.level", { value: currentLevel ?? (language === "en" ? "Not assessed yet" : "尚未评估") })}
+                {!currentLevel ? (language === "en" ? " Taking the assessment first will make this more precise." : "先做 1 分钟评估会更准。") : ""}
               </p>
               {!currentLevel ? (
                 <div className="mt-3">
-                  <Link href="/assessment"><Button variant="secondary">先做评估</Button></Link>
+                  <Link href="/assessment"><Button variant="secondary">{t("video.assessment.cta")}</Button></Link>
                 </div>
               ) : null}
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
               <Button type="button" onClick={() => void handleAnalyze()} disabled={!file || Boolean(processingStep)}>
-                {processingStep ? "诊断中..." : "开始视频诊断"}
+                {processingStep ? t("video.button.running") : t("video.button.start")}
               </Button>
-              {!user ? (
+              {!studyMode && !user ? (
                 <button
                   type="button"
                   className="text-sm font-medium text-slate-500 transition hover:text-brand-700"
-                  onClick={() => openLoginModal("登录后可同步保存视频诊断记录", "profile")}
+                  onClick={() => openLoginModal(language === "en" ? "Sign in to save your video diagnosis records" : "登录后可同步保存视频诊断记录", "profile")}
                 >
-                  登录后自动保存记录
+                  {t("video.loginHint")}
                 </button>
               ) : null}
             </div>
@@ -410,15 +431,26 @@ export default function VideoDiagnosePage() {
             <VideoAnalysisResult result={result} />
           ) : (
             <Card className="space-y-4">
-              <p className="text-sm font-semibold text-brand-700">结果会在这里</p>
-              <h2 className="text-xl font-bold text-slate-900">先上传视频，我会给你问题、内容和计划</h2>
+              <p className="text-sm font-semibold text-brand-700">{t("video.empty.badge")}</p>
+              <h2 className="text-xl font-bold text-slate-900">{t("video.empty.title")}</h2>
               <div className="space-y-3 text-sm leading-6 text-slate-600">
-                <p>回答要点:</p>
+                <p>{t("video.empty.bullets")}</p>
                 <ul className="list-disc space-y-1 pl-5">
-                  <li>最先要改什么</li>
-                  <li>更像击球点、准备、脚步还是节奏</li>
-                  <li>先看什么、先跟谁学</li>
-                  <li>接下来怎么练</li>
+                  {language === "en" ? (
+                    <>
+                      <li>What to fix first</li>
+                      <li>Whether it looks more like contact, preparation, footwork, or timing</li>
+                      <li>What to watch next and who to learn from</li>
+                      <li>What to practice next</li>
+                    </>
+                  ) : (
+                    <>
+                      <li>最先要改什么</li>
+                      <li>更像击球点、准备、脚步还是节奏</li>
+                      <li>先看什么、先跟谁学</li>
+                      <li>接下来怎么练</li>
+                    </>
+                  )}
                 </ul>
               </div>
             </Card>

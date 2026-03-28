@@ -1,17 +1,25 @@
 export type ContentType = "video" | "article" | "post";
 export type ContentPlatform = "Bilibili" | "Xiaohongshu" | "Zhihu" | "YouTube" | "Instagram";
+export type ContentLanguageCode = "zh" | "en";
+export type ContentSubtitleAvailability = "english" | "none" | "unknown" | "not_needed";
 
 export type ContentItem = {
   id: string;
   title: string;
   sourceTitle?: string;
+  originalTitle?: string;
+  displayTitleZh?: string;
+  displayTitleEn?: string;
+  focusLineEn?: string;
   creatorId: string;
   platform: ContentPlatform;
   type: ContentType;
   levels: string[];
   skills: string[];
   problemTags: string[];
-  language: "zh" | "en";
+  language: ContentLanguageCode;
+  contentLanguage?: ContentLanguageCode;
+  subtitleAvailability?: ContentSubtitleAvailability;
   summary: string;
   reason: string;
   useCases: string[];

@@ -1,5 +1,11 @@
 import { AssessmentResult } from "@/types/assessment";
 import { Card } from "@/components/ui/Card";
+import { useI18n } from "@/lib/i18n/config";
+import {
+  getAssessmentFallbackStrength,
+  getAssessmentFallbackWeakness,
+  translateAssessmentLabel
+} from "@/lib/assessment";
 
 function uniqLabels(labels: string[]) {
   return Array.from(new Set(labels));
@@ -34,29 +40,41 @@ function pickDisplayWeaknesses(result: AssessmentResult) {
 }
 
 export function ResultSummary({ result }: { result: AssessmentResult }) {
+  const { language, t } = useI18n();
+
   if (result.answeredCount === 0) {
     return (
       <Card className="space-y-2">
-        <h1 className="text-2xl font-black text-slate-900">先完成一次水平评估</h1>
-        <p className="text-slate-600">做完后，我们会直接告诉你大概处在哪个能力区间，以及接下来更值得优先补哪一块。</p>
+        <h1 className="text-2xl font-black text-slate-900">{t("assessment.empty.title")}</h1>
+        <p className="text-slate-600">{t("assessment.empty.subtitle")}</p>
       </Card>
     );
   }
 
   const strengths = pickDisplayStrengths(result);
   const weaknesses = pickDisplayWeaknesses(result);
-  const strengthText = strengths.length > 0 ? strengths.join("和") : "基础稳定性";
-  const weaknessText = weaknesses.length > 0 ? weaknesses.join("、") : "比赛中的下一拍处理";
+  const localizedStrengths = strengths.map((label) => translateAssessmentLabel(label, language));
+  const localizedWeaknesses = weaknesses.map((label) => translateAssessmentLabel(label, language));
+  const listFormatter = new Intl.ListFormat(language === "en" ? "en" : "zh-CN", {
+    style: "long",
+    type: "conjunction"
+  });
+  const strengthText = localizedStrengths.length > 0
+    ? listFormatter.format(localizedStrengths)
+    : getAssessmentFallbackStrength(language);
+  const weaknessText = localizedWeaknesses.length > 0
+    ? listFormatter.format(localizedWeaknesses)
+    : getAssessmentFallbackWeakness(language);
 
   return (
     <Card className="space-y-4">
-      <h1 className="text-2xl font-black text-slate-900">你的能力区间接近 {result.level}</h1>
+      <h1 className="text-2xl font-black text-slate-900">{t("assessment.result.headline")} {result.level}</h1>
       <div className="space-y-3 rounded-2xl bg-[var(--surface-soft)] p-4">
         <p className="text-base font-semibold text-slate-900">
-          你的 {strengthText} 比较强
+          {t("assessment.result.strength", { value: strengthText })}
         </p>
         <p className="text-base text-slate-700">
-          可以重点提升：{weaknessText}
+          {t("assessment.result.weakness", { value: weaknessText })}
         </p>
       </div>
     </Card>

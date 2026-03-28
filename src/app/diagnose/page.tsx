@@ -12,7 +12,11 @@ import {
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
 import { logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
+import { persistStudyArtifact } from "@/lib/study/client";
+import { sanitizeDiagnosisArtifact } from "@/lib/study/privacy";
 import { getLatestAssessmentResult, saveDiagnosisHistory } from "@/lib/userData";
+import { updateLocalStudyProgress } from "@/lib/study/localData";
 import { AssessmentResult } from "@/types/assessment";
 import { DiagnosisResult } from "@/types/diagnosis";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -20,10 +24,13 @@ import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { DiagnoseInput } from "@/components/diagnose/DiagnoseInput";
 import { DiagnoseResult as DiagnoseResultPanel } from "@/components/diagnose/DiagnoseResult";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useStudy } from "@/components/study/StudyProvider";
 
 function DiagnosePageContent() {
   const searchParams = useSearchParams();
   const { user, configured, loading } = useAuth();
+  const { session, studyMode, language } = useStudy();
+  const { t } = useI18n();
   const [text, setText] = useState("");
   const [currentLevel, setCurrentLevel] = useState<string | undefined>(undefined);
   const [assessmentResult, setAssessmentResult] = useState<AssessmentResult | null>(null);
@@ -32,7 +39,7 @@ function DiagnosePageContent() {
   const handledQueryRef = useRef<string | null>(null);
 
   const previewOptions = getProblemPreviewOptions();
-  const quickTags = previewOptions.map((item) => item.label);
+  const quickTags = previewOptions.map((item) => language === "en" ? item.label_en : item.label);
   const hasDiagnosed = Boolean(result.input.trim());
 
   const runDiagnosis = async (nextText: string, inputSource: "typed" | "tag_click" = "typed") => {
@@ -41,15 +48,19 @@ function DiagnosePageContent() {
     setText(nextText);
 
     if (!trimmedText) {
-      setResult(getDefaultDiagnosisResult(currentLevel));
+      setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
       return;
     }
 
-    logEvent("diagnosis_submit", { inputText: trimmedText, inputSource });
+    logEvent("diagnosis_submit", {
+      ...(studyMode ? { inputLength: trimmedText.length } : { inputText: trimmedText }),
+      inputSource
+    });
 
     const diagnosisResult = diagnoseProblem(trimmedText, {
       level: currentLevel,
-      assessmentResult
+      assessmentResult,
+      locale: language
     });
 
     if (inputSource === "tag_click") {
@@ -65,13 +76,16 @@ function DiagnosePageContent() {
         contentCount: diagnosisResult.recommendedContents.length
       });
     } else {
-      logEvent("diagnosis_no_match", {
-        inputText: trimmedText,
-        fallbackType: diagnosisResult.fallbackMode ?? "generic"
-      });
+      logEvent("diagnosis_no_match", studyMode
+        ? { inputLength: trimmedText.length, fallbackType: diagnosisResult.fallbackMode ?? "generic" }
+        : { inputText: trimmedText, fallbackType: diagnosisResult.fallbackMode ?? "generic" });
     }
 
-    if (user?.id && configured) {
+    if (studyMode && session) {
+      await persistStudyArtifact(session, "diagnosis", sanitizeDiagnosisArtifact(trimmedText, diagnosisResult));
+      logEvent("study_artifact_save", { artifactType: "diagnosis" });
+      updateLocalStudyProgress({ lastVisitedPath: "/diagnose" });
+    } else if (user?.id && configured) {
       const saveResult = await saveDiagnosisHistory(user.id, trimmedText, diagnosisResult);
       if (saveResult.error) {
         console.error("[diagnose] failed to save diagnosis history", saveResult.error);
@@ -96,7 +110,7 @@ function DiagnosePageContent() {
       let nextLevel = localResult?.level;
       let nextAssessmentResult = localResult ?? null;
 
-      if (user?.id && configured) {
+      if (!studyMode && user?.id && configured) {
         const remoteResult = await getLatestAssessmentResult(user.id);
 
         if (!active) {
@@ -116,7 +130,7 @@ function DiagnosePageContent() {
 
       setCurrentLevel(nextLevel);
       setAssessmentResult(nextAssessmentResult);
-      setResult(getDefaultDiagnosisResult(nextLevel));
+      setResult(getDefaultDiagnosisResult(nextLevel, undefined, undefined, language));
       setContextReady(true);
     }
 
@@ -147,7 +161,7 @@ function DiagnosePageContent() {
 
   const onClear = () => {
     setText("");
-    setResult(getDefaultDiagnosisResult(currentLevel));
+    setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
   };
 
   return (
@@ -155,19 +169,19 @@ function DiagnosePageContent() {
       <div className="space-y-5">
         {hasDiagnosed ? (
           <PageBreadcrumbs items={[
-            { href: "/diagnose", label: "← 重新诊断" },
-            { href: "/", label: "回到首页" }
+            { href: "/diagnose", label: language === "en" ? "← Diagnose again" : "← 重新诊断" },
+            { href: "/", label: language === "en" ? "Back home" : "回到首页" }
           ]} />
         ) : null}
         <div>
-          <h1 className="text-3xl font-black text-slate-900">说一句你的问题</h1>
-          <p className="mt-2 text-slate-600">我来帮你判断先改什么。</p>
+          <h1 className="text-3xl font-black text-slate-900">{t("diagnose.title")}</h1>
+          <p className="mt-2 text-slate-600">{t("diagnose.subtitle")}</p>
         </div>
 
         <DiagnoseInput
           value={text}
           quickTags={quickTags}
-          quickTagsLabel="也可以直接点："
+          quickTagsLabel={t("diagnose.quickTags")}
           onChange={setText}
           onDiagnose={onDiagnose}
           onClear={onClear}
@@ -182,7 +196,7 @@ function DiagnosePageContent() {
 
 export default function DiagnosePage() {
   return (
-    <Suspense fallback={<PageContainer><p className="text-slate-600">正在加载诊断页...</p></PageContainer>}>
+    <Suspense fallback={<PageContainer><p className="text-slate-600">Loading...</p></PageContainer>}>
       <DiagnosePageContent />
     </Suspense>
   );

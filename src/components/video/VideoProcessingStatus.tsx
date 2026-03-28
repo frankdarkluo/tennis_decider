@@ -1,33 +1,36 @@
+"use client";
+
 import { Card } from "@/components/ui/Card";
+import { useI18n } from "@/lib/i18n/config";
 
 type VideoProcessingStep = "extracting" | "analyzing" | "matching";
 
-const steps: Array<{ key: VideoProcessingStep; title: string; description: string }> = [
-  {
-    key: "extracting",
-    title: "正在取关键帧",
-    description: "先取几个关键动作。"
-  },
-  {
-    key: "analyzing",
-    title: "正在看动作",
-    description: "重点看击球点、脚步和挥拍。"
-  },
-  {
-    key: "matching",
-    title: "正在配内容和计划",
-    description: "把结果映射到内容和计划。"
-  }
-];
-
 export function VideoProcessingStatus({ step }: { step: VideoProcessingStep }) {
+  const { t } = useI18n();
+  const steps: Array<{ key: VideoProcessingStep; title: string; description: string }> = [
+    {
+      key: "extracting",
+      title: t("video.processing.extracting.title"),
+      description: t("video.processing.extracting.body")
+    },
+    {
+      key: "analyzing",
+      title: t("video.processing.analyzing.title"),
+      description: t("video.processing.analyzing.body")
+    },
+    {
+      key: "matching",
+      title: t("video.processing.matching.title"),
+      description: t("video.processing.matching.body")
+    }
+  ];
   const currentIndex = steps.findIndex((item) => item.key === step);
 
   return (
     <Card className="space-y-4">
       <div>
-        <p className="text-sm font-semibold text-brand-700">视频诊断中</p>
-        <h2 className="mt-1 text-xl font-bold text-slate-900">大约 10-20 秒</h2>
+        <p className="text-sm font-semibold text-brand-700">{t("video.processing.badge")}</p>
+        <h2 className="mt-1 text-xl font-bold text-slate-900">{t("video.processing.title")}</h2>
       </div>
 
       <div className="space-y-3">
@@ -43,7 +46,7 @@ export function VideoProcessingStatus({ step }: { step: VideoProcessingStep }) {
               }`}
             >
               <p className="text-sm font-semibold text-slate-900">
-                {completed ? "已完成" : active ? "进行中" : "待执行"} · {item.title}
+                {completed ? t("video.status.done") : active ? t("video.status.current") : t("video.status.todo")} · {item.title}
               </p>
               <p className="mt-1 text-sm text-slate-600">{item.description}</p>
             </div>

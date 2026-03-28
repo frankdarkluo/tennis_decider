@@ -1,6 +1,7 @@
 "use client";
 
 import { getSupabaseBrowserClient } from "@/lib/supabase";
+import { StudySession } from "@/types/study";
 import { EventLog, EventType } from "@/types/research";
 
 const LOCAL_EVENT_LOGS_KEY = "tennislevel_events";
@@ -9,6 +10,7 @@ const MAX_LOCAL_EVENTS = 500;
 
 let currentUserId: string | null = null;
 let currentPage = "/";
+let currentStudySession: StudySession | null = null;
 const pageEnterTimestamps = new Map<string, number>();
 
 function createId() {
@@ -71,7 +73,7 @@ function getCurrentPath() {
 function persistRemoteLog(event: EventLog) {
   const supabase = getSupabaseBrowserClient();
 
-  if (!supabase || !event.userId) {
+  if (!supabase || !event.userId || event.studyMode) {
     return;
   }
 
@@ -80,11 +82,38 @@ function persistRemoteLog(event: EventLog) {
       await supabase.from("event_logs").insert({
         session_id: event.sessionId,
         user_id: event.userId,
+        participant_id: event.participantId,
+        study_mode: event.studyMode,
+        language: event.language,
+        condition: event.condition,
+        snapshot_id: event.snapshotId,
+        snapshot_seed: event.snapshotSeed,
+        build_version: event.buildVersion,
         timestamp: event.timestamp,
         page: event.page,
         event_type: event.eventType,
         event_data: event.eventData,
         duration_ms: event.durationMs
+      });
+    } catch {
+      return;
+    }
+  })();
+}
+
+function persistStudyLog(event: EventLog) {
+  if (!event.studyMode) {
+    return;
+  }
+
+  void (async () => {
+    try {
+      await fetch("/api/study/event", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ event })
       });
     } catch {
       return;
@@ -103,6 +132,10 @@ export function initEventLogger() {
 }
 
 export function getEventSessionId() {
+  if (currentStudySession?.sessionId) {
+    return currentStudySession.sessionId;
+  }
+
   if (!isBrowser()) {
     return "server-session";
   }
@@ -113,6 +146,10 @@ export function getEventSessionId() {
 
 export function setEventLoggerUser(userId: string | null) {
   currentUserId = userId;
+}
+
+export function setEventLoggerStudySession(session: StudySession | null) {
+  currentStudySession = session;
 }
 
 export function setEventLoggerPage(page: string) {
@@ -134,6 +171,13 @@ export function logEvent(
     eventId: createId(),
     sessionId: getEventSessionId(),
     userId: currentUserId,
+    participantId: currentStudySession?.participantId ?? null,
+    studyMode: Boolean(currentStudySession),
+    language: currentStudySession?.language ?? null,
+    condition: currentStudySession?.condition ?? null,
+    snapshotId: currentStudySession?.snapshotId ?? null,
+    snapshotSeed: currentStudySession?.snapshotSeed ?? null,
+    buildVersion: currentStudySession?.buildVersion ?? null,
     timestamp: new Date().toISOString(),
     page: options.page ?? currentPage ?? getCurrentPath(),
     eventType,
@@ -142,7 +186,10 @@ export function logEvent(
   };
 
   appendLocalLog(event);
-  queueMicrotask(() => persistRemoteLog(event));
+  queueMicrotask(() => {
+    persistRemoteLog(event);
+    persistStudyLog(event);
+  });
 }
 
 export function logPageEnter(page: string): void {

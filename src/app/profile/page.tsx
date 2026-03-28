@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { contents } from "@/data/contents";
 import { logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
+import { readLocalStudyArtifacts, readLocalStudyBookmarks, readLocalStudyProgress } from "@/lib/study/localData";
 import {
   getBookmarkedContentIds,
   getDiagnosisHistory,
@@ -19,10 +21,25 @@ import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
+import { useStudy } from "@/components/study/StudyProvider";
 import { ContentCard } from "@/components/library/ContentCard";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { StudyArtifactRecord, StudyProgressState } from "@/types/study";
+
+const studyLanguageLabelKey = {
+  zh: "profile.studyLanguageValue.zh",
+  en: "profile.studyLanguageValue.en"
+} as const;
+
+const studyArtifactLabelKey = {
+  assessment: "profile.studyArtifact.assessment",
+  diagnosis: "profile.studyArtifact.diagnosis",
+  video_diagnosis: "profile.studyArtifact.video_diagnosis",
+  plan: "profile.studyArtifact.plan",
+  survey: "profile.studyArtifact.survey"
+} as const;
 
 function SectionSkeleton({ lines = 3 }: { lines?: number }) {
   return (
@@ -78,6 +95,8 @@ function toPlanSourceLabel(sourceType: SavedPlanRow["source_type"]) {
 export default function ProfilePage() {
   const { user, loading, configured } = useAuth();
   const { openLoginModal } = useAuthModal();
+  const { session, studyMode } = useStudy();
+  const { t } = useI18n();
 
   const [assessmentLoading, setAssessmentLoading] = useState(true);
   const [historyLoading, setHistoryLoading] = useState(true);
@@ -92,6 +111,19 @@ export default function ProfilePage() {
   const [savedPlans, setSavedPlans] = useState<SavedPlanRow[]>([]);
   const [expandedPlanId, setExpandedPlanId] = useState<string | null>(null);
   const [bookmarkPendingId, setBookmarkPendingId] = useState<string | null>(null);
+  const [studyArtifacts, setStudyArtifacts] = useState<StudyArtifactRecord[]>([]);
+  const [studyBookmarkIds, setStudyBookmarkIds] = useState<string[]>([]);
+  const [studyProgress, setStudyProgress] = useState<StudyProgressState | null>(null);
+
+  useEffect(() => {
+    if (!studyMode) {
+      return;
+    }
+
+    setStudyArtifacts(readLocalStudyArtifacts());
+    setStudyBookmarkIds(readLocalStudyBookmarks().contentIds);
+    setStudyProgress(readLocalStudyProgress());
+  }, [studyMode, session?.sessionId]);
 
   useEffect(() => {
     if (loading || !user?.id || !configured) {
@@ -239,6 +271,119 @@ export default function ProfilePage() {
           <SectionSkeleton lines={2} />
           <SectionSkeleton lines={4} />
           <SectionSkeleton lines={4} />
+        </div>
+      </PageContainer>
+    );
+  }
+
+  if (studyMode && session) {
+    const artifactSummary = studyArtifacts.reduce<Record<string, number>>((acc, artifact) => {
+      acc[artifact.artifactType] = (acc[artifact.artifactType] ?? 0) + 1;
+      return acc;
+    }, {});
+
+    return (
+      <PageContainer>
+        <div className="space-y-5">
+          <PageBreadcrumbs items={[{ href: "/", label: session.language === "en" ? "← Back home" : "← 回到首页" }]} />
+          <div className="rounded-3xl border border-[var(--line)] bg-white p-6 shadow-soft">
+            <div className="flex flex-wrap items-center gap-3">
+              <div>
+                <p className="text-sm font-semibold text-brand-700">{t("profile.studyBadge")}</p>
+                <h1 className="mt-1 text-2xl font-black text-slate-900">{t("profile.studySession")}</h1>
+              </div>
+              <Badge className="h-fit">{t(studyLanguageLabelKey[session.language])}</Badge>
+            </div>
+            <p className="mt-3 text-sm text-slate-600">{t("profile.studySubtitle")}</p>
+          </div>
+
+          <div className="grid gap-5 xl:grid-cols-2">
+            <Card className="space-y-4">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">{t("profile.studyParticipant")}</p>
+                  <p className="mt-1 text-sm text-slate-600">{session.participantId}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">Session ID</p>
+                  <p className="mt-1 break-all text-sm text-slate-600">{session.sessionId}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">{t("profile.studySnapshot")}</p>
+                  <p className="mt-1 text-sm text-slate-600">{session.snapshotId}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">{t("profile.studyBuild")}</p>
+                  <p className="mt-1 text-sm text-slate-600">{session.buildVersion}</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="space-y-4">
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div className="rounded-xl bg-slate-50 px-4 py-3">
+                  <p className="text-xs font-semibold text-slate-500">{t("profile.studyArtifacts")}</p>
+                  <p className="mt-1 text-lg font-bold text-slate-900">{studyArtifacts.length}</p>
+                </div>
+                <div className="rounded-xl bg-slate-50 px-4 py-3">
+                  <p className="text-xs font-semibold text-slate-500">{t("profile.studyBookmarks")}</p>
+                  <p className="mt-1 text-lg font-bold text-slate-900">{studyBookmarkIds.length}</p>
+                </div>
+                <div className="rounded-xl bg-slate-50 px-4 py-3">
+                  <p className="text-xs font-semibold text-slate-500">{t("profile.studyLast")}</p>
+                  <p className="mt-1 truncate text-sm font-medium text-slate-900">{studyProgress?.lastVisitedPath ?? "/"}</p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {studyProgress?.lastVisitedPath ? (
+                  <Link href={studyProgress.lastVisitedPath}>
+                    <Button>{t("profile.studyResume")}</Button>
+                  </Link>
+                ) : null}
+                {studyProgress?.lastPlanHref ? (
+                  <Link href={studyProgress.lastPlanHref}>
+                    <Button variant="secondary">{t("profile.studyContinuePlan")}</Button>
+                  </Link>
+                ) : null}
+                {studyProgress?.lastAssessmentPath ? (
+                  <Link href={studyProgress.lastAssessmentPath}>
+                    <Button variant="secondary">{t("profile.studyContinueAssessment")}</Button>
+                  </Link>
+                ) : null}
+                <Link href="/study/end">
+                  <Button variant="ghost">{t("profile.studyEnd")}</Button>
+                </Link>
+              </div>
+            </Card>
+
+            <Card className="space-y-4">
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">{t("profile.studyArtifacts")}</h2>
+                <p className="mt-1 text-sm text-slate-600">{t("profile.studySubtitle")}</p>
+              </div>
+              <div className="space-y-2">
+                {(["assessment", "diagnosis", "video_diagnosis", "plan", "survey"] as const).map((type) => (
+                  <div key={type} className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3">
+                    <span className="text-sm font-medium text-slate-700">{t(studyArtifactLabelKey[type])}</span>
+                    <span className="text-sm font-semibold text-slate-900">{artifactSummary[type] ?? 0}</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            <Card className="space-y-4">
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">{t("profile.studyContinuePlan")}</h2>
+                <p className="mt-1 text-sm text-slate-600">
+                  {studyProgress?.lastPlanTitle ?? t("profile.studyNoPlan")}
+                </p>
+              </div>
+              <div className="space-y-2 text-sm text-slate-600">
+                <p>{studyProgress?.lastAssessmentLevel ? `${t("assessment.result.headline")} ${studyProgress.lastAssessmentLevel}` : t("profile.studyNoAssessment")}</p>
+              </div>
+            </Card>
+          </div>
         </div>
       </PageContainer>
     );

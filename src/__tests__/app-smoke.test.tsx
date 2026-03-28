@@ -14,7 +14,30 @@ import SurveyPage from "@/app/survey/page";
 import { assessmentQuestions } from "@/data/assessmentQuestions";
 import { calculateSUS } from "@/lib/survey";
 
-const mockPush = vi.fn();
+const { mockPush, mockRedirect, translationMap } = vi.hoisted(() => ({
+  mockPush: vi.fn(),
+  mockRedirect: vi.fn(),
+  translationMap: {
+    "home.hero.title": "一句话，帮你找到下一步该练什么",
+    "assessment.title": "1 分钟测一下你的水平",
+    "diagnose.placeholder": "例如：我反手总下网，一快就更容易失误",
+    "library.title": "找内容",
+    "library.more": "查看更多",
+    "content.openAria": "打开视频：{value}",
+    "video.title": "上传视频，我来帮你看问题",
+    "rankings.title": "博主榜",
+    "rankings.searchAria": "搜索博主",
+    "rankings.detail": "查看详情",
+    "plan.title": "你的 7 天提升计划",
+    "plan.supporting": "这 7 天先练这一件事",
+    "plan.day.today": "今天",
+    "profile.loginTitle": "登录后查看你的记录",
+    "survey.title": "TennisLevel 使用体验问卷",
+    "survey.part.sus.title": "Part 2：SUS 系统可用性量表",
+    "modal.close": "关闭"
+  } satisfies Record<string, string>
+}));
+
 let mockSearchParams = new URLSearchParams();
 const mockSearchParamsAdapter = {
   get: (key: string) => mockSearchParams.get(key)
@@ -38,7 +61,8 @@ vi.mock("next/navigation", () => ({
     replace: vi.fn(),
     prefetch: vi.fn()
   }),
-  useSearchParams: () => mockSearchParamsAdapter
+  useSearchParams: () => mockSearchParamsAdapter,
+  redirect: mockRedirect
 }));
 
 vi.mock("@/components/auth/AuthProvider", () => ({
@@ -60,11 +84,34 @@ vi.mock("@/components/auth/AuthModalProvider", () => ({
   AuthModalProvider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children)
 }));
 
+vi.mock("@/components/study/StudyProvider", () => ({
+  useStudy: () => ({
+    session: null,
+    studyMode: false,
+    language: "zh",
+    loading: false,
+    startStudySession: vi.fn(),
+    endStudySession: vi.fn(),
+    clearStudyData: vi.fn()
+  }),
+  StudyProvider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children)
+}));
+
+vi.mock("@/lib/i18n/config", () => ({
+  useI18n: () => ({
+    language: "zh",
+    studyMode: false,
+    t: (key: string) => translationMap[key] ?? key
+  }),
+  I18nProvider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children)
+}));
+
 describe("app smoke tests", () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     mockPush.mockReset();
+    mockRedirect.mockReset();
     mockSearchParams = new URLSearchParams();
     window.localStorage.clear();
     consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
@@ -145,7 +192,7 @@ describe("app smoke tests", () => {
     render(React.createElement(LibraryPage));
 
     expect(await screen.findByText("找内容")).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /打开视频：/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: /打开视频：|Open video:/i }).length).toBeGreaterThan(0);
     expect(screen.getByText("查看更多")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
@@ -191,11 +238,10 @@ describe("app smoke tests", () => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("renders study page and shows consent modal on first visit", async () => {
+  it("redirects /study to /study/start", async () => {
     render(React.createElement(StudyPage));
 
-    expect(await screen.findByText("欢迎参加 TennisLevel 用户体验测试")).toBeInTheDocument();
-    expect(screen.getByText("用户体验研究知情同意书")).toBeInTheDocument();
+    expect(mockRedirect).toHaveBeenCalledWith("/study/start");
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 

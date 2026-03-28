@@ -8,22 +8,29 @@ import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
 import { logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
+import { useStudy } from "@/components/study/StudyProvider";
+import { StudyLanguage } from "@/types/study";
 
-const navItems = [
-  { href: "/", label: "首页" },
-  { href: "/assessment", label: "水平评估" },
-  { href: "/diagnose", label: "问题诊断" },
-  { href: "/video-diagnose", label: "视频诊断" },
-  { href: "/library", label: "内容库" },
-  { href: "/rankings", label: "博主榜" },
-  { href: "/plan", label: "训练计划" }
+type NavKey = "nav.home" | "nav.assessment" | "nav.diagnose" | "nav.videoDiagnose" | "nav.library" | "nav.rankings" | "nav.plan";
+
+const navItemDefs: { href: string; labelKey: NavKey }[] = [
+  { href: "/", labelKey: "nav.home" },
+  { href: "/assessment", labelKey: "nav.assessment" },
+  { href: "/diagnose", labelKey: "nav.diagnose" },
+  { href: "/video-diagnose", labelKey: "nav.videoDiagnose" },
+  { href: "/library", labelKey: "nav.library" },
+  { href: "/rankings", labelKey: "nav.rankings" },
+  { href: "/plan", labelKey: "nav.plan" }
 ];
 
 export function Header() {
   const pathname = usePathname();
   const { user, loading, signOut } = useAuth();
   const { openLoginModal } = useAuthModal();
+  const { language, t, setLanguage, canChangeLanguage } = useI18n();
+  const { studyMode } = useStudy();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
@@ -38,13 +45,52 @@ export function Header() {
     }
   }
 
+  function handleLanguageChange(nextLanguage: StudyLanguage) {
+    if (language === nextLanguage || !canChangeLanguage) {
+      return;
+    }
+
+    logEvent("language_switch", { from: language, to: nextLanguage });
+    setLanguage(nextLanguage);
+    setMobileNavOpen(false);
+  }
+
+  const languageToggle = (
+    <div
+      className="inline-flex items-center gap-0.5"
+      role="group"
+      aria-label={t("nav.languageLabel")}
+      title={canChangeLanguage ? undefined : t("nav.languageLocked")}
+    >
+      {(["zh", "en"] as const).map((option, index) => (
+        <div key={option} className="flex items-center">
+          {index > 0 ? <span className="text-[11px] text-slate-300">/</span> : null}
+          <button
+            type="button"
+            className={cn(
+              "rounded-md px-1.5 py-1 text-xs font-medium uppercase transition",
+              language === option ? "text-brand-600" : "text-slate-400 hover:text-slate-600",
+              !canChangeLanguage && "cursor-not-allowed opacity-50"
+            )}
+            aria-pressed={language === option}
+            aria-label={option === "zh" ? t("nav.languageOptionZh") : t("nav.languageOptionEn")}
+            disabled={!canChangeLanguage}
+            onClick={() => handleLanguageChange(option)}
+          >
+            {option}
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-white/90 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-[1480px] items-center justify-between gap-2 px-4 py-3 md:px-6">
+    <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-white/80 shadow-sm backdrop-blur-md">
+      <div className="mx-auto flex w-full max-w-[1480px] items-center justify-between gap-2 px-4 py-2.5 md:px-6 lg:gap-3">
         <Link
           href="/"
-          aria-label="返回 TennisLevel 首页"
-          className="inline-flex min-h-14 w-[150px] shrink-0 items-center justify-start rounded-2xl border border-transparent px-2 py-1.5 transition hover:border-brand-100 hover:bg-brand-50/50 sm:w-[180px] md:w-[235px] lg:w-[290px]"
+          aria-label={t("nav.logoAria")}
+          className="inline-flex min-h-14 shrink-0 items-center justify-start px-2 py-1.5 transition hover:opacity-80"
         >
           <Image
             src="/brand/tennislevel-logo-header.png"
@@ -52,65 +98,92 @@ export function Header() {
             width={994}
             height={256}
             priority
-            className="h-[2rem] w-auto max-w-full object-contain md:h-[2.4rem] lg:h-[2.8rem]"
+            className="h-[2rem] w-auto max-w-full object-contain mix-blend-multiply md:h-[2.4rem] lg:h-[2.8rem]"
           />
         </Link>
-        <nav className="hidden min-w-0 flex-1 justify-start gap-1 md:flex">
-          {navItems.map((item) => (
+        <nav className="hidden min-w-0 items-center gap-0.5 md:flex md:ml-4 lg:ml-6 lg:gap-1">
+          {navItemDefs.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "whitespace-nowrap rounded-xl px-3.5 py-2.5 text-[15px] font-semibold transition",
-                pathname === item.href ? "bg-brand-50 text-brand-700" : "text-slate-700 hover:bg-slate-100"
+                "relative whitespace-nowrap rounded-lg px-2.5 py-1.5 text-[13px] transition lg:px-3 lg:py-2 lg:text-sm",
+                pathname === item.href
+                  ? "font-semibold text-brand-700 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-3/5 after:-translate-x-1/2 after:rounded-full after:bg-brand-400 after:content-['']"
+                  : "font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-50"
               )}
             >
-              {item.label}
+              {t(item.labelKey)}
             </Link>
           ))}
+          {studyMode ? (
+            <>
+              <div className="mx-1 h-4 w-px bg-slate-200" />
+              <Link
+                href="/study/start"
+                className={cn(
+                  "relative whitespace-nowrap rounded-lg px-2.5 py-1.5 text-[13px] transition lg:px-3 lg:py-2 lg:text-sm",
+                  pathname.startsWith("/study")
+                    ? "font-semibold text-amber-600 after:absolute after:bottom-0 after:left-1/2 after:h-[2px] after:w-3/5 after:-translate-x-1/2 after:rounded-full after:bg-amber-400 after:content-['']"
+                    : "font-medium text-amber-500 hover:text-amber-700 hover:bg-amber-50"
+                )}
+              >
+                {t("nav.study")}
+              </Link>
+            </>
+          ) : null}
         </nav>
-        <div className="hidden shrink-0 items-center gap-2 md:flex">
+        <div className="hidden shrink-0 items-center gap-1 md:flex lg:gap-1.5">
+          {languageToggle}
+          <div className="mx-1 h-4 w-px bg-slate-200" />
           {user?.email ? (
             <>
-              <span className="hidden max-w-[160px] truncate text-sm text-slate-500 xl:inline">
-                {user.email}
-              </span>
               <Link
                 href="/profile"
-                className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                className="rounded-lg px-2.5 py-1.5 text-[13px] font-medium text-slate-500 transition hover:text-slate-800 hover:bg-slate-50 lg:text-sm"
               >
-                我的记录
+                {t("nav.profile")}
               </Link>
-              <Button variant="ghost" onClick={() => handleSignOut("header")}>
-                退出登录
-              </Button>
+              <button
+                type="button"
+                className="rounded-lg px-2 py-1.5 text-[13px] text-slate-400 transition hover:text-slate-600 lg:text-sm"
+                onClick={() => handleSignOut("header")}
+              >
+                {t("nav.logout")}
+              </button>
             </>
           ) : (
-            <Button variant="ghost" onClick={() => openLoginModal(undefined, "header")}>
-              {loading ? "账号" : "登录"}
-            </Button>
+            <button
+              type="button"
+              className="rounded-lg px-2.5 py-1.5 text-[13px] font-medium text-slate-500 transition hover:text-slate-800 hover:bg-slate-50 lg:text-sm"
+              onClick={() => openLoginModal(undefined, "header")}
+            >
+              {loading ? t("nav.account") : t("nav.login")}
+            </button>
           )}
           <Link
             href="/assessment"
-            onClick={() => logEvent("cta_click", { ctaLabel: "免费开始", ctaLocation: "header", targetPage: "/assessment" })}
+            className="ml-1"
+            onClick={() => logEvent("cta_click", { ctaLabel: t("cta.headerFree"), ctaLocation: "header", targetPage: "/assessment" })}
           >
-            <Button>免费开始</Button>
+            <Button className="rounded-full bg-brand-500 px-5 shadow-sm hover:bg-brand-600 hover:shadow-md">{t("nav.ctaFree")}</Button>
           </Link>
         </div>
 
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-1.5 md:hidden">
+          {languageToggle}
           <Link
             href="/assessment"
-            onClick={() => logEvent("cta_click", { ctaLabel: "开始", ctaLocation: "header_mobile", targetPage: "/assessment" })}
+            onClick={() => logEvent("cta_click", { ctaLabel: t("cta.headerMobile"), ctaLocation: "header_mobile", targetPage: "/assessment" })}
           >
-            <Button className="px-4">开始</Button>
+            <Button className="rounded-full px-4 shadow-sm">{t("nav.ctaMobile")}</Button>
           </Link>
           <Button
             type="button"
             variant="ghost"
             className="min-h-11 px-3"
             aria-expanded={mobileNavOpen}
-            aria-label={mobileNavOpen ? "关闭导航菜单" : "打开导航菜单"}
+            aria-label={mobileNavOpen ? t("nav.menuClose") : t("nav.menuOpen")}
             onClick={() => setMobileNavOpen((prev) => !prev)}
           >
             <svg aria-hidden="true" viewBox="0 0 20 20" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -128,7 +201,7 @@ export function Header() {
         <div className="border-t border-[var(--line)] bg-white md:hidden">
           <div className="mx-auto w-full max-w-6xl space-y-3 px-4 py-4">
             <nav className="grid gap-2">
-              {navItems.map((item) => (
+              {navItemDefs.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -137,9 +210,20 @@ export function Header() {
                     pathname === item.href ? "bg-brand-50 text-brand-700" : "text-slate-700 hover:bg-slate-100"
                   )}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </Link>
               ))}
+              {studyMode ? (
+                <Link
+                  href="/study/start"
+                  className={cn(
+                    "flex min-h-11 items-center rounded-xl px-4 text-base font-semibold transition",
+                    pathname.startsWith("/study") ? "bg-amber-50 text-amber-700" : "text-amber-600 hover:bg-amber-50"
+                  )}
+                >
+                  {t("nav.study")}
+                </Link>
+              ) : null}
             </nav>
             <div className="border-t border-[var(--line)] pt-3">
               {user?.email ? (
@@ -149,19 +233,19 @@ export function Header() {
                     href="/profile"
                     className="flex min-h-11 items-center rounded-xl px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
                   >
-                    我的记录
+                    {t("nav.profile")}
                   </Link>
                   <Button
                     variant="ghost"
                     className="w-full justify-start px-4"
                     onClick={() => handleSignOut("header_mobile")}
                   >
-                    退出登录
+                    {t("nav.logout")}
                   </Button>
                 </div>
               ) : (
                 <Button variant="ghost" className="w-full justify-start px-4" onClick={() => openLoginModal(undefined, "header")}>
-                  {loading ? "账号" : "登录"}
+                  {loading ? t("nav.account") : t("nav.login")}
                 </Button>
               )}
             </div>

@@ -1,0 +1,174 @@
+import React from "react";
+import { describe, expect, it, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { contents } from "@/data/contents";
+import { creators } from "@/data/creators";
+import { ContentCard } from "@/components/library/ContentCard";
+import { CreatorDetailModal } from "@/components/rankings/CreatorDetailModal";
+import { DayPlanCard } from "@/components/plan/DayPlanCard";
+import LibraryPage from "@/app/library/page";
+import { getPlanTemplate } from "@/lib/plans";
+
+const openLoginModal = vi.fn();
+
+const translationMap = {
+  "content.openAria": "Open video: {value}",
+  "content.targetPrefix": "Focus:",
+  "content.unknownCreator": "Unknown creator",
+  "content.subtitle.yes": "EN subtitles",
+  "content.subtitle.no": "No subtitles",
+  "content.subtitle.unknown": "Subtitles unknown",
+  "content.subtitle.notNeeded": "Native English",
+  "content.lang.zh": "ZH",
+  "content.lang.en": "EN",
+  "content.bookmark.add": "Add bookmark",
+  "content.bookmark.remove": "Remove bookmark",
+  "content.bookmark.removeSaved": "Remove bookmark",
+  "content.bookmark.working": "Working...",
+  "creator.modalTitle": "Creator details",
+  "creator.suitableFor": "Best for",
+  "creator.theirContent": "Their content",
+  "creator.noContent": "No indexed content yet",
+  "creator.goHome": "Visit homepage",
+  "creator.platformAria": "Visit {name} on {platform}",
+  "creator.targetPrefix": "Focus:",
+  "modal.close": "Close",
+  "plan.day.today": "Today",
+  "plan.day.what": "What to practice",
+  "plan.day.duration": "How long",
+  "plan.day.watch": "Watch this",
+  "plan.day.open": "Open video",
+  "plan.day.fallback": "Start with today's drills first, then use the library as needed.",
+  "plan.day.expand": "Expand",
+  "plan.day.collapse": "Collapse",
+  "library.title": "Find content",
+  "library.subtitle": "Search by skill, creator, or situation.",
+  "library.more": "See more",
+  "library.empty": "No matching content yet.",
+  "library.clear": "Clear filters",
+  "library.loading": "Loading library...",
+  "library.bookmarkLogin": "Sign in to bookmark content",
+  "library.searchPlaceholder": "Search by skill, creator, or situation",
+  "library.filter.languageAll": "All languages",
+  "library.filter.languageZh": "Chinese content",
+  "library.filter.languageEn": "English content",
+  "library.filter.subtitleAll": "All subtitle states",
+  "library.filter.subtitleYes": "Has English subtitles",
+  "library.filter.subtitleNo": "No English subtitles",
+  "library.bookmarks": "My bookmarks"
+} as const;
+
+function translate(key: string, replacements?: Record<string, string | number>) {
+  const template = translationMap[key as keyof typeof translationMap] ?? key;
+
+  if (!replacements) {
+    return template;
+  }
+
+  return Object.entries(replacements).reduce((current, [token, value]) => {
+    return current.replace(new RegExp(`\\{${token}\\}`, "g"), String(value));
+  }, template);
+}
+
+vi.mock("@/lib/i18n/config", () => ({
+  useI18n: () => ({
+    language: "en",
+    studyMode: true,
+    t: translate
+  })
+}));
+
+vi.mock("@/components/study/StudyProvider", () => ({
+  useStudy: () => ({
+    session: null,
+    studyMode: true,
+    language: "en",
+    loading: false,
+    startStudySession: vi.fn(),
+    endStudySession: vi.fn(),
+    clearStudyData: vi.fn()
+  })
+}));
+
+vi.mock("@/components/auth/AuthProvider", () => ({
+  useAuth: () => ({
+    user: null,
+    configured: false,
+    loading: false,
+    sendMagicLink: vi.fn(),
+    signOut: vi.fn()
+  })
+}));
+
+vi.mock("@/components/auth/AuthModalProvider", () => ({
+  useAuthModal: () => ({
+    openLoginModal,
+    closeLoginModal: vi.fn()
+  })
+}));
+
+vi.mock("@/lib/eventLogger", () => ({
+  logEvent: vi.fn()
+}));
+
+describe("bilingual rendering", () => {
+  it("renders ContentCard in English with English primary title and Chinese secondary title", () => {
+    const item = contents.find((entry) => entry.id === "content_gaiao_02");
+
+    expect(item).toBeTruthy();
+    if (!item) {
+      throw new Error("Missing content_gaiao_02");
+    }
+
+    render(<ContentCard item={item} />);
+
+    expect(screen.getByText("Serve fundamentals: build rhythm before power")).toBeInTheDocument();
+    expect(screen.getByText(/网球发球/)).toBeInTheDocument();
+    expect(screen.getByText("Focus: For players who rush the serve and lose trust in the second serve.")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Open video: Serve fundamentals: build rhythm before power" })).toBeInTheDocument();
+  });
+
+  it("renders CreatorDetailModal in English with translated creator copy and featured video text", () => {
+    const creator = creators.find((entry) => entry.id === "creator_gaiao");
+
+    expect(creator).toBeTruthy();
+    if (!creator) {
+      throw new Error("Missing creator_gaiao");
+    }
+
+    render(<CreatorDetailModal creator={creator} open onClose={() => {}} />);
+
+    expect(screen.getByText("Clear, wide-ranging instruction for beginners who want a solid base and a reliable self-study path.")).toBeInTheDocument();
+    expect(screen.getByText("Complete beginners / Building a forehand foundation / Serve basics")).toBeInTheDocument();
+    expect(screen.getByText("Detailed beginner forehand lesson")).toBeInTheDocument();
+    expect(screen.getByText("详细版 网球正手零基础教学")).toBeInTheDocument();
+    expect(screen.getByText("Focus: When your forehand foundation never feels stable")).toBeInTheDocument();
+  });
+
+  it("renders an English plan day card with localized template copy", () => {
+    const plan = getPlanTemplate("backhand-into-net", "3.0", "en");
+
+    render(<DayPlanCard day={plan.days[0]} isToday />);
+
+    expect(screen.getByText("Prepare earlier")).toBeInTheDocument();
+    expect(screen.getByText("20 shoulder-turn prep reps")).toBeInTheDocument();
+    expect(screen.getByText("20 min")).toBeInTheDocument();
+    expect(screen.getByText("Focus: For players who feel rushed and keep contacting the ball beside or behind the body.")).toBeInTheDocument();
+  });
+
+  it("uses the translated library bookmark login prompt in English mode", async () => {
+    const item = contents.find((entry) => entry.id === "content_gaiao_02");
+
+    expect(item).toBeTruthy();
+    if (!item) {
+      throw new Error("Missing content_gaiao_02");
+    }
+
+    render(<LibraryPage />);
+
+    const bookmarkButtons = await screen.findAllByRole("button", { name: "Add bookmark" });
+    bookmarkButtons[0]?.click();
+
+    expect(openLoginModal).toHaveBeenCalledWith("Sign in to bookmark content", "bookmark");
+  });
+});

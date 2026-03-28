@@ -1,31 +1,40 @@
 import { Input } from "@/components/ui/Input";
+import { useI18n } from "@/lib/i18n/config";
+import { ContentLanguageCode, ContentSubtitleAvailability } from "@/types/content";
 
 export type LibraryPlatformFilter = "all" | "Bilibili" | "YouTube" | "Douyin" | "Xiaohongshu";
+export type LibraryContentLanguageFilter = "all" | ContentLanguageCode;
+export type LibrarySubtitleFilter = "all" | Extract<ContentSubtitleAvailability, "english" | "none">;
 
 type LibraryFiltersProps = {
   keyword: string;
   setKeyword: (value: string) => void;
   selectedPlatform: LibraryPlatformFilter;
   setSelectedPlatform: (value: LibraryPlatformFilter) => void;
+  selectedContentLanguage: LibraryContentLanguageFilter;
+  setSelectedContentLanguage: (value: LibraryContentLanguageFilter) => void;
+  selectedSubtitleAvailability: LibrarySubtitleFilter;
+  setSelectedSubtitleAvailability: (value: LibrarySubtitleFilter) => void;
   showBookmarkedOnly: boolean;
   setShowBookmarkedOnly: (value: boolean) => void;
   bookmarkFilterEnabled: boolean;
 };
 
-const platformOptions: Array<{ value: LibraryPlatformFilter; label: string }> = [
-  { value: "all", label: "全部平台" },
-  { value: "Bilibili", label: "Bilibili" },
-  { value: "YouTube", label: "YouTube" },
-  { value: "Douyin", label: "抖音" },
-  { value: "Xiaohongshu", label: "小红书" }
+const platformFixedOptions: Array<{ value: LibraryPlatformFilter; zhLabel: string; enLabel: string }> = [
+  { value: "Bilibili", zhLabel: "Bilibili", enLabel: "Bilibili" },
+  { value: "YouTube", zhLabel: "YouTube", enLabel: "YouTube" },
+  { value: "Douyin", zhLabel: "抖音", enLabel: "TikTok" },
+  { value: "Xiaohongshu", zhLabel: "小红书", enLabel: "Red Note" }
 ];
 
 export function LibraryFilters(props: LibraryFiltersProps) {
+  const { language, t } = useI18n();
+
   return (
     <div className="space-y-3 rounded-2xl border border-[var(--line)] bg-white p-4 shadow-soft">
-      <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_220px]">
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_180px_180px]">
         <Input
-          placeholder="搜索技术、博主或场景"
+          placeholder={t("library.searchPlaceholder")}
           value={props.keyword}
           onChange={(e) => props.setKeyword(e.target.value)}
         />
@@ -34,11 +43,21 @@ export function LibraryFilters(props: LibraryFiltersProps) {
           value={props.selectedPlatform}
           onChange={(e) => props.setSelectedPlatform(e.target.value as LibraryPlatformFilter)}
         >
-          {platformOptions.map((option) => (
+          <option value="all">{t("library.filter.platformAll")}</option>
+          {platformFixedOptions.map((option) => (
             <option key={option.value} value={option.value}>
-              {option.label}
+              {language === "en" ? option.enLabel : option.zhLabel}
             </option>
           ))}
+        </select>
+        <select
+          className="min-h-11 w-full rounded-xl border border-[var(--line)] bg-white px-4 py-2 text-sm text-slate-700"
+          value={props.selectedSubtitleAvailability}
+          onChange={(e) => props.setSelectedSubtitleAvailability(e.target.value as LibrarySubtitleFilter)}
+        >
+          <option value="all">{t("library.filter.subtitleAll")}</option>
+          <option value="english">{t("library.filter.subtitleYes")}</option>
+          <option value="none">{t("library.filter.subtitleNo")}</option>
         </select>
       </div>
       <div className="flex flex-wrap items-center gap-3">
@@ -60,7 +79,7 @@ export function LibraryFilters(props: LibraryFiltersProps) {
             props.setShowBookmarkedOnly(!props.showBookmarkedOnly);
           }}
         >
-          我的收藏
+          {t("library.bookmarks")}
         </button>
       </div>
     </div>

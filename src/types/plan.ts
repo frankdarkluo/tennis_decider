@@ -8,12 +8,20 @@ export type DayPlan = {
   duration: string;
 };
 
+export type PlanTemplateDay = DayPlan & {
+  focusEn: string;
+  drillsEn: string[];
+  durationEn: string;
+};
+
 export type PlanTemplate = {
   problemTag: string;
   level: "3.0" | "3.5" | "4.0";
   title: string;
+  titleEn: string;
   target: string;
-  days: DayPlan[];
+  targetEn: string;
+  days: PlanTemplateDay[];
 };
 
 export type GeneratedPlan = {

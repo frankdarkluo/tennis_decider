@@ -1,17 +1,11 @@
 import { AssessmentQuestion } from "@/types/assessment";
 import { Card } from "@/components/ui/Card";
-
-function formatSliderValue(value: number) {
-  if (value === 0.5) {
-    return "半年";
-  }
-
-  if (value >= 10) {
-    return "10年+";
-  }
-
-  return `${value} 年`;
-}
+import { useI18n } from "@/lib/i18n/config";
+import {
+  formatAssessmentYearsLabel,
+  getAssessmentOptionLabel,
+  getAssessmentQuestionText
+} from "@/lib/i18n/assessmentCopy";
 
 type QuestionCardProps = {
   question: AssessmentQuestion;
@@ -32,21 +26,23 @@ export function QuestionCard({
   onSliderCommit,
   onSliderBeginInteract
 }: QuestionCardProps) {
+  const { language, t } = useI18n();
+
   if (question.type === "slider") {
     const sliderValue = typeof selectedValue === "number" ? selectedValue : question.sliderConfig.default;
 
     return (
       <Card className="space-y-5">
         <div className="space-y-2">
-          <p className="text-sm font-semibold text-brand-700">再补一个背景信息</p>
-          <h2 className="text-2xl font-black text-slate-900">{question.question}</h2>
+          <p className="text-sm font-semibold text-brand-700">{t("assessment.question.slider")}</p>
+          <h2 className="text-2xl font-black text-slate-900">{getAssessmentQuestionText(question, language)}</h2>
         </div>
         <div className="rounded-2xl bg-slate-50 px-4 py-5 text-center">
-          <p className="text-3xl font-black text-slate-900">{formatSliderValue(sliderValue)}</p>
+          <p className="text-3xl font-black text-slate-900">{formatAssessmentYearsLabel(sliderValue, language)}</p>
         </div>
         <div className="space-y-3">
           <input
-            aria-label={question.question}
+            aria-label={getAssessmentQuestionText(question, language)}
             type="range"
             min={question.sliderConfig.min}
             max={question.sliderConfig.max}
@@ -81,7 +77,9 @@ export function QuestionCard({
                   className={className}
                   style={!isFirst && !isLast ? { left } : undefined}
                 >
-                  {mark.label}
+                  {language === "en"
+                    ? formatAssessmentYearsLabel(mark.value, language).replace(" years", "y").replace(" year", "y")
+                    : mark.label}
                 </span>
               );
             })}
@@ -92,13 +90,17 @@ export function QuestionCard({
   }
 
   const isGender = question.type === "gender";
-  const titleTone = question.phase === "coarse" ? "核心评估" : question.phase === "fine" ? "继续了解一下" : "先从两个小问题开始";
+  const titleTone = question.phase === "coarse"
+    ? t("assessment.question.coarse")
+    : question.phase === "fine"
+      ? t("assessment.question.fine")
+      : t("assessment.question.profile");
 
   return (
     <Card className="space-y-5">
       <div className="space-y-2">
         <p className="text-sm font-semibold text-brand-700">{titleTone}</p>
-        <h2 className="text-2xl font-black text-slate-900">{question.question}</h2>
+        <h2 className="text-2xl font-black text-slate-900">{getAssessmentQuestionText(question, language)}</h2>
       </div>
       <div className={isGender ? "grid gap-3 sm:grid-cols-2" : "space-y-3"}>
         {question.options.map((option) => (
@@ -117,7 +119,7 @@ export function QuestionCard({
                 : "border-[var(--line)] bg-white text-slate-700 hover:border-brand-300 hover:text-brand-700"
             ].join(" ")}
           >
-            {option.label}
+            {getAssessmentOptionLabel(question.id, option.value, option.label, language)}
           </button>
         ))}
       </div>

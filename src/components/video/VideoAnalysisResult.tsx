@@ -7,7 +7,16 @@ import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import {
+  getContentCoachNote,
+  getContentFocusLine,
+  getContentPrimaryTitle,
+  getContentSecondaryTitle,
+  getCreatorBio,
+  getCreatorTags
+} from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
 import { VideoDiagnosisResult } from "@/types/videoDiagnosis";
 
@@ -28,7 +37,12 @@ function RecommendationCard({
   item: VideoDiagnosisResult["recommendedContents"][number];
   source: "video_diagnosis_featured" | "video_diagnosis_more";
 }) {
+  const { language, t } = useI18n();
   const thumbnail = getThumbnail(item);
+  const primaryTitle = getContentPrimaryTitle(item, language);
+  const secondaryTitle = getContentSecondaryTitle(item, language);
+  const focusLine = getContentFocusLine(item, language);
+  const coachNote = getContentCoachNote(item, language);
 
   return (
     <div className="rounded-xl border border-[var(--line)] p-4">
@@ -37,13 +51,13 @@ function RecommendationCard({
           {thumbnail ? (
             <img
               src={thumbnail}
-              alt={item.title}
+              alt={primaryTitle}
               className="h-full w-full object-cover"
               loading="lazy"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center">
-              <span className="text-lg font-medium text-slate-300">{getVideoInitial(item.title)}</span>
+              <span className="text-lg font-medium text-slate-300">{getVideoInitial(primaryTitle)}</span>
             </div>
           )}
           {item.duration ? (
@@ -57,10 +71,15 @@ function RecommendationCard({
             <PlatformBadge platform={item.platform} />
             <Badge className="bg-slate-100 text-slate-700">{item.levels.join("/")}</Badge>
           </div>
-          <p className="mt-2 font-semibold text-slate-900">{item.title}</p>
-          <p className="mt-1 text-sm text-slate-600">针对：{item.useCases[0] ?? item.reason}</p>
-          {item.coachReason ? (
-            <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">教练建议：{item.coachReason}</p>
+          <p className="mt-2 font-semibold text-slate-900">{primaryTitle}</p>
+          {secondaryTitle ? (
+            <p className="mt-1 text-xs leading-5 text-slate-400">{secondaryTitle}</p>
+          ) : null}
+          {focusLine && focusLine !== primaryTitle ? (
+            <p className="mt-1 text-sm text-slate-600">{t("content.targetPrefix")} {focusLine}</p>
+          ) : null}
+          {coachNote ? (
+            <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">{t("content.coachNote")} {coachNote}</p>
           ) : null}
         </div>
       </div>
@@ -74,7 +93,7 @@ function RecommendationCard({
             logEvent("content_external", { contentId: item.id, platform: item.platform, url: item.url });
           }}
         >
-          <Button variant="secondary">点击观看</Button>
+          <Button variant="secondary">{t("content.open")}</Button>
         </a>
       </div>
     </div>
@@ -82,6 +101,7 @@ function RecommendationCard({
 }
 
 export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }) {
+  const { language, t } = useI18n();
   const planHref = `/plan?problemTag=${encodeURIComponent(result.trainingPlan.problemTag)}&level=${encodeURIComponent(result.trainingPlan.level)}`;
   const [layer, setLayer] = useState<1 | 2 | 3>(1);
   const primaryFix = result.primaryProblem.fix || result.primaryProblem.cause;
@@ -97,20 +117,28 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
       <div className="space-y-3">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="text-sm font-semibold text-brand-700">诊断结果</p>
-            <h2 className="mt-1 text-2xl font-black text-slate-900">先改这一个：{result.primaryProblem.label}</h2>
+            <p className="text-sm font-semibold text-brand-700">{t("video.result.badge")}</p>
+            <h2 className="mt-1 text-2xl font-black text-slate-900">{t("video.result.title")} {result.primaryProblem.label}</h2>
           </div>
-          <Badge className={getConfidenceTone(result.confidenceBand)}>{result.confidenceBand}</Badge>
+          <Badge className={getConfidenceTone(result.confidenceBand)}>
+            {language === "en"
+              ? result.confidenceBand === "较高"
+                ? "High confidence"
+                : result.confidenceBand === "中等"
+                  ? "Medium confidence"
+                  : "Low confidence"
+              : result.confidenceBand}
+          </Badge>
         </div>
 
         <div className="rounded-2xl bg-[var(--surface-soft)] p-4">
-          <p className="text-sm font-semibold text-slate-700">先记这一点：</p>
+          <p className="text-sm font-semibold text-slate-700">{t("video.result.focus")}</p>
           <p className="mt-2 text-base font-medium text-slate-900">{primaryFix}</p>
         </div>
 
         {!result.chargeable && result.fallbackReason ? (
           <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm text-amber-800">
-            <p className="font-semibold">这次先别下重结论</p>
+            <p className="font-semibold">{t("video.result.cautionTitle")}</p>
             <p className="mt-1 leading-6">{result.fallbackReason}</p>
           </div>
         ) : null}
@@ -121,7 +149,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
             className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
             onClick={() => setLayer(2)}
           >
-            看细一点 ↓
+            {t("video.result.expand1")}
           </button>
         ) : null}
       </div>
@@ -130,17 +158,17 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
         <div className="space-y-4 border-t border-[var(--line)] pt-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl bg-slate-50 px-4 py-4">
-              <p className="text-sm font-semibold text-slate-900">AI 看到了什么</p>
+              <p className="text-sm font-semibold text-slate-900">{t("video.result.see")}</p>
               <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-600">
-                <li>身体姿态：{result.observation.bodyPosture}</li>
-                <li>击球点：{result.observation.contactPoint}</li>
-                <li>脚步：{result.observation.footwork}</li>
-                <li>挥拍路径：{result.observation.swingPath}</li>
+                <li>{language === "en" ? "Body posture:" : "身体姿态："}{result.observation.bodyPosture}</li>
+                <li>{language === "en" ? "Contact point:" : "击球点："}{result.observation.contactPoint}</li>
+                <li>{language === "en" ? "Footwork:" : "脚步："}{result.observation.footwork}</li>
+                <li>{language === "en" ? "Swing path:" : "挥拍路径："}{result.observation.swingPath}</li>
               </ul>
             </div>
 
             <div className="rounded-2xl bg-slate-50 px-4 py-4">
-              <p className="text-sm font-semibold text-slate-900">为什么会这样</p>
+              <p className="text-sm font-semibold text-slate-900">{t("video.result.because")}</p>
               <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-slate-600">
                 <li>{result.primaryProblem.cause}</li>
                 {result.secondaryProblems.slice(0, 2).map((item) => (
@@ -152,7 +180,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
 
           {featuredContent ? (
             <div>
-              <p className="mb-2 text-sm font-semibold text-slate-900">先看这条</p>
+              <p className="mb-2 text-sm font-semibold text-slate-900">{t("video.result.featured")}</p>
               <RecommendationCard item={featuredContent} source="video_diagnosis_featured" />
             </div>
           ) : null}
@@ -162,17 +190,17 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
               href={planHref}
               onClick={() => logEvent("video_plan_generate", { problemTag: result.trainingPlan.problemTag, level: result.trainingPlan.level })}
             >
-              <Button>{result.chargeable ? "生成 7 天训练计划" : "先看训练方向"}</Button>
+              <Button>{result.chargeable ? t("video.result.plan") : t("video.result.planFallback")}</Button>
             </Link>
           </div>
 
-          {layer === 2 ? (
+        {layer === 2 ? (
             <button
               type="button"
               className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
               onClick={() => setLayer(3)}
             >
-              再看更多 ↓
+              {t("video.result.expand2")}
             </button>
           ) : null}
         </div>
@@ -182,7 +210,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
         <div className="space-y-4 border-t border-[var(--line)] pt-4">
           {moreContents.length > 0 ? (
             <div className="space-y-3">
-              <p className="text-sm font-semibold text-slate-900">更多内容</p>
+              <p className="text-sm font-semibold text-slate-900">{t("video.result.more")}</p>
               {moreContents.map((item) => (
                 <RecommendationCard key={item.id} item={item} source="video_diagnosis_more" />
               ))}
@@ -191,7 +219,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
 
           {result.recommendedCreators.length > 0 ? (
             <div className="space-y-3">
-              <p className="text-sm font-semibold text-slate-900">推荐博主</p>
+              <p className="text-sm font-semibold text-slate-900">{t("video.result.creators")}</p>
               {result.recommendedCreators.map((creator) => (
                 <div key={creator.id} className="rounded-2xl border border-[var(--line)] p-4">
                   <div className="flex items-start gap-3">
@@ -203,10 +231,10 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
                           <PlatformBadge key={platform} platform={platform} />
                         ))}
                       </div>
-                      <p className="mt-2 text-sm leading-6 text-slate-600">{creator.bio}</p>
+                      <p className="mt-2 text-sm leading-6 text-slate-600">{getCreatorBio(creator, language)}</p>
                       <div className="mt-3 flex flex-wrap gap-2">
-                        {creator.styleTags.slice(0, 2).map((tag) => (
-                          <Badge key={tag}>{tag}</Badge>
+                        {getCreatorTags(creator.tags.slice(0, 2), language).map((tag, index) => (
+                          <Badge key={`${creator.id}:${index}`}>{tag}</Badge>
                         ))}
                       </div>
                       {creator.profileUrl ? (
@@ -217,7 +245,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
                             rel="noreferrer"
                             onClick={() => logEvent("creator_click", { creatorId: creator.id, source: "video_diagnosis" })}
                           >
-                            <Button variant="ghost">去看 TA</Button>
+                            <Button variant="ghost">{language === "en" ? "Visit creator" : "去看 TA"}</Button>
                           </a>
                         </div>
                       ) : null}
@@ -230,7 +258,7 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
 
           {result.searchSuggestions.length > 0 ? (
             <Card className="space-y-3">
-              <p className="text-sm font-semibold text-brand-700">还可以这样搜</p>
+              <p className="text-sm font-semibold text-brand-700">{t("video.result.search")}</p>
               <div className="space-y-2">
                 {result.searchSuggestions.map((item) => (
                   <div key={`${item.platform}-${item.keyword}`} className="rounded-2xl border border-[var(--line)] px-4 py-3">

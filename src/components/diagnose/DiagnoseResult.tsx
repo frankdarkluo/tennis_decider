@@ -6,17 +6,15 @@ import { DiagnosisResult as DiagnosisResultType } from "@/types/diagnosis";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { PlatformVideoSearch } from "@/components/PlatformVideoSearch";
+import {
+  getContentCoachNote,
+  getContentFocusLine,
+  getContentPrimaryTitle,
+  getContentSecondaryTitle
+} from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
-
-function getRecommendationTarget(useCases: string[], fallback: string) {
-  const primaryUseCase = useCases[0]?.trim();
-  if (primaryUseCase) {
-    return `针对：${primaryUseCase}`;
-  }
-
-  return `针对：${fallback.replace(/^针对[:：]\s*/, "").trim()}`;
-}
 
 function RecommendationCard({
   item,
@@ -25,8 +23,12 @@ function RecommendationCard({
   item: DiagnosisResultType["recommendedContents"][number];
   source: "diagnosis_featured" | "diagnosis_more";
 }) {
+  const { language, t } = useI18n();
   const thumbnail = getThumbnail(item);
-  const targetLabel = getRecommendationTarget(item.useCases, item.reason);
+  const primaryTitle = getContentPrimaryTitle(item, language);
+  const secondaryTitle = getContentSecondaryTitle(item, language);
+  const targetLabel = getContentFocusLine(item, language);
+  const coachNote = getContentCoachNote(item, language);
 
   return (
     <div className="rounded-xl border border-[var(--line)] p-4 text-sm">
@@ -35,13 +37,13 @@ function RecommendationCard({
           {thumbnail ? (
             <img
               src={thumbnail}
-              alt={item.title}
+              alt={primaryTitle}
               className="h-full w-full object-cover"
               loading="lazy"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center">
-              <span className="text-lg font-medium text-slate-300">{getVideoInitial(item.title)}</span>
+              <span className="text-lg font-medium text-slate-300">{getVideoInitial(primaryTitle)}</span>
             </div>
           )}
           {item.duration ? (
@@ -51,10 +53,15 @@ function RecommendationCard({
           ) : null}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="font-semibold text-slate-900">{item.title}</p>
-          <p className="mt-1 text-sm text-slate-600">{targetLabel}</p>
-          {item.coachReason && !item.coachReason.includes("[待填写") ? (
-            <p className="mt-2 text-xs text-slate-500">教练视角：{item.coachReason}</p>
+          <p className="font-semibold text-slate-900">{primaryTitle}</p>
+          {secondaryTitle ? (
+            <p className="mt-1 text-xs leading-5 text-slate-400">{secondaryTitle}</p>
+          ) : null}
+          {targetLabel && targetLabel !== primaryTitle ? (
+            <p className="mt-1 text-sm text-slate-600">{t("content.targetPrefix")} {targetLabel}</p>
+          ) : null}
+          {coachNote && !coachNote.includes("[待填写") ? (
+            <p className="mt-2 text-xs text-slate-500">{t("content.coachNote")} {coachNote}</p>
           ) : null}
         </div>
       </div>
@@ -68,7 +75,7 @@ function RecommendationCard({
             logEvent("content_external", { contentId: item.id, platform: item.platform, url: item.url });
           }}
         >
-          <Button variant="secondary">点击观看</Button>
+          <Button variant="secondary">{t("content.open")}</Button>
         </a>
       </div>
     </div>
@@ -76,6 +83,7 @@ function RecommendationCard({
 }
 
 export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
+  const { language, t } = useI18n();
   const planHref = `/plan?problemTag=${encodeURIComponent(result.problemTag)}${result.level ? `&level=${encodeURIComponent(result.level)}` : ""}`;
   const canGeneratePlan = Boolean(result.input.trim());
   const [layer, setLayer] = useState<1 | 2 | 3>(1);
@@ -94,24 +102,26 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
   return (
     <Card className="space-y-4">
       <div className="space-y-3">
-        <p className="text-sm font-semibold text-brand-700">你现在最该先改的是：</p>
-        <h2 className="text-2xl font-black text-slate-900">{result.title.replace("你的问题更接近：", "").replace("你的问题暂时更接近：", "")}</h2>
+        <p className="text-sm font-semibold text-brand-700">{t("diagnose.result.badge")}</p>
+        <h2 className="text-2xl font-black text-slate-900">{result.title}</h2>
         <div className="rounded-2xl bg-[var(--surface-soft)] p-4">
-          <p className="text-sm font-semibold text-slate-700">今天先记住一件事：</p>
+          <p className="text-sm font-semibold text-slate-700">{t("diagnose.result.today")}</p>
           <p className="mt-2 text-base font-medium text-slate-900">{primaryFix}</p>
         </div>
         {result.fallbackUsed && result.fallbackMode ? (
           <div className="rounded-xl border border-brand-100 bg-brand-50/70 p-3 text-sm text-slate-700">
             <p>
               {result.fallbackMode === "assessment"
-                ? "这次先按你评估里最需要补的环节给你一组方向，后面你再把问题描述得更具体一点，我们会更准。"
-                : "这次先给你一组通用提升内容。做完 1 分钟评估后，我们能把推荐收得更准。"}
+                ? (language === "en"
+                  ? "This first pass uses the weakest area from the assessment. A more specific description will make the diagnosis more precise."
+                  : "这次先按你评估里最需要补的环节给你一组方向，后面你再把问题描述得更具体一点，我们会更准。")
+                : (language === "en"
+                  ? "This first pass uses a general improvement bundle. After the 1-minute assessment, recommendations will be more precise."
+                  : "这次先给你一组通用提升内容。做完 1 分钟评估后，我们能把推荐收得更准。")}
             </p>
             {result.fallbackMode === "no-assessment" ? (
               <div className="mt-3">
-                <Link href="/assessment">
-                  <Button variant="secondary">先去做评估</Button>
-                </Link>
+                <Link href="/assessment"><Button variant="secondary">{t("video.assessment.cta")}</Button></Link>
               </div>
             ) : null}
           </div>
@@ -122,7 +132,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
             className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
             onClick={() => setLayer(2)}
           >
-            展开看更多 ↓
+            {t("diagnose.result.expand1")}
           </button>
         ) : null}
       </div>
@@ -130,7 +140,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
       {layer >= 2 ? (
         <div className="space-y-4 border-t border-[var(--line)] pt-4">
           <div>
-            <p className="mb-2 text-sm font-semibold text-slate-900">为什么会这样？</p>
+            <p className="mb-2 text-sm font-semibold text-slate-900">{t("diagnose.result.why")}</p>
             <ul className="list-disc space-y-1 pl-5 text-sm text-slate-700">
               {result.causes.slice(0, 2).map((cause) => (
                 <li key={cause}>{cause}</li>
@@ -140,7 +150,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
 
           {featuredContent ? (
             <div>
-              <p className="mb-2 text-sm font-semibold text-slate-900">推荐先看这条：</p>
+              <p className="mb-2 text-sm font-semibold text-slate-900">{t("diagnose.result.featured")}</p>
               <RecommendationCard item={featuredContent} source="diagnosis_featured" />
             </div>
           ) : null}
@@ -148,9 +158,9 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
               href={planHref}
-              onClick={() => logEvent("cta_click", { ctaLabel: "根据这个问题生成 7 天训练计划", ctaLocation: "diagnosis_result", targetPage: "/plan" })}
+              onClick={() => logEvent("cta_click", { ctaLabel: t("cta.generatePlan"), ctaLocation: "diagnosis_result", targetPage: "/plan" })}
             >
-              <Button>根据这个问题生成 7 天训练计划</Button>
+              <Button>{t("diagnose.result.plan")}</Button>
             </Link>
           </div>
 
@@ -160,7 +170,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
               className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
               onClick={() => setLayer(3)}
             >
-              展开搜索更多 ↓
+              {t("diagnose.result.expand2")}
             </button>
           ) : null}
         </div>
@@ -170,7 +180,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
         <div className="space-y-4 border-t border-[var(--line)] pt-4">
           {moreContents.length > 0 ? (
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-slate-900">更多推荐内容</p>
+              <p className="text-sm font-semibold text-slate-900">{t("diagnose.result.more")}</p>
               {moreContents.map((item) => (
                 <RecommendationCard key={item.id} item={item} source="diagnosis_more" />
               ))}
@@ -180,7 +190,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
           {result.searchQueries ? (
             <PlatformVideoSearch
               queries={result.searchQueries}
-              title="在其他平台搜索更多"
+              title={t("diagnose.result.search")}
             />
           ) : null}
 
@@ -189,17 +199,17 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
               type="button"
               className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
               onClick={() => {
-                logEvent("cta_click", { ctaLabel: "继续诊断别的问题", ctaLocation: "diagnosis_result", targetPage: "scroll_to_input" });
+                logEvent("cta_click", { ctaLabel: t("cta.continueDiagnosis"), ctaLocation: "diagnosis_result", targetPage: "scroll_to_input" });
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
-              继续诊断别的问题 →
+              {t("diagnose.result.continue")}
             </button>
             <Link
               href="/video-diagnose"
-              onClick={() => logEvent("cta_click", { ctaLabel: "上传视频做更精准诊断", ctaLocation: "diagnosis_result", targetPage: "/video-diagnose" })}
+              onClick={() => logEvent("cta_click", { ctaLabel: t("cta.videoUpgrade"), ctaLocation: "diagnosis_result", targetPage: "/video-diagnose" })}
             >
-              <Button variant="secondary">上传视频做更精准诊断</Button>
+              <Button variant="secondary">{t("diagnose.result.video")}</Button>
             </Link>
           </div>
         </div>

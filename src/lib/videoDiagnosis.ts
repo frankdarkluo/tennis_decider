@@ -59,17 +59,17 @@ function buildPrimaryProblem(
   fixes: string[]
 ) {
   return {
-    label: diagnosisTitle.replace("你的问题更接近：", ""),
+    label: diagnosisTitle,
     description: observation.keyIssues[0] ?? diagnosisTitle,
-    cause: causes[0] ?? "当前最主要的问题，还是准备、击球点和节奏没有稳定下来。",
-    fix: fixes[0] ?? "先围绕最明显的一个问题做 7 天连续练习。"
+    cause: causes[0] ?? "The main issue is still getting preparation, contact point, and rhythm settled.",
+    fix: fixes[0] ?? "Pick the most obvious problem and do 7 days of focused practice."
   };
 }
 
 function buildSecondaryProblems(observation: VLMObservation, causes: string[]) {
   return observation.keyIssues.slice(1, 3).map((issue, index) => ({
     label: issue,
-    description: causes[index + 1] ?? "这是次一级的问题，建议放在主要问题之后处理。"
+    description: causes[index + 1] ?? "This is a secondary issue — tackle it after the primary problem is under control."
   }));
 }
 
@@ -83,8 +83,8 @@ function buildSearchSuggestions(problemLabel: string, strokeType: VideoStrokeTyp
   };
 
   return [
-    { platform: "Bilibili" as const, keyword: problemLabel.replace("你的问题更接近：", ""), language: "zh" as const },
-    { platform: "Xiaohongshu" as const, keyword: `${problemLabel.replace("你的问题更接近：", "")} 纠正`, language: "zh" as const },
+    { platform: "Bilibili" as const, keyword: problemLabel, language: "zh" as const },
+    { platform: "Xiaohongshu" as const, keyword: `${problemLabel} 纠正`, language: "zh" as const },
     { platform: "YouTube" as const, keyword: `${englishStrokeMap[strokeType]} technique fix`, language: "en" as const }
   ];
 }
@@ -164,12 +164,12 @@ export function buildVideoDiagnosisResult(
       title: diagnosisTitle,
       fixes: diagnosis.fixes
     }),
-    searchSuggestions: buildSearchSuggestions(diagnosisTitle.replace("你的问题更接近：", ""), observation.strokeType),
+    searchSuggestions: buildSearchSuggestions(diagnosisTitle, observation.strokeType),
     confidence: observation.confidence,
     confidenceBand,
     chargeable: observation.confidence >= 0.45,
     fallbackReason: observation.confidence < 0.45
-      ? observation.retakeAdvice ?? "当前视频信息不足，建议重新拍一段更完整、更清晰的视频。"
+      ? observation.retakeAdvice ?? "The current clip does not have enough detail. Please try re-recording a clearer and more complete segment."
       : undefined
   };
 }

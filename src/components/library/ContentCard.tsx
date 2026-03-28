@@ -4,8 +4,18 @@ import { creators } from "@/data/creators";
 import { ContentItem } from "@/types/content";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
+import {
+  formatCompactViewCount,
+  getContentFocusLine,
+  getContentLanguageTag,
+  getContentPrimaryTitle,
+  getContentSecondaryTitle,
+  getSubtitleAvailability
+} from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
+import { useStudy } from "@/components/study/StudyProvider";
 
 type ContentCardProps = {
   item: ContentItem;
@@ -54,89 +64,6 @@ function ViewsIcon() {
   );
 }
 
-function clampText(value: string, maxLength = 20) {
-  const normalized = value.replace(/\s+/g, " ").trim();
-
-  if (normalized.length <= maxLength) {
-    return normalized;
-  }
-
-  return `${normalized.slice(0, maxLength)}…`;
-}
-
-
-function normalizeBilibiliTitle(value: string) {
-  return value
-    .replace(/[|｜]\s*LeonTV(?:网球频道|频道)?\s*[|｜]?/gi, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function getDisplayTitle(item: ContentItem) {
-  const rawTitle = (item.platform === "Bilibili" && item.language === "zh"
-    ? normalizeBilibiliTitle(item.sourceTitle ?? item.title)
-    : item.title)
-    .replace(/\s+/g, " ")
-    .trim();
-
-  const strippedTitle = rawTitle.replace(/[＃#].*$/, "").trim();
-  if (strippedTitle.length > 1) {
-    return strippedTitle;
-  }
-
-  const afterFirstTag = rawTitle
-    .replace(/^[＃#][^\s＃#]+\s*/, "")
-    .replace(/[＃#].*$/, "")
-    .trim();
-
-  if (afterFirstTag.length > 1) {
-    return afterFirstTag;
-  }
-
-  return rawTitle;
-}
-
-function getDisplayReason(item: ContentItem) {
-  const useCase = item.useCases[0]?.trim();
-  if (useCase) {
-    const normalized = useCase.replace(/。/g, "").trim();
-    return clampText(`针对: ${normalized}`);
-  }
-
-  const reason = item.reason?.trim();
-  if (reason) {
-    const normalized = reason
-      .replace(/^适合作为/, "")
-      .replace(/^适合/, "")
-      .replace(/^针对[:：]\s*/, "")
-      .replace(/。/g, "")
-      .trim();
-    return clampText(`针对: ${normalized}`);
-  }
-
-  return clampText(
-    `针对: ${item.summary
-      .replace(/^适合作为/, "")
-      .replace(/^适合/, "")
-      .replace(/^针对[:：]\s*/, "")
-      .replace(/。/g, "")
-      .trim()}`
-  );
-}
-
-function formatChineseViewCount(value?: number) {
-  if (!value || value <= 0) {
-    return null;
-  }
-
-  if (value < 10000) {
-    return String(Math.round(value));
-  }
-
-  const wan = Math.round((value / 10000) * 10) / 10;
-  return `${wan.toFixed(1)}万`;
-}
-
 function ThumbnailFallback({ title, platform }: { title: string; platform: string }) {
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-100 via-white to-brand-50">
@@ -159,14 +86,28 @@ export function ContentCard({
   bookmarkLoading = false,
   onToggleBookmark
 }: ContentCardProps) {
+  const { language, t } = useI18n();
+  const { studyMode } = useStudy();
   const creator = creators.find((c) => c.id === item.creatorId);
   const isProfileCompact = source === "profile";
-  const displayTitle = getDisplayTitle(item);
-  const displayReason = getDisplayReason(item);
+  const primaryTitle = getContentPrimaryTitle(item, language);
+  const secondaryTitle = getContentSecondaryTitle(item, language);
+  const focusLine = getContentFocusLine(item, language);
   const thumbnail = getThumbnail(item);
-  const viewCountLabel = formatChineseViewCount(item.viewCount);
+  const viewCountLabel = formatCompactViewCount(item.viewCount, language);
   const [thumbnailFailed, setThumbnailFailed] = useState(false);
   const showThumbnail = Boolean(thumbnail) && !thumbnailFailed;
+  const contentLanguage = getContentLanguageTag(item);
+  const subtitleAvailability = getSubtitleAvailability(item);
+  const showResearchMetadata = studyMode;
+
+  const subtitleLabel = subtitleAvailability === "english"
+    ? t("content.subtitle.yes")
+    : subtitleAvailability === "none"
+      ? t("content.subtitle.no")
+      : subtitleAvailability === "not_needed"
+        ? t("content.subtitle.notNeeded")
+        : t("content.subtitle.unknown");
 
   return (
     <Card className="group relative flex h-full flex-col overflow-hidden p-0">
@@ -174,7 +115,7 @@ export function ContentCard({
         href={item.url}
         target="_blank"
         rel="noreferrer"
-        aria-label={`打开视频：${displayTitle}`}
+        aria-label={t("content.openAria", { value: primaryTitle })}
         className="absolute inset-0 z-0 rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/70"
         onClick={() => {
           logEvent("content_click", { contentId: item.id, source, target: "card" });
@@ -186,13 +127,13 @@ export function ContentCard({
           {showThumbnail ? (
             <img
               src={thumbnail ?? undefined}
-              alt={displayTitle}
+              alt={primaryTitle}
               className="absolute inset-0 h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.02]"
               loading="lazy"
               onError={() => setThumbnailFailed(true)}
             />
           ) : (
-            <ThumbnailFallback title={displayTitle} platform={item.platform} />
+            <ThumbnailFallback title={primaryTitle} platform={item.platform} />
           )}
           <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-slate-200/70" />
           {viewCountLabel ? (
@@ -212,16 +153,35 @@ export function ContentCard({
             <div className="flex flex-wrap gap-2">
               <Badge className="px-5 py-2 text-base font-semibold leading-none">{item.platform}</Badge>
               <Badge className="bg-slate-100 px-5 py-2 text-base font-semibold leading-none text-slate-700">{item.levels.join("/")}</Badge>
+              {showResearchMetadata ? (
+                <>
+                  <Badge className="bg-slate-100 px-4 py-2 text-sm font-semibold leading-none text-slate-700">
+                    {contentLanguage === "zh" ? t("content.lang.zh") : t("content.lang.en")}
+                  </Badge>
+                  <Badge className="bg-slate-100 px-4 py-2 text-sm font-semibold leading-none text-slate-700">
+                    {subtitleLabel}
+                  </Badge>
+                </>
+              ) : null}
             </div>
             <div className="space-y-1">
               <h3 className="line-clamp-2 text-[0.96rem] font-bold leading-[1.35] text-slate-900 sm:text-[1rem]">
-                {displayTitle}
+                {primaryTitle}
               </h3>
-              <p className="text-sm leading-6 text-slate-600">{creator?.name ?? "未知"}</p>
+              {secondaryTitle ? (
+                <p className="line-clamp-1 text-xs leading-5 text-slate-400">
+                  {secondaryTitle}
+                </p>
+              ) : null}
+              <p className="text-sm leading-6 text-slate-600">{creator?.name ?? t("content.unknownCreator")}</p>
             </div>
           </div>
           <div className="relative mt-0.5 pr-10">
-            <p className="min-w-0 text-sm leading-6 text-slate-600">{displayReason}</p>
+            {focusLine && focusLine !== primaryTitle ? (
+              <p className="min-w-0 text-sm leading-6 text-slate-600">
+                {t("content.targetPrefix")} {focusLine}
+              </p>
+            ) : null}
             {onToggleBookmark ? (
               <button
                 type="button"
@@ -236,10 +196,10 @@ export function ContentCard({
                 }}
                 disabled={bookmarkLoading}
                 aria-pressed={bookmarked}
-                aria-label={isProfileCompact ? "移出收藏" : bookmarked ? "取消收藏" : "加入收藏"}
+                aria-label={isProfileCompact ? (language === "en" ? "Remove bookmark" : "移出收藏") : bookmarked ? (language === "en" ? "Remove bookmark" : "取消收藏") : (language === "en" ? "Add bookmark" : "加入收藏")}
               >
                 {isProfileCompact ? (
-                  <span>{bookmarkLoading ? "处理中..." : "移出收藏"}</span>
+                  <span>{bookmarkLoading ? (language === "en" ? "Working..." : "处理中...") : (language === "en" ? "Remove bookmark" : "移出收藏")}</span>
                 ) : (
                   <BookmarkIcon filled={bookmarked} className="h-[1.6rem] w-[1.6rem]" />
                 )}

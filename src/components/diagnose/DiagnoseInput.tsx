@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
+import { useI18n } from "@/lib/i18n/config";
 
 type DiagnoseInputProps = {
   value: string;
@@ -22,6 +23,8 @@ export function DiagnoseInput({
   onClear,
   onQuickTagClick
 }: DiagnoseInputProps) {
+  const { t } = useI18n();
+
   return (
     <div className="space-y-4 rounded-2xl border border-[var(--line)] bg-white p-5 shadow-soft">
       <Textarea
@@ -29,7 +32,7 @@ export function DiagnoseInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={variant === "compact" ? "min-h-[120px]" : undefined}
-        placeholder="我反手总下网 / 二发没信心 / 正手一发力就出界 / 比赛里总来不及准备"
+        placeholder={t("diagnose.placeholder")}
       />
       {quickTagsLabel ? <p className="text-sm text-slate-500">{quickTagsLabel}</p> : null}
       <div className="flex flex-wrap gap-2">
@@ -52,8 +55,8 @@ export function DiagnoseInput({
         ))}
       </div>
       <div className="flex flex-wrap gap-2">
-        <Button onClick={onDiagnose}>开始诊断</Button>
-        <Button variant="secondary" onClick={onClear}>清空</Button>
+        <Button onClick={onDiagnose}>{t("diagnose.button.start")}</Button>
+        <Button variant="secondary" onClick={onClear}>{t("diagnose.button.clear")}</Button>
       </div>
     </div>
   );

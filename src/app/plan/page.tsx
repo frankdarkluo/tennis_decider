@@ -1,16 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { logEvent } from "@/lib/eventLogger";
 import { getPlanTemplate } from "@/lib/plans";
 import { saveGeneratedPlan } from "@/lib/userData";
+import { useI18n } from "@/lib/i18n/config";
+import { persistStudyArtifact } from "@/lib/study/client";
+import { updateLocalStudyProgress } from "@/lib/study/localData";
+import { sanitizePlanArtifact } from "@/lib/study/privacy";
+import { getStudySnapshot } from "@/lib/study/snapshot";
 import { toChineseLevel } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
+import { useStudy } from "@/components/study/StudyProvider";
 import { PlanSummary } from "@/components/plan/PlanSummary";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
 import { Button } from "@/components/ui/Button";
@@ -29,6 +35,8 @@ function PlanPageContent() {
   const params = useSearchParams();
   const { user, configured } = useAuth();
   const { openLoginModal } = useAuthModal();
+  const { studyMode, session, language } = useStudy();
+  const { t } = useI18n();
   const defaultProblemTag = params.get("problemTag") ?? "no-plan";
   const defaultLevel = normalizeLevelParam(params.get("level"));
 
@@ -36,8 +44,9 @@ function PlanPageContent() {
   const [level, setLevel] = useState<PlanLevel>(defaultLevel);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [saveMessage, setSaveMessage] = useState("");
+  const studyPersistedKeyRef = useRef<string | null>(null);
 
-  const plan = useMemo(() => getPlanTemplate(problemTag, level), [problemTag, level]);
+  const plan = useMemo(() => getPlanTemplate(problemTag, level, language), [language, problemTag, level]);
   const todayPlan = plan.days[0];
   const laterPlans = plan.days.slice(1);
   const sourceType: SavedPlanSource = params.get("problemTag")
@@ -70,9 +79,50 @@ function PlanPageContent() {
     });
   }, [hasSource, plan.level, sourceLabel, sourceType]);
 
+  useEffect(() => {
+    if (!studyMode || !session || !hasSource) {
+      return;
+    }
+
+    const persistKey = `${session.sessionId}:${plan.problemTag}:${plan.level}:${sourceType}:${sourceLabel}`;
+    if (studyPersistedKeyRef.current === persistKey) {
+      return;
+    }
+
+    studyPersistedKeyRef.current = persistKey;
+    updateLocalStudyProgress({
+      lastVisitedPath: `/plan?problemTag=${encodeURIComponent(plan.problemTag)}&level=${encodeURIComponent(plan.level)}`,
+      lastPlanHref: `/plan?problemTag=${encodeURIComponent(plan.problemTag)}&level=${encodeURIComponent(plan.level)}`,
+      lastPlanTitle: plan.title,
+      lastPlanProblemTag: plan.problemTag,
+      lastPlanLevel: plan.level
+    });
+
+    void persistStudyArtifact(
+      session,
+      "plan",
+      sanitizePlanArtifact(plan, {
+        sourceType,
+        sourceLabel,
+        snapshotId: session.snapshotId,
+        planTemplateVersion: getStudySnapshot().planTemplateVersion
+      })
+    ).then(() => {
+      logEvent("study_artifact_save", { artifactType: "plan" });
+      setSaveStatus("saved");
+      setSaveMessage(language === "en" ? "Recorded in this study session." : "已记录到本轮研究会话。");
+    });
+  }, [hasSource, language, plan, session, sourceLabel, sourceType, studyMode]);
+
   const handleSavePlan = async () => {
+    if (studyMode && session) {
+      setSaveStatus("saved");
+      setSaveMessage(language === "en" ? "Already recorded in this study session." : "这份计划已经记录到本轮研究会话。");
+      return;
+    }
+
     if (!user?.id || !configured) {
-      openLoginModal("登录后可保存训练计划", "save_plan");
+      openLoginModal(language === "en" ? "Sign in to save this plan" : "登录后可保存训练计划", "save_plan");
       return;
     }
 
@@ -88,7 +138,7 @@ function PlanPageContent() {
     }
 
     setSaveStatus("saved");
-      setSaveMessage("已保存到你的账号。");
+      setSaveMessage(language === "en" ? "Saved to your account." : "已保存到你的账号。");
     logEvent("plan_save", { planId: `${plan.problemTag}:${plan.level}` });
   };
 
@@ -97,14 +147,14 @@ function PlanPageContent() {
       <PageContainer>
         <div className="space-y-5">
           <PageBreadcrumbs items={[
-            { href: "/diagnose", label: "← 回到诊断" },
-            { href: "/", label: "回到首页" }
+            { href: "/diagnose", label: language === "en" ? "← Back to diagnosis" : "← 回到诊断" },
+            { href: "/", label: language === "en" ? "Back home" : "回到首页" }
           ]} />
           <div className="rounded-2xl border border-dashed border-[var(--line)] bg-white p-8 text-center">
-            <p className="text-slate-700">先做评估或诊断，再生成计划。</p>
+            <p className="text-slate-700">{t("plan.empty")}</p>
             <div className="mt-4 flex justify-center gap-2">
-              <Link href="/assessment"><Button>去水平评估</Button></Link>
-              <Link href="/diagnose"><Button variant="secondary">去问题诊断</Button></Link>
+              <Link href="/assessment"><Button>{t("plan.assessment")}</Button></Link>
+              <Link href="/diagnose"><Button variant="secondary">{t("plan.diagnose")}</Button></Link>
             </div>
           </div>
         </div>
@@ -116,17 +166,17 @@ function PlanPageContent() {
     <PageContainer>
       <div className="space-y-5">
         <PageBreadcrumbs items={[
-          { href: "/diagnose", label: "← 回到诊断" },
-          { href: "/", label: "回到首页" }
+          { href: "/diagnose", label: language === "en" ? "← Back to diagnosis" : "← 回到诊断" },
+          { href: "/", label: language === "en" ? "Back home" : "回到首页" }
         ]} />
         <div>
-          <h1 className="text-3xl font-black text-slate-900">你的 7 天提升计划</h1>
-          <p className="mt-2 text-slate-600">先练今天，再往后推。</p>
+          <h1 className="text-3xl font-black text-slate-900">{t("plan.title")}</h1>
+          <p className="mt-2 text-slate-600">{t("plan.subtitle")}</p>
         </div>
 
         <PlanSummary
           headline={plan.summary ?? plan.target}
-          supportingText={`当前等级参考：${toChineseLevel(plan.level)}`}
+          supportingText={t("plan.supporting", { value: language === "en" ? plan.level : toChineseLevel(plan.level) })}
         />
 
         {todayPlan ? (
@@ -139,7 +189,7 @@ function PlanPageContent() {
 
         {laterPlans.length > 0 ? (
           <div className="space-y-3">
-            <p className="text-sm font-semibold text-slate-900">后续安排</p>
+            <p className="text-sm font-semibold text-slate-900">{t("plan.later")}</p>
             <div className="space-y-3">
               {laterPlans.map((day) => (
                 <DayPlanCard
@@ -154,9 +204,9 @@ function PlanPageContent() {
 
         <div className="flex flex-wrap gap-2">
           <Button onClick={() => void handleSavePlan()} disabled={saveStatus === "saving" || saveStatus === "saved"}>
-            {saveStatus === "saving" ? "保存中..." : saveStatus === "saved" ? "已保存 ✓" : "保存这份计划"}
+            {saveStatus === "saving" ? t("plan.saving") : saveStatus === "saved" ? t("plan.saved") : t("plan.save")}
           </Button>
-          <Button variant="secondary" onClick={regenerate}>重新生成</Button>
+          <Button variant="secondary" onClick={regenerate}>{t("plan.regenerate")}</Button>
         </div>
         {saveMessage ? (
           <div className={saveStatus === "error"
@@ -173,7 +223,7 @@ function PlanPageContent() {
 
 export default function PlanPage() {
   return (
-    <Suspense fallback={<PageContainer><p className="text-slate-600">正在加载训练计划...</p></PageContainer>}>
+    <Suspense fallback={<PageContainer><p className="text-slate-600">Loading...</p></PageContainer>}>
       <PlanPageContent />
     </Suspense>
   );

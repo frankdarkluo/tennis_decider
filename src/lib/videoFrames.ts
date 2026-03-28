@@ -15,7 +15,16 @@ export type VideoValidationResult = {
   sizeMb: number;
 };
 
-function loadVideoMetadata(file: File): Promise<{ duration: number; width: number; height: number }> {
+type VideoLocale = "zh" | "en";
+
+function msg(locale: VideoLocale, zh: string, en: string) {
+  return locale === "en" ? en : zh;
+}
+
+function loadVideoMetadata(
+  file: File,
+  locale: VideoLocale = "zh"
+): Promise<{ duration: number; width: number; height: number }> {
   return new Promise((resolve, reject) => {
     const video = document.createElement("video");
     const objectUrl = URL.createObjectURL(file);
@@ -36,18 +45,29 @@ function loadVideoMetadata(file: File): Promise<{ duration: number; width: numbe
 
     video.onerror = () => {
       URL.revokeObjectURL(objectUrl);
-      reject(new Error("无法读取视频元信息，请尝试 mp4 / mov / webm 格式。"));
+      reject(new Error(msg(
+        locale,
+        "无法读取视频元信息，请尝试 mp4 / mov / webm 格式。",
+        "Unable to read video metadata. Try mp4, mov, or webm format."
+      )));
     };
   });
 }
 
-export async function validateVideoFile(file: File): Promise<VideoValidationResult> {
+export async function validateVideoFile(
+  file: File,
+  locale: VideoLocale = "zh"
+): Promise<VideoValidationResult> {
   const sizeMb = Number((file.size / 1024 / 1024).toFixed(1));
 
   if (sizeMb > MAX_VIDEO_SIZE_MB) {
     return {
       ok: false,
-      error: `视频不能超过 ${MAX_VIDEO_SIZE_MB}MB，当前约 ${sizeMb}MB。`,
+      error: msg(
+        locale,
+        `视频不能超过 ${MAX_VIDEO_SIZE_MB}MB，当前约 ${sizeMb}MB。`,
+        `Video must be under ${MAX_VIDEO_SIZE_MB}MB. Yours is about ${sizeMb}MB.`
+      ),
       sizeMb
     };
   }
@@ -56,18 +76,26 @@ export async function validateVideoFile(file: File): Promise<VideoValidationResu
   if (!extension || !["mp4", "mov", "webm", "m4v"].includes(extension)) {
     return {
       ok: false,
-      error: "目前仅支持 mp4 / mov / webm 格式的视频。",
+      error: msg(
+        locale,
+        "目前仅支持 mp4 / mov / webm 格式的视频。",
+        "Only mp4, mov, and webm formats are currently supported."
+      ),
       sizeMb
     };
   }
 
   try {
-    const metadata = await loadVideoMetadata(file);
+    const metadata = await loadVideoMetadata(file, locale);
 
     if (metadata.duration <= 0) {
       return {
         ok: false,
-        error: "这段视频暂时无法读取时长，请换一段更标准的录制文件。",
+        error: msg(
+          locale,
+          "这段视频暂时无法读取时长，请换一段更标准的录制文件。",
+          "Could not read the video duration. Try a different recording."
+        ),
         sizeMb
       };
     }
@@ -75,7 +103,11 @@ export async function validateVideoFile(file: File): Promise<VideoValidationResu
     if (metadata.duration > MAX_VIDEO_DURATION_SECONDS) {
       return {
         ok: false,
-        error: `视频时长不能超过 ${MAX_VIDEO_DURATION_SECONDS} 秒，当前约 ${Math.ceil(metadata.duration)} 秒。`,
+        error: msg(
+          locale,
+          `视频时长不能超过 ${MAX_VIDEO_DURATION_SECONDS} 秒，当前约 ${Math.ceil(metadata.duration)} 秒。`,
+          `Video must be under ${MAX_VIDEO_DURATION_SECONDS} seconds. Yours is about ${Math.ceil(metadata.duration)} seconds.`
+        ),
         durationSeconds: metadata.duration,
         width: metadata.width,
         height: metadata.height,
@@ -93,7 +125,13 @@ export async function validateVideoFile(file: File): Promise<VideoValidationResu
   } catch (error) {
     return {
       ok: false,
-      error: error instanceof Error ? error.message : "视频校验失败，请更换一段视频后重试。",
+      error: error instanceof Error
+        ? error.message
+        : msg(
+          locale,
+          "视频校验失败，请更换一段视频后重试。",
+          "Video validation failed. Please try a different clip."
+        ),
       sizeMb
     };
   }
@@ -117,11 +155,12 @@ function buildTimestamps(duration: number, frameCount: number) {
 
 export async function extractFramesInBrowser(
   file: File,
-  options?: { frameCount?: number; maxWidth?: number; quality?: number }
+  options?: { frameCount?: number; maxWidth?: number; quality?: number; locale?: VideoLocale }
 ): Promise<string[]> {
   const frameCount = options?.frameCount ?? DEFAULT_FRAME_COUNT;
   const maxWidth = options?.maxWidth ?? DEFAULT_MAX_WIDTH;
   const quality = options?.quality ?? DEFAULT_QUALITY;
+  const locale = options?.locale ?? "zh";
 
   return new Promise((resolve, reject) => {
     const video = document.createElement("video");
@@ -131,7 +170,11 @@ export async function extractFramesInBrowser(
 
     if (!context) {
       URL.revokeObjectURL(objectUrl);
-      reject(new Error("当前浏览器无法完成视频抽帧。"));
+      reject(new Error(msg(
+        locale,
+        "当前浏览器无法完成视频抽帧。",
+        "Your browser could not extract video frames."
+      )));
       return;
     }
 
@@ -169,7 +212,11 @@ export async function extractFramesInBrowser(
 
     video.onerror = () => {
       URL.revokeObjectURL(objectUrl);
-      reject(new Error("视频抽帧失败，请换一个更清晰或更标准的文件后重试。"));
+      reject(new Error(msg(
+        locale,
+        "视频抽帧失败，请换一个更清晰或更标准的文件后重试。",
+        "Frame extraction failed. Try a clearer or more standard video file."
+      )));
     };
   });
 }

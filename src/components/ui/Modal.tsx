@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
+import { useI18n } from "@/lib/i18n/config";
 
 type ModalProps = {
   open: boolean;
@@ -9,6 +10,8 @@ type ModalProps = {
 };
 
 export function Modal({ open, title, onClose, children }: ModalProps) {
+  const { t } = useI18n();
+
   if (!open) {
     return null;
   }
@@ -18,7 +21,7 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
       <div className="max-h-[85vh] w-full max-w-xl overflow-y-auto rounded-2xl bg-white p-5 shadow-soft">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
-          <Button variant="ghost" onClick={onClose}>关闭</Button>
+          <Button variant="ghost" onClick={onClose}>{t("modal.close")}</Button>
         </div>
         <div className="space-y-4">{children}</div>
       </div>

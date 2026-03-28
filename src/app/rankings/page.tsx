@@ -3,6 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { readAssessmentResultFromStorage, writeAssessmentResultToStorage } from "@/lib/assessmentStorage";
 import { creators } from "@/data/creators";
+import {
+  getCreatorBio,
+  getCreatorShortDescription,
+  getCreatorTags
+} from "@/lib/content/display";
+import { useI18n } from "@/lib/i18n/config";
+import { seededSort } from "@/lib/study/seededSort";
 import { getLatestAssessmentResult } from "@/lib/userData";
 import { Creator, CreatorRankingSignals } from "@/types/creator";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -11,6 +18,7 @@ import { CreatorCard } from "@/components/rankings/CreatorCard";
 import { CreatorDetailModal } from "@/components/rankings/CreatorDetailModal";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { logEvent } from "@/lib/eventLogger";
+import { useStudy } from "@/components/study/StudyProvider";
 
 const LEVEL_ORDER = ["2.5", "3.0", "3.5", "4.0", "4.0+", "4.5"] as const;
 const INITIAL_VISIBLE_CREATORS = 20;
@@ -73,25 +81,32 @@ function getCreatorSortScore(creator: Creator, targetLevel?: string) {
   return 0.58 * matchScore + 0.28 * qualityScore + 0.14 * curatorScore;
 }
 
-function matchesSearch(creator: Creator, query: string) {
+function matchesSearch(creator: Creator, query: string, locale: "zh" | "en") {
   const normalizedQuery = query.trim().toLowerCase();
 
   if (!normalizedQuery) {
     return true;
   }
 
+  const translatedTags = getCreatorTags(creator.tags, locale);
+
   return (
     [
       creator.name,
       creator.shortDescription,
-      creator.bio
+      getCreatorShortDescription(creator, locale),
+      creator.bio,
+      getCreatorBio(creator, locale),
+      ...creator.suitableFor,
+      ...translatedTags
     ].some((value) => value.toLowerCase().includes(normalizedQuery))
-    || creator.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery))
   );
 }
 
 export default function RankingsPage() {
   const { user, configured, loading } = useAuth();
+  const { session, studyMode } = useStudy();
+  const { language, t } = useI18n();
   const [region, setRegion] = useState<"domestic" | "overseas">("domestic");
   const [query, setQuery] = useState("");
   const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
@@ -99,15 +114,27 @@ export default function RankingsPage() {
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_CREATORS);
 
   const list = useMemo(() => {
-    return creators
+    const scored = creators
       .filter((creator) => {
-        return creator.region === region && creator.rankingEligible !== false && matchesSearch(creator, query);
+        return creator.region === region && creator.rankingEligible !== false && matchesSearch(creator, query, language);
       })
       .map((creator) => ({
         creator,
         score: getCreatorSortScore(creator, viewerLevel),
         recommendedCount: creator.featuredVideos?.length ?? creator.featuredContentIds.length
-      }))
+      }));
+
+    if (studyMode && session) {
+      return seededSort(
+        scored,
+        session.snapshotSeed,
+        (item) => item.creator.id,
+        (item) => item.score * 100 + item.recommendedCount,
+        (left, right) => left.creator.name.localeCompare(right.creator.name, "zh-CN")
+      ).map(({ creator }) => creator);
+    }
+
+    return scored
       .sort((a, b) => {
         if (b.score !== a.score) {
           return b.score - a.score;
@@ -120,7 +147,7 @@ export default function RankingsPage() {
         return a.creator.name.localeCompare(b.creator.name, "zh-CN");
       })
       .map(({ creator }) => creator);
-  }, [query, region, viewerLevel]);
+  }, [language, query, region, session, studyMode, viewerLevel]);
 
   const visibleList = useMemo(() => list.slice(0, visibleCount), [list, visibleCount]);
 
@@ -166,7 +193,7 @@ export default function RankingsPage() {
     };
   }, [configured, loading, user?.id]);
 
-  const pageTitle = "博主榜";
+  const pageTitle = t("rankings.title");
 
   return (
     <PageContainer>
@@ -179,11 +206,11 @@ export default function RankingsPage() {
           <TabButton active={region === "domestic"} onClick={() => {
             setRegion("domestic");
             logEvent("creator_filter", { filterType: "region", filterValue: "domestic" });
-          }}>中文博主</TabButton>
+          }}>{t("rankings.domestic")}</TabButton>
           <TabButton active={region === "overseas"} onClick={() => {
             setRegion("overseas");
             logEvent("creator_filter", { filterType: "region", filterValue: "overseas" });
-          }}>英文博主</TabButton>
+          }}>{t("rankings.overseas")}</TabButton>
         </div>
 
         <div className="rounded-2xl border border-[var(--line)] bg-white p-4">
@@ -191,9 +218,9 @@ export default function RankingsPage() {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="搜索博主或标签..."
+            placeholder={t("rankings.searchPlaceholder")}
             className="min-h-11 w-full rounded-xl border border-[var(--line)] bg-[var(--surface-soft)] px-4 py-2 text-sm outline-none transition focus:border-brand-300 focus:bg-white"
-            aria-label="搜索博主"
+            aria-label={t("rankings.searchAria")}
           />
         </div>
 
@@ -218,13 +245,13 @@ export default function RankingsPage() {
                   onClick={() => setVisibleCount((count) => Math.min(count + INITIAL_VISIBLE_CREATORS, list.length))}
                   className="rounded-2xl border border-[var(--line)] bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700"
                 >
-                  查看更多
+                  {t("rankings.more")}
                 </button>
               </div>
             ) : null}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-[var(--line)] bg-white p-6 text-slate-600">没找到，换个关键词试试。</div>
+          <div className="rounded-2xl border border-dashed border-[var(--line)] bg-white p-6 text-slate-600">{t("rankings.empty")}</div>
         )}
       </div>
       <CreatorDetailModal creator={selectedCreator} open={Boolean(selectedCreator)} onClose={() => setSelectedCreator(null)} />

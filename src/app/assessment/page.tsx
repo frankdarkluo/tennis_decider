@@ -11,6 +11,10 @@ import {
 } from "@/lib/assessment";
 import { writeAssessmentResultToStorage } from "@/lib/assessmentStorage";
 import { logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
+import { formatAssessmentYearsLabel, getAssessmentOptionLabel } from "@/lib/i18n/assessmentCopy";
+import { sanitizeAssessmentArtifact } from "@/lib/study/privacy";
+import { persistStudyArtifact } from "@/lib/study/client";
 import { saveAssessmentResult } from "@/lib/userData";
 import { AssessmentProfile, AssessmentQuestion } from "@/types/assessment";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -18,31 +22,22 @@ import { AssessmentProgress } from "@/components/assessment/AssessmentProgress";
 import { QuestionCard } from "@/components/assessment/QuestionCard";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useStudy } from "@/components/study/StudyProvider";
 
 const AUTO_ADVANCE_DELAY = 300;
 const SLIDER_ADVANCE_DELAY = 500;
 const TOTAL_STEPS = 8;
 
-function formatYearsLabel(value: number) {
-  if (value === 0.5) {
-    return "半年";
-  }
-
-  if (value >= 10) {
-    return "10年+";
-  }
-
-  return `${value}年`;
-}
-
 export default function AssessmentPage() {
   const router = useRouter();
   const { user, configured } = useAuth();
+  const { session, studyMode } = useStudy();
+  const { language, t } = useI18n();
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [profile, setProfile] = useState<AssessmentProfile>({
     yearsPlaying: 2,
-    yearsLabel: "2年"
+    yearsLabel: formatAssessmentYearsLabel(2, language)
   });
   const [submitting, setSubmitting] = useState(false);
   const [autoAdvancing, setAutoAdvancing] = useState(false);
@@ -105,6 +100,13 @@ export default function AssessmentPage() {
   }, [answers, profile, stepIndex]);
 
   useEffect(() => {
+    setProfile((prev) => ({
+      ...prev,
+      yearsLabel: formatAssessmentYearsLabel(prev.yearsPlaying ?? 2, language)
+    }));
+  }, [language]);
+
+  useEffect(() => {
     logEvent("assessment_start", {
       totalSteps: TOTAL_STEPS,
       scoredQuestions: 6,
@@ -160,7 +162,10 @@ export default function AssessmentPage() {
     completedRef.current = true;
     writeAssessmentResultToStorage(result);
 
-    if (user?.id && configured) {
+    if (studyMode && session) {
+      await persistStudyArtifact(session, "assessment", sanitizeAssessmentArtifact(result));
+      logEvent("study_artifact_save", { artifactType: "assessment" });
+    } else if (user?.id && configured) {
       const saveResult = await saveAssessmentResult(user.id, result);
       if (saveResult.error) {
         console.error("[assessment] failed to save result", saveResult.error);
@@ -180,7 +185,12 @@ export default function AssessmentPage() {
       setProfile((prev) => ({ ...prev, gender }));
       logEvent("assessment_answer", {
         questionId: currentQuestion.id,
-        selectedOption: value === 1 ? "男" : "女",
+        selectedOption: getAssessmentOptionLabel(
+          currentQuestion.id,
+          value,
+          value === 1 ? t("assessment.gender.male") : t("assessment.gender.female"),
+          language
+        ),
         step: "profile"
       });
       scheduleAdvance(() => moveToStep(stepIndex + 1), AUTO_ADVANCE_DELAY);
@@ -198,7 +208,7 @@ export default function AssessmentPage() {
     setAnswers(nextAnswers);
     logEvent("assessment_answer", {
       questionId: currentQuestion.id,
-      selectedOption: selectedOption?.label ?? value,
+      selectedOption: getAssessmentOptionLabel(currentQuestion.id, value, selectedOption?.label ?? String(value), language),
       phase: currentQuestion.phase
     });
 
@@ -218,7 +228,7 @@ export default function AssessmentPage() {
     setProfile((prev) => ({
       ...prev,
       yearsPlaying: value,
-      yearsLabel: formatYearsLabel(value)
+      yearsLabel: formatAssessmentYearsLabel(value, language)
     }));
   };
 
@@ -230,7 +240,7 @@ export default function AssessmentPage() {
     sliderTouchedRef.current = false;
     logEvent("assessment_answer", {
       questionId: currentQuestion.id,
-      selectedOption: profileRef.current.yearsLabel ?? formatYearsLabel(profileRef.current.yearsPlaying ?? 2),
+      selectedOption: profileRef.current.yearsLabel ?? formatAssessmentYearsLabel(profileRef.current.yearsPlaying ?? 2, language),
       step: "profile"
     });
     scheduleAdvance(() => moveToStep(stepIndex + 1), SLIDER_ADVANCE_DELAY);
@@ -240,14 +250,14 @@ export default function AssessmentPage() {
     <PageContainer>
       <div className="mx-auto max-w-2xl space-y-5">
         <div className="space-y-2">
-          <h1 className="text-3xl font-black text-slate-900">1 分钟测一下你的水平</h1>
-          <p className="text-slate-600">答几个小问题，先给你一个区间。</p>
+          <h1 className="text-3xl font-black text-slate-900">{t("assessment.title")}</h1>
+          <p className="text-slate-600">{t("assessment.subtitle")}</p>
         </div>
 
         <AssessmentProgress
           current={stepIndex + 1}
           total={TOTAL_STEPS}
-          hint={stepIndex >= 5 ? "快完成了" : undefined}
+          hint={stepIndex >= 5 ? t("assessment.progress.almostDone") : undefined}
         />
 
         {currentQuestion ? (
@@ -266,7 +276,7 @@ export default function AssessmentPage() {
         ) : null}
 
         <div className="flex items-center justify-between gap-3">
-          <div className="text-sm text-slate-400">点一下就继续</div>
+          <div className="text-sm text-slate-400">{t("assessment.tapToContinue")}</div>
           {stepIndex > 0 ? (
             <Button
               variant="ghost"
@@ -274,7 +284,7 @@ export default function AssessmentPage() {
               disabled={submitting}
               onClick={() => moveToStep(stepIndex - 1)}
             >
-              上一步
+              {t("assessment.previous")}
             </Button>
           ) : null}
         </div>

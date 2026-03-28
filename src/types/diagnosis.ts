@@ -13,6 +13,9 @@ export type DiagnosisRule = {
   problemTag: string;
   causes: string[];
   fixes: string[];
+  causes_en?: string[];
+  fixes_en?: string[];
+  drills_en?: string[];
   recommendedContentIds: string[];
   drills: string[];
   searchQueries: DiagnosisSearchQueries;

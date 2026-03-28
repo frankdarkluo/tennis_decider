@@ -1,5 +1,6 @@
 import { getSupabaseBrowserClient } from "@/lib/supabase";
 import { ResearchExportTable, SurveyResponses } from "@/types/research";
+import { StudyExportBundle, StudySnapshot } from "@/types/study";
 
 function getClient() {
   return getSupabaseBrowserClient();
@@ -79,6 +80,45 @@ export async function fetchAllExportRows(table: ResearchExportTable) {
   }
 
   return { data: rows };
+}
+
+export function buildStudyExportBundle(input: {
+  snapshot: StudySnapshot;
+  sessions: Record<string, unknown>[];
+  artifacts: Record<string, unknown>[];
+  events: Record<string, unknown>[];
+  participantId?: string;
+  sessionId?: string;
+  snapshotId?: string;
+}): StudyExportBundle {
+  const participantId = input.participantId?.trim() ?? "";
+  const sessionId = input.sessionId?.trim() ?? "";
+  const snapshotId = input.snapshotId?.trim() ?? "";
+
+  const matches = (row: Record<string, unknown>) => {
+    const rowParticipantId = String(row.participant_id ?? "");
+    const rowSessionId = String(row.session_id ?? "");
+    const rowSnapshotId = String(row.snapshot_id ?? "");
+
+    if (participantId && rowParticipantId !== participantId) {
+      return false;
+    }
+    if (sessionId && rowSessionId !== sessionId) {
+      return false;
+    }
+    if (snapshotId && rowSnapshotId !== snapshotId) {
+      return false;
+    }
+
+    return true;
+  };
+
+  return {
+    snapshot: input.snapshot,
+    sessions: input.sessions.filter(matches) as StudyExportBundle["sessions"],
+    artifacts: input.artifacts.filter(matches) as StudyExportBundle["artifacts"],
+    events: input.events.filter(matches) as StudyExportBundle["events"]
+  };
 }
 
 export function downloadJsonFile(fileName: string, payload: string) {

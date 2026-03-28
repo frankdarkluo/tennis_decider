@@ -6,11 +6,18 @@ import { creators } from "@/data/creators";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
+import {
+  getContentFocusLine,
+  getContentPrimaryTitle,
+  getContentSecondaryTitle
+} from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
+import { useI18n } from "@/lib/i18n/config";
 
 const featuredContentIds = ["content_fr_01", "content_gaiao_02"];
 
 export function HotContentSection() {
+  const { language, t } = useI18n();
   const featuredContents = featuredContentIds
     .map((id) => contents.find((item) => item.id === id))
     .filter((item): item is (typeof contents)[number] => Boolean(item))
@@ -20,19 +27,22 @@ export function HotContentSection() {
     <section className="flex h-full flex-col space-y-4">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-xl font-bold text-slate-900">关注这些内容</h3>
+          <h3 className="text-xl font-bold text-slate-900">{t("home.hotContent.title")}</h3>
         </div>
         <Link
           href="/library"
           className="shrink-0 pt-1 text-sm font-medium text-slate-500 transition hover:text-slate-700"
-          onClick={() => logEvent("cta_click", { ctaLabel: "查看更多内容", ctaLocation: "home_hot_content", targetPage: "/library" })}
+          onClick={() => logEvent("cta_click", { ctaLabel: t("cta.moreContent"), ctaLocation: "home_hot_content", targetPage: "/library" })}
         >
-          查看更多 →
+          {t("home.more")}
         </Link>
       </div>
       <div className="grid flex-1 auto-rows-fr gap-3">
         {featuredContents.map((item) => {
           const creator = creators.find((entry) => entry.id === item.creatorId);
+          const primaryTitle = getContentPrimaryTitle(item, language);
+          const secondaryTitle = getContentSecondaryTitle(item, language);
+          const focusLine = getContentFocusLine(item, language);
 
           return (
             <Link
@@ -48,8 +58,13 @@ export function HotContentSection() {
                   {creator ? <span className="text-xs font-medium text-slate-500">{creator.name}</span> : null}
                 </div>
                 <div className="space-y-2">
-                  <p className="font-semibold text-slate-900">{item.title}</p>
-                  <p className="text-sm leading-6 text-slate-600">{item.reason}</p>
+                  <p className="font-semibold text-slate-900">{primaryTitle}</p>
+                  {secondaryTitle ? (
+                    <p className="text-xs leading-5 text-slate-400">{secondaryTitle}</p>
+                  ) : null}
+                  {focusLine && focusLine !== primaryTitle ? (
+                    <p className="text-sm leading-6 text-slate-600">{t("content.targetPrefix")} {focusLine}</p>
+                  ) : null}
                 </div>
               </Card>
             </Link>
