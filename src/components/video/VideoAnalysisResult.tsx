@@ -17,6 +17,7 @@ import {
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
+import { buildDiagnosisPlanCandidateIds, buildPlanHref } from "@/lib/plans";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
 import { VideoDiagnosisResult } from "@/types/videoDiagnosis";
 
@@ -102,7 +103,17 @@ function RecommendationCard({
 
 export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }) {
   const { language, t } = useI18n();
-  const planHref = `/plan?problemTag=${encodeURIComponent(result.trainingPlan.problemTag)}&level=${encodeURIComponent(result.trainingPlan.level)}`;
+  const candidateIds = buildDiagnosisPlanCandidateIds({
+    problemTag: result.trainingPlan.problemTag,
+    level: result.trainingPlan.level,
+    recommendedContentIds: result.recommendedContents.map((item) => item.id)
+  });
+  const planHref = buildPlanHref({
+    problemTag: result.trainingPlan.problemTag,
+    level: result.trainingPlan.level,
+    preferredContentIds: candidateIds,
+    sourceType: "diagnosis"
+  });
   const [layer, setLayer] = useState<1 | 2 | 3>(1);
   const primaryFix = result.primaryProblem.fix || result.primaryProblem.cause;
   const featuredContent = result.recommendedContents[0];

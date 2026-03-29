@@ -98,6 +98,9 @@ export type StudyProgressState = {
   lastAssessmentPath?: string;
   lastAssessmentLevel?: string;
   lastAssessmentCompletedAt?: string;
+  assessmentDraftInProgress?: boolean;
+  assessmentDraftStepIndex?: number;
+  assessmentDraftUpdatedAt?: string;
   lastPlanHref?: string;
   lastPlanTitle?: string;
   lastPlanProblemTag?: string;

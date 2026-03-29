@@ -33,6 +33,13 @@ export type AssessmentProfile = {
   yearsLabel?: string;
 };
 
+export type AssessmentDraft = {
+  stepIndex: number;
+  answers: AssessmentAnswers;
+  profile: AssessmentProfile;
+  updatedAt: string;
+};
+
 export type AssessmentOption = {
   label: string;
   value: number;

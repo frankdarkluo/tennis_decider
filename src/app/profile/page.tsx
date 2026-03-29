@@ -6,6 +6,7 @@ import { contents } from "@/data/contents";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { formatLocalizedDateTime } from "@/lib/i18n/format";
+import { readAssessmentDraftFromStorage } from "@/lib/assessmentStorage";
 import { readLocalStudyArtifacts, readLocalStudyBookmarks, readLocalStudyProgress } from "@/lib/study/localData";
 import {
   getBookmarkedContentIds,
@@ -40,7 +41,8 @@ const studyArtifactLabelKey = {
   diagnosis: "profile.studyArtifact.diagnosis",
   video_diagnosis: "profile.studyArtifact.video_diagnosis",
   plan: "profile.studyArtifact.plan",
-  survey: "profile.studyArtifact.survey"
+  survey: "profile.studyArtifact.survey",
+  study_resume: "profile.studyArtifact.study_resume"
 } as const;
 
 function SectionSkeleton({ lines = 3 }: { lines?: number }) {
@@ -100,6 +102,7 @@ export default function ProfilePage() {
   const [studyArtifacts, setStudyArtifacts] = useState<StudyArtifactRecord[]>([]);
   const [studyBookmarkIds, setStudyBookmarkIds] = useState<string[]>([]);
   const [studyProgress, setStudyProgress] = useState<StudyProgressState | null>(null);
+  const [studyAssessmentDraftStep, setStudyAssessmentDraftStep] = useState<number | null>(null);
 
   useEffect(() => {
     logEvent("profile.viewed", {}, { page: "/profile" });
@@ -113,6 +116,7 @@ export default function ProfilePage() {
     setStudyArtifacts(readLocalStudyArtifacts());
     setStudyBookmarkIds(readLocalStudyBookmarks().contentIds);
     setStudyProgress(readLocalStudyProgress());
+    setStudyAssessmentDraftStep(readAssessmentDraftFromStorage()?.stepIndex ?? null);
   }, [studyMode, session?.sessionId]);
 
   useEffect(() => {
@@ -279,6 +283,10 @@ export default function ProfilePage() {
       acc[artifact.artifactType] = (acc[artifact.artifactType] ?? 0) + 1;
       return acc;
     }, {});
+    const activeAssessmentDraftStep = studyProgress?.assessmentDraftInProgress
+      ? (studyProgress.assessmentDraftStepIndex ?? studyAssessmentDraftStep ?? 0)
+      : null;
+    const hasActiveAssessmentDraft = activeAssessmentDraftStep !== null;
 
     return (
       <PageContainer>
@@ -350,7 +358,14 @@ export default function ProfilePage() {
                     <Button variant="secondary">{t("profile.studyContinuePlan")}</Button>
                   </Link>
                 ) : null}
-                {studyProgress?.lastAssessmentPath ? (
+                {hasActiveAssessmentDraft ? (
+                  <Link
+                    href="/assessment"
+                    onClick={() => logEvent("profile.history_item_opened", { itemType: "assessment_draft", itemId: "/assessment" }, { page: "/profile" })}
+                  >
+                    <Button variant="secondary">{t("profile.studyContinueAssessmentDraft")}</Button>
+                  </Link>
+                ) : studyProgress?.lastAssessmentPath ? (
                   <Link
                     href={studyProgress.lastAssessmentPath}
                     onClick={() => logEvent("profile.history_item_opened", { itemType: "assessment", itemId: studyProgress.lastAssessmentPath }, { page: "/profile" })}
@@ -370,7 +385,7 @@ export default function ProfilePage() {
                 <p className="mt-1 text-sm text-slate-600">{t("profile.studySubtitle")}</p>
               </div>
               <div className="space-y-2">
-                {(["study_background", "assessment", "diagnosis", "video_diagnosis", "plan", "survey"] as const).map((type) => (
+                {(["study_background", "assessment", "diagnosis", "video_diagnosis", "plan", "survey", "study_resume"] as const).map((type) => (
                   <div key={type} className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3">
                     <span className="text-sm font-medium text-slate-700">{t(studyArtifactLabelKey[type])}</span>
                     <span className="text-sm font-semibold text-slate-900">{artifactSummary[type] ?? 0}</span>
@@ -387,7 +402,11 @@ export default function ProfilePage() {
                 </p>
               </div>
               <div className="space-y-2 text-sm text-slate-600">
-                <p>{studyProgress?.lastAssessmentLevel ? `${t("assessment.result.headline")} ${studyProgress.lastAssessmentLevel}` : t("profile.studyNoAssessment")}</p>
+                {hasActiveAssessmentDraft ? (
+                  <p>{t("profile.studyAssessmentDraftStatus", { value: (activeAssessmentDraftStep ?? 0) + 1 })}</p>
+                ) : (
+                  <p>{studyProgress?.lastAssessmentLevel ? `${t("assessment.result.headline")} ${studyProgress.lastAssessmentLevel}` : t("profile.studyNoAssessment")}</p>
+                )}
               </div>
             </Card>
           </div>

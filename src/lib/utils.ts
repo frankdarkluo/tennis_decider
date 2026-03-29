@@ -1,6 +1,7 @@
 import clsx, { ClassValue } from "clsx";
 
 export const ASSESSMENT_STORAGE_KEY = "tennislevel-assessment-result";
+export const ASSESSMENT_DRAFT_STORAGE_KEY = "tennislevel-assessment-draft";
 
 export function cn(...inputs: ClassValue[]) {
   return clsx(inputs);

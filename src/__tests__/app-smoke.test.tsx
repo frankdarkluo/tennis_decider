@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import HomePage from "@/app/page";
 import AssessmentPage from "@/app/assessment/page";
+import AssessmentResultPage from "@/app/assessment/result/page";
 import DiagnosePage from "@/app/diagnose/page";
 import VideoDiagnosePage from "@/app/video-diagnose/page";
 import LibraryPage from "@/app/library/page";
@@ -12,7 +13,9 @@ import ProfilePage from "@/app/profile/page";
 import StudyPage from "@/app/study/page";
 import SurveyPage from "@/app/survey/page";
 import { assessmentQuestions } from "@/data/assessmentQuestions";
+import { getDefaultAssessmentResult } from "@/lib/assessment";
 import { calculateSUS } from "@/lib/survey";
+import { ASSESSMENT_DRAFT_STORAGE_KEY, ASSESSMENT_STORAGE_KEY } from "@/lib/utils";
 
 const { mockPush, mockRedirect, translationMap } = vi.hoisted(() => ({
   mockPush: vi.fn(),
@@ -20,6 +23,8 @@ const { mockPush, mockRedirect, translationMap } = vi.hoisted(() => ({
   translationMap: {
     "home.hero.title": "一句话，帮你找到下一步该练什么",
     "assessment.title": "1 分钟测一下你的水平",
+    "assessment.resumeDraft": "已恢复你刚才做到一半的评估进度。",
+    "assessment.result.ctaPlan": "生成训练计划 →",
     "diagnose.placeholder": "例如：我反手总下网，一快就更容易失误",
     "library.title": "找内容",
     "library.more": "查看更多",
@@ -32,6 +37,8 @@ const { mockPush, mockRedirect, translationMap } = vi.hoisted(() => ({
     "plan.supporting": "这 7 天先练这一件事",
     "plan.day.today": "今天",
     "plan.day.label": "Day {day}",
+    "plan.day.expand": "展开",
+    "plan.day.collapse": "收起",
     "profile.loginTitle": "登录后查看你的记录",
     "survey.title": "TennisLevel 使用体验问卷",
     "survey.part.sus.title": "Part 2：SUS 系统可用性量表",
@@ -124,6 +131,7 @@ describe("app smoke tests", () => {
     mockRedirect.mockReset();
     mockSearchParams = new URLSearchParams();
     window.localStorage.clear();
+    window.history.pushState({}, "", "/");
     consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
@@ -191,6 +199,119 @@ describe("app smoke tests", () => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("redirects back to the saved assessment result on revisit", async () => {
+    window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({ answeredCount: 6 }));
+
+    render(React.createElement(AssessmentPage));
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith("/assessment/result");
+    });
+  });
+
+  it("still allows an explicit retake even if a saved assessment result exists", async () => {
+    mockSearchParams = new URLSearchParams("retake=1");
+    window.history.pushState({}, "", "/assessment?retake=1");
+    window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({ answeredCount: 6 }));
+
+    render(React.createElement(AssessmentPage));
+
+    expect(await screen.findByText("你的性别？")).toBeInTheDocument();
+    expect(mockPush).not.toHaveBeenCalled();
+  });
+
+  it("resumes an in-progress assessment draft instead of redirecting to the saved result", async () => {
+    window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({ answeredCount: 6 }));
+    window.localStorage.setItem(ASSESSMENT_DRAFT_STORAGE_KEY, JSON.stringify({
+      stepIndex: 3,
+      answers: { coarse_rally: 2 },
+      profile: { gender: "female", yearsPlaying: 4, yearsLabel: "4 年" },
+      updatedAt: "2026-03-29T00:00:00.000Z"
+    }));
+
+    render(React.createElement(AssessmentPage));
+
+    expect(await screen.findByText("已恢复你刚才做到一半的评估进度。")).toBeInTheDocument();
+    expect(screen.getByText("你的发球大概什么状态？")).toBeInTheDocument();
+    expect(mockPush).not.toHaveBeenCalled();
+  });
+
+  it("returns to the same question after leaving and coming back mid-assessment", async () => {
+    window.localStorage.setItem(ASSESSMENT_DRAFT_STORAGE_KEY, JSON.stringify({
+      stepIndex: 5,
+      answers: {
+        coarse_rally: 2,
+        coarse_serve: 2,
+        coarse_awareness: 1
+      },
+      profile: { gender: "male", yearsPlaying: 3, yearsLabel: "3 年" },
+      updatedAt: "2026-03-29T00:00:00.000Z"
+    }));
+
+    render(React.createElement(AssessmentPage));
+
+    expect(await screen.findByText("已恢复你刚才做到一半的评估进度。")).toBeInTheDocument();
+    expect(screen.getByText("打球时你的握拍和准备动作？")).toBeInTheDocument();
+    expect(mockPush).not.toHaveBeenCalled();
+  });
+
+  it("renders assessment result page with a direct training-plan CTA", async () => {
+    const storedResult = {
+      ...getDefaultAssessmentResult("zh"),
+      answeredCount: 8,
+      totalQuestions: 8,
+      level: "3.0" as const,
+      confidence: "中等" as const,
+      dimensions: [
+        {
+          key: "serve" as const,
+          label: "发球",
+          score: 1,
+          maxScore: 4,
+          average: 1,
+          levelHint: "3.0" as const,
+          answeredCount: 2,
+          uncertainCount: 0,
+          status: "正常" as const
+        },
+        {
+          key: "matchplay" as const,
+          label: "比赛意识",
+          score: 2,
+          maxScore: 4,
+          average: 2,
+          levelHint: "3.0" as const,
+          answeredCount: 2,
+          uncertainCount: 0,
+          status: "正常" as const
+        },
+        {
+          key: "forehand" as const,
+          label: "正手",
+          score: 3,
+          maxScore: 4,
+          average: 3,
+          levelHint: "3.0" as const,
+          answeredCount: 2,
+          uncertainCount: 0,
+          status: "正常" as const
+        }
+      ],
+      strengths: ["正手"],
+      weaknesses: ["发球"],
+      observationNeeded: ["比赛意识"]
+    };
+    window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify(storedResult));
+
+    render(React.createElement(AssessmentResultPage));
+
+    const planLink = await screen.findByRole("link", { name: "生成训练计划 →" });
+    expect(planLink.getAttribute("href")).toContain("/plan?");
+    expect(planLink.getAttribute("href")).toContain("source=assessment");
+    expect(planLink.getAttribute("href")).toContain("problemTag=second-serve-confidence");
+    expect(planLink.getAttribute("href")).toContain("contentIds=");
+  });
+
   it("renders diagnose page with input box", async () => {
     render(React.createElement(DiagnosePage));
 
@@ -223,13 +344,19 @@ describe("app smoke tests", () => {
   });
 
   it("renders plan page without crashing", async () => {
-    mockSearchParams = new URLSearchParams("problemTag=backhand-into-net&level=3.0");
+    mockSearchParams = new URLSearchParams(
+      "problemTag=backhand-into-net&level=3.0&source=diagnosis&contentIds=content_cn_a_01,content_zlx_03,expanded_junior_tennis_co_video_112"
+    );
 
     render(React.createElement(PlanPage));
 
     expect(await screen.findByText("你的 7 天提升计划")).toBeInTheDocument();
     expect(screen.getByText("这 7 天先练这一件事")).toBeInTheDocument();
     expect(screen.getByText("Day 1 · 今天")).toBeInTheDocument();
+    expect(screen.getByText("反手总下网：先别急着加力")).toBeInTheDocument();
+
+    fireEvent.click(screen.getAllByRole("button", { name: "展开" })[0]);
+    expect(screen.getAllByRole("link").filter((node) => node.getAttribute("href")?.startsWith("http")).length).toBe(2);
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 

@@ -1,7 +1,18 @@
+import { getDimensionLabel } from "@/lib/assessment";
+import { contents } from "@/data/contents";
+import { diagnosisRules } from "@/data/diagnosisRules";
+import { expandedContents } from "@/data/expandedContents";
 import { planTemplates } from "@/data/planTemplates";
+import { AssessmentDimension, AssessmentResult, DimensionSummary } from "@/types/assessment";
+import { ContentItem } from "@/types/content";
 import { DayPlan, GeneratedPlan, PlanLevel, PlanTemplate } from "@/types/plan";
+import { SavedPlanSource } from "@/types/userData";
 
 type PlanLocale = "zh" | "en";
+type PlanPoolSource = "curated" | "expanded";
+
+const MAX_PLAN_CANDIDATES = 7;
+const MIN_PLAN_CANDIDATES = 5;
 
 const defaultDaysZh = [1, 2, 3, 4, 5, 6, 7].map((day) => ({
   day,
@@ -18,6 +29,154 @@ const defaultDaysEn = [1, 2, 3, 4, 5, 6, 7].map((day) => ({
   drills: ["20 basic swing reps", "20 target shots — focus on clearing the net"],
   duration: "20 minutes"
 }));
+
+const allPlanContents = [...contents, ...expandedContents];
+const curatedContentIds = new Set(contents.map((content) => content.id));
+const planContentById = new Map(allPlanContents.map((content) => [content.id, content]));
+
+const planDayKeywordSignals = [
+  {
+    matches: ["发球", "二发", "一发", "抛球", "serve", "second serve", "toss"],
+    skills: ["serve"],
+    problemTags: ["serve-basics", "serve-rhythm", "second-serve-confidence", "serve-toss-inconsistent", "serve-accuracy"]
+  },
+  {
+    matches: ["正手", "上旋", "弧线", "forehand", "topspin", "arc", "depth"],
+    skills: ["forehand", "topspin"],
+    problemTags: ["forehand-out", "topspin-low", "balls-too-short", "forehand-no-power"]
+  },
+  {
+    matches: ["反手", "切削", "backhand", "slice"],
+    skills: ["backhand", "slice"],
+    problemTags: ["backhand-into-net", "slice-too-high", "late-contact"]
+  },
+  {
+    matches: ["脚步", "移动", "准备", "启动", "footwork", "movement", "prepare", "split step"],
+    skills: ["movement", "footwork"],
+    problemTags: ["late-contact", "movement-slow", "slow-preparation"]
+  },
+  {
+    matches: ["网前", "截击", "上网", "volley", "net"],
+    skills: ["net"],
+    problemTags: ["net-confidence", "volley-errors", "doubles-net-fear"]
+  },
+  {
+    matches: ["双打", "站位", "轮转", "搭档", "doubles", "positioning", "partner", "rotation"],
+    skills: ["doubles"],
+    problemTags: ["doubles-positioning", "doubles-net-fear"]
+  },
+  {
+    matches: ["比赛", "紧张", "流程", "复盘", "match", "pressure", "routine", "review", "nerves"],
+    skills: ["matchplay", "mental"],
+    problemTags: ["match-anxiety", "cant-self-practice"]
+  },
+  {
+    matches: ["自练", "自己练", "记录", "self-practice", "solo", "track"],
+    skills: ["training"],
+    problemTags: ["cant-self-practice", "no-clear-technique", "plateau-no-progress"]
+  }
+] as const;
+
+const ASSESSMENT_DIMENSION_PLAN_HINTS: Record<
+  AssessmentDimension,
+  { primaryProblemTag: string; relatedProblemTags: string[]; skills: string[] }
+> = {
+  basics: {
+    primaryProblemTag: "cant-self-practice",
+    relatedProblemTags: ["late-contact", "plateau-no-progress", "general-improvement"],
+    skills: ["basics", "training", "forehand", "backhand"]
+  },
+  forehand: {
+    primaryProblemTag: "forehand-out",
+    relatedProblemTags: ["topspin-low", "forehand-no-power", "balls-too-short"],
+    skills: ["forehand", "topspin"]
+  },
+  backhand: {
+    primaryProblemTag: "backhand-into-net",
+    relatedProblemTags: ["slice-too-high", "late-contact", "trouble-with-slice"],
+    skills: ["backhand", "slice"]
+  },
+  serve: {
+    primaryProblemTag: "second-serve-confidence",
+    relatedProblemTags: ["serve-toss-inconsistent", "serve-accuracy"],
+    skills: ["serve"]
+  },
+  net: {
+    primaryProblemTag: "net-confidence",
+    relatedProblemTags: ["doubles-positioning"],
+    skills: ["net", "doubles"]
+  },
+  movement: {
+    primaryProblemTag: "late-contact",
+    relatedProblemTags: ["movement-slow", "balls-too-short"],
+    skills: ["movement", "footwork"]
+  },
+  matchplay: {
+    primaryProblemTag: "match-anxiety",
+    relatedProblemTags: ["plateau-no-progress", "cant-self-practice", "return-under-pressure"],
+    skills: ["matchplay", "mental", "return"]
+  },
+  rally: {
+    primaryProblemTag: "backhand-into-net",
+    relatedProblemTags: ["forehand-out", "balls-too-short", "general-improvement"],
+    skills: ["consistency", "forehand", "backhand"]
+  },
+  awareness: {
+    primaryProblemTag: "match-anxiety",
+    relatedProblemTags: ["cant-self-practice", "plateau-no-progress"],
+    skills: ["matchplay", "mental", "training"]
+  },
+  fundamentals: {
+    primaryProblemTag: "cant-self-practice",
+    relatedProblemTags: ["late-contact", "general-improvement"],
+    skills: ["basics", "grip", "forehand", "backhand"]
+  },
+  receiving: {
+    primaryProblemTag: "late-contact",
+    relatedProblemTags: ["return-under-pressure", "movement-slow", "backhand-into-net"],
+    skills: ["return", "movement", "backhand", "footwork"]
+  },
+  consistency: {
+    primaryProblemTag: "cant-self-practice",
+    relatedProblemTags: ["plateau-no-progress", "balls-too-short", "general-improvement"],
+    skills: ["consistency", "training", "basics"]
+  },
+  both_sides: {
+    primaryProblemTag: "backhand-into-net",
+    relatedProblemTags: ["forehand-out", "general-improvement"],
+    skills: ["forehand", "backhand", "consistency"]
+  },
+  direction: {
+    primaryProblemTag: "forehand-out",
+    relatedProblemTags: ["balls-too-short", "general-improvement"],
+    skills: ["forehand", "backhand", "training"]
+  },
+  rhythm: {
+    primaryProblemTag: "late-contact",
+    relatedProblemTags: ["movement-slow", "trouble-with-slice"],
+    skills: ["movement", "footwork", "backhand"]
+  },
+  net_play: {
+    primaryProblemTag: "net-confidence",
+    relatedProblemTags: ["doubles-positioning"],
+    skills: ["net", "doubles"]
+  },
+  depth_variety: {
+    primaryProblemTag: "balls-too-short",
+    relatedProblemTags: ["topspin-low", "forehand-no-power"],
+    skills: ["forehand", "topspin", "training"]
+  },
+  forcing: {
+    primaryProblemTag: "forehand-no-power",
+    relatedProblemTags: ["forehand-out", "balls-too-short"],
+    skills: ["forehand", "topspin", "matchplay"]
+  },
+  tactics: {
+    primaryProblemTag: "match-anxiety",
+    relatedProblemTags: ["doubles-positioning", "cant-self-practice"],
+    skills: ["matchplay", "mental", "doubles"]
+  }
+};
 
 function toGenerated(template: PlanTemplate, locale: PlanLocale): GeneratedPlan {
   const isEn = locale === "en";
@@ -50,39 +209,613 @@ function normalizePlanLevel(level: PlanLevel): PlanTemplate["level"] {
   return level;
 }
 
-export function getPlanTemplate(problemTag: string, level: PlanLevel, locale: PlanLocale = "zh"): GeneratedPlan {
+function getPlanPoolSource(contentId: string): PlanPoolSource {
+  return curatedContentIds.has(contentId) ? "curated" : "expanded";
+}
+
+function isCuratedContent(item: ContentItem): boolean {
+  return getPlanPoolSource(item.id) === "curated";
+}
+
+function uniqueStrings(values: string[]): string[] {
+  return Array.from(new Set(values.filter(Boolean)));
+}
+
+function overlapCount(left: string[], right: string[]): number {
+  if (left.length === 0 || right.length === 0) {
+    return 0;
+  }
+
+  const rightSet = new Set(right);
+  return left.reduce((count, value) => count + (rightSet.has(value) ? 1 : 0), 0);
+}
+
+function getContentSearchText(content: ContentItem) {
+  return [
+    content.title,
+    content.displayTitleEn,
+    content.focusLineEn,
+    content.summary,
+    content.reason,
+    ...content.useCases
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
+function getContextMismatchPenalty(content: ContentItem, desiredSkills: string[]) {
+  const text = getContentSearchText(content);
+  let penalty = 0;
+
+  if (desiredSkills.includes("serve") && !desiredSkills.includes("return")) {
+    if (content.skills.includes("return") && (text.includes("return") || text.includes("接发"))) {
+      penalty += 10;
+    }
+  }
+
+  if ((desiredSkills.includes("backhand") || desiredSkills.includes("forehand")) && !desiredSkills.includes("net")) {
+    if (content.skills.includes("net") && (text.includes("volley") || text.includes("截击") || text.includes("网前"))) {
+      penalty += 8;
+    }
+  }
+
+  return penalty;
+}
+
+function compareContentPriority(
+  left: { item: ContentItem; score: number; index: number },
+  right: { item: ContentItem; score: number; index: number }
+) {
+  if (right.score !== left.score) {
+    return right.score - left.score;
+  }
+
+  const leftCurated = isCuratedContent(left.item);
+  const rightCurated = isCuratedContent(right.item);
+  if (leftCurated !== rightCurated) {
+    return leftCurated ? -1 : 1;
+  }
+
+  const leftViews = left.item.viewCount ?? 0;
+  const rightViews = right.item.viewCount ?? 0;
+  if (rightViews !== leftViews) {
+    return rightViews - leftViews;
+  }
+
+  return left.index - right.index;
+}
+
+function getLevelPreferenceScore(content: ContentItem, level: PlanLevel) {
+  const normalizedLevel = normalizePlanLevel(level);
+  const preferredLevels =
+    level === "2.5"
+      ? ["2.5", "3.0"]
+      : level === "3.5"
+        ? ["3.0", "3.5"]
+        : level === "4.0+"
+          ? ["4.0", "4.5"]
+          : [normalizedLevel, level];
+
+  let score = 0;
+  if (content.levels.includes(level)) {
+    score += 5;
+  }
+
+  if (content.levels.includes(normalizedLevel)) {
+    score += 4;
+  }
+
+  score += preferredLevels.reduce((sum, candidate) => sum + (content.levels.includes(candidate) ? 2 : 0), 0);
+  return score;
+}
+
+function getRecommendedRuleContentIds(problemTag: string): string[] {
+  return uniqueStrings(
+    diagnosisRules
+      .filter((rule) => rule.problemTag === problemTag)
+      .flatMap((rule) => rule.recommendedContentIds)
+  );
+}
+
+function getTemplateSeedContentIds(problemTag: string, level: PlanLevel): string[] {
+  const templateLevel = normalizePlanLevel(level);
+  const template = planTemplates.find((item) => item.problemTag === problemTag && item.level === templateLevel)
+    ?? planTemplates.find((item) => item.problemTag === problemTag);
+
+  if (!template) {
+    return [];
+  }
+
+  return uniqueStrings(template.days.flatMap((day) => day.contentIds));
+}
+
+function getDaySignals(day: DayPlan) {
+  const items = day.contentIds
+    .map((id) => planContentById.get(id))
+    .filter((item): item is ContentItem => Boolean(item));
+  const dayText = `${day.focus} ${day.drills.join(" ")}`.toLowerCase();
+  const keywordSignals = planDayKeywordSignals.filter((entry) =>
+    entry.matches.some((match) => dayText.includes(match.toLowerCase()))
+  );
+
+  return {
+    skills: uniqueStrings(items.flatMap((item) => item.skills)),
+    problemTags: uniqueStrings(items.flatMap((item) => item.problemTags)),
+    keywordSkills: uniqueStrings(keywordSignals.flatMap((entry) => entry.skills)),
+    keywordProblemTags: uniqueStrings(keywordSignals.flatMap((entry) => entry.problemTags)),
+    matchedTerms: uniqueStrings(keywordSignals.flatMap((entry) => entry.matches.map((match) => match.toLowerCase())))
+  };
+}
+
+function scorePreferredContentForDay(
+  content: ContentItem,
+  day: DayPlan,
+  problemTag: string,
+  level: PlanLevel,
+  reuseCount = 0
+) {
+  const signals = getDaySignals(day);
+  const contentText = getContentSearchText(content);
+  const desiredSkills = uniqueStrings([...signals.skills, ...signals.keywordSkills]);
+  let score = 0;
+
+  if (day.contentIds.includes(content.id)) {
+    score += 10;
+  }
+
+  score += overlapCount(content.problemTags, signals.problemTags) * 6;
+  score += overlapCount(content.skills, signals.skills) * 3;
+  score += overlapCount(content.problemTags, signals.keywordProblemTags) * 5;
+  score += overlapCount(content.skills, signals.keywordSkills) * 4;
+  score += signals.matchedTerms.reduce((count, term) => count + (contentText.includes(term) ? 2 : 0), 0);
+
+  if (content.problemTags.includes(problemTag)) {
+    score += 5;
+  }
+
+  score += getLevelPreferenceScore(content, level);
+
+  if (isCuratedContent(content)) {
+    score += 1;
+  }
+
+  score -= getContextMismatchPenalty(content, desiredSkills);
+
+  const isReviewDay = signals.matchedTerms.some((term) =>
+    ["review", "录像", "复盘", "休息", "track"].includes(term)
+  );
+  if (reuseCount > 0) {
+    score -= reuseCount * (isReviewDay ? 3 : 9);
+  }
+
+  return score;
+}
+
+function scoreContentForCandidatePool(input: {
+  item: ContentItem;
+  index: number;
+  problemTag: string;
+  level: PlanLevel;
+  explicitContentIdSet: Set<string>;
+  seedProblemTags: string[];
+  seedSkills: string[];
+  secondaryProblemTags: string[];
+  secondarySkills: string[];
+  templateSeedContentIdSet: Set<string>;
+}) {
+  const {
+    item,
+    index,
+    problemTag,
+    level,
+    explicitContentIdSet,
+    seedProblemTags,
+    seedSkills,
+    secondaryProblemTags,
+    secondarySkills,
+    templateSeedContentIdSet
+  } = input;
+
+  let score = 0;
+
+  if (explicitContentIdSet.has(item.id)) {
+    score += 80;
+  }
+
+  if (templateSeedContentIdSet.has(item.id)) {
+    score += 24;
+  }
+
+  if (item.problemTags.includes(problemTag)) {
+    score += 28;
+  }
+
+  score += overlapCount(item.problemTags, seedProblemTags) * 12;
+  score += overlapCount(item.skills, seedSkills) * 9;
+  score += overlapCount(item.problemTags, secondaryProblemTags) * 6;
+  score += overlapCount(item.skills, secondarySkills) * 4;
+  score += getLevelPreferenceScore(item, level);
+  score -= getContextMismatchPenalty(item, seedSkills);
+
+  return {
+    item,
+    index,
+    score
+  };
+}
+
+function fillCandidatePoolIfNeeded(
+  candidateIds: string[],
+  level: PlanLevel,
+  seedSkills: string[],
+  seedProblemTags: string[]
+) {
+  if (candidateIds.length >= MIN_PLAN_CANDIDATES) {
+    return candidateIds.slice(0, MAX_PLAN_CANDIDATES);
+  }
+
+  const existingIds = new Set(candidateIds);
+  const backfill = allPlanContents
+    .map((item, index) => {
+      const problemTagOverlap = overlapCount(item.problemTags, seedProblemTags);
+      const skillOverlap = overlapCount(item.skills, seedSkills);
+      let score = 0;
+      score += problemTagOverlap * 6;
+      score += skillOverlap * 5;
+      score += getLevelPreferenceScore(item, level);
+
+      return { item, index, score, problemTagOverlap, skillOverlap };
+    })
+    .filter(({ item, score, problemTagOverlap, skillOverlap }) =>
+      !existingIds.has(item.id) &&
+      (
+        problemTagOverlap > 0 ||
+        (skillOverlap > 0 && score >= 10)
+      )
+    )
+    .sort(compareContentPriority)
+    .map(({ item }) => item.id);
+
+  return uniqueStrings([...candidateIds, ...backfill]).slice(0, MAX_PLAN_CANDIDATES);
+}
+
+function getAssessmentDimensionKeySet(result: AssessmentResult): AssessmentDimension[] {
+  const directKeys = result.dimensions.map((dimension) => dimension.key);
+  const labelKeys = result.observationNeeded
+    .map((label) =>
+      (Object.keys(ASSESSMENT_DIMENSION_PLAN_HINTS) as AssessmentDimension[])
+        .find((key) => getDimensionLabel(key, "zh") === label || getDimensionLabel(key, "en") === label)
+    )
+    .filter((key): key is AssessmentDimension => Boolean(key));
+
+  return uniqueStrings([...directKeys, ...labelKeys]) as AssessmentDimension[];
+}
+
+function getWeakestAssessmentDimension(result: AssessmentResult): DimensionSummary | null {
+  const scored = result.dimensions.filter((dimension) => dimension.answeredCount > 0);
+
+  if (scored.length === 0) {
+    return null;
+  }
+
+  return [...scored].sort((left, right) => left.average - right.average || left.label.localeCompare(right.label))[0] ?? null;
+}
+
+export function buildDiagnosisPlanCandidateIds(input: {
+  problemTag: string;
+  level: PlanLevel;
+  recommendedContentIds?: string[];
+  maxCandidates?: number;
+}): string[] {
+  const explicitContentIds = uniqueStrings([
+    ...(input.recommendedContentIds ?? []),
+    ...getRecommendedRuleContentIds(input.problemTag)
+  ]);
+  const explicitItems = explicitContentIds
+    .map((id) => planContentById.get(id))
+    .filter((item): item is ContentItem => Boolean(item));
+  const templateSeedContentIds = getTemplateSeedContentIds(input.problemTag, input.level);
+  const templateSeedItems = templateSeedContentIds
+    .map((id) => planContentById.get(id))
+    .filter((item): item is ContentItem => Boolean(item));
+  const seedProblemTags = uniqueStrings([
+    input.problemTag,
+    ...explicitItems.flatMap((item) => item.problemTags),
+    ...templateSeedItems.flatMap((item) => item.problemTags)
+  ]);
+  const seedSkills = uniqueStrings([
+    ...explicitItems.flatMap((item) => item.skills),
+    ...templateSeedItems.flatMap((item) => item.skills)
+  ]);
+  const explicitContentIdSet = new Set(explicitContentIds);
+  const templateSeedContentIdSet = new Set(templateSeedContentIds);
+
+  const rankedCandidateIds = allPlanContents
+    .map((item, index) =>
+      scoreContentForCandidatePool({
+        item,
+        index,
+        problemTag: input.problemTag,
+        level: input.level,
+        explicitContentIdSet,
+        seedProblemTags,
+        seedSkills,
+        secondaryProblemTags: [],
+        secondarySkills: [],
+        templateSeedContentIdSet
+      })
+    )
+    .filter(({ item, score }) => score > 0 || explicitContentIdSet.has(item.id))
+    .sort(compareContentPriority)
+    .map(({ item }) => item.id);
+
+  const orderedIds = uniqueStrings([
+    ...explicitContentIds.filter((id) => planContentById.has(id)),
+    ...templateSeedContentIds.filter((id) => planContentById.has(id)),
+    ...rankedCandidateIds
+  ]);
+
+  return fillCandidatePoolIfNeeded(
+    orderedIds,
+    input.level,
+    seedSkills,
+    seedProblemTags
+  ).slice(0, input.maxCandidates ?? MAX_PLAN_CANDIDATES);
+}
+
+export function buildAssessmentPlanContext(result: AssessmentResult): {
+  problemTag: string;
+  candidateIds: string[];
+} {
+  const weakestDimension = getWeakestAssessmentDimension(result);
+  const weakestKey = weakestDimension?.key ?? "basics";
+  const primaryHint = ASSESSMENT_DIMENSION_PLAN_HINTS[weakestKey];
+  const allDimensionKeys = getAssessmentDimensionKeySet(result);
+  const secondaryKeys = allDimensionKeys.filter((key) => key !== weakestKey);
+  const secondaryHints = secondaryKeys.map((key) => ASSESSMENT_DIMENSION_PLAN_HINTS[key]);
+  const explicitContentIds = getRecommendedRuleContentIds(primaryHint.primaryProblemTag);
+  const templateSeedContentIds = getTemplateSeedContentIds(primaryHint.primaryProblemTag, result.level);
+  const explicitItems = explicitContentIds
+    .map((id) => planContentById.get(id))
+    .filter((item): item is ContentItem => Boolean(item));
+  const templateSeedItems = templateSeedContentIds
+    .map((id) => planContentById.get(id))
+    .filter((item): item is ContentItem => Boolean(item));
+  const secondaryProblemTags = uniqueStrings(
+    secondaryHints.flatMap((hint) => [hint.primaryProblemTag, ...hint.relatedProblemTags])
+  );
+  const secondarySkills = uniqueStrings(secondaryHints.flatMap((hint) => hint.skills));
+  const seedProblemTags = uniqueStrings([
+    primaryHint.primaryProblemTag,
+    ...primaryHint.relatedProblemTags,
+    ...explicitItems.flatMap((item) => item.problemTags),
+    ...templateSeedItems.flatMap((item) => item.problemTags),
+    ...secondaryProblemTags
+  ]);
+  const seedSkills = uniqueStrings([
+    ...primaryHint.skills,
+    ...explicitItems.flatMap((item) => item.skills),
+    ...templateSeedItems.flatMap((item) => item.skills),
+    ...secondarySkills
+  ]);
+  const explicitContentIdSet = new Set(explicitContentIds);
+  const templateSeedContentIdSet = new Set(templateSeedContentIds);
+
+  const rankedCandidateIds = allPlanContents
+    .map((item, index) =>
+      scoreContentForCandidatePool({
+        item,
+        index,
+        problemTag: primaryHint.primaryProblemTag,
+        level: result.level,
+        explicitContentIdSet,
+        seedProblemTags,
+        seedSkills,
+        secondaryProblemTags,
+        secondarySkills,
+        templateSeedContentIdSet
+      })
+    )
+    .filter(({ item, score }) => score > 0 || explicitContentIdSet.has(item.id))
+    .sort(compareContentPriority)
+    .map(({ item }) => item.id);
+
+  const orderedIds = uniqueStrings([
+    ...explicitContentIds.filter((id) => planContentById.has(id)),
+    ...templateSeedContentIds.filter((id) => planContentById.has(id)),
+    ...rankedCandidateIds
+  ]);
+
+  return {
+    problemTag: primaryHint.primaryProblemTag,
+    candidateIds: fillCandidatePoolIfNeeded(
+      orderedIds,
+      result.level,
+      seedSkills,
+      seedProblemTags
+    )
+  };
+}
+
+function applyPreferredContentIds(
+  plan: GeneratedPlan,
+  level: PlanLevel,
+  preferredContentIds: string[]
+): GeneratedPlan {
+  const preferredItems = uniqueStrings(preferredContentIds)
+    .map((id) => planContentById.get(id))
+    .filter((item): item is ContentItem => Boolean(item));
+
+  if (preferredItems.length === 0) {
+    return plan;
+  }
+
+  const usageCounts = new Map<string, number>();
+
+  return {
+    ...plan,
+    days: plan.days.map((day) => {
+      const daySignals = getDaySignals(day);
+      const hasSpecificDayIntent =
+        day.contentIds.length > 0 ||
+        daySignals.problemTags.length > 0 ||
+        daySignals.skills.length > 0 ||
+        daySignals.matchedTerms.length > 0;
+      const isReviewLikeDay = daySignals.matchedTerms.some((term) =>
+        ["review", "录像", "复盘", "休息", "track"].includes(term)
+      );
+      const rankedCandidates = preferredItems
+        .map((item, index) => ({
+          item,
+          index,
+          score: scorePreferredContentForDay(
+            item,
+            day,
+            plan.problemTag,
+            level,
+            usageCounts.get(item.id) ?? 0
+          )
+        }))
+        .filter((entry) => entry.score > 0)
+        .sort(compareContentPriority);
+      const rankedUnusedCandidates = rankedCandidates.filter((entry) => (usageCounts.get(entry.item.id) ?? 0) === 0);
+      const bestOverallCandidate = rankedCandidates[0] ?? null;
+      const bestUnusedCandidate = rankedUnusedCandidates[0] ?? null;
+      const bestOverallReuseCount = bestOverallCandidate ? (usageCounts.get(bestOverallCandidate.item.id) ?? 0) : 0;
+      const bestOverallMatchesSeed = bestOverallCandidate ? day.contentIds.includes(bestOverallCandidate.item.id) : false;
+      const bestUnusedMatchesSeed = bestUnusedCandidate ? day.contentIds.includes(bestUnusedCandidate.item.id) : false;
+
+      const assignedEntry = !bestOverallCandidate
+        ? bestUnusedCandidate
+        : !bestUnusedCandidate || bestOverallReuseCount === 0
+          ? bestOverallCandidate
+          : bestOverallMatchesSeed && !bestUnusedMatchesSeed
+            ? bestOverallCandidate
+          : (() => {
+              const scoreGap = bestOverallCandidate.score - bestUnusedCandidate.score;
+              const acceptableGap = !hasSpecificDayIntent ? 2 : isReviewLikeDay ? 3 : 5;
+              const minimumUnusedScore = !hasSpecificDayIntent ? 12 : isReviewLikeDay ? 8 : 10;
+              const shouldUseUnused =
+                bestUnusedCandidate.score >= minimumUnusedScore &&
+                scoreGap <= acceptableGap;
+
+              return shouldUseUnused ? bestUnusedCandidate : bestOverallCandidate;
+            })();
+      const assignedContent = assignedEntry?.item ?? null;
+
+      if (assignedContent) {
+        usageCounts.set(assignedContent.id, (usageCounts.get(assignedContent.id) ?? 0) + 1);
+      }
+
+      const existingPreferredIds = preferredItems
+        .filter((item) => day.contentIds.includes(item.id) && item.id !== assignedContent?.id)
+        .map((item) => item.id);
+
+      return {
+        ...day,
+        contentIds: uniqueStrings([
+          ...(assignedContent ? [assignedContent.id] : []),
+          ...existingPreferredIds,
+          ...day.contentIds
+        ])
+      };
+    })
+  };
+}
+
+export function encodePlanContentIds(contentIds: string[]): string | null {
+  const normalized = uniqueStrings(contentIds.map((value) => value.trim()));
+  return normalized.length > 0 ? normalized.join(",") : null;
+}
+
+export function parsePlanContentIds(raw: string | null | undefined): string[] {
+  if (!raw) {
+    return [];
+  }
+
+  return uniqueStrings(raw.split(",").map((value) => value.trim()));
+}
+
+export function buildPlanHref(input: {
+  problemTag?: string;
+  level?: string;
+  preferredContentIds?: string[];
+  sourceType?: SavedPlanSource;
+}): string {
+  const params = new URLSearchParams();
+
+  if (input.problemTag) {
+    params.set("problemTag", input.problemTag);
+  }
+
+  if (input.level) {
+    params.set("level", input.level);
+  }
+
+  if (input.sourceType) {
+    params.set("source", input.sourceType);
+  }
+
+  const contentIds = encodePlanContentIds(input.preferredContentIds ?? []);
+  if (contentIds) {
+    params.set("contentIds", contentIds);
+  }
+
+  const query = params.toString();
+  return query ? `/plan?${query}` : "/plan";
+}
+
+export function getPlanTemplate(
+  problemTag: string,
+  level: PlanLevel,
+  locale: PlanLocale = "zh",
+  preferredContentIds: string[] = []
+): GeneratedPlan {
   const templateLevel = normalizePlanLevel(level);
   const exact = planTemplates.find((item) => item.problemTag === problemTag && item.level === templateLevel);
   if (exact) {
-    return {
-      ...toGenerated(exact, locale),
-      level
-    };
+    return applyPreferredContentIds(
+      {
+        ...toGenerated(exact, locale),
+        level
+      },
+      level,
+      preferredContentIds
+    );
   }
 
   const sameTag = planTemplates.find((item) => item.problemTag === problemTag);
   if (sameTag) {
-    return {
-      ...toGenerated(sameTag, locale),
-      level
-    };
+    return applyPreferredContentIds(
+      {
+        ...toGenerated(sameTag, locale),
+        level
+      },
+      level,
+      preferredContentIds
+    );
   }
 
   const defaultDays = locale === "en" ? defaultDaysEn : defaultDaysZh;
 
-  return {
-    source: "fallback",
+  return applyPreferredContentIds(
+    {
+      source: "fallback",
+      level,
+      problemTag,
+      title: locale === "en" ? "7-day general improvement plan" : "通用 7 天基础提升计划",
+      target: locale === "en"
+        ? "Build a steady swing and a practical training rhythm within one week"
+        : "在一周内建立稳定击球与可执行训练节奏",
+      summary: locale === "en"
+        ? "Not enough context to customize yet. Starting with a general, actionable 7-day training rhythm."
+        : "当前上下文不足，先使用一份通用且可执行的 7 天训练节奏。",
+      days: defaultDays
+    },
     level,
-    problemTag,
-    title: locale === "en" ? "7-day general improvement plan" : "通用 7 天基础提升计划",
-    target: locale === "en"
-      ? "Build a steady swing and a practical training rhythm within one week"
-      : "在一周内建立稳定击球与可执行训练节奏",
-    summary: locale === "en"
-      ? "Not enough context to customize yet. Starting with a general, actionable 7-day training rhythm."
-      : "当前上下文不足，先使用一份通用且可执行的 7 天训练节奏。",
-    days: defaultDays
-  };
+    preferredContentIds
+  );
 }
 
 const DIMENSION_TO_PROBLEM_TAG: Record<string, string> = {
@@ -92,7 +825,6 @@ const DIMENSION_TO_PROBLEM_TAG: Record<string, string> = {
   "网前": "net-confidence",
   "移动": "late-contact",
   "比赛意识": "match-anxiety",
-  // English dimension labels
   "forehand": "forehand-out",
   "backhand": "backhand-into-net",
   "serve": "second-serve-confidence",

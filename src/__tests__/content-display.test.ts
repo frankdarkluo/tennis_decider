@@ -3,6 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { contents } from "@/data/contents";
 import { creators } from "@/data/creators";
+import { expandedContents } from "@/data/expandedContents";
 import { CREATOR_FEATURED_VIDEO_CHINESE_SUBTITLE_OVERRIDES } from "@/lib/content/chineseSubtitleOverrides";
 import {
   formatCompactViewCount,
@@ -18,7 +19,13 @@ import {
 } from "@/lib/content/display";
 import { findBestDiagnosisRule } from "@/lib/diagnosis";
 import { formatLocalizedDate, formatLocalizedDateTime } from "@/lib/i18n/format";
-import { getPlanTemplate } from "@/lib/plans";
+import {
+  buildAssessmentPlanContext,
+  buildDiagnosisPlanCandidateIds,
+  buildPlanHref,
+  getPlanTemplate,
+  parsePlanContentIds
+} from "@/lib/plans";
 import { ContentItem } from "@/types/content";
 
 describe("content display helpers", () => {
@@ -78,8 +85,8 @@ describe("content display helpers", () => {
       url: "https://example.com/focus-fallback"
     };
 
-    expect(getContentPrimaryTitle(item, "en")).toBe("Basics lesson");
-    expect(getContentFocusLine(item, "en")).toBe("For players building clean fundamentals.");
+    expect(getContentPrimaryTitle(item, "en")).toBe("Fundamentals keep breaking down");
+    expect(getContentFocusLine(item, "en")).toBe("Subtitled reference library with full fundamentals");
   });
 
   it("uses creator featured-video English title and target overrides", () => {
@@ -167,6 +174,191 @@ describe("content display helpers", () => {
 
     expect(fallbackEn.source).toBe("fallback");
     expect(fallbackEn.days[0].focus).toBe("Day 1 stability training");
+  });
+
+  it("prioritizes diagnosis-specific content when building a plan", () => {
+    const preferredContentIds = ["content_cn_a_01", "content_zlx_03"];
+    const plan = getPlanTemplate("backhand-into-net", "3.0", "zh", preferredContentIds);
+    const earlyAssignedIds = plan.days.slice(0, 5).map((day) => day.contentIds[0]);
+
+    expect(plan.days[0].contentIds[0]).toBe("content_cn_a_01");
+    expect(earlyAssignedIds).toContain("content_zlx_03");
+  });
+
+  it("serializes preferred plan content ids into plan hrefs", () => {
+    const href = buildPlanHref({
+      problemTag: "backhand-into-net",
+      level: "3.0",
+      preferredContentIds: ["content_cn_a_01", "content_zlx_03"],
+      sourceType: "diagnosis"
+    });
+
+    const params = new URL(href, "https://example.com").searchParams;
+    expect(params.get("source")).toBe("diagnosis");
+    expect(parsePlanContentIds(params.get("contentIds"))).toEqual(["content_cn_a_01", "content_zlx_03"]);
+  });
+
+  it("expands diagnosis plan candidates beyond the base three when expanded matches exist", () => {
+    const candidateIds = buildDiagnosisPlanCandidateIds({
+      problemTag: "backhand-into-net",
+      level: "3.0",
+      recommendedContentIds: ["content_cn_a_01", "content_zlx_03"]
+    });
+    const expandedIdSet = new Set(expandedContents.map((entry) => entry.id));
+
+    expect(candidateIds.length).toBeGreaterThanOrEqual(5);
+    expect(candidateIds.slice(0, 2)).toEqual(["content_cn_a_01", "content_zlx_03"]);
+    expect(candidateIds.some((id) => expandedIdSet.has(id))).toBe(true);
+  });
+
+  it("derives assessment plan candidates from the weakest dimension and watch areas", () => {
+    const context = buildAssessmentPlanContext({
+      totalScore: 0,
+      maxScore: 0,
+      normalizedScore: 0,
+      answeredCount: 8,
+      uncertainCount: 0,
+      totalQuestions: 8,
+      level: "3.0",
+      confidence: "中等",
+      dimensions: [
+        {
+          key: "serve",
+          label: "发球",
+          score: 1,
+          maxScore: 4,
+          average: 1,
+          levelHint: "3.0",
+          answeredCount: 2,
+          uncertainCount: 0,
+          status: "正常"
+        },
+        {
+          key: "matchplay",
+          label: "比赛意识",
+          score: 2,
+          maxScore: 4,
+          average: 2,
+          levelHint: "3.0",
+          answeredCount: 2,
+          uncertainCount: 0,
+          status: "正常"
+        },
+        {
+          key: "forehand",
+          label: "正手",
+          score: 3,
+          maxScore: 4,
+          average: 3,
+          levelHint: "3.0",
+          answeredCount: 2,
+          uncertainCount: 0,
+          status: "正常"
+        }
+      ],
+      strengths: ["正手"],
+      weaknesses: ["发球"],
+      observationNeeded: ["比赛意识"],
+      summary: ""
+    });
+    const contentById = new Map([...contents, ...expandedContents].map((entry) => [entry.id, entry]));
+
+    expect(context.problemTag).toBe("second-serve-confidence");
+    expect(context.candidateIds.length).toBeGreaterThanOrEqual(5);
+    expect(
+      context.candidateIds
+        .slice(0, 3)
+        .some((id) => {
+          const item = contentById.get(id);
+          return Boolean(item?.skills.includes("serve") || item?.problemTags.includes("second-serve-confidence"));
+        })
+    ).toBe(true);
+  });
+
+  it("falls back gracefully for sparse plan tags and prefers stronger unused matches before reuse", () => {
+    const candidateIds = buildDiagnosisPlanCandidateIds({
+      problemTag: "plateau-no-progress",
+      level: "3.0"
+    });
+    const plan = getPlanTemplate("plateau-no-progress", "3.0", "zh", candidateIds);
+    const assignedIds = plan.days.map((day) => day.contentIds[0]).filter(Boolean);
+    const uniqueEarlyIds = new Set(assignedIds.slice(0, 3));
+
+    expect(candidateIds.length).toBeGreaterThanOrEqual(5);
+    expect(assignedIds[0]).toBeTruthy();
+    expect(uniqueEarlyIds.size).toBeGreaterThanOrEqual(Math.min(3, candidateIds.length));
+  });
+
+  it("keeps seeded review-day explainers instead of forcing a weaker unused mismatch", () => {
+    const candidateIds = buildDiagnosisPlanCandidateIds({
+      problemTag: "backhand-into-net",
+      level: "3.0",
+      recommendedContentIds: ["content_cn_a_01", "content_zlx_03"]
+    });
+    const plan = getPlanTemplate("backhand-into-net", "3.0", "zh", candidateIds);
+
+    expect(plan.days[5]?.contentIds[0]).toBe("content_cn_a_01");
+  });
+
+  it("keeps assessment-derived second-serve plans on serve-focused content", () => {
+    const context = buildAssessmentPlanContext({
+      totalScore: 0,
+      maxScore: 0,
+      normalizedScore: 0,
+      answeredCount: 8,
+      uncertainCount: 0,
+      totalQuestions: 8,
+      level: "3.0",
+      confidence: "中等",
+      dimensions: [
+        {
+          key: "serve",
+          label: "发球",
+          score: 1,
+          maxScore: 4,
+          average: 1,
+          levelHint: "3.0",
+          answeredCount: 2,
+          uncertainCount: 0,
+          status: "正常"
+        },
+        {
+          key: "matchplay",
+          label: "比赛意识",
+          score: 2,
+          maxScore: 4,
+          average: 2,
+          levelHint: "3.0",
+          answeredCount: 2,
+          uncertainCount: 0,
+          status: "正常"
+        },
+        {
+          key: "forehand",
+          label: "正手",
+          score: 3,
+          maxScore: 4,
+          average: 3,
+          levelHint: "3.0",
+          answeredCount: 2,
+          uncertainCount: 0,
+          status: "正常"
+        }
+      ],
+      strengths: ["正手"],
+      weaknesses: ["发球"],
+      observationNeeded: ["比赛意识"],
+      summary: ""
+    });
+    const contentById = new Map([...contents, ...expandedContents].map((entry) => [entry.id, entry]));
+    const plan = getPlanTemplate(context.problemTag, "3.0", "zh", context.candidateIds);
+
+    expect(
+      plan.days.every((day) => {
+        const item = day.contentIds[0] ? contentById.get(day.contentIds[0]) : null;
+        return Boolean(item?.skills.includes("serve"));
+      })
+    ).toBe(true);
   });
 
   it("matches newly added English diagnosis triggers", () => {

@@ -10,7 +10,10 @@ import {
   getFineQuestionsForBranch
 } from "@/lib/assessment";
 import {
+  clearAssessmentDraftFromStorage,
+  readAssessmentDraftFromStorage,
   readAssessmentResultFromStorage,
+  writeAssessmentDraftToStorage,
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
 import { logEvent } from "@/lib/eventLogger";
@@ -18,6 +21,7 @@ import { useI18n } from "@/lib/i18n/config";
 import { formatAssessmentYearsLabel, getAssessmentOptionLabel } from "@/lib/i18n/assessmentCopy";
 import { sanitizeAssessmentArtifact } from "@/lib/study/privacy";
 import { persistStudyArtifact } from "@/lib/study/client";
+import { updateLocalStudyProgress } from "@/lib/study/localData";
 import { saveAssessmentResult } from "@/lib/userData";
 import { AssessmentProfile, AssessmentQuestion } from "@/types/assessment";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -51,6 +55,7 @@ export default function AssessmentPage() {
   const [entryState, setEntryState] = useState<"checking" | "questionnaire" | "redirecting">("checking");
   const [searchReady, setSearchReady] = useState(false);
   const [retakeRequested, setRetakeRequested] = useState(false);
+  const [draftRestored, setDraftRestored] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [profile, setProfile] = useState<AssessmentProfile>({
@@ -67,6 +72,7 @@ export default function AssessmentPage() {
   const stepRef = useRef(0);
   const profileRef = useRef<AssessmentProfile>(profile);
   const sliderTouchedRef = useRef(false);
+  const draftArtifactStepRef = useRef<number | null>(null);
 
   const profileQuestions = useMemo(
     () => assessmentQuestions.filter((question) => question.phase === "profile"),
@@ -140,7 +146,32 @@ export default function AssessmentPage() {
       return;
     }
 
+    const storedDraft = readAssessmentDraftFromStorage();
+
     if (retakeRequested) {
+      if (storedDraft) {
+        setAnswers(storedDraft.answers ?? {});
+        setProfile((prev) => ({
+          ...prev,
+          ...storedDraft.profile,
+          yearsLabel: formatAssessmentYearsLabel(storedDraft.profile?.yearsPlaying ?? prev.yearsPlaying ?? 2, language)
+        }));
+        setStepIndex(Math.max(0, Math.min(TOTAL_STEPS - 1, storedDraft.stepIndex ?? 0)));
+        setDraftRestored(true);
+      }
+      setEntryState("questionnaire");
+      return;
+    }
+
+    if (storedDraft) {
+      setAnswers(storedDraft.answers ?? {});
+      setProfile((prev) => ({
+        ...prev,
+        ...storedDraft.profile,
+        yearsLabel: formatAssessmentYearsLabel(storedDraft.profile?.yearsPlaying ?? prev.yearsPlaying ?? 2, language)
+      }));
+      setStepIndex(Math.max(0, Math.min(TOTAL_STEPS - 1, storedDraft.stepIndex ?? 0)));
+      setDraftRestored(true);
       setEntryState("questionnaire");
       return;
     }
@@ -153,7 +184,64 @@ export default function AssessmentPage() {
     }
 
     setEntryState("questionnaire");
-  }, [retakeRequested, router, searchReady]);
+  }, [language, retakeRequested, router, searchReady]);
+
+  useEffect(() => {
+    if (entryState !== "questionnaire") {
+      return;
+    }
+
+    const hasProgress =
+      stepIndex > 0 ||
+      Object.keys(answers).length > 0 ||
+      Boolean(profile.gender) ||
+      (profile.yearsPlaying ?? 2) !== 2;
+
+    if (!hasProgress) {
+      return;
+    }
+
+    writeAssessmentDraftToStorage({
+      stepIndex,
+      answers,
+      profile,
+      updatedAt: new Date().toISOString()
+    });
+
+    if (studyMode) {
+      updateLocalStudyProgress({
+        lastVisitedPath: "/assessment",
+        lastAssessmentPath: "/assessment",
+        assessmentDraftInProgress: true,
+        assessmentDraftStepIndex: stepIndex,
+        assessmentDraftUpdatedAt: new Date().toISOString()
+      });
+    }
+  }, [answers, entryState, profile, stepIndex]);
+
+  useEffect(() => {
+    if (!studyMode || !session || entryState !== "questionnaire") {
+      return;
+    }
+
+    const hasProgress =
+      stepIndex > 0 ||
+      Object.keys(answers).length > 0 ||
+      Boolean(profile.gender) ||
+      (profile.yearsPlaying ?? 2) !== 2;
+
+    if (!hasProgress || draftArtifactStepRef.current === stepIndex) {
+      return;
+    }
+
+    draftArtifactStepRef.current = stepIndex;
+    void persistStudyArtifact(session, "study_resume", {
+      resumeType: "assessment_draft",
+      stepIndex,
+      answeredCount: Object.keys(answers).length,
+      questionId: currentQuestion?.id ?? null
+    });
+  }, [answers, currentQuestion?.id, entryState, profile.gender, profile.yearsPlaying, session, stepIndex, studyMode]);
 
   useEffect(() => {
     if (entryState !== "questionnaire") {
@@ -222,6 +310,18 @@ export default function AssessmentPage() {
     setSubmitting(true);
     const result = calculateAssessmentResult(finalAnswers, assessmentQuestions, profileRef.current);
     completedRef.current = true;
+    clearAssessmentDraftFromStorage();
+    if (studyMode) {
+      updateLocalStudyProgress({
+        lastVisitedPath: "/assessment/result",
+        lastAssessmentPath: "/assessment/result",
+        lastAssessmentLevel: result.level,
+        lastAssessmentCompletedAt: new Date().toISOString(),
+        assessmentDraftInProgress: false,
+        assessmentDraftStepIndex: undefined,
+        assessmentDraftUpdatedAt: undefined
+      });
+    }
     writeAssessmentResultToStorage(result);
 
     if (studyMode && session) {
@@ -333,6 +433,9 @@ export default function AssessmentPage() {
         <div className="space-y-2">
           <h1 className="text-3xl font-black text-slate-900">{t("assessment.title")}</h1>
           <p className="text-slate-600">{t("assessment.subtitle")}</p>
+          {draftRestored ? (
+            <p className="text-sm text-brand-700">{t("assessment.resumeDraft")}</p>
+          ) : null}
         </div>
 
         <AssessmentProgress
