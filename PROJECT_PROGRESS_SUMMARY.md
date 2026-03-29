@@ -1,205 +1,483 @@
-# Claude Review Progress
+# TennisLevel Interactive Pages Handoff
 
-更新时间：2026-03-25
+This file is a local handoff note for Claude / GPT-5.4 paper refinement.
+It is intentionally **not** meant for GitHub.
 
-适用范围：**仅主产品与研究原型进展，不包含 `SportsHCI_2026/` 相关 LaTeX/论文模板整理工作。**
+## March 28, 2026 Progress Update
 
-## 1. 当前项目处于什么阶段
+### What Was Completed Today
 
-TennisLevel 目前已经不是只有首页和静态 demo 的状态，而是一个可运行的研究型原型。当前主闭环已经具备：
+- A large bilingual polish pass was completed and pushed to GitHub in commit `c16f635` (`Polish bilingual study mode surfaces and content subtitles`).
+- The bilingual audit was rewritten into a current-state version in `BILINGUAL_AUDIT.md` so it reflects the actual repo status instead of the earlier pre-fix snapshot.
+- The remaining high-priority active-surface localization gaps were cleaned up across:
+  - profile
+  - auth callback / login flow
+  - video diagnose
+  - footer
+  - platform video search
+  - study banner
+  - plan UI residuals
+- The exact plan / study-path bilingual work was extended so the visible study flow is much more consistent in English mode.
+- `ContentCard` and related shared display helpers were further refined so English-mode content rendering is more systematic across the library and recommendation surfaces.
+- Chinese-environment subtitles for English creator featured videos were improved substantially:
+  - a curated Chinese subtitle override layer was added
+  - a backlog generator script was added
+  - the creator-video subtitle backlog was reduced from `200` pending items to `5`
+- The remaining creator subtitle items that were too clickbait / too semantically vague to polish confidently were intentionally left in `CONTENT_TRANSLATION_BACKLOG.md` instead of being force-translated.
+- English-mode focus-line fallback behavior for Chinese videos was fixed so cards no longer silently hide `Focus:` just because the fallback was too generic or collapsed into the title.
+- README metadata was updated to reflect the current validated data scale:
+  - `673` content items
+  - `52` creators
+  - `9` plan templates
 
-1. `/assessment` 做 1 分钟水平评估
-2. `/diagnose` 做一句话问题诊断
-3. `/library` 和 `/rankings` 承接内容与创作者推荐
-4. `/plan` 生成 7 天训练计划
-5. `/profile` 聚合用户历史记录
-6. `/study` + `/survey` + `/admin/export` 承接研究流程、问卷和导出
+### Validation Completed Today
 
-在这个基础上，本轮最主要的新进展是：**AI 视频诊断第一版已经落地到代码，并接入现有用户数据与研究数据体系。**
+- `npm test`
+- `npm run validate:data`
+- `npm run build`
+- `npm run generate:translation-backlog`
 
-## 2. 本轮已落地的核心进展
+### What Still Needs Improvement
 
-### 2.1 视频诊断第一版已实现
+- The bilingual work is meaningfully better, but it is still not “done” in a deep long-tail sense.
+- The biggest remaining quality gap is **expanded library content in English mode**:
+  - many Chinese videos now show a visible English `Focus:` fallback
+  - however, a large number of expanded items still rely on generic English fallback titles / focus lines rather than hand-polished English phrasing
+  - this is especially visible on long-tail Bilibili entries
+- Related to that, some expanded-content metadata is still too coarse:
+  - certain videos are tagged with broad skills like `basics` / `matchplay`
+  - when that happens, the English fallback can feel generic even if it is no longer invisible
+- The 5 remaining creator subtitle backlog items still need human-quality Chinese polishing:
+  - `creator_2minute_tennis_video_02`
+  - `creator_2minute_tennis_video_04`
+  - `creator_total_tennis_domination_video_02`
+  - `creator_tennis_hacker_video_08`
+  - `creator_tennis_hacker_video_10`
+- The creator-video Chinese subtitle system is now practical, but it is partly override-based rather than fully normalized back into creator data fields. This is acceptable for now, but could be unified later if the data model is cleaned further.
+- Some bilingual surfaces are now fallback-safe rather than truly copy-complete:
+  - they no longer leak Chinese incorrectly
+  - but not every item has bespoke English copy yet
+- The current repo state is therefore best described as:
+  - **core bilingual study-mode and active surfaces are in place**
+  - **long-tail content translation quality still needs another pass**
 
-已新增：
+### Recommended Next Improvement Pass
 
-- `/video-diagnose` 页面
-- `/api/video-diagnose` API route
-- 浏览器本地视频校验与抽帧
-- provider-agnostic 的 `vlm.ts`
-- mock VLM fallback
-- 视频结果到既有诊断规则、内容、博主、训练计划的映射
+- Prioritize the English long tail in the library by adding better `displayTitleEn` / `focusLineEn` coverage for the highest-traffic Chinese expanded content items.
+- Review and refine coarse skill tagging in `expandedContents` where it is clearly producing weak English fallback titles.
+- Finish the last `CONTENT_TRANSLATION_BACKLOG.md` items with human-approved Chinese subtitle phrasing.
+- After that, do another visual QA pass specifically in:
+  - `/library?lang=en`
+  - `/diagnose?lang=en`
+  - `/video-diagnose?lang=en`
+  - creator modal / rankings / homepage hot cards
 
-当前视频诊断主链路：
+## Current System Snapshot
 
-1. 用户上传 `<= 60s` 视频
-2. 前端校验格式、大小、时长
-3. 浏览器本地抽取关键帧
-4. POST 帧 + 用户描述 + 用户等级 + 击球类型 + 场景 到 `/api/video-diagnose`
-5. 后端调用 `analyzeVideoFrames`
-6. 将 VLM observation 映射为：
-   - primary problem
-   - secondary problems
-   - recommended contents
-   - recommended creators
-   - training plan
-   - search suggestions
-   - confidence / fallback reason
+- Project: `TennisLevel`
+- Current repo: `https://github.com/frankdarkluo/tennis_level.git`
+- Current validated data snapshot:
+  - Creators: `52`
+  - Total content items: `673`
+  - Static curated items: `39`
+  - Expanded content items: `634`
+  - Plan templates: `9`
+- Primary platforms represented in the experience:
+  - `Bilibili`
+  - `YouTube`
+- Current product stance:
+  - low-friction guidance over exhaustive analytics
+  - coach-grounded curation over fully open search
+  - progressive disclosure over dense dashboards
+  - source fidelity over aggressive recommendation automation
 
-### 2.2 免费次数与降级策略已接入
+## SportsHCI Framing
 
-视频诊断已实现：
+The current implementation can be described as a **coach-grounded, interaction-light tennis learning system** that helps recreational players move from vague confusion to concrete next actions. The system is not trying to be a full social platform or generic content browser. Instead, it combines lightweight self-assessment, problem articulation, video-supported diagnosis, and coach-curated educational content into a single training support flow.
 
-- 免费 3 次
-- 仅对 `chargeable = true` 的成功分析计次
-- 低置信度结果不扣次
-- 登录用户走远端 `video_usage`
-- 未登录用户走本地 `localStorage`
+The design aligns well with several SportsHCI themes:
 
-### 2.3 视频诊断记录已接入用户体系
+- `Situated self-improvement`
+  - Users are not asked to quantify everything up front.
+  - They can start from a felt problem, a short assessment, or a practice video.
+- `Low-friction sports interaction`
+  - Entry flows are intentionally short.
+  - Most pages prioritize one next action rather than many competing controls.
+- `Coach-grounded curation`
+  - Recommendations are not purely popularity-based.
+  - They are filtered and framed around player problems, levels, and training contexts.
+- `Progressive disclosure`
+  - Diagnosis pages reveal more detail only when the user asks for it.
+  - This reduces cognitive load while keeping richer evidence available.
+- `Human-interpretable support`
+  - Results are phrased as “what to fix next” and “who to learn from,” not as abstract model scores.
+- `Cross-platform sport learning ecology`
+  - The content ecosystem bridges Bilibili and YouTube while preserving creator/source integrity.
 
-已新增：
+## Cross-Page Design Principles
 
-- `video_diagnosis_history` 持久化
-- 个人中心展示最近视频诊断记录
-- 管理员导出页支持导出视频诊断数据
-- 研究事件日志新增视频相关事件类型
+### 1. Start from the user's immediate problem
+The homepage, diagnosis page, and video diagnosis page all assume that many players do not begin with a cleanly articulated training goal. They begin with something like “my backhand keeps going into the net” or “I do not know what to fix first.”
 
-### 2.4 产品入口已补齐
+### 2. Hide raw complexity unless it helps action
+Assessment scores, confidence values, and internal dimensions are preserved in data, but most user-facing pages reduce the presentation to a few actionable statements.
 
-视频诊断入口已经接入：
+### 3. Preserve source authenticity
+For content and creator data, the system prioritizes:
+- correct creator-to-video mapping
+- original source titles when available
+- direct source links
+- local thumbnail storage for stability when possible
 
-- Header
-- 首页 Hero
-- 文字诊断结果页
-- 个人中心记录页
+### 4. Keep recommendation pages browsable but not chaotic
+Both the creator ranking page and the content library now use lightweight controls, batching, and simplified cards to keep browsing manageable.
 
-## 3. 相关数据与后端准备情况
+## Page-by-Page Implementation
 
-已新增 SQL：
+## 1. Homepage `/`
 
-- `supabase/video_diagnosis.sql`
+### User role in the system
+The homepage is the primary intake page. Its job is not to explain the whole product. Its job is to help users start.
 
-这份 SQL 会创建：
+### Current interaction design
+The homepage currently has four major functions:
+- a hero prompt for direct problem entry
+- a compact “关注这些内容” section
+- a compact “网球博主” section
+- a large assessment CTA card that is fully clickable
 
-- `video_usage`
-- `video_diagnosis_history`
+### Main behaviors
+- The hero supports free-text problem entry and quick-tag shortcuts.
+- The primary CTA sends the user to `/diagnose` with the typed query in the URL.
+- A secondary CTA sends the user to `/assessment`.
+- The bottom assessment CTA card is clickable across the whole card, not just the button region.
+- Hot content and hot creator sections are intentionally reduced in density.
 
-并补齐：
+### SportsHCI interpretation
+This page works as a **minimal entry surface for sports self-support**. It does not force users to choose a formal workflow first. Instead, it supports multiple entry styles:
+- symptom-first
+- assessment-first
+- video-first
 
-- user-level RLS
-- admin select policy
-- 视频次数与历史的索引
+### Key files
+- `src/app/page.tsx`
+- `src/components/home/HeroSection.tsx`
+- `src/components/home/HotContentSection.tsx`
+- `src/components/home/HotCreatorsSection.tsx`
 
-环境变量示例也已补到：
+## 2. Level Assessment `/assessment`
 
-- `.env.example`
+### User role in the system
+This page provides a very short adaptive assessment that gives the system enough structure to personalize downstream guidance without exhausting the user.
 
-当前支持：
+### Current interaction design
+The assessment is now an `8-step` adaptive flow:
+- `2` profile steps
+- `3` coarse screening questions
+- `3` branch-specific fine questions
 
-- `VLM_PROVIDER`
-- `VLM_API_KEY`
-- `VLM_MODEL`
-- `VLM_BASE_URL`
+### Main behaviors
+- Gender is selected with one tap.
+- Years playing uses a slider with sparse visual labels but finer selectable values.
+- Choice questions auto-advance after selection.
+- The branch of the last three questions depends on the coarse score.
+- The UI emphasizes speed and completion over survey-like seriousness.
+- The assessment result is written locally and can also be stored remotely for authenticated users.
 
-默认仍是 `mock` provider，用来先跑通流程。
+### SportsHCI interpretation
+This page reflects a **low-burden sports profiling strategy**. Instead of presenting a traditional long form, it uses short interaction bursts to infer enough context for personalized coaching support.
 
-## 4. 当前工程验证状态
+### Research-relevant note
+Years playing does not currently determine level directly, but it is stored for downstream personalization and is conceptually available for recommendation weighting.
 
-我刚刚重新在本地执行过以下校验，结果如下：
+### Key files
+- `src/app/assessment/page.tsx`
+- `src/data/assessmentQuestions.ts`
+- `src/lib/assessment.ts`
+- `src/components/assessment/QuestionCard.tsx`
+- `src/components/assessment/AssessmentProgress.tsx`
 
-- `npm run validate:data`：通过
-- `npm test`：11 / 11 通过
-- `npm run build`：通过
+## 3. Assessment Result `/assessment/result`
 
-最新校验数据：
+### User role in the system
+This page translates internal assessment output into a user-friendly “where you are now and what to work on next” view.
 
-- 诊断规则：19 条
-- 内容条目：36 条
-- 创作者：17 位
-- 训练计划模板：9 套
+### Current interaction design
+The result page intentionally shows only three things:
+- approximate level band
+- strongest areas
+- weakest areas / next priority
 
-最新构建结果：
+### Main behaviors
+- The page loads the newest result from local storage or Supabase.
+- Raw scores and confidence details are not foregrounded.
+- Two primary next actions are shown:
+  - diagnose a specific problem
+  - browse suitable content
 
-- 成功生成 17 个 app routes
-- 已包含 `/video-diagnose`
-- 已包含 `/api/video-diagnose`
+### SportsHCI interpretation
+This page exemplifies **action-oriented feedback compression**. It turns measurement into a next-step coaching cue rather than a dashboard.
 
-## 5. 现在还没做完的部分
+### Key files
+- `src/app/assessment/result/page.tsx`
+- `src/components/assessment/ResultSummary.tsx`
 
-这轮并不是“视频诊断全部完成”，而是 **V1 已完成，真实上线前还有几个明确待办**：
+## 4. Problem Diagnosis `/diagnose`
 
-- 还没有接支付
-- 还没有接服务端 ffmpeg
-- 还没有做原视频存储
-- 还没有做异步任务队列
-- 还没有做更严格的 provider 级容错与质量评估
-- 还没有用 5 到 10 段真实视频系统验证 prompt 稳定性
+### User role in the system
+This page lets users describe a problem in natural language and receive a structured response that feels closer to coaching guidance than search results.
 
-如果要让远端持久化真正可用，还需要手动在 Supabase 执行：
+### Current interaction design
+The page has three states:
+- empty input state
+- active diagnosis state
+- three-layer expanded results
 
-- `supabase/video_diagnosis.sql`
+### Main behaviors
+- Users can type a problem or click quick tags.
+- The page can inherit level context from the assessment result.
+- The result is organized into three disclosure layers:
+  1. the core problem and one immediate fix
+  2. why it likely happens and one recommended content item
+  3. more content and platform search suggestions
+- If no strong rule match exists, the page falls back to assessment-based or general guidance rather than failing silently.
 
-如果要切到真实多模态模型，还需要在 `.env.local` 配置：
+### SportsHCI interpretation
+This page implements **problem-to-practice translation**. It converts informal player language into a structured practice recommendation pipeline.
 
-- `VLM_PROVIDER`
-- `VLM_API_KEY`
-- `VLM_MODEL`
-- `VLM_BASE_URL`
+### Key files
+- `src/app/diagnose/page.tsx`
+- `src/components/diagnose/DiagnoseInput.tsx`
+- `src/components/diagnose/DiagnoseResult.tsx`
+- `src/lib/diagnosis.ts`
+- `src/data/diagnosisRules.ts`
 
-## 6. 建议 Claude 重点审核的地方
+## 5. Video Diagnosis `/video-diagnose`
 
-请优先从“代码是否已经足够稳，能不能支持真实试跑”这个角度审核，而不是只看功能表面是否存在。
+### User role in the system
+This page supports users who have a real stroke or practice clip and want more concrete feedback than text alone can provide.
 
-建议重点看：
+### Current interaction design
+The video diagnosis flow is built around:
+- lightweight metadata selection
+- upload validation
+- a staged processing UI
+- a three-layer result page
 
-1. `src/app/api/video-diagnose/route.ts`
-   - 请求校验是否足够
-   - 是否需要更严格的 payload / auth / abuse protection
+### Main behaviors
+- Users upload a video and optionally specify stroke type and practice scene.
+- The browser extracts frames client-side before sending the payload.
+- Usage limits are tracked for guest and authenticated users.
+- The result page follows the same progressive disclosure logic as text diagnosis:
+  1. primary issue + one key fix
+  2. AI observations + cause explanation + one highlighted content item + plan CTA
+  3. more content, recommended creators, search suggestions
+- If evidence is insufficient, the system explicitly communicates uncertainty instead of overclaiming.
 
-2. `src/lib/vlm.ts`
-   - remote provider 适配是否稳
-   - JSON 解析与 fallback 策略是否合理
-   - 当前错误时直接回退 mock 是否会掩盖真实问题
+### SportsHCI interpretation
+This page is the clearest example of **hybrid AI + coach-curated intervention**. The model produces a diagnosis scaffold, but the final learning path is still expressed through curated content, creators, and a training plan.
 
-3. `src/lib/videoDiagnosis.ts`
-   - VLM 结果映射到现有 diagnosis/content/creator/plan 的逻辑是否合理
-   - 低置信度输出是否够保守
-
-4. `src/app/video-diagnose/page.tsx`
-   - 上传、抽帧、状态切换、扣次逻辑是否有边界问题
-   - 登录态与游客态次数逻辑是否一致
-
-5. `src/lib/userData.ts`
-   - `video_usage` 的更新方式是否可能有并发竞争
-   - `video_diagnosis_history` 的结构是否适合后续研究导出与分析
-
-6. `supabase/video_diagnosis.sql`
-   - 表设计与 RLS 是否合理
-   - 管理员导出权限是否完整
-
-## 7. Claude 审核时可直接参考的关键文件
-
+### Key files
 - `src/app/video-diagnose/page.tsx`
-- `src/app/api/video-diagnose/route.ts`
 - `src/components/video/VideoUploader.tsx`
 - `src/components/video/VideoProcessingStatus.tsx`
 - `src/components/video/VideoAnalysisResult.tsx`
-- `src/components/video/UsageMeter.tsx`
 - `src/lib/videoFrames.ts`
-- `src/lib/videoUsage.ts`
-- `src/lib/videoDiagnosis.ts`
-- `src/lib/vlm.ts`
-- `src/lib/userData.ts`
-- `src/types/videoDiagnosis.ts`
-- `src/types/userData.ts`
-- `src/types/research.ts`
+- `src/app/api/video-diagnose/route.ts`
+
+## 6. Content Library `/library`
+
+### User role in the system
+The content library is the main browsing surface for educational videos. It is where diagnosis and assessment outputs become a manageable learning inventory.
+
+### Current interaction design
+The library is intentionally simplified:
+- a search bar
+- a platform dropdown
+- an optional bookmarks filter
+- batched loading with “查看更多”
+
+### Main behaviors
+- The library merges three sources:
+  - static curated items
+  - expanded generated items
+  - creator featured videos
+- Duplicate URLs are merged into one item.
+- Thumbnail-backed items are shown first.
+- Within that, ordering uses a mixed strategy:
+  - partially randomized surfacing
+  - partially boosted by view count
+- Cards are fully clickable to source videos.
+- Bookmarking is handled separately so card clicks and bookmark clicks do not conflict.
+- Bilibili titles are cleaned for readability while trying to preserve source fidelity.
+- Bilibili thumbnails are increasingly localized to improve stability.
+
+### SportsHCI interpretation
+The library functions as a **curated sport learning repository** rather than an open video feed. The emphasis is on learnability, source trust, and problem relevance.
+
+### Key files
+- `src/app/library/page.tsx`
+- `src/components/library/LibraryFilters.tsx`
+- `src/components/library/ContentCard.tsx`
+- `src/data/contents.ts`
+- `src/data/expandedContents.ts`
+
+## 7. Creator Rankings `/rankings`
+
+### User role in the system
+This page helps users choose *who to learn from*, not only *what video to watch*.
+
+### Current interaction design
+The ranking page is now intentionally light:
+- domestic / overseas toggle
+- search box
+- show `20` creators first, then `查看更多`
+- creator detail modal
+
+### Main behaviors
+- Ranking uses a mixed score based on:
+  - level match
+  - content quality signals
+  - curator / authority signals
+- Search matches name, short description, bio, and tags.
+- Creator cards are visually simplified.
+- The creator modal shows curated featured videos and a homepage CTA.
+- Creator/source identity is treated carefully; hidden creators are used where needed to preserve true upload source without polluting the main ranking list.
+
+### SportsHCI interpretation
+This page supports **coach selection as interaction**, which is especially relevant in sports learning ecosystems where creator trust and teaching style matter as much as topic coverage.
+
+### Key files
+- `src/app/rankings/page.tsx`
+- `src/components/rankings/CreatorCard.tsx`
+- `src/components/rankings/CreatorDetailModal.tsx`
+- `src/data/creators.ts`
+
+## 8. Training Plan `/plan`
+
+### User role in the system
+This page converts a diagnosis or level estimate into a short-term actionable plan.
+
+### Current interaction design
+The page is centered on “today first”:
+- one headline summary
+- a prominent `Day 1 / 今天`
+- later days shown as follow-up structure
+
+### Main behaviors
+- The page reads `problemTag` and `level` from query params.
+- If there is no upstream context, it nudges users back to assessment or diagnosis.
+- Today’s plan is highlighted as the main action unit.
+- Users can regenerate or save plans.
+
+### SportsHCI interpretation
+This page embodies **bridging diagnosis to practice structure**. Instead of stopping at feedback, it operationalizes what to do next.
+
+### Key files
+- `src/app/plan/page.tsx`
+- `src/components/plan/PlanSummary.tsx`
+- `src/components/plan/DayPlanCard.tsx`
+- `src/lib/plans.ts`
+
+## 9. Profile / My Record `/profile`
+
+### User role in the system
+This page acts as a personal history and lightweight memory surface rather than a social profile.
+
+### Current interaction design
+It aggregates:
+- latest assessment
+- diagnosis history
+- video diagnosis history
+- bookmarks
+- saved plans
+
+### Main behaviors
+- Bookmark cards reuse the library card component in compact form.
+- Saved plans can be revisited and expanded.
+- The page is intentionally calmer than the library or diagnosis pages.
+
+### SportsHCI interpretation
+This page supports **continuity of practice**. It helps the user revisit prior guidance instead of starting over every session.
+
+### Key files
 - `src/app/profile/page.tsx`
-- `src/app/admin/export/page.tsx`
-- `supabase/video_diagnosis.sql`
-- `VIDEO_DIAGNOSIS_PLAN.md`
-- `VIDEO_DIAGNOSIS_TASKS.md`
+- `src/lib/userData.ts`
 
-## 8. 一句话总结
+## Content and Creator Curation Notes
 
-当前主产品在原有“评估 -> 诊断 -> 内容 -> 训练计划 -> 研究导出”的闭环上，已经把 **视频诊断 V1** 真实接进去了，而且本地校验、测试和构建都通过。现在最值得 Claude 帮忙看的，不是“这个功能有没有”，而是“这版实现是否足够稳，能不能安全地进入真实用户试跑”。
+### Why source fidelity matters in the paper
+One of the strongest system-level claims available in the current implementation is that the project does **not** simply scrape tennis videos and present them as if they were equivalent. There has been repeated manual correction of:
+- creator-to-video mismatches
+- non-direct search entries
+- misleading titles
+- broken or missing thumbnails
+- missing real uploader attribution
+
+This is important for SportsHCI framing because the system is not just recommending content. It is doing **curated instructional mediation**.
+
+### Current curation strategy
+- Prefer direct source video links over generic channel links for content items.
+- Preserve original source titles where possible.
+- Normalize noisy Bilibili title prefixes only when they are clearly non-semantic decorations.
+- Use hidden creators when a video needs truthful source attribution but the uploader should not become a ranked public creator.
+- Keep Bilibili and YouTube together in one library, but preserve platform identity visibly.
+
+## What Is Already Strong Enough for the Paper
+
+These claims are already well-supported by the current implementation:
+- the system supports multiple low-friction starting points into training support
+- diagnosis is action-oriented and progressively disclosed
+- the library is coach-grounded and cross-platform
+- creator selection is personalized rather than pure popularity ranking
+- the design intentionally reduces cognitive load for everyday recreational athletes
+- the system bridges reflective understanding and actionable short-term practice
+
+## What Should Be Described Carefully in the Paper
+
+These are good contributions, but they should be phrased carefully:
+- the assessment is approximate and guidance-oriented, not a formal rating engine
+- AI video diagnosis is best described as assistive and uncertainty-aware, not authoritative biomechanical truth
+- the content ranking is hybrid and curated, not fully automatic recommendation optimization
+- view counts and creator popularity are supporting signals, not the core logic
+
+## Suggested Paper Language Hooks
+
+Possible phrases that fit the current product well:
+- `coach-grounded content curation`
+- `low-friction sports guidance workflow`
+- `progressive disclosure for recreational athlete support`
+- `problem-to-practice translation`
+- `cross-platform tennis learning ecology`
+- `source-faithful sports instruction mediation`
+- `assessment-informed creator and content discovery`
+
+## Key Files for Paper-Focused Inspection
+
+If Claude or GPT-5.4 needs to inspect the implementation directly, these are the most useful starting points:
+
+- `src/app/page.tsx`
+- `src/components/home/HeroSection.tsx`
+- `src/app/assessment/page.tsx`
+- `src/app/assessment/result/page.tsx`
+- `src/components/assessment/ResultSummary.tsx`
+- `src/app/diagnose/page.tsx`
+- `src/components/diagnose/DiagnoseResult.tsx`
+- `src/app/video-diagnose/page.tsx`
+- `src/components/video/VideoAnalysisResult.tsx`
+- `src/app/library/page.tsx`
+- `src/components/library/ContentCard.tsx`
+- `src/app/rankings/page.tsx`
+- `src/components/rankings/CreatorDetailModal.tsx`
+- `src/app/plan/page.tsx`
+- `src/app/profile/page.tsx`
+- `src/data/creators.ts`
+- `src/data/contents.ts`
+- `src/data/expandedContents.ts`
+- `src/data/diagnosisRules.ts`
+
+## Final Handoff Note
+
+If the paper needs a sharper contribution statement, the cleanest formulation is probably:
+
+> TennisLevel is an interactive SportsHCI system that helps recreational tennis players move from ambiguous performance frustration to concrete next-step practice through lightweight assessment, problem-oriented diagnosis, source-faithful content curation, and coach-informed creator discovery.

@@ -141,9 +141,6 @@ function buildLibraryItems(): ContentItem[] {
         displayTitleEn: creator.region === "domestic"
           ? getFeaturedVideoPrimaryTitle(video, "en", creator)
           : video.displayTitleEn ?? video.title,
-        focusLineEn: creator.region === "domestic"
-          ? getFeaturedVideoTarget(video, "en", creator)
-          : video.targetEn,
         creatorId: creator.id,
         platform: video.platform,
         type: "video",

@@ -237,6 +237,90 @@ const englishNameReplacements: Record<string, string> = {
   "andrey rublev": "安德烈·卢布列夫"
 };
 
+const REASON_EN: Record<string, string> = {
+  "发球动作总不顺": "Serve mechanics feel off",
+  "正手总发不上力": "Forehand lacks power",
+  "练球总没结构": "Practice feels unstructured",
+  "基础动作总立不住": "Fundamentals keep breaking down",
+  "反手总打不扎实": "Backhand feels unreliable",
+  "双打站位总发乱": "Doubles positioning is messy",
+  "比赛思路总不够清楚": "Match strategy feels unclear",
+  "网前总不敢主动上": "Hesitant to come to net",
+  "脚步启动总慢半拍": "Footwork is a step behind",
+  "上旋总转不起来": "Can't generate enough topspin",
+  "握拍总不稳定": "Grip feels unstable",
+  "切削总飘不压低": "Slice floats instead of staying low",
+  "高球和防守总处理不好": "Struggling with lobs and defense",
+  "相持球总不够稳": "Rallies lack consistency",
+  "接发总被对手压住": "Return gets dominated",
+  "比赛里总容易紧": "Tense under match pressure"
+};
+
+const SUMMARY_EN: Record<string, string> = {
+  // ZH expanded content summaries
+  "反手准备和脚步理顺": "Backhand preparation and footwork",
+  "3.0-3.5 综合提升": "All-around improvement for 3.0–3.5",
+  "进阶动作细节和纠错": "Advanced technique and error correction",
+  "真实练球过程更有代入感": "Real practice sessions for immersion",
+  "中文字幕整理型资料库，基础内容全": "Subtitled reference library with full fundamentals",
+  "训练营视角，偏脚步和发球体系": "Camp-style focus on footwork and serve",
+  "中文字幕教学整理，偏发球和击球点": "Subtitled drills on serve and contact point",
+  "适合自练和训练框架搭建": "Solo practice and training framework",
+  "职业视角拆解发球框架": "Pro-level serve breakdown",
+  "系统化理顺正反手框架": "Systematic forehand and backhand framework",
+  "慢动作与中字整理，适合看动作模板": "Slow-motion reference for form study",
+  "双打实战和比赛执行": "Doubles tactics and match execution",
+  "动作细节和击球点纠正": "Technique detail and contact point fixes",
+  "适合新手练脚步和稳定": "Beginner footwork and stability",
+  "握拍、站位和发力讲得细": "Detailed grip, stance, and power",
+  "真人示范型教学，偏正反手和截击": "Live demo drills: groundstrokes and volleys",
+  "训练结构和发球基础": "Training structure and serve basics",
+  "课后复盘型内容，偏动力链和训练": "Post-lesson review: kinetic chain and drills",
+  // Creator shortDescriptions (used as summary for featured videos)
+  "偏训练方法和青少年课堂": "Training methods and junior coaching",
+  "内容全面清晰，适合打基础和自学入门": "Clear and thorough, great for self-study basics",
+  "分主题教学，基础动作很系统": "Organized by topic with systematic fundamentals",
+  "前职业球员视角，发球和脚步讲得清楚": "Ex-pro perspective on serve and footwork",
+  "双打和时机处理很有干货": "Doubles and timing insights",
+  "发力和实战连接讲得很强": "Power mechanics connected to match play",
+  "发球和击球原理拆得很细": "Detailed serve and stroke principles",
+  "成人球友视角，纠错很直接": "Adult player perspective with direct fixes",
+  "战术和基本功拆解很扎实": "Solid tactics and fundamentals breakdown",
+  "暂未绑定单一博主": "Curated content selection",
+  "比赛拆解清楚，策略含金量高": "Match breakdowns with high-value strategy",
+  "比赛模式拆解细，双打也强": "Detailed match patterns and doubles",
+  "真实上传源，暂不参与博主榜": "Original source content",
+  "短平快纠错，偏小技巧和细节": "Quick fixes and technique tips",
+  "零基础到进阶的慢节奏讲解": "Beginner-to-intermediate at a steady pace",
+  // EN expanded content summaries
+  "短平快讲清实战细节": "Quick, focused match-play tips",
+  "lesson实拍多，发球和正手干货密": "Lesson footage packed with serve and forehand drills",
+  "底线深度和比赛策略": "Baseline depth and match strategy",
+  "细节拆解扎实，讲得很透": "Thorough technique breakdowns",
+  "4.5 学员实拍纠正": "Real 4.5-level student corrections",
+  "现代击球和实战细节": "Modern strokes and match-play detail",
+  "世界级教练的系统拆解": "World-class coaching breakdowns",
+  "短视频密度高，技术点很准": "Dense, precise short-form tips",
+  "长线技术框架和重建": "Long-term technique rebuilds",
+  "动作修正和移动基础": "Stroke fixes and movement basics",
+  "适合重建基础动作框架": "Rebuilding fundamental technique",
+  "发球脚步和实战训练": "Serve footwork and match drills",
+  "基础动作和训练逻辑讲得扎实": "Solid fundamentals and training logic",
+  "技术细节和比赛理解并重": "Technique detail meets match IQ",
+  "系统化正反手教学": "Systematic groundstroke coaching",
+  "现代正手和发球讲得很实用": "Practical modern forehand and serve",
+  "职业球员分享比赛经验": "Pro player match experience sharing",
+  "时机、眼睛和截击讲得很透": "Deep dives on timing, vision, and volleys"
+};
+
+function translateReasonToEnglish(value?: string | null) {
+  return value ? REASON_EN[value.trim()] : undefined;
+}
+
+function translateSummaryToEnglish(value?: string | null) {
+  return value ? SUMMARY_EN[value.trim()] : undefined;
+}
+
 function normalizeTitleForComparison(value?: string | null) {
   return normalizeText(value ?? "")
     .replace(/[^A-Za-z0-9\u3400-\u9fff]+/g, "")
@@ -1004,6 +1088,16 @@ function getContentFocusLineEn(
     return normalizeEnglishSentence(item.summary);
   }
 
+  const translatedSummary = translateSummaryToEnglish(item.summary);
+  if (translatedSummary) {
+    return translatedSummary;
+  }
+
+  const translatedReason = translateReasonToEnglish(useCase) ?? translateReasonToEnglish(item.reason);
+  if (translatedReason) {
+    return translatedReason;
+  }
+
   return defaultEnglishFocusLine(item.skills);
 }
 
@@ -1040,11 +1134,20 @@ export function getEnglishGloss(
   const skill = englishSkillLabel(item.skills[0]);
   const target = item.useCases[0]?.trim() || item.reason.trim();
 
-  if (!target || hasCJK(target)) {
+  if (!target) {
     return `${skill} lesson`;
   }
 
-  return `${skill}: ${normalizeEnglishSentence(target)}`;
+  if (!hasCJK(target)) {
+    return `${skill}: ${normalizeEnglishSentence(target)}`;
+  }
+
+  const translated = translateReasonToEnglish(target);
+  if (translated) {
+    return translated;
+  }
+
+  return `${skill} lesson`;
 }
 
 export function getChineseDisplayTitle(
