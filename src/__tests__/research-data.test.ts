@@ -101,21 +101,52 @@ describe("research export helpers", () => {
         id: "snapshot_1",
         seed: "seed_1",
         buildVersion: "build_1",
+        snapshotVersion: "snapshot_1",
+        fixedSeed: "seed_1",
+        sortingMode: "deterministic_study",
         contentSetVersion: "content_1",
         creatorSetVersion: "creator_1",
         assessmentVersion: "assessment_1",
         diagnosisRulesVersion: "diagnosis_1",
         planTemplateVersion: "plan_1",
         localeBundleVersion: "locale_1",
-        rankingStrategyVersion: "ranking_1"
+        rankingStrategyVersion: "ranking_1",
+        buildSha: null,
+        randomSurfacingDisabled: true,
+        viewCountBoostDisabled: true
       },
       sessions: [{ participant_id: "P001", session_id: "session_1", snapshot_id: "snapshot_1" }],
       artifacts: [],
+      taskRatings: [
+        {
+          participant_id: "P001",
+          session_id: "session_1",
+          snapshot_id: "snapshot_1",
+          task_id: "task_1_problem_entry",
+          metric_name: "actionability",
+          score: 6,
+          language: "zh"
+        },
+        {
+          participant_id: "P001",
+          session_id: "session_1",
+          snapshot_id: "snapshot_1",
+          task_id: "task_2_assessment_entry",
+          metric_name: "actionability",
+          score: 4,
+          language: "en"
+        }
+      ],
       events,
       participantId: "P001"
     });
 
     expect(bundle.derivedMetrics).toHaveLength(1);
     expect(bundle.derivedMetrics?.[0].sessionId).toBe("session_1");
+    expect(bundle.taskRatings).toHaveLength(2);
+    expect(bundle.actionabilitySummary?.overall.count).toBe(2);
+    expect(bundle.actionabilitySummary?.overall.mean).toBe(5);
+    expect(bundle.actionabilitySummary?.byTask.task_1_problem_entry.mean).toBe(6);
+    expect(bundle.actionabilitySummary?.byLanguage.zh.mean).toBe(6);
   });
 });

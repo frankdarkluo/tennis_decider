@@ -57,6 +57,18 @@ create table if not exists study_artifacts (
   created_at timestamptz default now() not null
 );
 
+create table if not exists study_task_ratings (
+  id bigint generated always as identity primary key,
+  study_id text not null,
+  participant_id text not null,
+  session_id text not null,
+  task_id text not null,
+  metric_name text not null check (metric_name = 'actionability'),
+  score integer not null check (score between 1 and 7),
+  language text not null,
+  submitted_at timestamptz not null default now()
+);
+
 create index if not exists idx_event_logs_participant on event_logs(participant_id);
 create index if not exists idx_event_logs_snapshot on event_logs(snapshot_id);
 create index if not exists idx_survey_responses_study_id on survey_responses(study_id);
@@ -67,9 +79,13 @@ create index if not exists idx_study_artifacts_session on study_artifacts(sessio
 create index if not exists idx_study_artifacts_participant on study_artifacts(participant_id);
 create index if not exists idx_study_artifacts_study_id on study_artifacts(study_id);
 create index if not exists idx_study_artifacts_type on study_artifacts(artifact_type);
+create index if not exists idx_study_task_ratings_session on study_task_ratings(session_id);
+create index if not exists idx_study_task_ratings_participant on study_task_ratings(participant_id);
+create index if not exists idx_study_task_ratings_study_task on study_task_ratings(study_id, task_id);
 
 alter table study_sessions enable row level security;
 alter table study_artifacts enable row level security;
+alter table study_task_ratings enable row level security;
 
 drop policy if exists "event_logs_insert_study_anon" on event_logs;
 create policy "event_logs_insert_study_anon"
@@ -96,6 +112,12 @@ create policy "study_artifacts_insert_anon"
   to anon
   with check (study_mode = true and participant_id is not null);
 
+drop policy if exists "study_task_ratings_insert_anon" on study_task_ratings;
+create policy "study_task_ratings_insert_anon"
+  on study_task_ratings for insert
+  to anon
+  with check (participant_id is not null);
+
 -- Replace the placeholder email below with your real researcher/admin email
 drop policy if exists "study_sessions_admin_select" on study_sessions;
 create policy "study_sessions_admin_select"
@@ -105,4 +127,9 @@ create policy "study_sessions_admin_select"
 drop policy if exists "study_artifacts_admin_select" on study_artifacts;
 create policy "study_artifacts_admin_select"
   on study_artifacts for select
+  using ((auth.jwt() ->> 'email') in ('your-email@example.com'));
+
+drop policy if exists "study_task_ratings_admin_select" on study_task_ratings;
+create policy "study_task_ratings_admin_select"
+  on study_task_ratings for select
   using ((auth.jwt() ->> 'email') in ('your-email@example.com'));

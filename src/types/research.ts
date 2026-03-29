@@ -21,6 +21,8 @@ export type EventName =
   | "assessment.exited"
   | "assessment_result.viewed"
   | "assessment_result.next_action_clicked"
+  | "task.actionability_prompt_viewed"
+  | "task.actionability_submitted"
   | "diagnose.started"
   | "diagnose.input_method_selected"
   | "diagnose.submitted"
@@ -33,6 +35,8 @@ export type EventName =
   | "diagnose.plan_cta_clicked"
   | "diagnose.why_this_viewed"
   | "library.viewed"
+  | "library.snapshot_loaded"
+  | "library.sort_context_logged"
   | "library.search_used"
   | "library.filter_changed"
   | "library.batch_loaded"
@@ -41,6 +45,8 @@ export type EventName =
   | "content.bookmark_toggled"
   | "content.language_badge_clicked"
   | "rankings.viewed"
+  | "rankings.snapshot_loaded"
+  | "rankings.sort_context_logged"
   | "rankings.region_changed"
   | "rankings.search_used"
   | "creator.card_opened"
@@ -182,4 +188,5 @@ export type ResearchExportTable =
   | "diagnosis_history"
   | "video_diagnosis_history"
   | "study_sessions"
-  | "study_artifacts";
+  | "study_artifacts"
+  | "study_task_ratings";

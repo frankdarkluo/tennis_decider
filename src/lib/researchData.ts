@@ -4,7 +4,13 @@ import {
   StudyDerivedMetric,
   SurveyResponses
 } from "@/types/research";
-import { StudyExportBundle, StudySnapshot } from "@/types/study";
+import {
+  StudyExportBundle,
+  StudyLanguage,
+  StudySnapshot,
+  StudyTaskId,
+  StudyTaskRatingRecord
+} from "@/types/study";
 
 function getClient() {
   return getSupabaseBrowserClient();
@@ -65,7 +71,8 @@ export async function fetchAllExportRows(table: ResearchExportTable) {
     diagnosis_history: "created_at",
     video_diagnosis_history: "created_at",
     study_sessions: "started_at",
-    study_artifacts: "created_at"
+    study_artifacts: "created_at",
+    study_task_ratings: "submitted_at"
   };
 
   while (true) {
@@ -233,6 +240,7 @@ export function buildStudyExportBundle(input: {
   snapshot: StudySnapshot;
   sessions: Record<string, unknown>[];
   artifacts: Record<string, unknown>[];
+  taskRatings?: Record<string, unknown>[];
   events: Record<string, unknown>[];
   participantId?: string;
   sessionId?: string;
@@ -260,12 +268,89 @@ export function buildStudyExportBundle(input: {
     return true;
   };
 
+  const filteredTaskRatings = (input.taskRatings ?? [])
+    .filter(matches)
+    .map(normalizeTaskRatingRow)
+    .filter((rating): rating is StudyTaskRatingRecord => Boolean(rating));
+
   return {
     snapshot: input.snapshot,
     sessions: input.sessions.filter(matches) as StudyExportBundle["sessions"],
     artifacts: input.artifacts.filter(matches) as StudyExportBundle["artifacts"],
     events: input.events.filter(matches) as StudyExportBundle["events"],
-    derivedMetrics: deriveStudyMetrics(input.events.filter(matches))
+    taskRatings: filteredTaskRatings,
+    derivedMetrics: deriveStudyMetrics(input.events.filter(matches)),
+    actionabilitySummary: summarizeActionabilityRatings(filteredTaskRatings)
+  };
+}
+
+function toMean(scores: number[]) {
+  if (scores.length === 0) {
+    return null;
+  }
+
+  const total = scores.reduce((sum, score) => sum + score, 0);
+  return total / scores.length;
+}
+
+function normalizeTaskRatingRow(row: Record<string, unknown>): StudyTaskRatingRecord | null {
+  const studyId = String(row.study_id ?? row.studyId ?? "unknown_study");
+  const participantId = String(row.participant_id ?? row.participantId ?? "");
+  const sessionId = String(row.session_id ?? row.sessionId ?? "");
+  const taskId = String(row.task_id ?? row.taskId ?? "");
+  const metricName = String(row.metric_name ?? row.metricName ?? "");
+  const language = String(row.language ?? "");
+  const submittedAt = String(row.submitted_at ?? row.submittedAt ?? "1970-01-01T00:00:00.000Z");
+  const score = Number(row.score);
+
+  if (!participantId || !sessionId || !taskId || !metricName || !language || !Number.isFinite(score)) {
+    return null;
+  }
+
+  return {
+    id: String(row.id ?? `${sessionId}:${taskId}:${submittedAt}`),
+    studyId,
+    participantId,
+    sessionId,
+    taskId: taskId as StudyTaskId,
+    metricName: metricName as StudyTaskRatingRecord["metricName"],
+    score: score as StudyTaskRatingRecord["score"],
+    language: language as StudyLanguage,
+    submittedAt
+  };
+}
+
+export function summarizeActionabilityRatings(taskRatings: StudyTaskRatingRecord[]) {
+  const actionabilityRatings = taskRatings.filter((rating) => rating.metricName === "actionability");
+  const overallScores = actionabilityRatings.map((rating) => rating.score);
+  const byTask: Partial<Record<StudyTaskId, { count: number; mean: number | null }>> = {};
+  const byLanguage: Partial<Record<StudyLanguage, { count: number; mean: number | null }>> = {};
+
+  actionabilityRatings.forEach((rating) => {
+    const taskBucket = actionabilityRatings
+      .filter((entry) => entry.taskId === rating.taskId)
+      .map((entry) => entry.score);
+    byTask[rating.taskId] = {
+      count: taskBucket.length,
+      mean: toMean(taskBucket)
+    };
+
+    const languageBucket = actionabilityRatings
+      .filter((entry) => entry.language === rating.language)
+      .map((entry) => entry.score);
+    byLanguage[rating.language] = {
+      count: languageBucket.length,
+      mean: toMean(languageBucket)
+    };
+  });
+
+  return {
+    overall: {
+      count: overallScores.length,
+      mean: toMean(overallScores)
+    },
+    byTask,
+    byLanguage
   };
 }
 

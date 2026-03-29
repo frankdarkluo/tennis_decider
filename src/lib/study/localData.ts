@@ -4,9 +4,15 @@ import {
   STUDY_ARTIFACTS_KEY,
   STUDY_BOOKMARKS_KEY,
   STUDY_LAST_PATH_KEY,
-  STUDY_PROGRESS_KEY
+  STUDY_PROGRESS_KEY,
+  STUDY_TASK_RATINGS_KEY
 } from "@/lib/study/config";
-import { StudyArtifactRecord, StudyBookmarkState, StudyProgressState } from "@/types/study";
+import {
+  StudyArtifactRecord,
+  StudyBookmarkState,
+  StudyProgressState,
+  StudyTaskRatingRecord
+} from "@/types/study";
 
 function isBrowser() {
   return typeof window !== "undefined";
@@ -45,6 +51,16 @@ export function appendLocalStudyArtifact(artifact: StudyArtifactRecord) {
   const items = readLocalStudyArtifacts();
   items.push(artifact);
   writeJson(STUDY_ARTIFACTS_KEY, items);
+}
+
+export function readLocalStudyTaskRatings() {
+  return readJson<StudyTaskRatingRecord[]>(STUDY_TASK_RATINGS_KEY, []);
+}
+
+export function appendLocalStudyTaskRating(rating: StudyTaskRatingRecord) {
+  const items = readLocalStudyTaskRatings();
+  items.push(rating);
+  writeJson(STUDY_TASK_RATINGS_KEY, items);
 }
 
 export function readLocalStudyBookmarks() {
@@ -116,7 +132,8 @@ export function clearLocalStudyData() {
     STUDY_ARTIFACTS_KEY,
     STUDY_BOOKMARKS_KEY,
     STUDY_PROGRESS_KEY,
-    STUDY_LAST_PATH_KEY
+    STUDY_LAST_PATH_KEY,
+    STUDY_TASK_RATINGS_KEY
   ].forEach((key) => {
     window.localStorage.removeItem(key);
     window.sessionStorage.removeItem(key);

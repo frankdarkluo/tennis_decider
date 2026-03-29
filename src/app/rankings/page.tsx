@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { readAssessmentResultFromStorage, writeAssessmentResultToStorage } from "@/lib/assessmentStorage";
-import { creators } from "@/data/creators";
 import {
   getCreatorBio,
   getCreatorPrimaryName,
@@ -12,77 +11,22 @@ import {
   getCreatorTags
 } from "@/lib/content/display";
 import { useI18n } from "@/lib/i18n/config";
-import { seededSort } from "@/lib/study/seededSort";
 import { getLatestAssessmentResult } from "@/lib/userData";
-import { Creator, CreatorRankingSignals } from "@/types/creator";
+import { Creator } from "@/types/creator";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { TabButton } from "@/components/ui/Tabs";
 import { CreatorCard } from "@/components/rankings/CreatorCard";
 import { CreatorDetailModal } from "@/components/rankings/CreatorDetailModal";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { logEvent } from "@/lib/eventLogger";
+import {
+  buildRankingsCreatorsForMode,
+  sortRankingsCreatorsForMode
+} from "@/lib/rankings/studyOrder";
+import { getStudySnapshot } from "@/lib/study/snapshot";
 import { useStudy } from "@/components/study/StudyProvider";
 
-const LEVEL_ORDER = ["2.5", "3.0", "3.5", "4.0", "4.0+", "4.5"] as const;
 const INITIAL_VISIBLE_CREATORS = 20;
-
-function clamp01(value: number) {
-  return Math.max(0, Math.min(1, value));
-}
-
-function getLevelMatchScore(creator: Creator, targetLevel?: string) {
-  if (!targetLevel) {
-    return 0.6;
-  }
-
-  const targetIndex = LEVEL_ORDER.indexOf(targetLevel as (typeof LEVEL_ORDER)[number]);
-  if (targetIndex < 0) {
-    return 0.6;
-  }
-
-  const creatorIndexes = creator.levels
-    .map((level) => LEVEL_ORDER.indexOf(level as (typeof LEVEL_ORDER)[number]))
-    .filter((index) => index >= 0);
-
-  if (creatorIndexes.length === 0) {
-    return 0.45;
-  }
-
-  const minDistance = Math.min(...creatorIndexes.map((index) => Math.abs(index - targetIndex)));
-  if (minDistance === 0) return 1;
-  if (minDistance === 1) return 0.82;
-  if (minDistance === 2) return 0.6;
-  return 0.35;
-}
-
-function getQualityScore(signals?: CreatorRankingSignals) {
-  if (!signals) {
-    return 0.5;
-  }
-
-  return clamp01(
-    0.35 * signals.subscriberScore
-      + 0.35 * signals.averageViewsScore
-      + 0.15 * signals.activityScore
-      + 0.15 * signals.catalogScore
-  );
-}
-
-function getCuratorScore(signals?: CreatorRankingSignals) {
-  if (!signals) {
-    return 0.5;
-  }
-
-  return clamp01((signals.authorityScore + signals.curatorBoost) / 2);
-}
-
-function getCreatorSortScore(creator: Creator, targetLevel?: string) {
-  const matchScore = getLevelMatchScore(creator, targetLevel);
-  const qualityScore = getQualityScore(creator.rankingSignals);
-  const curatorScore = getCuratorScore(creator.rankingSignals);
-
-  return 0.58 * matchScore + 0.28 * qualityScore + 0.14 * curatorScore;
-}
 
 function matchesSearch(creator: Creator, query: string, locale: "zh" | "en") {
   const normalizedQuery = query.trim().toLowerCase();
@@ -114,42 +58,24 @@ export default function RankingsPage() {
   const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
   const [viewerLevel, setViewerLevel] = useState<string | undefined>(undefined);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_CREATORS);
+  const loggedSnapshotRef = useRef<string | null>(null);
+  const previousSortContextRef = useRef<string | null>(null);
+  const creatorPool = useMemo(
+    () => buildRankingsCreatorsForMode({ studyMode }),
+    [studyMode]
+  );
 
   const list = useMemo(() => {
-    const scored = creators
+    const matched = creatorPool
       .filter((creator) => {
         return creator.region === region && creator.rankingEligible !== false && matchesSearch(creator, query, language);
       })
-      .map((creator) => ({
-        creator,
-        score: getCreatorSortScore(creator, viewerLevel),
-        recommendedCount: creator.featuredVideos?.length ?? creator.featuredContentIds.length
-      }));
-
-    if (studyMode && session) {
-      return seededSort(
-        scored,
-        session.snapshotSeed,
-        (item) => item.creator.id,
-        (item) => item.score * 100 + item.recommendedCount,
-        (left, right) => left.creator.name.localeCompare(right.creator.name, "zh-CN")
-      ).map(({ creator }) => creator);
-    }
-
-    return scored
-      .sort((a, b) => {
-        if (b.score !== a.score) {
-          return b.score - a.score;
-        }
-
-        if (b.recommendedCount !== a.recommendedCount) {
-          return b.recommendedCount - a.recommendedCount;
-        }
-
-        return a.creator.name.localeCompare(b.creator.name, "zh-CN");
-      })
-      .map(({ creator }) => creator);
-  }, [language, query, region, session, studyMode, viewerLevel]);
+    return sortRankingsCreatorsForMode(matched, {
+      studyMode: studyMode && Boolean(session),
+      seed: studyMode && session ? session.snapshotSeed : `${region}:${language}`,
+      targetLevel: viewerLevel
+    });
+  }, [creatorPool, language, query, region, session, studyMode, viewerLevel]);
 
   const visibleList = useMemo(() => list.slice(0, visibleCount), [list, visibleCount]);
 
@@ -158,6 +84,29 @@ export default function RankingsPage() {
       sourceRoute: null
     }, { page: "/rankings" });
   }, []);
+
+  useEffect(() => {
+    if (!studyMode || !session) {
+      loggedSnapshotRef.current = null;
+      return;
+    }
+
+    if (loggedSnapshotRef.current === session.snapshotId) {
+      return;
+    }
+
+    const snapshot = getStudySnapshot();
+    logEvent("rankings.snapshot_loaded", {
+      snapshotVersion: session.snapshotId,
+      snapshotSeed: session.snapshotSeed,
+      buildVersion: session.buildVersion,
+      sortingMode: snapshot.sortingMode,
+      fixedSeed: snapshot.fixedSeed,
+      randomSurfacingDisabled: snapshot.randomSurfacingDisabled,
+      viewCountBoostDisabled: snapshot.viewCountBoostDisabled
+    }, { page: "/rankings" });
+    loggedSnapshotRef.current = session.snapshotId;
+  }, [session, studyMode]);
 
   useEffect(() => {
     setVisibleCount(INITIAL_VISIBLE_CREATORS);
@@ -173,6 +122,36 @@ export default function RankingsPage() {
       queryLength: trimmed.length
     }, { page: "/rankings" });
   }, [query]);
+
+  useEffect(() => {
+    if (!studyMode || !session) {
+      previousSortContextRef.current = null;
+      return;
+    }
+
+    const sortContext = JSON.stringify({
+      snapshotVersion: session.snapshotId,
+      snapshotSeed: session.snapshotSeed,
+      region,
+      query: query.trim().toLowerCase(),
+      viewerLevel: viewerLevel ?? null,
+      totalMatched: list.length
+    });
+
+    if (previousSortContextRef.current === sortContext) {
+      return;
+    }
+
+    logEvent("rankings.sort_context_logged", {
+      snapshotVersion: session.snapshotId,
+      snapshotSeed: session.snapshotSeed,
+      region,
+      queryLength: query.trim().length,
+      viewerLevel: viewerLevel ?? null,
+      totalMatched: list.length
+    }, { page: "/rankings" });
+    previousSortContextRef.current = sortContext;
+  }, [list.length, query, region, session, studyMode, viewerLevel]);
 
   useEffect(() => {
     if (!selectedCreator) {

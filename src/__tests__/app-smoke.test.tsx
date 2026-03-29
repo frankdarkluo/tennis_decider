@@ -1,30 +1,28 @@
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import HomePage from "@/app/page";
-import AssessmentPage from "@/app/assessment/page";
-import AssessmentResultPage from "@/app/assessment/result/page";
-import DiagnosePage from "@/app/diagnose/page";
-import VideoDiagnosePage from "@/app/video-diagnose/page";
-import LibraryPage from "@/app/library/page";
-import RankingsPage from "@/app/rankings/page";
-import PlanPage from "@/app/plan/page";
-import ProfilePage from "@/app/profile/page";
-import StudyPage from "@/app/study/page";
-import SurveyPage from "@/app/survey/page";
 import { assessmentQuestions } from "@/data/assessmentQuestions";
 import { getDefaultAssessmentResult } from "@/lib/assessment";
+import { getLocalLogs } from "@/lib/eventLogger";
+import { STUDY_TASK_RATINGS_KEY } from "@/lib/study/config";
 import { calculateSUS } from "@/lib/survey";
 import { ASSESSMENT_DRAFT_STORAGE_KEY, ASSESSMENT_STORAGE_KEY } from "@/lib/utils";
+import type { StudySession } from "@/types/study";
 
-const { mockPush, mockRedirect, translationMap } = vi.hoisted(() => ({
+const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi.hoisted(() => ({
   mockPush: vi.fn(),
   mockRedirect: vi.fn(),
+  mockReplace: vi.fn(),
+  mockPrefetch: vi.fn(),
   translationMap: {
     "home.hero.title": "一句话，帮你找到下一步该练什么",
     "assessment.title": "1 分钟测一下你的水平",
     "assessment.resumeDraft": "已恢复你刚才做到一半的评估进度。",
     "assessment.result.ctaPlan": "生成训练计划 →",
+    "study.actionability.prompt": "完成这个任务后，我知道我下一步该练什么了。",
+    "study.actionability.submit": "提交评分",
+    "study.actionability.submitting": "提交中...",
+    "study.actionability.saved": "评分已记录。",
     "diagnose.placeholder": "例如：我反手总下网，一快就更容易失误",
     "library.title": "找内容",
     "library.more": "查看更多",
@@ -50,6 +48,38 @@ let mockSearchParams = new URLSearchParams();
 const mockSearchParamsAdapter = {
   get: (key: string) => mockSearchParams.get(key)
 };
+const mockRouter = {
+  push: mockPush,
+  replace: mockReplace,
+  prefetch: mockPrefetch
+};
+const baseStudySession: StudySession = {
+  studyId: "sportshci_2026_no_video_v1",
+  participantId: "P001",
+  sessionId: "session_1",
+  studyMode: true,
+  language: "zh",
+  condition: "lang_zh",
+  snapshotId: "2026-03-29-v1",
+  snapshotSeed: "20260329",
+  buildVersion: "2026-03-29-v1",
+  startedAt: "2026-03-29T00:00:00.000Z",
+  endedAt: null
+};
+const mockStudyContext = {
+  session: null as StudySession | null,
+  studyMode: false,
+  language: "zh" as const,
+  loading: false,
+  startStudySession: vi.fn(),
+  endStudySession: vi.fn(),
+  clearStudyData: vi.fn()
+};
+
+async function loadPage<T>(importer: () => Promise<{ default: T }>) {
+  const module = await importer();
+  return module.default;
+}
 
 vi.mock("next/link", () => ({
   default: ({
@@ -64,12 +94,9 @@ vi.mock("next/link", () => ({
 }));
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: mockPush,
-    replace: vi.fn(),
-    prefetch: vi.fn()
-  }),
+  useRouter: () => mockRouter,
   useSearchParams: () => mockSearchParamsAdapter,
+  usePathname: () => window.location.pathname,
   redirect: mockRedirect
 }));
 
@@ -93,15 +120,7 @@ vi.mock("@/components/auth/AuthModalProvider", () => ({
 }));
 
 vi.mock("@/components/study/StudyProvider", () => ({
-  useStudy: () => ({
-    session: null,
-    studyMode: false,
-    language: "zh",
-    loading: false,
-    startStudySession: vi.fn(),
-    endStudySession: vi.fn(),
-    clearStudyData: vi.fn()
-  }),
+  useStudy: () => mockStudyContext,
   StudyProvider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children)
 }));
 
@@ -129,6 +148,10 @@ describe("app smoke tests", () => {
   beforeEach(() => {
     mockPush.mockReset();
     mockRedirect.mockReset();
+    mockReplace.mockReset();
+    mockPrefetch.mockReset();
+    mockStudyContext.session = null;
+    mockStudyContext.studyMode = false;
     mockSearchParams = new URLSearchParams();
     window.localStorage.clear();
     window.history.pushState({}, "", "/");
@@ -141,13 +164,18 @@ describe("app smoke tests", () => {
   });
 
   it("renders home page without crashing", () => {
-    render(React.createElement(HomePage));
+    const HomePage = vi.importActual<typeof import("@/app/page")>("@/app/page");
+    return HomePage.then(({ default: Page }) => {
+      render(React.createElement(Page));
 
-    expect(screen.getByText("一句话，帮你找到下一步该练什么")).toBeInTheDocument();
-    expect(consoleErrorSpy).not.toHaveBeenCalled();
+      expect(screen.getByText("一句话，帮你找到下一步该练什么")).toBeInTheDocument();
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
+    });
   });
 
   it("renders assessment page and allows stepping through the simplified flow", async () => {
+    const AssessmentPage = await loadPage(() => import("@/app/assessment/page"));
+
     render(React.createElement(AssessmentPage));
 
     expect(assessmentQuestions).toHaveLength(14);
@@ -200,6 +228,8 @@ describe("app smoke tests", () => {
   });
 
   it("redirects back to the saved assessment result on revisit", async () => {
+    const AssessmentPage = await loadPage(() => import("@/app/assessment/page"));
+
     window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({ answeredCount: 6 }));
 
     render(React.createElement(AssessmentPage));
@@ -210,6 +240,8 @@ describe("app smoke tests", () => {
   });
 
   it("still allows an explicit retake even if a saved assessment result exists", async () => {
+    const AssessmentPage = await loadPage(() => import("@/app/assessment/page"));
+
     mockSearchParams = new URLSearchParams("retake=1");
     window.history.pushState({}, "", "/assessment?retake=1");
     window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({ answeredCount: 6 }));
@@ -221,6 +253,8 @@ describe("app smoke tests", () => {
   });
 
   it("resumes an in-progress assessment draft instead of redirecting to the saved result", async () => {
+    const AssessmentPage = await loadPage(() => import("@/app/assessment/page"));
+
     window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({ answeredCount: 6 }));
     window.localStorage.setItem(ASSESSMENT_DRAFT_STORAGE_KEY, JSON.stringify({
       stepIndex: 3,
@@ -237,6 +271,8 @@ describe("app smoke tests", () => {
   });
 
   it("returns to the same question after leaving and coming back mid-assessment", async () => {
+    const AssessmentPage = await loadPage(() => import("@/app/assessment/page"));
+
     window.localStorage.setItem(ASSESSMENT_DRAFT_STORAGE_KEY, JSON.stringify({
       stepIndex: 5,
       answers: {
@@ -256,6 +292,8 @@ describe("app smoke tests", () => {
   });
 
   it("renders assessment result page with a direct training-plan CTA", async () => {
+    const AssessmentResultPage = await loadPage(() => import("@/app/assessment/result/page"));
+
     const storedResult = {
       ...getDefaultAssessmentResult("zh"),
       answeredCount: 8,
@@ -312,14 +350,51 @@ describe("app smoke tests", () => {
     expect(planLink.getAttribute("href")).toContain("contentIds=");
   });
 
+  it("shows the actionability prompt on assessment result in study mode", async () => {
+    const AssessmentResultPage = await loadPage(() => import("@/app/assessment/result/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+    window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({
+      ...getDefaultAssessmentResult("zh"),
+      answeredCount: 8,
+      totalQuestions: 8,
+      level: "3.0"
+    }));
+
+    render(React.createElement(AssessmentResultPage));
+
+    expect(await screen.findByText("完成这个任务后，我知道我下一步该练什么了。")).toBeInTheDocument();
+  });
+
   it("renders diagnose page with input box", async () => {
+    const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
+
     render(React.createElement(DiagnosePage));
 
     expect(await screen.findByPlaceholderText(/我反手总下网/)).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("shows the actionability prompt after a study diagnosis result is shown", async () => {
+    const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+
+    render(React.createElement(DiagnosePage));
+
+    fireEvent.change(await screen.findByPlaceholderText(/我反手总下网/), {
+      target: { value: "我反手总下网，一快就更容易失误" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "diagnose.button.start" }));
+
+    expect(await screen.findByText("完成这个任务后，我知道我下一步该练什么了。")).toBeInTheDocument();
+  });
+
   it("renders library page and shows non-empty content list", async () => {
+    const LibraryPage = await loadPage(() => import("@/app/library/page"));
+
     render(React.createElement(LibraryPage));
 
     expect(await screen.findByText("找内容")).toBeInTheDocument();
@@ -328,14 +403,28 @@ describe("app smoke tests", () => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("renders video diagnose page without crashing", async () => {
-    render(React.createElement(VideoDiagnosePage));
+  it("logs snapshot and sort context when library opens in study mode", async () => {
+    const LibraryPage = await loadPage(() => import("@/app/library/page"));
 
-    expect(await screen.findByText("上传视频，我来帮你看问题")).toBeInTheDocument();
-    expect(consoleErrorSpy).not.toHaveBeenCalled();
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+
+    render(React.createElement(LibraryPage));
+
+    expect(await screen.findByText("找内容")).toBeInTheDocument();
+
+    const eventNames = getLocalLogs().map((entry) => entry.eventName);
+    expect(eventNames).toContain("library.snapshot_loaded");
+    expect(eventNames).toContain("library.sort_context_logged");
+
+    const snapshotEvent = getLocalLogs().find((entry) => entry.eventName === "library.snapshot_loaded");
+    expect(snapshotEvent?.payload.snapshotVersion).toBe(baseStudySession.snapshotId);
+    expect(snapshotEvent?.payload.snapshotSeed).toBe(baseStudySession.snapshotSeed);
   });
 
-  it("renders rankings page without crashing", () => {
+  it("renders rankings page without crashing", async () => {
+    const RankingsPage = await loadPage(() => import("@/app/rankings/page"));
+
     render(React.createElement(RankingsPage));
 
     expect(screen.getByText("博主榜")).toBeInTheDocument();
@@ -343,7 +432,28 @@ describe("app smoke tests", () => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("logs snapshot and sort context when rankings opens in study mode", async () => {
+    const RankingsPage = await loadPage(() => import("@/app/rankings/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+
+    render(React.createElement(RankingsPage));
+
+    expect(await screen.findByText("博主榜")).toBeInTheDocument();
+
+    const eventNames = getLocalLogs().map((entry) => entry.eventName);
+    expect(eventNames).toContain("rankings.snapshot_loaded");
+    expect(eventNames).toContain("rankings.sort_context_logged");
+
+    const snapshotEvent = getLocalLogs().find((entry) => entry.eventName === "rankings.snapshot_loaded");
+    expect(snapshotEvent?.payload.snapshotVersion).toBe(baseStudySession.snapshotId);
+    expect(snapshotEvent?.payload.snapshotSeed).toBe(baseStudySession.snapshotSeed);
+  });
+
   it("renders plan page without crashing", async () => {
+    const PlanPage = await loadPage(() => import("@/app/plan/page"));
+
     mockSearchParams = new URLSearchParams(
       "problemTag=backhand-into-net&level=3.0&source=diagnosis&contentIds=content_cn_a_01,content_zlx_03,expanded_junior_tennis_co_video_112"
     );
@@ -360,14 +470,60 @@ describe("app smoke tests", () => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("renders profile page login prompt when user is not signed in", () => {
-    render(React.createElement(ProfilePage));
+  it("shows the actionability prompt on plan page in study mode", async () => {
+    const PlanPage = await loadPage(() => import("@/app/plan/page"));
 
-    expect(screen.getByText("登录后查看你的记录")).toBeInTheDocument();
-    expect(consoleErrorSpy).not.toHaveBeenCalled();
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+    mockSearchParams = new URLSearchParams(
+      "problemTag=backhand-into-net&level=3.0&source=diagnosis&contentIds=content_cn_a_01"
+    );
+    window.history.pushState({}, "", `/plan?${mockSearchParams.toString()}`);
+
+    render(React.createElement(PlanPage));
+
+    expect(await screen.findByText("完成这个任务后，我知道我下一步该练什么了。")).toBeInTheDocument();
   });
 
-  it("renders survey page without crashing", () => {
+  it("does not show the task 3 prompt twice after a rating exists", async () => {
+    const PlanPage = await loadPage(() => import("@/app/plan/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+    mockSearchParams = new URLSearchParams(
+      "problemTag=backhand-into-net&level=3.0&source=diagnosis&contentIds=content_cn_a_01"
+    );
+    window.history.pushState({}, "", `/plan?${mockSearchParams.toString()}`);
+    window.localStorage.setItem(STUDY_TASK_RATINGS_KEY, JSON.stringify([{
+      id: "rating_1",
+      studyId: baseStudySession.studyId,
+      participantId: baseStudySession.participantId,
+      sessionId: baseStudySession.sessionId,
+      taskId: "task_3_action_or_revisit",
+      metricName: "actionability",
+      score: 6,
+      language: "zh",
+      submittedAt: "2026-03-29T00:00:00.000Z"
+    }]));
+
+    render(React.createElement(PlanPage));
+
+    await screen.findByText("你的 7 天提升计划");
+    expect(screen.queryByText("完成这个任务后，我知道我下一步该练什么了。")).not.toBeInTheDocument();
+  });
+
+  it("renders profile page login prompt when user is not signed in", () => {
+    return loadPage(() => import("@/app/profile/page")).then((ProfilePage) => {
+      render(React.createElement(ProfilePage));
+
+      expect(screen.getByText("登录后查看你的记录")).toBeInTheDocument();
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  it("renders survey page without crashing", async () => {
+    const SurveyPage = await loadPage(() => import("@/app/survey/page"));
+
     render(React.createElement(SurveyPage));
 
     expect(screen.getByText("TennisLevel 使用体验问卷")).toBeInTheDocument();
@@ -376,6 +532,8 @@ describe("app smoke tests", () => {
   });
 
   it("redirects /study to /study/start", async () => {
+    const StudyPage = await loadPage(() => import("@/app/study/page"));
+
     render(React.createElement(StudyPage));
 
     expect(mockRedirect).toHaveBeenCalledWith("/study/start");

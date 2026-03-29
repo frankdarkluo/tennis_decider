@@ -1,23 +1,19 @@
 "use client";
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { contents } from "@/data/contents";
-import { expandedContents } from "@/data/expandedContents";
 import { creators } from "@/data/creators";
-import { ContentItem } from "@/types/content";
 import {
   getContentFocusLine,
   getContentLanguageTag,
   getContentPrimaryTitle,
-  getFeaturedVideoPrimaryTitle,
-  getFeaturedVideoTarget,
   getSubtitleAvailability
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
+import { buildLibraryItemsForMode, sortLibraryItemsForMode } from "@/lib/library/studyOrder";
 import { persistStudyArtifact } from "@/lib/study/client";
+import { getStudySnapshot } from "@/lib/study/snapshot";
 import { readLocalStudyBookmarks, toggleLocalStudyBookmark } from "@/lib/study/localData";
-import { seededSort } from "@/lib/study/seededSort";
 import { addBookmark, getBookmarkedContentIds, removeBookmark } from "@/lib/userData";
 import { getThumbnail } from "@/lib/thumbnail";
 import { toChineseSkill } from "@/lib/utils";
@@ -46,137 +42,6 @@ function inferQueryLanguage(query: string) {
   return "unknown";
 }
 
-function normalizeUrl(url: string) {
-  return url.replace(/\/+$/, "");
-}
-
-function hashString(value: string) {
-  let hash = 2166136261;
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 16777619);
-  }
-  return (hash >>> 0) / 4294967295;
-}
-
-function sortByMixedPriority(items: ContentItem[], seed: string) {
-  if (items.length <= 1) {
-    return items;
-  }
-
-  const maxLogViews = items.reduce((currentMax, item) => {
-    const nextValue = item.viewCount ? Math.log10(item.viewCount + 10) : 0;
-    return Math.max(currentMax, nextValue);
-  }, 0);
-
-  return [...items].sort((left, right) => {
-    const leftViewScore = left.viewCount ? Math.log10(left.viewCount + 10) / (maxLogViews || 1) : 0;
-    const rightViewScore = right.viewCount ? Math.log10(right.viewCount + 10) / (maxLogViews || 1) : 0;
-
-    const leftRandom = hashString(`${seed}:${left.id}`);
-    const rightRandom = hashString(`${seed}:${right.id}`);
-
-    const leftScore = leftRandom * 0.65 + leftViewScore * 0.35;
-    const rightScore = rightRandom * 0.65 + rightViewScore * 0.35;
-
-    if (rightScore !== leftScore) {
-      return rightScore - leftScore;
-    }
-
-    return left.title.localeCompare(right.title, "zh-Hans-CN");
-  });
-}
-
-function sortByStudyPriority(items: ContentItem[], seed: string) {
-  if (items.length <= 1) {
-    return items;
-  }
-
-  const maxLogViews = items.reduce((currentMax, item) => {
-    const nextValue = item.viewCount ? Math.log10(item.viewCount + 10) : 0;
-    return Math.max(currentMax, nextValue);
-  }, 0);
-
-  return seededSort(
-    items,
-    seed,
-    (item) => item.id,
-    (item) => {
-      const thumbBoost = getThumbnail(item) ? 0.15 : 0;
-      const viewScore = item.viewCount ? Math.log10(item.viewCount + 10) / (maxLogViews || 1) : 0;
-      return thumbBoost + viewScore;
-    },
-    (left, right) => left.title.localeCompare(right.title, "zh-Hans-CN")
-  );
-}
-
-function mergeLibraryItem(existing: ContentItem, candidate: ContentItem): ContentItem {
-  return {
-    ...existing,
-    originalTitle: existing.originalTitle ?? candidate.originalTitle,
-    sourceTitle: existing.sourceTitle ?? candidate.sourceTitle,
-    displayTitleZh: existing.displayTitleZh ?? candidate.displayTitleZh,
-    displayTitleEn: existing.displayTitleEn ?? candidate.displayTitleEn,
-    focusLineEn: existing.focusLineEn ?? candidate.focusLineEn,
-    contentLanguage: existing.contentLanguage ?? candidate.contentLanguage,
-    subtitleAvailability: existing.subtitleAvailability ?? candidate.subtitleAvailability,
-    useCases: existing.useCases.length > 0 ? existing.useCases : candidate.useCases,
-    coachReason: existing.coachReason || candidate.coachReason,
-    thumbnail: candidate.thumbnail ?? existing.thumbnail,
-    duration: candidate.duration ?? existing.duration,
-    viewCount: candidate.viewCount ?? existing.viewCount
-  };
-}
-
-function buildLibraryItems(): ContentItem[] {
-  const itemsByUrl = new Map<string, ContentItem>();
-
-  const upsert = (item: ContentItem) => {
-    const normalizedUrl = normalizeUrl(item.url);
-    const existing = itemsByUrl.get(normalizedUrl);
-    itemsByUrl.set(normalizedUrl, existing ? mergeLibraryItem(existing, item) : item);
-  };
-
-  contents.forEach(upsert);
-  expandedContents.forEach(upsert);
-
-  creators.forEach((creator) => {
-    (creator.featuredVideos ?? []).forEach((video, index) => {
-      upsert({
-        id: `content_featured_${creator.id}_${index + 1}`,
-        title: video.title,
-        sourceTitle: video.sourceTitle ?? video.title,
-        originalTitle: video.originalTitle ?? video.sourceTitle ?? video.title,
-        displayTitleZh: video.displayTitleZh ?? (creator.region === "domestic" ? (video.sourceTitle ?? video.title) : undefined),
-        displayTitleEn: creator.region === "domestic"
-          ? getFeaturedVideoPrimaryTitle(video, "en", creator)
-          : video.displayTitleEn ?? video.title,
-        creatorId: creator.id,
-        platform: video.platform,
-        type: "video",
-        levels: video.levels,
-        skills: creator.specialties,
-        problemTags: [],
-        language: creator.region === "domestic" ? "zh" : "en",
-        contentLanguage: video.contentLanguage ?? (creator.region === "domestic" ? "zh" : "en"),
-        subtitleAvailability: video.subtitleAvailability ?? (creator.region === "overseas" ? "not_needed" : video.platform === "Bilibili" ? "none" : "unknown"),
-        summary: creator.shortDescription,
-        reason: video.target,
-        useCases: [video.target],
-        coachReason: creator.bio,
-        thumbnail: video.thumbnail,
-        duration: video.duration,
-        viewCount: video.viewCount,
-        url: video.url
-      });
-    });
-  });
-
-  return Array.from(itemsByUrl.values());
-}
-
-const libraryItems = buildLibraryItems();
-
 function LibraryPageContent() {
   const { user, configured, loading } = useAuth();
   const { openLoginModal } = useAuthModal();
@@ -192,10 +57,16 @@ function LibraryPageContent() {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const previousFiltersRef = useRef<Record<string, string | boolean> | null>(null);
   const previousKeywordRef = useRef("");
+  const loggedSnapshotRef = useRef<string | null>(null);
+  const previousSortContextRef = useRef<string | null>(null);
   const productSeed = useMemo(() => new Date().toLocaleDateString("en-CA"), []);
   const creatorNameById = useMemo(
     () => new Map(creators.map((creator) => [creator.id, creator.name])),
     []
+  );
+  const libraryItems = useMemo(
+    () => buildLibraryItemsForMode({ studyMode }),
+    [studyMode]
   );
 
   useEffect(() => {
@@ -244,6 +115,29 @@ function LibraryPageContent() {
       prefilledLevelBand: null
     }, { page: "/library" });
   }, []);
+
+  useEffect(() => {
+    if (!studyMode || !session) {
+      loggedSnapshotRef.current = null;
+      return;
+    }
+
+    if (loggedSnapshotRef.current === session.snapshotId) {
+      return;
+    }
+
+    const snapshot = getStudySnapshot();
+    logEvent("library.snapshot_loaded", {
+      snapshotVersion: session.snapshotId,
+      snapshotSeed: session.snapshotSeed,
+      buildVersion: session.buildVersion,
+      sortingMode: snapshot.sortingMode,
+      fixedSeed: snapshot.fixedSeed,
+      randomSurfacingDisabled: snapshot.randomSurfacingDisabled,
+      viewCountBoostDisabled: snapshot.viewCountBoostDisabled
+    }, { page: "/library" });
+    loggedSnapshotRef.current = session.snapshotId;
+  }, [session, studyMode]);
 
   useEffect(() => {
     const currentFilters: Record<string, string | boolean> = {
@@ -325,10 +219,15 @@ function LibraryPageContent() {
       return hitKeyword && hitPlatform && hitContentLanguage && hitSubtitle && hitBookmark;
     });
 
-    const sorter = studyMode && session ? sortByStudyPriority : sortByMixedPriority;
     const activeSeed = studyMode && session ? session.snapshotSeed : productSeed;
-    const withThumbnail = sorter(matchedItems.filter((item) => Boolean(getThumbnail(item))), `${activeSeed}:with-thumb`);
-    const withoutThumbnail = sorter(matchedItems.filter((item) => !getThumbnail(item)), `${activeSeed}:no-thumb`);
+    const withThumbnail = sortLibraryItemsForMode(matchedItems.filter((item) => Boolean(getThumbnail(item))), {
+      studyMode: studyMode && Boolean(session),
+      seed: `${activeSeed}:with-thumb`
+    });
+    const withoutThumbnail = sortLibraryItemsForMode(matchedItems.filter((item) => !getThumbnail(item)), {
+      studyMode: studyMode && Boolean(session),
+      seed: `${activeSeed}:no-thumb`
+    });
     return [...withThumbnail, ...withoutThumbnail];
   }, [bookmarkedIds, creatorNameById, keyword, productSeed, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, session, showBookmarkedOnly, studyMode]);
   const visibleItems = useMemo(
@@ -336,6 +235,49 @@ function LibraryPageContent() {
     [filtered, visibleCount]
   );
   const hasMore = visibleItems.length < filtered.length;
+
+  useEffect(() => {
+    if (!studyMode || !session) {
+      previousSortContextRef.current = null;
+      return;
+    }
+
+    const sortContext = JSON.stringify({
+      snapshotVersion: session.snapshotId,
+      snapshotSeed: session.snapshotSeed,
+      keyword: keyword.trim().toLowerCase(),
+      platform: selectedPlatform,
+      contentLanguage: selectedContentLanguage,
+      subtitleAvailability: selectedSubtitleAvailability,
+      bookmarkedOnly: showBookmarkedOnly,
+      totalMatched: filtered.length
+    });
+
+    if (previousSortContextRef.current === sortContext) {
+      return;
+    }
+
+    logEvent("library.sort_context_logged", {
+      snapshotVersion: session.snapshotId,
+      snapshotSeed: session.snapshotSeed,
+      keywordLength: keyword.trim().length,
+      platform: selectedPlatform,
+      contentLanguage: selectedContentLanguage,
+      subtitleAvailability: selectedSubtitleAvailability,
+      bookmarkedOnly: showBookmarkedOnly,
+      totalMatched: filtered.length
+    }, { page: "/library" });
+    previousSortContextRef.current = sortContext;
+  }, [
+    filtered.length,
+    keyword,
+    selectedContentLanguage,
+    selectedPlatform,
+    selectedSubtitleAvailability,
+    session,
+    showBookmarkedOnly,
+    studyMode
+  ]);
 
   useEffect(() => {
     if (visibleItems.length === 0) {

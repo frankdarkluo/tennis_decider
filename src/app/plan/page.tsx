@@ -11,12 +11,14 @@ import { persistStudyArtifact } from "@/lib/study/client";
 import { updateLocalStudyProgress } from "@/lib/study/localData";
 import { sanitizePlanArtifact } from "@/lib/study/privacy";
 import { getStudySnapshot } from "@/lib/study/snapshot";
+import { hasStudyTaskRating } from "@/lib/study/taskRatings";
 import { toChineseLevel } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
 import { useStudy } from "@/components/study/StudyProvider";
+import { ActionabilityPrompt } from "@/components/study/ActionabilityPrompt";
 import { PlanSummary } from "@/components/plan/PlanSummary";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
 import { Button } from "@/components/ui/Button";
@@ -45,6 +47,7 @@ function PlanPageContent() {
   const [level, setLevel] = useState<PlanLevel>(defaultLevel);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [saveMessage, setSaveMessage] = useState("");
+  const [actionabilitySubmitted, setActionabilitySubmitted] = useState(false);
   const studyPersistedKeyRef = useRef<string | null>(null);
   const preferredContentIds = useMemo(() => parsePlanContentIds(preferredContentIdsParam), [preferredContentIdsParam]);
 
@@ -75,6 +78,12 @@ function PlanPageContent() {
   };
 
   const hasSource = Boolean(params.get("problemTag") || params.get("level"));
+  const shouldShowActionability =
+    studyMode
+    && Boolean(session)
+    && hasSource
+    && !actionabilitySubmitted
+    && !hasStudyTaskRating(session?.sessionId ?? "", "task_3_action_or_revisit");
   const backtrackHref = sourceType === "assessment" ? "/assessment/result" : "/diagnose";
   const backtrackLabel = sourceType === "assessment" ? t("plan.backAssessment") : t("plan.backDiagnosis");
 
@@ -262,6 +271,12 @@ function PlanPageContent() {
           >
             {saveMessage}
           </div>
+        ) : null}
+        {shouldShowActionability ? (
+          <ActionabilityPrompt
+            taskId="task_3_action_or_revisit"
+            onSubmitted={() => setActionabilitySubmitted(true)}
+          />
         ) : null}
       </div>
     </PageContainer>

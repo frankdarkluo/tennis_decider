@@ -85,6 +85,12 @@ VLM_BASE_URL=https://api.siliconflow.cn/v1
 ```bash
 NEXT_PUBLIC_ADMIN_EMAILS=your-email@example.com
 NEXT_PUBLIC_RESEARCH_CONTACT_EMAIL=your-email@example.com
+NEXT_PUBLIC_STUDY_SNAPSHOT_VERSION=2026-03-29-v1
+NEXT_PUBLIC_STUDY_FIXED_SEED=20260329
+NEXT_PUBLIC_STUDY_FREEZE_LIBRARY=true
+NEXT_PUBLIC_STUDY_FREEZE_RANKINGS=true
+NEXT_PUBLIC_STUDY_DISABLE_RANDOM_SURFACING=true
+NEXT_PUBLIC_STUDY_DISABLE_VIEWCOUNT_BOOST=true
 ```
 
 ## Supabase SQL
@@ -101,6 +107,14 @@ NEXT_PUBLIC_RESEARCH_CONTACT_EMAIL=your-email@example.com
   创建：`video_usage`、`video_diagnosis_history`
 
 执行前如果涉及管理员邮箱占位符，请先改成你自己的邮箱。
+
+## Study notes
+
+- study mode 采用冻结 snapshot 驱动 `/library` 与 `/rankings` 顺序
+- post-task actionability 使用 7 点量表
+- study bundle 导出包含 `taskRatings` 与 `actionabilitySummary`
+- 详细说明见 [docs_local/STUDY_MODE.md](/Users/gluo/Desktop/tennis_level/.worktrees/pr1-study-data-contracts/docs_local/STUDY_MODE.md)
+- snapshot 生成与校验见 [docs_local/STUDY_SNAPSHOT_NOTE.md](/Users/gluo/Desktop/tennis_level/.worktrees/pr1-study-data-contracts/docs_local/STUDY_SNAPSHOT_NOTE.md)
 
 ## 目录说明
 

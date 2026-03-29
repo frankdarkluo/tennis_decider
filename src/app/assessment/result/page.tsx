@@ -12,7 +12,9 @@ import { logEvent } from "@/lib/eventLogger";
 import { getLatestAssessmentResult, saveAssessmentResult } from "@/lib/userData";
 import { useI18n } from "@/lib/i18n/config";
 import { buildAssessmentPlanContext, buildPlanHref } from "@/lib/plans";
+import { hasStudyTaskRating } from "@/lib/study/taskRatings";
 import { updateLocalStudyProgress } from "@/lib/study/localData";
+import { ActionabilityPrompt } from "@/components/study/ActionabilityPrompt";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
@@ -25,10 +27,11 @@ type AssessmentResultSource = "loading" | "remote" | "synced" | "local";
 
 export default function AssessmentResultPage() {
   const { user, configured, loading } = useAuth();
-  const { studyMode } = useStudy();
+  const { studyMode, session } = useStudy();
   const { language, t } = useI18n();
   const [result, setResult] = useState<AssessmentResult>(getDefaultAssessmentResult(language));
   const [source, setSource] = useState<AssessmentResultSource>("loading");
+  const [actionabilitySubmitted, setActionabilitySubmitted] = useState(false);
   const assessmentPlan = result.answeredCount > 0 ? buildAssessmentPlanContext(result) : null;
   const planHref = assessmentPlan
     ? buildPlanHref({
@@ -112,6 +115,14 @@ export default function AssessmentResultPage() {
     });
   }, [result, studyMode]);
 
+  const shouldShowActionability =
+    studyMode
+    && Boolean(session)
+    && result.answeredCount > 0
+    && source !== "loading"
+    && !actionabilitySubmitted
+    && !hasStudyTaskRating(session?.sessionId ?? "", "task_2_assessment_entry");
+
   return (
     <PageContainer>
       <div className="space-y-5">
@@ -125,28 +136,36 @@ export default function AssessmentResultPage() {
         <ResultSummary result={result} />
         {source !== "loading" ? (
           result.answeredCount > 0 ? (
-            <div className="flex flex-wrap gap-3">
-              {planHref ? (
+            <>
+              <div className="flex flex-wrap gap-3">
+                {planHref ? (
+                  <Link
+                    href={planHref}
+                    onClick={() => logEvent("assessment_result.next_action_clicked", { action: "generate_training_plan" }, { page: "/assessment/result" })}
+                  >
+                    <Button>{t("assessment.result.ctaPlan")}</Button>
+                  </Link>
+                ) : null}
                 <Link
-                  href={planHref}
-                  onClick={() => logEvent("assessment_result.next_action_clicked", { action: "generate_training_plan" }, { page: "/assessment/result" })}
+                  href="/diagnose"
+                  onClick={() => logEvent("assessment_result.next_action_clicked", { action: "diagnose_specific_problem" }, { page: "/assessment/result" })}
                 >
-                  <Button>{t("assessment.result.ctaPlan")}</Button>
+                  <Button>{t("assessment.result.ctaDiagnose")}</Button>
                 </Link>
+                <Link
+                  href={`/library?level=${result.level}`}
+                  onClick={() => logEvent("assessment_result.next_action_clicked", { action: "browse_content" }, { page: "/assessment/result" })}
+                >
+                  <Button variant="secondary">{t("assessment.result.ctaLibrary")}</Button>
+                </Link>
+              </div>
+              {shouldShowActionability ? (
+                <ActionabilityPrompt
+                  taskId="task_2_assessment_entry"
+                  onSubmitted={() => setActionabilitySubmitted(true)}
+                />
               ) : null}
-              <Link
-                href="/diagnose"
-                onClick={() => logEvent("assessment_result.next_action_clicked", { action: "diagnose_specific_problem" }, { page: "/assessment/result" })}
-              >
-                <Button>{t("assessment.result.ctaDiagnose")}</Button>
-              </Link>
-              <Link
-                href={`/library?level=${result.level}`}
-                onClick={() => logEvent("assessment_result.next_action_clicked", { action: "browse_content" }, { page: "/assessment/result" })}
-              >
-                <Button variant="secondary">{t("assessment.result.ctaLibrary")}</Button>
-              </Link>
-            </div>
+            </>
           ) : (
             <Link
               href="/assessment?retake=1"

@@ -68,13 +68,14 @@ export default function AdminExportPage() {
     setPendingKey("study_bundle");
     setStatusMessage("");
 
-    const [sessions, artifacts, events] = await Promise.all([
+    const [sessions, artifacts, taskRatings, events] = await Promise.all([
       fetchAllExportRows("study_sessions"),
       fetchAllExportRows("study_artifacts"),
+      fetchAllExportRows("study_task_ratings"),
       fetchAllExportRows("event_logs")
     ]);
 
-    const failed = [sessions, artifacts, events].find((result) => result.error);
+    const failed = [sessions, artifacts, taskRatings, events].find((result) => result.error);
     if (failed?.error) {
       setPendingKey(null);
       setStatusMessage(failed.error);
@@ -85,6 +86,7 @@ export default function AdminExportPage() {
       snapshot: getStudySnapshot(),
       sessions: sessions.data,
       artifacts: artifacts.data,
+      taskRatings: taskRatings.data,
       events: events.data,
       participantId,
       sessionId,
@@ -147,6 +149,9 @@ export default function AdminExportPage() {
               <Button variant="secondary" onClick={() => void handleRemoteExport("study_artifacts")} disabled={pendingKey !== null}>
                 {pendingKey === "study_artifacts" ? "导出中..." : "导出 study artifacts"}
               </Button>
+              <Button variant="secondary" onClick={() => void handleRemoteExport("study_task_ratings")} disabled={pendingKey !== null}>
+                {pendingKey === "study_task_ratings" ? "导出中..." : "导出 study task ratings"}
+              </Button>
             </div>
           </Card>
 
@@ -162,7 +167,7 @@ export default function AdminExportPage() {
         <Card className="space-y-4">
           <div>
             <h2 className="text-lg font-bold text-slate-900">研究 bundle 导出</h2>
-            <p className="mt-1 text-sm text-slate-600">按 participant/session/snapshot 聚合导出 study sessions、artifacts 和 events。</p>
+            <p className="mt-1 text-sm text-slate-600">按 participant/session/snapshot 聚合导出 study sessions、artifacts、task ratings、events，以及 actionability 汇总。</p>
           </div>
           <div className="grid gap-3 md:grid-cols-3">
             <Input placeholder="participantId（可选）" value={participantId} onChange={(event) => setParticipantId(event.target.value)} />
