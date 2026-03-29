@@ -1,13 +1,16 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useStudy } from "@/components/study/StudyProvider";
 import {
+  flushEventQueue,
   initEventLogger,
+  logEvent,
   logPageEnter,
   logPageLeave,
+  logSessionAbandoned,
   setEventLoggerPage,
   setEventLoggerUser
 } from "@/lib/eventLogger";
@@ -17,6 +20,7 @@ export function EventLoggerProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { user } = useAuth();
   const { studyMode } = useStudy();
+  const previousPathRef = useRef<string | null>(null);
 
   useEffect(() => {
     initEventLogger();
@@ -31,15 +35,21 @@ export function EventLoggerProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    const previousPath = previousPathRef.current;
+
+    if (previousPath) {
+      logPageLeave(previousPath, { nextRoute: pathname });
+    }
+
     setEventLoggerPage(pathname);
     if (studyMode && pathname !== "/study/end") {
       writeLastStudyPath(pathname);
     }
-    logPageEnter(pathname);
-
-    return () => {
-      logPageLeave(pathname);
-    };
+    logPageEnter(pathname, {
+      referrerRoute: previousPath ?? null,
+      sourceContext: studyMode ? "study_flow" : "product_flow"
+    });
+    previousPathRef.current = pathname;
   }, [pathname, studyMode]);
 
   useEffect(() => {
@@ -48,12 +58,41 @@ export function EventLoggerProvider({ children }: { children: ReactNode }) {
     }
 
     const handleBeforeUnload = () => {
-      logPageLeave(pathname);
+      logPageLeave(pathname, { nextRoute: "unload" });
+      if (studyMode && pathname !== "/study/end") {
+        logSessionAbandoned(pathname);
+      } else {
+        flushEventQueue(true);
+      }
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [pathname, studyMode]);
+
+  useEffect(() => {
+    const handleError = () => {
+      logEvent("page.error", {
+        errorCode: "unexpected_state",
+        errorScope: "client"
+      }, { page: pathname ?? "/" });
+    };
+
+    const handleRejection = () => {
+      logEvent("page.error", {
+        errorCode: "unhandled_rejection",
+        errorScope: "client"
+      }, { page: pathname ?? "/" });
+    };
+
+    window.addEventListener("error", handleError);
+    window.addEventListener("unhandledrejection", handleRejection);
+
+    return () => {
+      window.removeEventListener("error", handleError);
+      window.removeEventListener("unhandledrejection", handleRejection);
     };
   }, [pathname]);
 

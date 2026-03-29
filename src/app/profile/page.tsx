@@ -35,6 +35,7 @@ const studyLanguageLabelKey = {
 } as const;
 
 const studyArtifactLabelKey = {
+  study_background: "profile.studyArtifact.study_background",
   assessment: "profile.studyArtifact.assessment",
   diagnosis: "profile.studyArtifact.diagnosis",
   video_diagnosis: "profile.studyArtifact.video_diagnosis",
@@ -99,6 +100,10 @@ export default function ProfilePage() {
   const [studyArtifacts, setStudyArtifacts] = useState<StudyArtifactRecord[]>([]);
   const [studyBookmarkIds, setStudyBookmarkIds] = useState<string[]>([]);
   const [studyProgress, setStudyProgress] = useState<StudyProgressState | null>(null);
+
+  useEffect(() => {
+    logEvent("profile.viewed", {}, { page: "/profile" });
+  }, []);
 
   useEffect(() => {
     if (!studyMode) {
@@ -253,7 +258,7 @@ export default function ProfilePage() {
     }
 
     setBookmarkedItems((prev) => prev.filter((item) => item.id !== contentId));
-    logEvent("content_bookmark", { contentId, action: "remove" });
+    logEvent("content.bookmark_toggled", { contentId, bookmarked: false }, { page: "/profile" });
     setBookmarkPendingId(null);
   };
 
@@ -330,17 +335,26 @@ export default function ProfilePage() {
 
               <div className="flex flex-wrap gap-2">
                 {studyProgress?.lastVisitedPath ? (
-                  <Link href={studyProgress.lastVisitedPath}>
+                  <Link
+                    href={studyProgress.lastVisitedPath}
+                    onClick={() => logEvent("profile.history_item_opened", { itemType: "diagnosis", itemId: studyProgress.lastVisitedPath }, { page: "/profile" })}
+                  >
                     <Button>{t("profile.studyResume")}</Button>
                   </Link>
                 ) : null}
                 {studyProgress?.lastPlanHref ? (
-                  <Link href={studyProgress.lastPlanHref}>
+                  <Link
+                    href={studyProgress.lastPlanHref}
+                    onClick={() => logEvent("profile.history_item_opened", { itemType: "plan", itemId: studyProgress.lastPlanHref }, { page: "/profile" })}
+                  >
                     <Button variant="secondary">{t("profile.studyContinuePlan")}</Button>
                   </Link>
                 ) : null}
                 {studyProgress?.lastAssessmentPath ? (
-                  <Link href={studyProgress.lastAssessmentPath}>
+                  <Link
+                    href={studyProgress.lastAssessmentPath}
+                    onClick={() => logEvent("profile.history_item_opened", { itemType: "assessment", itemId: studyProgress.lastAssessmentPath }, { page: "/profile" })}
+                  >
                     <Button variant="secondary">{t("profile.studyContinueAssessment")}</Button>
                   </Link>
                 ) : null}
@@ -356,7 +370,7 @@ export default function ProfilePage() {
                 <p className="mt-1 text-sm text-slate-600">{t("profile.studySubtitle")}</p>
               </div>
               <div className="space-y-2">
-                {(["assessment", "diagnosis", "video_diagnosis", "plan", "survey"] as const).map((type) => (
+                {(["study_background", "assessment", "diagnosis", "video_diagnosis", "plan", "survey"] as const).map((type) => (
                   <div key={type} className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3">
                     <span className="text-sm font-medium text-slate-700">{t(studyArtifactLabelKey[type])}</span>
                     <span className="text-sm font-semibold text-slate-900">{artifactSummary[type] ?? 0}</span>
@@ -486,6 +500,7 @@ export default function ProfilePage() {
                     key={item.id}
                     href={`/diagnose?q=${encodeURIComponent(item.input_text)}`}
                     className="block rounded-xl border border-[var(--line)] px-4 py-3 transition hover:border-brand-200 hover:bg-brand-50/40"
+                    onClick={() => logEvent("profile.history_item_opened", { itemType: "diagnosis", itemId: item.id }, { page: "/profile" })}
                   >
                     <p className="font-semibold text-slate-900">{item.input_text}</p>
                     <p className="mt-1 text-sm text-slate-600">{item.problem_label ?? t("profile.diagnosis.unmatched")}</p>
@@ -597,7 +612,13 @@ export default function ProfilePage() {
                         <Button
                           type="button"
                           variant="secondary"
-                          onClick={() => setExpandedPlanId(expanded ? null : item.id)}
+                          onClick={() => {
+                            if (!expanded) {
+                              logEvent("profile.section_opened", { section: "saved_plans" }, { page: "/profile" });
+                              logEvent("profile.history_item_opened", { itemType: "plan", itemId: item.id }, { page: "/profile" });
+                            }
+                            setExpandedPlanId(expanded ? null : item.id);
+                          }}
                         >
                           {expanded ? t("profile.plans.toggleCollapse") : t("profile.plans.toggleExpand")}
                         </Button>

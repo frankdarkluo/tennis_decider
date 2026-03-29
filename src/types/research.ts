@@ -1,4 +1,66 @@
-export type EventType =
+export type EventName =
+  | "study.started"
+  | "study.background_submitted"
+  | "session.started"
+  | "session.completed"
+  | "session.abandoned"
+  | "page.view"
+  | "page.leave"
+  | "page.error"
+  | "home.entry_selected"
+  | "home.problem_started"
+  | "home.quick_tag_clicked"
+  | "home.problem_submitted"
+  | "home.hot_content_clicked"
+  | "home.hot_creator_clicked"
+  | "home.assessment_cta_clicked"
+  | "assessment.started"
+  | "assessment.step_answered"
+  | "assessment.branch_resolved"
+  | "assessment.completed"
+  | "assessment.exited"
+  | "assessment_result.viewed"
+  | "assessment_result.next_action_clicked"
+  | "diagnose.started"
+  | "diagnose.input_method_selected"
+  | "diagnose.submitted"
+  | "diagnose.rule_matched"
+  | "diagnose.fallback_used"
+  | "diagnose.result_viewed"
+  | "diagnose.layer_opened"
+  | "diagnose.recommended_content_clicked"
+  | "diagnose.search_suggestion_clicked"
+  | "diagnose.plan_cta_clicked"
+  | "diagnose.why_this_viewed"
+  | "library.viewed"
+  | "library.search_used"
+  | "library.filter_changed"
+  | "library.batch_loaded"
+  | "content.card_opened"
+  | "content.outbound_clicked"
+  | "content.bookmark_toggled"
+  | "content.language_badge_clicked"
+  | "rankings.viewed"
+  | "rankings.region_changed"
+  | "rankings.search_used"
+  | "creator.card_opened"
+  | "creator.modal_viewed"
+  | "creator.featured_video_clicked"
+  | "creator.homepage_cta_clicked"
+  | "plan.viewed"
+  | "plan.generated"
+  | "plan.day_expanded"
+  | "plan.regenerated"
+  | "plan.saved"
+  | "plan.backtrack_clicked"
+  | "profile.viewed"
+  | "profile.section_opened"
+  | "profile.history_item_opened"
+  | "profile.local_data_cleared"
+  | "sus.completed"
+  | "study.open_feedback_submitted";
+
+export type LegacyEventType =
   | "study_session_start"
   | "study_session_end"
   | "study_artifact_save"
@@ -41,21 +103,34 @@ export type EventType =
   | "logout_click"
   | "study_consent";
 
+export type EventType = EventName | LegacyEventType;
+
+export type StudyEventPayload = Record<string, unknown>;
+
 export type EventLog = {
   eventId: string;
+  studyId: string;
   sessionId: string;
   userId: string | null;
   participantId: string | null;
+  appMode: "study" | "product";
   studyMode: boolean;
   language?: "zh" | "en" | null;
   condition?: string | null;
+  snapshotVersion?: string | null;
+  buildSha?: string | null;
   snapshotId?: string | null;
   snapshotSeed?: string | null;
   buildVersion?: string | null;
   timestamp: string;
+  tsClient: number;
+  tsServer?: string;
+  route: string;
   page: string;
+  eventName: EventType;
   eventType: EventType;
-  eventData: Record<string, unknown>;
+  payload: StudyEventPayload;
+  eventData: StudyEventPayload;
   durationMs: number | null;
 };
 
@@ -74,6 +149,30 @@ export type SurveyResponseRow = {
   responses: SurveyResponses;
   sus_score: number | null;
   created_at: string;
+};
+
+export type StudyDerivedMetric = {
+  studyId: string;
+  participantId: string | null;
+  sessionId: string;
+  firstEntryMode: string | null;
+  routesVisited: string[];
+  pageCount: number;
+  firstCoreFeatureUsed: string | null;
+  dwellMsByRoute: Record<string, number>;
+  longestDwellRoute: string | null;
+  totalSessionMs: number;
+  assessmentCompleted: boolean;
+  diagnoseCompleted: boolean;
+  planGenerated: boolean;
+  planSaved: boolean;
+  diagnoseMaxLayerOpened: number;
+  contentClickCount: number;
+  creatorClickCount: number;
+  outboundClickCount: number;
+  bookmarkCount: number;
+  fallbackUsed: boolean;
+  whyThisViewedCount: number;
 };
 
 export type ResearchExportTable =

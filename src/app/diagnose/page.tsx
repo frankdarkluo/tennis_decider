@@ -26,6 +26,12 @@ import { DiagnoseResult as DiagnoseResultPanel } from "@/components/diagnose/Dia
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useStudy } from "@/components/study/StudyProvider";
 
+function toConfidenceBucket(score: number) {
+  if (score >= 6) return "high";
+  if (score >= 3) return "mid";
+  return "low";
+}
+
 function DiagnosePageContent() {
   const searchParams = useSearchParams();
   const { user, configured, loading } = useAuth();
@@ -52,10 +58,15 @@ function DiagnosePageContent() {
       return;
     }
 
-    logEvent("diagnosis_submit", {
-      ...(studyMode ? { inputLength: trimmedText.length } : { inputText: trimmedText }),
-      inputSource
-    });
+    logEvent("diagnose.input_method_selected", {
+      inputMethod: inputSource === "tag_click" ? "quick_tag" : "typing"
+    }, { page: "/diagnose" });
+    logEvent("diagnose.submitted", {
+      inputMethod: inputSource === "tag_click" ? "quick_tag" : "typing",
+      queryLength: trimmedText.length,
+      inheritedLevelBand: currentLevel ?? null,
+      usedAssessmentContext: Boolean(assessmentResult)
+    }, { page: "/diagnose" });
 
     const diagnosisResult = diagnoseProblem(trimmedText, {
       level: currentLevel,
@@ -63,27 +74,27 @@ function DiagnosePageContent() {
       locale: language
     });
 
-    if (inputSource === "tag_click") {
-      logEvent("diagnosis_tag_click", { tagText: trimmedText });
-    }
-
     setResult(diagnosisResult);
 
-    if (diagnosisResult.matchedRuleId) {
-      logEvent("diagnosis_result", {
-        matchedRuleId: diagnosisResult.matchedRuleId,
-        problemLabel: diagnosisResult.title,
-        contentCount: diagnosisResult.recommendedContents.length
-      });
-    } else {
-      logEvent("diagnosis_no_match", studyMode
-        ? { inputLength: trimmedText.length, fallbackType: diagnosisResult.fallbackMode ?? "generic" }
-        : { inputText: trimmedText, fallbackType: diagnosisResult.fallbackMode ?? "generic" });
+    logEvent("diagnose.rule_matched", {
+      matched: Boolean(diagnosisResult.matchedRuleId),
+      ruleId: diagnosisResult.matchedRuleId,
+      confidenceBucket: toConfidenceBucket(diagnosisResult.matchScore)
+    }, { page: "/diagnose" });
+
+    if (diagnosisResult.fallbackUsed) {
+      logEvent("diagnose.fallback_used", {
+        fallbackType: diagnosisResult.fallbackMode === "assessment" ? "assessment_based" : "general_guidance"
+      }, { page: "/diagnose" });
     }
+
+    logEvent("diagnose.result_viewed", {
+      problemTag: diagnosisResult.problemTag,
+      immediateFixCode: diagnosisResult.fixes[0] ?? null
+    }, { page: "/diagnose" });
 
     if (studyMode && session) {
       await persistStudyArtifact(session, "diagnosis", sanitizeDiagnosisArtifact(trimmedText, diagnosisResult));
-      logEvent("study_artifact_save", { artifactType: "diagnosis" });
       updateLocalStudyProgress({ lastVisitedPath: "/diagnose" });
     } else if (user?.id && configured) {
       const saveResult = await saveDiagnosisHistory(user.id, trimmedText, diagnosisResult);
@@ -140,6 +151,17 @@ function DiagnosePageContent() {
       active = false;
     };
   }, [configured, loading, searchParams, user?.id]);
+
+  useEffect(() => {
+    if (!contextReady) {
+      return;
+    }
+
+    logEvent("diagnose.started", {
+      sourceRoute: null,
+      inheritedLevelBand: currentLevel ?? null
+    }, { page: "/diagnose" });
+  }, [contextReady, currentLevel]);
 
   useEffect(() => {
     if (!contextReady) {

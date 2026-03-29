@@ -3,6 +3,7 @@ import Link from "next/link";
 type BreadcrumbItem = {
   href: string;
   label: string;
+  onClick?: () => void;
 };
 
 export function PageBreadcrumbs({ items }: { items: BreadcrumbItem[] }) {
@@ -13,6 +14,7 @@ export function PageBreadcrumbs({ items }: { items: BreadcrumbItem[] }) {
           key={`${item.href}-${item.label}`}
           href={item.href}
           className="transition hover:text-slate-600"
+          onClick={item.onClick}
         >
           {item.label}
         </Link>

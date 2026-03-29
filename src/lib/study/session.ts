@@ -2,10 +2,16 @@
 
 import {
   ACTIVE_STUDY_SESSION_KEY,
+  CURRENT_STUDY_ID,
   STUDY_SESSION_HISTORY_KEY
 } from "@/lib/study/config";
 import { getStudySnapshot } from "@/lib/study/snapshot";
-import { StudyCondition, StudyLanguage, StudySession } from "@/types/study";
+import {
+  StudyBackgroundProfile,
+  StudyCondition,
+  StudyLanguage,
+  StudySession
+} from "@/types/study";
 
 function isBrowser() {
   return typeof window !== "undefined";
@@ -48,9 +54,12 @@ export function createStudySession(input: {
   participantId: string;
   language: StudyLanguage;
   condition?: StudyCondition;
+  background?: StudyBackgroundProfile;
+  consentedAt?: string;
 }): StudySession {
   const snapshot = getStudySnapshot();
   return {
+    studyId: CURRENT_STUDY_ID,
     participantId: input.participantId.trim(),
     sessionId: createId(),
     studyMode: true,
@@ -59,6 +68,8 @@ export function createStudySession(input: {
     snapshotId: snapshot.id,
     snapshotSeed: snapshot.seed,
     buildVersion: snapshot.buildVersion,
+    consentedAt: input.consentedAt ?? new Date().toISOString(),
+    background: input.background ?? null,
     startedAt: new Date().toISOString(),
     endedAt: null
   };
@@ -103,4 +114,3 @@ export function markStudySessionEnded(session: StudySession) {
   upsertStudySessionHistory(endedSession);
   return endedSession;
 }
-

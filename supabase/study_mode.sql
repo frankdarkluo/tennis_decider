@@ -10,6 +10,7 @@ alter table if exists event_logs
   add column if not exists build_version text;
 
 alter table if exists survey_responses
+  add column if not exists study_id text,
   add column if not exists participant_id text,
   add column if not exists study_mode boolean default false not null,
   add column if not exists language text,
@@ -18,8 +19,15 @@ alter table if exists survey_responses
   add column if not exists snapshot_seed text,
   add column if not exists build_version text;
 
+alter table if exists study_sessions
+  add column if not exists study_id text;
+
+alter table if exists study_artifacts
+  add column if not exists study_id text;
+
 create table if not exists study_sessions (
   id uuid primary key default gen_random_uuid(),
+  study_id text,
   participant_id text not null,
   session_id text not null unique,
   study_mode boolean default true not null,
@@ -35,6 +43,7 @@ create table if not exists study_sessions (
 
 create table if not exists study_artifacts (
   id uuid primary key default gen_random_uuid(),
+  study_id text,
   participant_id text not null,
   session_id text not null,
   study_mode boolean default true not null,
@@ -50,10 +59,13 @@ create table if not exists study_artifacts (
 
 create index if not exists idx_event_logs_participant on event_logs(participant_id);
 create index if not exists idx_event_logs_snapshot on event_logs(snapshot_id);
+create index if not exists idx_survey_responses_study_id on survey_responses(study_id);
 create index if not exists idx_study_sessions_participant on study_sessions(participant_id);
+create index if not exists idx_study_sessions_study_id on study_sessions(study_id);
 create index if not exists idx_study_sessions_snapshot on study_sessions(snapshot_id);
 create index if not exists idx_study_artifacts_session on study_artifacts(session_id);
 create index if not exists idx_study_artifacts_participant on study_artifacts(participant_id);
+create index if not exists idx_study_artifacts_study_id on study_artifacts(study_id);
 create index if not exists idx_study_artifacts_type on study_artifacts(artifact_type);
 
 alter table study_sessions enable row level security;
@@ -94,4 +106,3 @@ drop policy if exists "study_artifacts_admin_select" on study_artifacts;
 create policy "study_artifacts_admin_select"
   on study_artifacts for select
   using ((auth.jwt() ->> 'email') in ('your-email@example.com'));
-

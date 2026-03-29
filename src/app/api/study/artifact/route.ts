@@ -15,6 +15,7 @@ export async function POST(request: Request) {
   }
 
   const { error } = await supabase.from("study_artifacts").insert({
+    study_id: artifact.studyId,
     participant_id: artifact.participantId,
     session_id: artifact.sessionId,
     study_mode: true,

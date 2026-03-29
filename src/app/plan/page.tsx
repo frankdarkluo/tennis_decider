@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { logEvent } from "@/lib/eventLogger";
-import { getPlanTemplate } from "@/lib/plans";
+import { buildPlanHref, getPlanTemplate, parsePlanContentIds } from "@/lib/plans";
 import { saveGeneratedPlan } from "@/lib/userData";
 import { useI18n } from "@/lib/i18n/config";
 import { persistStudyArtifact } from "@/lib/study/client";
@@ -39,28 +39,44 @@ function PlanPageContent() {
   const { t } = useI18n();
   const defaultProblemTag = params.get("problemTag") ?? "no-plan";
   const defaultLevel = normalizeLevelParam(params.get("level"));
+  const preferredContentIdsParam = params.get("contentIds");
 
   const [problemTag, setProblemTag] = useState(defaultProblemTag);
   const [level, setLevel] = useState<PlanLevel>(defaultLevel);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [saveMessage, setSaveMessage] = useState("");
   const studyPersistedKeyRef = useRef<string | null>(null);
+  const preferredContentIds = useMemo(() => parsePlanContentIds(preferredContentIdsParam), [preferredContentIdsParam]);
 
-  const plan = useMemo(() => getPlanTemplate(problemTag, level, language), [language, problemTag, level]);
+  const plan = useMemo(
+    () => getPlanTemplate(problemTag, level, language, preferredContentIds),
+    [language, problemTag, level, preferredContentIds]
+  );
   const todayPlan = plan.days[0];
   const laterPlans = plan.days.slice(1);
-  const sourceType: SavedPlanSource = params.get("problemTag")
-    ? "diagnosis"
-    : params.get("level")
-      ? "assessment"
-      : "default";
-  const sourceLabel = params.get("problemTag") ?? params.get("level") ?? `${problemTag}:${level}`;
+  const explicitSource = params.get("source");
+  const sourceType: SavedPlanSource = explicitSource === "diagnosis" || explicitSource === "assessment" || explicitSource === "default"
+    ? explicitSource
+    : params.get("problemTag")
+      ? "diagnosis"
+      : params.get("level")
+        ? "assessment"
+        : "default";
+  const sourceLabel = preferredContentIds.length > 0
+    ? `${params.get("problemTag") ?? params.get("level") ?? `${problemTag}:${level}`}:${preferredContentIds.join(",")}`
+    : params.get("problemTag") ?? params.get("level") ?? `${problemTag}:${level}`;
+  const planHref = useMemo(
+    () => buildPlanHref({ problemTag: plan.problemTag, level: plan.level, preferredContentIds, sourceType }),
+    [plan.level, plan.problemTag, preferredContentIds, sourceType]
+  );
 
   const regenerate = () => {
     setLevel((prev) => (prev === "2.5" ? "3.0" : prev === "3.0" ? "3.5" : prev === "3.5" ? "4.0" : prev === "4.0" ? "4.0+" : "2.5"));
   };
 
   const hasSource = Boolean(params.get("problemTag") || params.get("level"));
+  const backtrackHref = sourceType === "assessment" ? "/assessment/result" : "/diagnose";
+  const backtrackLabel = sourceType === "assessment" ? t("plan.backAssessment") : t("plan.backDiagnosis");
 
   useEffect(() => {
     setSaveStatus("idle");
@@ -68,16 +84,25 @@ function PlanPageContent() {
   }, [level, problemTag]);
 
   useEffect(() => {
+    logEvent("plan.viewed", {
+      sourceRoute: sourceType === "diagnosis" ? "/diagnose" : sourceType === "assessment" ? "/assessment/result" : null,
+      problemTag: plan.problemTag,
+      levelBand: plan.level
+    }, { page: "/plan" });
+  }, [plan.level, plan.problemTag, sourceType]);
+
+  useEffect(() => {
     if (!hasSource) {
       return;
     }
 
-    logEvent("plan_generate", {
-      sourceType,
-      sourceLabel,
-      level: plan.level
-    });
-  }, [hasSource, plan.level, sourceLabel, sourceType]);
+    logEvent("plan.generated", {
+      planId: `${plan.problemTag}:${plan.level}`,
+      problemTag: plan.problemTag,
+      levelBand: plan.level,
+      origin: sourceType === "default" ? "direct" : sourceType
+    }, { page: "/plan" });
+  }, [hasSource, plan.level, plan.problemTag, sourceLabel, sourceType]);
 
   useEffect(() => {
     if (!studyMode || !session || !hasSource) {
@@ -91,8 +116,8 @@ function PlanPageContent() {
 
     studyPersistedKeyRef.current = persistKey;
     updateLocalStudyProgress({
-      lastVisitedPath: `/plan?problemTag=${encodeURIComponent(plan.problemTag)}&level=${encodeURIComponent(plan.level)}`,
-      lastPlanHref: `/plan?problemTag=${encodeURIComponent(plan.problemTag)}&level=${encodeURIComponent(plan.level)}`,
+      lastVisitedPath: planHref,
+      lastPlanHref: planHref,
       lastPlanTitle: plan.title,
       lastPlanProblemTag: plan.problemTag,
       lastPlanLevel: plan.level
@@ -108,11 +133,10 @@ function PlanPageContent() {
         planTemplateVersion: getStudySnapshot().planTemplateVersion
       })
     ).then(() => {
-      logEvent("study_artifact_save", { artifactType: "plan" });
       setSaveStatus("saved");
       setSaveMessage(t("plan.saveRecorded"));
     });
-  }, [hasSource, plan, session, sourceLabel, sourceType, studyMode, t]);
+  }, [hasSource, plan, planHref, session, sourceLabel, sourceType, studyMode, t]);
 
   const handleSavePlan = async () => {
     if (studyMode && session) {
@@ -139,7 +163,7 @@ function PlanPageContent() {
 
     setSaveStatus("saved");
     setSaveMessage(t("plan.saveAccount"));
-    logEvent("plan_save", { planId: `${plan.problemTag}:${plan.level}` });
+    logEvent("plan.saved", { planId: `${plan.problemTag}:${plan.level}` }, { page: "/plan" });
   };
 
   if (!hasSource && problemTag === "no-plan") {
@@ -147,7 +171,13 @@ function PlanPageContent() {
       <PageContainer>
         <div className="space-y-5">
           <PageBreadcrumbs items={[
-            { href: "/diagnose", label: t("plan.backDiagnosis") },
+            {
+              href: backtrackHref,
+              label: backtrackLabel,
+              onClick: () => logEvent("plan.backtrack_clicked", {
+                target: sourceType === "assessment" ? "assessment" : "diagnose"
+              }, { page: "/plan" })
+            },
             { href: "/", label: t("plan.backHome") }
           ]} />
           <div className="rounded-2xl border border-dashed border-[var(--line)] bg-white p-8 text-center">
@@ -166,7 +196,13 @@ function PlanPageContent() {
     <PageContainer>
       <div className="space-y-5">
         <PageBreadcrumbs items={[
-          { href: "/diagnose", label: t("plan.backDiagnosis") },
+          {
+            href: backtrackHref,
+            label: backtrackLabel,
+            onClick: () => logEvent("plan.backtrack_clicked", {
+              target: sourceType === "assessment" ? "assessment" : "diagnose"
+            }, { page: "/plan" })
+          },
           { href: "/", label: t("plan.backHome") }
         ]} />
         <div>
@@ -183,7 +219,7 @@ function PlanPageContent() {
           <DayPlanCard
             day={todayPlan}
             isToday
-            onViewDetails={(dayNumber) => logEvent("plan_view_day", { dayNumber })}
+            onViewDetails={(dayNumber) => logEvent("plan.day_expanded", { dayIndex: dayNumber }, { page: "/plan" })}
           />
         ) : null}
 
@@ -195,7 +231,7 @@ function PlanPageContent() {
                 <DayPlanCard
                   key={day.day}
                   day={day}
-                  onViewDetails={(dayNumber) => logEvent("plan_view_day", { dayNumber })}
+                  onViewDetails={(dayNumber) => logEvent("plan.day_expanded", { dayIndex: dayNumber }, { page: "/plan" })}
                 />
               ))}
             </div>
@@ -206,7 +242,18 @@ function PlanPageContent() {
           <Button onClick={() => void handleSavePlan()} disabled={saveStatus === "saving" || saveStatus === "saved"}>
             {saveStatus === "saving" ? t("plan.saving") : saveStatus === "saved" ? t("plan.saved") : t("plan.save")}
           </Button>
-          <Button variant="secondary" onClick={regenerate}>{t("plan.regenerate")}</Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              logEvent("plan.regenerated", {
+                previousPlanId: `${plan.problemTag}:${plan.level}`,
+                reason: "manual_regenerate"
+              }, { page: "/plan" });
+              regenerate();
+            }}
+          >
+            {t("plan.regenerate")}
+          </Button>
         </div>
         {saveMessage ? (
           <div className={saveStatus === "error"

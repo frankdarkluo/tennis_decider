@@ -14,14 +14,29 @@ import {
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
+import { buildDiagnosisPlanCandidateIds, buildPlanHref } from "@/lib/plans";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
+import { PlanLevel } from "@/types/plan";
+import { useStudy } from "@/components/study/StudyProvider";
+
+function normalizePlanLevel(level?: string): PlanLevel {
+  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.0+") {
+    return level;
+  }
+
+  return "3.0";
+}
 
 function RecommendationCard({
   item,
-  source
+  source,
+  layer,
+  problemTag
 }: {
   item: DiagnosisResultType["recommendedContents"][number];
   source: "diagnosis_featured" | "diagnosis_more";
+  layer: 2 | 3;
+  problemTag: string;
 }) {
   const { language, t } = useI18n();
   const thumbnail = getThumbnail(item);
@@ -71,8 +86,17 @@ function RecommendationCard({
           target="_blank"
           rel="noreferrer"
           onClick={() => {
-            logEvent("content_click", { contentId: item.id, source });
-            logEvent("content_external", { contentId: item.id, platform: item.platform, url: item.url });
+            logEvent("diagnose.recommended_content_clicked", {
+              problemTag,
+              contentId: item.id,
+              platform: item.platform,
+              layer
+            }, { page: "/diagnose" });
+            logEvent("content.outbound_clicked", {
+              contentId: item.id,
+              platform: item.platform,
+              sourceContext: source
+            }, { page: "/diagnose" });
           }}
         >
           <Button variant="secondary">{t("content.open")}</Button>
@@ -84,7 +108,19 @@ function RecommendationCard({
 
 export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
   const { language, t } = useI18n();
-  const planHref = `/plan?problemTag=${encodeURIComponent(result.problemTag)}${result.level ? `&level=${encodeURIComponent(result.level)}` : ""}`;
+  const { studyMode } = useStudy();
+  const normalizedPlanLevel = normalizePlanLevel(result.level);
+  const candidateIds = buildDiagnosisPlanCandidateIds({
+    problemTag: result.problemTag,
+    level: normalizedPlanLevel,
+    recommendedContentIds: result.recommendedContents.map((item) => item.id)
+  });
+  const planHref = buildPlanHref({
+    problemTag: result.problemTag,
+    level: normalizedPlanLevel,
+    preferredContentIds: candidateIds,
+    sourceType: "diagnosis"
+  });
   const canGeneratePlan = Boolean(result.input.trim());
   const [layer, setLayer] = useState<1 | 2 | 3>(1);
   const primaryFix = result.fixes[0] ?? result.summary;
@@ -130,7 +166,11 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
           <button
             type="button"
             className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
-            onClick={() => setLayer(2)}
+            onClick={() => {
+              logEvent("diagnose.layer_opened", { layer: 2 }, { page: "/diagnose" });
+              logEvent("diagnose.why_this_viewed", { targetType: "fix" }, { page: "/diagnose" });
+              setLayer(2);
+            }}
           >
             {t("diagnose.result.expand1")}
           </button>
@@ -151,14 +191,17 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
           {featuredContent ? (
             <div>
               <p className="mb-2 text-sm font-semibold text-slate-900">{t("diagnose.result.featured")}</p>
-              <RecommendationCard item={featuredContent} source="diagnosis_featured" />
+              <RecommendationCard item={featuredContent} source="diagnosis_featured" layer={2} problemTag={result.problemTag} />
             </div>
           ) : null}
 
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
               href={planHref}
-              onClick={() => logEvent("cta_click", { ctaLabel: t("cta.generatePlan"), ctaLocation: "diagnosis_result", targetPage: "/plan" })}
+              onClick={() => logEvent("diagnose.plan_cta_clicked", {
+                problemTag: result.problemTag,
+                levelBand: normalizedPlanLevel
+              }, { page: "/diagnose" })}
             >
               <Button>{t("diagnose.result.plan")}</Button>
             </Link>
@@ -168,7 +211,10 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
             <button
               type="button"
               className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
-              onClick={() => setLayer(3)}
+              onClick={() => {
+                logEvent("diagnose.layer_opened", { layer: 3 }, { page: "/diagnose" });
+                setLayer(3);
+              }}
             >
               {t("diagnose.result.expand2")}
             </button>
@@ -182,7 +228,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
             <div className="space-y-2">
               <p className="text-sm font-semibold text-slate-900">{t("diagnose.result.more")}</p>
               {moreContents.map((item) => (
-                <RecommendationCard key={item.id} item={item} source="diagnosis_more" />
+                <RecommendationCard key={item.id} item={item} source="diagnosis_more" layer={3} problemTag={result.problemTag} />
               ))}
             </div>
           ) : null}
@@ -191,6 +237,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
             <PlatformVideoSearch
               queries={result.searchQueries}
               title={t("diagnose.result.search")}
+              sourceContext="diagnose"
             />
           ) : null}
 
@@ -199,18 +246,19 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
               type="button"
               className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
               onClick={() => {
-                logEvent("cta_click", { ctaLabel: t("cta.continueDiagnosis"), ctaLocation: "diagnosis_result", targetPage: "scroll_to_input" });
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
               {t("diagnose.result.continue")}
             </button>
-            <Link
-              href="/video-diagnose"
-              onClick={() => logEvent("cta_click", { ctaLabel: t("cta.videoUpgrade"), ctaLocation: "diagnosis_result", targetPage: "/video-diagnose" })}
-            >
-              <Button variant="secondary">{t("diagnose.result.video")}</Button>
-            </Link>
+            {!studyMode ? (
+              <Link
+                href="/video-diagnose"
+                onClick={() => logEvent("cta_click", { ctaLabel: t("cta.videoUpgrade"), ctaLocation: "diagnosis_result", targetPage: "/video-diagnose" })}
+              >
+                <Button variant="secondary">{t("diagnose.result.video")}</Button>
+              </Link>
+            ) : null}
           </div>
         </div>
       ) : null}

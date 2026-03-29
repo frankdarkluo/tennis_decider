@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { contents } from "@/data/contents";
+import { expandedContents } from "@/data/expandedContents";
 import { DayPlan } from "@/types/plan";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -10,6 +11,7 @@ import {
   getContentPrimaryTitle,
   getContentSecondaryTitle
 } from "@/lib/content/display";
+import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
 
@@ -21,6 +23,8 @@ function compactFocus(value: string, maxLength = 15) {
   return `${value.slice(0, maxLength)}…`;
 }
 
+const contentById = new Map([...contents, ...expandedContents].map((content) => [content.id, content]));
+
 export function DayPlanCard({
   day,
   onViewDetails,
@@ -31,9 +35,64 @@ export function DayPlanCard({
   isToday?: boolean;
 }) {
   const { language, t } = useI18n();
-  const relatedContents = contents.filter((content) => day.contentIds.includes(content.id)).slice(0, 1);
+  const relatedContents = day.contentIds
+    .map((id) => contentById.get(id))
+    .filter((content) => Boolean(content));
   const [expanded, setExpanded] = useState(isToday);
   const displayExpanded = isToday || expanded;
+  const featuredContent = relatedContents[0] ?? null;
+  const thumbnail = featuredContent ? getThumbnail(featuredContent) : null;
+  const primaryTitle = featuredContent ? getContentPrimaryTitle(featuredContent, language) : null;
+  const secondaryTitle = featuredContent ? getContentSecondaryTitle(featuredContent, language) : null;
+  const focusLine = featuredContent ? getContentFocusLine(featuredContent, language) : null;
+
+  const featuredContentCard = featuredContent ? (
+    <a
+      href={featuredContent.url}
+      target="_blank"
+      rel="noreferrer"
+      className="block rounded-2xl border border-[var(--line)] bg-white p-3 transition hover:border-brand-200"
+      onClick={() => {
+        logEvent("content.outbound_clicked", {
+          contentId: featuredContent.id,
+          platform: featuredContent.platform,
+          sourceContext: "plan"
+        }, { page: "/plan" });
+      }}
+    >
+      <div className="flex gap-3">
+        <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+          {thumbnail ? (
+            <img
+              src={thumbnail}
+              alt={primaryTitle ?? featuredContent.title}
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <span className="text-lg font-medium text-slate-300">{getVideoInitial(primaryTitle ?? featuredContent.title)}</span>
+            </div>
+          )}
+          {featuredContent.duration ? (
+            <span className="absolute bottom-1.5 right-1.5 rounded bg-black/75 px-1 py-0.5 text-[11px] font-medium text-white">
+              {featuredContent.duration}
+            </span>
+          ) : null}
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="font-semibold text-slate-900">{primaryTitle ?? featuredContent.title}</p>
+          {secondaryTitle ? (
+            <p className="mt-1 text-xs leading-5 text-slate-400">{secondaryTitle}</p>
+          ) : null}
+          {focusLine && focusLine !== primaryTitle ? (
+            <p className="mt-1 text-sm text-slate-600">{t("content.targetPrefix")} {focusLine}</p>
+          ) : null}
+          <p className="mt-2 text-sm font-medium text-slate-500">{t("plan.day.open")} →</p>
+        </div>
+      </div>
+    </a>
+  ) : null;
 
   const toggleExpanded = () => {
     if (isToday) {
@@ -48,12 +107,6 @@ export function DayPlanCard({
   };
 
   if (isToday) {
-    const featuredContent = relatedContents[0];
-    const thumbnail = featuredContent ? getThumbnail(featuredContent) : null;
-    const primaryTitle = featuredContent ? getContentPrimaryTitle(featuredContent, language) : null;
-    const secondaryTitle = featuredContent ? getContentSecondaryTitle(featuredContent, language) : null;
-    const focusLine = featuredContent ? getContentFocusLine(featuredContent, language) : null;
-
     return (
       <Card className="space-y-4 border-brand-200 bg-brand-50/40">
         <div>
@@ -77,46 +130,7 @@ export function DayPlanCard({
 
         <div>
           <p className="mb-2 text-sm font-semibold text-slate-900">{t("plan.day.watch")}</p>
-          {featuredContent ? (
-            <a
-              href={featuredContent.url}
-              target="_blank"
-              rel="noreferrer"
-              className="block rounded-2xl border border-[var(--line)] bg-white p-3 transition hover:border-brand-200"
-            >
-              <div className="flex gap-3">
-                <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg bg-slate-100">
-                  {thumbnail ? (
-                    <img
-                      src={thumbnail}
-                      alt={primaryTitle ?? featuredContent.title}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center">
-                      <span className="text-lg font-medium text-slate-300">{getVideoInitial(primaryTitle ?? featuredContent.title)}</span>
-                    </div>
-                  )}
-                  {featuredContent.duration ? (
-                    <span className="absolute bottom-1.5 right-1.5 rounded bg-black/75 px-1 py-0.5 text-[11px] font-medium text-white">
-                      {featuredContent.duration}
-                    </span>
-                  ) : null}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-slate-900">{primaryTitle ?? featuredContent.title}</p>
-                  {secondaryTitle ? (
-                    <p className="mt-1 text-xs leading-5 text-slate-400">{secondaryTitle}</p>
-                  ) : null}
-                  {focusLine && focusLine !== primaryTitle ? (
-                    <p className="mt-1 text-sm text-slate-600">{t("content.targetPrefix")} {focusLine}</p>
-                  ) : null}
-                  <p className="mt-2 text-sm font-medium text-slate-500">{t("plan.day.open")} →</p>
-                </div>
-              </div>
-            </a>
-          ) : (
+          {featuredContentCard ?? (
             <p className="text-sm text-slate-600">{t("plan.day.fallback")}</p>
           )}
         </div>
@@ -146,6 +160,12 @@ export function DayPlanCard({
               <li key={drill}>{drill}</li>
             ))}
           </ul>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-slate-700">{t("plan.day.watch")}</p>
+            {featuredContentCard ?? (
+              <p className="text-sm text-slate-600">{t("plan.day.fallback")}</p>
+            )}
+          </div>
         </div>
       ) : null}
     </Card>

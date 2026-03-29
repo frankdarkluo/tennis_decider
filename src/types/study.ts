@@ -1,7 +1,7 @@
 import { AssessmentResult } from "@/types/assessment";
 import { DiagnosisResult } from "@/types/diagnosis";
 import { GeneratedPlan } from "@/types/plan";
-import { EventLog } from "@/types/research";
+import { EventLog, StudyDerivedMetric } from "@/types/research";
 import { VideoDiagnosisResult } from "@/types/videoDiagnosis";
 
 export type StudyLanguage = "zh" | "en";
@@ -21,7 +21,17 @@ export type StudySnapshot = {
 
 export type StudyCondition = `lang_${StudyLanguage}` | (string & {});
 
+export type StudyBackgroundProfile = {
+  ageBand: string;
+  yearsPlayingBand: string;
+  playFrequency: string;
+  selfReportedLevel: string;
+  watchesTrainingVideos: boolean;
+  hasUploadedPracticeVideoBefore: boolean;
+};
+
 export type StudySession = {
+  studyId: string;
   participantId: string;
   sessionId: string;
   studyMode: true;
@@ -30,11 +40,14 @@ export type StudySession = {
   snapshotId: string;
   snapshotSeed: string;
   buildVersion: string;
+  consentedAt?: string;
+  background?: StudyBackgroundProfile | null;
   startedAt: string;
   endedAt?: string | null;
 };
 
 export type StudyArtifactType =
+  | "study_background"
   | "assessment"
   | "diagnosis"
   | "video_diagnosis"
@@ -52,6 +65,7 @@ export type StudyArtifactPayload =
 
 export type StudyArtifactRecord = {
   id: string;
+  studyId: string;
   participantId: string;
   sessionId: string;
   studyMode: true;
@@ -70,6 +84,7 @@ export type StudyExportBundle = {
   sessions: StudySession[];
   artifacts: StudyArtifactRecord[];
   events: EventLog[];
+  derivedMetrics?: StudyDerivedMetric[];
 };
 
 export type StudyBookmarkState = {

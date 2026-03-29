@@ -51,6 +51,7 @@ export async function persistStudyArtifact(
 ) {
   const artifact: StudyArtifactRecord = {
     id: createId(),
+    studyId: session.studyId,
     participantId: session.participantId,
     sessionId: session.sessionId,
     studyMode: true,
@@ -70,4 +71,3 @@ export async function persistStudyArtifact(
     ...(await postJson("/api/study/artifact", { artifact }))
   };
 }
-

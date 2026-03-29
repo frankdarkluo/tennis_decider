@@ -25,7 +25,10 @@ export default function HomePage() {
         <Link
           href="/assessment"
           className="group block"
-          onClick={() => logEvent("cta_click", { ctaLabel: t("cta.assessmentCTA"), ctaLocation: "home_bottom_cta", targetPage: "/assessment" })}
+          onClick={() => {
+            logEvent("home.entry_selected", { entryMode: "assessment" }, { page: "/" });
+            logEvent("home.assessment_cta_clicked", { ctaPosition: "bottom_card" }, { page: "/" });
+          }}
         >
           <Card className="flex cursor-pointer flex-col items-start justify-between gap-4 transition-shadow group-hover:shadow-md md:flex-row md:items-center">
             <div>

@@ -55,7 +55,10 @@ export function CreatorCard({ creator, onDetail }: CreatorCardProps) {
                 rel="noreferrer"
                 aria-label={t("creator.platformAria", { name: creator.name, platform })}
                 className="platform-link-wiggle inline-flex rounded-full transition-transform duration-200 hover:scale-[1.04] focus-visible:scale-[1.04]"
-                onClick={() => logEvent("creator_click", { creatorId: creator.id, source: "creator_card_platform_badge", platform, targetUrl: href })}
+                onClick={() => logEvent("creator.homepage_cta_clicked", {
+                  creatorId: creator.id,
+                  platform
+                }, { page: "/rankings" })}
               >
                 <PlatformBadge platform={platform} size="md" />
               </a>

@@ -10,7 +10,12 @@ import {
   readActiveStudySession,
   writeActiveStudySession
 } from "@/lib/study/session";
-import { StudyCondition, StudyLanguage, StudySession } from "@/types/study";
+import {
+  StudyBackgroundProfile,
+  StudyCondition,
+  StudyLanguage,
+  StudySession
+} from "@/types/study";
 
 const APP_LANGUAGE_KEY = "tennislevel.app_language";
 
@@ -21,7 +26,13 @@ type StudyContextValue = {
   canChangeLanguage: boolean;
   loading: boolean;
   setLanguage: (language: StudyLanguage) => void;
-  startStudySession: (input: { participantId: string; language: StudyLanguage; condition?: StudyCondition }) => Promise<{ session?: StudySession; error?: string }>;
+  startStudySession: (input: {
+    participantId: string;
+    language: StudyLanguage;
+    condition?: StudyCondition;
+    background?: StudyBackgroundProfile;
+    consentedAt?: string;
+  }) => Promise<{ session?: StudySession; error?: string }>;
   endStudySession: () => Promise<void>;
   clearStudyData: () => void;
 };
@@ -63,7 +74,7 @@ export function StudyProvider({ children }: { children: ReactNode }) {
 
   const activeSession = session && !session.endedAt ? session : null;
   const language = appLanguage;
-  const canChangeLanguage = true;
+  const canChangeLanguage = !activeSession;
 
   useEffect(() => {
     setEventLoggerStudySession(activeSession);
@@ -87,7 +98,7 @@ export function StudyProvider({ children }: { children: ReactNode }) {
         setSession(updatedSession);
       }
     },
-    startStudySession: async ({ participantId, language: nextLanguage, condition }) => {
+    startStudySession: async ({ participantId, language: nextLanguage, condition, background, consentedAt }) => {
       const normalizedParticipantId = participantId.trim();
       if (!normalizedParticipantId) {
         return { error: "participantId is required" };
@@ -96,7 +107,9 @@ export function StudyProvider({ children }: { children: ReactNode }) {
       const nextSession = createStudySession({
         participantId: normalizedParticipantId,
         language: nextLanguage,
-        condition
+        condition,
+        background,
+        consentedAt
       });
 
       writeActiveStudySession(nextSession);

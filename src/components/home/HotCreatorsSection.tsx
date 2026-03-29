@@ -33,7 +33,7 @@ export function HotCreatorsSection() {
         <Link
           href="/rankings"
           className="shrink-0 pt-1 text-sm font-medium text-slate-500 transition hover:text-slate-700"
-          onClick={() => logEvent("cta_click", { ctaLabel: t("cta.moreCreators"), ctaLocation: "home_hot_creators", targetPage: "/rankings" })}
+          onClick={() => logEvent("home.entry_selected", { entryMode: "browse_creators" }, { page: "/" })}
         >
           {t("home.more")}
         </Link>
@@ -49,7 +49,14 @@ export function HotCreatorsSection() {
             key={creator.id}
             href="/rankings"
             className="h-full"
-            onClick={() => logEvent("creator_click", { creatorId: creator.id, source: "homepage" })}
+            onClick={() => {
+              logEvent("home.entry_selected", { entryMode: "browse_creators" }, { page: "/" });
+              logEvent("home.hot_creator_clicked", {
+                creatorId: creator.id,
+                creatorRegion: creator.region,
+                position: 1
+              }, { page: "/" });
+            }}
           >
             <Card className="flex h-full flex-col justify-between p-4 transition hover:-translate-y-0.5 hover:border-brand-200">
               <div className="flex items-start gap-3">

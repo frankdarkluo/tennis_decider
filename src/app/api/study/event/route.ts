@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
+import { toEventLogInsert } from "@/lib/study/eventPersistence";
 import { EventLog } from "@/types/research";
 
 export async function POST(request: Request) {
@@ -14,22 +15,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, persisted: false });
   }
 
-  const { error } = await supabase.from("event_logs").insert({
-    session_id: event.sessionId,
-    user_id: event.userId,
-    participant_id: event.participantId,
-    study_mode: event.studyMode,
-    language: event.language,
-    condition: event.condition,
-    snapshot_id: event.snapshotId,
-    snapshot_seed: event.snapshotSeed,
-    build_version: event.buildVersion,
-    timestamp: event.timestamp,
-    page: event.page,
-    event_type: event.eventType,
-    event_data: event.eventData,
-    duration_ms: event.durationMs
-  });
+  const { error } = await supabase.from("event_logs").insert(toEventLogInsert(event));
 
   if (error) {
     return NextResponse.json({ ok: false, message: error.message }, { status: 500 });
@@ -37,4 +23,3 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ ok: true, persisted: true });
 }
-

@@ -192,7 +192,10 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
                       rel="noreferrer"
                       aria-label={t("creator.platformAria", { name: primaryName ?? creator.name, platform })}
                       className="platform-link-wiggle inline-flex rounded-full transition-transform duration-200 hover:scale-[1.04] focus-visible:scale-[1.04]"
-                      onClick={() => logEvent("creator_click", { creatorId: creator.id, source: "creator_modal_platform_badge", platform, targetUrl: href })}
+                      onClick={() => logEvent("creator.homepage_cta_clicked", {
+                        creatorId: creator.id,
+                        platform
+                      }, { page: "/rankings" })}
                     >
                       <PlatformBadge platform={platform} size="md" />
                     </a>
@@ -220,10 +223,17 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
                   className="block rounded-xl border border-[var(--line)] px-4 py-3 transition hover:border-brand-200 hover:bg-brand-50/30"
                   onClick={() => {
                     if (item.contentId) {
-                      logEvent("content_click", { contentId: item.contentId, source: "creator_modal" });
-                      logEvent("content_external", { contentId: item.contentId, platform: item.platform, url: item.url });
+                      logEvent("creator.featured_video_clicked", {
+                        creatorId: creator.id,
+                        contentId: item.contentId,
+                        platform: item.platform
+                      }, { page: "/rankings" });
                     } else {
-                      logEvent("creator_click", { creatorId: creator.id, source: item.logSource ?? "creator_modal_fallback_search", targetUrl: item.url });
+                      logEvent("creator.homepage_cta_clicked", {
+                        creatorId: creator.id,
+                        platform: item.platform,
+                        source: item.logSource ?? "creator_modal_fallback_search"
+                      }, { page: "/rankings" });
                     }
                   }}
                 >
@@ -266,7 +276,15 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
               <p className="text-sm text-slate-600">{t("creator.noContent")}</p>
             )}
           </div>
-          <a href={creator.profileUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex"><Button>{t("creator.goHome")}</Button></a>
+          <a
+            href={creator.profileUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-3 inline-flex"
+            onClick={() => logEvent("creator.homepage_cta_clicked", { creatorId: creator.id }, { page: "/rankings" })}
+          >
+            <Button>{t("creator.goHome")}</Button>
+          </a>
         </>
       ) : null}
     </Modal>

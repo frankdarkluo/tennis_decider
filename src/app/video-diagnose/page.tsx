@@ -291,10 +291,30 @@ export default function VideoDiagnosePage() {
       const message = error instanceof Error ? error.message : t("video.error.failed");
       setSubmitError(message);
       logEvent("video_analysis_fail", { message });
-    } finally {
+  } finally {
       setProcessingStep(null);
     }
   };
+
+  if (studyMode) {
+    return (
+      <PageContainer>
+        <Card className="mx-auto max-w-3xl space-y-4 text-center">
+          <p className="text-sm font-semibold text-brand-700">{t("study.start.badge")}</p>
+          <h1 className="text-3xl font-black text-slate-900">{t("video.title")}</h1>
+          <p className="text-sm leading-6 text-slate-600">
+            {language === "en"
+              ? "Video diagnose is hidden in this study phase. Please continue with text diagnosis, content browsing, or the training plan flow."
+              : "本轮研究暂时不开放视频诊断。请继续使用问题诊断、内容库或训练计划流程。"}
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link href="/diagnose"><Button>{language === "en" ? "Go to diagnose" : "去问题诊断"}</Button></Link>
+            <Link href="/library"><Button variant="secondary">{language === "en" ? "Browse library" : "去内容库"}</Button></Link>
+          </div>
+        </Card>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>

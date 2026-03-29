@@ -36,6 +36,16 @@ import { useStudy } from "@/components/study/StudyProvider";
 
 const PAGE_SIZE = 20;
 
+function inferQueryLanguage(query: string) {
+  const hasChinese = /[\u3400-\u9fff]/.test(query);
+  const hasEnglish = /[A-Za-z]/.test(query);
+
+  if (hasChinese && hasEnglish) return "mixed";
+  if (hasChinese) return "zh";
+  if (hasEnglish) return "en";
+  return "unknown";
+}
+
 function normalizeUrl(url: string) {
   return url.replace(/\/+$/, "");
 }
@@ -181,6 +191,7 @@ function LibraryPageContent() {
   const [showBookmarkedOnly, setShowBookmarkedOnly] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const previousFiltersRef = useRef<Record<string, string | boolean> | null>(null);
+  const previousKeywordRef = useRef("");
   const productSeed = useMemo(() => new Date().toLocaleDateString("en-CA"), []);
   const creatorNameById = useMemo(
     () => new Map(creators.map((creator) => [creator.id, creator.name])),
@@ -227,8 +238,15 @@ function LibraryPageContent() {
   }, [configured, loading, studyMode, user?.id]);
 
   useEffect(() => {
+    logEvent("library.viewed", {
+      sourceRoute: null,
+      prefilledProblemTag: null,
+      prefilledLevelBand: null
+    }, { page: "/library" });
+  }, []);
+
+  useEffect(() => {
     const currentFilters: Record<string, string | boolean> = {
-      keyword,
       platform: selectedPlatform,
       contentLanguage: selectedContentLanguage,
       subtitleAvailability: selectedSubtitleAvailability,
@@ -242,12 +260,34 @@ function LibraryPageContent() {
 
     for (const [filterType, filterValue] of Object.entries(currentFilters)) {
       if (previousFiltersRef.current[filterType] !== filterValue) {
-        logEvent("content_filter", { filterType, filterValue });
+        const filterName = filterType === "contentLanguage"
+          ? "content_language"
+          : filterType === "subtitleAvailability"
+            ? "subtitle_availability"
+            : filterType;
+        logEvent("library.filter_changed", {
+          filterName,
+          filterValue
+        }, { page: "/library" });
       }
     }
 
     previousFiltersRef.current = currentFilters;
-  }, [keyword, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, showBookmarkedOnly]);
+  }, [selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, showBookmarkedOnly]);
+
+  useEffect(() => {
+    const trimmed = keyword.trim();
+    if (!trimmed || previousKeywordRef.current === trimmed) {
+      previousKeywordRef.current = trimmed;
+      return;
+    }
+
+    previousKeywordRef.current = trimmed;
+    logEvent("library.search_used", {
+      queryLength: trimmed.length,
+      queryLanguage: inferQueryLanguage(trimmed)
+    }, { page: "/library" });
+  }, [keyword]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
@@ -297,6 +337,17 @@ function LibraryPageContent() {
   );
   const hasMore = visibleItems.length < filtered.length;
 
+  useEffect(() => {
+    if (visibleItems.length === 0) {
+      return;
+    }
+
+    logEvent("library.batch_loaded", {
+      visibleCount: visibleItems.length,
+      batchIndex: Math.ceil(visibleItems.length / PAGE_SIZE)
+    }, { page: "/library" });
+  }, [visibleItems.length]);
+
   const clearAll = () => {
     setKeyword("");
     setSelectedPlatform("all");
@@ -309,10 +360,10 @@ function LibraryPageContent() {
     if (studyMode && session) {
       const nextIds = toggleLocalStudyBookmark(contentId);
       setBookmarkedIds(nextIds);
-      const action = nextIds.includes(contentId) ? "add" : "remove";
-      logEvent("content_bookmark", { contentId, action });
+      const bookmarked = nextIds.includes(contentId);
+      const action = bookmarked ? "add" : "remove";
+      logEvent("content.bookmark_toggled", { contentId, bookmarked }, { page: "/library" });
       await persistStudyArtifact(session, "bookmark", { contentId, action, contentIds: nextIds });
-      logEvent("study_artifact_save", { artifactType: "bookmark" });
       return;
     }
 
@@ -337,7 +388,10 @@ function LibraryPageContent() {
     setBookmarkedIds((prev) =>
       isBookmarked ? prev.filter((id) => id !== contentId) : [...prev, contentId]
     );
-    logEvent("content_bookmark", { contentId, action: isBookmarked ? "remove" : "add" });
+    logEvent("content.bookmark_toggled", {
+      contentId,
+      bookmarked: !isBookmarked
+    }, { page: "/library" });
     setBookmarkPendingId(null);
   };
 

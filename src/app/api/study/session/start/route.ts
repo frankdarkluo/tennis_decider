@@ -15,6 +15,7 @@ export async function POST(request: Request) {
   }
 
   const { error } = await supabase.from("study_sessions").upsert({
+    study_id: session.studyId,
     participant_id: session.participantId,
     session_id: session.sessionId,
     study_mode: true,
@@ -33,4 +34,3 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ ok: true, persisted: true });
 }
-

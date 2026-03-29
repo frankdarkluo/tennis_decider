@@ -120,8 +120,19 @@ export function ContentCard({
         aria-label={t("content.openAria", { value: primaryTitle })}
         className="absolute inset-0 z-0 rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/70"
         onClick={() => {
-          logEvent("content_click", { contentId: item.id, source, target: "card" });
-          logEvent("content_external", { contentId: item.id, platform: item.platform, url: item.url });
+          const route = source === "profile" ? "/profile" : "/library";
+          logEvent("content.card_opened", {
+            contentId: item.id,
+            platform: item.platform,
+            contentLanguage,
+            subtitleAvailability,
+            sourceContext: source
+          }, { page: route });
+          logEvent("content.outbound_clicked", {
+            contentId: item.id,
+            platform: item.platform,
+            sourceContext: source
+          }, { page: route });
         }}
       />
       <div className="relative z-10 flex h-full flex-col pointer-events-none">

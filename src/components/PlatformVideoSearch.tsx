@@ -13,6 +13,7 @@ import { TabButton } from "@/components/ui/Tabs";
 type PlatformVideoSearchProps = {
   queries: DiagnosisSearchQueries;
   title?: string;
+  sourceContext?: "diagnose" | "generic";
 };
 
 const platformLabels: Record<SearchPlatform, "Bilibili" | "YouTube"> = {
@@ -35,7 +36,8 @@ function LoadingCard() {
 
 export function PlatformVideoSearch({
   queries,
-  title
+  title,
+  sourceContext = "generic"
 }: PlatformVideoSearchProps) {
   const { language, t } = useI18n();
   const [activePlatform, setActivePlatform] = useState<SearchPlatform>("bilibili");
@@ -93,12 +95,6 @@ export function PlatformVideoSearch({
 
         setResults(Array.isArray(data.results) ? data.results : []);
         setCached(Boolean(data.cached));
-        logEvent("platform_search", {
-          platform: activePlatform,
-          query: activeQuery,
-          cached: Boolean(data.cached),
-          resultCount: Array.isArray(data.results) ? data.results.length : 0
-        });
       } catch (searchError) {
         if (!active) {
           return;
@@ -200,12 +196,12 @@ export function PlatformVideoSearch({
                 rel="noreferrer"
                 className="overflow-hidden rounded-2xl border border-[var(--line)] bg-white transition hover:-translate-y-0.5 hover:shadow-sm"
                 onClick={() => {
-                  logEvent("platform_video_click", {
-                    platform: item.platform,
-                    query: activeQuery,
-                    videoId: item.videoId,
-                    title: item.title
-                  });
+                  if (sourceContext === "diagnose") {
+                    logEvent("diagnose.search_suggestion_clicked", {
+                      platform: item.platform,
+                      suggestionType: "platform_search"
+                    }, { page: "/diagnose" });
+                  }
                 }}
               >
                 {item.thumbnail ? (

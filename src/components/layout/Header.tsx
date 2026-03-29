@@ -32,6 +32,9 @@ export function Header() {
   const { language, t, setLanguage, canChangeLanguage } = useI18n();
   const { studyMode } = useStudy();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const visibleNavItems = studyMode
+    ? navItemDefs.filter((item) => item.href !== "/video-diagnose")
+    : navItemDefs;
 
   useEffect(() => {
     setMobileNavOpen(false);
@@ -102,7 +105,7 @@ export function Header() {
           />
         </Link>
         <nav className="hidden min-w-0 items-center gap-0.5 md:flex md:ml-4 lg:ml-6 lg:gap-1">
-          {navItemDefs.map((item) => (
+          {visibleNavItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -201,7 +204,7 @@ export function Header() {
         <div className="border-t border-[var(--line)] bg-white md:hidden">
           <div className="mx-auto w-full max-w-6xl space-y-3 px-4 py-4">
             <nav className="grid gap-2">
-              {navItemDefs.map((item) => (
+              {visibleNavItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}

@@ -80,10 +80,21 @@ export default function SurveyPage() {
       return;
     }
 
-    logEvent("cta_click", { ctaLabel: t("cta.submitSurvey"), ctaLocation: "survey", targetPage: "/survey" });
-    if (studyMode) {
-      logEvent("study_artifact_save", { artifactType: "survey" });
-    }
+    logEvent("sus.completed", {
+      scoreRaw: susScore / 2.5,
+      scoreNormalized: susScore
+    }, { page: "/survey" });
+    ["q23", "q24", "q25"].forEach((questionId) => {
+      const answer = String(responses[questionId] ?? "").trim();
+      if (!answer) {
+        return;
+      }
+
+      logEvent("study.open_feedback_submitted", {
+        questionId,
+        answerLength: answer.length
+      }, { page: "/survey" });
+    });
     setStatus("submitted");
     setMessage(t("survey.thanks.body"));
   }

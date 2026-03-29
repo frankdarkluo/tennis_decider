@@ -32,7 +32,7 @@ export function HotContentSection() {
         <Link
           href="/library"
           className="shrink-0 pt-1 text-sm font-medium text-slate-500 transition hover:text-slate-700"
-          onClick={() => logEvent("cta_click", { ctaLabel: t("cta.moreContent"), ctaLocation: "home_hot_content", targetPage: "/library" })}
+          onClick={() => logEvent("home.entry_selected", { entryMode: "browse_content" }, { page: "/" })}
         >
           {t("home.more")}
         </Link>
@@ -49,7 +49,14 @@ export function HotContentSection() {
               key={item.id}
               href="/library"
               className="h-full"
-              onClick={() => logEvent("content_click", { contentId: item.id, source: "homepage" })}
+              onClick={() => {
+                logEvent("home.entry_selected", { entryMode: "browse_content" }, { page: "/" });
+                logEvent("home.hot_content_clicked", {
+                  contentId: item.id,
+                  platform: item.platform,
+                  position: 1
+                }, { page: "/" });
+              }}
             >
               <Card className="flex h-full flex-col justify-between gap-3 p-4 transition hover:-translate-y-0.5 hover:border-brand-200">
                 <div className="flex flex-wrap items-center gap-2">

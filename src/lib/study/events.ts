@@ -28,7 +28,7 @@ export async function endStudySessionRemote(session: StudySession) {
 }
 
 export async function postStudyEvent(event: EventLog) {
-  return postJson("/api/study/event", { event });
+  return postJson("/api/study/events", { events: [event] });
 }
 
 export async function saveStudyArtifact(input: {

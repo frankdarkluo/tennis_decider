@@ -154,8 +154,35 @@ export default function RankingsPage() {
   const visibleList = useMemo(() => list.slice(0, visibleCount), [list, visibleCount]);
 
   useEffect(() => {
+    logEvent("rankings.viewed", {
+      sourceRoute: null
+    }, { page: "/rankings" });
+  }, []);
+
+  useEffect(() => {
     setVisibleCount(INITIAL_VISIBLE_CREATORS);
   }, [query, region]);
+
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (!trimmed) {
+      return;
+    }
+
+    logEvent("rankings.search_used", {
+      queryLength: trimmed.length
+    }, { page: "/rankings" });
+  }, [query]);
+
+  useEffect(() => {
+    if (!selectedCreator) {
+      return;
+    }
+
+    logEvent("creator.modal_viewed", {
+      creatorId: selectedCreator.id
+    }, { page: "/rankings" });
+  }, [selectedCreator]);
 
   useEffect(() => {
     if (loading) {
@@ -207,11 +234,11 @@ export default function RankingsPage() {
         <div className="flex gap-2">
           <TabButton active={region === "domestic"} onClick={() => {
             setRegion("domestic");
-            logEvent("creator_filter", { filterType: "region", filterValue: "domestic" });
+            logEvent("rankings.region_changed", { region: "domestic" }, { page: "/rankings" });
           }}>{t("rankings.domestic")}</TabButton>
           <TabButton active={region === "overseas"} onClick={() => {
             setRegion("overseas");
-            logEvent("creator_filter", { filterType: "region", filterValue: "overseas" });
+            logEvent("rankings.region_changed", { region: "overseas" }, { page: "/rankings" });
           }}>{t("rankings.overseas")}</TabButton>
         </div>
 
@@ -234,7 +261,11 @@ export default function RankingsPage() {
                 key={creator.id}
                 creator={creator}
                 onDetail={() => {
-                  logEvent("creator_click", { creatorId: creator.id });
+                  logEvent("creator.card_opened", {
+                    creatorId: creator.id,
+                    position: visibleList.findIndex((item) => item.id === creator.id) + 1,
+                    region: creator.region
+                  }, { page: "/rankings" });
                   setSelectedCreator(creator);
                 }}
               />

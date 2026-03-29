@@ -9,7 +9,10 @@ import {
   getCoarseQuestions,
   getFineQuestionsForBranch
 } from "@/lib/assessment";
-import { writeAssessmentResultToStorage } from "@/lib/assessmentStorage";
+import {
+  readAssessmentResultFromStorage,
+  writeAssessmentResultToStorage
+} from "@/lib/assessmentStorage";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { formatAssessmentYearsLabel, getAssessmentOptionLabel } from "@/lib/i18n/assessmentCopy";
@@ -28,11 +31,26 @@ const AUTO_ADVANCE_DELAY = 300;
 const SLIDER_ADVANCE_DELAY = 500;
 const TOTAL_STEPS = 8;
 
+function getSourceRoute() {
+  if (typeof document === "undefined" || !document.referrer) {
+    return null;
+  }
+
+  try {
+    return new URL(document.referrer).pathname;
+  } catch {
+    return null;
+  }
+}
+
 export default function AssessmentPage() {
   const router = useRouter();
   const { user, configured } = useAuth();
   const { session, studyMode } = useStudy();
   const { language, t } = useI18n();
+  const [entryState, setEntryState] = useState<"checking" | "questionnaire" | "redirecting">("checking");
+  const [searchReady, setSearchReady] = useState(false);
+  const [retakeRequested, setRetakeRequested] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [profile, setProfile] = useState<AssessmentProfile>({
@@ -43,6 +61,8 @@ export default function AssessmentPage() {
   const [autoAdvancing, setAutoAdvancing] = useState(false);
   const timerRef = useRef<number | null>(null);
   const completedRef = useRef(false);
+  const startedAtRef = useRef<number | null>(null);
+  const branchLoggedRef = useRef<string | null>(null);
   const answersRef = useRef<Record<string, number>>({});
   const stepRef = useRef(0);
   const profileRef = useRef<AssessmentProfile>(profile);
@@ -107,11 +127,43 @@ export default function AssessmentPage() {
   }, [language]);
 
   useEffect(() => {
-    logEvent("assessment_start", {
-      totalSteps: TOTAL_STEPS,
-      scoredQuestions: 6,
-      mode: "adaptive"
-    });
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    setRetakeRequested(new URLSearchParams(window.location.search).get("retake") === "1");
+    setSearchReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!searchReady) {
+      return;
+    }
+
+    if (retakeRequested) {
+      setEntryState("questionnaire");
+      return;
+    }
+
+    const storedResult = readAssessmentResultFromStorage();
+    if (storedResult?.answeredCount) {
+      setEntryState("redirecting");
+      router.push("/assessment/result");
+      return;
+    }
+
+    setEntryState("questionnaire");
+  }, [retakeRequested, router, searchReady]);
+
+  useEffect(() => {
+    if (entryState !== "questionnaire") {
+      return;
+    }
+
+    startedAtRef.current = Date.now();
+    logEvent("assessment.started", {
+      sourceRoute: getSourceRoute()
+    }, { page: "/assessment" });
 
     return () => {
       if (timerRef.current) {
@@ -119,14 +171,24 @@ export default function AssessmentPage() {
       }
 
       if (!completedRef.current && stepRef.current > 0) {
-        logEvent("assessment_abandon", {
-          lastStepIndex: stepRef.current + 1,
-          totalSteps: TOTAL_STEPS,
-          answeredCount: Object.keys(answersRef.current).length
-        });
+        logEvent("assessment.exited", {
+          stepReached: stepRef.current + 1,
+          completed: false
+        }, { page: "/assessment" });
       }
     };
-  }, []);
+  }, [entryState]);
+
+  useEffect(() => {
+    if (stepIndex < 5 || branchLoggedRef.current === branch) {
+      return;
+    }
+
+    branchLoggedRef.current = branch;
+    logEvent("assessment.branch_resolved", {
+      branch: branch === "A" ? "beginner" : branch === "B" ? "intermediate" : "advanced"
+    }, { page: "/assessment" });
+  }, [branch, stepIndex]);
 
   const clearAdvanceTimer = () => {
     if (timerRef.current) {
@@ -164,13 +226,21 @@ export default function AssessmentPage() {
 
     if (studyMode && session) {
       await persistStudyArtifact(session, "assessment", sanitizeAssessmentArtifact(result));
-      logEvent("study_artifact_save", { artifactType: "assessment" });
     } else if (user?.id && configured) {
       const saveResult = await saveAssessmentResult(user.id, result);
       if (saveResult.error) {
         console.error("[assessment] failed to save result", saveResult.error);
       }
     }
+
+    const rankedDimensions = [...result.dimensions].sort((left, right) => right.average - left.average);
+    const weakestDimensions = [...result.dimensions].sort((left, right) => left.average - right.average);
+    logEvent("assessment.completed", {
+      durationMs: startedAtRef.current ? Date.now() - startedAtRef.current : null,
+      approximateLevelBand: result.level,
+      strongestAreaCodes: rankedDimensions.slice(0, 2).map((dimension) => dimension.key),
+      weakestAreaCodes: weakestDimensions.slice(0, 2).map((dimension) => dimension.key)
+    }, { page: "/assessment" });
 
     router.push("/assessment/result");
   };
@@ -183,16 +253,13 @@ export default function AssessmentPage() {
     if (currentQuestion.type === "gender") {
       const gender = value === 1 ? "male" : "female";
       setProfile((prev) => ({ ...prev, gender }));
-      logEvent("assessment_answer", {
+      logEvent("assessment.step_answered", {
+        stepIndex,
+        stepType: "profile",
         questionId: currentQuestion.id,
-        selectedOption: getAssessmentOptionLabel(
-          currentQuestion.id,
-          value,
-          value === 1 ? t("assessment.gender.male") : t("assessment.gender.female"),
-          language
-        ),
-        step: "profile"
-      });
+        answerCode: gender,
+        autoAdvanced: true
+      }, { page: "/assessment" });
       scheduleAdvance(() => moveToStep(stepIndex + 1), AUTO_ADVANCE_DELAY);
       return;
     }
@@ -206,11 +273,13 @@ export default function AssessmentPage() {
 
     answersRef.current = nextAnswers;
     setAnswers(nextAnswers);
-    logEvent("assessment_answer", {
+    logEvent("assessment.step_answered", {
+      stepIndex,
+      stepType: currentQuestion.phase,
       questionId: currentQuestion.id,
-      selectedOption: getAssessmentOptionLabel(currentQuestion.id, value, selectedOption?.label ?? String(value), language),
-      phase: currentQuestion.phase
-    });
+      answerCode: getAssessmentOptionLabel(currentQuestion.id, value, selectedOption?.label ?? String(value), language),
+      autoAdvanced: true
+    }, { page: "/assessment" });
 
     if (stepIndex === TOTAL_STEPS - 1) {
       scheduleAdvance(() => {
@@ -238,13 +307,25 @@ export default function AssessmentPage() {
     }
 
     sliderTouchedRef.current = false;
-    logEvent("assessment_answer", {
+    logEvent("assessment.step_answered", {
+      stepIndex,
+      stepType: "profile",
       questionId: currentQuestion.id,
-      selectedOption: profileRef.current.yearsLabel ?? formatAssessmentYearsLabel(profileRef.current.yearsPlaying ?? 2, language),
-      step: "profile"
-    });
+      answerCode: profileRef.current.yearsLabel ?? formatAssessmentYearsLabel(profileRef.current.yearsPlaying ?? 2, language),
+      autoAdvanced: true
+    }, { page: "/assessment" });
     scheduleAdvance(() => moveToStep(stepIndex + 1), SLIDER_ADVANCE_DELAY);
   };
+
+  if (entryState !== "questionnaire") {
+    return (
+      <PageContainer>
+        <div className="mx-auto max-w-2xl rounded-2xl border border-[var(--line)] bg-white p-6 text-sm text-slate-600">
+          {t("assessment.loading")}
+        </div>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>

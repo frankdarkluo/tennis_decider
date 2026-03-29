@@ -4,4 +4,4 @@ export const STUDY_ARTIFACTS_KEY = "tennislevel_study_artifacts";
 export const STUDY_BOOKMARKS_KEY = "tennislevel_study_bookmarks";
 export const STUDY_PROGRESS_KEY = "tennislevel_study_progress";
 export const STUDY_LAST_PATH_KEY = "tennislevel_study_last_path";
-
+export const CURRENT_STUDY_ID = "sportshci_2026_no_video_v1";
