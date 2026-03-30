@@ -37,3 +37,5 @@ CONTENT_EDIT_GUIDE.md
 requirement.txt
 docs_local/
 docs/
+.github/
+scripts/automation/
