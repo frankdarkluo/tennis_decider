@@ -6,10 +6,6 @@ TennisLevel is being developed in a study-ready mode for SportsHCI-style user re
 ## Source of truth
 Read repository markdown docs before asking for repeated context.
 
-Current high-priority docs:
-- `TennisLevel_EVENT_TRACKING_PLAN_NO_VIDEO.md`
-- `TennisLevel_ACTIONABILITY_AND_SORT_FREEZE_PLAN.md`
-
 Also scan for newer or more specific markdown docs that may update or override older requirements, especially docs related to:
 - study mode
 - event tracking
