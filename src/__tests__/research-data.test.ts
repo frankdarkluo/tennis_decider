@@ -205,5 +205,19 @@ describe("research export helpers", () => {
     expect(bundle.actionabilitySummary?.overall.mean).toBe(5);
     expect(bundle.actionabilitySummary?.byTask.task_1_problem_entry.mean).toBe(6);
     expect(bundle.actionabilitySummary?.byLanguage.zh.mean).toBe(6);
+    expect(bundle.openFeedbackRows).toEqual([
+      expect.objectContaining({
+        questionId: "q23",
+        answerLength: "The assessment result was clear.".length,
+        taskContext: "task_3_action_or_revisit",
+        language: "zh"
+      }),
+      expect.objectContaining({
+        questionId: "q25",
+        answerLength: "I would use the plan again.".length,
+        taskContext: "task_3_action_or_revisit",
+        language: "zh"
+      })
+    ]);
   });
 });

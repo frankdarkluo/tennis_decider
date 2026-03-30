@@ -92,6 +92,7 @@ NEXT_PUBLIC_STUDY_FREEZE_LIBRARY=true
 NEXT_PUBLIC_STUDY_FREEZE_RANKINGS=true
 NEXT_PUBLIC_STUDY_DISABLE_RANDOM_SURFACING=true
 NEXT_PUBLIC_STUDY_DISABLE_VIEWCOUNT_BOOST=true
+NEXT_PUBLIC_ENABLE_RESEARCHER_OVERLAY=false
 ```
 
 ## Supabase SQL
@@ -113,6 +114,12 @@ NEXT_PUBLIC_STUDY_DISABLE_VIEWCOUNT_BOOST=true
 
 ```bash
 npm run validate:study-remote
+```
+
+如果你要检查研究文档、`.env.example` 和当前 snapshot 配置是否一致，可以运行：
+
+```bash
+npm run validate:study-docs
 ```
 
 这个命令会用合成 `participantId` / `sessionId` 依次尝试写入：

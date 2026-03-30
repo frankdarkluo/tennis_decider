@@ -114,6 +114,7 @@ export type StudyExportBundle = {
   artifacts: StudyArtifactRecord[];
   events: EventLog[];
   taskRatings?: StudyTaskRatingRecord[];
+  openFeedbackRows?: StudyOpenFeedbackRow[];
   derivedMetrics?: StudyDerivedMetric[];
   actionabilitySummary?: {
     overall: { count: number; mean: number | null };
@@ -130,6 +131,18 @@ export type StudyTaskRatingRecord = {
   taskId: StudyTaskId;
   metricName: StudyMetricName;
   score: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  language: StudyLanguage;
+  submittedAt: string;
+};
+
+export type StudyOpenFeedbackRow = {
+  studyId: string;
+  participantId: string;
+  sessionId: string;
+  questionId: "q23" | "q24" | "q25";
+  answer: string;
+  answerLength: number;
+  taskContext: StudyTaskId | "cross_task" | null;
   language: StudyLanguage;
   submittedAt: string;
 };

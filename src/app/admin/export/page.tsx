@@ -172,7 +172,7 @@ export default function AdminExportPage() {
         <Card className="space-y-4">
           <div>
             <h2 className="text-lg font-bold text-slate-900">研究 bundle 导出</h2>
-            <p className="mt-1 text-sm text-slate-600">按 participant/session/snapshot 聚合导出 participant registry、study sessions、artifacts、task ratings、events，以及 actionability 汇总。</p>
+            <p className="mt-1 text-sm text-slate-600">按 participant/session/snapshot 聚合导出 participant registry、study sessions、artifacts、task ratings、events、open feedback rows，以及 actionability 汇总。</p>
           </div>
           <div className="grid gap-3 md:grid-cols-3">
             <Input placeholder="participantId（可选）" value={participantId} onChange={(event) => setParticipantId(event.target.value)} />

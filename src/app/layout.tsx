@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/Header";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { AuthModalProvider } from "@/components/auth/AuthModalProvider";
 import { EventLoggerProvider } from "@/components/research/EventLoggerProvider";
+import { ResearcherOverlay } from "@/components/study/ResearcherOverlay";
 import { StudyProvider } from "@/components/study/StudyProvider";
 import { I18nProvider } from "@/lib/i18n/config";
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <AuthModalProvider>
                   <Header />
                   <main>{children}</main>
+                  <ResearcherOverlay />
                   <Footer />
                 </AuthModalProvider>
               </EventLoggerProvider>

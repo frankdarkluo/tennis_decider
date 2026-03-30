@@ -7,6 +7,7 @@ import {
 import {
   StudyExportBundle,
   StudyLanguage,
+  StudyOpenFeedbackRow,
   StudyParticipantRecord,
   StudySnapshot,
   StudyTaskId,
@@ -352,17 +353,84 @@ export function buildStudyExportBundle(input: {
     .filter(matches)
     .map(normalizeStudyParticipantRow)
     .filter((participant): participant is StudyParticipantRecord => Boolean(participant));
+  const filteredEvents = input.events.filter(matches);
 
   return {
     snapshot: input.snapshot,
     participants: filteredParticipants,
     sessions: input.sessions.filter(matches) as StudyExportBundle["sessions"],
     artifacts: filteredArtifacts as StudyExportBundle["artifacts"],
-    events: input.events.filter(matches) as StudyExportBundle["events"],
+    events: filteredEvents as StudyExportBundle["events"],
     taskRatings: filteredTaskRatings,
-    derivedMetrics: deriveStudyMetrics(input.events.filter(matches), filteredArtifacts),
+    openFeedbackRows: deriveOpenFeedbackRows(filteredArtifacts, filteredEvents),
+    derivedMetrics: deriveStudyMetrics(filteredEvents, filteredArtifacts),
     actionabilitySummary: summarizeActionabilityRatings(filteredTaskRatings)
   };
+}
+
+function deriveTaskContextForSession(events: Record<string, unknown>[], sessionId: string): StudyOpenFeedbackRow["taskContext"] {
+  const sessionEvents = events.filter((row) => String(row.session_id ?? row.sessionId ?? "") === sessionId);
+
+  if (sessionEvents.some((row) => {
+    const eventName = String(row.event_type ?? row.eventName ?? "");
+    return eventName === "plan.generated" || eventName === "plan.saved";
+  })) {
+    return "task_3_action_or_revisit";
+  }
+
+  if (sessionEvents.some((row) => String(row.event_type ?? row.eventName ?? "") === "assessment.completed")) {
+    return "task_2_assessment_entry";
+  }
+
+  if (sessionEvents.some((row) => String(row.event_type ?? row.eventName ?? "") === "diagnose.result_viewed")) {
+    return "task_1_problem_entry";
+  }
+
+  return sessionEvents.length > 0 ? "cross_task" : null;
+}
+
+function deriveOpenFeedbackRows(
+  artifacts: Record<string, unknown>[],
+  events: Record<string, unknown>[]
+): StudyOpenFeedbackRow[] {
+  return artifacts.flatMap((row) => {
+    const artifactType = String(row.artifact_type ?? row.artifactType ?? "");
+    if (artifactType !== "survey") {
+      return [];
+    }
+
+    const sessionId = String(row.session_id ?? row.sessionId ?? "");
+    const participantId = String(row.participant_id ?? row.participantId ?? "");
+    const studyId = String(row.study_id ?? row.studyId ?? "unknown_study");
+    const language = String(row.language ?? "zh");
+    if (!sessionId || !participantId || !language) {
+      return [];
+    }
+
+    const payload = (row.payload ?? {}) as Record<string, unknown>;
+    const responses = (payload.responses ?? {}) as Record<string, unknown>;
+    const submittedAt = String(row.created_at ?? row.createdAt ?? "1970-01-01T00:00:00.000Z");
+    const taskContext = deriveTaskContextForSession(events, sessionId);
+
+    return (["q23", "q24", "q25"] as const).flatMap((questionId) => {
+      const answer = String(responses[questionId] ?? "").trim();
+      if (!answer) {
+        return [];
+      }
+
+      return [{
+        studyId,
+        participantId,
+        sessionId,
+        questionId,
+        answer,
+        answerLength: answer.length,
+        taskContext,
+        language: language as StudyLanguage,
+        submittedAt
+      } satisfies StudyOpenFeedbackRow];
+    });
+  });
 }
 
 function toMean(scores: number[]) {
