@@ -229,6 +229,16 @@ const ASSESSMENT_DIMENSION_PLAN_HINTS: Record<
     primaryProblemTag: "match-anxiety",
     relatedProblemTags: ["doubles-positioning", "cant-self-practice"],
     skills: ["matchplay", "mental", "doubles"]
+  },
+  tactical_adaptability: {
+    primaryProblemTag: "doubles-positioning",
+    relatedProblemTags: ["match-anxiety", "cant-self-practice"],
+    skills: ["matchplay", "mental", "doubles", "training"]
+  },
+  pressure_performance: {
+    primaryProblemTag: "pressure-tightness",
+    relatedProblemTags: ["match-anxiety", "return-under-pressure", "second-serve-reliability"],
+    skills: ["matchplay", "mental", "serve", "return"]
   }
 };
 
