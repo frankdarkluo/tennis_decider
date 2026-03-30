@@ -17,6 +17,9 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
   mockPrefetch: vi.fn(),
   translationMap: {
     "home.hero.title": "一句话，帮你找到下一步该练什么",
+    "home.hero.subtitle": "💡动作、错误、场景描述越具体，诊断越准",
+    "home.hero.helper": "💡 描述越具体，诊断越准",
+    "home.hero.examples": "示例",
     "assessment.title": "1 分钟测一下你的水平",
     "assessment.resumeDraft": "已恢复你刚才做到一半的评估进度。",
     "assessment.result.ctaPlan": "生成训练计划 →",
@@ -25,10 +28,14 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "study.actionability.submitting": "提交中...",
     "study.actionability.saved": "评分已记录。",
     "diagnose.placeholder": "例如：我反手总下网，一快就更容易失误",
+    "diagnose.helper": "💡 描述越具体，诊断越准",
+    "diagnose.examples": "示例",
     "content.whyRecommended": "为什么推荐这个",
     "content.whyPrefix": "推荐依据:",
+    "diagnose.result.plan": "根据这个问题生成 7 天训练计划",
     "diagnose.result.library": "去内容库找更多练习",
     "diagnose.result.rankings": "去博主榜找适合的人",
+    "diagnose.result.moreOptions": "查看更多选项 ↓",
     "library.title": "找内容",
     "library.more": "查看更多",
     "content.openAria": "打开视频：{value}",
@@ -40,6 +47,9 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "creator.whyPrefix": "推荐依据:",
     "plan.title": "你的 7 天提升计划",
     "plan.supporting": "这 7 天先练这一件事",
+    "plan.day.what": "What to practice",
+    "plan.day.duration": "How long",
+    "plan.day.watch": "Watch this",
     "plan.nextDiagnose": "继续诊断一个具体问题",
     "plan.openProfile": "去 study hub 继续",
     "plan.day.today": "今天",
@@ -219,8 +229,29 @@ describe("app smoke tests", () => {
       render(React.createElement(Page));
 
       expect(screen.getByText("一句话，帮你找到下一步该练什么")).toBeInTheDocument();
+      expect(screen.getByText("💡动作、错误、场景描述越具体，诊断越准")).toBeInTheDocument();
+      expect(screen.queryByText("💡 描述越具体，诊断越准")).not.toBeInTheDocument();
+      expect(screen.getByText("示例")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "反手总是下网" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "一发总发不进" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "二发总双误" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "正手一发力就出界" })).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "脚步总慢半拍" })).not.toBeInTheDocument();
+      expect(screen.queryByText("也可以直接点一个接近的问题：")).not.toBeInTheDocument();
+      expect(screen.queryByText("查看更多示例 ↓")).not.toBeInTheDocument();
+      expect(screen.queryByRole("link", { name: /AI 诊断|video diagnosis/i })).not.toBeInTheDocument();
       expect(consoleErrorSpy).not.toHaveBeenCalled();
     });
+  });
+
+  it("shows the video diagnose route as temporarily unavailable", async () => {
+    const VideoDiagnosePage = await loadPage(() => import("@/app/video-diagnose/page"));
+
+    render(React.createElement(VideoDiagnosePage));
+
+    expect(await screen.findByText("上传视频，我来帮你看问题")).toBeInTheDocument();
+    expect(screen.getByText("视频诊断暂时还没准备好。请继续使用问题诊断、内容库或训练计划流程。")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "去问题诊断" })).toHaveAttribute("href", "/diagnose");
   });
 
   it("renders assessment page and allows stepping through the simplified flow", async () => {
@@ -241,11 +272,11 @@ describe("app smoke tests", () => {
     fireEvent.change(experienceSlider, { target: { value: "3" } });
     fireEvent.mouseUp(experienceSlider);
     await waitFor(() => {
-      expect(screen.getByText("你和朋友对打，通常能连续打多少拍？")).toBeInTheDocument();
+      expect(screen.getByText("日常练习中，你通常能连续对打多少拍？")).toBeInTheDocument();
     });
 
     const branchAFlow = [
-      "你和朋友对打，通常能连续打多少拍？",
+      "日常练习中，你通常能连续对打多少拍？",
       "你的发球大概什么状态？",
       "你对打或比赛时脑子里在想什么？",
       "打球时你的握拍和准备动作？",
@@ -396,8 +427,24 @@ describe("app smoke tests", () => {
     const planLink = await screen.findByRole("link", { name: "生成训练计划 →" });
     expect(planLink.getAttribute("href")).toContain("/plan?");
     expect(planLink.getAttribute("href")).toContain("source=assessment");
-    expect(planLink.getAttribute("href")).toContain("problemTag=second-serve-confidence");
+    expect(planLink.getAttribute("href")).toContain("problemTag=second-serve-reliability");
     expect(planLink.getAttribute("href")).toContain("contentIds=");
+  });
+
+  it("shows 4.5 instead of the legacy 4.0+ label on assessment results", async () => {
+    const AssessmentResultPage = await loadPage(() => import("@/app/assessment/result/page"));
+
+    window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({
+      ...getDefaultAssessmentResult("zh"),
+      answeredCount: 8,
+      totalQuestions: 8,
+      level: "4.0+"
+    }));
+
+    render(React.createElement(AssessmentResultPage));
+
+    expect(await screen.findByRole("heading", { name: /4\.5/ })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /4\.0\+/ })).not.toBeInTheDocument();
   });
 
   it("shows the actionability prompt on assessment result in study mode", async () => {
@@ -423,6 +470,15 @@ describe("app smoke tests", () => {
     render(React.createElement(DiagnosePage));
 
     expect(await screen.findByPlaceholderText(/我反手总下网/)).toBeInTheDocument();
+    expect(screen.getByText("💡 描述越具体，诊断越准")).toBeInTheDocument();
+    expect(screen.getByText("示例")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "反手总是下网" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "一发总发不进" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "二发总双误" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "正手一发力就出界" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "脚步总慢半拍" })).not.toBeInTheDocument();
+    expect(screen.queryByText("也可以直接点一个接近的问题：")).not.toBeInTheDocument();
+    expect(screen.queryByText("查看更多示例 ↓")).not.toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
@@ -461,7 +517,7 @@ describe("app smoke tests", () => {
     expect(studyProgress?.lastVisitedPath).toBe("/diagnose?q=%E6%88%91%E5%8F%8D%E6%89%8B%E6%80%BB%E4%B8%8B%E7%BD%91%EF%BC%8C%E4%B8%80%E5%BF%AB%E5%B0%B1%E6%9B%B4%E5%AE%B9%E6%98%93%E5%A4%B1%E8%AF%AF");
   });
 
-  it("offers library and rankings follow-up CTAs after opening the diagnosis details", async () => {
+  it("keeps the plan CTA primary in study mode and hides library/rankings behind more options", async () => {
     const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
 
     mockStudyContext.session = baseStudySession;
@@ -475,6 +531,12 @@ describe("app smoke tests", () => {
     fireEvent.click(screen.getByRole("button", { name: "diagnose.button.start" }));
 
     fireEvent.click(await screen.findByRole("button", { name: "diagnose.result.expand1" }));
+
+    expect(await screen.findByRole("link", { name: "根据这个问题生成 7 天训练计划" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "去内容库找更多练习" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "去博主榜找适合的人" })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "查看更多选项 ↓" }));
 
     expect(await screen.findByRole("link", { name: "去内容库找更多练习" })).toHaveAttribute("href", "/library");
     expect(screen.getByRole("link", { name: "去博主榜找适合的人" })).toHaveAttribute("href", "/rankings");
@@ -600,6 +662,20 @@ describe("app smoke tests", () => {
     fireEvent.click(screen.getAllByRole("button", { name: "展开" })[0]);
     expect(screen.getAllByRole("link").filter((node) => node.getAttribute("href")?.startsWith("http")).length).toBe(2);
     expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("renders a visible today card and watch block on the plan page for the upgraded diagnosis flow", async () => {
+    const PlanPage = await loadPage(() => import("@/app/plan/page"));
+
+    mockSearchParams = new URLSearchParams(
+      "problemTag=overhead-timing&level=3.0&source=diagnosis"
+    );
+    window.history.pushState({}, "", `/plan?${mockSearchParams.toString()}`);
+
+    render(React.createElement(PlanPage));
+
+    expect(await screen.findByText(/今天/)).toBeInTheDocument();
+    expect(screen.getByText("Watch this")).toBeInTheDocument();
   });
 
   it("shows the actionability prompt on plan page in study mode", async () => {

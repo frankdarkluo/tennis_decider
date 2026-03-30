@@ -204,6 +204,60 @@ describe("bilingual rendering", () => {
     expect(screen.getByText("Focus: For players who rush the serve and lose trust in the second serve.")).toBeInTheDocument();
   });
 
+  it("renders a clearer today-card hierarchy with focus leading the section order", () => {
+    render(
+      <DayPlanCard
+        isToday
+        day={{
+          day: 1,
+          focus: "固定高压准备点",
+          drills: ["原地高压引拍 15 次", "高压落点控制 12 球"],
+          duration: "20 分钟",
+          contentIds: ["content_cn_b_03"]
+        }}
+      />
+    );
+
+    const focusHeading = screen.getByRole("heading", { name: "固定高压准备点" });
+    const whatLabel = screen.getByText("What to practice");
+    const durationLabel = screen.getByText("How long");
+    const watchLabel = screen.getByText("Watch this");
+
+    expect(focusHeading).toBeInTheDocument();
+    expect(whatLabel).toBeInTheDocument();
+    expect(durationLabel).toBeInTheDocument();
+    expect(watchLabel).toBeInTheDocument();
+    expect(focusHeading.compareDocumentPosition(whatLabel)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(whatLabel.compareDocumentPosition(durationLabel)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(durationLabel.compareDocumentPosition(watchLabel)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+
+  it("shows drills before duration on expanded non-today plan cards", () => {
+    render(
+      <DayPlanCard
+        day={{
+          day: 2,
+          focus: "跑动中先到位",
+          drills: ["两点启动 15 组", "到位后停住击球 12 球"],
+          duration: "20 分钟",
+          contentIds: ["content_cn_c_02"]
+        }}
+      />
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Expand" }));
+
+    const whatLabel = screen.getByText("What to practice");
+    const durationLabel = screen.getByText("How long");
+    const watchLabel = screen.getByText("Watch this");
+
+    expect(whatLabel).toBeInTheDocument();
+    expect(durationLabel).toBeInTheDocument();
+    expect(watchLabel).toBeInTheDocument();
+    expect(whatLabel.compareDocumentPosition(durationLabel)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(durationLabel.compareDocumentPosition(watchLabel)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+
   it("renders diagnose recommendation cards with language cues and original-title label", () => {
     const item = contents.find((entry) => entry.id === "content_gaiao_02");
 

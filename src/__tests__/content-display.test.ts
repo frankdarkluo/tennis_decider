@@ -17,7 +17,7 @@ import {
   resolveFeaturedVideoChineseTitleSuggestion,
   resolveChineseSecondaryTitleForEnglishContent
 } from "@/lib/content/display";
-import { findBestDiagnosisRule } from "@/lib/diagnosis";
+import { extractDiagnosisSignalBundle, findBestDiagnosisRule, getDiagnosisTitle } from "@/lib/diagnosis";
 import { formatLocalizedDate, formatLocalizedDateTime } from "@/lib/i18n/format";
 import {
   buildAssessmentPlanContext,
@@ -176,6 +176,42 @@ describe("content display helpers", () => {
     expect(fallbackEn.days[0].focus).toBe("Day 1 stability training");
   });
 
+  it("returns dedicated templates for upgraded plan-quality priority tags", () => {
+    const overheadPlan = getPlanTemplate("overhead-timing", "3.0", "zh");
+    const volleyFloatPlan = getPlanTemplate("volley-floating", "3.0", "zh");
+    const runningForehandPlan = getPlanTemplate("running-forehand", "3.0", "zh");
+    const generalImprovementPlan = getPlanTemplate("general-improvement", "3.0", "zh");
+
+    expect(overheadPlan.source).toBe("template");
+    expect(overheadPlan.title).toContain("高压");
+    expect(volleyFloatPlan.source).toBe("template");
+    expect(volleyFloatPlan.title).toContain("截击");
+    expect(runningForehandPlan.source).toBe("template");
+    expect(runningForehandPlan.title).toContain("跑动");
+    expect(generalImprovementPlan.source).toBe("template");
+    expect(generalImprovementPlan.title).toContain("通用");
+  });
+
+  it("keeps overhead-timing day watch content aligned with the drill theme instead of generic reuse", () => {
+    const plan = getPlanTemplate("overhead-timing", "3.0", "zh");
+
+    expect(plan.days[0].contentIds[0]).toBe("content_cn_c_02");
+    expect(plan.days[0].contentIds[0]).not.toBe(plan.days[6].contentIds[0]);
+  });
+
+  it("returns dedicated templates for upgraded movement and net-play study tags", () => {
+    const movementPlan = getPlanTemplate("movement-slow", "3.0", "zh");
+    const netPlan = getPlanTemplate("net-confidence", "3.0", "zh");
+    const latePlan = getPlanTemplate("late-contact", "3.0", "zh");
+
+    expect(movementPlan.source).toBe("template");
+    expect(netPlan.source).toBe("template");
+    expect(latePlan.source).toBe("template");
+    expect(movementPlan.title).toContain("脚步");
+    expect(netPlan.title).toContain("网前");
+    expect(latePlan.title).toContain("准备");
+  });
+
   it("prioritizes diagnosis-specific content when building a plan", () => {
     const preferredContentIds = ["content_cn_a_01", "content_zlx_03"];
     const plan = getPlanTemplate("backhand-into-net", "3.0", "zh", preferredContentIds);
@@ -263,14 +299,14 @@ describe("content display helpers", () => {
     });
     const contentById = new Map([...contents, ...expandedContents].map((entry) => [entry.id, entry]));
 
-    expect(context.problemTag).toBe("second-serve-confidence");
+    expect(context.problemTag).toBe("second-serve-reliability");
     expect(context.candidateIds.length).toBeGreaterThanOrEqual(5);
     expect(
       context.candidateIds
         .slice(0, 3)
         .some((id) => {
           const item = contentById.get(id);
-          return Boolean(item?.skills.includes("serve") || item?.problemTags.includes("second-serve-confidence"));
+          return Boolean(item?.skills.includes("serve") || item?.problemTags.includes("second-serve-reliability"));
         })
     ).toBe(true);
   });
@@ -363,9 +399,73 @@ describe("content display helpers", () => {
 
   it("matches newly added English diagnosis triggers", () => {
     expect(findBestDiagnosisRule("I do not know where to stand in doubles").rule?.problemTag).toBe("doubles-positioning");
-    expect(findBestDiagnosisRule("I practice a lot but never get better").rule?.problemTag).toBe("plateau-no-progress");
-    expect(findBestDiagnosisRule("My serve toss is all over the place").rule?.problemTag).toBe("serve-toss-inconsistent");
+    expect(findBestDiagnosisRule("My serve toss is all over the place").rule?.problemTag).toBe("serve-toss-consistency");
     expect(findBestDiagnosisRule("My shots keep landing short").rule?.problemTag).toBe("balls-too-short");
+    expect(extractDiagnosisSignalBundle("I practice a lot but never get better").supportSignals).toContain("plateau_no_progress");
+  });
+
+  it("matches more specific movement and net-play phrasing without falling back to broad tags", () => {
+    expect(findBestDiagnosisRule("脚步总慢半拍，左右移动时最明显").rule?.problemTag).toBe("movement-slow");
+    expect(findBestDiagnosisRule("双打时网前截击老冒高，一紧张就更明显").rule?.problemTag).toBe("volley-floating");
+    expect(findBestDiagnosisRule("my footwork is always half a beat late when I move wide").rule?.problemTag).toBe("movement-slow");
+    expect(findBestDiagnosisRule("my volley keeps floating in doubles when I get tight").rule?.problemTag).toBe("volley-floating");
+  });
+
+  it("applies slot-aware diagnosis priority for overlapping stroke, physical, and mental phrasing", () => {
+    expect(findBestDiagnosisRule("关键分正手老飞").rule?.problemTag).toBe("forehand-out");
+    expect(findBestDiagnosisRule("年纪大了跑不太动").rule?.problemTag).toBe("mobility-limit");
+    expect(findBestDiagnosisRule("比赛一紧张就手紧").rule?.problemTag).toBe("pressure-tightness");
+  });
+
+  it("keeps self-slice and match-context technical complaints in their technical lanes", () => {
+    expect(findBestDiagnosisRule("slice floats").rule?.problemTag).toBe("backhand-slice-floating");
+    expect(findBestDiagnosisRule("my backhand slice sits up").rule?.problemTag).toBe("backhand-slice-floating");
+    expect(["movement-slow", "late-contact"]).toContain(findBestDiagnosisRule("比赛总慢半拍").rule?.problemTag);
+    expect(findBestDiagnosisRule("比赛来不及准备").rule?.problemTag).toBe("late-contact");
+    expect(findBestDiagnosisRule("比赛接发总被压制").rule?.problemTag).toBe("return-under-pressure");
+    expect(findBestDiagnosisRule("比赛里切球总飘起来").rule?.problemTag).toBe("backhand-slice-floating");
+  });
+
+  it("aligns diagnosis titles to the renamed plan-facing tags", () => {
+    expect(getDiagnosisTitle("second-serve-reliability", "zh")).toBe("二发稳定性不足");
+    expect(getDiagnosisTitle("serve-toss-consistency", "zh")).toBe("发球抛球稳定性不足");
+    expect(getDiagnosisTitle("backhand-slice-floating", "zh")).toBe("反手切削控制不足");
+    expect(getDiagnosisTitle("incoming-slice-trouble", "zh")).toBe("对手削球来球处理不顺");
+    expect(getDiagnosisTitle("mobility-limit", "zh")).toBe("移动范围和到位能力受限");
+  });
+
+  it("normalizes renamed tags onto existing plan templates instead of falling back", () => {
+    const secondServePlan = getPlanTemplate("second-serve-reliability", "3.0", "zh");
+    const tossPlan = getPlanTemplate("serve-toss-consistency", "3.0", "zh");
+    const slicePlan = getPlanTemplate("incoming-slice-trouble", "3.0", "zh");
+
+    expect(secondServePlan.source).toBe("template");
+    expect(secondServePlan.title).toContain("二发");
+    expect(tossPlan.source).toBe("template");
+    expect(tossPlan.title).toContain("抛球");
+    expect(slicePlan.source).toBe("template");
+    expect(slicePlan.title).toContain("削球");
+  });
+
+  it("adds minimal plan-template coverage for new diagnosis winners", () => {
+    const firstServePlan = getPlanTemplate("first-serve-in", "3.0", "zh");
+    const mobilityPlan = getPlanTemplate("mobility-limit", "3.0", "zh");
+
+    expect(firstServePlan.source).toBe("template");
+    expect(firstServePlan.title).toContain("一发");
+    expect(mobilityPlan.source).toBe("template");
+    expect(mobilityPlan.title).toContain("移动");
+  });
+
+  it("preserves specific new-tag recommendation priority before compatibility fallback when seeding plan candidates", () => {
+    const candidateIds = buildDiagnosisPlanCandidateIds({
+      problemTag: "pressure-tightness",
+      level: "3.0"
+    });
+
+    expect(candidateIds.length).toBeGreaterThanOrEqual(5);
+    expect(candidateIds[0]).toBe("content_cn_f_01");
+    expect(candidateIds.slice(0, 3)).toEqual(expect.arrayContaining(["content_cn_e_02", "content_rb_03"]));
   });
 
   it("prefers hand-polished Chinese secondary titles for English content in zh mode", () => {

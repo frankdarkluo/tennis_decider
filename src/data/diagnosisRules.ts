@@ -25,13 +25,37 @@ const searchQueriesByRule = {
     bilibili: ["网球截击 动作太大 纠正", "网前截击 基础 教学", "双打网前 截击 稳定性"],
     youtube: ["tennis volley technique beginner", "compact volley drill", "net play basics tennis"]
   },
+  rule_volley_floating: {
+    bilibili: ["网球截击 冒高 纠正", "双打网前 截击 飘起来", "网前截击 拍面控制 网球"],
+    youtube: ["tennis volley floating fix", "keep volleys low tennis", "volley racquet face control"]
+  },
+  rule_volley_into_net: {
+    bilibili: ["网球截击 下网 纠正", "网前截击 老下网 网球", "双打网前 截击 过网 训练"],
+    youtube: ["tennis volley into net fix", "net clearance volley drill", "compact volley contact tennis"]
+  },
+  rule_overhead_timing: {
+    bilibili: ["网球高压 时机 纠正", "杀高球 总打不到点 网球", "高压球 步法 节奏 网球"],
+    youtube: ["tennis overhead timing fix", "overhead footwork tennis", "smash timing drill"]
+  },
   rule_match_anxiety: {
     bilibili: ["网球比赛紧张 怎么办", "比赛心态 调整 网球", "比赛失误多 心态 网球"],
     youtube: ["tennis match nerves tips", "how to stay calm tennis match", "tennis mental game beginner"]
   },
+  rule_pressure_tightness: {
+    bilibili: ["网球 关键分 手紧 怎么办", "比赛压力下 动作变形 网球", "网球 关键球 执行 心态"],
+    youtube: ["tennis tight under pressure", "tennis key point nerves", "how to stay loose tennis match"]
+  },
   rule_forehand_no_power: {
     bilibili: ["正手没力量 发力链 网球", "盖奥网球 正手 发力", "正手转体发力 教学 网球"],
     youtube: ["tennis forehand power technique", "forehand kinetic chain tennis", "generate power forehand"]
+  },
+  rule_running_forehand: {
+    bilibili: ["跑动中正手 网球", "正手 跑动击球 训练", "移动中正手 击球点 网球"],
+    youtube: ["running forehand tennis fix", "open stance running forehand drill", "tennis wide forehand movement"]
+  },
+  rule_running_backhand: {
+    bilibili: ["跑动中反手 网球", "反手 跑动击球 训练", "移动中反手 击球点 网球"],
+    youtube: ["running backhand tennis fix", "wide backhand recovery tennis", "tennis running backhand drill"]
   },
   rule_balls_too_short: {
     bilibili: ["网球打不深 怎么办", "击球深度 训练 网球", "网球 稳定性 打深 底线 深度"],
@@ -53,9 +77,21 @@ const searchQueriesByRule = {
     bilibili: ["发球发不进 纠正 网球", "发球进区率 训练", "发球落点控制 教学 网球"],
     youtube: ["tennis serve accuracy drill", "serve consistency targets tennis", "how to improve serve placement"]
   },
+  rule_first_serve_in: {
+    bilibili: ["一发总发不进 网球", "第一发 进区率 训练 网球", "网球 一发 稳定性"],
+    youtube: ["first serve percentage tennis", "tennis first serve consistency", "first serve in drill tennis"]
+  },
   rule_movement_slow: {
     bilibili: ["六六网球 脚步 训练", "分腿垫步 教学 网球", "网球移动 基础 训练"],
     youtube: ["tennis footwork drill beginner", "split step timing tennis", "tennis movement training"]
+  },
+  rule_mobility_limit: {
+    bilibili: ["网球 跑不动 怎么办", "移动范围 受限 网球", "年纪大了 网球 移动"],
+    youtube: ["tennis mobility limitations", "tennis movement for older players", "court coverage mobility tennis"]
+  },
+  rule_stamina_drop: {
+    bilibili: ["网球 体能下降 后面打不动", "打到后面 失误变多 网球", "网球 体能 训练 基础"],
+    youtube: ["tennis stamina drop late in matches", "tennis conditioning basics", "stay fresh longer tennis"]
   },
   rule_doubles_positioning: {
     bilibili: ["双打站位 基础 网球", "双打轮转 配合 教学", "一前一后 站位 网球"],
@@ -65,17 +101,13 @@ const searchQueriesByRule = {
     bilibili: ["是佩恩呀 下旋 来球 网球", "低球处理 教学 网球", "对方切球 怎么接 网球"],
     youtube: ["how to hit against slice tennis", "tennis handle slice return", "low ball tennis technique"]
   },
+  rule_moonball_trouble: {
+    bilibili: ["月亮球 不好打 网球", "高吊球 处理 网球", "月亮球 反手 别扭 网球"],
+    youtube: ["tennis moonball trouble", "high ball timing tennis", "how to handle moonballs tennis"]
+  },
   rule_cant_hit_lob: {
     bilibili: ["网球高球 怎么打", "防守高球 教学 网球", "挑高球 训练 网球"],
     youtube: ["tennis defensive lob technique", "how to hit a lob tennis", "lob shot drill beginner"]
-  },
-  rule_plateau_no_progress: {
-    bilibili: ["网球瓶颈期 怎么突破", "网球 练了很多 没进步 训练 聚焦", "网球进步 方法 训练"],
-    youtube: ["tennis plateau how to improve", "stuck at 3.0 tennis tips", "tennis improvement strategy"]
-  },
-  rule_cant_self_practice: {
-    bilibili: ["没有教练怎么练球 网球", "网球自己练 方法", "网球课后复习 训练"],
-    youtube: ["tennis solo practice drills", "how to practice tennis alone", "tennis self training routine"]
   }
 } satisfies Record<string, DiagnosisSearchQueries>;
 
@@ -117,7 +149,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     keywords: ["二发", "没信心", "second serve", "confidence"],
     synonyms: ["二发老双误", "二发不敢发", "第二发总想保守一推", "第二发没有底气", "二发一紧张就推球", "second serve double fault", "I do not trust my second serve", "I am scared to hit my second serve", "my second serve keeps double faulting"],
     category: ["serve", "confidence"],
-    problemTag: "second-serve-confidence",
+    problemTag: "second-serve-reliability",
     causes: ["只想发快，没有建立稳定节奏", "抛球位置不稳定", "没有先建立安全弧线意识"],
     causes_en: ["Only thinking about speed, no stable rhythm established", "Toss location is inconsistent", "No awareness of building a safe arc first"],
     fixes: ["先建立节奏感，再加力量", "先练稳定抛球和完整动作", "先接受安全二发，不急着追求球速"],
@@ -129,11 +161,27 @@ export const diagnosisRules: DiagnosisRule[] = [
     fallbackLevel: ["3.0", "3.5"]
   },
   {
+    id: "rule_first_serve_in",
+    keywords: ["一发", "发不进", "first_serve"],
+    synonyms: ["一发总发不进", "第一发进区率太低", "第一发老失误", "first serve will not go in", "my first serve keeps missing", "I cannot land my first serve"],
+    category: ["serve", "control"],
+    problemTag: "first-serve-in",
+    causes: ["一发发力意图过满", "抛球和挥拍节奏不一致", "没有先建立安全进区基准"],
+    causes_en: ["Trying to hit the first serve too hard", "Toss timing and swing rhythm are out of sync", "No safe first-serve make-rate baseline yet"],
+    fixes: ["先把一发降到七成力量", "先固定抛球和挥拍节奏", "先记录可重复的一发进区率"],
+    fixes_en: ["Dial the first serve back to about 70% effort", "Lock in the toss and swing rhythm first", "Track a repeatable first-serve make rate before chasing pace"],
+    drills: ["一区一发 20 球", "二区一发 20 球", "只记录进区率"],
+    drills_en: ["20 first serves to the deuce court", "20 first serves to the ad court", "Track only the make rate"],
+    recommendedContentIds: ["content_gaiao_02", "content_ttt_01", "content_zlx_01"],
+    searchQueries: searchQueriesByRule.rule_first_serve_in,
+    fallbackLevel: ["3.0", "3.5", "4.0"]
+  },
+  {
     id: "rule_serve_toss",
     keywords: ["抛球", "不稳", "serve toss", "toss"],
     synonyms: ["抛球老歪", "发球抛球不稳", "一抛球就乱", "抛球忽前忽后", "抛球老偏左", "serve toss inconsistent", "my serve toss is all over the place", "I cannot toss the ball consistently on serve", "my toss keeps drifting around"],
     category: ["serve", "toss"],
-    problemTag: "serve-toss-inconsistent",
+    problemTag: "serve-toss-consistency",
     causes: ["抛球手臂路径不固定", "出手点不一致", "抛球前站姿和节奏变化太大"],
     causes_en: ["Tossing arm path is not consistent", "Release point varies each time", "Stance and rhythm change too much before the toss"],
     fixes: ["先单独练抛球动作", "站姿固定后再抛", "每次抛球后停住观察落点"],
@@ -162,8 +210,8 @@ export const diagnosisRules: DiagnosisRule[] = [
   },
   {
     id: "rule_net_errors",
-    keywords: ["网前", "失误", "volley", "net play"],
-    synonyms: ["截击老丢", "网前一紧张就乱", "双打网前很怕", "网前老下网", "截击老冒高", "volley errors", "I keep missing volleys", "I panic at the net", "net play feels shaky"],
+    keywords: ["网前", "失误", "截击", "volley", "net play"],
+    synonyms: ["截击老丢", "网前一紧张就乱", "双打网前很怕", "volley errors", "I keep missing volleys", "I panic at the net", "net play feels shaky"],
     category: ["net", "confidence"],
     problemTag: "net-confidence",
     causes: ["站位过于僵硬", "拍头控制不稳定", "以大挥拍方式去打截击"],
@@ -175,6 +223,54 @@ export const diagnosisRules: DiagnosisRule[] = [
     recommendedContentIds: ["content_rb_01", "content_cn_b_01", "content_cn_b_03"],
     searchQueries: searchQueriesByRule.rule_net_errors,
     fallbackLevel: ["3.0", "3.5"]
+  },
+  {
+    id: "rule_volley_floating",
+    keywords: ["截击", "冒高", "volley", "floating"],
+    synonyms: ["网前截击老冒高", "双打时网前截击老冒高", "截击总飘", "volley keeps floating", "my volley keeps floating in doubles", "I cannot keep my volleys down"],
+    category: ["net", "control"],
+    problemTag: "volley-floating",
+    causes: ["拍面太开，挡球时托球过多", "截击触球点偏低偏后", "网前动作不够紧凑稳定"],
+    causes_en: ["Racquet face opens up too much on contact", "Volley contact stays too low and too far back", "The net-play motion is not compact or stable enough"],
+    fixes: ["先把拍面立住，不要托球", "截击触球点放在身体前侧", "先用小动作把球送深送低"],
+    fixes_en: ["Keep the racquet face steadier instead of lifting the ball", "Make volley contact farther in front", "Use a compact motion to punch the ball low and deep"],
+    drills: ["近网挡球 20 次", "正反手截击各 15 球", "双打网前低平截击 10 组"],
+    drills_en: ["20 short-court block volleys", "15 forehand and 15 backhand volleys", "10 doubles net drills focused on keeping the volley low"],
+    recommendedContentIds: ["content_rb_01", "content_cn_b_01", "content_cn_b_03"],
+    searchQueries: searchQueriesByRule.rule_volley_floating,
+    fallbackLevel: ["3.0", "3.5"]
+  },
+  {
+    id: "rule_volley_into_net",
+    keywords: ["截击", "下网", "volley", "net"],
+    synonyms: ["网前截击总下网", "截击总不过网", "双打网前一碰就下网", "my volley keeps going into the net", "I keep dumping volleys into the net", "volley into the net"],
+    category: ["net", "consistency"],
+    problemTag: "volley-into-net",
+    causes: ["拍头稳定性不足", "触球点掉到身体后侧", "想发力但没有先建立挡送节奏"],
+    causes_en: ["Racquet-head stability is not there yet", "Volley contact drops behind the body", "Trying to hit through the volley before mastering the block-and-push rhythm"],
+    fixes: ["拍头保持在身体前面", "先练挡和送，不急着加速", "把截击触球点放在身体前侧"],
+    fixes_en: ["Keep the racquet head out in front", "Practice blocking and guiding the volley before adding pace", "Move the volley contact point farther ahead of the body"],
+    drills: ["近网挡球 20 次", "正反手截击过网练习各 15 球", "双打反应截击 10 组"],
+    drills_en: ["20 short-court block volleys", "15 forehand and 15 backhand volleys focused on clearance", "10 doubles reaction-volley drills"],
+    recommendedContentIds: ["content_rb_01", "content_cn_b_03", "content_cn_b_01"],
+    searchQueries: searchQueriesByRule.rule_volley_into_net,
+    fallbackLevel: ["3.0", "3.5"]
+  },
+  {
+    id: "rule_overhead_timing",
+    keywords: ["高压", "overhead", "timing"],
+    synonyms: ["高压总打不到点", "高压球对不准球", "高压老打框", "高压球下来总找不准点", "杀高球总慢半拍", "高球来了不知道怎么调步", "my overhead timing is off", "I keep missing overheads", "I mistime my overheads"],
+    category: ["net", "timing"],
+    problemTag: "overhead-timing",
+    causes: ["判断落点和调整步不够早", "引拍节奏太慢", "击球点掉到头后或身体后侧"],
+    causes_en: ["Reading the ball and adjusting the feet too late", "Racquet preparation is too slow", "Contact drops behind or too far over the head"],
+    fixes: ["先用交叉步把身体转到球后", "更早把拍子举起来", "把击球点留在头前上方"],
+    fixes_en: ["Use crossover steps to get behind the ball earlier", "Set the racquet sooner", "Keep the contact point in front and above the head"],
+    drills: ["高压调步 15 组", "高压定点击球 15 球", "高压后回位 10 组"],
+    drills_en: ["15 overhead footwork sets", "15 fed overheads from a fixed spot", "10 overhead-plus-recovery reps"],
+    recommendedContentIds: ["content_rb_01", "content_cn_b_03", "content_fr_02"],
+    searchQueries: searchQueriesByRule.rule_overhead_timing,
+    fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
     id: "rule_match_anxiety",
@@ -193,6 +289,22 @@ export const diagnosisRules: DiagnosisRule[] = [
     fallbackLevel: ["3.0", "3.5"]
   },
   {
+    id: "rule_pressure_tightness",
+    keywords: ["tight", "关键分", "手紧"],
+    synonyms: ["关键分一紧张动作就变形", "压力一来手就紧", "关键球一到就缩手缩脚", "I get tight on big points", "pressure makes my swing tighten up", "I freeze on key points"],
+    category: ["matchplay", "mental"],
+    problemTag: "pressure-tightness",
+    causes: ["关键分时注意力被结果牵走", "动作节奏被紧张打断", "没有固定的关键分执行口令"],
+    causes_en: ["On big points, attention shifts to the outcome", "Tension disrupts the swing rhythm", "No fixed key-point execution cue or routine"],
+    fixes: ["关键分只保留一个执行关键词", "发接发前先做同一个放松流程", "把目标从赢分改成完成动作"],
+    fixes_en: ["Keep just one execution cue on big points", "Use the same reset routine before serve and return", "Shift the goal from winning the point to completing the motion"],
+    drills: ["关键分口令练习 10 次", "从 30-30 开始打 10 分", "每分前做一次呼吸重置"],
+    drills_en: ["10 key-point cue rehearsals", "10 minutes starting every game at 30-30", "Take one reset breath before every point"],
+    recommendedContentIds: ["content_cn_f_01", "content_cn_e_02", "content_rb_03"],
+    searchQueries: searchQueriesByRule.rule_pressure_tightness,
+    fallbackLevel: ["3.0", "3.5", "4.0"]
+  },
+  {
     id: "rule_forehand_no_power",
     keywords: ["正手", "没力量", "forehand", "no power"],
     synonyms: ["正手打不透", "正手很费劲但球不走", "怎么打都没穿透力", "正手打不出去", "球不往前走", "forehand no power", "my forehand has no power", "my forehand feels weak", "I cannot hit through the court on my forehand"],
@@ -207,6 +319,38 @@ export const diagnosisRules: DiagnosisRule[] = [
     recommendedContentIds: ["content_fr_03", "content_cn_d_02", "content_gaiao_01"],
     searchQueries: searchQueriesByRule.rule_forehand_no_power,
     fallbackLevel: ["3.0", "3.5"]
+  },
+  {
+    id: "rule_running_forehand",
+    keywords: ["跑动", "正手", "running"],
+    synonyms: ["跑动中正手总赶不上点", "侧向追球时正手总乱", "跑着打正手就失误", "my running forehand falls apart", "I struggle on the forehand while moving", "wide-ball forehand feels rushed"],
+    category: ["forehand", "movement"],
+    problemTag: "running-forehand",
+    causes: ["移动中准备太晚", "身体刹不住就急着出手", "跑动中的击球点没有留在前侧"],
+    causes_en: ["Preparation starts too late on the run", "You hit before the body is balanced", "The contact point does not stay in front while moving"],
+    fixes: ["先用更小的引拍接上跑动节奏", "最后两步先刹住再击球", "把击球点留在身体前侧"],
+    fixes_en: ["Use a smaller take-back to match the running rhythm", "Stabilize with the last two steps before contact", "Keep the running-forehand contact point in front"],
+    drills: ["侧向两点移动 15 组", "移动后正手 20 球", "跑动后正手回位 10 组"],
+    drills_en: ["15 lateral two-point movement sets", "20 forehands after movement", "10 running-forehand plus recovery reps"],
+    recommendedContentIds: ["content_cn_a_03", "content_cn_d_03", "content_fr_02"],
+    searchQueries: searchQueriesByRule.rule_running_forehand,
+    fallbackLevel: ["3.0", "3.5", "4.0"]
+  },
+  {
+    id: "rule_running_backhand",
+    keywords: ["跑动", "反手", "running"],
+    synonyms: ["跑动中反手总赶不上点", "追到反手位就来不及", "跑着打反手总失误", "my running backhand falls apart", "I struggle on the backhand while moving", "wide-ball backhand feels rushed"],
+    category: ["backhand", "movement"],
+    problemTag: "running-backhand",
+    causes: ["反手位移动中转肩太晚", "移动节奏和击球节奏脱节", "跑动中击球点掉到身体后侧"],
+    causes_en: ["Shoulder turn is too late on the run to the backhand side", "Movement rhythm and swing rhythm disconnect", "Contact drops behind the body while moving"],
+    fixes: ["更早转肩并缩小动作", "最后两步先找稳重心", "反手跑动时仍要把击球点留在前侧"],
+    fixes_en: ["Turn the shoulders earlier and keep the swing compact", "Use the last two steps to regain balance", "Keep the running-backhand contact point in front"],
+    drills: ["反手侧向移动 15 组", "移动后反手 20 球", "跑动后反手回位 10 组"],
+    drills_en: ["15 backhand-side movement sets", "20 backhands after movement", "10 running-backhand plus recovery reps"],
+    recommendedContentIds: ["content_cn_a_03", "content_cn_a_01", "content_fr_02"],
+    searchQueries: searchQueriesByRule.rule_running_backhand,
+    fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
     id: "rule_balls_too_short",
@@ -245,7 +389,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     keywords: ["切削", "太高", "slice", "floating"],
     synonyms: ["切削飘起来", "切削没有压低", "反手切削总浮", "切削总飘", "切削球飞起来", "slice floats", "my slice floats", "my backhand slice sits up", "I cannot keep the slice low"],
     category: ["backhand", "slice"],
-    problemTag: "slice-too-high",
+    problemTag: "backhand-slice-floating",
     causes: ["拍面太开", "切球方向过于向上", "击球点不在身体前侧"],
     causes_en: ["Racquet face is too open", "Slicing upward instead of forward", "Contact point is not in front of the body"],
     fixes: ["先控制拍面角度", "切球方向更向前", "把击球点放在身体前侧"],
@@ -291,7 +435,7 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_movement_slow",
     keywords: ["脚步", "移动", "来不及", "步伐", "footwork", "slow feet"],
-    synonyms: ["脚步总慢半拍", "移动跟不上", "球到了脚还没到", "跑不到位", "步伐太慢", "footwork too slow", "my footwork is too slow", "I am late getting to the ball", "I cannot get into position fast enough"],
+    synonyms: ["脚步总慢半拍", "脚步老慢一拍", "左右移动时脚步总慢半拍", "移动跟不上", "球到了脚还没到", "跑不到位", "步伐太慢", "footwork too slow", "my footwork is too slow", "my footwork is always half a beat late", "my footwork is always half a beat late when I move wide", "I am late getting to the ball", "I cannot get into position fast enough"],
     category: ["movement", "footwork"],
     problemTag: "movement-slow",
     causes: ["分腿垫步缺失或时机偏晚", "第一步启动不够积极，重心起得太高", "只盯着挥拍，忽略了先到位"],
@@ -303,6 +447,38 @@ export const diagnosisRules: DiagnosisRule[] = [
     recommendedContentIds: ["content_cn_c_02", "content_cn_a_03", "content_fr_02"],
     searchQueries: searchQueriesByRule.rule_movement_slow,
     fallbackLevel: ["2.5", "3.0", "3.5"]
+  },
+  {
+    id: "rule_mobility_limit",
+    keywords: ["mobility_limit", "跑不太动", "跟不上"],
+    synonyms: ["年纪大了跑不太动", "左右追球跟不上", "场地一拉开就跟不上", "I cannot move well anymore", "I cannot cover the court anymore", "my movement range feels limited"],
+    category: ["movement", "physical"],
+    problemTag: "mobility-limit",
+    causes: ["启动偏慢", "恢复步不到位", "体能和移动范围限制了到位质量"],
+    causes_en: ["The first step is too slow", "Recovery steps do not bring you back in time", "Mobility range and physical limits reduce your quality on arrival"],
+    fixes: ["先缩小移动半径", "优先练恢复步和第一步", "把训练量放在可持续节奏上"],
+    fixes_en: ["Shrink the movement radius first", "Prioritize the recovery step and first step", "Keep training volume inside a sustainable rhythm"],
+    drills: ["左右两点启动 15 组", "恢复步 20 次", "短时高质量移动 10 组"],
+    drills_en: ["15 left-right first-step sets", "20 recovery-step reps", "10 short high-quality movement intervals"],
+    recommendedContentIds: ["content_cn_c_02", "content_fr_02", "content_cn_a_03"],
+    searchQueries: searchQueriesByRule.rule_mobility_limit,
+    fallbackLevel: ["2.5", "3.0", "3.5"]
+  },
+  {
+    id: "rule_stamina_drop",
+    keywords: ["体能", "后面", "stamina"],
+    synonyms: ["打到后面就散了", "后半段腿就不动了", "体能一下来动作就垮", "my stamina drops late", "I fade badly later in matches", "I lose my legs after a while"],
+    category: ["movement", "physical"],
+    problemTag: "stamina-drop",
+    causes: ["前半段节奏分配不合理", "移动和恢复效率偏低", "体能储备不足导致后段动作质量下降"],
+    causes_en: ["Pacing early in the session or match is inefficient", "Movement and recovery are not economical", "Conditioning base is not strong enough to protect technique late"],
+    fixes: ["先稳住每拍节奏，不要前半段过度发力", "把恢复步和呼吸放进每一分之间", "用短组高质量体能训练支撑动作稳定"],
+    fixes_en: ["Settle the rally rhythm early instead of redlining", "Add recovery steps and breathing between points", "Use short high-quality conditioning blocks to support technique"],
+    drills: ["20 秒移动 + 40 秒恢复 8 组", "相持后恢复步 15 组", "后半段只记录动作是否变形"],
+    drills_en: ["8 sets of 20 seconds on, 40 seconds recovery", "15 rally-plus-recovery-step reps", "Track only whether technique breaks down late"],
+    recommendedContentIds: ["content_cn_c_02", "content_fr_02", "content_cn_c_01"],
+    searchQueries: searchQueriesByRule.rule_stamina_drop,
+    fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
     id: "rule_doubles_positioning",
@@ -322,10 +498,10 @@ export const diagnosisRules: DiagnosisRule[] = [
   },
   {
     id: "rule_trouble_with_slice",
-    keywords: ["下旋", "切球", "低球", "slice", "low ball"],
+    keywords: ["下旋", "切球", "切过来", "低球", "slice", "low ball"],
     synonyms: ["遇到下旋就打不好", "对方切过来就失误", "低球总处理不好", "下旋来球不知道怎么打", "对方一切球我就乱", "struggle against slice", "I struggle against slice", "I cannot handle low skidding balls", "I keep missing when opponents slice"],
     category: ["backhand", "control"],
-    problemTag: "trouble-with-slice",
+    problemTag: "incoming-slice-trouble",
     causes: ["没有提前判断来球旋转和落点", "击球点经常掉到身体后侧，来不及往上提拉", "面对低球还在用平击思路处理"],
     causes_en: ["Not reading the spin and landing spot early enough", "Contact drops behind the body — cannot lift in time", "Still using a flat-hit approach against low balls"],
     fixes: ["看到对方切球时先多给自己半拍时间", "尽量在前点往上提拉，不要等球掉太低", "先用高过网弧线把这一拍处理过去"],
@@ -334,6 +510,22 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 low-ball feeds — practise hitting in front", "20 low-ball lifts — track net clearance height", "10 slice-exchange rallies — focus on reading and positioning"],
     recommendedContentIds: ["content_common_02", "content_cn_a_02", "content_fr_02"],
     searchQueries: searchQueriesByRule.rule_trouble_with_slice,
+    fallbackLevel: ["3.0", "3.5", "4.0"]
+  },
+  {
+    id: "rule_moonball_trouble",
+    keywords: ["moonball", "别扭", "高吊球"],
+    synonyms: ["月亮球一来我就很别扭", "月亮球一来我反手就很别扭", "高吊球一来节奏就乱", "moonballs make me uncomfortable", "I struggle when moonballs come in", "high looping balls throw off my timing"],
+    category: ["timing", "high-ball"],
+    problemTag: "moonball-trouble",
+    causes: ["高弹跳来球的站位和击球点准备不足", "面对高吊球时节奏容易被拖慢", "不确定该上升期还是下降期处理"],
+    causes_en: ["Court position and contact-point prep are unclear against high-bouncing balls", "Looping balls disrupt your timing rhythm", "You are unsure whether to take the ball on the rise or on the drop"],
+    fixes: ["先提前判断落点和弹跳高度", "更早决定是后退让位还是上升期处理", "先用稳定弧线把这一拍处理过去"],
+    fixes_en: ["Read the landing spot and bounce height earlier", "Decide sooner whether to back up or take the ball on the rise", "Use a safe arc first to handle the shot cleanly"],
+    drills: ["高吊球调步 15 组", "高弹跳来球定点击球 20 球", "月亮球相持 10 组"],
+    drills_en: ["15 moonball adjustment-step sets", "20 fed high-bounce contact drills", "10 moonball rally sets"],
+    recommendedContentIds: ["content_fr_02", "content_cn_a_02", "content_cn_c_01"],
+    searchQueries: searchQueriesByRule.rule_moonball_trouble,
     fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
@@ -351,37 +543,5 @@ export const diagnosisRules: DiagnosisRule[] = [
     recommendedContentIds: ["content_common_01", "content_cn_c_01", "content_rb_03"],
     searchQueries: searchQueriesByRule.rule_cant_hit_lob,
     fallbackLevel: ["3.0", "3.5", "4.0"]
-  },
-  {
-    id: "rule_plateau_no_progress",
-    keywords: ["没进步", "瓶颈", "原地踏步", "not improving", "plateau"],
-    synonyms: ["练了很多还是老样子", "感觉到了瓶颈", "总是在原地踏步", "每次都练但没感觉进步", "练了很久没变化", "tennis plateau", "I am stuck and not improving", "I practice a lot but never get better", "I feel like I have hit a plateau"],
-    category: ["training", "planning"],
-    problemTag: "plateau-no-progress",
-    causes: ["每次练习同时改太多点，没有一个主问题", "练习和比赛脱节，没有用比赛反馈反推训练重点", "缺少连续两周以上的聚焦练习"],
-    causes_en: ["Trying to fix too many things each session — no single focus", "Practice and match play are disconnected — not using match feedback", "Missing two or more weeks of focused, consistent practice"],
-    fixes: ["先选一个最影响比赛的问题连续练两周", "训练后记录一个最常见失误，而不是泛泛复盘", "把计划从'练很多'改成'练一个最关键的问题'"],
-    fixes_en: ["Pick the one problem that matters most in matches and work on it for two weeks", "After each session, record your most common error instead of a vague recap", "Change your plan from 'practise lots' to 'practise one key thing'"],
-    drills: ["写下本周唯一主问题", "每次训练只记录一个指标", "连续两周只围绕同一个问题安排练习"],
-    drills_en: ["Write down this week's one main problem", "Track just one metric per session", "For two straight weeks, build every session around the same problem"],
-    recommendedContentIds: ["content_cn_f_03", "content_cn_f_02", "content_cn_c_03"],
-    searchQueries: searchQueriesByRule.rule_plateau_no_progress,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
-  },
-  {
-    id: "rule_cant_self_practice",
-    keywords: ["不会自己练", "不知道练什么", "practice plan", "what to practice"],
-    synonyms: ["训练没计划", "每次都乱练", "上完课不知道怎么复习", "自己练没章法", "练球没重点", "不知道怎么安排训练", "I do not know what to practice", "I cannot plan my own practice", "I just hit balls randomly"],
-    category: ["training", "planning"],
-    problemTag: "cant-self-practice",
-    causes: ["没有把问题拆小", "每次练的目标太多", "缺少固定训练模版"],
-    causes_en: ["Not breaking problems into small enough pieces", "Too many goals per session", "No consistent practice template to follow"],
-    fixes: ["一次只解决一个问题", "先安排 20–30 分钟小练习", "每次练都要有记录项"],
-    fixes_en: ["Work on one problem at a time", "Start with a focused 20–30 minute session", "Track at least one thing after every practice"],
-    drills: ["列出本周唯一主问题", "每次训练写 1 个目标 1 个记录项", "训练后记录成功率和感觉"],
-    drills_en: ["Write down this week's single main problem", "Set 1 goal and 1 tracking item per session", "After practice, note your success rate and how it felt"],
-    recommendedContentIds: ["content_cn_c_03", "content_cn_f_02", "content_cn_f_03"],
-    searchQueries: searchQueriesByRule.rule_cant_self_practice,
-    fallbackLevel: ["2.5", "3.0", "3.5"]
   }
 ];

@@ -2,7 +2,24 @@ import { PlanTemplate } from "@/types/plan";
 
 export const planTemplates: PlanTemplate[] = [
   {
-    problemTag: "second-serve-confidence",
+    problemTag: "first-serve-in",
+    level: "3.0",
+    title: "一发进区率 7 天计划",
+    titleEn: "7-Day First-Serve Make-Rate Plan",
+    target: "先把一发发力欲望降下来，建立可重复进区率。",
+    targetEn: "Reduce all-out force and build a repeatable first-serve make rate first.",
+    days: [
+      { day: 1, focus: "一发节奏", focusEn: "First-serve rhythm", contentIds: ["content_ttt_01"], drills: ["一区一发 20 球"], drillsEn: ["20 first serves to the deuce court"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 2, focus: "固定抛球", focusEn: "Stabilize the toss", contentIds: ["content_gaiao_02"], drills: ["抛球 30 次", "抛球后停住看落点"], drillsEn: ["30 tosses", "Pause after each toss and check the landing spot"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "七成力量进区", focusEn: "Make serves at 70% effort", contentIds: ["content_zlx_01"], drills: ["二区一发 20 球", "只记录进区率"], drillsEn: ["20 first serves to the ad court", "Track only the make rate"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 4, focus: "节奏复盘", focusEn: "Review the rhythm", contentIds: ["content_ttt_01"], drills: ["录像 10 球", "写下发球口令"], drillsEn: ["Record 10 serves", "Write down your serve cue"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "两侧目标区", focusEn: "Use both target boxes", contentIds: ["content_zlx_01"], drills: ["一区目标区 15 球", "二区目标区 15 球"], drillsEn: ["15 serves to the deuce-side target", "15 serves to the ad-side target"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 6, focus: "一发连续进区", focusEn: "String together first serves in", contentIds: ["content_gaiao_02"], drills: ["连续 8 个进区 3 组", "失败后重来"], drillsEn: ["3 sets of 8 first serves in a row", "Restart the set after a miss"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 7, focus: "模拟发球局", focusEn: "Simulate service games", contentIds: ["content_ttt_01"], drills: ["打一局只记录一发进区率", "每局后写一句复盘"], drillsEn: ["Play one service game and track first-serve percentage", "Write one review note after each game"], duration: "30 分钟", durationEn: "30 min" }
+    ]
+  },
+  {
+    problemTag: "second-serve-reliability",
     level: "3.5",
     title: "二发稳定性 7 天重建计划",
     titleEn: "7-Day Second-Serve Confidence Reset",
@@ -16,6 +33,23 @@ export const planTemplates: PlanTemplate[] = [
       { day: 5, focus: "在疲劳下保持动作", focusEn: "Hold the motion under fatigue", contentIds: ["content_gaiao_02"], drills: ["慢跑后发二发 15 球", "发球前固定流程 10 次"], drillsEn: ["15 second serves after a light jog", "10 reps of the pre-serve routine"], duration: "20 分钟", durationEn: "20 min" },
       { day: 6, focus: "带目标区发球", focusEn: "Serve to target zones", contentIds: ["content_zlx_02"], drills: ["二区目标区 15 球", "一区目标区 15 球"], drillsEn: ["15 serves to the deuce-court target", "15 serves to the ad-court target"], duration: "25 分钟", durationEn: "25 min" },
       { day: 7, focus: "模拟比赛发球", focusEn: "Simulate match serving", contentIds: ["content_zlx_01"], drills: ["每分只发一次二发 20 球", "记录成功率"], drillsEn: ["20 points using second serve only", "Track the make percentage"], duration: "30 分钟", durationEn: "30 min" }
+    ]
+  },
+  {
+    problemTag: "serve-toss-consistency",
+    level: "3.0",
+    title: "发球抛球稳定性 7 天计划",
+    titleEn: "7-Day Serve Toss Consistency Plan",
+    target: "先把抛球路线和出手点固定下来，再接回完整发球节奏。",
+    targetEn: "Fix the toss path and release point first, then reconnect it to the full serve rhythm.",
+    days: [
+      { day: 1, focus: "只练抛球动作", focusEn: "Isolate the toss motion", contentIds: ["content_gaiao_02"], drills: ["抛球 30 次不挥拍"], drillsEn: ["30 tosses with no swing"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 2, focus: "固定站姿", focusEn: "Stabilize the stance", contentIds: ["content_zlx_01"], drills: ["同一站姿抛球 20 次", "记录落点"], drillsEn: ["20 tosses from the same stance", "Track the landing spot"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "抛球后停住检查", focusEn: "Pause after the toss", contentIds: ["content_ttt_01"], drills: ["抛球后停住 20 次", "看球是否落在理想区"], drillsEn: ["20 toss-and-pause reps", "Check whether the ball lands in the ideal zone"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 4, focus: "录像复盘", focusEn: "Review the toss path", contentIds: ["content_gaiao_02"], drills: ["录 10 次抛球", "写下最常偏的一侧"], drillsEn: ["Record 10 tosses", "Write down the side you miss most often"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "抛球接空挥", focusEn: "Pair the toss with a shadow swing", contentIds: ["content_zlx_01"], drills: ["抛球 + 空挥 20 次"], drillsEn: ["20 toss-plus-shadow-swing reps"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 6, focus: "半动作发球", focusEn: "Rebuild with a half motion", contentIds: ["content_ttt_01"], drills: ["半动作发球 20 次", "只看抛球是否稳定"], drillsEn: ["20 half-motion serves", "Track only whether the toss stays consistent"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 7, focus: "完整动作发球", focusEn: "Return to the full motion", contentIds: ["content_gaiao_02"], drills: ["完整动作发球 20 球", "记录抛球稳定率"], drillsEn: ["20 full-motion serves", "Track the toss-consistency rate"], duration: "25 分钟", durationEn: "25 min" }
     ]
   },
   {
@@ -33,6 +67,91 @@ export const planTemplates: PlanTemplate[] = [
       { day: 5, focus: "反手直线控制", focusEn: "Control the down-the-line backhand", contentIds: ["content_zlx_03"], drills: ["反手直线 20 球", "反手中路深球 20 球"], drillsEn: ["20 down-the-line backhands", "20 deep backhands through the middle"], duration: "25 分钟", durationEn: "25 min" },
       { day: 6, focus: "录像复盘", focusEn: "Review on video", contentIds: ["content_cn_a_01"], drills: ["录 10 个反手", "记录击球点是否在前"], drillsEn: ["Record 10 backhands", "Note whether contact stays in front"], duration: "20 分钟", durationEn: "20 min" },
       { day: 7, focus: "带相持的反手练习", focusEn: "Add rally pressure to the backhand", contentIds: ["content_cn_a_02"], drills: ["反手相持 5 组", "失误只记录是否晚点"], drillsEn: ["5 backhand rally sets", "Only track whether misses came from late contact"], duration: "30 分钟", durationEn: "30 min" }
+    ]
+  },
+  {
+    problemTag: "movement-slow",
+    level: "3.0",
+    title: "脚步启动与到位 7 天计划",
+    titleEn: "7-Day Footwork Timing Plan",
+    target: "先把分腿垫步、第一步启动和到位节奏理顺",
+    targetEn: "Fix split-step timing, first-step initiation, and court arrival rhythm first.",
+    days: [
+      { day: 1, focus: "分腿垫步时机", focusEn: "Split-step timing", contentIds: ["content_cn_c_02"], drills: ["分腿垫步 20 组", "只练启动不击球 15 次"], drillsEn: ["20 split-step sets", "15 first-step reps without hitting"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 2, focus: "第一步启动", focusEn: "First-step initiation", contentIds: ["content_fr_02"], drills: ["左右第一步启动 20 组", "看球后再启动 15 组"], drillsEn: ["20 lateral first-step sets", "15 react-then-go sets"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "移动到位后击球", focusEn: "Arrive before hitting", contentIds: ["content_cn_a_03"], drills: ["两点移动后击球 20 球", "只记录是否先到位"], drillsEn: ["20 balls after two-point movement", "Track only whether you arrived first"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 4, focus: "节奏复盘", focusEn: "Review the movement rhythm", contentIds: ["content_cn_c_02"], drills: ["录像 10 次启动", "写下最慢的一个环节"], drillsEn: ["Record 10 movement starts", "Write down the slowest phase"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "前后移动", focusEn: "Forward and backward movement", contentIds: ["content_fr_02"], drills: ["前后移动 15 组", "到位后停住检查重心"], drillsEn: ["15 forward-backward sets", "Stop and check balance after arrival"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 6, focus: "带球节奏", focusEn: "Movement with live-ball rhythm", contentIds: ["content_cn_a_03"], drills: ["移动后慢节奏击球 20 球", "失误只记是否脚先慢"], drillsEn: ["20 slow balls after movement", "Track only whether the feet were late"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 7, focus: "半场应用", focusEn: "Apply it in live movement", contentIds: ["content_cn_c_02"], drills: ["半场跑动对打 10 分钟", "每球只提醒自己先到位"], drillsEn: ["10 minutes of live half-court movement", "Use one cue: arrive first"], duration: "25 分钟", durationEn: "25 min" }
+    ]
+  },
+  {
+    problemTag: "mobility-limit",
+    level: "3.0",
+    title: "移动范围与到位 7 天计划",
+    titleEn: "7-Day Mobility And Court-Coverage Plan",
+    target: "把移动半径缩到可持续范围内，先把第一步和恢复步做扎实。",
+    targetEn: "Shrink the movement radius to something sustainable and build the first step plus recovery step first.",
+    days: [
+      { day: 1, focus: "第一步启动", focusEn: "First-step initiation", contentIds: ["content_cn_c_02"], drills: ["左右第一步启动 15 组", "每次只追求启动质量"], drillsEn: ["15 left-right first-step sets", "Track only the quality of the first move"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 2, focus: "恢复步", focusEn: "Recovery steps", contentIds: ["content_fr_02"], drills: ["恢复步 20 次", "移动后停住检查重心"], drillsEn: ["20 recovery-step reps", "Stop after each move and check your balance"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "缩小移动半径", focusEn: "Shrink the movement radius", contentIds: ["content_cn_a_03"], drills: ["两点移动 15 组", "只打自己能稳定到位的范围"], drillsEn: ["15 two-point movement sets", "Play only inside the range you can reach on balance"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 4, focus: "节奏复盘", focusEn: "Review the movement rhythm", contentIds: ["content_cn_c_02"], drills: ["录像 10 次启动", "写下最慢的一步"], drillsEn: ["Record 10 movement starts", "Write down the slowest step"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "到位后再击球", focusEn: "Arrive before hitting", contentIds: ["content_cn_a_03"], drills: ["移动后击球 20 球", "失误只记录是否没到位"], drillsEn: ["20 hits after movement", "Track only whether misses came from not arriving"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 6, focus: "短组高质量移动", focusEn: "Short high-quality movement intervals", contentIds: ["content_fr_02"], drills: ["20 秒移动 + 40 秒休息 8 组", "每组后恢复呼吸"], drillsEn: ["8 sets of 20 seconds moving plus 40 seconds rest", "Reset your breathing after each set"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 7, focus: "半场实战应用", focusEn: "Apply it in live half-court play", contentIds: ["content_cn_c_02"], drills: ["半场跑动对打 10 分钟", "每球只提醒自己先回位"], drillsEn: ["10 minutes of live half-court movement", "Use one cue: recover first after every ball"], duration: "25 分钟", durationEn: "25 min" }
+    ]
+  },
+  {
+    problemTag: "incoming-slice-trouble",
+    level: "3.0",
+    title: "处理削球来球 7 天计划",
+    titleEn: "7-Day Incoming Slice Handling Plan",
+    target: "先读懂削球的弹跳和节奏，再把低球处理得更稳。",
+    targetEn: "Read the slice bounce earlier and handle the low ball with more stability first.",
+    days: [
+      { day: 1, focus: "判断来球旋转", focusEn: "Read the incoming spin", contentIds: ["content_common_02"], drills: ["看球后先说出落点和旋转 15 次"], drillsEn: ["15 reps of calling out the bounce and spin before hitting"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 2, focus: "前点处理低球", focusEn: "Take the low ball farther in front", contentIds: ["content_cn_a_02"], drills: ["喂低球 20 球", "只记录击球点是否在前"], drillsEn: ["20 low-ball feeds", "Track only whether contact stayed in front"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "用弧线把球处理过去", focusEn: "Use net clearance against the slice", contentIds: ["content_fr_02"], drills: ["低球上提 20 球", "只记录过网高度"], drillsEn: ["20 low-ball lift reps", "Track only net clearance"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 4, focus: "录像复盘", focusEn: "Review the contact decisions", contentIds: ["content_common_02"], drills: ["录像 10 球", "写下最容易晚点的一个场景"], drillsEn: ["Record 10 balls", "Write down the situation where you get late most often"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "脚步和站位", focusEn: "Footwork and spacing", contentIds: ["content_fr_02"], drills: ["低球调步 15 组", "每球先到位再挥拍"], drillsEn: ["15 low-ball adjustment-step sets", "Arrive before swinging on every rep"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 6, focus: "削球相持", focusEn: "Rally against slice", contentIds: ["content_common_02"], drills: ["切削来回 10 组", "只记录是否处理过网"], drillsEn: ["10 slice-exchange rallies", "Track only whether you cleared the net cleanly"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 7, focus: "带对抗应用", focusEn: "Apply it in live play", contentIds: ["content_cn_a_02"], drills: ["半场相持 10 分钟", "每球先提醒自己读旋转"], drillsEn: ["10 minutes of half-court rallies", "Use one cue: read the spin first"], duration: "25 分钟", durationEn: "25 min" }
+    ]
+  },
+  {
+    problemTag: "late-contact",
+    level: "3.0",
+    title: "提前准备与击球点 7 天计划",
+    titleEn: "7-Day Early Preparation Plan",
+    target: "先把提前准备和前点击球建立起来",
+    targetEn: "Build earlier preparation and more forward contact first.",
+    days: [
+      { day: 1, focus: "更早转肩", focusEn: "Turn the shoulders earlier", contentIds: ["content_cn_a_02"], drills: ["转肩准备 20 次", "看球后立刻准备 15 次"], drillsEn: ["20 shoulder-turn reps", "15 react-and-prepare reps"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 2, focus: "缩小动作", focusEn: "Shorten the motion", contentIds: ["content_fr_02"], drills: ["小动作击球 20 球", "只求赶上击球点"], drillsEn: ["20 compact swings", "Focus only on catching the contact point"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "前点击球", focusEn: "Move contact forward", contentIds: ["content_cn_a_01"], drills: ["前点击球 20 球", "影子挥拍 20 次"], drillsEn: ["20 contact-out-front feeds", "20 shadow swings"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 4, focus: "准备节奏复盘", focusEn: "Review prep rhythm", contentIds: ["content_cn_a_02"], drills: ["录像 10 球", "记录是否晚点"], drillsEn: ["Record 10 shots", "Track whether contact stayed late"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "小碎步找位", focusEn: "Use adjustment steps", contentIds: ["content_cn_c_02"], drills: ["小碎步找位 20 组", "找位后击球 20 球"], drillsEn: ["20 adjustment-step sets", "20 shots after adjustment steps"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 6, focus: "来球加快时保持准备", focusEn: "Hold prep against faster balls", contentIds: ["content_fr_02"], drills: ["快节奏喂球 15 球", "每球先看准备是否够早"], drillsEn: ["15 faster feeds", "Check only whether prep started early"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 7, focus: "相持应用", focusEn: "Apply it in rallies", contentIds: ["content_cn_a_01"], drills: ["相持 5 组", "失误只记是否晚点"], drillsEn: ["5 rally sets", "Track only whether misses came from late contact"], duration: "25 分钟", durationEn: "25 min" }
+    ]
+  },
+  {
+    problemTag: "net-confidence",
+    level: "3.0",
+    title: "网前截击稳定性 7 天计划",
+    titleEn: "7-Day Net-Play Confidence Plan",
+    target: "先把网前站位、拍头稳定和小动作截击理顺",
+    targetEn: "Stabilize net positioning, racquet-head control, and compact volleys first.",
+    days: [
+      { day: 1, focus: "拍头稳定在前方", focusEn: "Keep the racquet head in front", contentIds: ["content_cn_b_01"], drills: ["近网准备姿势 20 次", "固定拍头位置 15 次"], drillsEn: ["20 ready-position reps at the net", "15 hold-the-racquet-head reps"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 2, focus: "缩小截击动作", focusEn: "Keep the volley compact", contentIds: ["content_cn_b_03"], drills: ["正手挡球 15 次", "反手挡球 15 次"], drillsEn: ["15 forehand block volleys", "15 backhand block volleys"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "近网高成功率处理", focusEn: "Handle easy net balls cleanly", contentIds: ["content_rb_01"], drills: ["近网挡送 20 球", "只记是否冒高"], drillsEn: ["20 short block-and-push volleys", "Track only whether the volley floated"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 4, focus: "双打紧张场景复盘", focusEn: "Review doubles-pressure moments", contentIds: ["content_cn_b_01"], drills: ["写下最慌的网前场景", "录像 10 次截击"], drillsEn: ["Write down the most stressful net pattern", "Record 10 volleys"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "站位与第一步", focusEn: "Net positioning and first step", contentIds: ["content_rb_02"], drills: ["网前第一步移动 15 组", "截击前先稳定站位"], drillsEn: ["15 net first-step sets", "Stabilize the stance before the volley"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 6, focus: "双打网前反应", focusEn: "Doubles net reactions", contentIds: ["content_cn_b_03"], drills: ["双打网前反应 10 组", "只求动作小而稳"], drillsEn: ["10 doubles net-reaction sets", "Keep the motion small and stable"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 7, focus: "实战应用", focusEn: "Apply it in live points", contentIds: ["content_rb_01"], drills: ["双打练习赛 10 分钟", "只记录网前第一拍质量"], drillsEn: ["10 minutes of doubles points", "Track only the first volley quality"], duration: "25 分钟", durationEn: "25 min" }
     ]
   },
   {
@@ -152,6 +271,142 @@ export const planTemplates: PlanTemplate[] = [
       { day: 5, focus: "只记录非受迫性失误", focusEn: "Track only unforced errors", contentIds: ["content_cn_f_03"], drills: ["打一盘只记非受迫失误", "每局结束写一句提醒"], drillsEn: ["Play one set and track only unforced errors", "Write one reminder at the end of each game"], duration: "30 分钟", durationEn: "30 min" },
       { day: 6, focus: "每局结束做一句执行复盘", focusEn: "Review execution after every game", contentIds: ["content_rb_03"], drills: ["和朋友打一盘", "每局结束写一句执行复盘"], drillsEn: ["Play one set with a friend", "Write one execution note after every game"], duration: "35 分钟", durationEn: "35 min" },
       { day: 7, focus: "总结最常丢分的模式", focusEn: "Summarize the pattern behind lost points", contentIds: ["content_cn_f_03"], drills: ["整理本周记录", "选出下周唯一重点"], drillsEn: ["Review this week's notes", "Choose one priority for next week"], duration: "20 分钟", durationEn: "20 min" }
+    ]
+  },
+  {
+    problemTag: "overhead-timing",
+    level: "3.0",
+    title: "高压时机 7 天计划",
+    titleEn: "7-Day Overhead Timing Plan",
+    target: "先把高压球的到位、转身和出手时机理顺，再谈压迫性。",
+    targetEn: "Fix the footwork, turn, and strike timing on overheads before chasing aggression.",
+    days: [
+      { day: 1, focus: "先到位再举拍", focusEn: "Arrive before you lift the racket", contentIds: ["content_cn_c_02"], drills: ["后撤启动 15 组", "抬头找球后再做引拍 12 次"], drillsEn: ["15 retreat-start sets", "12 find-the-ball then take-back reps"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 2, focus: "转身找击球点", focusEn: "Turn early and find the contact point", contentIds: ["content_fr_02"], drills: ["交叉步转身 12 组", "不击球只找高压击球点 15 次"], drillsEn: ["12 crossover-turn sets", "15 overhead contact-point reps without hitting"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "中场高压先求打正", focusEn: "Middle-court overheads first, clean contact first", contentIds: ["content_cn_b_03"], drills: ["中场高压 15 球", "只记录是否打在甜区"], drillsEn: ["15 mid-court overheads", "Track only whether contact hits the sweet spot"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 4, focus: "录像复盘准备节奏", focusEn: "Review the setup rhythm on video", contentIds: ["content_cn_c_02"], drills: ["录 8 个高压准备动作", "写下最晚的一步"], drillsEn: ["Record 8 overhead setup reps", "Write down the step that arrives latest"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "高压后落回平衡", focusEn: "Land balanced after the overhead", contentIds: ["content_rb_01"], drills: ["高压后恢复步 12 组", "高压后回中 10 次"], drillsEn: ["12 overhead recovery-step sets", "10 overhead then recover-to-middle reps"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 6, focus: "高球来了先喊口令", focusEn: "Use one cue when the lob goes up", contentIds: ["content_cn_f_01"], drills: ["高球一出先喊“转身” 12 次", "高压前只保留 1 个口令"], drillsEn: ["Call \"turn\" on 12 lob reads", "Keep one cue before each overhead"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 7, focus: "高压接下一拍", focusEn: "Link the overhead to the next ball", contentIds: ["content_rb_01"], drills: ["高压后接下一拍 12 分钟", "失误只记是否晚到位"], drillsEn: ["12 minutes of overhead plus next-ball play", "Track only whether misses came from late arrival"], duration: "25 分钟", durationEn: "25 min" }
+    ]
+  },
+  {
+    problemTag: "volley-floating",
+    level: "3.0",
+    title: "截击冒高 7 天计划",
+    titleEn: "7-Day Floating Volley Plan",
+    target: "先缩小截击动作、稳住拍面，再把冒高球压回到可控高度。",
+    targetEn: "Shrink the volley motion and steady the racket face before trying to drive the ball down.",
+    days: [
+      { day: 1, focus: "先缩小截击动作", focusEn: "Shrink the volley motion first", contentIds: ["content_cn_b_03"], drills: ["原地截击挡球 20 次", "只练肩前小动作 15 次"], drillsEn: ["20 block-volley reps", "15 compact-in-front volley reps"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 2, focus: "拍面别往上兜", focusEn: "Stop lifting the racket face", contentIds: ["content_cn_b_03"], drills: ["拍面固定截击 15 球", "每球只看出球高度"], drillsEn: ["15 fixed-face volleys", "Track only launch height"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "双打网前稳稳挡住", focusEn: "Block firmly at the doubles net", contentIds: ["content_cn_b_01"], drills: ["双打网前挡球 15 球", "只求落在发球线后"], drillsEn: ["15 doubles-net block volleys", "Aim only beyond the service line"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 4, focus: "录像看出球高度", focusEn: "Review the launch height on video", contentIds: ["content_cn_b_03"], drills: ["录 10 个截击", "记 3 个最冒高的球"], drillsEn: ["Record 10 volleys", "Note the 3 floatiest balls"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "来球快时先挡后压", focusEn: "Block first, then add pressure on faster feeds", contentIds: ["content_rb_01"], drills: ["快球截击 15 球", "先挡稳再加落点"], drillsEn: ["15 faster-feed volleys", "Stabilize first, then add placement"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 6, focus: "连续两拍网前控制", focusEn: "Control two volleys in a row", contentIds: ["content_cn_b_01"], drills: ["连续两拍截击 10 组", "只记第二拍是否还冒高"], drillsEn: ["10 two-volley sequences", "Track only whether the second volley still floats"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 7, focus: "双打网前应用", focusEn: "Apply it in doubles net play", contentIds: ["content_rb_01"], drills: ["双打网前练习 12 分钟", "每分只记网前第一拍高度"], drillsEn: ["12 minutes of doubles net play", "Track only the height of the first net touch"], duration: "25 分钟", durationEn: "25 min" }
+    ]
+  },
+  {
+    problemTag: "volley-into-net",
+    level: "3.0",
+    title: "截击下网 7 天计划",
+    titleEn: "7-Day Volley Into Net Plan",
+    target: "先把截击触球点放到身体前面，再稳住拍面和出球线路。",
+    targetEn: "Move volley contact farther in front first, then steady the racket face and outgoing path.",
+    days: [
+      { day: 1, focus: "截击点放到身体前", focusEn: "Move volley contact in front", contentIds: ["content_cn_b_03"], drills: ["前点击挡球 15 球", "停住检查触球点 12 次"], drillsEn: ["15 out-front block volleys", "12 pause-and-check contact reps"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 2, focus: "先挡深一点", focusEn: "Block a little deeper first", contentIds: ["content_cn_b_01"], drills: ["中路深截击 15 球", "只求过网后再求角度"], drillsEn: ["15 deeper middle volleys", "Clear the net first, angle later"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "拍头别往下砸", focusEn: "Stop chopping the racket head down", contentIds: ["content_cn_b_03"], drills: ["平送截击 15 球", "每球只记拍头是否砸下去"], drillsEn: ["15 flatter push volleys", "Track only whether the racket head chops down"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 4, focus: "录像看下网原因", focusEn: "Review why volleys hit the net", contentIds: ["content_cn_b_03"], drills: ["录 10 个截击", "区分晚点还是拍面关太多"], drillsEn: ["Record 10 volleys", "Separate late contact from overly closed faces"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "移动后先稳住第一拍", focusEn: "Stabilize the first volley after movement", contentIds: ["content_rb_01"], drills: ["移动后第一拍截击 12 球", "只记第一拍是否下网"], drillsEn: ["12 first volleys after movement", "Track only whether the first volley hits the net"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 6, focus: "双打网前挡中路", focusEn: "Block through the middle in doubles", contentIds: ["content_cn_b_01"], drills: ["双打中路截击 15 球", "连续 6 球不过网重来"], drillsEn: ["15 middle-channel doubles volleys", "Restart after failing to clear 6 in a row"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 7, focus: "实战只盯截击过网率", focusEn: "Track only net clearance in point play", contentIds: ["content_rb_01"], drills: ["网前对抗 12 分钟", "每分只记截击过网率"], drillsEn: ["12 minutes of net-play points", "Track only volley net-clearance rate"], duration: "25 分钟", durationEn: "25 min" }
+    ]
+  },
+  {
+    problemTag: "running-forehand",
+    level: "3.0",
+    title: "跑动正手 7 天计划",
+    titleEn: "7-Day Running Forehand Plan",
+    target: "先把跑动中的到位、减速和前点击球做好，再谈发力。",
+    targetEn: "Fix arrival, deceleration, and contact out front on the run before chasing pace.",
+    days: [
+      { day: 1, focus: "先到位再出手", focusEn: "Arrive before you swing", contentIds: ["content_cn_c_02"], drills: ["两点启动 15 组", "到位后停住正手 12 球"], drillsEn: ["15 two-point starts", "12 forehands after arriving and stopping"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 2, focus: "跑动中正手减速", focusEn: "Decelerate into the running forehand", contentIds: ["content_fr_02"], drills: ["外侧急停 12 组", "减速后再挥拍 12 球"], drillsEn: ["12 outside-leg stop sets", "12 forehands only after decelerating"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "跑动中只求弧线和深度", focusEn: "On the run, chase arc and depth only", contentIds: ["content_cn_d_01"], drills: ["跑动正手 15 球", "只记弧线和落点"], drillsEn: ["15 running forehands", "Track only arc and depth"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 4, focus: "录像看击球点是否在前", focusEn: "Review whether contact stays in front", contentIds: ["content_fr_02"], drills: ["录 8 个跑动正手", "记下 3 个最晚的球"], drillsEn: ["Record 8 running forehands", "Note the 3 latest-contact reps"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "宽球来了先拉高弧线", focusEn: "Lift the arc first on wider balls", contentIds: ["content_cn_d_03"], drills: ["宽球跑动正手 15 球", "只求高过网"], drillsEn: ["15 wider-ball running forehands", "Aim only for higher net clearance"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 6, focus: "跑动后正手接下一拍", focusEn: "Recover for the next ball after the running forehand", contentIds: ["content_cn_a_03"], drills: ["跑动正手接回中 10 组", "下一拍只求站稳"], drillsEn: ["10 run-hit-recover sets", "Stabilize only for the next ball"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 7, focus: "半场应用跑动正手", focusEn: "Apply the running forehand in half-court play", contentIds: ["content_cn_c_01"], drills: ["半场追球 12 分钟", "每拍只记是否先到位"], drillsEn: ["12 minutes of half-court chase-ball play", "Track only whether you arrived first"], duration: "25 分钟", durationEn: "25 min" }
+    ]
+  },
+  {
+    problemTag: "running-backhand",
+    level: "3.0",
+    title: "跑动反手 7 天计划",
+    titleEn: "7-Day Running Backhand Plan",
+    target: "先把跑动反手的转肩、到位和前点击球理顺，再提高稳定性。",
+    targetEn: "Fix the shoulder turn, arrival, and contact point on the running backhand before adding pressure.",
+    days: [
+      { day: 1, focus: "跑动反手先转肩", focusEn: "Turn the shoulders first on the run", contentIds: ["content_cn_c_02"], drills: ["移动转肩 15 组", "转肩后停住找击球点 12 次"], drillsEn: ["15 move-and-turn sets", "12 turn-then-find-contact reps"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 2, focus: "到位后前点击球", focusEn: "Find contact out front after arrival", contentIds: ["content_fr_01"], drills: ["跑动反手 15 球", "只记击球点是否在前"], drillsEn: ["15 running backhands", "Track only whether contact stays in front"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "外侧球先求过网", focusEn: "On the outside ball, clear the net first", contentIds: ["content_gaiao_03"], drills: ["外侧跑动反手 15 球", "只求高过网"], drillsEn: ["15 outside-ball running backhands", "Aim only for higher net clearance"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 4, focus: "录像复盘脚先慢还是手先慢", focusEn: "Review whether the feet or hands were late", contentIds: ["content_fr_02"], drills: ["录 8 个跑动反手", "每球只分脚慢或手慢"], drillsEn: ["Record 8 running backhands", "Label each rep foot-late or hand-late"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "跑动反手先打中路深球", focusEn: "Drive deeper through the middle first", contentIds: ["content_zlx_03"], drills: ["跑动反手中路深球 15 球", "不急着变线"], drillsEn: ["15 deeper middle running backhands", "Do not change direction yet"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 6, focus: "跑动反手接回中", focusEn: "Recover to the middle after the running backhand", contentIds: ["content_cn_a_03"], drills: ["跑动反手回中 10 组", "下一拍只求站稳"], drillsEn: ["10 run-hit-recover backhand sets", "Stabilize only for the next ball"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 7, focus: "半场应用跑动反手", focusEn: "Apply the running backhand in half-court play", contentIds: ["content_cn_c_01"], drills: ["半场追球 12 分钟", "只记跑动反手是否过网并到深区"], drillsEn: ["12 minutes of chase-ball half-court play", "Track only whether the running backhand clears the net and lands deep"], duration: "25 分钟", durationEn: "25 min" }
+    ]
+  },
+  {
+    problemTag: "pressure-tightness",
+    level: "3.0",
+    title: "关键分手紧 7 天计划",
+    titleEn: "7-Day Tightness Under Pressure Plan",
+    target: "先把关键分时的呼吸、流程和执行口令固定下来，不让手紧抢走动作。",
+    targetEn: "Lock in breathing, routines, and one execution cue on pressure points so tension stops stealing the motion.",
+    days: [
+      { day: 1, focus: "关键分只留一个口令", focusEn: "Keep one cue on pressure points", contentIds: ["content_cn_f_01"], drills: ["写下关键分口令 1 个", "模拟关键分前重复 10 次"], drillsEn: ["Write down 1 pressure-point cue", "Repeat it 10 times before simulated key points"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 2, focus: "先呼气再出手", focusEn: "Exhale before you swing", contentIds: ["content_cn_f_01"], drills: ["关键分前呼气 10 次", "呼气后再击球 12 球"], drillsEn: ["10 exhale-before-point reps", "12 hits only after the exhale"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 3, focus: "发接发前固定流程", focusEn: "Lock in the serve-return routine", contentIds: ["content_cn_e_02"], drills: ["发球前流程 10 次", "接发前流程 10 次"], drillsEn: ["10 pre-serve routine reps", "10 pre-return routine reps"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 4, focus: "录像看紧张时节奏哪里断了", focusEn: "Review where your rhythm breaks under tension", contentIds: ["content_cn_f_03"], drills: ["录 8 个关键分模拟球", "记下最乱的 2 球"], drillsEn: ["Record 8 simulated pressure-point reps", "Note the 2 messiest reps"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "关键分只做保底球", focusEn: "Use only your highest-margin shot on key points", contentIds: ["content_rb_03"], drills: ["关键分模拟 12 分钟", "每分只允许一条保底路线"], drillsEn: ["12 minutes of pressure-point simulation", "Allow only one high-margin pattern per point"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 6, focus: "落后时照样走流程", focusEn: "Keep the routine even when trailing", contentIds: ["content_cn_e_02"], drills: ["2 比 4 落后开始打 3 组", "每分前先做流程"], drillsEn: ["Play 3 sets starting from 2-4 down", "Do the routine before every point"], duration: "25 分钟", durationEn: "25 min" },
+      { day: 7, focus: "复盘最容易手紧的比分", focusEn: "Review the scorelines that tighten you up most", contentIds: ["content_cn_f_03"], drills: ["整理本周记录", "只留下一种下周应对"], drillsEn: ["Review this week's notes", "Keep only one response for next week"], duration: "20 分钟", durationEn: "20 min" }
+    ]
+  },
+  {
+    problemTag: "moonball-trouble",
+    level: "3.0",
+    title: "月亮球处理 7 天计划",
+    titleEn: "7-Day Moonball Handling Plan",
+    target: "先学会判断落点、保持耐心和把高球处理回安全深度。",
+    targetEn: "Learn to read the bounce, stay patient, and send high balls back with safe depth first.",
+    days: [
+      { day: 1, focus: "先判断落点再决定站位", focusEn: "Read the bounce before choosing your position", contentIds: ["content_common_01"], drills: ["高球判断落点 15 次", "落点前不抢步"], drillsEn: ["15 high-ball bounce reads", "Do not rush your feet before the bounce"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 2, focus: "高球来了先稳住弧线", focusEn: "Lift a safe arc first on higher balls", contentIds: ["content_cn_c_01"], drills: ["高球回深区 15 球", "只求深不求快"], drillsEn: ["15 high balls back deep", "Depth first, pace later"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "别被高球顶到身后", focusEn: "Do not let the ball crowd behind you", contentIds: ["content_fr_02"], drills: ["高球后退到位 12 组", "只记是否让球掉到身后"], drillsEn: ["12 retreat-and-set sets", "Track only whether the ball drifts behind you"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 4, focus: "录像看高球来时是否慌了", focusEn: "Review whether high balls trigger rushed decisions", contentIds: ["content_cn_f_01"], drills: ["录 8 个高球处理", "标记最急的 2 球"], drillsEn: ["Record 8 high-ball responses", "Mark the 2 most rushed reps"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 5, focus: "高球后只回中路深区", focusEn: "After the moonball, send it deep through the middle", contentIds: ["content_cn_e_03"], drills: ["高球后中路深球 15 球", "不急着变线"], drillsEn: ["15 deep middle replies after moonballs", "Do not change direction yet"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 6, focus: "高球后接下一拍", focusEn: "Recover for the next ball after the moonball reply", contentIds: ["content_cn_c_02"], drills: ["高球处理后回中 10 组", "下一拍只求站稳"], drillsEn: ["10 recover-after-high-ball sets", "Stabilize only for the next ball"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 7, focus: "半场专练高球来球", focusEn: "Train high-ball handling in half-court play", contentIds: ["content_common_01"], drills: ["半场高球对抗 12 分钟", "只记是否把球重新送深"], drillsEn: ["12 minutes of half-court moonball play", "Track only whether you send the ball back deep"], duration: "25 分钟", durationEn: "25 min" }
+    ]
+  },
+  {
+    problemTag: "general-improvement",
+    level: "3.0",
+    title: "通用基础提升 7 天计划",
+    titleEn: "7-Day General Improvement Plan",
+    target: "用一周先把训练节奏、稳定性、移动和发球基础串起来。",
+    targetEn: "Use one week to connect training rhythm, consistency, movement, and serve basics into a usable base.",
+    days: [
+      { day: 1, focus: "先定本周唯一重点", focusEn: "Set one priority for the week", contentIds: ["content_cn_f_02"], drills: ["写下本周唯一重点", "写 1 个可记录指标"], drillsEn: ["Write down one priority for the week", "Write down 1 metric you can track"], duration: "15 分钟", durationEn: "15 min" },
+      { day: 2, focus: "稳定深球优先", focusEn: "Prioritize steady depth", contentIds: ["content_cn_c_01"], drills: ["中路深球 20 球", "只记深度不过分发力"], drillsEn: ["20 deep middle balls", "Track depth without overhitting"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 3, focus: "脚步启动和到位", focusEn: "Work on movement start and arrival", contentIds: ["content_cn_c_02"], drills: ["分腿垫步 15 组", "两点启动 12 组"], drillsEn: ["15 split-step sets", "12 two-point start sets"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 4, focus: "发球节奏别乱", focusEn: "Keep the serve rhythm simple", contentIds: ["content_gaiao_02"], drills: ["抛球 20 次", "七成力量发球 15 球"], drillsEn: ["20 toss reps", "15 serves at 70 percent effort"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 5, focus: "单人训练模板", focusEn: "Use one simple solo-training template", contentIds: ["content_cn_c_03"], drills: ["影子挥拍 20 次", "定点慢打 20 球", "记录 1 条体感"], drillsEn: ["20 shadow swings", "20 controlled balls from one spot", "Write 1 feel note"], duration: "20 分钟", durationEn: "20 min" },
+      { day: 6, focus: "组合一次 30 分钟训练", focusEn: "Assemble one 30-minute session", contentIds: ["content_cn_f_02"], drills: ["5 分钟热身", "10 分钟主问题", "10 分钟发球或移动", "5 分钟记录"], drillsEn: ["5-minute warm-up", "10 minutes on the main issue", "10 minutes of serve or movement", "5 minutes of notes"], duration: "30 分钟", durationEn: "30 min" },
+      { day: 7, focus: "复盘并留下下周模板", focusEn: "Review and keep next week's template", contentIds: ["content_cn_f_03"], drills: ["整理本周记录", "留下下周 3 次训练模版"], drillsEn: ["Review this week's notes", "Keep a 3-session template for next week"], duration: "20 分钟", durationEn: "20 min" }
     ]
   }
 ];

@@ -33,12 +33,12 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     id: "coarse_rally",
     phase: "coarse",
     type: "choice",
-    question: "你和朋友对打，通常能连续打多少拍？",
+    question: "日常练习中，你通常能连续对打多少拍？",
     options: [
       { label: "3 拍以内", value: 1 },
-      { label: "3-10 拍", value: 2 },
-      { label: "10-20 拍", value: 3 },
-      { label: "20 拍以上不太会主动失误", value: 4 }
+      { label: "4-8 拍", value: 2 },
+      { label: "9-15 拍", value: 3 },
+      { label: "16 拍以上，主动失误比较少", value: 4 }
     ],
     dimension: "rally"
   },

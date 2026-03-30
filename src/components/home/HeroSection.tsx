@@ -7,23 +7,19 @@ import { Textarea } from "@/components/ui/Textarea";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { getProblemPreviewTags } from "@/lib/diagnosis";
-import { useStudy } from "@/components/study/StudyProvider";
 
 export function HeroSection() {
   const { language, t } = useI18n();
-  const { studyMode } = useStudy();
   const [question, setQuestion] = useState("");
   const startedTypingRef = useRef(false);
   const diagnoseHref = `/diagnose?q=${encodeURIComponent(question)}`;
   const quickTags = getProblemPreviewTags(language);
+  const visibleQuickTags = quickTags.slice(0, 4);
   const trimmedQuestion = question.trim();
   const inputMethod = quickTags.includes(trimmedQuestion) ? "quick_tag" : "typing";
 
   return (
     <section className="rounded-3xl border border-[var(--line)] bg-white p-8 shadow-soft md:p-10">
-      <p className="mb-4 inline-flex rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">
-        {t("home.hero.badge")}
-      </p>
       <h1 className="max-w-4xl text-3xl font-black leading-tight text-slate-900 md:text-[2.7rem]">
         {t("home.hero.title")}
       </h1>
@@ -42,9 +38,11 @@ export function HeroSection() {
           }}
           placeholder={t("home.hero.placeholder")}
         />
-        <p className="text-sm text-slate-500">{t("home.hero.quickTags")}</p>
-        <div className="flex flex-wrap gap-2">
-          {quickTags.map((tag) => (
+        <div className="flex flex-wrap items-center gap-2 pt-1">
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">
+            {t("home.hero.examples")}
+          </span>
+          {visibleQuickTags.map((tag) => (
             <button
               type="button"
               key={tag}
@@ -86,17 +84,6 @@ export function HeroSection() {
           {t("home.hero.assessment")}
         </Link>
       </div>
-      {!studyMode ? (
-        <div className="mt-4">
-          <Link
-            href="/video-diagnose"
-            className="text-sm font-medium text-slate-500 transition hover:text-brand-700"
-            onClick={() => logEvent("cta_click", { ctaLabel: t("cta.heroVideo"), ctaLocation: "home_hero_video", targetPage: "/video-diagnose" })}
-          >
-            {t("home.hero.video")}
-          </Link>
-        </div>
-      ) : null}
     </section>
   );
 }

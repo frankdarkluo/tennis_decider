@@ -7,36 +7,37 @@
 </p>
 
 <p align="center">
-  水平评估 · 问题诊断 · 内容推荐 · 视频诊断 · 训练计划
+  水平评估 · 问题诊断 · 内容推荐 · 训练计划 · 研究模式
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Supabase-Auth%20%26%20Data-10B981?style=flat-square" alt="Supabase" />
-  <img src="https://img.shields.io/badge/Content-673%20items-0F766E?style=flat-square" alt="673 content items" />
+  <img src="https://img.shields.io/badge/Supabase-Auth%20%26%20Research%20Data-10B981?style=flat-square" alt="Supabase auth and research data" />
+  <img src="https://img.shields.io/badge/Curated%20Content-39-0F766E?style=flat-square" alt="39 curated content items" />
+  <img src="https://img.shields.io/badge/Expanded%20Index-634-115E59?style=flat-square" alt="634 expanded content items" />
   <img src="https://img.shields.io/badge/Creators-52-CA8A04?style=flat-square" alt="52 creators" />
 </p>
 
 ---
 
-一个面向业余网球用户的训练决策型产品。当前版本已经具备：
+TennisLevel 是一个面向业余网球用户的训练决策型原型，核心目标是把“我现在到底该练什么”变得更具体、更可执行。
+
+当前版本重点包括：
 
 - 1 分钟水平评估
 - 一句话问题诊断
-- 真实内容推荐
-- AI 视频诊断
+- 场景化诊断解释与内容推荐
 - 7 天训练计划
-- 中英双语界面与全站 `zh | en` 切换
-- Supabase 邮箱登录与保存能力
-- 研究基础设施：study mode、事件日志、研究问卷、导出页、测试引导、知情同意
+- 中英双语界面
+- Study mode、事件日志、研究问卷与导出支持
 
 ## 当前数据规模
 
 - 评估题：14 道
-- 诊断规则：19 条
-- 内容条目：673 条
+- 诊断规则：27 条
+- 精选内容：39 条
+- 扩展内容索引：634 条
 - 创作者：52 位
-- 训练计划模板：9 套
-- 视频诊断：前端抽帧 + VLM 接口适配 + 次数限制
+- 训练计划模板：24 套
 
 ## 本地运行
 
@@ -47,7 +48,7 @@ npm run dev
 
 打开 `http://localhost:3000`
 
-推荐在提交前额外运行：
+推荐在提交前运行：
 
 ```bash
 npm test
@@ -56,19 +57,17 @@ npm run validate:study-remote
 npm run build
 ```
 
-## Supabase 配置
-
-项目默认使用 Supabase 作为登录和研究数据存储。
+## 环境变量
 
 1. 复制 `.env.example` 为 `.env.local`
-2. 填入：
+2. 至少补上：
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 ```
 
-如果你要切换到真实多模态模型接口，可以再补：
+如果要接入真实多模态接口，再补：
 
 ```bash
 VLM_PROVIDER=mock
@@ -77,15 +76,11 @@ VLM_MODEL=Qwen/Qwen2.5-VL-72B-Instruct
 VLM_BASE_URL=https://api.siliconflow.cn/v1
 ```
 
-3. 在 Supabase Auth 里把回调地址加入允许列表：
-
-- `http://localhost:3000/auth/callback`
-
-如果你要启用研究导出页和 study 联系邮箱，建议再加：
+研究模式常用变量：
 
 ```bash
-NEXT_PUBLIC_ADMIN_EMAILS=your-email@example.com
-NEXT_PUBLIC_RESEARCH_CONTACT_EMAIL=your-email@example.com
+NEXT_PUBLIC_ADMIN_EMAILS=researcher@example.com
+NEXT_PUBLIC_RESEARCH_CONTACT_EMAIL=researcher@example.com
 NEXT_PUBLIC_STUDY_SNAPSHOT_VERSION=2026-03-29-v1
 NEXT_PUBLIC_STUDY_FIXED_SEED=20260329
 NEXT_PUBLIC_STUDY_FREEZE_LIBRARY=true
@@ -94,6 +89,10 @@ NEXT_PUBLIC_STUDY_DISABLE_RANDOM_SURFACING=true
 NEXT_PUBLIC_STUDY_DISABLE_VIEWCOUNT_BOOST=true
 NEXT_PUBLIC_ENABLE_RESEARCHER_OVERLAY=false
 ```
+
+Supabase Auth 需要允许本地回调：
+
+- `http://localhost:3000/auth/callback`
 
 ## Supabase SQL
 
@@ -108,54 +107,35 @@ NEXT_PUBLIC_ENABLE_RESEARCHER_OVERLAY=false
 - `supabase/video_diagnosis.sql`
   创建：`video_usage`、`video_diagnosis_history`
 
-执行前如果涉及管理员邮箱占位符，请先改成你自己的邮箱。
-
-如果你要验证远端研究库是否已经具备 study-mode 写入能力，可以运行：
+常用校验命令：
 
 ```bash
 npm run validate:study-remote
-```
-
-如果你要检查研究文档、`.env.example` 和当前 snapshot 配置是否一致，可以运行：
-
-```bash
 npm run validate:study-docs
 ```
 
-这个命令会用合成 `participantId` / `sessionId` 依次尝试写入：
-- `study_participants`
-- `study_sessions`
-- `event_logs`
-- `study_task_ratings`
-- `study_artifacts`
-- `survey_responses`
+## Study Notes
 
-适合在执行 `supabase/research_infra.sql` 与 `supabase/study_mode.sql` 后立即做真实写入检查。
-
-## Study notes
-
-- study mode 采用冻结 snapshot 驱动 `/library` 与 `/rankings` 顺序
+- `/library` 与 `/rankings` 在 study mode 下由冻结 snapshot 驱动
 - post-task actionability 使用 7 点量表
-- study bundle 导出包含 `taskRatings` 与 `actionabilitySummary`
-- 详细说明见 [docs_local/STUDY_MODE.md](/Users/gluo/Desktop/tennis_level/.worktrees/pr1-study-data-contracts/docs_local/STUDY_MODE.md)
-- 远端迁移清单见 [docs_local/STUDY_REMOTE_MIGRATION_CHECKLIST.md](/Users/gluo/Desktop/tennis_level/docs_local/STUDY_REMOTE_MIGRATION_CHECKLIST.md)
-- snapshot 生成与校验见 [docs_local/STUDY_SNAPSHOT_NOTE.md](/Users/gluo/Desktop/tennis_level/.worktrees/pr1-study-data-contracts/docs_local/STUDY_SNAPSHOT_NOTE.md)
+- 导出 bundle 包含 `taskRatings` 与 `actionabilitySummary`
+- 详细说明见 [docs_local/STUDY_MODE.md](docs_local/STUDY_MODE.md)
+- 远端迁移清单见 [docs_local/STUDY_REMOTE_MIGRATION_CHECKLIST.md](docs_local/STUDY_REMOTE_MIGRATION_CHECKLIST.md)
+- snapshot 说明见 [docs_local/STUDY_SNAPSHOT_NOTE.md](docs_local/STUDY_SNAPSHOT_NOTE.md)
 
 ## 目录说明
 
 - `src/app`：页面路由
 - `src/components`：业务组件与 UI 组件
 - `src/data`：评估题、诊断规则、内容、创作者、问卷等结构化数据
-- `src/lib`：评估、诊断、计划、用户数据、研究日志与导出逻辑
-- `scripts`：数据校验脚本
+- `src/lib`：评估、诊断、计划、研究日志与导出逻辑
+- `scripts`：校验与数据脚本
 - `supabase`：Supabase 初始化 SQL
 
 ## 说明
 
-当前版本仍然是前端驱动的产品原型：
-
 - 内容推荐基于本地维护的真实内容和规则数据
-- 双语文案、内容标题和创作者信息支持中英切换；研究模式下语言会锁定
+- 研究模式下语言、snapshot 与排序策略会锁定
 - 登录使用 Supabase magic link
-- 研究数据采用“localStorage + Supabase API”双写策略
-- 视频诊断当前默认使用 mock VLM 结果跑通流程；配置真实 API key 后可切换到托管多模态模型
+- 研究数据采用 `localStorage + Supabase API` 双写策略
+- 视频诊断链路仍保留，但当前研究主路径以文字诊断与训练计划为主

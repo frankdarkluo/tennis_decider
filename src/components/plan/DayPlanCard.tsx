@@ -18,7 +18,7 @@ import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
 
-function compactFocus(value: string, maxLength = 15) {
+function compactFocus(value: string, maxLength = 24) {
   if (value.length <= maxLength) {
     return value;
   }
@@ -170,7 +170,7 @@ export function DayPlanCard({
       <div className="flex items-center justify-between gap-3">
         <div>
           <p className="text-sm font-semibold text-slate-900">{t("plan.day.label", { day: day.day })}</p>
-          <p className="mt-1 text-sm text-slate-600">{compactFocus(day.focus)}</p>
+          <p className="mt-1 text-sm font-medium text-slate-700">{compactFocus(day.focus)}</p>
         </div>
         <Button variant="ghost" className="px-3 text-sm" onClick={toggleExpanded}>
           {displayExpanded ? t("plan.day.collapse") : t("plan.day.expand")}
@@ -179,14 +179,17 @@ export function DayPlanCard({
 
       {displayExpanded ? (
         <div className="mt-4 space-y-3 border-t border-[var(--line)] pt-4">
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-slate-700">{t("plan.day.what")}</p>
+            <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
+              {day.drills.map((drill) => (
+                <li key={drill}>{drill}</li>
+              ))}
+            </ul>
+          </div>
           <p className="text-sm text-slate-600">
             <span className="font-medium text-slate-700">{t("plan.day.duration")}</span> {day.duration}
           </p>
-          <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
-            {day.drills.map((drill) => (
-              <li key={drill}>{drill}</li>
-            ))}
-          </ul>
           <div className="space-y-2">
             <p className="text-sm font-medium text-slate-700">{t("plan.day.watch")}</p>
             {featuredContentCard ?? (
