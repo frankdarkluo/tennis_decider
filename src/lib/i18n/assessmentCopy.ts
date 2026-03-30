@@ -93,10 +93,10 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
   fine_c_net: {
     en: "How do you feel about coming to the net?",
     labels: {
-      1: "I almost never come in",
-      2: "Occasionally, easy volleys only",
-      3: "I come in on purpose and trust my volleys",
-      4: "Net play is one of my scoring tools"
+      1: "I almost never come to the net",
+      2: "I come up sometimes but struggle with high balls and wide angles",
+      3: "I approach on purpose and my volleys are solid, though I rarely score at net",
+      4: "Net play is a regular scoring weapon \u2014 I handle volleys and overheads"
     }
   },
   fine_c_depth: {
@@ -113,8 +113,26 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
     labels: {
       1: "Mostly waiting for their errors",
       2: "Sometimes I hit a pressuring ball",
-      3: "I can pressure them into errors fairly often",
-      4: "I can build patterns that create chances"
+      3: "I can force errors with depth and pace changes",
+      4: "I build structured points and control rally tempo"
+    }
+  },
+  fine_c_tactical: {
+    en: "Can you adjust your game plan for different opponents?",
+    labels: {
+      1: "I mostly play one style regardless",
+      2: "I know I should adapt but cannot execute in matches",
+      3: "I can make some adjustments targeting opponent weaknesses",
+      4: "I design and execute different tactics based on opponent style"
+    }
+  },
+  fine_c_pressure: {
+    en: "How do you perform on big points?",
+    labels: {
+      1: "I get nervous and errors increase noticeably",
+      2: "I hang in but play passively, afraid to attack",
+      3: "I keep my normal level and sometimes hit a good shot",
+      4: "I can attack on big points and have a reliable weapon"
     }
   }
 };

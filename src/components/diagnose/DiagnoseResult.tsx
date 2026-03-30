@@ -23,7 +23,7 @@ import { useStudy } from "@/components/study/StudyProvider";
 import { Badge } from "@/components/ui/Badge";
 
 function normalizePlanLevel(level?: string): PlanLevel {
-  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.0+") {
+  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.5") {
     return level;
   }
 

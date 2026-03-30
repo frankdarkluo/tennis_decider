@@ -32,7 +32,9 @@ const DIMENSION_LABELS_ZH: Record<AssessmentDimension, string> = {
   net_play: "网前",
   depth_variety: "深度和变化",
   forcing: "施压能力",
-  tactics: "策略执行"
+  tactics: "策略执行",
+  tactical_adaptability: "战术适应",
+  pressure_performance: "关键分表现"
 };
 
 const DIMENSION_LABELS_EN: Record<AssessmentDimension, string> = {
@@ -54,7 +56,9 @@ const DIMENSION_LABELS_EN: Record<AssessmentDimension, string> = {
   net_play: "net play",
   depth_variety: "depth and variation",
   forcing: "pressure skills",
-  tactics: "tactical execution"
+  tactics: "tactical execution",
+  tactical_adaptability: "tactical adaptability",
+  pressure_performance: "big-point performance"
 };
 
 const SUMMARY_TEMPLATES_ZH: Record<AssessmentLevel, string> = {
@@ -62,7 +66,7 @@ const SUMMARY_TEMPLATES_ZH: Record<AssessmentLevel, string> = {
   "3.0": "你已经能打起来了，但稳定性和控制力还有空间。建议先减少失误，再想变化。",
   "3.5": "你的基本功比较扎实，下一步可以开始练方向控制和节奏变化。",
   "4.0": "你已经有不错的全场能力，可以开始强化网前和战术执行。",
-  "4.0+": "你的水平已经比较高了，建议针对比赛中的薄弱环节做专项强化。"
+  "4.5": "你的水平已经很高，力量和旋转运用成熟，建议针对比赛中的薄弱环节做专项强化。"
 };
 
 const SUMMARY_TEMPLATES_EN: Record<AssessmentLevel, string> = {
@@ -70,7 +74,7 @@ const SUMMARY_TEMPLATES_EN: Record<AssessmentLevel, string> = {
   "3.0": "You can already rally, but stability and control still need work. Clean up errors before adding variety.",
   "3.5": "Your fundamentals are taking shape. The next step is direction control and better rhythm changes.",
   "4.0": "You already have solid all-court foundations. It is worth sharpening net play and tactical execution next.",
-  "4.0+": "You are already playing at a strong level. The next gains will come from targeted match-specific refinement."
+  "4.5": "You are playing at an advanced level with strong power and spin. Target your remaining match-day weaknesses for the next gains."
 };
 
 const CONFIDENCE_LABELS = {
@@ -198,15 +202,16 @@ export function calculateLevel(coarseScore: number, fineScore: number): Assessme
     return fineScore <= 5 ? "3.0" : "3.5";
   }
 
-  if (fineScore <= 5) {
+  // Branch C: 5 questions, max 20 points
+  if (fineScore <= 10) {
     return "3.5";
   }
 
-  if (fineScore <= 8) {
+  if (fineScore <= 15) {
     return "4.0";
   }
 
-  return "4.0+";
+  return "4.5";
 }
 
 function getConfidence(answeredCount: number, totalQuestions: number): AssessmentResult["confidence"] {
@@ -312,11 +317,11 @@ export function calculateAssessmentResult(
 export function getDefaultAssessmentResult(locale: AssessmentLocale = "zh"): AssessmentResult {
   return {
     totalScore: 0,
-    maxScore: 24,
+    maxScore: 32,
     normalizedScore: 0,
     answeredCount: 0,
     uncertainCount: 0,
-    totalQuestions: 6,
+    totalQuestions: 8,
     level: "2.5",
     confidence: "较低",
     dimensions: [],

@@ -43,7 +43,7 @@ export function toChineseSkill(skill: string): string {
 }
 
 export function toChineseLevel(level: string): string {
-  if (["2.5", "3.0", "3.5", "4.0", "4.0+", "4.5"].includes(level)) {
+  if (["2.5", "3.0", "3.5", "4.0", "4.5"].includes(level)) {
     return level;
   }
   return "3.0";

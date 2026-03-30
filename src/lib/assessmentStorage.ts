@@ -14,7 +14,14 @@ export function readAssessmentResultFromStorage(): AssessmentResult | null {
   }
 
   try {
-    return JSON.parse(raw) as AssessmentResult;
+    const parsed = JSON.parse(raw) as AssessmentResult;
+
+    // Migrate legacy 4.0+ level to 4.5
+    if ((parsed.level as string) === "4.0+") {
+      parsed.level = "4.5";
+    }
+
+    return parsed;
   } catch {
     return null;
   }

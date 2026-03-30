@@ -3,7 +3,7 @@ import { getStudySnapshotCreators } from "@/lib/study/snapshot";
 import { seededSort } from "@/lib/study/seededSort";
 import type { Creator, CreatorRankingSignals } from "@/types/creator";
 
-const LEVEL_ORDER = ["2.5", "3.0", "3.5", "4.0", "4.0+", "4.5"] as const;
+const LEVEL_ORDER = ["2.5", "3.0", "3.5", "4.0", "4.5"] as const;
 
 function clamp01(value: number) {
   return Math.max(0, Math.min(1, value));

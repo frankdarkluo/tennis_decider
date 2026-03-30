@@ -33,7 +33,6 @@ import { useStudy } from "@/components/study/StudyProvider";
 
 const AUTO_ADVANCE_DELAY = 300;
 const SLIDER_ADVANCE_DELAY = 500;
-const TOTAL_STEPS = 8;
 
 function getSourceRoute() {
   if (typeof document === "undefined" || !document.referrer) {
@@ -82,17 +81,21 @@ export default function AssessmentPage() {
   const coarseScore = coarseQuestions.reduce((sum, question) => sum + Number(answers[question.id] ?? 0), 0);
   const branch = determineBranch(coarseScore);
   const fineQuestions = useMemo(() => getFineQuestionsForBranch(branch, assessmentQuestions), [branch]);
+  const totalSteps = profileQuestions.length + coarseQuestions.length + fineQuestions.length;
 
   const currentQuestion: AssessmentQuestion | null = useMemo(() => {
-    if (stepIndex < 2) {
+    const profileCount = profileQuestions.length;
+    const coarseEnd = profileCount + coarseQuestions.length;
+
+    if (stepIndex < profileCount) {
       return profileQuestions[stepIndex] ?? null;
     }
 
-    if (stepIndex < 5) {
-      return coarseQuestions[stepIndex - 2] ?? null;
+    if (stepIndex < coarseEnd) {
+      return coarseQuestions[stepIndex - profileCount] ?? null;
     }
 
-    return fineQuestions[stepIndex - 5] ?? null;
+    return fineQuestions[stepIndex - coarseEnd] ?? null;
   }, [coarseQuestions, fineQuestions, profileQuestions, stepIndex]);
 
   const selectedValue = useMemo(() => {
@@ -156,7 +159,7 @@ export default function AssessmentPage() {
           ...storedDraft.profile,
           yearsLabel: formatAssessmentYearsLabel(storedDraft.profile?.yearsPlaying ?? prev.yearsPlaying ?? 2, language)
         }));
-        setStepIndex(Math.max(0, Math.min(TOTAL_STEPS - 1, storedDraft.stepIndex ?? 0)));
+        setStepIndex(Math.max(0, Math.min(totalSteps - 1, storedDraft.stepIndex ?? 0)));
         setDraftRestored(true);
       }
       setEntryState("questionnaire");
@@ -170,7 +173,7 @@ export default function AssessmentPage() {
         ...storedDraft.profile,
         yearsLabel: formatAssessmentYearsLabel(storedDraft.profile?.yearsPlaying ?? prev.yearsPlaying ?? 2, language)
       }));
-      setStepIndex(Math.max(0, Math.min(TOTAL_STEPS - 1, storedDraft.stepIndex ?? 0)));
+      setStepIndex(Math.max(0, Math.min(totalSteps - 1, storedDraft.stepIndex ?? 0)));
       setDraftRestored(true);
       setEntryState("questionnaire");
       return;
@@ -289,7 +292,7 @@ export default function AssessmentPage() {
     clearAdvanceTimer();
     setAutoAdvancing(false);
     sliderTouchedRef.current = false;
-    setStepIndex(Math.max(0, Math.min(TOTAL_STEPS - 1, nextStep)));
+    setStepIndex(Math.max(0, Math.min(totalSteps - 1, nextStep)));
   };
 
   const scheduleAdvance = (callback: () => void, delay: number) => {
@@ -381,7 +384,7 @@ export default function AssessmentPage() {
       autoAdvanced: true
     }, { page: "/assessment" });
 
-    if (stepIndex === TOTAL_STEPS - 1) {
+    if (stepIndex === totalSteps - 1) {
       scheduleAdvance(() => {
         void onSubmit(nextAnswers);
       }, AUTO_ADVANCE_DELAY);
@@ -440,8 +443,8 @@ export default function AssessmentPage() {
 
         <AssessmentProgress
           current={stepIndex + 1}
-          total={TOTAL_STEPS}
-          hint={stepIndex >= 5 ? t("assessment.progress.almostDone") : undefined}
+          total={totalSteps}
+          hint={stepIndex >= totalSteps - 3 ? t("assessment.progress.almostDone") : undefined}
         />
 
         {currentQuestion ? (

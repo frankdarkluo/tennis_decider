@@ -1,4 +1,4 @@
-export type AssessmentLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.0+";
+export type AssessmentLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.5";
 
 export type AssessmentBranch = "A" | "B" | "C";
 
@@ -25,7 +25,9 @@ export type AssessmentDimension =
   | "net_play"
   | "depth_variety"
   | "forcing"
-  | "tactics";
+  | "tactics"
+  | "tactical_adaptability"
+  | "pressure_performance";
 
 export type AssessmentProfile = {
   gender?: AssessmentGender;
