@@ -61,6 +61,19 @@ export type StudySession = {
   endedAt?: string | null;
 };
 
+export type StudyParticipantRecord = {
+  id: string;
+  studyId: string;
+  participantId: string;
+  latestSessionId: string;
+  language: StudyLanguage;
+  condition: StudyCondition | string | null;
+  latestSnapshotId: string;
+  latestBuildVersion: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type StudyArtifactType =
   | "study_background"
   | "assessment"
@@ -96,6 +109,7 @@ export type StudyArtifactRecord = {
 
 export type StudyExportBundle = {
   snapshot: StudySnapshot;
+  participants?: StudyParticipantRecord[];
   sessions: StudySession[];
   artifacts: StudyArtifactRecord[];
   events: EventLog[];
@@ -128,6 +142,8 @@ export type StudyBookmarkState = {
 export type StudyProgressState = {
   updatedAt: string;
   lastVisitedPath?: string;
+  lastDiagnosisPath?: string;
+  lastDiagnosisTitle?: string;
   lastAssessmentPath?: string;
   lastAssessmentLevel?: string;
   lastAssessmentCompletedAt?: string;

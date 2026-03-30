@@ -6,6 +6,7 @@ export type EventName =
   | "session.abandoned"
   | "page.view"
   | "page.leave"
+  | "page.visibility_changed"
   | "page.error"
   | "home.entry_selected"
   | "home.problem_started"
@@ -43,6 +44,7 @@ export type EventName =
   | "content.card_opened"
   | "content.outbound_clicked"
   | "content.bookmark_toggled"
+  | "content.why_this_viewed"
   | "content.language_badge_clicked"
   | "rankings.viewed"
   | "rankings.snapshot_loaded"
@@ -51,6 +53,7 @@ export type EventName =
   | "rankings.search_used"
   | "creator.card_opened"
   | "creator.modal_viewed"
+  | "creator.why_this_viewed"
   | "creator.featured_video_clicked"
   | "creator.homepage_cta_clicked"
   | "plan.viewed"
@@ -161,12 +164,18 @@ export type StudyDerivedMetric = {
   studyId: string;
   participantId: string | null;
   sessionId: string;
+  susScore: number | null;
+  openFeedbackCount: number;
   firstEntryMode: string | null;
   routesVisited: string[];
   pageCount: number;
   firstCoreFeatureUsed: string | null;
   dwellMsByRoute: Record<string, number>;
+  focusedDwellMsByRoute: Record<string, number>;
+  activeDwellMsByRoute: Record<string, number>;
   longestDwellRoute: string | null;
+  longestFocusedDwellRoute: string | null;
+  longestActiveDwellRoute: string | null;
   totalSessionMs: number;
   assessmentCompleted: boolean;
   diagnoseCompleted: boolean;
@@ -178,6 +187,9 @@ export type StudyDerivedMetric = {
   outboundClickCount: number;
   bookmarkCount: number;
   fallbackUsed: boolean;
+  diagnoseWhyThisViewedCount: number;
+  contentWhyThisViewedCount: number;
+  creatorWhyThisViewedCount: number;
   whyThisViewedCount: number;
 };
 
@@ -187,6 +199,7 @@ export type ResearchExportTable =
   | "assessment_results"
   | "diagnosis_history"
   | "video_diagnosis_history"
+  | "study_participants"
   | "study_sessions"
   | "study_artifacts"
   | "study_task_ratings";

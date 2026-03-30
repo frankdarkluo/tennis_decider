@@ -9,8 +9,10 @@ import { PlatformVideoSearch } from "@/components/PlatformVideoSearch";
 import {
   getContentCoachNote,
   getContentFocusLine,
+  getContentLanguageTag,
   getContentPrimaryTitle,
-  getContentSecondaryTitle
+  getContentSecondaryTitle,
+  getSubtitleAvailability
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
@@ -18,6 +20,7 @@ import { buildDiagnosisPlanCandidateIds, buildPlanHref } from "@/lib/plans";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
 import { PlanLevel } from "@/types/plan";
 import { useStudy } from "@/components/study/StudyProvider";
+import { Badge } from "@/components/ui/Badge";
 
 function normalizePlanLevel(level?: string): PlanLevel {
   if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.0+") {
@@ -39,11 +42,22 @@ function RecommendationCard({
   problemTag: string;
 }) {
   const { language, t } = useI18n();
+  const [showWhy, setShowWhy] = useState(false);
   const thumbnail = getThumbnail(item);
   const primaryTitle = getContentPrimaryTitle(item, language);
   const secondaryTitle = getContentSecondaryTitle(item, language);
   const targetLabel = getContentFocusLine(item, language);
   const coachNote = getContentCoachNote(item, language);
+  const whySummary = coachNote || targetLabel || primaryTitle;
+  const contentLanguage = getContentLanguageTag(item);
+  const subtitleAvailability = getSubtitleAvailability(item);
+  const subtitleLabel = subtitleAvailability === "english"
+    ? t("content.subtitle.yes")
+    : subtitleAvailability === "none"
+      ? t("content.subtitle.no")
+      : subtitleAvailability === "not_needed"
+        ? t("content.subtitle.notNeeded")
+        : t("content.subtitle.unknown");
 
   return (
     <div className="rounded-xl border border-[var(--line)] p-4 text-sm">
@@ -68,9 +82,22 @@ function RecommendationCard({
           ) : null}
         </div>
         <div className="min-w-0 flex-1">
+          <div className="mb-2 flex flex-wrap gap-2">
+            <Badge className="bg-slate-100 px-4 py-1.5 text-sm font-semibold leading-none text-slate-700">
+              {contentLanguage === "zh" ? t("content.lang.zh") : t("content.lang.en")}
+            </Badge>
+            <Badge className="bg-slate-100 px-4 py-1.5 text-sm font-semibold leading-none text-slate-700">
+              {subtitleLabel}
+            </Badge>
+          </div>
           <p className="font-semibold text-slate-900">{primaryTitle}</p>
           {secondaryTitle ? (
-            <p className="mt-1 text-xs leading-5 text-slate-400">{secondaryTitle}</p>
+            <div className="mt-1 space-y-0.5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">
+                {t("content.secondaryTitle")}
+              </p>
+              <p className="text-xs leading-5 text-slate-400">{secondaryTitle}</p>
+            </div>
           ) : null}
           {targetLabel && targetLabel !== primaryTitle ? (
             <p className="mt-1 text-sm text-slate-600">{t("content.targetPrefix")} {targetLabel}</p>
@@ -101,6 +128,26 @@ function RecommendationCard({
         >
           <Button variant="secondary">{t("content.open")}</Button>
         </a>
+        <button
+          type="button"
+          className="mt-3 text-xs font-semibold text-slate-500 transition hover:text-slate-700"
+          onClick={() => {
+            logEvent("diagnose.why_this_viewed", {
+              targetType: "content",
+              problemTag,
+              contentId: item.id,
+              layer
+            }, { page: "/diagnose" });
+            setShowWhy((current) => !current);
+          }}
+        >
+          {t("content.whyRecommended")}
+        </button>
+        {showWhy ? (
+          <p className="mt-2 text-xs leading-5 text-slate-500">
+            {t("content.whyPrefix")} {whySummary}
+          </p>
+        ) : null}
       </div>
     </div>
   );
@@ -204,6 +251,26 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
               }, { page: "/diagnose" })}
             >
               <Button>{t("diagnose.result.plan")}</Button>
+            </Link>
+            <Link
+              href="/library"
+              onClick={() => logEvent("cta_click", {
+                ctaLabel: t("diagnose.result.library"),
+                ctaLocation: "diagnosis_result_follow_up",
+                targetPage: "/library"
+              }, { page: "/diagnose" })}
+            >
+              <Button variant="secondary">{t("diagnose.result.library")}</Button>
+            </Link>
+            <Link
+              href="/rankings"
+              onClick={() => logEvent("cta_click", {
+                ctaLabel: t("diagnose.result.rankings"),
+                ctaLocation: "diagnosis_result_follow_up",
+                targetPage: "/rankings"
+              }, { page: "/diagnose" })}
+            >
+              <Button variant="ghost">{t("diagnose.result.rankings")}</Button>
             </Link>
           </div>
 

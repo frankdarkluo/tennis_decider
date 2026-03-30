@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import {
   formatCompactViewCount,
+  getContentCoachNote,
   getContentFocusLine,
   getContentLanguageTag,
   getContentPrimaryTitle,
@@ -16,7 +17,6 @@ import {
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
-import { useStudy } from "@/components/study/StudyProvider";
 
 type ContentCardProps = {
   item: ContentItem;
@@ -88,7 +88,6 @@ export function ContentCard({
   onToggleBookmark
 }: ContentCardProps) {
   const { language, t } = useI18n();
-  const { studyMode } = useStudy();
   const creator = creators.find((c) => c.id === item.creatorId);
   const isProfileCompact = source === "profile";
   const primaryTitle = getContentPrimaryTitle(item, language);
@@ -100,8 +99,10 @@ export function ContentCard({
   const showThumbnail = Boolean(thumbnail) && !thumbnailFailed;
   const contentLanguage = getContentLanguageTag(item);
   const subtitleAvailability = getSubtitleAvailability(item);
-  const showResearchMetadata = studyMode;
   const creatorName = creator ? getCreatorPrimaryName(creator, language) : t("content.unknownCreator");
+  const [showWhy, setShowWhy] = useState(false);
+  const coachNote = getContentCoachNote(item, language);
+  const whySummary = coachNote || focusLine || primaryTitle;
 
   const subtitleLabel = subtitleAvailability === "english"
     ? t("content.subtitle.yes")
@@ -166,25 +167,26 @@ export function ContentCard({
             <div className="flex flex-wrap gap-2">
               <Badge className="px-5 py-2 text-base font-semibold leading-none">{item.platform}</Badge>
               <Badge className="bg-slate-100 px-5 py-2 text-base font-semibold leading-none text-slate-700">{item.levels.join("/")}</Badge>
-              {showResearchMetadata ? (
-                <>
-                  <Badge className="bg-slate-100 px-4 py-2 text-sm font-semibold leading-none text-slate-700">
-                    {contentLanguage === "zh" ? t("content.lang.zh") : t("content.lang.en")}
-                  </Badge>
-                  <Badge className="bg-slate-100 px-4 py-2 text-sm font-semibold leading-none text-slate-700">
-                    {subtitleLabel}
-                  </Badge>
-                </>
-              ) : null}
+              <Badge className="bg-slate-100 px-4 py-2 text-sm font-semibold leading-none text-slate-700">
+                {contentLanguage === "zh" ? t("content.lang.zh") : t("content.lang.en")}
+              </Badge>
+              <Badge className="bg-slate-100 px-4 py-2 text-sm font-semibold leading-none text-slate-700">
+                {subtitleLabel}
+              </Badge>
             </div>
             <div className="space-y-1">
               <h3 className="line-clamp-2 text-[0.96rem] font-bold leading-[1.35] text-slate-900 sm:text-[1rem]">
                 {primaryTitle}
               </h3>
               {secondaryTitle ? (
-                <p className="line-clamp-1 text-xs leading-5 text-slate-400">
-                  {secondaryTitle}
-                </p>
+                <div className="space-y-0.5">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">
+                    {t("content.secondaryTitle")}
+                  </p>
+                  <p className="line-clamp-1 text-xs leading-5 text-slate-400">
+                    {secondaryTitle}
+                  </p>
+                </div>
               ) : null}
               <p className="text-sm leading-6 text-slate-600">{creatorName}</p>
             </div>
@@ -193,6 +195,28 @@ export function ContentCard({
             {focusLine && focusLine !== primaryTitle ? (
               <p className="min-w-0 text-sm leading-6 text-slate-600">
                 {t("content.targetPrefix")} {focusLine}
+              </p>
+            ) : null}
+            <button
+              type="button"
+              className="pointer-events-auto mt-2 text-xs font-semibold text-slate-500 transition hover:text-slate-700"
+              onClick={(event) => {
+                event.stopPropagation();
+                const route = source === "profile" ? "/profile" : "/library";
+                logEvent("content.why_this_viewed", {
+                  contentId: item.id,
+                  sourceContext: source,
+                  contentLanguage,
+                  subtitleAvailability
+                }, { page: route });
+                setShowWhy((current) => !current);
+              }}
+            >
+              {t("content.whyRecommended")}
+            </button>
+            {showWhy ? (
+              <p className="mt-2 text-xs leading-5 text-slate-500">
+                {t("content.whyPrefix")} {whySummary}
               </p>
             ) : null}
             {onToggleBookmark ? (

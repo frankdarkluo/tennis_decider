@@ -45,6 +45,76 @@ const studyArtifactLabelKey = {
   study_resume: "profile.studyArtifact.study_resume"
 } as const;
 
+function deriveStudyResumeAction(studyProgress: StudyProgressState | null) {
+  const path = studyProgress?.lastVisitedPath;
+
+  if (!path) {
+    return null;
+  }
+
+  if (path.startsWith("/diagnose")) {
+    return {
+      href: path,
+      itemType: "diagnosis",
+      labelKey: "profile.studyResumeDiagnosis" as const
+    };
+  }
+
+  if (path.startsWith("/plan")) {
+    return {
+      href: path,
+      itemType: "plan",
+      labelKey: "profile.studyResumePlan" as const
+    };
+  }
+
+  if (path.startsWith("/assessment/result")) {
+    return {
+      href: path,
+      itemType: "assessment",
+      labelKey: "profile.studyContinueAssessment" as const
+    };
+  }
+
+  if (path.startsWith("/assessment")) {
+    return {
+      href: path,
+      itemType: "assessment_draft",
+      labelKey: "profile.studyContinueAssessmentDraft" as const
+    };
+  }
+
+  return {
+    href: path,
+    itemType: "study_resume",
+    labelKey: "profile.studyResume" as const
+  };
+}
+
+function deriveStudyDiagnosisAction(studyProgress: StudyProgressState | null) {
+  const diagnosisPath = studyProgress?.lastDiagnosisPath;
+
+  if (diagnosisPath) {
+    return {
+      href: diagnosisPath,
+      itemType: "diagnosis",
+      labelKey: "profile.studyResumeDiagnosis" as const,
+      title: studyProgress?.lastDiagnosisTitle ?? diagnosisPath
+    };
+  }
+
+  if (studyProgress?.lastVisitedPath?.startsWith("/diagnose")) {
+    return {
+      href: studyProgress.lastVisitedPath,
+      itemType: "diagnosis",
+      labelKey: "profile.studyResumeDiagnosis" as const,
+      title: studyProgress?.lastDiagnosisTitle ?? studyProgress.lastVisitedPath
+    };
+  }
+
+  return null;
+}
+
 function SectionSkeleton({ lines = 3 }: { lines?: number }) {
   return (
     <Card className="space-y-3">
@@ -76,6 +146,26 @@ function EmptyState({
       <Link href={href}>
         <Button variant="secondary">{actionLabel}</Button>
       </Link>
+    </Card>
+  );
+}
+
+function QuickContinueCard({
+  title,
+  description,
+  children
+}: {
+  title: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Card className="space-y-3 border-slate-200 bg-slate-50/60 shadow-none">
+      <div>
+        <h2 className="text-base font-bold text-slate-900">{title}</h2>
+        <p className="mt-1 text-sm text-slate-600">{description}</p>
+      </div>
+      {children}
     </Card>
   );
 }
@@ -238,6 +328,9 @@ export default function ProfilePage() {
       .slice(0, 3);
   }, [assessmentResult]);
 
+  const latestSavedPlan = savedPlans[0] ?? null;
+  const latestDiagnosis = diagnosisHistory[0] ?? null;
+
   const formatDateTime = (value: string) => formatLocalizedDateTime(value, language);
 
   const toPlanSourceLabel = (sourceType: SavedPlanRow["source_type"]) => {
@@ -287,6 +380,16 @@ export default function ProfilePage() {
       ? (studyProgress.assessmentDraftStepIndex ?? studyAssessmentDraftStep ?? 0)
       : null;
     const hasActiveAssessmentDraft = activeAssessmentDraftStep !== null;
+    const resumeAction = deriveStudyResumeAction(studyProgress);
+    const diagnosisAction = deriveStudyDiagnosisAction(studyProgress);
+    const planAlreadyCoveredByResume = Boolean(
+      resumeAction?.itemType === "plan" && studyProgress?.lastPlanHref && resumeAction.href === studyProgress.lastPlanHref
+    );
+    const assessmentAlreadyCoveredByResume = Boolean(
+      (resumeAction?.itemType === "assessment" || resumeAction?.itemType === "assessment_draft")
+      && studyProgress?.lastAssessmentPath
+      && resumeAction.href === studyProgress.lastAssessmentPath
+    );
 
     return (
       <PageContainer>
@@ -341,31 +444,75 @@ export default function ProfilePage() {
                 </div>
               </div>
 
+              <div className="grid gap-3 md:grid-cols-3">
+                <Card className="space-y-3 border-slate-200 bg-slate-50/60 shadow-none">
+                  <div>
+                    <h2 className="text-base font-bold text-slate-900">{t("profile.studyQuickContinue")}</h2>
+                    <p className="mt-1 text-sm text-slate-600">{t("profile.studyQuickContinueHint")}</p>
+                  </div>
+                  {hasActiveAssessmentDraft ? (
+                    <Link
+                      href="/assessment"
+                      onClick={() => logEvent("profile.history_item_opened", { itemType: "assessment_draft", itemId: "/assessment" }, { page: "/profile" })}
+                    >
+                      <Button>{t("profile.studyContinueAssessmentDraft")}</Button>
+                    </Link>
+                  ) : resumeAction ? (
+                    <Link
+                      href={resumeAction.href}
+                      onClick={() => logEvent("profile.history_item_opened", { itemType: resumeAction.itemType, itemId: resumeAction.href }, { page: "/profile" })}
+                    >
+                      <Button>{t(resumeAction.labelKey)}</Button>
+                    </Link>
+                  ) : (
+                    <p className="text-sm text-slate-500">{t("profile.studyQuickEmpty")}</p>
+                  )}
+                </Card>
+
+                <Card className="space-y-3 border-slate-200 bg-slate-50/60 shadow-none">
+                  <div>
+                    <h2 className="text-base font-bold text-slate-900">{t("profile.studyQuickPlan")}</h2>
+                    <p className="mt-1 text-sm text-slate-600">{t("profile.studyQuickPlanHint")}</p>
+                  </div>
+                  {studyProgress?.lastPlanHref && !planAlreadyCoveredByResume ? (
+                    <Link
+                      href={studyProgress.lastPlanHref}
+                      onClick={() => logEvent("profile.history_item_opened", { itemType: "plan", itemId: studyProgress.lastPlanHref }, { page: "/profile" })}
+                    >
+                      <Button variant="secondary">{t("profile.studyContinuePlan")}</Button>
+                    </Link>
+                  ) : studyProgress?.lastPlanHref ? (
+                    <Link
+                      href={studyProgress.lastPlanHref}
+                      onClick={() => logEvent("profile.history_item_opened", { itemType: "plan", itemId: studyProgress.lastPlanHref }, { page: "/profile" })}
+                    >
+                      <Button variant="secondary">{t("profile.studyContinuePlan")}</Button>
+                    </Link>
+                  ) : (
+                    <p className="text-sm text-slate-500">{t("profile.studyQuickEmpty")}</p>
+                  )}
+                </Card>
+
+                <Card className="space-y-3 border-slate-200 bg-slate-50/60 shadow-none">
+                  <div>
+                    <h2 className="text-base font-bold text-slate-900">{t("profile.studyQuickDiagnosis")}</h2>
+                    <p className="mt-1 text-sm text-slate-600">{t("profile.studyQuickDiagnosisHint")}</p>
+                  </div>
+                  {diagnosisAction ? (
+                    <Link
+                      href={diagnosisAction.href}
+                      onClick={() => logEvent("profile.history_item_opened", { itemType: diagnosisAction.itemType, itemId: diagnosisAction.href }, { page: "/profile" })}
+                    >
+                      <Button variant="secondary">{t(diagnosisAction.labelKey)}</Button>
+                    </Link>
+                  ) : (
+                    <p className="text-sm text-slate-500">{t("profile.studyQuickEmpty")}</p>
+                  )}
+                </Card>
+              </div>
+
               <div className="flex flex-wrap gap-2">
-                {studyProgress?.lastVisitedPath ? (
-                  <Link
-                    href={studyProgress.lastVisitedPath}
-                    onClick={() => logEvent("profile.history_item_opened", { itemType: "diagnosis", itemId: studyProgress.lastVisitedPath }, { page: "/profile" })}
-                  >
-                    <Button>{t("profile.studyResume")}</Button>
-                  </Link>
-                ) : null}
-                {studyProgress?.lastPlanHref ? (
-                  <Link
-                    href={studyProgress.lastPlanHref}
-                    onClick={() => logEvent("profile.history_item_opened", { itemType: "plan", itemId: studyProgress.lastPlanHref }, { page: "/profile" })}
-                  >
-                    <Button variant="secondary">{t("profile.studyContinuePlan")}</Button>
-                  </Link>
-                ) : null}
-                {hasActiveAssessmentDraft ? (
-                  <Link
-                    href="/assessment"
-                    onClick={() => logEvent("profile.history_item_opened", { itemType: "assessment_draft", itemId: "/assessment" }, { page: "/profile" })}
-                  >
-                    <Button variant="secondary">{t("profile.studyContinueAssessmentDraft")}</Button>
-                  </Link>
-                ) : studyProgress?.lastAssessmentPath ? (
+                {!hasActiveAssessmentDraft && studyProgress?.lastAssessmentPath && !assessmentAlreadyCoveredByResume ? (
                   <Link
                     href={studyProgress.lastAssessmentPath}
                     onClick={() => logEvent("profile.history_item_opened", { itemType: "assessment", itemId: studyProgress.lastAssessmentPath }, { page: "/profile" })}
@@ -453,6 +600,58 @@ export default function ProfilePage() {
             )}
           </div>
           <p className="mt-3 text-sm text-slate-600">{t("profile.headerSubtitle")}</p>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          <QuickContinueCard
+            title={t("profile.studyQuickContinue")}
+            description={t("profile.studyQuickContinueHint")}
+          >
+            {assessmentResult?.level ? (
+              <Link href={`/library?level=${assessmentResult.level}`}>
+                <Button>{t("profile.assessment.openLibrary")}</Button>
+              </Link>
+            ) : (
+              <p className="text-sm text-slate-500">{t("profile.studyQuickEmpty")}</p>
+            )}
+          </QuickContinueCard>
+
+          <QuickContinueCard
+            title={t("profile.studyQuickPlan")}
+            description={t("profile.studyQuickPlanHint")}
+          >
+            {latestSavedPlan ? (
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  logEvent("profile.section_opened", { section: "saved_plans" }, { page: "/profile" });
+                  logEvent("profile.history_item_opened", { itemType: "plan", itemId: latestSavedPlan.id }, { page: "/profile" });
+                  setExpandedPlanId((current) => current === latestSavedPlan.id ? null : latestSavedPlan.id);
+                }}
+              >
+                {t("profile.plans.toggleExpand")}
+              </Button>
+            ) : (
+              <p className="text-sm text-slate-500">{t("profile.studyQuickEmpty")}</p>
+            )}
+          </QuickContinueCard>
+
+          <QuickContinueCard
+            title={t("profile.studyQuickDiagnosis")}
+            description={t("profile.studyQuickDiagnosisHint")}
+          >
+            {latestDiagnosis ? (
+              <Link
+                href={`/diagnose?q=${encodeURIComponent(latestDiagnosis.input_text)}`}
+                onClick={() => logEvent("profile.history_item_opened", { itemType: "diagnosis", itemId: latestDiagnosis.id }, { page: "/profile" })}
+              >
+                <Button variant="secondary">{latestDiagnosis.input_text}</Button>
+              </Link>
+            ) : (
+              <p className="text-sm text-slate-500">{t("profile.studyQuickEmpty")}</p>
+            )}
+          </QuickContinueCard>
         </div>
 
         <div className="grid gap-5 xl:grid-cols-2">

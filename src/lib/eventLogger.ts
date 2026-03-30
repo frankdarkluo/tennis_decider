@@ -2,6 +2,13 @@
 
 import { getSupabaseBrowserClient } from "@/lib/supabase";
 import { CURRENT_STUDY_ID } from "@/lib/study/config";
+import {
+  createFocusedDwellState,
+  finishFocusedDwell,
+  FocusedDwellState,
+  markFocusedDwellInteraction,
+  updateFocusedDwellState
+} from "@/lib/study/focusedDwell";
 import { EventLog, EventType, LegacyEventType } from "@/types/research";
 import { StudySession } from "@/types/study";
 
@@ -59,7 +66,7 @@ let sessionCompleted = false;
 let flushTimer: number | null = null;
 let flushing = false;
 const queuedStudyEvents: EventLog[] = [];
-const pageEnterTimestamps = new Map<string, number>();
+const pageDwellStates = new Map<string, FocusedDwellState>();
 
 function createId() {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -123,6 +130,17 @@ function getCurrentPath() {
   }
 
   return sanitizeRoute(window.location.pathname || currentPage);
+}
+
+function getVisibilitySnapshot() {
+  if (!isBrowser()) {
+    return { isVisible: true, isWindowFocused: true };
+  }
+
+  return {
+    isVisible: document.visibilityState !== "hidden",
+    isWindowFocused: typeof document.hasFocus === "function" ? document.hasFocus() : true
+  };
 }
 
 function normalizeEventName(eventName: EventType): EventType {
@@ -307,7 +325,11 @@ function updateMeaningfulState(event: EventLog) {
     return;
   }
 
-  if (event.eventName === "page.view" || event.eventName === "page.leave") {
+  if (
+    event.eventName === "page.view"
+    || event.eventName === "page.leave"
+    || event.eventName === "page.visibility_changed"
+  ) {
     return;
   }
 
@@ -405,7 +427,7 @@ export function logPageEnter(page: string, payload: Record<string, unknown> = {}
 
   const route = sanitizeRoute(page);
   setEventLoggerPage(route);
-  pageEnterTimestamps.set(route, Date.now());
+  pageDwellStates.set(route, createFocusedDwellState(Date.now(), getVisibilitySnapshot()));
   logEvent("page.view", payload, { page: route });
 }
 
@@ -418,11 +440,58 @@ export function logPageLeave(
   }
 
   const route = sanitizeRoute(page);
-  const enteredAt = pageEnterTimestamps.get(route);
-  const dwellMs = typeof enteredAt === "number" ? Date.now() - enteredAt : null;
+  const now = Date.now();
+  const state = pageDwellStates.get(route);
+  const snapshot = getVisibilitySnapshot();
+  const settled = state ? finishFocusedDwell(state, now, snapshot) : null;
 
-  pageEnterTimestamps.delete(route);
-  logEvent("page.leave", { ...payload, dwellMs }, { page: route, durationMs: dwellMs });
+  pageDwellStates.delete(route);
+  logEvent("page.leave", {
+    ...payload,
+    dwellMs: settled?.dwellMs ?? null,
+    focusedDwellMs: settled?.focusedDwellMs ?? null,
+    activeDwellMs: settled?.activeDwellMs ?? null
+  }, { page: route, durationMs: settled?.dwellMs ?? null });
+}
+
+export function syncPageFocusState(page: string) {
+  if (!isBrowser()) {
+    return;
+  }
+
+  const route = sanitizeRoute(page);
+  const state = pageDwellStates.get(route);
+  if (!state) {
+    return;
+  }
+
+  pageDwellStates.set(route, updateFocusedDwellState(state, Date.now(), getVisibilitySnapshot()));
+}
+
+export function markPageInteraction(page: string) {
+  if (!isBrowser()) {
+    return;
+  }
+
+  const route = sanitizeRoute(page);
+  const state = pageDwellStates.get(route);
+  if (!state) {
+    return;
+  }
+
+  pageDwellStates.set(route, markFocusedDwellInteraction(state, Date.now()));
+}
+
+export function logPageVisibilityChange(page: string) {
+  if (!isBrowser()) {
+    return;
+  }
+
+  syncPageFocusState(page);
+  logEvent("page.visibility_changed", {
+    visibilityState: document.visibilityState,
+    isWindowFocused: typeof document.hasFocus === "function" ? document.hasFocus() : true
+  }, { page });
 }
 
 export function logSessionAbandoned(route: string) {

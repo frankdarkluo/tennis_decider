@@ -4,6 +4,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { StudyProvider } from "@/components/study/StudyProvider";
 import { Header } from "@/components/layout/Header";
 import { I18nProvider, useI18n } from "@/lib/i18n/config";
+import { createStudySession, writeActiveStudySession } from "@/lib/study/session";
 
 const mockUsePathname = vi.fn(() => "/");
 const mockSignOut = vi.fn();
@@ -119,5 +120,46 @@ describe("language switcher", () => {
     const homeLinks = screen.getAllByRole("link", { name: "Home" });
     expect(homeLinks.length).toBeGreaterThan(0);
     expect(screen.getAllByRole("button", { name: "Switch site language to Chinese" }).length).toBeGreaterThan(0);
+  });
+
+  it("keeps the study language locked when an active study session already exists", () => {
+    writeActiveStudySession(createStudySession({
+      participantId: "P001",
+      language: "zh"
+    }));
+
+    render(
+      <StudyProvider>
+        <I18nProvider>
+          <LanguageProbe />
+        </I18nProvider>
+      </StudyProvider>
+    );
+
+    expect(screen.getByTestId("language-value").textContent).toBe("zh");
+
+    fireEvent.click(screen.getByText("switch-to-en"));
+
+    expect(screen.getByTestId("language-value").textContent).toBe("zh");
+    expect(window.localStorage.getItem("tennislevel.app_language")).toBe("zh");
+  });
+
+  it("prefers the active study session language over stale app-language storage", () => {
+    window.localStorage.setItem("tennislevel.app_language", "zh");
+    writeActiveStudySession(createStudySession({
+      participantId: "P002",
+      language: "en"
+    }));
+
+    render(
+      <StudyProvider>
+        <I18nProvider>
+          <LanguageProbe />
+        </I18nProvider>
+      </StudyProvider>
+    );
+
+    expect(screen.getByTestId("language-value").textContent).toBe("en");
+    expect(screen.getByTestId("translated-home").textContent).toBe("Home");
   });
 });

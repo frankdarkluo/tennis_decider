@@ -4,10 +4,11 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { assessmentQuestions } from "@/data/assessmentQuestions";
 import { getDefaultAssessmentResult } from "@/lib/assessment";
 import { getLocalLogs } from "@/lib/eventLogger";
-import { STUDY_TASK_RATINGS_KEY } from "@/lib/study/config";
+import { STUDY_PROGRESS_KEY, STUDY_TASK_RATINGS_KEY } from "@/lib/study/config";
 import { calculateSUS } from "@/lib/survey";
 import { ASSESSMENT_DRAFT_STORAGE_KEY, ASSESSMENT_STORAGE_KEY } from "@/lib/utils";
 import type { StudySession } from "@/types/study";
+import type { AssessmentResultRow, DiagnosisHistoryRow, SavedPlanRow, VideoDiagnosisHistoryRow } from "@/types/userData";
 
 const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi.hoisted(() => ({
   mockPush: vi.fn(),
@@ -24,6 +25,10 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "study.actionability.submitting": "提交中...",
     "study.actionability.saved": "评分已记录。",
     "diagnose.placeholder": "例如：我反手总下网，一快就更容易失误",
+    "content.whyRecommended": "为什么推荐这个",
+    "content.whyPrefix": "推荐依据:",
+    "diagnose.result.library": "去内容库找更多练习",
+    "diagnose.result.rankings": "去博主榜找适合的人",
     "library.title": "找内容",
     "library.more": "查看更多",
     "content.openAria": "打开视频：{value}",
@@ -31,13 +36,33 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "rankings.title": "博主榜",
     "rankings.searchAria": "搜索博主",
     "rankings.detail": "查看详情",
+    "creator.whyRecommended": "为什么推荐这位博主",
+    "creator.whyPrefix": "推荐依据:",
     "plan.title": "你的 7 天提升计划",
     "plan.supporting": "这 7 天先练这一件事",
+    "plan.nextDiagnose": "继续诊断一个具体问题",
+    "plan.openProfile": "去 study hub 继续",
     "plan.day.today": "今天",
     "plan.day.label": "Day {day}",
     "plan.day.expand": "展开",
     "plan.day.collapse": "收起",
     "profile.loginTitle": "登录后查看你的记录",
+    "profile.studySession": "当前研究会话",
+    "profile.studyContinuePlan": "继续这次训练计划",
+    "profile.studyContinueAssessment": "回到评估结果",
+    "profile.studyContinueAssessmentDraft": "继续未完成评估",
+    "profile.studyResumeDiagnosis": "继续这个诊断",
+    "profile.studyResumePlan": "回到这份训练计划",
+    "profile.studyResume": "继续这次研究",
+    "profile.studyQuickContinue": "继续上次练习",
+    "profile.studyQuickPlan": "回看训练计划",
+    "profile.studyQuickDiagnosis": "回看上次诊断",
+    "profile.studyQuickContinueHint": "从你上次停下来的地方继续。",
+    "profile.studyQuickPlanHint": "直接回到最近一次保存的计划。",
+    "profile.studyQuickDiagnosisHint": "带着原问题回到诊断页。",
+    "profile.studyQuickEmpty": "还没有可继续的记录。",
+    "profile.assessment.openLibrary": "去看推荐内容",
+    "profile.plans.toggleExpand": "查看计划",
     "survey.title": "TennisLevel 使用体验问卷",
     "survey.part.sus.title": "Part 2：SUS 系统可用性量表",
     "modal.close": "关闭"
@@ -75,6 +100,20 @@ const mockStudyContext = {
   endStudySession: vi.fn(),
   clearStudyData: vi.fn()
 };
+const mockAuthContext = {
+  user: null as { id: string; email: string } | null,
+  loading: false,
+  configured: false,
+  sendMagicLink: vi.fn(),
+  signOut: vi.fn()
+};
+const mockUserDataState = {
+  latestAssessmentResult: null as AssessmentResultRow | null,
+  diagnosisHistory: [] as DiagnosisHistoryRow[],
+  videoDiagnosisHistory: [] as VideoDiagnosisHistoryRow[],
+  bookmarkedContentIds: [] as string[],
+  savedPlans: [] as SavedPlanRow[]
+};
 
 async function loadPage<T>(importer: () => Promise<{ default: T }>) {
   const module = await importer();
@@ -101,13 +140,7 @@ vi.mock("next/navigation", () => ({
 }));
 
 vi.mock("@/components/auth/AuthProvider", () => ({
-  useAuth: () => ({
-    user: null,
-    loading: false,
-    configured: false,
-    sendMagicLink: vi.fn(),
-    signOut: vi.fn()
-  }),
+  useAuth: () => mockAuthContext,
   AuthProvider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children)
 }));
 
@@ -142,6 +175,16 @@ vi.mock("@/lib/i18n/config", () => ({
   I18nProvider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children)
 }));
 
+vi.mock("@/lib/userData", () => ({
+  getLatestAssessmentResult: vi.fn(async () => ({ data: mockUserDataState.latestAssessmentResult, error: null })),
+  getDiagnosisHistory: vi.fn(async () => ({ data: mockUserDataState.diagnosisHistory, error: null })),
+  getSavedPlans: vi.fn(async () => ({ data: mockUserDataState.savedPlans, error: null })),
+  getVideoDiagnosisHistory: vi.fn(async () => ({ data: mockUserDataState.videoDiagnosisHistory, error: null })),
+  getBookmarkedContentIds: vi.fn(async () => ({ data: mockUserDataState.bookmarkedContentIds, error: null })),
+  removeBookmark: vi.fn(async () => ({ error: null })),
+  saveDiagnosisHistory: vi.fn()
+}));
+
 describe("app smoke tests", () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
@@ -152,6 +195,13 @@ describe("app smoke tests", () => {
     mockPrefetch.mockReset();
     mockStudyContext.session = null;
     mockStudyContext.studyMode = false;
+    mockAuthContext.user = null;
+    mockAuthContext.configured = false;
+    mockUserDataState.latestAssessmentResult = null;
+    mockUserDataState.diagnosisHistory = [];
+    mockUserDataState.videoDiagnosisHistory = [];
+    mockUserDataState.bookmarkedContentIds = [];
+    mockUserDataState.savedPlans = [];
     mockSearchParams = new URLSearchParams();
     window.localStorage.clear();
     window.history.pushState({}, "", "/");
@@ -392,6 +442,63 @@ describe("app smoke tests", () => {
     expect(await screen.findByText("完成这个任务后，我知道我下一步该练什么了。")).toBeInTheDocument();
   });
 
+  it("stores the exact diagnose query path in study progress after a study diagnosis", async () => {
+    const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+
+    render(React.createElement(DiagnosePage));
+
+    fireEvent.change(await screen.findByPlaceholderText(/我反手总下网/), {
+      target: { value: "我反手总下网，一快就更容易失误" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "diagnose.button.start" }));
+
+    await screen.findByText("完成这个任务后，我知道我下一步该练什么了。");
+
+    const studyProgress = JSON.parse(window.localStorage.getItem(STUDY_PROGRESS_KEY) ?? "null");
+    expect(studyProgress?.lastVisitedPath).toBe("/diagnose?q=%E6%88%91%E5%8F%8D%E6%89%8B%E6%80%BB%E4%B8%8B%E7%BD%91%EF%BC%8C%E4%B8%80%E5%BF%AB%E5%B0%B1%E6%9B%B4%E5%AE%B9%E6%98%93%E5%A4%B1%E8%AF%AF");
+  });
+
+  it("offers library and rankings follow-up CTAs after opening the diagnosis details", async () => {
+    const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+
+    render(React.createElement(DiagnosePage));
+
+    fireEvent.change(await screen.findByPlaceholderText(/我反手总下网/), {
+      target: { value: "我反手总下网，一快就更容易失误" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "diagnose.button.start" }));
+
+    fireEvent.click(await screen.findByRole("button", { name: "diagnose.result.expand1" }));
+
+    expect(await screen.findByRole("link", { name: "去内容库找更多练习" })).toHaveAttribute("href", "/library");
+    expect(screen.getByRole("link", { name: "去博主榜找适合的人" })).toHaveAttribute("href", "/rankings");
+  });
+
+  it("reveals why a diagnosis recommendation was chosen and logs the explanation view", async () => {
+    const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+
+    render(React.createElement(DiagnosePage));
+
+    fireEvent.change(await screen.findByPlaceholderText(/我反手总下网/), {
+      target: { value: "我反手总下网，一快就更容易失误" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "diagnose.button.start" }));
+    fireEvent.click(await screen.findByRole("button", { name: "diagnose.result.expand1" }));
+    fireEvent.click(await screen.findByRole("button", { name: "为什么推荐这个" }));
+
+    expect(await screen.findByText(/推荐依据:/)).toBeInTheDocument();
+    expect(getLocalLogs().some((entry) => entry.eventName === "diagnose.why_this_viewed" && entry.payload.targetType === "content")).toBe(true);
+  });
+
   it("renders library page and shows non-empty content list", async () => {
     const LibraryPage = await loadPage(() => import("@/app/library/page"));
 
@@ -401,6 +508,18 @@ describe("app smoke tests", () => {
     expect(screen.getAllByRole("link", { name: /打开视频：|Open video:/i }).length).toBeGreaterThan(0);
     expect(screen.getByText("查看更多")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("reveals a lightweight why-recommended explanation on library content cards", async () => {
+    const LibraryPage = await loadPage(() => import("@/app/library/page"));
+
+    render(React.createElement(LibraryPage));
+
+    expect(await screen.findByText("找内容")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole("button", { name: "为什么推荐这个" })[0]);
+
+    expect(await screen.findAllByText(/推荐依据:/)).not.toHaveLength(0);
+    expect(getLocalLogs().some((entry) => entry.eventName === "content.why_this_viewed")).toBe(true);
   });
 
   it("logs snapshot and sort context when library opens in study mode", async () => {
@@ -430,6 +549,19 @@ describe("app smoke tests", () => {
     expect(screen.getByText("博主榜")).toBeInTheDocument();
     expect(screen.getByText("盖奥网球")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("reveals a lightweight why-recommended explanation in creator detail modal", async () => {
+    const RankingsPage = await loadPage(() => import("@/app/rankings/page"));
+
+    render(React.createElement(RankingsPage));
+
+    expect(await screen.findByText("博主榜")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole("button", { name: /查看详情/ })[0]);
+    fireEvent.click(await screen.findByRole("button", { name: "为什么推荐这位博主" }));
+
+    expect(await screen.findByText(/推荐依据:/)).toBeInTheDocument();
+    expect(getLocalLogs().some((entry) => entry.eventName === "creator.why_this_viewed")).toBe(true);
   });
 
   it("logs snapshot and sort context when rankings opens in study mode", async () => {
@@ -485,6 +617,23 @@ describe("app smoke tests", () => {
     expect(await screen.findByText("完成这个任务后，我知道我下一步该练什么了。")).toBeInTheDocument();
   });
 
+  it("offers diagnose and profile follow-up CTAs for an assessment-based study plan", async () => {
+    const PlanPage = await loadPage(() => import("@/app/plan/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+    mockSearchParams = new URLSearchParams(
+      "problemTag=second-serve-confidence&level=3.0&source=assessment&contentIds=content_cn_a_01"
+    );
+    window.history.pushState({}, "", `/plan?${mockSearchParams.toString()}`);
+
+    render(React.createElement(PlanPage));
+
+    expect(await screen.findByText("你的 7 天提升计划")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "继续诊断一个具体问题" }).getAttribute("href")).toBe("/diagnose");
+    expect(screen.getByRole("link", { name: "去 study hub 继续" }).getAttribute("href")).toBe("/profile");
+  });
+
   it("does not show the task 3 prompt twice after a rating exists", async () => {
     const PlanPage = await loadPage(() => import("@/app/plan/page"));
 
@@ -519,6 +668,142 @@ describe("app smoke tests", () => {
       expect(screen.getByText("登录后查看你的记录")).toBeInTheDocument();
       expect(consoleErrorSpy).not.toHaveBeenCalled();
     });
+  });
+
+  it("prioritizes the unfinished assessment as the primary study resume action", async () => {
+    const ProfilePage = await loadPage(() => import("@/app/profile/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+    window.localStorage.setItem(STUDY_PROGRESS_KEY, JSON.stringify({
+      updatedAt: "2026-03-29T00:00:00.000Z",
+      lastVisitedPath: "/diagnose?q=test",
+      lastAssessmentPath: "/assessment/result",
+      assessmentDraftInProgress: true,
+      assessmentDraftStepIndex: 4,
+      lastPlanHref: "/plan?problemTag=backhand-into-net&level=3.0&source=diagnosis"
+    }));
+
+    render(React.createElement(ProfilePage));
+
+    expect(await screen.findByText("当前研究会话")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "继续未完成评估" }).getAttribute("href")).toBe("/assessment");
+  });
+
+  it("avoids duplicating the resume CTA when the last visited path is already the saved plan", async () => {
+    const ProfilePage = await loadPage(() => import("@/app/profile/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+    window.localStorage.setItem(STUDY_PROGRESS_KEY, JSON.stringify({
+      updatedAt: "2026-03-29T00:00:00.000Z",
+      lastVisitedPath: "/plan?problemTag=backhand-into-net&level=3.0&source=diagnosis",
+      lastPlanHref: "/plan?problemTag=backhand-into-net&level=3.0&source=diagnosis",
+      lastPlanTitle: "反手稳定性计划"
+    }));
+
+    render(React.createElement(ProfilePage));
+
+    expect(await screen.findByText("当前研究会话")).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "回到这份训练计划" })).toHaveLength(1);
+  });
+
+  it("labels diagnose resume more specifically and logs the correct item type", async () => {
+    const ProfilePage = await loadPage(() => import("@/app/profile/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+    window.localStorage.setItem(STUDY_PROGRESS_KEY, JSON.stringify({
+      updatedAt: "2026-03-29T00:00:00.000Z",
+      lastVisitedPath: "/diagnose?q=backhand"
+    }));
+
+    render(React.createElement(ProfilePage));
+
+    const resumeLinks = await screen.findAllByRole("link", { name: "继续这个诊断" });
+    fireEvent.click(resumeLinks[0]!);
+
+    const resumeEvent = getLocalLogs().find((entry) => entry.eventName === "profile.history_item_opened");
+    expect(resumeEvent?.payload.itemType).toBe("diagnosis");
+    expect(resumeEvent?.payload.itemId).toBe("/diagnose?q=backhand");
+  });
+
+  it("shows explicit continue-practice cards for last practice, saved plan, and last diagnosis", async () => {
+    const ProfilePage = await loadPage(() => import("@/app/profile/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+    window.localStorage.setItem(STUDY_PROGRESS_KEY, JSON.stringify({
+      updatedAt: "2026-03-29T00:00:00.000Z",
+      lastVisitedPath: "/library?level=3.0",
+      lastPlanHref: "/plan?problemTag=backhand-into-net&level=3.0&source=diagnosis",
+      lastPlanTitle: "反手稳定性计划",
+      lastDiagnosisPath: "/diagnose?q=backhand",
+      lastDiagnosisTitle: "反手总下网"
+    }));
+
+    render(React.createElement(ProfilePage));
+
+    expect(await screen.findByText("继续上次练习")).toBeInTheDocument();
+    expect(screen.getByText("回看训练计划")).toBeInTheDocument();
+    expect(screen.getByText("回看上次诊断")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "继续这次研究" }).getAttribute("href")).toBe("/library?level=3.0");
+    expect(screen.getByRole("link", { name: "继续这次训练计划" }).getAttribute("href")).toBe("/plan?problemTag=backhand-into-net&level=3.0&source=diagnosis");
+    expect(screen.getByRole("link", { name: "继续这个诊断" }).getAttribute("href")).toBe("/diagnose?q=backhand");
+  });
+
+  it("shows the same continue-practice entry points for a signed-in non-study profile", async () => {
+    const ProfilePage = await loadPage(() => import("@/app/profile/page"));
+
+    mockAuthContext.user = { id: "user_1", email: "player@example.com" };
+    mockAuthContext.configured = true;
+    mockUserDataState.latestAssessmentResult = {
+      ...getDefaultAssessmentResult(),
+      level: "3.0",
+      strengths: ["正手"],
+      weaknesses: ["反手"],
+      summary: "先把反手稳定下来。"
+    } as unknown as AssessmentResultRow;
+    mockUserDataState.savedPlans = [{
+      id: "plan_1",
+      user_id: "user_1",
+      source_type: "diagnosis",
+      source_label: "反手问题",
+      created_at: "2026-03-29T00:00:00.000Z",
+      plan_data: {
+        source: "template",
+        level: "3.0",
+        problemTag: "backhand-into-net",
+        title: "反手稳定性计划",
+        target: "先把反手过网稳定住",
+        days: []
+      }
+    }];
+    mockUserDataState.diagnosisHistory = [{
+      id: "diag_1",
+      user_id: "user_1",
+      input_text: "我反手总下网",
+      matched_rule_id: "backhand-into-net",
+      problem_label: "反手总下网",
+      created_at: "2026-03-29T00:00:00.000Z"
+    }];
+
+    render(React.createElement(ProfilePage));
+
+    expect(await screen.findByText("继续上次练习")).toBeInTheDocument();
+    expect(screen.getByText("回看训练计划")).toBeInTheDocument();
+    expect(screen.getByText("回看上次诊断")).toBeInTheDocument();
+    expect(
+      screen
+        .getAllByRole("link", { name: "去看推荐内容" })
+        .some((link) => link.getAttribute("href") === "/library?level=3.0")
+    ).toBe(true);
+    expect(screen.getAllByRole("button", { name: "查看计划" }).length).toBeGreaterThan(0);
+    expect(
+      screen
+        .getAllByRole("link", { name: "我反手总下网" })
+        .some((link) => link.getAttribute("href") === "/diagnose?q=%E6%88%91%E5%8F%8D%E6%89%8B%E6%80%BB%E4%B8%8B%E7%BD%91")
+    ).toBe(true);
   });
 
   it("renders survey page without crashing", async () => {

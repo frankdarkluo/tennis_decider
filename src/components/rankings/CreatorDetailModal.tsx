@@ -1,4 +1,5 @@
 import { contents } from "@/data/contents";
+import { useState } from "react";
 import { Creator, CreatorFeaturedVideo } from "@/types/creator";
 import { ContentItem } from "@/types/content";
 import { Modal } from "@/components/ui/Modal";
@@ -8,15 +9,18 @@ import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import {
   getContentFocusLine,
+    getContentLanguageTag,
     getContentPrimaryTitle,
     getContentSecondaryTitle,
     getCreatorBio,
     getCreatorPrimaryName,
     getCreatorSecondaryName,
     getCreatorSuitableFor,
+    getCreatorTags,
     getFeaturedVideoPrimaryTitle,
     getFeaturedVideoSecondaryTitle,
-  getFeaturedVideoTarget
+  getFeaturedVideoTarget,
+    getSubtitleAvailability
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
@@ -34,6 +38,8 @@ type CreatorModalItem = {
   duration?: string;
   contentId?: string;
   logSource?: string;
+  contentLanguage?: "zh" | "en";
+  subtitleAvailability?: "english" | "none" | "unknown" | "not_needed";
 };
 
 const SKILL_CARD_MAP: Record<string, { title: string; title_en: string; summary: string; summary_en: string; query: string }> = {
@@ -73,6 +79,7 @@ const TAG_TO_SKILL_MAP: Record<string, string[]> = {
 
 export function CreatorDetailModal({ creator, open, onClose }: { creator: Creator | null; open: boolean; onClose: () => void }) {
   const { language, t } = useI18n();
+  const [showWhy, setShowWhy] = useState(false);
   const isEn = language === "en";
   const primaryName = creator ? getCreatorPrimaryName(creator, language) : null;
   const secondaryName = creator ? getCreatorSecondaryName(creator, language) : null;
@@ -144,6 +151,8 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
           thumbnail: item.thumbnail,
           duration: item.duration,
           contentId: item.id,
+          contentLanguage: getContentLanguageTag(item),
+          subtitleAvailability: getSubtitleAvailability(item),
           logSource: "creator_modal_content"
         }))
     : [];
@@ -158,6 +167,8 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
       platform: item.platform,
       thumbnail: item.thumbnail,
       duration: item.duration,
+      contentLanguage: item.contentLanguage,
+      subtitleAvailability: item.subtitleAvailability,
       logSource: "creator_modal_featured_video"
     }))
     : [];
@@ -165,6 +176,12 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
   const modalItems = creatorFeaturedVideos.length > 0
     ? creatorFeaturedVideos
     : [...creatorContents, ...fallbackItems].slice(0, 5);
+  const creatorWhySummary = creator
+    ? [
+      getCreatorSuitableFor(creator, language).slice(0, 2).join(" / "),
+      getCreatorTags(creator.tags.slice(0, 2), language).join(" / ")
+    ].filter(Boolean).join(" · ")
+    : "";
 
   return (
     <Modal open={open} onClose={onClose} title={primaryName ?? t("creator.modalTitle")}>
@@ -210,11 +227,40 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
             <p className="text-sm text-slate-700">{getCreatorSuitableFor(creator, language).join(" / ")}</p>
           </div>
           <div>
+            <button
+              type="button"
+              className="text-sm font-semibold text-slate-500 transition hover:text-slate-700"
+              onClick={() => {
+                logEvent("creator.why_this_viewed", {
+                  creatorId: creator.id
+                }, { page: "/rankings" });
+                setShowWhy((current) => !current);
+              }}
+            >
+              {t("creator.whyRecommended")}
+            </button>
+            {showWhy ? (
+              <p className="mt-2 text-sm text-slate-600">
+                {t("creator.whyPrefix")} {creatorWhySummary}
+              </p>
+            ) : null}
+          </div>
+          <div>
             <p className="text-sm font-semibold text-slate-900">{t("creator.theirContent")}</p>
           </div>
           <div className="space-y-3">
             {modalItems.length > 0 ? (
               modalItems.map((item) => (
+                (() => {
+                  const subtitleLabel = item.subtitleAvailability === "english"
+                    ? t("content.subtitle.yes")
+                    : item.subtitleAvailability === "none"
+                      ? t("content.subtitle.no")
+                      : item.subtitleAvailability === "not_needed"
+                        ? t("content.subtitle.notNeeded")
+                        : t("content.subtitle.unknown");
+
+                  return (
                 <a
                   key={item.id}
                   href={item.url}
@@ -261,9 +307,24 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
                       <div className="flex flex-wrap items-center gap-2">
                         <p className="font-semibold text-slate-900">{item.title}</p>
                         <Badge className="bg-slate-100 px-3.5 py-1.5 text-sm text-slate-700">{item.levels.join("/")}</Badge>
+                        {item.contentLanguage ? (
+                          <Badge className="bg-slate-100 px-3.5 py-1.5 text-sm text-slate-700">
+                            {item.contentLanguage === "zh" ? t("content.lang.zh") : t("content.lang.en")}
+                          </Badge>
+                        ) : null}
+                        {item.subtitleAvailability ? (
+                          <Badge className="bg-slate-100 px-3.5 py-1.5 text-sm text-slate-700">
+                            {subtitleLabel}
+                          </Badge>
+                        ) : null}
                       </div>
                       {item.secondaryTitle ? (
-                        <p className="mt-1 text-xs leading-5 text-slate-400">{item.secondaryTitle}</p>
+                        <div className="mt-1 space-y-0.5">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">
+                            {t("content.secondaryTitle")}
+                          </p>
+                          <p className="text-xs leading-5 text-slate-400">{item.secondaryTitle}</p>
+                        </div>
                       ) : null}
                       {item.focusLine && item.focusLine !== item.title ? (
                         <p className="mt-2 text-sm text-slate-600">{formatTargetSummary(item.focusLine)}</p>
@@ -271,6 +332,8 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
                     </div>
                   </div>
                 </a>
+                  );
+                })()
               ))
             ) : (
               <p className="text-sm text-slate-600">{t("creator.noContent")}</p>

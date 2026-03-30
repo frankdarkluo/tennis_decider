@@ -264,6 +264,34 @@ function PlanPageContent() {
             {t("plan.regenerate")}
           </Button>
         </div>
+        {(sourceType === "assessment" || (studyMode && session)) ? (
+          <div className="flex flex-wrap gap-2">
+            {sourceType === "assessment" ? (
+              <Link
+                href="/diagnose"
+                onClick={() => logEvent("cta_click", {
+                  ctaLabel: t("plan.nextDiagnose"),
+                  ctaLocation: "plan_follow_up",
+                  targetPage: "/diagnose"
+                }, { page: "/plan" })}
+              >
+                <Button variant="secondary">{t("plan.nextDiagnose")}</Button>
+              </Link>
+            ) : null}
+            {studyMode && session ? (
+              <Link
+                href="/profile"
+                onClick={() => logEvent("cta_click", {
+                  ctaLabel: t("plan.openProfile"),
+                  ctaLocation: "plan_follow_up",
+                  targetPage: "/profile"
+                }, { page: "/plan" })}
+              >
+                <Button variant="ghost">{t("plan.openProfile")}</Button>
+              </Link>
+            ) : null}
+          </div>
+        ) : null}
         {saveMessage ? (
           <div className={saveStatus === "error"
             ? "rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"

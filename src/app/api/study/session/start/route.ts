@@ -14,6 +14,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, persisted: false });
   }
 
+  const participantPayload = {
+    study_id: session.studyId,
+    participant_id: session.participantId,
+    latest_session_id: session.sessionId,
+    language: session.language,
+    condition: session.condition ?? `lang_${session.language}`,
+    latest_snapshot_id: session.snapshotId,
+    latest_build_version: session.buildVersion,
+    updated_at: new Date().toISOString()
+  };
+  const { error: participantError } = await supabase.from("study_participants").upsert(participantPayload, {
+    onConflict: "study_id,participant_id"
+  });
+
+  if (participantError) {
+    return NextResponse.json({ ok: false, message: participantError.message }, { status: 500 });
+  }
+
   const { error } = await supabase.from("study_sessions").upsert({
     study_id: session.studyId,
     participant_id: session.participantId,

@@ -46,10 +46,40 @@ describe("research export helpers", () => {
     {
       session_id: "session_1",
       participant_id: "P001",
+      event_type: "diagnose.why_this_viewed",
+      page: "/diagnose",
+      timestamp: "2026-03-29T10:02:12.000Z",
+      event_data: { studyId: "sportshci_2026_no_video_v1", tsClient: 133_000, targetType: "content" }
+    },
+    {
+      session_id: "session_1",
+      participant_id: "P001",
+      event_type: "content.why_this_viewed",
+      page: "/library",
+      timestamp: "2026-03-29T10:02:14.000Z",
+      event_data: { studyId: "sportshci_2026_no_video_v1", tsClient: 135_000, contentId: "content_1" }
+    },
+    {
+      session_id: "session_1",
+      participant_id: "P001",
+      event_type: "creator.why_this_viewed",
+      page: "/rankings",
+      timestamp: "2026-03-29T10:02:16.000Z",
+      event_data: { studyId: "sportshci_2026_no_video_v1", tsClient: 137_000, creatorId: "creator_1" }
+    },
+    {
+      session_id: "session_1",
+      participant_id: "P001",
       event_type: "page.leave",
       page: "/diagnose",
       timestamp: "2026-03-29T10:02:30.000Z",
-      event_data: { studyId: "sportshci_2026_no_video_v1", tsClient: 151_000, dwellMs: 42_000 }
+      event_data: {
+        studyId: "sportshci_2026_no_video_v1",
+        tsClient: 151_000,
+        dwellMs: 42_000,
+        focusedDwellMs: 17_000,
+        activeDwellMs: 8_000
+      }
     },
     {
       session_id: "session_1",
@@ -90,9 +120,17 @@ describe("research export helpers", () => {
       planSaved: true,
       diagnoseMaxLayerOpened: 3,
       outboundClickCount: 1,
+      diagnoseWhyThisViewedCount: 1,
+      contentWhyThisViewedCount: 1,
+      creatorWhyThisViewedCount: 1,
+      whyThisViewedCount: 3,
       totalSessionMs: 240_000
     });
     expect(metrics[0].dwellMsByRoute["/diagnose"]).toBe(42_000);
+    expect(metrics[0].focusedDwellMsByRoute["/diagnose"]).toBe(17_000);
+    expect(metrics[0].activeDwellMsByRoute["/diagnose"]).toBe(8_000);
+    expect(metrics[0].longestFocusedDwellRoute).toBe("/diagnose");
+    expect(metrics[0].longestActiveDwellRoute).toBe("/diagnose");
   });
 
   it("includes derived metrics in the study export bundle", () => {
@@ -116,7 +154,22 @@ describe("research export helpers", () => {
         viewCountBoostDisabled: true
       },
       sessions: [{ participant_id: "P001", session_id: "session_1", snapshot_id: "snapshot_1" }],
-      artifacts: [],
+      artifacts: [
+        {
+          participant_id: "P001",
+          session_id: "session_1",
+          snapshot_id: "snapshot_1",
+          artifact_type: "survey",
+          payload: {
+            susScore: 72.5,
+            responses: {
+              q23: "The assessment result was clear.",
+              q24: "",
+              q25: "I would use the plan again."
+            }
+          }
+        }
+      ],
       taskRatings: [
         {
           participant_id: "P001",
@@ -143,6 +196,10 @@ describe("research export helpers", () => {
 
     expect(bundle.derivedMetrics).toHaveLength(1);
     expect(bundle.derivedMetrics?.[0].sessionId).toBe("session_1");
+    expect(bundle.derivedMetrics?.[0].susScore).toBe(72.5);
+    expect(bundle.derivedMetrics?.[0].openFeedbackCount).toBe(2);
+    expect(bundle.derivedMetrics?.[0].whyThisViewedCount).toBe(3);
+    expect(bundle.derivedMetrics?.[0].contentWhyThisViewedCount).toBe(1);
     expect(bundle.taskRatings).toHaveLength(2);
     expect(bundle.actionabilitySummary?.overall.count).toBe(2);
     expect(bundle.actionabilitySummary?.overall.mean).toBe(5);

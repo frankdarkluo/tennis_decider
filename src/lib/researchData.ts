@@ -7,6 +7,7 @@ import {
 import {
   StudyExportBundle,
   StudyLanguage,
+  StudyParticipantRecord,
   StudySnapshot,
   StudyTaskId,
   StudyTaskRatingRecord
@@ -70,6 +71,7 @@ export async function fetchAllExportRows(table: ResearchExportTable) {
     assessment_results: "created_at",
     diagnosis_history: "created_at",
     video_diagnosis_history: "created_at",
+    study_participants: "updated_at",
     study_sessions: "started_at",
     study_artifacts: "created_at",
     study_task_ratings: "submitted_at"
@@ -141,7 +143,10 @@ function normalizeEventRow(row: Record<string, unknown>): NormalizedEventRow | n
   };
 }
 
-export function deriveStudyMetrics(events: Record<string, unknown>[]): StudyDerivedMetric[] {
+export function deriveStudyMetrics(
+  events: Record<string, unknown>[],
+  artifacts: Record<string, unknown>[] = []
+): StudyDerivedMetric[] {
   const grouped = new Map<string, NormalizedEventRow[]>();
 
   events.forEach((row) => {
@@ -155,9 +160,36 @@ export function deriveStudyMetrics(events: Record<string, unknown>[]): StudyDeri
     grouped.set(normalized.sessionId, bucket);
   });
 
+  const surveyMetricsBySession = artifacts.reduce<Map<string, { susScore: number | null; openFeedbackCount: number }>>((acc, row) => {
+    const artifactType = String(row.artifact_type ?? row.artifactType ?? "");
+    if (artifactType !== "survey") {
+      return acc;
+    }
+
+    const sessionId = String(row.session_id ?? row.sessionId ?? "");
+    if (!sessionId) {
+      return acc;
+    }
+
+    const payload = (row.payload ?? {}) as Record<string, unknown>;
+    const susScoreRaw = toNumber(payload.susScore);
+    const responses = (payload.responses ?? {}) as Record<string, unknown>;
+    const openFeedbackCount = ["q23", "q24", "q25"].filter((questionId) => {
+      const value = responses[questionId];
+      return typeof value === "string" && value.trim().length > 0;
+    }).length;
+
+    acc.set(sessionId, {
+      susScore: Number.isFinite(susScoreRaw) ? susScoreRaw : null,
+      openFeedbackCount
+    });
+    return acc;
+  }, new Map());
+
   return Array.from(grouped.entries()).map(([sessionId, rows]) => {
     const ordered = [...rows].sort((left, right) => left.tsClient - right.tsClient);
     const firstEvent = ordered[0];
+    const surveyMetrics = surveyMetricsBySession.get(sessionId);
     const routesVisited = Array.from(new Set(
       ordered
         .filter((row) => row.eventName === "page.view")
@@ -176,8 +208,38 @@ export function deriveStudyMetrics(events: Record<string, unknown>[]): StudyDeri
       acc[row.route] = (acc[row.route] ?? 0) + dwell;
       return acc;
     }, {});
+    const focusedDwellMsByRoute = ordered.reduce<Record<string, number>>((acc, row) => {
+      if (row.eventName !== "page.leave") {
+        return acc;
+      }
+
+      const focusedDwell = toNumber(row.payload.focusedDwellMs);
+      if (!Number.isFinite(focusedDwell)) {
+        return acc;
+      }
+
+      acc[row.route] = (acc[row.route] ?? 0) + focusedDwell;
+      return acc;
+    }, {});
+    const activeDwellMsByRoute = ordered.reduce<Record<string, number>>((acc, row) => {
+      if (row.eventName !== "page.leave") {
+        return acc;
+      }
+
+      const activeDwell = toNumber(row.payload.activeDwellMs);
+      if (!Number.isFinite(activeDwell)) {
+        return acc;
+      }
+
+      acc[row.route] = (acc[row.route] ?? 0) + activeDwell;
+      return acc;
+    }, {});
 
     const longestDwellRoute = Object.entries(dwellMsByRoute)
+      .sort((left, right) => right[1] - left[1])[0]?.[0] ?? null;
+    const longestFocusedDwellRoute = Object.entries(focusedDwellMsByRoute)
+      .sort((left, right) => right[1] - left[1])[0]?.[0] ?? null;
+    const longestActiveDwellRoute = Object.entries(activeDwellMsByRoute)
       .sort((left, right) => right[1] - left[1])[0]?.[0] ?? null;
 
     const firstCoreFeatureUsed = ordered.find((row) => [
@@ -192,11 +254,16 @@ export function deriveStudyMetrics(events: Record<string, unknown>[]): StudyDeri
     const totalSessionMs = Number.isFinite(toNumber(totalSessionFromEvent?.payload.totalDurationMs))
       ? Number(totalSessionFromEvent?.payload.totalDurationMs)
       : Math.max(0, ordered[ordered.length - 1].tsClient - firstEvent.tsClient);
+    const diagnoseWhyThisViewedCount = ordered.filter((row) => row.eventName === "diagnose.why_this_viewed").length;
+    const contentWhyThisViewedCount = ordered.filter((row) => row.eventName === "content.why_this_viewed").length;
+    const creatorWhyThisViewedCount = ordered.filter((row) => row.eventName === "creator.why_this_viewed").length;
 
     return {
       studyId: firstEvent.studyId,
       participantId: firstEvent.participantId,
       sessionId,
+      susScore: surveyMetrics?.susScore ?? null,
+      openFeedbackCount: surveyMetrics?.openFeedbackCount ?? 0,
       firstEntryMode: String(
         ordered.find((row) => row.eventName === "home.entry_selected")?.payload.entryMode ?? ""
       ) || null,
@@ -204,7 +271,11 @@ export function deriveStudyMetrics(events: Record<string, unknown>[]): StudyDeri
       pageCount: ordered.filter((row) => row.eventName === "page.view").length,
       firstCoreFeatureUsed,
       dwellMsByRoute,
+      focusedDwellMsByRoute,
+      activeDwellMsByRoute,
       longestDwellRoute,
+      longestFocusedDwellRoute,
+      longestActiveDwellRoute,
       totalSessionMs,
       assessmentCompleted: ordered.some((row) => row.eventName === "assessment.completed"),
       diagnoseCompleted: ordered.some((row) => row.eventName === "diagnose.result_viewed"),
@@ -231,13 +302,17 @@ export function deriveStudyMetrics(events: Record<string, unknown>[]): StudyDeri
         row.eventName === "content.bookmark_toggled" && row.payload.bookmarked === true
       )).length,
       fallbackUsed: ordered.some((row) => row.eventName === "diagnose.fallback_used"),
-      whyThisViewedCount: ordered.filter((row) => row.eventName === "diagnose.why_this_viewed").length
+      diagnoseWhyThisViewedCount,
+      contentWhyThisViewedCount,
+      creatorWhyThisViewedCount,
+      whyThisViewedCount: diagnoseWhyThisViewedCount + contentWhyThisViewedCount + creatorWhyThisViewedCount
     };
   });
 }
 
 export function buildStudyExportBundle(input: {
   snapshot: StudySnapshot;
+  participants?: Record<string, unknown>[];
   sessions: Record<string, unknown>[];
   artifacts: Record<string, unknown>[];
   taskRatings?: Record<string, unknown>[];
@@ -252,8 +327,8 @@ export function buildStudyExportBundle(input: {
 
   const matches = (row: Record<string, unknown>) => {
     const rowParticipantId = String(row.participant_id ?? "");
-    const rowSessionId = String(row.session_id ?? "");
-    const rowSnapshotId = String(row.snapshot_id ?? "");
+    const rowSessionId = String(row.session_id ?? row.latest_session_id ?? "");
+    const rowSnapshotId = String(row.snapshot_id ?? row.latest_snapshot_id ?? "");
 
     if (participantId && rowParticipantId !== participantId) {
       return false;
@@ -272,14 +347,20 @@ export function buildStudyExportBundle(input: {
     .filter(matches)
     .map(normalizeTaskRatingRow)
     .filter((rating): rating is StudyTaskRatingRecord => Boolean(rating));
+  const filteredArtifacts = input.artifacts.filter(matches);
+  const filteredParticipants = (input.participants ?? [])
+    .filter(matches)
+    .map(normalizeStudyParticipantRow)
+    .filter((participant): participant is StudyParticipantRecord => Boolean(participant));
 
   return {
     snapshot: input.snapshot,
+    participants: filteredParticipants,
     sessions: input.sessions.filter(matches) as StudyExportBundle["sessions"],
-    artifacts: input.artifacts.filter(matches) as StudyExportBundle["artifacts"],
+    artifacts: filteredArtifacts as StudyExportBundle["artifacts"],
     events: input.events.filter(matches) as StudyExportBundle["events"],
     taskRatings: filteredTaskRatings,
-    derivedMetrics: deriveStudyMetrics(input.events.filter(matches)),
+    derivedMetrics: deriveStudyMetrics(input.events.filter(matches), filteredArtifacts),
     actionabilitySummary: summarizeActionabilityRatings(filteredTaskRatings)
   };
 }
@@ -317,6 +398,32 @@ function normalizeTaskRatingRow(row: Record<string, unknown>): StudyTaskRatingRe
     score: score as StudyTaskRatingRecord["score"],
     language: language as StudyLanguage,
     submittedAt
+  };
+}
+
+function normalizeStudyParticipantRow(row: Record<string, unknown>): StudyParticipantRecord | null {
+  const studyId = String(row.study_id ?? row.studyId ?? "unknown_study");
+  const participantId = String(row.participant_id ?? row.participantId ?? "");
+  const latestSessionId = String(row.latest_session_id ?? row.latestSessionId ?? row.session_id ?? row.sessionId ?? "");
+  const language = String(row.language ?? "");
+  const latestSnapshotId = String(row.latest_snapshot_id ?? row.latestSnapshotId ?? row.snapshot_id ?? row.snapshotId ?? "");
+  const latestBuildVersion = String(row.latest_build_version ?? row.latestBuildVersion ?? row.build_version ?? row.buildVersion ?? "");
+
+  if (!participantId || !latestSessionId || !language || !latestSnapshotId || !latestBuildVersion) {
+    return null;
+  }
+
+  return {
+    id: String(row.id ?? `${studyId}:${participantId}`),
+    studyId,
+    participantId,
+    latestSessionId,
+    language: language as StudyLanguage,
+    condition: row.condition ? String(row.condition) : null,
+    latestSnapshotId,
+    latestBuildVersion,
+    createdAt: String(row.created_at ?? row.createdAt ?? "1970-01-01T00:00:00.000Z"),
+    updatedAt: String(row.updated_at ?? row.updatedAt ?? "1970-01-01T00:00:00.000Z")
   };
 }
 

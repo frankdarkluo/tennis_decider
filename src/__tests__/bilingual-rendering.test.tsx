@@ -1,13 +1,14 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { contents } from "@/data/contents";
 import { creators } from "@/data/creators";
+import { DiagnoseResult } from "@/components/diagnose/DiagnoseResult";
+import { HotContentSection } from "@/components/home/HotContentSection";
 import { ContentCard } from "@/components/library/ContentCard";
 import { CreatorDetailModal } from "@/components/rankings/CreatorDetailModal";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
 import LibraryPage from "@/app/library/page";
-import { getPlanTemplate } from "@/lib/plans";
 
 const openLoginModal = vi.fn();
 
@@ -15,6 +16,7 @@ const translationMap = {
   "content.openAria": "Open video: {value}",
   "content.targetPrefix": "Focus:",
   "content.unknownCreator": "Unknown creator",
+  "content.secondaryTitle": "Original title",
   "content.subtitle.yes": "EN subtitles",
   "content.subtitle.no": "No subtitles",
   "content.subtitle.unknown": "Subtitles unknown",
@@ -25,6 +27,9 @@ const translationMap = {
   "content.bookmark.remove": "Remove bookmark",
   "content.bookmark.removeSaved": "Remove bookmark",
   "content.bookmark.working": "Working...",
+  "content.open": "Open video",
+  "content.whyRecommended": "Why recommended",
+  "content.whyPrefix": "Recommended because:",
   "creator.modalTitle": "Creator details",
   "creator.suitableFor": "Best for",
   "creator.theirContent": "Their content",
@@ -43,6 +48,16 @@ const translationMap = {
   "plan.day.expand": "Expand",
   "plan.day.collapse": "Collapse",
   "plan.day.drills": "Drills",
+  "diagnose.result.badge": "Diagnosis",
+  "diagnose.result.today": "Try this first",
+  "diagnose.result.expand1": "See why and what to watch",
+  "diagnose.result.why": "Why this is happening",
+  "diagnose.result.featured": "Featured content",
+  "diagnose.result.plan": "Build a plan",
+  "diagnose.result.library": "Browse more content",
+  "diagnose.result.rankings": "Find creators",
+  "home.hotContent.title": "Hot content",
+  "home.more": "See more",
   "library.title": "Find content",
   "library.subtitle": "Search by skill, creator, or situation.",
   "library.more": "See more",
@@ -125,6 +140,9 @@ describe("bilingual rendering", () => {
     render(<ContentCard item={item} />);
 
     expect(screen.getByText("Serve fundamentals: build rhythm before power")).toBeInTheDocument();
+    expect(screen.getByText("ZH")).toBeInTheDocument();
+    expect(screen.getByText("No subtitles")).toBeInTheDocument();
+    expect(screen.getByText("Original title")).toBeInTheDocument();
     expect(screen.getByText(/网球发球/)).toBeInTheDocument();
     expect(screen.getByText("Focus: For players who rush the serve and lose trust in the second serve.")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Open video: Serve fundamentals: build rhythm before power" })).toBeInTheDocument();
@@ -147,15 +165,85 @@ describe("bilingual rendering", () => {
     expect(screen.getByText("Focus: When your forehand foundation never feels stable")).toBeInTheDocument();
   });
 
+  it("renders CreatorDetailModal content cards with language cues and original-title label", () => {
+    const creator = creators.find((entry) => entry.id === "creator_topspinpro_hidden");
+
+    expect(creator).toBeTruthy();
+    if (!creator) {
+      throw new Error("Missing creator_topspinpro_hidden");
+    }
+
+    render(<CreatorDetailModal creator={creator} open onClose={() => {}} />);
+
+    expect(screen.getByText("ZH")).toBeInTheDocument();
+    expect(screen.getByText("Original title")).toBeInTheDocument();
+    expect(screen.getByText(/盖奥教练教你上旋球/)).toBeInTheDocument();
+  });
+
   it("renders an English plan day card with localized template copy", () => {
-    const plan = getPlanTemplate("backhand-into-net", "3.0", "en");
+    render(
+      <DayPlanCard
+        isToday
+        day={{
+          day: 1,
+          focus: "Stabilize the toss",
+          drills: ["30 toss reps"],
+          duration: "20 min",
+          contentIds: ["content_gaiao_02"]
+        }}
+      />
+    );
 
-    render(<DayPlanCard day={plan.days[0]} isToday />);
-
-    expect(screen.getByText("Prepare earlier")).toBeInTheDocument();
-    expect(screen.getByText("20 shoulder-turn prep reps")).toBeInTheDocument();
+    expect(screen.getByText("Stabilize the toss")).toBeInTheDocument();
+    expect(screen.getByText("30 toss reps")).toBeInTheDocument();
     expect(screen.getByText("20 min")).toBeInTheDocument();
-    expect(screen.getByText("Focus: For players who feel rushed and keep contacting the ball beside or behind the body.")).toBeInTheDocument();
+    expect(screen.getByText("ZH")).toBeInTheDocument();
+    expect(screen.getByText("No subtitles")).toBeInTheDocument();
+    expect(screen.getByText("Original title")).toBeInTheDocument();
+    expect(screen.getByText(/网球发球/)).toBeInTheDocument();
+    expect(screen.getByText("Focus: For players who rush the serve and lose trust in the second serve.")).toBeInTheDocument();
+  });
+
+  it("renders diagnose recommendation cards with language cues and original-title label", () => {
+    const item = contents.find((entry) => entry.id === "content_gaiao_02");
+
+    expect(item).toBeTruthy();
+    if (!item) {
+      throw new Error("Missing content_gaiao_02");
+    }
+
+    render(
+      <DiagnoseResult
+        result={{
+          input: "my serve feels rushed",
+          normalizedInput: "my serve feels rushed",
+          matchedRuleId: "serve-basics",
+          matchedKeywords: ["serve"],
+          matchedSynonyms: [],
+          matchScore: 0.8,
+          confidence: "中等",
+          problemTag: "serve-basics",
+          category: ["serve"],
+          title: "Serve diagnosis",
+          summary: "Build a cleaner serve rhythm first.",
+          causes: ["You rush the motion before the toss settles."],
+          fixes: ["Slow the tempo and rebuild the toss."],
+          drills: ["30 toss reps"],
+          recommendedContents: [item],
+          searchQueries: null,
+          fallbackUsed: false,
+          fallbackMode: null,
+          level: "3.0"
+        }}
+      />
+    );
+
+    fireEvent.click(screen.getByText("See why and what to watch"));
+
+    expect(screen.getByText("ZH")).toBeInTheDocument();
+    expect(screen.getByText("No subtitles")).toBeInTheDocument();
+    expect(screen.getByText("Original title")).toBeInTheDocument();
+    expect(screen.getByText(/网球发球/)).toBeInTheDocument();
   });
 
   it("uses the translated library bookmark login prompt in English mode", async () => {
@@ -172,5 +260,21 @@ describe("bilingual rendering", () => {
     bookmarkButtons[0]?.click();
 
     expect(openLoginModal).toHaveBeenCalledWith("Sign in to bookmark content", "bookmark");
+  });
+
+  it("renders the content-language filter in the English library flow", () => {
+    render(<LibraryPage />);
+
+    expect(screen.getByText("Chinese content")).toBeInTheDocument();
+    expect(screen.getByText("English content")).toBeInTheDocument();
+  });
+
+  it("renders home hot content cards with bilingual metadata cues", () => {
+    render(<HotContentSection />);
+
+    expect(screen.getByText("ZH")).toBeInTheDocument();
+    expect(screen.getByText("No subtitles")).toBeInTheDocument();
+    expect(screen.getByText("Original title")).toBeInTheDocument();
+    expect(screen.getByText(/反手总下网/)).toBeInTheDocument();
   });
 });

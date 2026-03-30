@@ -68,14 +68,15 @@ export default function AdminExportPage() {
     setPendingKey("study_bundle");
     setStatusMessage("");
 
-    const [sessions, artifacts, taskRatings, events] = await Promise.all([
+    const [participants, sessions, artifacts, taskRatings, events] = await Promise.all([
+      fetchAllExportRows("study_participants"),
       fetchAllExportRows("study_sessions"),
       fetchAllExportRows("study_artifacts"),
       fetchAllExportRows("study_task_ratings"),
       fetchAllExportRows("event_logs")
     ]);
 
-    const failed = [sessions, artifacts, taskRatings, events].find((result) => result.error);
+    const failed = [participants, sessions, artifacts, taskRatings, events].find((result) => result.error);
     if (failed?.error) {
       setPendingKey(null);
       setStatusMessage(failed.error);
@@ -84,6 +85,7 @@ export default function AdminExportPage() {
 
     const bundle = buildStudyExportBundle({
       snapshot: getStudySnapshot(),
+      participants: participants.data,
       sessions: sessions.data,
       artifacts: artifacts.data,
       taskRatings: taskRatings.data,
@@ -146,6 +148,9 @@ export default function AdminExportPage() {
               <Button variant="secondary" onClick={() => void handleRemoteExport("study_sessions")} disabled={pendingKey !== null}>
                 {pendingKey === "study_sessions" ? "导出中..." : "导出 study sessions"}
               </Button>
+              <Button variant="secondary" onClick={() => void handleRemoteExport("study_participants")} disabled={pendingKey !== null}>
+                {pendingKey === "study_participants" ? "导出中..." : "导出 study participants"}
+              </Button>
               <Button variant="secondary" onClick={() => void handleRemoteExport("study_artifacts")} disabled={pendingKey !== null}>
                 {pendingKey === "study_artifacts" ? "导出中..." : "导出 study artifacts"}
               </Button>
@@ -167,7 +172,7 @@ export default function AdminExportPage() {
         <Card className="space-y-4">
           <div>
             <h2 className="text-lg font-bold text-slate-900">研究 bundle 导出</h2>
-            <p className="mt-1 text-sm text-slate-600">按 participant/session/snapshot 聚合导出 study sessions、artifacts、task ratings、events，以及 actionability 汇总。</p>
+            <p className="mt-1 text-sm text-slate-600">按 participant/session/snapshot 聚合导出 participant registry、study sessions、artifacts、task ratings、events，以及 actionability 汇总。</p>
           </div>
           <div className="grid gap-3 md:grid-cols-3">
             <Input placeholder="participantId（可选）" value={participantId} onChange={(event) => setParticipantId(event.target.value)} />

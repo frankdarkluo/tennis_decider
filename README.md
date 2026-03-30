@@ -52,6 +52,7 @@ npm run dev
 ```bash
 npm test
 npm run validate:data
+npm run validate:study-remote
 npm run build
 ```
 
@@ -108,12 +109,29 @@ NEXT_PUBLIC_STUDY_DISABLE_VIEWCOUNT_BOOST=true
 
 执行前如果涉及管理员邮箱占位符，请先改成你自己的邮箱。
 
+如果你要验证远端研究库是否已经具备 study-mode 写入能力，可以运行：
+
+```bash
+npm run validate:study-remote
+```
+
+这个命令会用合成 `participantId` / `sessionId` 依次尝试写入：
+- `study_participants`
+- `study_sessions`
+- `event_logs`
+- `study_task_ratings`
+- `study_artifacts`
+- `survey_responses`
+
+适合在执行 `supabase/research_infra.sql` 与 `supabase/study_mode.sql` 后立即做真实写入检查。
+
 ## Study notes
 
 - study mode 采用冻结 snapshot 驱动 `/library` 与 `/rankings` 顺序
 - post-task actionability 使用 7 点量表
 - study bundle 导出包含 `taskRatings` 与 `actionabilitySummary`
 - 详细说明见 [docs_local/STUDY_MODE.md](/Users/gluo/Desktop/tennis_level/.worktrees/pr1-study-data-contracts/docs_local/STUDY_MODE.md)
+- 远端迁移清单见 [docs_local/STUDY_REMOTE_MIGRATION_CHECKLIST.md](/Users/gluo/Desktop/tennis_level/docs_local/STUDY_REMOTE_MIGRATION_CHECKLIST.md)
 - snapshot 生成与校验见 [docs_local/STUDY_SNAPSHOT_NOTE.md](/Users/gluo/Desktop/tennis_level/.worktrees/pr1-study-data-contracts/docs_local/STUDY_SNAPSHOT_NOTE.md)
 
 ## 目录说明

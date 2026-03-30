@@ -10,9 +10,12 @@ import {
   logEvent,
   logPageEnter,
   logPageLeave,
+  logPageVisibilityChange,
+  markPageInteraction,
   logSessionAbandoned,
   setEventLoggerPage,
-  setEventLoggerUser
+  setEventLoggerUser,
+  syncPageFocusState
 } from "@/lib/eventLogger";
 import { writeLastStudyPath } from "@/lib/study/localData";
 
@@ -51,6 +54,60 @@ export function EventLoggerProvider({ children }: { children: ReactNode }) {
     });
     previousPathRef.current = pathname;
   }, [pathname, studyMode]);
+
+  useEffect(() => {
+    if (!pathname) {
+      return;
+    }
+
+    const handleVisibilityChange = () => {
+      logPageVisibilityChange(pathname);
+    };
+    const handleFocusChange = () => {
+      syncPageFocusState(pathname);
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("focus", handleFocusChange);
+    window.addEventListener("blur", handleFocusChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("focus", handleFocusChange);
+      window.removeEventListener("blur", handleFocusChange);
+    };
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!pathname) {
+      return;
+    }
+
+    let lastScrollMarkAt = 0;
+
+    const handleInteraction = () => {
+      markPageInteraction(pathname);
+    };
+    const handleScroll = () => {
+      const now = Date.now();
+      if (now - lastScrollMarkAt < 1000) {
+        return;
+      }
+
+      lastScrollMarkAt = now;
+      markPageInteraction(pathname);
+    };
+
+    window.addEventListener("pointerdown", handleInteraction, { passive: true });
+    window.addEventListener("keydown", handleInteraction);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("pointerdown", handleInteraction);
+      window.removeEventListener("keydown", handleInteraction);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [pathname]);
 
   useEffect(() => {
     if (!pathname) {

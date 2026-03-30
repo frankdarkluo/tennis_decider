@@ -32,7 +32,7 @@ export function LibraryFilters(props: LibraryFiltersProps) {
 
   return (
     <div className="space-y-3 rounded-2xl border border-[var(--line)] bg-white p-4 shadow-soft">
-      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_180px_180px]">
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_180px_180px_180px]">
         <Input
           placeholder={t("library.searchPlaceholder")}
           value={props.keyword}
@@ -49,6 +49,15 @@ export function LibraryFilters(props: LibraryFiltersProps) {
               {language === "en" ? option.enLabel : option.zhLabel}
             </option>
           ))}
+        </select>
+        <select
+          className="min-h-11 w-full rounded-xl border border-[var(--line)] bg-white px-4 py-2 text-sm text-slate-700"
+          value={props.selectedContentLanguage}
+          onChange={(e) => props.setSelectedContentLanguage(e.target.value as LibraryContentLanguageFilter)}
+        >
+          <option value="all">{t("library.filter.languageAll")}</option>
+          <option value="zh">{t("library.filter.languageZh")}</option>
+          <option value="en">{t("library.filter.languageEn")}</option>
         </select>
         <select
           className="min-h-11 w-full rounded-xl border border-[var(--line)] bg-white px-4 py-2 text-sm text-slate-700"

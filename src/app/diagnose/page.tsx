@@ -104,7 +104,11 @@ function DiagnosePageContent() {
 
     if (studyMode && session) {
       await persistStudyArtifact(session, "diagnosis", sanitizeDiagnosisArtifact(trimmedText, diagnosisResult));
-      updateLocalStudyProgress({ lastVisitedPath: "/diagnose" });
+      updateLocalStudyProgress({
+        lastVisitedPath: `/diagnose?q=${encodeURIComponent(trimmedText)}`,
+        lastDiagnosisPath: `/diagnose?q=${encodeURIComponent(trimmedText)}`,
+        lastDiagnosisTitle: diagnosisResult.title
+      });
     } else if (user?.id && configured) {
       const saveResult = await saveDiagnosisHistory(user.id, trimmedText, diagnosisResult);
       if (saveResult.error) {

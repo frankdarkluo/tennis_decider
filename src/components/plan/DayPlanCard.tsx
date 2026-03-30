@@ -6,10 +6,13 @@ import { expandedContents } from "@/data/expandedContents";
 import { DayPlan } from "@/types/plan";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
 import {
   getContentFocusLine,
+  getContentLanguageTag,
   getContentPrimaryTitle,
-  getContentSecondaryTitle
+  getContentSecondaryTitle,
+  getSubtitleAvailability
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
@@ -45,6 +48,15 @@ export function DayPlanCard({
   const primaryTitle = featuredContent ? getContentPrimaryTitle(featuredContent, language) : null;
   const secondaryTitle = featuredContent ? getContentSecondaryTitle(featuredContent, language) : null;
   const focusLine = featuredContent ? getContentFocusLine(featuredContent, language) : null;
+  const contentLanguage = featuredContent ? getContentLanguageTag(featuredContent) : null;
+  const subtitleAvailability = featuredContent ? getSubtitleAvailability(featuredContent) : null;
+  const subtitleLabel = subtitleAvailability === "english"
+    ? t("content.subtitle.yes")
+    : subtitleAvailability === "none"
+      ? t("content.subtitle.no")
+      : subtitleAvailability === "not_needed"
+        ? t("content.subtitle.notNeeded")
+        : t("content.subtitle.unknown");
 
   const featuredContentCard = featuredContent ? (
     <a
@@ -81,9 +93,24 @@ export function DayPlanCard({
           ) : null}
         </div>
         <div className="min-w-0 flex-1">
+          {featuredContent ? (
+            <div className="mb-2 flex flex-wrap gap-2">
+              <Badge className="bg-slate-100 px-4 py-1.5 text-sm font-semibold leading-none text-slate-700">
+                {contentLanguage === "zh" ? t("content.lang.zh") : t("content.lang.en")}
+              </Badge>
+              <Badge className="bg-slate-100 px-4 py-1.5 text-sm font-semibold leading-none text-slate-700">
+                {subtitleLabel}
+              </Badge>
+            </div>
+          ) : null}
           <p className="font-semibold text-slate-900">{primaryTitle ?? featuredContent.title}</p>
           {secondaryTitle ? (
-            <p className="mt-1 text-xs leading-5 text-slate-400">{secondaryTitle}</p>
+            <div className="mt-1 space-y-0.5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">
+                {t("content.secondaryTitle")}
+              </p>
+              <p className="text-xs leading-5 text-slate-400">{secondaryTitle}</p>
+            </div>
           ) : null}
           {focusLine && focusLine !== primaryTitle ? (
             <p className="mt-1 text-sm text-slate-600">{t("content.targetPrefix")} {focusLine}</p>

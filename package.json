@@ -9,6 +9,7 @@
     "lint": "next lint",
     "test": "vitest run",
     "validate:data": "ts-node --project tsconfig.scripts.json scripts/validate-data.ts",
+    "validate:study-remote": "ts-node --project tsconfig.scripts.json scripts/verify-study-remote.ts",
     "generate:translation-backlog": "ts-node --project tsconfig.scripts.json scripts/generate-content-translation-backlog.ts"
   },
   "dependencies": {

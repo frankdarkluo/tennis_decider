@@ -109,4 +109,39 @@ describe("ActionabilityPrompt", () => {
       { page: "/study/actionability-preview" }
     );
   });
+
+  it("renders the English study prompt when the session language is English", async () => {
+    useStudy.mockReturnValue({
+      session: { ...baseSession, language: "en", condition: "lang_en" },
+      studyMode: true,
+      language: "en"
+    });
+    useI18n.mockReturnValue({
+      language: "en",
+      t: (key: string) => {
+        const table: Record<string, string> = {
+          "study.actionability.title": "One quick question after the task",
+          "study.actionability.prompt": "After this task, I know what to practise next.",
+          "study.actionability.scale.min": "Strongly disagree",
+          "study.actionability.scale.max": "Strongly agree",
+          "study.actionability.submit": "Submit rating"
+        };
+        return table[key] ?? key;
+      }
+    });
+
+    const { ActionabilityPrompt } = await import("@/components/study/ActionabilityPrompt");
+
+    render(React.createElement(ActionabilityPrompt, { taskId: "task_2_assessment_entry" }));
+
+    expect(await screen.findByText("After this task, I know what to practise next.")).toBeInTheDocument();
+    expect(logEvent).toHaveBeenCalledWith(
+      "task.actionability_prompt_viewed",
+      expect.objectContaining({
+        taskId: "task_2_assessment_entry",
+        language: "en"
+      }),
+      { page: "/study/actionability-preview" }
+    );
+  });
 });

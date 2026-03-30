@@ -12,9 +12,12 @@ import { UsageMeter } from "@/components/video/UsageMeter";
 import { PlatformVideoSearch } from "@/components/PlatformVideoSearch";
 import { StudyBanner } from "@/components/study/StudyBanner";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
+import { Header } from "@/components/layout/Header";
 import { getPlanTemplate } from "@/lib/plans";
 import { contents } from "@/data/contents";
 import { creators } from "@/data/creators";
+import StudyEndPage from "@/app/study/end/page";
+import StudyActionabilityPreviewPage from "@/app/study/actionability-preview/page";
 
 const {
   mockPush,
@@ -93,7 +96,8 @@ vi.mock("next/navigation", () => ({
     replace: mockPush,
     prefetch: vi.fn()
   }),
-  useSearchParams: () => mockSearchParamsAdapter
+  useSearchParams: () => mockSearchParamsAdapter,
+  usePathname: () => "/study/actionability-preview"
 }));
 
 vi.mock("@/components/study/StudyProvider", () => ({
@@ -122,7 +126,8 @@ vi.mock("@/lib/supabase", () => ({
 }));
 
 vi.mock("@/lib/eventLogger", () => ({
-  logEvent: vi.fn()
+  logEvent: vi.fn(),
+  markEventLoggerSessionCompleted: vi.fn()
 }));
 
 function renderWithI18n(ui: React.ReactElement) {
@@ -337,5 +342,83 @@ describe("surface localization", () => {
 
     expect(screen.getByText("How To Hit A Basic Tennis Serve with Venus Williams")).toBeInTheDocument();
     expect(screen.getByText("跟维纳斯·威廉姆斯学网球基础发球")).toBeInTheDocument();
+  });
+
+  it("renders study end in zh without leftover English study labels", () => {
+    mockStudyState.language = "zh";
+    mockStudyState.studyMode = true;
+    mockStudyState.session = {
+      participantId: "P001",
+      sessionId: "session-12345678",
+      snapshotId: "snapshot-a",
+      buildVersion: "build-1",
+      language: "zh"
+    };
+
+    renderWithI18n(<StudyEndPage />);
+
+    expect(screen.getAllByText("研究模式").length).toBeGreaterThan(0);
+    expect(screen.getByText("本轮研究已结束")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "去填写问卷" })).toBeInTheDocument();
+    expect(screen.queryByText("Study mode")).not.toBeInTheDocument();
+  });
+
+  it("renders the actionability preview badge in zh without English leftovers", () => {
+    mockStudyState.language = "zh";
+    mockStudyState.studyMode = true;
+    mockStudyState.session = {
+      participantId: "P001",
+      sessionId: "session-12345678",
+      snapshotId: "snapshot-a",
+      buildVersion: "build-1",
+      language: "zh"
+    };
+
+    renderWithI18n(<StudyActionabilityPreviewPage />);
+
+    expect(screen.getByText("研究预览")).toBeInTheDocument();
+    expect(screen.queryByText("Study preview")).not.toBeInTheDocument();
+  });
+
+  it("renders the study nav label in zh without beta wording", () => {
+    mockStudyState.language = "zh";
+    mockStudyState.studyMode = true;
+    mockStudyState.session = {
+      participantId: "P001",
+      sessionId: "session-12345678",
+      snapshotId: "snapshot-a",
+      buildVersion: "build-1",
+      language: "zh"
+    };
+
+    renderWithI18n(<Header />);
+
+    expect(screen.getAllByText("研究模式").length).toBeGreaterThan(0);
+    expect(screen.queryByText("测试 (Beta)")).not.toBeInTheDocument();
+  });
+
+  it("renders the profile study panel in zh without English field labels", async () => {
+    mockStudyState.language = "zh";
+    mockStudyState.studyMode = true;
+    mockStudyState.session = {
+      participantId: "P001",
+      sessionId: "session-12345678",
+      snapshotId: "snapshot-a",
+      buildVersion: "build-1",
+      language: "zh"
+    };
+
+    renderWithI18n(<ProfilePage />);
+
+    await waitFor(() => {
+      expect(screen.getByText("当前研究会话")).toBeInTheDocument();
+    });
+
+    expect(screen.getByText("会话编号")).toBeInTheDocument();
+    expect(screen.getByText("快照")).toBeInTheDocument();
+    expect(screen.getByText("构建版本")).toBeInTheDocument();
+    expect(screen.queryByText("Snapshot")).not.toBeInTheDocument();
+    expect(screen.queryByText("Build")).not.toBeInTheDocument();
+    expect(screen.queryByText("Session ID")).not.toBeInTheDocument();
   });
 });

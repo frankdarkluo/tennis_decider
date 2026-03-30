@@ -4,6 +4,8 @@ import { FormEvent, useMemo, useState } from "react";
 import { surveyQuestions, susLikertLabels } from "@/data/surveyQuestions";
 import { getEventSessionId, logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
+import enDictionary from "@/lib/i18n/dictionaries/en";
+import zhDictionary from "@/lib/i18n/dictionaries/zh";
 import { saveSurveyResponse } from "@/lib/researchData";
 import { persistStudyArtifact } from "@/lib/study/client";
 import { sanitizeSurveyArtifact } from "@/lib/study/privacy";
@@ -15,6 +17,8 @@ import { Textarea } from "@/components/ui/Textarea";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useStudy } from "@/components/study/StudyProvider";
 
+type DictionaryKey = keyof typeof zhDictionary;
+
 const partTranslationKeys = {
   basic: { title: "survey.part.basic.title", body: "survey.part.basic.body" },
   sus: { title: "survey.part.sus.title", body: "survey.part.sus.body" },
@@ -22,13 +26,29 @@ const partTranslationKeys = {
   open: { title: "survey.part.open.title", body: "survey.part.open.body" }
 } as const;
 
+function applyReplacements(value: string, replacements?: Record<string, string | number>) {
+  if (!replacements) {
+    return value;
+  }
+
+  return Object.entries(replacements).reduce((current, [key, replacement]) => {
+    return current.replace(new RegExp(`\\{${key}\\}`, "g"), String(replacement));
+  }, value);
+}
+
 export default function SurveyPage() {
   const { user } = useAuth();
   const { studyMode, session } = useStudy();
-  const { language, t } = useI18n();
+  const { language } = useI18n();
   const [responses, setResponses] = useState<Record<string, string | number>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "submitted" | "error">("idle");
   const [message, setMessage] = useState("");
+  const effectiveLanguage = studyMode && session ? session.language : language;
+  const surveyT = (key: DictionaryKey, replacements?: Record<string, string | number>) => {
+    const dictionary = effectiveLanguage === "en" ? enDictionary : zhDictionary;
+    const translated = dictionary[key] ?? zhDictionary[key] ?? key;
+    return applyReplacements(String(translated), replacements);
+  };
 
   const groupedQuestions = useMemo(() => {
     return {
@@ -96,7 +116,7 @@ export default function SurveyPage() {
       }, { page: "/survey" });
     });
     setStatus("submitted");
-    setMessage(t("survey.thanks.body"));
+    setMessage(surveyT("survey.thanks.body"));
   }
 
   const renderQuestion = (question: (typeof surveyQuestions)[number], index: number) => {
@@ -105,12 +125,12 @@ export default function SurveyPage() {
     if (question.type === "text") {
       return (
         <div key={question.id} className="space-y-2">
-          <p className="font-semibold text-slate-900">Q{displayIndex}. {language === "en" && question.prompt_en ? question.prompt_en : question.prompt}</p>
+          <p className="font-semibold text-slate-900">Q{displayIndex}. {effectiveLanguage === "en" && question.prompt_en ? question.prompt_en : question.prompt}</p>
           <Textarea
             rows={5}
             value={typeof responses[question.id] === "string" ? (responses[question.id] as string) : ""}
             onChange={(event) => setResponses((prev) => ({ ...prev, [question.id]: event.target.value }))}
-            placeholder={t("survey.placeholder")}
+            placeholder={surveyT("survey.placeholder")}
           />
         </div>
       );
@@ -119,7 +139,7 @@ export default function SurveyPage() {
     if (question.type === "likert") {
       return (
         <div key={question.id} className="space-y-3">
-          <p className="font-semibold text-slate-900">Q{displayIndex}. {language === "en" && question.prompt_en ? question.prompt_en : question.prompt}</p>
+          <p className="font-semibold text-slate-900">Q{displayIndex}. {effectiveLanguage === "en" && question.prompt_en ? question.prompt_en : question.prompt}</p>
           <div className="grid gap-2 sm:grid-cols-5">
             {susLikertLabels.map((label, optionIndex) => {
               const score = optionIndex + 1;
@@ -146,11 +166,11 @@ export default function SurveyPage() {
       );
     }
 
-    return (
-      <div key={question.id} className="space-y-3">
-        <p className="font-semibold text-slate-900">Q{displayIndex}. {language === "en" && question.prompt_en ? question.prompt_en : question.prompt}</p>
+  return (
+    <div key={question.id} className="space-y-3">
+        <p className="font-semibold text-slate-900">Q{displayIndex}. {effectiveLanguage === "en" && question.prompt_en ? question.prompt_en : question.prompt}</p>
         <div className="space-y-2">
-          {(language === "en" && question.options_en ? question.options_en : question.options)?.map((option) => {
+          {(effectiveLanguage === "en" && question.options_en ? question.options_en : question.options)?.map((option) => {
             const active = responses[question.id] === option;
 
             return (
@@ -178,9 +198,9 @@ export default function SurveyPage() {
     return (
       <PageContainer>
         <Card className="mx-auto max-w-3xl space-y-4 text-center">
-          <p className="text-sm font-semibold text-brand-700">{t("survey.completedBadge")}</p>
-          <p className="text-sm font-semibold text-brand-700">{t("survey.thanks.badge")}</p>
-          <h1 className="text-3xl font-black text-slate-900">{t("survey.thanks.title")}</h1>
+          <p className="text-sm font-semibold text-brand-700">{surveyT("survey.completedBadge")}</p>
+          <p className="text-sm font-semibold text-brand-700">{surveyT("survey.thanks.badge")}</p>
+          <h1 className="text-3xl font-black text-slate-900">{surveyT("survey.thanks.title")}</h1>
           <p className="text-sm leading-6 text-slate-600">{message}</p>
         </Card>
       </PageContainer>
@@ -191,10 +211,10 @@ export default function SurveyPage() {
     <PageContainer>
       <div className="space-y-6">
         <Card className="space-y-3">
-          <p className="text-sm font-semibold text-brand-700">{t("survey.badge")}</p>
-          <h1 className="text-3xl font-black text-slate-900">{t("survey.title")}</h1>
+          <p className="text-sm font-semibold text-brand-700">{surveyT("survey.badge")}</p>
+          <h1 className="text-3xl font-black text-slate-900">{surveyT("survey.title")}</h1>
           <p className="text-sm leading-6 text-slate-600">
-            {t("survey.subtitle")}
+            {surveyT("survey.subtitle")}
           </p>
         </Card>
 
@@ -202,8 +222,8 @@ export default function SurveyPage() {
           {(["basic", "sus", "product", "open"] as const).map((partKey) => (
             <Card key={partKey} className="space-y-5">
               <div>
-                <h2 className="text-xl font-bold text-slate-900">{t(partTranslationKeys[partKey].title)}</h2>
-                <p className="mt-1 text-sm text-slate-600">{t(partTranslationKeys[partKey].body)}</p>
+                <h2 className="text-xl font-bold text-slate-900">{surveyT(partTranslationKeys[partKey].title)}</h2>
+                <p className="mt-1 text-sm text-slate-600">{surveyT(partTranslationKeys[partKey].body)}</p>
               </div>
               <div className="space-y-5">
                 {groupedQuestions[partKey].map((question, index) => renderQuestion(question, index))}
@@ -213,9 +233,9 @@ export default function SurveyPage() {
 
           <div className="flex flex-wrap items-center gap-3">
             <Button type="submit" disabled={!allAnswered || status === "submitting"}>
-              {status === "submitting" ? t("survey.submitting") : t("survey.submit")}
+              {status === "submitting" ? surveyT("survey.submitting") : surveyT("survey.submit")}
             </Button>
-            {!allAnswered ? <p className="text-sm text-slate-500">{t("survey.answerAll")}</p> : null}
+            {!allAnswered ? <p className="text-sm text-slate-500">{surveyT("survey.answerAll")}</p> : null}
           </div>
         </form>
 

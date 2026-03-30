@@ -68,13 +68,19 @@ export function StudyProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const nextSession = readActiveStudySession();
     setSession(nextSession);
-    setAppLanguage(readAppLanguage());
+    setAppLanguage(nextSession?.language ?? readAppLanguage());
     setLoading(false);
   }, []);
 
   const activeSession = session && !session.endedAt ? session : null;
-  const language = appLanguage;
+  const language = activeSession?.language ?? appLanguage;
   const canChangeLanguage = !activeSession;
+
+  useEffect(() => {
+    if (activeSession) {
+      writeAppLanguage(activeSession.language);
+    }
+  }, [activeSession]);
 
   useEffect(() => {
     setEventLoggerStudySession(activeSession);
@@ -88,15 +94,12 @@ export function StudyProvider({ children }: { children: ReactNode }) {
     canChangeLanguage,
     loading,
     setLanguage: (nextLanguage) => {
+      if (activeSession) {
+        return;
+      }
+
       setAppLanguage(nextLanguage);
       writeAppLanguage(nextLanguage);
-
-      if (activeSession) {
-        const updatedSession = { ...activeSession, language: nextLanguage };
-        writeActiveStudySession(updatedSession);
-        setEventLoggerStudySession(updatedSession);
-        setSession(updatedSession);
-      }
     },
     startStudySession: async ({ participantId, language: nextLanguage, condition, background, consentedAt }) => {
       const normalizedParticipantId = participantId.trim();

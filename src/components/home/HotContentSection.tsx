@@ -8,8 +8,10 @@ import { Badge } from "@/components/ui/Badge";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import {
   getContentFocusLine,
+  getContentLanguageTag,
   getContentPrimaryTitle,
-  getContentSecondaryTitle
+  getContentSecondaryTitle,
+  getSubtitleAvailability
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
@@ -43,6 +45,15 @@ export function HotContentSection() {
           const primaryTitle = getContentPrimaryTitle(item, language);
           const secondaryTitle = getContentSecondaryTitle(item, language);
           const focusLine = getContentFocusLine(item, language);
+          const contentLanguage = getContentLanguageTag(item);
+          const subtitleAvailability = getSubtitleAvailability(item);
+          const subtitleLabel = subtitleAvailability === "english"
+            ? t("content.subtitle.yes")
+            : subtitleAvailability === "none"
+              ? t("content.subtitle.no")
+              : subtitleAvailability === "not_needed"
+                ? t("content.subtitle.notNeeded")
+                : t("content.subtitle.unknown");
 
           return (
             <Link
@@ -62,12 +73,21 @@ export function HotContentSection() {
                 <div className="flex flex-wrap items-center gap-2">
                   <PlatformBadge platform={item.platform} />
                   <Badge className="bg-slate-100 text-slate-700">{item.levels.join("/")}</Badge>
+                  <Badge className="bg-slate-100 text-slate-700">
+                    {contentLanguage === "zh" ? t("content.lang.zh") : t("content.lang.en")}
+                  </Badge>
+                  <Badge className="bg-slate-100 text-slate-700">{subtitleLabel}</Badge>
                   {creator ? <span className="text-xs font-medium text-slate-500">{creator.name}</span> : null}
                 </div>
                 <div className="space-y-2">
                   <p className="font-semibold text-slate-900">{primaryTitle}</p>
                   {secondaryTitle ? (
-                    <p className="text-xs leading-5 text-slate-400">{secondaryTitle}</p>
+                    <div className="space-y-0.5">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">
+                        {t("content.secondaryTitle")}
+                      </p>
+                      <p className="text-xs leading-5 text-slate-400">{secondaryTitle}</p>
+                    </div>
                   ) : null}
                   {focusLine && focusLine !== primaryTitle ? (
                     <p className="text-sm leading-6 text-slate-600">{t("content.targetPrefix")} {focusLine}</p>
