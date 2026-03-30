@@ -27,7 +27,10 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "study.actionability.submit": "提交评分",
     "study.actionability.submitting": "提交中...",
     "study.actionability.saved": "评分已记录。",
+    "diagnose.title": "说一句你的问题",
+    "diagnose.subtitle": "具体说出动作、错误和场景，我来帮你判断先改什么。",
     "diagnose.placeholder": "例如：我反手总下网，一快就更容易失误",
+    "diagnose.quickTags": "示例",
     "diagnose.helper": "💡 描述越具体，诊断越准",
     "diagnose.examples": "示例",
     "content.whyRecommended": "为什么推荐这个",
@@ -39,7 +42,40 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "library.title": "找内容",
     "library.more": "查看更多",
     "content.openAria": "打开视频：{value}",
-    "video.title": "上传视频，我来帮你看问题",
+    "video.title": "传一段视频，帮你看看问题出在哪",
+    "video.subtitle": "传一段几十秒的小视频就好，我们帮你诊断。",
+    "video.badge": "AI视频诊断",
+    "video.tip.shootTitle": "拍摄视角",
+    "video.tip.shootBody": "横屏、侧后方、连续 3-5 拍。",
+    "video.tip.sceneTitle": "拍什么都行",
+    "video.tip.sceneBody": "喂球、对拉、发球、比赛都行。",
+    "video.tip.resultTitle": "这次能看什么",
+    "video.tip.resultBody": "重点看动作问题和下一步。",
+    "video.upload.title": "上传视频",
+    "video.upload.subtitle": "建议 {duration} 秒内、{size}MB 内。",
+    "video.stroke": "想看哪一拍？",
+    "video.scene": "这是什么场景？",
+    "video.description": "可选：补一句感觉",
+    "video.descriptionPlaceholder": "例如：正手总晚点，越发力越容易飞",
+    "video.option.unknown": "不确定",
+    "video.option.forehand": "正手",
+    "video.option.backhand": "反手",
+    "video.option.serve": "发球",
+    "video.option.volley": "网前 / 截击",
+    "video.option.scene_unknown": "不确定",
+    "video.option.drill": "喂球训练",
+    "video.option.rally": "对拉 / 相持",
+    "video.option.serve_practice": "发球练习",
+    "video.option.match": "比赛片段",
+    "video.upload.dropTitle": "拖进来或点击上传 1 分钟以内的视频",
+    "video.upload.dropBody": "推荐拍法：横屏、侧后方机位、让击球点和全身步伐尽量都进画面。",
+    "video.upload.dropFormats": "支持 mp4 / mov / webm，建议 50MB 以内",
+    "video.button.start": "开始视频诊断",
+    "video.backHome": "← 回到首页",
+    "video.usage.title": "视频诊断额度",
+    "video.usage.remainingHeadline": "你还剩 {remaining} 次免费视频诊断",
+    "video.usage.used": "已成功使用 {used}/{max}",
+    "video.usage.note": "只有当系统成功完成分析并给出有效结果时，才会算作一次使用。分析失败或建议重拍时不会扣次数。",
     "rankings.title": "博主榜",
     "rankings.searchAria": "搜索博主",
     "rankings.detail": "查看详情",
@@ -244,14 +280,15 @@ describe("app smoke tests", () => {
     });
   });
 
-  it("shows the video diagnose route as temporarily unavailable", async () => {
+  it("renders the current video diagnose upload flow", async () => {
     const VideoDiagnosePage = await loadPage(() => import("@/app/video-diagnose/page"));
 
     render(React.createElement(VideoDiagnosePage));
 
-    expect(await screen.findByText("上传视频，我来帮你看问题")).toBeInTheDocument();
-    expect(screen.getByText("视频诊断暂时还没准备好。请继续使用问题诊断、内容库或训练计划流程。")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "去问题诊断" })).toHaveAttribute("href", "/diagnose");
+    expect(await screen.findByText("传一段视频，帮你看看问题出在哪")).toBeInTheDocument();
+    expect(screen.getByText("上传视频")).toBeInTheDocument();
+    expect(screen.getByText("拖进来或点击上传 1 分钟以内的视频")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "← 回到首页" })).toHaveAttribute("href", "/");
   });
 
   it("renders assessment page and allows stepping through the simplified flow", async () => {
@@ -469,16 +506,15 @@ describe("app smoke tests", () => {
 
     render(React.createElement(DiagnosePage));
 
+    expect(await screen.findByText("说一句你的问题")).toBeInTheDocument();
+    expect(screen.getByText("具体说出动作、错误和场景，我来帮你判断先改什么。")).toBeInTheDocument();
     expect(await screen.findByPlaceholderText(/我反手总下网/)).toBeInTheDocument();
-    expect(screen.getByText("💡 描述越具体，诊断越准")).toBeInTheDocument();
     expect(screen.getByText("示例")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "反手总是下网" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "一发总发不进" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "二发总双误" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "正手一发力就出界" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "脚步总慢半拍" })).not.toBeInTheDocument();
-    expect(screen.queryByText("也可以直接点一个接近的问题：")).not.toBeInTheDocument();
-    expect(screen.queryByText("查看更多示例 ↓")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "脚步总慢半拍" })).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
@@ -517,7 +553,7 @@ describe("app smoke tests", () => {
     expect(studyProgress?.lastVisitedPath).toBe("/diagnose?q=%E6%88%91%E5%8F%8D%E6%89%8B%E6%80%BB%E4%B8%8B%E7%BD%91%EF%BC%8C%E4%B8%80%E5%BF%AB%E5%B0%B1%E6%9B%B4%E5%AE%B9%E6%98%93%E5%A4%B1%E8%AF%AF");
   });
 
-  it("keeps the plan CTA primary in study mode and hides library/rankings behind more options", async () => {
+  it("keeps the plan CTA primary in study mode while library and rankings stay available after expand", async () => {
     const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
 
     mockStudyContext.session = baseStudySession;
@@ -533,11 +569,6 @@ describe("app smoke tests", () => {
     fireEvent.click(await screen.findByRole("button", { name: "diagnose.result.expand1" }));
 
     expect(await screen.findByRole("link", { name: "根据这个问题生成 7 天训练计划" })).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "去内容库找更多练习" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "去博主榜找适合的人" })).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: "查看更多选项 ↓" }));
-
     expect(await screen.findByRole("link", { name: "去内容库找更多练习" })).toHaveAttribute("href", "/library");
     expect(screen.getByRole("link", { name: "去博主榜找适合的人" })).toHaveAttribute("href", "/rankings");
   });

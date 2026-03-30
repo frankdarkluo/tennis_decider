@@ -84,6 +84,7 @@ const zh = {
   "diagnose.subtitle": "具体说出动作、错误和场景，我来帮你判断先改什么。",
   "diagnose.helper": "💡 描述越具体，诊断越准",
   "diagnose.examples": "示例",
+  "diagnose.quickTags": "示例",
   "diagnose.placeholder": "例如：反手总下网，来球一快更明显 / 网前截击老冒高，双打一紧张就更明显",
   "diagnose.button.start": "开始诊断",
   "diagnose.button.clear": "清空",

@@ -84,6 +84,7 @@ const en = {
   "diagnose.subtitle": "Tell us the stroke, the miss, and when it gets worse, and we will decide what to fix first.",
   "diagnose.helper": "💡 More detail means a more accurate diagnosis",
   "diagnose.examples": "Examples",
+  "diagnose.quickTags": "Examples",
   "diagnose.placeholder": "For example: My backhand keeps going into the net when the ball comes faster / My volleys keep floating when I get tight in doubles",
   "diagnose.button.start": "Start diagnosis",
   "diagnose.button.clear": "Clear",
