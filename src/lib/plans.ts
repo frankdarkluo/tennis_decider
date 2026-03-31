@@ -18,6 +18,12 @@ import { SavedPlanSource } from "@/types/userData";
 type PlanLocale = "zh" | "en";
 type PlanPoolSource = "curated" | "expanded";
 
+type PlanDiagnosisContextHint = {
+  skills: string[];
+  problemTags: string[];
+  contentIds: string[];
+};
+
 const MAX_PLAN_CANDIDATES = 7;
 const MIN_PLAN_CANDIDATES = 5;
 
@@ -34,6 +40,45 @@ const PLAN_COMPATIBILITY_FALLBACKS: Record<string, string> = {
 };
 
 const PLAN_DAY_REVIEW_TERMS = ["review", "录像", "复盘", "休息", "track"];
+
+const PLAN_CONTEXT_SIGNAL_PATTERNS: Array<{ patterns: RegExp[]; skills: string[]; problemTags: string[]; contentIds: string[] }> = [
+  {
+    patterns: [/(?:关键分|关键球|一紧张|紧张|手紧|pressure point|big point|under pressure|nerves?)/i],
+    skills: ["mental", "matchplay"],
+    problemTags: ["pressure-tightness", "match-anxiety"],
+    contentIds: ["content_cn_f_01", "content_cn_e_02"]
+  },
+  {
+    patterns: [/(?:对手在网前|对手一上网|网前压迫|抢网|封网|opponent at net|net pressure|poach|poaching)/i],
+    skills: ["net", "matchplay", "doubles"],
+    problemTags: ["net-confidence", "doubles-positioning", "volley-floating", "volley-into-net"],
+    contentIds: ["content_rb_03", "content_cn_b_01"]
+  },
+  {
+    patterns: [/(?:左右移动|跑动中|追球|宽球|move wide|running|on the stretch)/i],
+    skills: ["movement", "footwork"],
+    problemTags: ["movement-slow", "late-contact", "running-forehand", "running-backhand"],
+    contentIds: ["content_cn_c_02", "content_fr_02"]
+  },
+  {
+    patterns: [/(?:月亮球|moonball|moon ball|高吊球|高挑球)/i],
+    skills: ["matchplay", "defense", "topspin"],
+    problemTags: ["moonball-trouble", "cant-hit-lob"],
+    contentIds: ["content_common_01"]
+  },
+  {
+    patterns: [/(?:下旋来球|对方切过来|against slice|incoming slice|low skidding balls)/i],
+    skills: ["backhand", "slice"],
+    problemTags: ["incoming-slice-trouble", "backhand-slice-floating"],
+    contentIds: ["content_common_02", "content_fr_02"]
+  },
+  {
+    patterns: [/(?:年纪大了|上年纪|跑不太动|跑不动|跟不上|cannot move well anymore|mobility)/i],
+    skills: ["movement", "footwork"],
+    problemTags: ["mobility-limit", "movement-slow"],
+    contentIds: ["content_fr_02"]
+  }
+];
 
 type PlanDayInput = Pick<DayPlan, "day" | "focus" | "contentIds" | "drills" | "duration"> &
   Partial<Pick<
@@ -586,6 +631,28 @@ function uniqueStrings(values: string[]): string[] {
   return Array.from(new Set(values.filter(Boolean)));
 }
 
+function buildDiagnosisContextHint(rawInput?: string): PlanDiagnosisContextHint {
+  if (!rawInput?.trim()) {
+    return { skills: [], problemTags: [], contentIds: [] };
+  }
+
+  const normalized = rawInput.toLowerCase();
+  const matchedSignals = PLAN_CONTEXT_SIGNAL_PATTERNS.filter(({ patterns }) =>
+    patterns.some((pattern) => pattern.test(normalized))
+  );
+  const skills = uniqueStrings(
+    matchedSignals.flatMap(({ skills: signalSkills }) => signalSkills)
+  );
+  const problemTags = uniqueStrings(
+    matchedSignals.flatMap(({ problemTags: signalProblemTags }) => signalProblemTags)
+  );
+  const contentIds = uniqueStrings(
+    matchedSignals.flatMap(({ contentIds: signalContentIds }) => signalContentIds)
+  );
+
+  return { skills, problemTags, contentIds };
+}
+
 function getPlanLookupProblemTags(problemTag: string): string[] {
   const canonicalProblemTag = normalizePlanProblemTag(problemTag);
   const compatibilityFallback = PLAN_COMPATIBILITY_FALLBACKS[canonicalProblemTag];
@@ -782,6 +849,8 @@ function scoreContentForCandidatePool(input: {
   seedSkills: string[];
   secondaryProblemTags: string[];
   secondarySkills: string[];
+  contextProblemTags: string[];
+  contextSkills: string[];
   templateSeedContentIdSet: Set<string>;
 }) {
   const {
@@ -794,6 +863,8 @@ function scoreContentForCandidatePool(input: {
     seedSkills,
     secondaryProblemTags,
     secondarySkills,
+    contextProblemTags,
+    contextSkills,
     templateSeedContentIdSet
   } = input;
 
@@ -815,6 +886,8 @@ function scoreContentForCandidatePool(input: {
   score += overlapCount(item.skills, seedSkills) * 9;
   score += overlapCount(item.problemTags, secondaryProblemTags) * 6;
   score += overlapCount(item.skills, secondarySkills) * 4;
+  score += overlapCount(item.problemTags, contextProblemTags) * 5;
+  score += overlapCount(item.skills, contextSkills) * 3;
   score += getLevelPreferenceScore(item, level);
   score -= getContextMismatchPenalty(item, seedSkills);
 
@@ -886,13 +959,16 @@ export function buildDiagnosisPlanCandidateIds(input: {
   problemTag: string;
   level: PlanLevel;
   recommendedContentIds?: string[];
+  diagnosisInput?: string;
   maxCandidates?: number;
 }): string[] {
   const normalizedProblemTag = normalizePlanProblemTag(input.problemTag);
   const lookupProblemTags = getPlanLookupProblemTags(input.problemTag);
+  const contextHint = buildDiagnosisContextHint(input.diagnosisInput);
   const explicitContentIds = uniqueStrings([
     ...(input.recommendedContentIds ?? []),
-    ...getRecommendedRuleContentIds(input.problemTag)
+    ...getRecommendedRuleContentIds(input.problemTag),
+    ...contextHint.contentIds
   ]);
   const explicitItems = explicitContentIds
     .map((id) => planContentById.get(id))
@@ -905,11 +981,13 @@ export function buildDiagnosisPlanCandidateIds(input: {
     normalizedProblemTag,
     ...lookupProblemTags,
     ...explicitItems.flatMap((item) => item.problemTags),
-    ...templateSeedItems.flatMap((item) => item.problemTags)
+    ...templateSeedItems.flatMap((item) => item.problemTags),
+    ...contextHint.problemTags
   ]);
   const seedSkills = uniqueStrings([
     ...explicitItems.flatMap((item) => item.skills),
-    ...templateSeedItems.flatMap((item) => item.skills)
+    ...templateSeedItems.flatMap((item) => item.skills),
+    ...contextHint.skills
   ]);
   const explicitContentIdSet = new Set(explicitContentIds);
   const templateSeedContentIdSet = new Set(templateSeedContentIds);
@@ -926,6 +1004,8 @@ export function buildDiagnosisPlanCandidateIds(input: {
         seedSkills,
         secondaryProblemTags: [],
         secondarySkills: [],
+        contextProblemTags: contextHint.problemTags,
+        contextSkills: contextHint.skills,
         templateSeedContentIdSet
       })
     )
@@ -997,6 +1077,8 @@ export function buildAssessmentPlanContext(result: AssessmentResult): {
         seedSkills,
         secondaryProblemTags,
         secondarySkills,
+        contextProblemTags: [],
+        contextSkills: [],
         templateSeedContentIdSet
       })
     )

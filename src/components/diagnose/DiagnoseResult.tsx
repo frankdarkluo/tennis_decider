@@ -160,6 +160,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
   const candidateIds = buildDiagnosisPlanCandidateIds({
     problemTag: result.problemTag,
     level: normalizedPlanLevel,
+    diagnosisInput: result.input,
     recommendedContentIds: result.recommendedContents.map((item) => item.id)
   });
   const planHref = buildPlanHref({

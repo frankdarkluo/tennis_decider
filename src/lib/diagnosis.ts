@@ -258,7 +258,12 @@ const DIAGNOSIS_ALIAS_PATTERNS: Array<{ alias: DiagnosisAlias; patterns: RegExp[
   { alias: "overhead", patterns: [/(?:高压|overhead|smash|杀高球|高球处理)/i] },
   { alias: "moonball", patterns: [/(?:月亮球|moon ball|moonball|高吊球|高挑球|挑高球)/i] },
   { alias: "slice", patterns: [/(?:切削|slice|下旋)/i] },
-  { alias: "key_point", patterns: [/(?:关键分|关键球|pressure point|big point)/i] },
+  {
+    alias: "key_point",
+    patterns: [
+      /(?:关键分|关键球|pressure point|big point|break point|game point|match point|deuce|tie ?break|tiebreak|30\s*30|30\s*40|40\s*30|40\s*40|\b(?:bp|gp|mp|tb)\b)/i
+    ]
+  },
   {
     alias: "mobility_limit",
     patterns: [/(?:左右追球跟不上|追球跟不上|移动跟不上|左右移动跟不上|脚步慢|移动受限|跑不动|movement slow|cover the court)/i]
@@ -266,7 +271,12 @@ const DIAGNOSIS_ALIAS_PATTERNS: Array<{ alias: DiagnosisAlias; patterns: RegExp[
 ];
 
 const DIAGNOSIS_MODIFIER_PATTERNS: Array<{ modifier: DiagnosisModifier; patterns: RegExp[] }> = [
-  { modifier: "tight", patterns: [/(?:关键分|关键球|压力大|一紧张|紧张|手紧|pressure point|big point)/i] },
+  {
+    modifier: "tight",
+    patterns: [
+      /(?:关键分|关键球|压力大|一紧张|紧张|手紧|pressure point|big point|break point|game point|match point|deuce|tie ?break|tiebreak|30\s*30|30\s*40|40\s*30|40\s*40|\b(?:bp|gp|mp|tb)\b|chok(?:e|ing)|tense up)/i
+    ]
+  },
   { modifier: "age", patterns: [/(?:年纪大了|年纪大|上年纪|年龄大|老了)/i] }
 ];
 
@@ -284,10 +294,42 @@ const DIAGNOSIS_SUPPORT_SIGNAL_PATTERNS: Array<{ signal: DiagnosisSupportSignal;
 const DIAGNOSIS_CLAUSE_SPLITTER = /[，。！？、；;]+|如果|但是|但/g;
 
 const DIAGNOSIS_TRIGGER_PATTERNS: Array<{ signal: string; patterns: RegExp[] }> = [
-  { signal: "opponent_at_net", patterns: [/(?:对手在网前|对手一上网|opponent at net)/i] },
-  { signal: "net_pressure", patterns: [/(?:压网|上网压迫|net pressure)/i] },
+  {
+    signal: "opponent_at_net",
+    patterns: [/(?:对手在网前|对手一上网|对手抢网|对手封网|opponent at net|they poach|poach(?:ing)? at net|rush(?:es)? the net|serve and volley)/i]
+  },
+  { signal: "net_pressure", patterns: [/(?:压网|上网压迫|net pressure|poach(?:ing)?|closing at net)/i] },
   { signal: "overhit", patterns: [/(?:一发力就|发力就飞|swing harder.*long|hit harder.*out)/i] },
   { signal: "hesitation", patterns: [/(?:犹豫|不敢打|hesitat)/i] }
+];
+
+const DIAGNOSIS_TYPO_NORMALIZATIONS: Array<{ pattern: RegExp; replacement: string }> = [
+  { pattern: /\bduece\b/g, replacement: "deuce" },
+  { pattern: /\bdueuse\b/g, replacement: "deuce" },
+  { pattern: /\bduese\b/g, replacement: "deuce" },
+  { pattern: /\btiebrake\b/g, replacement: "tiebreak" },
+  { pattern: /\btiebrak\b/g, replacement: "tiebreak" },
+  { pattern: /\btiebrkae\b/g, replacement: "tiebreak" },
+  { pattern: /\btie\s*brake\b/g, replacement: "tiebreak" },
+  { pattern: /\bbrek\s*point\b/g, replacement: "break point" },
+  { pattern: /\bbrekpoint\b/g, replacement: "break point" },
+  { pattern: /\bbreakpiont\b/g, replacement: "break point" },
+  { pattern: /\bgamepiont\b/g, replacement: "game point" },
+  { pattern: /\bmatchpiont\b/g, replacement: "match point" },
+  { pattern: /\bsecnd\s*serve\b/g, replacement: "second serve" },
+  { pattern: /\bseond\s*serve\b/g, replacement: "second serve" },
+  { pattern: /\bsecond\s*seve\b/g, replacement: "second serve" },
+  { pattern: /\bforehnad\b/g, replacement: "forehand" },
+  { pattern: /\bbackhnad\b/g, replacement: "backhand" },
+  { pattern: /\bnervious\b/g, replacement: "nervous" },
+  { pattern: /\bpressue\b/g, replacement: "pressure" },
+  { pattern: /\bpoching\b/g, replacement: "poaching" },
+  { pattern: /\bdouble\s*fualt(s|ing)?\b/g, replacement: "double fault$1" },
+  { pattern: /\bdoulbe\s*fault(s|ing)?\b/g, replacement: "double fault$1" },
+  { pattern: /\bdoble\s*fault(s|ing)?\b/g, replacement: "double fault$1" },
+  { pattern: /\bdoublefualt(s|ing)?\b/g, replacement: "doublefault$1" },
+  { pattern: /\bdoulbefault(s|ing)?\b/g, replacement: "doublefault$1" },
+  { pattern: /\bdoublefaut(s|ing)?\b/g, replacement: "doublefault$1" }
 ];
 
 type DiagnosisPriorityLane =
@@ -325,9 +367,15 @@ const DIAGNOSIS_SLOT_PATTERNS: Array<{ type: DiagnosisSlotType; value: string; p
   { type: "outcome", value: "net", patterns: [/(?:下网|挂网|不过网|into the net|cannot clear the net)/i] },
   { type: "outcome", value: "out", patterns: [/(?:出界|出底线|老飞|一抡就飞|long|flying long|going out|goes long)/i] },
   { type: "outcome", value: "float", patterns: [/(?:冒高|总浮|总飘|飘起来|floating|keeps floating|sits up)/i] },
-  { type: "outcome", value: "double_fault", patterns: [/(?:双误|double fault|double faulting)/i] },
+  { type: "outcome", value: "double_fault", patterns: [/(?:双误|double fault|double faults|double faulting|doublefault|doublefaults|doublefaulting)/i] },
   { type: "outcome", value: "miss_in", patterns: [/(?:发不进|进区率太低|will not go in|keeps missing)/i] },
-  { type: "context", value: "pressure", patterns: [/(?:关键分|关键球|pressure point|big point|under pressure|一紧张|紧张|记分|score matters|nervous|nerves|key_point|手硬|手紧|不敢打)/i] },
+  {
+    type: "context",
+    value: "pressure",
+    patterns: [
+      /(?:关键分|关键球|pressure point|big point|under pressure|一紧张|紧张|记分|score matters|nervous|nerves|key_point|手硬|手紧|不敢打|break point|game point|match point|deuce|tie ?break|tiebreak|30\s*30|30\s*40|40\s*30|40\s*40|\b(?:bp|gp|mp|tb)\b|chok(?:e|ing)|tense up)/i
+    ]
+  },
   { type: "context", value: "movement", patterns: [/(?:左右移动|移动时|移动中|跑动中|宽球|追球|wide|move wide|running|on the stretch)/i] },
   { type: "context", value: "incoming_slice", patterns: [/(?:对方切过来|对手切过来|遇到下旋|下旋来球|对方一切球|against slice|opponents slice|incoming slice|low skidding balls)/i] },
   { type: "context", value: "incoming_moonball", patterns: [/(?:月亮球|moonball|moon ball|高吊球|高挑球|挑高球)/i] },
@@ -594,8 +642,13 @@ export function getMatchableInput(input: string): DiagnosisSignalBundle {
 }
 
 export function normalizeDiagnosisInput(input: string): string {
-  return input
-    .toLowerCase()
+  const lowered = input.toLowerCase();
+  const typoNormalized = DIAGNOSIS_TYPO_NORMALIZATIONS.reduce(
+    (value, entry) => value.replace(entry.pattern, entry.replacement),
+    lowered
+  );
+
+  return typoNormalized
     .trim()
     .replace(/[，。！？、；：""''（）()【】\[\],.!?;:"'`~\-_/]+/g, " ")
     .replace(/\s+/g, " ");
@@ -951,6 +1004,156 @@ function buildModifierAwareFixes(
   return fixes;
 }
 
+function buildModifierAwareCauses(
+  problemTag: string,
+  causes: string[],
+  signalBundle: DiagnosisSignalBundle,
+  locale: "zh" | "en" = "zh"
+): string[] {
+  if (causes.length === 0) {
+    return causes;
+  }
+
+  const modifiers = signalBundle.layeredSignals.modifiers;
+  const triggers = signalBundle.layeredSignals.triggers;
+
+  if (
+    problemTag === "forehand-out" &&
+    modifiers.includes("key_point") &&
+    triggers.includes("opponent_at_net")
+  ) {
+    const override =
+      locale === "en"
+        ? "On key points with the opponent at net, your attention shifts to not missing, which flattens the swing path and makes forehands fly long."
+        : "关键分且对手在网前时，你会把注意力放在“别失误”上，挥拍路径容易变平，正手更容易飞出底线。";
+
+    return [override, ...causes.slice(1)];
+  }
+
+  if (problemTag === "second-serve-reliability" && modifiers.includes("tight")) {
+    const override =
+      locale === "en"
+        ? "On key points, fear of double faults can turn the second serve into a protective push, so toss rhythm and spin shape break down first."
+        : "关键分怕双误时，二发容易变成保护性推送，抛球节奏和旋转形状会先散掉。";
+
+    return [override, ...causes.slice(1)];
+  }
+
+  if (problemTag === "mobility-limit" && modifiers.includes("age")) {
+    const override =
+      locale === "en"
+        ? "Age-related recovery speed loss makes the second and third movement steps harder, so position breaks after the first chase."
+        : "年龄带来的恢复速度下降，会让第二步和第三步更吃力，因此第一拍追到后更容易失位。";
+
+    return [override, ...causes.slice(1)];
+  }
+
+  if (problemTag === "moonball-trouble" && modifiers.includes("moonball")) {
+    const override =
+      locale === "en"
+        ? "Moonballs disrupt spacing decisions first; once that decision is late, contact timing breaks before swing mechanics do."
+        : "月亮球会先打乱你的站位选择；一旦站位决策偏晚，击球时机会先于动作本身失控。";
+
+    return [override, ...causes.slice(1)];
+  }
+
+  return causes;
+}
+
+function buildModifierAwareDrills(
+  problemTag: string,
+  drills: string[],
+  signalBundle: DiagnosisSignalBundle,
+  locale: "zh" | "en" = "zh"
+): string[] {
+  if (drills.length === 0) {
+    return drills;
+  }
+
+  const modifiers = signalBundle.layeredSignals.modifiers;
+  const triggers = signalBundle.layeredSignals.triggers;
+
+  if (
+    problemTag === "forehand-out" &&
+    modifiers.includes("key_point") &&
+    triggers.includes("opponent_at_net")
+  ) {
+    const override =
+      locale === "en"
+        ? "12-minute key-point plus opponent-at-net simulation: forehand must go high and deep through the middle before any aggressive change."
+        : "12 分钟关键分+对手上网模拟：正手先打高弧线中路深球，再考虑变线压制。";
+
+    return [override, ...drills.slice(1)];
+  }
+
+  if (problemTag === "second-serve-reliability" && modifiers.includes("tight")) {
+    const override =
+      locale === "en"
+        ? "12 key-point second-serve sequences: one reset breath plus one cue, then serve to a safe target before adding pace."
+        : "关键分二发 12 组：每组先做一次呼吸重置并重复口令，先把安全目标区发进再加速。";
+
+    return [override, ...drills.slice(1)];
+  }
+
+  if (problemTag === "mobility-limit" && modifiers.includes("age")) {
+    const override =
+      locale === "en"
+        ? "8 sets of 20 seconds move plus 40 seconds reset: track only first-step initiation and one clean recovery step."
+        : "20 秒移动 + 40 秒恢复，共 8 组：每组只盯第一步启动和一次干净回位。";
+
+    return [override, ...drills.slice(1)];
+  }
+
+  if (problemTag === "moonball-trouble" && modifiers.includes("moonball")) {
+    const override =
+      locale === "en"
+        ? "15 moonball reads: call bounce depth first, then decide rise-or-drop contact before swinging."
+        : "月亮球判断 15 次：先报落点深浅，再决定上升期或下降期处理后再出手。";
+
+    return [override, ...drills.slice(1)];
+  }
+
+  return drills;
+}
+
+function buildModifierAwareRecommendedContentIds(
+  problemTag: string,
+  baseContentIds: string[],
+  signalBundle: DiagnosisSignalBundle
+): string[] {
+  const modifiers = signalBundle.layeredSignals.modifiers;
+  const triggers = signalBundle.layeredSignals.triggers;
+  const extraContentIds: string[] = [];
+
+  if (
+    problemTag === "forehand-out" &&
+    modifiers.includes("key_point") &&
+    triggers.includes("opponent_at_net")
+  ) {
+    extraContentIds.push("content_rb_03", "content_cn_f_01");
+  }
+
+  if (problemTag === "second-serve-reliability" && modifiers.includes("tight")) {
+    extraContentIds.push("content_cn_e_02", "content_cn_f_01");
+  }
+
+  if (problemTag === "mobility-limit" && modifiers.includes("age")) {
+    extraContentIds.push("content_fr_02");
+  }
+
+  if (problemTag === "moonball-trouble" && modifiers.includes("moonball")) {
+    extraContentIds.push("content_common_01");
+  }
+
+  if (extraContentIds.length === 0) {
+    return baseContentIds;
+  }
+
+  const [first, ...rest] = baseContentIds;
+
+  return buildUniqueSignalList([first, ...extraContentIds, ...rest].filter(Boolean));
+}
+
 export function buildDiagnosisSummary(
   causes: string[],
   fixes: string[],
@@ -1176,10 +1379,17 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
   }
 
   const ruleContent = selectRuleContent(rule, locale);
+  const modifierAwareCauses = buildModifierAwareCauses(rule.problemTag, ruleContent.causes, signalBundle, locale);
   const modifierAwareFixes = buildModifierAwareFixes(rule.problemTag, ruleContent.fixes, signalBundle, locale);
+  const modifierAwareDrills = buildModifierAwareDrills(rule.problemTag, ruleContent.drills, signalBundle, locale);
+  const modifierAwareContentIds = buildModifierAwareRecommendedContentIds(
+    rule.problemTag,
+    rule.recommendedContentIds,
+    signalBundle
+  );
 
   const recommendedContents = getContentsByIds(
-    rule.recommendedContentIds,
+    modifierAwareContentIds,
     contentPool,
     maxRecommendations,
     level
@@ -1206,10 +1416,10 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     category: rule.category,
     problemTag: rule.problemTag,
     title: buildModifierAwareTitle(rule.problemTag, signalBundle, locale),
-    summary: buildDiagnosisSummary(ruleContent.causes, modifierAwareFixes, false, locale, rule.problemTag, signalBundle),
-    causes: ruleContent.causes,
+    summary: buildDiagnosisSummary(modifierAwareCauses, modifierAwareFixes, false, locale, rule.problemTag, signalBundle),
+    causes: modifierAwareCauses,
     fixes: modifierAwareFixes,
-    drills: ruleContent.drills,
+    drills: modifierAwareDrills,
     recommendedContents: finalContents,
     searchQueries: rule.searchQueries,
     fallbackUsed: recommendedContents.length === 0,

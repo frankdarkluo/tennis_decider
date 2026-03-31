@@ -270,4 +270,150 @@ describe("diagnosis alias normalization", () => {
     expect(result.summary).toContain("月亮球");
     expect(result.fixes[0]).toContain("落点");
   });
+
+  it("enriches forehand pressure scenes with scenario-specific causes, drills, and support content", () => {
+    const result = diagnoseProblem("正手在关键分的时候，如果对手在网前，我容易紧张，一发力就出界");
+
+    expect(result.problemTag).toBe("forehand-out");
+    expect(result.causes[0]).toContain("别失误");
+    expect(result.drills[0]).toContain("关键分+对手上网模拟");
+    expect(result.recommendedContents[0]?.id).toBe("content_cn_d_01");
+    expect(result.recommendedContents.map((item) => item.id)).toEqual(
+      expect.arrayContaining(["content_rb_03", "content_cn_f_01"])
+    );
+  });
+
+  it("adds pressure-routine support for second-serve complaints on key points", () => {
+    const result = diagnoseProblem("关键分二发总双误");
+
+    expect(result.problemTag).toBe("second-serve-reliability");
+    expect(result.causes[0]).toContain("关键分怕双误");
+    expect(result.drills[0]).toContain("关键分二发 12 组");
+    expect(result.recommendedContents.map((item) => item.id)).toEqual(
+      expect.arrayContaining(["content_cn_e_02", "content_cn_f_01"])
+    );
+  });
+
+  it("keeps moonball analysis tied to spacing decisions and adds a defensive support resource", () => {
+    const result = diagnoseProblem("月亮球一来我反手就很别扭");
+
+    expect(result.problemTag).toBe("moonball-trouble");
+    expect(result.causes[0]).toContain("站位选择");
+    expect(result.drills[0]).toContain("上升期或下降期");
+    expect(result.recommendedContents.map((item) => item.id)).toContain("content_common_01");
+  });
+
+  it("understands English break-point plus poaching phrasing as a key-point forehand pressure scene", () => {
+    const bundle = extractDiagnosisSignalBundle("At break point my forehand goes long when they poach at net");
+    const result = diagnoseProblem("At break point my forehand goes long when they poach at net", { locale: "en" });
+
+    expect(bundle.aliases).toContain("key_point");
+    expect(bundle.modifiers).toContain("tight");
+    expect(bundle.layeredSignals.triggers).toContain("opponent_at_net");
+    expect(result.problemTag).toBe("forehand-out");
+    expect(result.summary).toContain("opponent is at net");
+  });
+
+  it("maps scoreline pressure phrasing to second-serve pressure-aware output", () => {
+    const result = diagnoseProblem("At 30-40 my second serve keeps double faulting", { locale: "en" });
+
+    expect(result.problemTag).toBe("second-serve-reliability");
+    expect(result.title).toContain("key points");
+    expect(result.fixes[0]).toContain("key points");
+  });
+
+  it("supports shorthand score pressure and compact doublefault spelling", () => {
+    const bundle = extractDiagnosisSignalBundle("At BP my second serve doublefaults");
+    const result = diagnoseProblem("At BP my second serve doublefaults", { locale: "en" });
+
+    expect(bundle.aliases).toContain("key_point");
+    expect(bundle.internalSignals).toEqual(expect.arrayContaining([
+      "slot_stroke_serve",
+      "slot_outcome_double_fault",
+      "slot_context_pressure"
+    ]));
+    expect(result.problemTag).toBe("second-serve-reliability");
+    expect(result.title).toContain("key points");
+  });
+
+  it("normalizes common English score and double-fault misspellings", () => {
+    const bundle = extractDiagnosisSignalBundle("At duece my second serve doublefualts");
+    const result = diagnoseProblem("At duece my second serve doublefualts", { locale: "en" });
+
+    expect(bundle.aliases).toContain("key_point");
+    expect(bundle.internalSignals).toEqual(expect.arrayContaining([
+      "slot_stroke_serve",
+      "slot_outcome_double_fault",
+      "slot_context_pressure"
+    ]));
+    expect(result.problemTag).toBe("second-serve-reliability");
+  });
+
+  it("normalizes tiebrake typo and keeps pressure-lane parsing", () => {
+    const bundle = extractDiagnosisSignalBundle("In tiebrake I tense up and my second serve doublefualting starts");
+
+    expect(bundle.aliases).toContain("key_point");
+    expect(bundle.modifiers).toContain("tight");
+    expect(bundle.internalSignals).toContain("slot_context_pressure");
+  });
+
+  it.each([
+    {
+      input: "At duese my second seve doublefaults",
+      expectedTag: "second-serve-reliability",
+      expectedSignals: ["slot_stroke_serve", "slot_outcome_double_fault", "slot_context_pressure"],
+      expectKeyPoint: true
+    },
+    {
+      input: "At brek point my secnd serve doublefaulting starts",
+      expectedTag: "second-serve-reliability",
+      expectedSignals: ["slot_stroke_serve", "slot_outcome_double_fault", "slot_context_pressure"],
+      expectKeyPoint: true
+    },
+    {
+      input: "At brekpoint my second serve doulbe faults",
+      expectedTag: "second-serve-reliability",
+      expectedSignals: ["slot_stroke_serve", "slot_outcome_double_fault", "slot_context_pressure"],
+      expectKeyPoint: true
+    },
+    {
+      input: "At gamepiont my seond serve doublefauts",
+      expectedTag: "second-serve-reliability",
+      expectedSignals: ["slot_stroke_serve", "slot_outcome_double_fault", "slot_context_pressure"],
+      expectKeyPoint: true
+    },
+    {
+      input: "At matchpiont my second serve doble faults",
+      expectedTag: "second-serve-reliability",
+      expectedSignals: ["slot_stroke_serve", "slot_outcome_double_fault", "slot_context_pressure"],
+      expectKeyPoint: true
+    },
+    {
+      input: "Under pressue they are poching at net and my forehnad goes long",
+      expectedTag: "forehand-out",
+      expectedSignals: ["slot_stroke_forehand", "slot_outcome_out", "slot_context_pressure"],
+      expectKeyPoint: false
+    },
+    {
+      input: "In tiebrkae my forehnad goes long",
+      expectedTag: "forehand-out",
+      expectedSignals: ["slot_stroke_forehand", "slot_outcome_out", "slot_context_pressure"],
+      expectKeyPoint: true
+    },
+    {
+      input: "At breakpiont I get nervious and my forehnad goes long",
+      expectedTag: "forehand-out",
+      expectedSignals: ["slot_stroke_forehand", "slot_outcome_out", "slot_context_pressure"],
+      expectKeyPoint: true
+    }
+  ])("normalizes typo-heavy input: $input", ({ input, expectedTag, expectedSignals, expectKeyPoint }) => {
+    const bundle = extractDiagnosisSignalBundle(input);
+    const result = diagnoseProblem(input, { locale: "en" });
+
+    if (expectKeyPoint) {
+      expect(bundle.aliases).toContain("key_point");
+    }
+    expect(bundle.internalSignals).toEqual(expect.arrayContaining(expectedSignals));
+    expect(result.problemTag).toBe(expectedTag);
+  });
 });

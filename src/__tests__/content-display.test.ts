@@ -641,6 +641,33 @@ describe("content display helpers", () => {
     expect(candidateIds.slice(0, 3)).toEqual(expect.arrayContaining(["content_cn_e_02", "content_rb_03"]));
   });
 
+  it("uses diagnosis context cues to keep pressure-support content in plan candidates", () => {
+    const baseline = buildDiagnosisPlanCandidateIds({
+      problemTag: "forehand-out",
+      level: "3.0"
+    });
+    const withContext = buildDiagnosisPlanCandidateIds({
+      problemTag: "forehand-out",
+      level: "3.0",
+      diagnosisInput: "关键分正手老飞，对手一上网我就慌"
+    });
+
+    expect(withContext[0]).toBe("content_cn_d_01");
+    expect(withContext.slice(0, 5)).toEqual(expect.arrayContaining(["content_cn_f_01"]));
+    expect(baseline.slice(0, 5)).not.toEqual(expect.arrayContaining(["content_cn_f_01"]));
+  });
+
+  it("recognizes poaching-at-net pressure phrasing and keeps net-pressure support in plan candidates", () => {
+    const withContext = buildDiagnosisPlanCandidateIds({
+      problemTag: "forehand-out",
+      level: "3.0",
+      diagnosisInput: "On key points I panic when they poach at net and my forehand flies long"
+    });
+
+    expect(withContext[0]).toBe("content_cn_d_01");
+    expect(withContext.slice(0, 6)).toEqual(expect.arrayContaining(["content_rb_03"]));
+  });
+
   it("prefers hand-polished Chinese secondary titles for English content in zh mode", () => {
     const item = contents.find((entry) => entry.id === "content_ttt_01");
 
