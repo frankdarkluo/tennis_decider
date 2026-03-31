@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
@@ -8,6 +9,7 @@ import {
   getProblemPreviewOptions
 } from "@/lib/diagnosis";
 import {
+  hasCompletedAssessmentResult,
   readAssessmentResultFromStorage,
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
@@ -27,6 +29,8 @@ import { DiagnoseResult as DiagnoseResultPanel } from "@/components/diagnose/Dia
 import { ActionabilityPrompt } from "@/components/study/ActionabilityPrompt";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useStudy } from "@/components/study/StudyProvider";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 
 function toConfidenceBucket(score: number) {
   if (score >= 6) return "high";
@@ -37,7 +41,7 @@ function toConfidenceBucket(score: number) {
 function DiagnosePageContent() {
   const searchParams = useSearchParams();
   const { user, configured, loading } = useAuth();
-  const { session, studyMode, language } = useStudy();
+  const { session, studyMode, language, loading: studyLoading } = useStudy();
   const { t } = useI18n();
   const [text, setText] = useState("");
   const [currentLevel, setCurrentLevel] = useState<string | undefined>(undefined);
@@ -163,7 +167,7 @@ function DiagnosePageContent() {
     return () => {
       active = false;
     };
-  }, [configured, loading, searchParams, user?.id]);
+  }, [configured, language, loading, searchParams, studyMode, user?.id]);
 
   useEffect(() => {
     if (!contextReady) {
@@ -198,6 +202,42 @@ function DiagnosePageContent() {
     setText("");
     setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
   };
+
+  if (studyLoading || !contextReady) {
+    return (
+      <PageContainer>
+        <Card className="text-sm text-slate-600">{t("assessment.loading")}</Card>
+      </PageContainer>
+    );
+  }
+
+  if (studyMode && !session) {
+    return (
+      <PageContainer>
+        <Card className="mx-auto max-w-2xl space-y-4">
+          <h1 className="text-2xl font-black text-slate-900">{t("study.start.title")}</h1>
+          <p className="text-sm leading-6 text-slate-600">{t("study.start.subtitle")}</p>
+          <Link href="/study/start">
+            <Button>{t("study.start.button")}</Button>
+          </Link>
+        </Card>
+      </PageContainer>
+    );
+  }
+
+  if (!hasCompletedAssessmentResult(assessmentResult)) {
+    return (
+      <PageContainer>
+        <Card className="mx-auto max-w-2xl space-y-4">
+          <h1 className="text-2xl font-black text-slate-900">{t("assessment.empty.title")}</h1>
+          <p className="text-sm leading-6 text-slate-600">{t("assessment.empty.subtitle")}</p>
+          <Link href="/assessment">
+            <Button>{t("assessment.result.ctaStart")}</Button>
+          </Link>
+        </Card>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>

@@ -84,6 +84,7 @@ const PROBLEM_PREVIEW_OPTIONS: ProblemPreviewOption[] = [
   { label: "反手总是下网", label_en: "Backhand keeps going into the net", problemTag: "backhand-into-net" },
   { label: "一发总发不进", label_en: "My first serve will not go in", problemTag: "first-serve-in" },
   { label: "二发总双误", label_en: "Second serve keeps double faulting", problemTag: "second-serve-reliability" },
+  { label: "多拍对拉总不稳", label_en: "Rally breaks down after a few balls", problemTag: "rally-consistency" },
   { label: "正手一发力就出界", label_en: "Forehand flies out when I swing harder", problemTag: "forehand-out" },
   { label: "双打不知道站哪", label_en: "Not sure where to stand in doubles", problemTag: "doubles-positioning" },
   { label: "脚步总慢半拍", label_en: "Footwork is always half a beat late", problemTag: "movement-slow" },
@@ -132,7 +133,7 @@ const ASSESSMENT_DIMENSION_HINTS: Record<string, { skills: string[]; problemTags
   },
   rally: {
     skills: ["basics", "consistency", "forehand", "backhand"],
-    problemTags: ["general-improvement", "plateau-no-progress", "backhand-into-net", "forehand-out"]
+    problemTags: ["rally-consistency", "general-improvement", "plateau-no-progress", "backhand-into-net", "forehand-out"]
   },
   awareness: {
     skills: ["matchplay", "mental", "training"],
@@ -182,6 +183,7 @@ const ASSESSMENT_DIMENSION_HINTS: Record<string, { skills: string[]; problemTags
 
 const TITLE_MAP_ZH: Record<string, string> = {
   "backhand-into-net": "反手稳定性不足",
+  "rally-consistency": "多拍对拉稳定性不足",
   "forehand-out": "正手控制不足",
   "first-serve-in": "一发进区率不足",
   "second-serve-reliability": "二发稳定性不足",
@@ -215,6 +217,7 @@ const TITLE_MAP_ZH: Record<string, string> = {
 
 const TITLE_MAP_EN: Record<string, string> = {
   "backhand-into-net": "Backhand consistency",
+  "rally-consistency": "Rally consistency",
   "forehand-out": "Forehand control",
   "first-serve-in": "First-serve make rate",
   "second-serve-reliability": "Second-serve reliability",
@@ -354,6 +357,9 @@ type DiagnosisRuleCandidate = {
   slotScore: number;
   priorityWeight: number;
   layeredPrimaryBonus: number;
+  clauseCoverageBonus: number;
+  matchedClauseCount: number;
+  laneConflictPenalty: number;
   score: number;
 };
 
@@ -376,6 +382,7 @@ const DIAGNOSIS_SLOT_PATTERNS: Array<{ type: DiagnosisSlotType; value: string; p
       /(?:关键分|关键球|pressure point|big point|under pressure|一紧张|紧张|记分|score matters|nervous|nerves|key_point|手硬|手紧|不敢打|break point|game point|match point|deuce|tie ?break|tiebreak|30\s*30|30\s*40|40\s*30|40\s*40|\b(?:bp|gp|mp|tb)\b|chok(?:e|ing)|tense up)/i
     ]
   },
+  { type: "context", value: "rally", patterns: [/(?:多拍|回合|对拉|相持|拉锯|rally|baseline exchange|long exchange)/i] },
   { type: "context", value: "movement", patterns: [/(?:左右移动|移动时|移动中|跑动中|宽球|追球|wide|move wide|running|on the stretch)/i] },
   { type: "context", value: "incoming_slice", patterns: [/(?:对方切过来|对手切过来|遇到下旋|下旋来球|对方一切球|against slice|opponents slice|incoming slice|low skidding balls)/i] },
   { type: "context", value: "incoming_moonball", patterns: [/(?:月亮球|moonball|moon ball|高吊球|高挑球|挑高球)/i] },
@@ -434,6 +441,11 @@ const DIAGNOSIS_RULE_SLOT_PROFILES: Partial<Record<string, DiagnosisRuleSlotProf
   "running-backhand": {
     lane: "stroke_context",
     required: ["slot_stroke_backhand", "slot_context_movement"]
+  },
+  "rally-consistency": {
+    lane: "stroke_context",
+    required: ["slot_context_rally"],
+    optional: ["slot_outcome_net", "slot_outcome_out", "slot_context_movement"]
   },
   "incoming-slice-trouble": {
     lane: "stroke_context",
@@ -713,8 +725,59 @@ function getLayeredPrimaryBonus(rule: DiagnosisRule, signalBundle: DiagnosisSign
   return 0;
 }
 
-function buildDiagnosisRuleCandidate(input: string, rule: DiagnosisRule): DiagnosisRuleCandidate | null {
-  const signalBundle = extractDiagnosisSignalBundle(input);
+function getMatchedClauseCount(
+  signalBundle: DiagnosisSignalBundle,
+  matchedKeywords: string[],
+  matchedSynonyms: string[]
+): number {
+  const lexicalTerms = buildUniqueSignalList([
+    ...matchedKeywords,
+    ...matchedSynonyms
+  ])
+    .map((term) => normalizeDiagnosisInput(term))
+    .filter((term) => term.length >= 2);
+
+  if (lexicalTerms.length === 0 || signalBundle.clauses.length === 0) {
+    return 0;
+  }
+
+  return signalBundle.clauses.reduce((count, clause) => {
+    return lexicalTerms.some((term) => clause.normalizedText.includes(term))
+      ? count + 1
+      : count;
+  }, 0);
+}
+
+function getClauseCoverageBonus(
+  signalBundle: DiagnosisSignalBundle,
+  matchedKeywords: string[],
+  matchedSynonyms: string[]
+): { matchedClauseCount: number; clauseCoverageBonus: number } {
+  const matchedClauseCount = getMatchedClauseCount(signalBundle, matchedKeywords, matchedSynonyms);
+  const clauseCoverageBonus = matchedClauseCount <= 1
+    ? 0
+    : Math.min(3, matchedClauseCount - 1) * 2;
+
+  return {
+    matchedClauseCount,
+    clauseCoverageBonus
+  };
+}
+
+function getLaneConflictPenalty(rule: DiagnosisRule, signalBundle: DiagnosisSignalBundle): number {
+  const lane = DIAGNOSIS_RULE_SLOT_PROFILES[rule.problemTag]?.lane;
+
+  if (lane !== "mental_fallback") {
+    return 0;
+  }
+
+  return signalBundle.layeredSignals.primaryCandidates.length > 0 ? 6 : 0;
+}
+
+function buildDiagnosisRuleCandidateFromBundle(
+  signalBundle: DiagnosisSignalBundle,
+  rule: DiagnosisRule
+): DiagnosisRuleCandidate | null {
   const matchedKeywords = getMatchedKeywordsFromBundle(signalBundle, rule);
   const matchedSynonyms = getMatchedSynonymsFromBundle(signalBundle, rule);
   const lexicalScore = getLexicalDiagnosisScore(rule, matchedKeywords, matchedSynonyms);
@@ -726,12 +789,30 @@ function buildDiagnosisRuleCandidate(input: string, rule: DiagnosisRule): Diagno
     requiredSignals.every((signal) => slotSignals.has(signal));
   const { slotScore, priorityWeight } = scoreDiagnosisRuleSlots(rule, signalBundle.slots);
   const layeredPrimaryBonus = getLayeredPrimaryBonus(rule, signalBundle);
+  const { matchedClauseCount, clauseCoverageBonus } = getClauseCoverageBonus(
+    signalBundle,
+    matchedKeywords,
+    matchedSynonyms
+  );
+  const laneConflictPenalty = getLaneConflictPenalty(rule, signalBundle);
 
   if (lexicalScore <= 0 && !hasAllRequiredSignals && layeredPrimaryBonus <= 0) {
     return null;
   }
 
   if (slotProfile?.lane === "mental_fallback" && requiredSignals.length > 0 && !hasAllRequiredSignals) {
+    return null;
+  }
+
+  const score =
+    lexicalScore +
+    slotScore +
+    priorityWeight +
+    layeredPrimaryBonus +
+    clauseCoverageBonus -
+    laneConflictPenalty;
+
+  if (score <= 0 && !hasAllRequiredSignals) {
     return null;
   }
 
@@ -743,8 +824,16 @@ function buildDiagnosisRuleCandidate(input: string, rule: DiagnosisRule): Diagno
     slotScore,
     priorityWeight,
     layeredPrimaryBonus,
-    score: lexicalScore + slotScore + priorityWeight + layeredPrimaryBonus
+    clauseCoverageBonus,
+    matchedClauseCount,
+    laneConflictPenalty,
+    score
   };
+}
+
+function buildDiagnosisRuleCandidate(input: string, rule: DiagnosisRule): DiagnosisRuleCandidate | null {
+  const signalBundle = extractDiagnosisSignalBundle(input);
+  return buildDiagnosisRuleCandidateFromBundle(signalBundle, rule);
 }
 
 export function scoreDiagnosisRule(input: string, rule: DiagnosisRule): number {
@@ -770,10 +859,11 @@ export function findBestDiagnosisRule(
   matchedSynonyms: string[];
   score: number;
 } {
+  const signalBundle = extractDiagnosisSignalBundle(input);
   let bestCandidate: DiagnosisRuleCandidate | null = null;
 
   for (const rule of rules) {
-    const candidate = buildDiagnosisRuleCandidate(input, rule);
+    const candidate = buildDiagnosisRuleCandidateFromBundle(signalBundle, rule);
 
     if (!candidate) {
       continue;
@@ -784,6 +874,9 @@ export function findBestDiagnosisRule(
       candidate.score > bestCandidate.score ||
       (candidate.score === bestCandidate.score &&
         candidate.layeredPrimaryBonus > bestCandidate.layeredPrimaryBonus) ||
+      (candidate.score === bestCandidate.score &&
+        candidate.layeredPrimaryBonus === bestCandidate.layeredPrimaryBonus &&
+        candidate.clauseCoverageBonus > bestCandidate.clauseCoverageBonus) ||
       (candidate.score === bestCandidate.score &&
         candidate.slotScore + candidate.priorityWeight > bestCandidate.slotScore + bestCandidate.priorityWeight) ||
       (candidate.score === bestCandidate.score &&
@@ -824,6 +917,285 @@ function scoreContentAgainstLevel(item: ContentItem, preferredLevels: string[], 
   }
 
   return score;
+}
+
+type DiagnosisRecommendationSignalBoost = {
+  contentIds: string[];
+  problemTags: string[];
+  skills: string[];
+};
+
+function overlapCount(left: string[], right: string[]): number {
+  if (left.length === 0 || right.length === 0) {
+    return 0;
+  }
+
+  const rightSet = new Set(right);
+  return left.reduce((count, value) => count + (rightSet.has(value) ? 1 : 0), 0);
+}
+
+function getDiagnosisSignalBoost(signalBundle: DiagnosisSignalBundle): DiagnosisRecommendationSignalBoost {
+  const contentIds: string[] = [];
+  const problemTags: string[] = [];
+  const skills: string[] = [];
+
+  const slotSignals = new Set(signalBundle.internalSignals);
+  const modifiers = signalBundle.layeredSignals.modifiers;
+  const triggers = signalBundle.layeredSignals.triggers;
+
+  if (modifiers.includes("tight") || slotSignals.has("slot_context_pressure")) {
+    contentIds.push("content_rb_03", "content_cn_f_02", "content_rb_02");
+    problemTags.push("pressure-tightness", "match-anxiety", "return-under-pressure");
+    skills.push("mental", "matchplay", "return");
+  }
+
+  if (triggers.includes("opponent_at_net") || triggers.includes("net_pressure")) {
+    contentIds.push("content_rb_01", "content_rb_03", "content_rb_02");
+    problemTags.push("net-confidence", "doubles-positioning", "volley-floating", "volley-into-net", "return-under-pressure");
+    skills.push("net", "doubles", "matchplay");
+  }
+
+  if (slotSignals.has("slot_context_movement") || slotSignals.has("slot_condition_mobility_limit")) {
+    contentIds.push("content_cn_c_02", "content_fr_02", "content_cn_a_03");
+    problemTags.push("movement-slow", "late-contact", "mobility-limit");
+    skills.push("movement", "footwork");
+  }
+
+  if (slotSignals.has("slot_context_rally")) {
+    contentIds.push("content_fr_02", "content_fr_03", "content_fr_01");
+    problemTags.push("rally-consistency", "balls-too-short", "late-contact");
+    skills.push("consistency", "forehand", "backhand");
+  }
+
+  if (slotSignals.has("slot_context_incoming_slice")) {
+    contentIds.push("content_fr_01", "content_fr_02");
+    problemTags.push("incoming-slice-trouble", "backhand-slice-floating", "late-contact");
+    skills.push("slice", "backhand", "movement");
+  }
+
+  if (slotSignals.has("slot_context_incoming_moonball")) {
+    contentIds.push("content_fr_02", "content_rb_03");
+    problemTags.push("moonball-trouble", "cant-hit-lob");
+    skills.push("defense", "matchplay", "movement");
+  }
+
+  if (slotSignals.has("slot_context_doubles")) {
+    contentIds.push("content_rb_01", "content_rb_03", "content_rb_02");
+    problemTags.push("doubles-positioning", "net-confidence");
+    skills.push("doubles", "net", "matchplay");
+  }
+
+  return {
+    contentIds: buildUniqueSignalList(contentIds),
+    problemTags: buildUniqueSignalList(problemTags),
+    skills: buildUniqueSignalList(skills)
+  };
+}
+
+function getDiagnosisContentSearchText(item: ContentItem): string {
+  return [
+    item.title,
+    item.displayTitleEn,
+    item.focusLineEn,
+    item.summary,
+    item.reason,
+    item.coachReason,
+    ...item.useCases
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
+const NON_DIRECT_VIDEO_URL_PATTERNS = [
+  /search\.bilibili\.com\/all\?keyword=/i,
+  /youtube\.com\/results\?search_query=/i
+];
+
+function isDirectLibraryVideo(item: ContentItem): boolean {
+  if (item.type !== "video") {
+    return false;
+  }
+
+  return !NON_DIRECT_VIDEO_URL_PATTERNS.some((pattern) => pattern.test(item.url));
+}
+
+type RankedDiagnosisContentCandidate = {
+  item: ContentItem;
+  index: number;
+  score: number;
+  seedIndex: number | undefined;
+};
+
+function selectDiagnosisRecommendationsWithDiversity(
+  rankedCandidates: RankedDiagnosisContentCandidate[],
+  maxRecommendations: number
+): ContentItem[] {
+  if (maxRecommendations <= 0 || rankedCandidates.length === 0) {
+    return [];
+  }
+
+  const selected: RankedDiagnosisContentCandidate[] = [];
+  const creatorUsageCounts = new Map<string, number>();
+  const remaining = [...rankedCandidates];
+
+  const first = remaining.shift();
+  if (!first) {
+    return [];
+  }
+
+  selected.push(first);
+  creatorUsageCounts.set(first.item.creatorId, 1);
+
+  while (selected.length < maxRecommendations && remaining.length > 0) {
+    let bestIndex = 0;
+    let bestAdjustedScore = Number.NEGATIVE_INFINITY;
+
+    for (let index = 0; index < remaining.length; index += 1) {
+      const candidate = remaining[index];
+      const creatorRepeatCount = creatorUsageCounts.get(candidate.item.creatorId) ?? 0;
+      const creatorPenalty = creatorRepeatCount * 14;
+      const tagPenalty = selected.some((entry) => overlapCount(entry.item.problemTags, candidate.item.problemTags) >= 2)
+        ? 4
+        : 0;
+      const adjustedScore = candidate.score - creatorPenalty - tagPenalty;
+      const bestCandidate = remaining[bestIndex];
+
+      if (
+        adjustedScore > bestAdjustedScore ||
+        (adjustedScore === bestAdjustedScore && candidate.score > bestCandidate.score) ||
+        (adjustedScore === bestAdjustedScore && candidate.score === bestCandidate.score && candidate.index < bestCandidate.index)
+      ) {
+        bestAdjustedScore = adjustedScore;
+        bestIndex = index;
+      }
+    }
+
+    const [picked] = remaining.splice(bestIndex, 1);
+    selected.push(picked);
+    creatorUsageCounts.set(
+      picked.item.creatorId,
+      (creatorUsageCounts.get(picked.item.creatorId) ?? 0) + 1
+    );
+  }
+
+  return selected.map((entry) => entry.item);
+}
+
+function getDiagnosisRecommendedContents(input: {
+  rule: DiagnosisRule;
+  signalBundle: DiagnosisSignalBundle;
+  seedContentIds: string[];
+  matchedKeywords: string[];
+  matchedSynonyms: string[];
+  contentPool: ContentItem[];
+  maxRecommendations: number;
+  level?: string;
+}): ContentItem[] {
+  const {
+    rule,
+    signalBundle,
+    seedContentIds,
+    matchedKeywords,
+    matchedSynonyms,
+    contentPool,
+    maxRecommendations,
+    level
+  } = input;
+
+  const boost = getDiagnosisSignalBoost(signalBundle);
+  const seedIds = buildUniqueSignalList([...seedContentIds, ...boost.contentIds]);
+  const seedItems = seedIds
+    .map((id) => contentPool.find((item) => item.id === id))
+    .filter((item): item is ContentItem => Boolean(item));
+  const seedProblemTags = buildUniqueSignalList([
+    rule.problemTag,
+    ...seedItems.flatMap((item) => item.problemTags),
+    ...boost.problemTags
+  ]);
+  const seedSkills = buildUniqueSignalList([
+    ...rule.category,
+    ...seedItems.flatMap((item) => item.skills),
+    ...boost.skills
+  ]);
+  const lexicalTerms = buildUniqueSignalList([
+    ...matchedKeywords,
+    ...matchedSynonyms,
+    ...signalBundle.aliases,
+    ...signalBundle.modifiers,
+    ...signalBundle.layeredSignals.triggers
+  ])
+    .map((term) => normalizeDiagnosisInput(term))
+    .filter((term) => term.length >= 3);
+  const seedIndexMap = new Map(seedIds.map((id, index) => [id, index]));
+  const preferredLevels = level ? (LEVEL_PREFERENCE_MAP[level] ?? [level]) : [];
+
+  const rankedCandidates = contentPool
+    .map((item, index) => {
+      const seedIndex = seedIndexMap.get(item.id);
+      const searchText = getDiagnosisContentSearchText(item);
+      let score = 0;
+
+      if (seedIndex !== undefined) {
+        score += 140 - seedIndex * 8;
+        if (seedIndex === 0) {
+          score += 120;
+        } else if (seedIndex === 1) {
+          score += 36;
+        }
+      }
+
+      if (item.problemTags.includes(rule.problemTag)) {
+        score += 32;
+      }
+
+      score += overlapCount(item.problemTags, seedProblemTags) * 10;
+      score += overlapCount(item.skills, seedSkills) * 8;
+      score += overlapCount(item.problemTags, boost.problemTags) * 8;
+      score += overlapCount(item.skills, boost.skills) * 6;
+
+      if (lexicalTerms.length > 0) {
+        score += lexicalTerms.reduce((sum, term) => sum + (searchText.includes(term) ? 2 : 0), 0);
+      }
+
+      if (level) {
+        score += scoreContentAgainstLevel(item, preferredLevels, level);
+      }
+
+      return { item, index, score, seedIndex };
+    })
+    .filter(({ item, score, seedIndex }) => {
+      if (seedIndex !== undefined) {
+        return true;
+      }
+
+      return score > 0 && (
+        item.problemTags.includes(rule.problemTag) ||
+        overlapCount(item.skills, seedSkills) > 0 ||
+        overlapCount(item.problemTags, seedProblemTags) > 0
+      );
+    })
+    .sort((left, right) => {
+      if (right.score !== left.score) {
+        return right.score - left.score;
+      }
+
+      if (left.seedIndex !== undefined || right.seedIndex !== undefined) {
+        if (left.seedIndex === undefined) return 1;
+        if (right.seedIndex === undefined) return -1;
+        if (left.seedIndex !== right.seedIndex) {
+          return left.seedIndex - right.seedIndex;
+        }
+      }
+
+      return left.index - right.index;
+    });
+
+  const dedupedRankedCandidates = buildUniqueSignalList(rankedCandidates.map((entry) => entry.item.id))
+    .map((id) => rankedCandidates.find((entry) => entry.item.id === id))
+    .filter((entry): entry is RankedDiagnosisContentCandidate => Boolean(entry));
+
+  return selectDiagnosisRecommendationsWithDiversity(dedupedRankedCandidates, maxRecommendations);
 }
 
 function prioritizeContentsByLevel(
@@ -1312,30 +1684,23 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     contentPool = contents,
     locale = "zh"
   } = options;
+  const eligibleContentPool = contentPool.filter(isDirectLibraryVideo);
 
   const signalBundle = extractDiagnosisSignalBundle(input);
   const normalizedInput = signalBundle.normalizedInput;
 
   if (!normalizedInput) {
-    return getDefaultDiagnosisResult(level, contentPool, maxRecommendations, locale);
+    return getDefaultDiagnosisResult(level, eligibleContentPool, maxRecommendations, locale);
   }
 
-  const { rule, matchedKeywords, matchedSynonyms, score } = findBestDiagnosisRule(normalizedInput, rules);
+  const { rule, matchedKeywords, matchedSynonyms, score } = findBestDiagnosisRule(input, rules);
 
   if (!rule || score <= 0) {
     const supportAwareCopy = getSupportAwareFallbackCopy(signalBundle.supportSignals, locale);
     const supportContentIds = getSupportAwareFallbackContentIds(signalBundle.supportSignals);
-    const fallbackContents = getFallbackContents(
-      normalizedInput,
-      contentPool,
-      maxRecommendations,
-      level,
-      assessmentResult
-    );
     const fallbackMode = assessmentResult ? "assessment" : "no-assessment";
 
-    const supportContents = getContentsByIds(supportContentIds, contentPool, maxRecommendations, level);
-    const finalFallbackContents = supportContents.length > 0 ? supportContents : fallbackContents;
+    const supportContents = getContentsByIds(supportContentIds, eligibleContentPool, maxRecommendations, level);
     const defCauses = supportAwareCopy?.causes ?? (locale === "en" ? DEFAULT_CAUSES_EN : DEFAULT_CAUSES);
     const defFixes = supportAwareCopy?.fixes ?? (locale === "en" ? DEFAULT_FIXES_EN : DEFAULT_FIXES);
     const defDrills = supportAwareCopy?.drills ?? (locale === "en" ? DEFAULT_DRILLS_EN : DEFAULT_DRILLS);
@@ -1370,7 +1735,7 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
       causes: defCauses,
       fixes: defFixes,
       drills: defDrills,
-      recommendedContents: finalFallbackContents,
+      recommendedContents: supportContents,
       searchQueries: null,
       fallbackUsed: true,
       fallbackMode,
@@ -1388,17 +1753,16 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     signalBundle
   );
 
-  const recommendedContents = getContentsByIds(
-    modifierAwareContentIds,
-    contentPool,
+  const recommendedContents = getDiagnosisRecommendedContents({
+    rule,
+    signalBundle,
+    seedContentIds: modifierAwareContentIds,
+    matchedKeywords,
+    matchedSynonyms,
+    contentPool: eligibleContentPool,
     maxRecommendations,
     level
-  );
-
-  const finalContents =
-    recommendedContents.length > 0
-      ? recommendedContents
-      : getFallbackContents(normalizedInput, contentPool, maxRecommendations, level, assessmentResult);
+  });
   const fallbackMode = recommendedContents.length === 0
     ? assessmentResult
       ? "assessment"
@@ -1420,7 +1784,7 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     causes: modifierAwareCauses,
     fixes: modifierAwareFixes,
     drills: modifierAwareDrills,
-    recommendedContents: finalContents,
+    recommendedContents,
     searchQueries: rule.searchQueries,
     fallbackUsed: recommendedContents.length === 0,
     fallbackMode,

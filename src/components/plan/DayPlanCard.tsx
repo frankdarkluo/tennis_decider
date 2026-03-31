@@ -35,10 +35,15 @@ function PrescriptionBlock({
   label: string;
   block: DayPlan["warmupBlock"];
 }) {
+  const normalizeHeading = (value: string) => value.replace(/[\s\-:：]/g, "").toLowerCase();
+  const shouldShowBlockTitle = block.title.trim().length > 0 && normalizeHeading(block.title) !== normalizeHeading(label);
+
   return (
     <div className="space-y-2 rounded-2xl border border-[var(--line)] bg-white/70 p-4">
       <p className="text-sm font-semibold text-slate-900">{label}</p>
-      <p className="text-sm font-medium text-slate-700">{block.title}</p>
+      {shouldShowBlockTitle ? (
+        <p className="text-sm font-medium text-slate-700">{block.title}</p>
+      ) : null}
       <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
         {block.items.map((item, index) => (
           <li key={`${label}-${block.title}-${index}`}>{item}</li>
@@ -79,6 +84,11 @@ function PrescriptionPlan({
   day: DayPlan;
   t: ReturnType<typeof useI18n>["t"];
 }) {
+  const practiceItems = [...day.mainBlock.items, ...day.pressureBlock.items]
+    .map((item) => item.trim())
+    .filter((item, index, source) => item.length > 0 && source.indexOf(item) === index);
+  const practiceLabel = t("plan.day.main");
+
   return (
     <div className="space-y-4">
       <div className="space-y-2">
@@ -93,9 +103,13 @@ function PrescriptionPlan({
       />
 
       <div className="space-y-3">
-        <PrescriptionBlock label={t("plan.day.warmup")} block={day.warmupBlock} />
-        <PrescriptionBlock label={t("plan.day.main")} block={day.mainBlock} />
-        <PrescriptionBlock label={t("plan.day.pressure")} block={day.pressureBlock} />
+        <PrescriptionBlock
+          label={practiceLabel}
+          block={{
+            title: practiceLabel,
+            items: practiceItems
+          }}
+        />
       </div>
 
       <div className="space-y-2 rounded-2xl border border-[var(--line)] bg-white/70 p-4">

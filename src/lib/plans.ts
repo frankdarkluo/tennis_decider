@@ -22,6 +22,7 @@ type PlanDiagnosisContextHint = {
   skills: string[];
   problemTags: string[];
   contentIds: string[];
+  terms: string[];
 };
 
 const MAX_PLAN_CANDIDATES = 7;
@@ -41,42 +42,54 @@ const PLAN_COMPATIBILITY_FALLBACKS: Record<string, string> = {
 
 const PLAN_DAY_REVIEW_TERMS = ["review", "录像", "复盘", "休息", "track"];
 
-const PLAN_CONTEXT_SIGNAL_PATTERNS: Array<{ patterns: RegExp[]; skills: string[]; problemTags: string[]; contentIds: string[] }> = [
+const PLAN_CONTEXT_SIGNAL_PATTERNS: Array<{
+  patterns: RegExp[];
+  skills: string[];
+  problemTags: string[];
+  contentIds: string[];
+  terms: string[];
+}> = [
   {
     patterns: [/(?:关键分|关键球|一紧张|紧张|手紧|pressure point|big point|under pressure|nerves?)/i],
     skills: ["mental", "matchplay"],
     problemTags: ["pressure-tightness", "match-anxiety"],
-    contentIds: ["content_cn_f_01", "content_cn_e_02"]
+    contentIds: ["content_rb_03", "content_rb_02", "content_cn_f_02"],
+    terms: ["关键分", "紧张", "手紧", "pressure", "nerves", "key point"]
   },
   {
     patterns: [/(?:对手在网前|对手一上网|网前压迫|抢网|封网|opponent at net|net pressure|poach|poaching)/i],
     skills: ["net", "matchplay", "doubles"],
     problemTags: ["net-confidence", "doubles-positioning", "volley-floating", "volley-into-net"],
-    contentIds: ["content_rb_03", "content_cn_b_01"]
+    contentIds: ["content_rb_01", "content_rb_03", "content_rb_02"],
+    terms: ["网前", "上网", "截击", "opponent at net", "poach", "net pressure"]
   },
   {
     patterns: [/(?:左右移动|跑动中|追球|宽球|move wide|running|on the stretch)/i],
     skills: ["movement", "footwork"],
     problemTags: ["movement-slow", "late-contact", "running-forehand", "running-backhand"],
-    contentIds: ["content_cn_c_02", "content_fr_02"]
+    contentIds: ["content_cn_c_02", "content_fr_02"],
+    terms: ["左右移动", "跑动", "追球", "move wide", "running"]
   },
   {
     patterns: [/(?:月亮球|moonball|moon ball|高吊球|高挑球)/i],
     skills: ["matchplay", "defense", "topspin"],
     problemTags: ["moonball-trouble", "cant-hit-lob"],
-    contentIds: ["content_common_01"]
+    contentIds: ["content_fr_02", "content_rb_03"],
+    terms: ["月亮球", "高吊球", "moonball", "lob"]
   },
   {
     patterns: [/(?:下旋来球|对方切过来|against slice|incoming slice|low skidding balls)/i],
     skills: ["backhand", "slice"],
     problemTags: ["incoming-slice-trouble", "backhand-slice-floating"],
-    contentIds: ["content_common_02", "content_fr_02"]
+    contentIds: ["content_fr_01", "content_fr_02"],
+    terms: ["下旋", "切球", "against slice", "incoming slice", "low skidding"]
   },
   {
     patterns: [/(?:年纪大了|上年纪|跑不太动|跑不动|跟不上|cannot move well anymore|mobility)/i],
     skills: ["movement", "footwork"],
     problemTags: ["mobility-limit", "movement-slow"],
-    contentIds: ["content_fr_02"]
+    contentIds: ["content_fr_02"],
+    terms: ["年纪", "跑不动", "mobility", "cannot move"]
   }
 ];
 
@@ -172,7 +185,7 @@ const FALLBACK_DAY_PRESCRIPTIONS_ZH: PlanDayInput[] = [
     duration: "20 分钟",
     goal: "把每一拍前的准备动作固定住",
     warmupBlock: createBlock("热身", ["站姿检查 8 次", "准备动作 12 次"]),
-    mainBlock: createBlock("主练", ["慢速多球 10 球", "每球前先喊一次口令"]),
+    mainBlock: createBlock("主练", ["慢速多球 10 球", "每球前先说一次提醒词（如：先转肩）"]),
     pressureBlock: createBlock("带压力重复", ["连续 5 球都按同一准备流程"]),
     successCriteria: ["能在不抢拍的情况下完成 2 轮"],
     intensity: "low",
@@ -196,13 +209,13 @@ const FALLBACK_DAY_PRESCRIPTIONS_ZH: PlanDayInput[] = [
     day: 4,
     focus: "把今天的节奏复述出来",
     contentIds: [],
-    drills: ["录像回看 5 分钟", "写下 2 条口令"],
+    drills: ["录像回看 5 分钟", "写下 2 条提醒词"],
     duration: "15 分钟",
     goal: "把有效节奏用一句话说清楚",
     warmupBlock: createBlock("热身", ["慢走回位 5 次", "深呼吸 5 次"]),
     mainBlock: createBlock("主练", ["回看 8 球录像", "写下 2 个最有用的提示"]),
-    pressureBlock: createBlock("带压力重复", ["只能保留 1 条明天继续用的口令"]),
-    successCriteria: ["能说出今天最稳的一条口令"],
+    pressureBlock: createBlock("带压力重复", ["只能保留 1 条明天继续用的提醒词"]),
+    successCriteria: ["能说出今天最稳的一条提醒词"],
     intensity: "low",
     tempo: "slow"
   },
@@ -213,7 +226,7 @@ const FALLBACK_DAY_PRESCRIPTIONS_ZH: PlanDayInput[] = [
     drills: ["计数击球 8 次", "失败后重来 3 轮"],
     duration: "20 分钟",
     goal: "在有要求时也不改动作",
-    warmupBlock: createBlock("热身", ["空挥 8 次", "节奏口令 8 次"]),
+    warmupBlock: createBlock("热身", ["空挥 8 次", "节奏提醒词 8 次"]),
     mainBlock: createBlock("主练", ["计数对打 12 球", "每球都先确认呼吸"]),
     pressureBlock: createBlock("带压力重复", ["连续 3 轮都要完成 5 个有效球"]),
     successCriteria: ["压力下仍能维持同一击球节奏"],
@@ -633,7 +646,7 @@ function uniqueStrings(values: string[]): string[] {
 
 function buildDiagnosisContextHint(rawInput?: string): PlanDiagnosisContextHint {
   if (!rawInput?.trim()) {
-    return { skills: [], problemTags: [], contentIds: [] };
+    return { skills: [], problemTags: [], contentIds: [], terms: [] };
   }
 
   const normalized = rawInput.toLowerCase();
@@ -649,8 +662,11 @@ function buildDiagnosisContextHint(rawInput?: string): PlanDiagnosisContextHint 
   const contentIds = uniqueStrings(
     matchedSignals.flatMap(({ contentIds: signalContentIds }) => signalContentIds)
   );
+  const terms = uniqueStrings(
+    matchedSignals.flatMap(({ terms: signalTerms }) => signalTerms)
+  ).map((term) => term.toLowerCase());
 
-  return { skills, problemTags, contentIds };
+  return { skills, problemTags, contentIds, terms };
 }
 
 function getPlanLookupProblemTags(problemTag: string): string[] {
@@ -851,6 +867,7 @@ function scoreContentForCandidatePool(input: {
   secondarySkills: string[];
   contextProblemTags: string[];
   contextSkills: string[];
+  contextTerms: string[];
   templateSeedContentIdSet: Set<string>;
 }) {
   const {
@@ -865,10 +882,12 @@ function scoreContentForCandidatePool(input: {
     secondarySkills,
     contextProblemTags,
     contextSkills,
+    contextTerms,
     templateSeedContentIdSet
   } = input;
 
   let score = 0;
+  const contentText = getContentSearchText(item);
 
   if (explicitContentIdSet.has(item.id)) {
     score += 80;
@@ -888,6 +907,7 @@ function scoreContentForCandidatePool(input: {
   score += overlapCount(item.skills, secondarySkills) * 4;
   score += overlapCount(item.problemTags, contextProblemTags) * 5;
   score += overlapCount(item.skills, contextSkills) * 3;
+  score += contextTerms.reduce((sum, term) => sum + (contentText.includes(term) ? 2 : 0), 0);
   score += getLevelPreferenceScore(item, level);
   score -= getContextMismatchPenalty(item, seedSkills);
 
@@ -1006,6 +1026,7 @@ export function buildDiagnosisPlanCandidateIds(input: {
         secondarySkills: [],
         contextProblemTags: contextHint.problemTags,
         contextSkills: contextHint.skills,
+        contextTerms: contextHint.terms,
         templateSeedContentIdSet
       })
     )
@@ -1079,6 +1100,7 @@ export function buildAssessmentPlanContext(result: AssessmentResult): {
         secondarySkills,
         contextProblemTags: [],
         contextSkills: [],
+        contextTerms: [],
         templateSeedContentIdSet
       })
     )

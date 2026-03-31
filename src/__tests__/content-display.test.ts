@@ -653,8 +653,8 @@ describe("content display helpers", () => {
     });
 
     expect(withContext[0]).toBe("content_cn_d_01");
-    expect(withContext.slice(0, 5)).toEqual(expect.arrayContaining(["content_cn_f_01"]));
-    expect(baseline.slice(0, 5)).not.toEqual(expect.arrayContaining(["content_cn_f_01"]));
+    expect(withContext.slice(0, 5)).toEqual(expect.arrayContaining(["content_rb_02"]));
+    expect(baseline.slice(0, 5)).not.toEqual(expect.arrayContaining(["content_rb_02"]));
   });
 
   it("recognizes poaching-at-net pressure phrasing and keeps net-pressure support in plan candidates", () => {
@@ -665,7 +665,27 @@ describe("content display helpers", () => {
     });
 
     expect(withContext[0]).toBe("content_cn_d_01");
-    expect(withContext.slice(0, 6)).toEqual(expect.arrayContaining(["content_rb_03"]));
+    expect(withContext.slice(0, 6)).toEqual(expect.arrayContaining(["content_rb_03", "content_rb_01"]));
+  });
+
+  it("expands canonical problem-tag coverage for direct-library training videos", () => {
+    const byId = new Map(contents.map((entry) => [entry.id, entry]));
+
+    expect(byId.get("content_gaiao_02")?.problemTags).toEqual(
+      expect.arrayContaining(["second-serve-reliability"])
+    );
+    expect(byId.get("content_ttt_01")?.problemTags).toEqual(
+      expect.arrayContaining(["serve-toss-consistency"])
+    );
+    expect(byId.get("content_common_02")?.problemTags).toEqual(
+      expect.arrayContaining(["incoming-slice-trouble"])
+    );
+    expect(byId.get("content_common_03")?.problemTags).toEqual(
+      expect.arrayContaining(["backhand-slice-floating"])
+    );
+    expect(byId.get("content_rb_03")?.problemTags).toEqual(
+      expect.arrayContaining(["pressure-tightness", "plateau-no-progress"])
+    );
   });
 
   it("prefers hand-polished Chinese secondary titles for English content in zh mode", () => {

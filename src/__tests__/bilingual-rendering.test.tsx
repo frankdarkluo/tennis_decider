@@ -46,7 +46,7 @@ const translationMap = {
   "plan.day.open": "Open video",
   "plan.day.goal": "Goal",
   "plan.day.warmup": "Warm-up",
-  "plan.day.main": "Main work",
+  "plan.day.main": "Practice",
   "plan.day.pressure": "Pressure reps",
   "plan.day.success": "Success criteria",
   "plan.day.intensity": "Intensity",
@@ -220,12 +220,11 @@ describe("bilingual rendering", () => {
     expect(screen.getByText("How long · 20 min")).toBeInTheDocument();
     expect(screen.getByText("Intensity · Medium")).toBeInTheDocument();
     expect(screen.getByText("Tempo · Controlled")).toBeInTheDocument();
-    expect(screen.getByText("Warm-up")).toBeInTheDocument();
-    expect(screen.getByText("Warm-up prep")).toBeInTheDocument();
-    expect(screen.getByText("Main work")).toBeInTheDocument();
-    expect(screen.getByText("Serve reps")).toBeInTheDocument();
-    expect(screen.getByText("Pressure reps")).toBeInTheDocument();
-    expect(screen.getByText("Pressure rule")).toBeInTheDocument();
+    expect(screen.queryByText("Warm-up")).not.toBeInTheDocument();
+    expect(screen.getByText("Practice")).toBeInTheDocument();
+    expect(screen.queryByText("Pressure reps")).not.toBeInTheDocument();
+    expect(screen.getByText("20 first serves")).toBeInTheDocument();
+    expect(screen.getByText("Land 6 in a row before moving on")).toBeInTheDocument();
     expect(screen.getByText("Success criteria")).toBeInTheDocument();
     expect(screen.getByText("Finish with stable mechanics")).toBeInTheDocument();
     expect(screen.getByText("Watch this")).toBeInTheDocument();

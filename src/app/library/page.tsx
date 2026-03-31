@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { creators } from "@/data/creators";
 import {
@@ -8,13 +9,18 @@ import {
   getContentPrimaryTitle,
   getSubtitleAvailability
 } from "@/lib/content/display";
+import {
+  hasCompletedAssessmentResult,
+  readAssessmentResultFromStorage,
+  writeAssessmentResultToStorage
+} from "@/lib/assessmentStorage";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { buildLibraryItemsForMode, sortLibraryItemsForMode } from "@/lib/library/studyOrder";
 import { persistStudyArtifact } from "@/lib/study/client";
 import { getStudySnapshot } from "@/lib/study/snapshot";
 import { readLocalStudyBookmarks, toggleLocalStudyBookmark } from "@/lib/study/localData";
-import { addBookmark, getBookmarkedContentIds, removeBookmark } from "@/lib/userData";
+import { addBookmark, getBookmarkedContentIds, getLatestAssessmentResult, removeBookmark } from "@/lib/userData";
 import { getThumbnail } from "@/lib/thumbnail";
 import { toChineseSkill } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -28,9 +34,11 @@ import {
 } from "@/components/library/LibraryFilters";
 import { ContentCard } from "@/components/library/ContentCard";
 import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { useStudy } from "@/components/study/StudyProvider";
 
 const PAGE_SIZE = 20;
+type LibraryGateState = "checking" | "study_session_required" | "assessment_required" | "ready";
 
 function inferQueryLanguage(query: string) {
   const hasChinese = /[\u3400-\u9fff]/.test(query);
@@ -47,6 +55,7 @@ function LibraryPageContent() {
   const { openLoginModal } = useAuthModal();
   const { session, studyMode } = useStudy();
   const { t } = useI18n();
+  const [gateState, setGateState] = useState<LibraryGateState>("checking");
   const [keyword, setKeyword] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState<LibraryPlatformFilter>("all");
   const [selectedContentLanguage, setSelectedContentLanguage] = useState<LibraryContentLanguageFilter>("all");
@@ -70,6 +79,54 @@ function LibraryPageContent() {
   );
 
   useEffect(() => {
+    if (studyMode && !session) {
+      setGateState("study_session_required");
+      return;
+    }
+
+    if (loading) {
+      return;
+    }
+
+    let active = true;
+
+    async function resolveGate() {
+      const localResult = readAssessmentResultFromStorage();
+      let hasCompletedAssessment = hasCompletedAssessmentResult(localResult);
+
+      if (!hasCompletedAssessment && !studyMode && user?.id && configured) {
+        const remoteResult = await getLatestAssessmentResult(user.id);
+
+        if (!active) {
+          return;
+        }
+
+        const remoteAssessment = remoteResult.data;
+        if (hasCompletedAssessmentResult(remoteAssessment)) {
+          hasCompletedAssessment = true;
+          writeAssessmentResultToStorage(remoteAssessment);
+        }
+      }
+
+      if (!active) {
+        return;
+      }
+
+      setGateState(hasCompletedAssessment ? "ready" : "assessment_required");
+    }
+
+    void resolveGate();
+
+    return () => {
+      active = false;
+    };
+  }, [configured, loading, session, studyMode, user?.id]);
+
+  useEffect(() => {
+    if (gateState !== "ready") {
+      return;
+    }
+
     if (loading) {
       return;
     }
@@ -106,17 +163,25 @@ function LibraryPageContent() {
     return () => {
       active = false;
     };
-  }, [configured, loading, studyMode, user?.id]);
+  }, [configured, gateState, loading, studyMode, user?.id]);
 
   useEffect(() => {
+    if (gateState !== "ready") {
+      return;
+    }
+
     logEvent("library.viewed", {
       sourceRoute: null,
       prefilledProblemTag: null,
       prefilledLevelBand: null
     }, { page: "/library" });
-  }, []);
+  }, [gateState]);
 
   useEffect(() => {
+    if (gateState !== "ready") {
+      return;
+    }
+
     if (!studyMode || !session) {
       loggedSnapshotRef.current = null;
       return;
@@ -137,9 +202,13 @@ function LibraryPageContent() {
       viewCountBoostDisabled: snapshot.viewCountBoostDisabled
     }, { page: "/library" });
     loggedSnapshotRef.current = session.snapshotId;
-  }, [session, studyMode]);
+  }, [gateState, session, studyMode]);
 
   useEffect(() => {
+    if (gateState !== "ready") {
+      return;
+    }
+
     const currentFilters: Record<string, string | boolean> = {
       platform: selectedPlatform,
       contentLanguage: selectedContentLanguage,
@@ -167,9 +236,13 @@ function LibraryPageContent() {
     }
 
     previousFiltersRef.current = currentFilters;
-  }, [selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, showBookmarkedOnly]);
+  }, [gateState, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, showBookmarkedOnly]);
 
   useEffect(() => {
+    if (gateState !== "ready") {
+      return;
+    }
+
     const trimmed = keyword.trim();
     if (!trimmed || previousKeywordRef.current === trimmed) {
       previousKeywordRef.current = trimmed;
@@ -181,7 +254,7 @@ function LibraryPageContent() {
       queryLength: trimmed.length,
       queryLanguage: inferQueryLanguage(trimmed)
     }, { page: "/library" });
-  }, [keyword]);
+  }, [gateState, keyword]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
@@ -237,6 +310,10 @@ function LibraryPageContent() {
   const hasMore = visibleItems.length < filtered.length;
 
   useEffect(() => {
+    if (gateState !== "ready") {
+      return;
+    }
+
     if (!studyMode || !session) {
       previousSortContextRef.current = null;
       return;
@@ -276,10 +353,15 @@ function LibraryPageContent() {
     selectedSubtitleAvailability,
     session,
     showBookmarkedOnly,
-    studyMode
+    studyMode,
+    gateState
   ]);
 
   useEffect(() => {
+    if (gateState !== "ready") {
+      return;
+    }
+
     if (visibleItems.length === 0) {
       return;
     }
@@ -288,7 +370,7 @@ function LibraryPageContent() {
       visibleCount: visibleItems.length,
       batchIndex: Math.ceil(visibleItems.length / PAGE_SIZE)
     }, { page: "/library" });
-  }, [visibleItems.length]);
+  }, [gateState, visibleItems.length]);
 
   const clearAll = () => {
     setKeyword("");
@@ -336,6 +418,42 @@ function LibraryPageContent() {
     }, { page: "/library" });
     setBookmarkPendingId(null);
   };
+
+  if (gateState === "checking") {
+    return (
+      <PageContainer>
+        <Card className="text-sm text-slate-600">{t("assessment.loading")}</Card>
+      </PageContainer>
+    );
+  }
+
+  if (gateState === "study_session_required") {
+    return (
+      <PageContainer>
+        <Card className="mx-auto max-w-2xl space-y-4">
+          <h1 className="text-2xl font-black text-slate-900">{t("study.start.title")}</h1>
+          <p className="text-sm leading-6 text-slate-600">{t("study.start.subtitle")}</p>
+          <Link href="/study/start">
+            <Button>{t("study.start.button")}</Button>
+          </Link>
+        </Card>
+      </PageContainer>
+    );
+  }
+
+  if (gateState === "assessment_required") {
+    return (
+      <PageContainer>
+        <Card className="mx-auto max-w-2xl space-y-4">
+          <h1 className="text-2xl font-black text-slate-900">{t("assessment.empty.title")}</h1>
+          <p className="text-sm leading-6 text-slate-600">{t("assessment.empty.subtitle")}</p>
+          <Link href="/assessment">
+            <Button>{t("assessment.result.ctaStart")}</Button>
+          </Link>
+        </Card>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>

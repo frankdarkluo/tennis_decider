@@ -27,6 +27,10 @@ export function readAssessmentResultFromStorage(): AssessmentResult | null {
   }
 }
 
+export function hasCompletedAssessmentResult(result: AssessmentResult | null | undefined): result is AssessmentResult {
+  return Boolean(result && typeof result.answeredCount === "number" && result.answeredCount > 0);
+}
+
 export function getStoredAssessmentResultOrDefault(): AssessmentResult {
   return readAssessmentResultFromStorage() ?? getDefaultAssessmentResult();
 }

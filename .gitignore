@@ -41,3 +41,16 @@ docs/
 scripts/automation/
 /*.md
 !/README.md
+
+# GSD-2 runtime
+.gsd/auto.lock
+.gsd/completed-units.json
+.gsd/STATE.md
+.gsd/metrics.json
+.gsd/activity/
+.gsd/runtime/
+.gsd/worktrees/
+.gsd/parallel/
+.gsd/reports/
+.gsd/milestones/**/continue.md
+.gsd/milestones/**/*-CONTINUE.md

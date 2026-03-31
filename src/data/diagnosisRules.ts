@@ -61,6 +61,10 @@ const searchQueriesByRule = {
     bilibili: ["网球打不深 怎么办", "击球深度 训练 网球", "网球 稳定性 打深 底线 深度"],
     youtube: ["tennis hit deeper shots", "depth control tennis drill", "how to stop hitting short tennis"]
   },
+  rule_rally_consistency: {
+    bilibili: ["网球 多拍 对拉 稳定性", "网球 相持 稳定 训练", "网球 对拉 失误 减少"],
+    youtube: ["tennis rally consistency drill", "baseline rally control tennis", "reduce rally errors tennis"]
+  },
   rule_return_under_pressure: {
     bilibili: ["网球 接发球 站位 准备", "接发球被压制 怎么办", "接发回深 训练 网球"],
     youtube: ["tennis return of serve tips", "return position beginner tennis", "deep return drill tennis"]
@@ -178,7 +182,7 @@ export const diagnosisRules: DiagnosisRule[] = [
   },
   {
     id: "rule_serve_toss",
-    keywords: ["抛球", "不稳", "serve toss", "toss"],
+    keywords: ["抛球", "serve toss", "toss"],
     synonyms: ["抛球老歪", "发球抛球不稳", "一抛球就乱", "抛球忽前忽后", "抛球老偏左", "serve toss inconsistent", "my serve toss is all over the place", "I cannot toss the ball consistently on serve", "my toss keeps drifting around"],
     category: ["serve", "toss"],
     problemTag: "serve-toss-consistency",
@@ -191,6 +195,22 @@ export const diagnosisRules: DiagnosisRule[] = [
     recommendedContentIds: ["content_gaiao_02", "content_zlx_01", "content_ttt_01"],
     searchQueries: searchQueriesByRule.rule_serve_toss,
     fallbackLevel: ["3.0", "3.5"]
+  },
+  {
+    id: "rule_rally_consistency",
+    keywords: ["多拍", "回合", "对拉", "相持", "rally"],
+    synonyms: ["多拍回合不稳定", "多拍对拉不稳定", "相持稳定性差", "对拉超过 5 拍就失误", "多拍一多就散", "my rally breaks down after a few shots", "my baseline rally is unstable", "I cannot keep rally consistency", "I miss too much in longer rallies"],
+    category: ["consistency", "rally"],
+    problemTag: "rally-consistency",
+    causes: ["击球节奏前后不一致，越打越急", "落点和弧线目标不稳定，回合中容易追求过快", "准备动作和回位衔接断档，导致连续球质量下滑"],
+    causes_en: ["Shot rhythm changes from ball to ball and speeds up too early", "Depth and arc targets drift during longer exchanges", "Preparation and recovery links break down across consecutive balls"],
+    fixes: ["先把对拉目标设成中路深区，先稳住 6 拍以上", "每拍前只保留一个节奏口令，不急着发力", "失误后先复位脚步和击球点，再继续回合"],
+    fixes_en: ["Set the rally target to deep middle and stabilize 6+ balls first", "Use one rhythm cue before each ball instead of forcing pace", "After an error, reset footwork and contact point before continuing"],
+    drills: ["中路对拉 6 拍起步 12 组", "正反手交替相持 20 球，只记深度", "失误后复位再启动 10 组"],
+    drills_en: ["12 sets starting from 6-ball middle rallies", "20 alternating forehand-backhand rally balls tracking depth only", "10 error-reset-restart sequences"],
+    recommendedContentIds: ["content_fr_02", "content_fr_03", "content_fr_01"],
+    searchQueries: searchQueriesByRule.rule_rally_consistency,
+    fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
     id: "rule_late_contact",
@@ -296,7 +316,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     problemTag: "pressure-tightness",
     causes: ["关键分时注意力被结果牵走", "动作节奏被紧张打断", "没有固定的关键分执行口令"],
     causes_en: ["On big points, attention shifts to the outcome", "Tension disrupts the swing rhythm", "No fixed key-point execution cue or routine"],
-    fixes: ["关键分只保留一个执行关键词", "发接发前先做同一个放松流程", "把目标从赢分改成完成动作"],
+    fixes: ["关键分先把注意力放回一个最稳的动作", "发接发前先做同一个放松流程", "把目标从赢分改成完成动作"],
     fixes_en: ["Keep just one execution cue on big points", "Use the same reset routine before serve and return", "Shift the goal from winning the point to completing the motion"],
     drills: ["关键分口令练习 10 次", "从 30-30 开始打 10 分", "每分前做一次呼吸重置"],
     drills_en: ["10 key-point cue rehearsals", "10 minutes starting every game at 30-30", "Take one reset breath before every point"],

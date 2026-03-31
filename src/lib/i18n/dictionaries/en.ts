@@ -212,7 +212,7 @@ const en = {
   "plan.day.open": "Open video",
   "plan.day.goal": "Goal",
   "plan.day.warmup": "Warm-up",
-  "plan.day.main": "Main work",
+  "plan.day.main": "Practice",
   "plan.day.pressure": "Pressure reps",
   "plan.day.success": "Success criteria",
   "plan.day.intensity": "Intensity",

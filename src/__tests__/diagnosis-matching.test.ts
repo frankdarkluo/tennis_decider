@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { diagnoseProblem, findBestDiagnosisRule, getMatchableInput, extractDiagnosisSignalBundle } from "@/lib/diagnosis";
 import type { DiagnosisRule } from "@/types/diagnosis";
+import type { ContentItem } from "@/types/content";
 
 describe("diagnosis alias normalization", () => {
   it("segments a mixed input into clause-sized signal units", () => {
@@ -278,9 +279,7 @@ describe("diagnosis alias normalization", () => {
     expect(result.causes[0]).toContain("别失误");
     expect(result.drills[0]).toContain("关键分+对手上网模拟");
     expect(result.recommendedContents[0]?.id).toBe("content_cn_d_01");
-    expect(result.recommendedContents.map((item) => item.id)).toEqual(
-      expect.arrayContaining(["content_rb_03", "content_cn_f_01"])
-    );
+    expect(result.recommendedContents.map((item) => item.id)).toEqual(expect.arrayContaining(["content_rb_03"]));
   });
 
   it("adds pressure-routine support for second-serve complaints on key points", () => {
@@ -289,9 +288,8 @@ describe("diagnosis alias normalization", () => {
     expect(result.problemTag).toBe("second-serve-reliability");
     expect(result.causes[0]).toContain("关键分怕双误");
     expect(result.drills[0]).toContain("关键分二发 12 组");
-    expect(result.recommendedContents.map((item) => item.id)).toEqual(
-      expect.arrayContaining(["content_cn_e_02", "content_cn_f_01"])
-    );
+    expect(result.recommendedContents.length).toBeGreaterThan(0);
+    expect(result.recommendedContents.every((item) => !item.url.includes("search.bilibili.com/all?keyword="))).toBe(true);
   });
 
   it("keeps moonball analysis tied to spacing decisions and adds a defensive support resource", () => {
@@ -300,7 +298,51 @@ describe("diagnosis alias normalization", () => {
     expect(result.problemTag).toBe("moonball-trouble");
     expect(result.causes[0]).toContain("站位选择");
     expect(result.drills[0]).toContain("上升期或下降期");
-    expect(result.recommendedContents.map((item) => item.id)).toContain("content_common_01");
+    expect(result.recommendedContents.map((item) => item.id)).toEqual(
+      expect.arrayContaining(["content_fr_02"])
+    );
+    expect(result.recommendedContents.every((item) => !item.url.includes("search.bilibili.com/all?keyword="))).toBe(true);
+  });
+
+  it("returns no recommendations when only search-link entries are available", () => {
+    const rule: DiagnosisRule = {
+      id: "rule_search_only_reco",
+      keywords: ["searchonly"],
+      synonyms: [],
+      category: ["mental"],
+      problemTag: "pressure-tightness",
+      causes: ["test cause"],
+      fixes: ["test fix"],
+      recommendedContentIds: ["content_search_only_01"],
+      drills: ["test drill"],
+      searchQueries: { bilibili: [], youtube: [] }
+    };
+
+    const searchOnlyContent: ContentItem = {
+      id: "content_search_only_01",
+      title: "Search-only placeholder",
+      creatorId: "creator_search_curated",
+      platform: "Bilibili",
+      type: "video",
+      levels: ["3.0"],
+      skills: ["mental"],
+      problemTags: ["pressure-tightness"],
+      language: "zh",
+      summary: "",
+      reason: "",
+      useCases: [],
+      coachReason: "",
+      url: "https://search.bilibili.com/all?keyword=test"
+    };
+
+    const result = diagnoseProblem("searchonly", {
+      rules: [rule],
+      contentPool: [searchOnlyContent]
+    });
+
+    expect(result.problemTag).toBe("general-improvement");
+    expect(result.recommendedContents).toEqual([]);
+    expect(result.fallbackUsed).toBe(true);
   });
 
   it("understands English break-point plus poaching phrasing as a key-point forehand pressure scene", () => {
@@ -415,5 +457,38 @@ describe("diagnosis alias normalization", () => {
     }
     expect(bundle.internalSignals).toEqual(expect.arrayContaining(expectedSignals));
     expect(result.problemTag).toBe(expectedTag);
+  });
+
+  it("pulls in net-pressure support content when forehand errors happen against poaching", () => {
+    const result = diagnoseProblem("My forehand goes long in doubles when they poach at net", { locale: "en" });
+
+    expect(result.problemTag).toBe("forehand-out");
+    expect(result.recommendedContents.map((item) => item.id).some((id) => ["content_rb_03", "content_rb_01"].includes(id))).toBe(true);
+  });
+
+  it("pulls in movement-support content when backhand net errors happen while moving wide", () => {
+    const result = diagnoseProblem("My backhand goes into the net when I move wide", { locale: "en" });
+
+    expect(result.problemTag).toBe("backhand-into-net");
+    expect(result.recommendedContents.map((item) => item.id)).toEqual(
+      expect.arrayContaining(["content_fr_02"])
+    );
+  });
+
+  it("keeps mixed pressure-net recommendation lists diversified by creator", () => {
+    const result = diagnoseProblem("关键分正手老飞，对手一上网我就慌");
+    const creatorCount = new Set(result.recommendedContents.map((item) => item.creatorId)).size;
+
+    expect(result.problemTag).toBe("forehand-out");
+    expect(creatorCount).toBeGreaterThanOrEqual(Math.min(2, result.recommendedContents.length));
+  });
+
+  it("prefers direct pressure-support resources for key-point second-serve failures", () => {
+    const result = diagnoseProblem("关键分二发总双误");
+    const ids = result.recommendedContents.map((item) => item.id);
+
+    expect(result.problemTag).toBe("second-serve-reliability");
+    expect(ids).toEqual(expect.arrayContaining(["content_rb_03"]));
+    expect(ids).not.toContain("content_cn_f_01");
   });
 });

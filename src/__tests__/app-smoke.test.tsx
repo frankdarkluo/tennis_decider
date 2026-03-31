@@ -20,8 +20,14 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "home.hero.subtitle": "💡动作、错误、场景描述越具体，诊断越准",
     "home.hero.helper": "💡 描述越具体，诊断越准",
     "home.hero.examples": "示例",
+    "study.start.title": "开始研究会话",
+    "study.start.subtitle": "确认参与者编号和语言后，开始一轮可导出的研究会话。",
+    "study.start.button": "开始研究",
     "assessment.title": "1 分钟测一下你的水平",
+    "assessment.empty.title": "先完成一次水平评估",
+    "assessment.empty.subtitle": "做完后，我们会直接告诉你大概处在哪个能力区间，以及接下来更值得优先补哪一块。",
     "assessment.resumeDraft": "已恢复你刚才做到一半的评估进度。",
+    "assessment.result.ctaStart": "去完成水平评估 →",
     "assessment.result.ctaPlan": "生成训练计划 →",
     "study.actionability.prompt": "完成这个任务后，我知道我下一步该练什么了。",
     "study.actionability.submit": "提交评分",
@@ -166,6 +172,13 @@ async function loadPage<T>(importer: () => Promise<{ default: T }>) {
   return module.default;
 }
 
+function seedCompletedAssessmentInStorage() {
+  window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({
+    answeredCount: 6,
+    level: "3.0"
+  }));
+}
+
 vi.mock("next/link", () => ({
   default: ({
     href,
@@ -259,19 +272,49 @@ describe("app smoke tests", () => {
     consoleErrorSpy.mockRestore();
   });
 
-  it("renders home page without crashing", () => {
+  it("prioritizes assessment on home when no saved assessment exists", async () => {
     const HomePage = vi.importActual<typeof import("@/app/page")>("@/app/page");
-    return HomePage.then(({ default: Page }) => {
+    return HomePage.then(async ({ default: Page }) => {
       render(React.createElement(Page));
 
-      expect(screen.getByText("一句话，帮你找到下一步该练什么")).toBeInTheDocument();
+      expect(await screen.findByText("先完成一次水平评估")).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "去完成水平评估 →" })).toHaveAttribute("href", "/assessment");
+      expect(screen.queryByText("一句话，帮你找到下一步该练什么")).not.toBeInTheDocument();
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  it("requires study start before home flow in study mode when session is missing", async () => {
+    const HomePage = vi.importActual<typeof import("@/app/page")>("@/app/page");
+    return HomePage.then(async ({ default: Page }) => {
+      mockStudyContext.studyMode = true;
+      mockStudyContext.session = null;
+
+      render(React.createElement(Page));
+
+      expect(await screen.findByText("开始研究会话")).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "开始研究" })).toHaveAttribute("href", "/study/start");
+      expect(screen.queryByText("先完成一次水平评估")).not.toBeInTheDocument();
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  it("renders full home page after assessment is completed", async () => {
+    const HomePage = vi.importActual<typeof import("@/app/page")>("@/app/page");
+    return HomePage.then(async ({ default: Page }) => {
+      seedCompletedAssessmentInStorage();
+
+      render(React.createElement(Page));
+
+      expect(await screen.findByText("一句话，帮你找到下一步该练什么")).toBeInTheDocument();
       expect(screen.getByText("💡动作、错误、场景描述越具体，诊断越准")).toBeInTheDocument();
       expect(screen.queryByText("💡 描述越具体，诊断越准")).not.toBeInTheDocument();
       expect(screen.getByText("示例")).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "反手总是下网" })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "一发总发不进" })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "二发总双误" })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "正手一发力就出界" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "多拍对拉总不稳" })).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "正手一发力就出界" })).not.toBeInTheDocument();
       expect(screen.queryByRole("button", { name: "脚步总慢半拍" })).not.toBeInTheDocument();
       expect(screen.queryByText("也可以直接点一个接近的问题：")).not.toBeInTheDocument();
       expect(screen.queryByText("查看更多示例 ↓")).not.toBeInTheDocument();
@@ -503,6 +546,7 @@ describe("app smoke tests", () => {
 
   it("renders diagnose page with input box", async () => {
     const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
+    seedCompletedAssessmentInStorage();
 
     render(React.createElement(DiagnosePage));
 
@@ -518,11 +562,35 @@ describe("app smoke tests", () => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("blocks diagnose and points to assessment when no saved assessment exists", async () => {
+    const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
+
+    render(React.createElement(DiagnosePage));
+
+    expect(await screen.findByText("先完成一次水平评估")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "去完成水平评估 →" })).toHaveAttribute("href", "/assessment");
+    expect(screen.queryByText("说一句你的问题")).not.toBeInTheDocument();
+  });
+
+  it("requires study start before diagnose when study mode has no active session", async () => {
+    const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
+
+    mockStudyContext.studyMode = true;
+    mockStudyContext.session = null;
+
+    render(React.createElement(DiagnosePage));
+
+    expect(await screen.findByText("开始研究会话")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "开始研究" })).toHaveAttribute("href", "/study/start");
+    expect(screen.queryByText("先完成一次水平评估")).not.toBeInTheDocument();
+  });
+
   it("shows the actionability prompt after a study diagnosis result is shown", async () => {
     const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
 
     mockStudyContext.session = baseStudySession;
     mockStudyContext.studyMode = true;
+    seedCompletedAssessmentInStorage();
 
     render(React.createElement(DiagnosePage));
 
@@ -539,6 +607,7 @@ describe("app smoke tests", () => {
 
     mockStudyContext.session = baseStudySession;
     mockStudyContext.studyMode = true;
+    seedCompletedAssessmentInStorage();
 
     render(React.createElement(DiagnosePage));
 
@@ -558,6 +627,7 @@ describe("app smoke tests", () => {
 
     mockStudyContext.session = baseStudySession;
     mockStudyContext.studyMode = true;
+    seedCompletedAssessmentInStorage();
 
     render(React.createElement(DiagnosePage));
 
@@ -573,11 +643,12 @@ describe("app smoke tests", () => {
     expect(screen.getByRole("link", { name: "去博主榜找适合的人" })).toHaveAttribute("href", "/rankings");
   });
 
-  it("reveals why a diagnosis recommendation was chosen and logs the explanation view", async () => {
+  it("does not render why-recommended content details on diagnosis recommendation cards", async () => {
     const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
 
     mockStudyContext.session = baseStudySession;
     mockStudyContext.studyMode = true;
+    seedCompletedAssessmentInStorage();
 
     render(React.createElement(DiagnosePage));
 
@@ -586,14 +657,15 @@ describe("app smoke tests", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "diagnose.button.start" }));
     fireEvent.click(await screen.findByRole("button", { name: "diagnose.result.expand1" }));
-    fireEvent.click(await screen.findByRole("button", { name: "为什么推荐这个" }));
 
-    expect(await screen.findByText(/推荐依据:/)).toBeInTheDocument();
-    expect(getLocalLogs().some((entry) => entry.eventName === "diagnose.why_this_viewed" && entry.payload.targetType === "content")).toBe(true);
+    expect(screen.queryByRole("button", { name: "为什么推荐这个" })).not.toBeInTheDocument();
+    expect(screen.queryByText(/推荐依据:/)).not.toBeInTheDocument();
+    expect(getLocalLogs().some((entry) => entry.eventName === "diagnose.why_this_viewed" && entry.payload.targetType === "content")).toBe(false);
   });
 
   it("renders library page and shows non-empty content list", async () => {
     const LibraryPage = await loadPage(() => import("@/app/library/page"));
+    seedCompletedAssessmentInStorage();
 
     render(React.createElement(LibraryPage));
 
@@ -603,8 +675,19 @@ describe("app smoke tests", () => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("blocks library and points to assessment when no saved assessment exists", async () => {
+    const LibraryPage = await loadPage(() => import("@/app/library/page"));
+
+    render(React.createElement(LibraryPage));
+
+    expect(await screen.findByText("先完成一次水平评估")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "去完成水平评估 →" })).toHaveAttribute("href", "/assessment");
+    expect(screen.queryByText("找内容")).not.toBeInTheDocument();
+  });
+
   it("reveals a lightweight why-recommended explanation on library content cards", async () => {
     const LibraryPage = await loadPage(() => import("@/app/library/page"));
+    seedCompletedAssessmentInStorage();
 
     render(React.createElement(LibraryPage));
 
@@ -620,6 +703,7 @@ describe("app smoke tests", () => {
 
     mockStudyContext.session = baseStudySession;
     mockStudyContext.studyMode = true;
+    seedCompletedAssessmentInStorage();
 
     render(React.createElement(LibraryPage));
 

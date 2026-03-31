@@ -42,13 +42,11 @@ function RecommendationCard({
   problemTag: string;
 }) {
   const { language, t } = useI18n();
-  const [showWhy, setShowWhy] = useState(false);
   const thumbnail = getThumbnail(item);
   const primaryTitle = getContentPrimaryTitle(item, language);
   const secondaryTitle = getContentSecondaryTitle(item, language);
   const targetLabel = getContentFocusLine(item, language);
   const coachNote = getContentCoachNote(item, language);
-  const whySummary = coachNote || targetLabel || primaryTitle;
   const contentLanguage = getContentLanguageTag(item);
   const subtitleAvailability = getSubtitleAvailability(item);
   const subtitleLabel = subtitleAvailability === "english"
@@ -128,26 +126,6 @@ function RecommendationCard({
         >
           <Button variant="secondary">{t("content.open")}</Button>
         </a>
-        <button
-          type="button"
-          className="mt-3 text-xs font-semibold text-slate-500 transition hover:text-slate-700"
-          onClick={() => {
-            logEvent("diagnose.why_this_viewed", {
-              targetType: "content",
-              problemTag,
-              contentId: item.id,
-              layer
-            }, { page: "/diagnose" });
-            setShowWhy((current) => !current);
-          }}
-        >
-          {t("content.whyRecommended")}
-        </button>
-        {showWhy ? (
-          <p className="mt-2 text-xs leading-5 text-slate-500">
-            {t("content.whyPrefix")} {whySummary}
-          </p>
-        ) : null}
       </div>
     </div>
   );

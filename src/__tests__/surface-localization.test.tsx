@@ -303,9 +303,9 @@ describe("surface localization", () => {
     renderWithI18n(<DayPlanCard day={zhPlan.days[0]} isToday />);
     expect(screen.getByText("第 1 天 · 今天")).toBeInTheDocument();
     expect(screen.getByText("今日目标")).toBeInTheDocument();
-    expect(screen.getAllByText("热身").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("主练").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("带压力重复").length).toBeGreaterThan(0);
+    expect(screen.queryByText("热身")).not.toBeInTheDocument();
+    expect(screen.getAllByText("练习").length).toBeGreaterThan(0);
+    expect(screen.queryByText("带压力重复")).not.toBeInTheDocument();
     expect(screen.getByText("完成标准")).toBeInTheDocument();
     expect(screen.getByText("强度 · 低")).toBeInTheDocument();
     expect(screen.getByText("节奏 · 慢节奏")).toBeInTheDocument();
@@ -318,9 +318,9 @@ describe("surface localization", () => {
 
     expect(screen.getByText("Day 2")).toBeInTheDocument();
     expect(screen.getByText("Goal")).toBeInTheDocument();
-    expect(screen.getAllByText("Warm-up").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("Main work").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("Pressure reps").length).toBeGreaterThan(0);
+    expect(screen.queryByText("Warm-up")).not.toBeInTheDocument();
+    expect(screen.getAllByText("Practice").length).toBeGreaterThan(0);
+    expect(screen.queryByText("Pressure reps")).not.toBeInTheDocument();
     expect(screen.getByText("Success criteria")).toBeInTheDocument();
     expect(screen.getByText("Intensity · Low")).toBeInTheDocument();
     expect(screen.getByText("Tempo · Slow")).toBeInTheDocument();

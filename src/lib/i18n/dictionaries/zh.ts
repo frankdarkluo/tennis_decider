@@ -212,7 +212,7 @@ const zh = {
   "plan.day.open": "点击观看",
   "plan.day.goal": "今日目标",
   "plan.day.warmup": "热身",
-  "plan.day.main": "主练",
+  "plan.day.main": "练习",
   "plan.day.pressure": "带压力重复",
   "plan.day.success": "完成标准",
   "plan.day.intensity": "强度",
