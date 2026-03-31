@@ -28,6 +28,88 @@ function compactFocus(value: string, maxLength = 24) {
 
 const contentById = new Map([...contents, ...expandedContents].map((content) => [content.id, content]));
 
+function PrescriptionBlock({
+  label,
+  block
+}: {
+  label: string;
+  block: DayPlan["warmupBlock"];
+}) {
+  return (
+    <div className="space-y-2 rounded-2xl border border-[var(--line)] bg-white/70 p-4">
+      <p className="text-sm font-semibold text-slate-900">{label}</p>
+      <p className="text-sm font-medium text-slate-700">{block.title}</p>
+      <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
+        {block.items.map((item, index) => (
+          <li key={`${label}-${block.title}-${index}`}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function PrescriptionMetadata({
+  durationLabel,
+  intensityLabel,
+  tempoLabel
+}: {
+  durationLabel: string;
+  intensityLabel: string;
+  tempoLabel: string;
+}) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      <Badge className="bg-slate-100 px-3 py-1.5 text-sm font-semibold leading-none text-slate-700">
+        {durationLabel}
+      </Badge>
+      <Badge className="bg-slate-100 px-3 py-1.5 text-sm font-semibold leading-none text-slate-700">
+        {intensityLabel}
+      </Badge>
+      <Badge className="bg-slate-100 px-3 py-1.5 text-sm font-semibold leading-none text-slate-700">
+        {tempoLabel}
+      </Badge>
+    </div>
+  );
+}
+
+function PrescriptionPlan({
+  day,
+  t
+}: {
+  day: DayPlan;
+  t: ReturnType<typeof useI18n>["t"];
+}) {
+  return (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <p className="text-sm font-semibold text-slate-900">{t("plan.day.goal")}</p>
+        <p className="text-sm leading-6 text-slate-700">{day.goal}</p>
+      </div>
+
+      <PrescriptionMetadata
+        durationLabel={`${t("plan.day.duration")} · ${day.duration}`}
+        intensityLabel={`${t("plan.day.intensity")} · ${t(`plan.day.intensity.${day.intensity}`)}`}
+        tempoLabel={`${t("plan.day.tempo")} · ${t(`plan.day.tempo.${day.tempo}`)}`}
+      />
+
+      <div className="space-y-3">
+        <PrescriptionBlock label={t("plan.day.warmup")} block={day.warmupBlock} />
+        <PrescriptionBlock label={t("plan.day.main")} block={day.mainBlock} />
+        <PrescriptionBlock label={t("plan.day.pressure")} block={day.pressureBlock} />
+      </div>
+
+      <div className="space-y-2 rounded-2xl border border-[var(--line)] bg-white/70 p-4">
+        <p className="text-sm font-semibold text-slate-900">{t("plan.day.success")}</p>
+        <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
+          {day.successCriteria.map((criteria, index) => (
+            <li key={`success-${day.day}-${index}`}>{criteria}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
 export function DayPlanCard({
   day,
   onViewDetails,
@@ -43,6 +125,7 @@ export function DayPlanCard({
     .filter((content) => Boolean(content));
   const [expanded, setExpanded] = useState(isToday);
   const displayExpanded = isToday || expanded;
+  const detailsId = `plan-day-${day.day}-details`;
   const featuredContent = relatedContents[0] ?? null;
   const thumbnail = featuredContent ? getThumbnail(featuredContent) : null;
   const primaryTitle = featuredContent ? getContentPrimaryTitle(featuredContent, language) : null;
@@ -141,19 +224,7 @@ export function DayPlanCard({
           <h3 className="mt-1 text-xl font-bold text-slate-900">{day.focus}</h3>
         </div>
 
-        <div className="space-y-2">
-          <p className="text-sm font-semibold text-slate-900">{t("plan.day.what")}</p>
-          <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
-            {day.drills.map((drill) => (
-              <li key={drill}>{drill}</li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <p className="text-sm font-semibold text-slate-900">{t("plan.day.duration")}</p>
-          <p className="mt-1 text-sm text-slate-700">{day.duration}</p>
-        </div>
+        <PrescriptionPlan day={day} t={t} />
 
         <div>
           <p className="mb-2 text-sm font-semibold text-slate-900">{t("plan.day.watch")}</p>
@@ -172,24 +243,20 @@ export function DayPlanCard({
           <p className="text-sm font-semibold text-slate-900">{t("plan.day.label", { day: day.day })}</p>
           <p className="mt-1 text-sm font-medium text-slate-700">{compactFocus(day.focus)}</p>
         </div>
-        <Button variant="ghost" className="px-3 text-sm" onClick={toggleExpanded}>
+        <Button
+          variant="ghost"
+          className="px-3 text-sm"
+          onClick={toggleExpanded}
+          aria-expanded={displayExpanded}
+          aria-controls={detailsId}
+        >
           {displayExpanded ? t("plan.day.collapse") : t("plan.day.expand")}
         </Button>
       </div>
 
       {displayExpanded ? (
-        <div className="mt-4 space-y-3 border-t border-[var(--line)] pt-4">
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-slate-700">{t("plan.day.what")}</p>
-            <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
-              {day.drills.map((drill) => (
-                <li key={drill}>{drill}</li>
-              ))}
-            </ul>
-          </div>
-          <p className="text-sm text-slate-600">
-            <span className="font-medium text-slate-700">{t("plan.day.duration")}</span> {day.duration}
-          </p>
+        <div id={detailsId} className="mt-4 space-y-3 border-t border-[var(--line)] pt-4">
+          <PrescriptionPlan day={day} t={t} />
           <div className="space-y-2">
             <p className="text-sm font-medium text-slate-700">{t("plan.day.watch")}</p>
             {featuredContentCard ?? (

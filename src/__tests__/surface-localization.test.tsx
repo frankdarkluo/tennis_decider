@@ -1,6 +1,6 @@
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { I18nProvider } from "@/lib/i18n/config";
 import { LoginModal } from "@/components/auth/LoginModal";
 import { AuthCallbackCard } from "@/components/auth/AuthCallbackCard";
@@ -295,22 +295,35 @@ describe("surface localization", () => {
     expect(screen.getByText("结束会话")).toBeInTheDocument();
   });
 
-  it("renders localized plan day labels", () => {
+  it("renders localized plan prescription blocks in both locales", () => {
     const zhPlan = getPlanTemplate("backhand-into-net", "3.0", "zh");
     const enPlan = getPlanTemplate("backhand-into-net", "3.0", "en");
 
     mockStudyState.language = "zh";
-    const { rerender } = renderWithI18n(<DayPlanCard day={zhPlan.days[0]} isToday />);
+    renderWithI18n(<DayPlanCard day={zhPlan.days[0]} isToday />);
     expect(screen.getByText("第 1 天 · 今天")).toBeInTheDocument();
+    expect(screen.getByText("今日目标")).toBeInTheDocument();
+    expect(screen.getAllByText("热身").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("主练").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("带压力重复").length).toBeGreaterThan(0);
+    expect(screen.getByText("完成标准")).toBeInTheDocument();
+    expect(screen.getByText("强度 · 低")).toBeInTheDocument();
+    expect(screen.getByText("节奏 · 慢节奏")).toBeInTheDocument();
 
+    cleanup();
     mockStudyState.language = "en";
-    rerender(
-      <I18nProvider>
-        <DayPlanCard day={enPlan.days[0]} isToday />
-      </I18nProvider>
-    );
+    renderWithI18n(<DayPlanCard day={enPlan.days[1]} />);
 
-    expect(screen.getByText("Day 1 · Today")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Expand" }));
+
+    expect(screen.getByText("Day 2")).toBeInTheDocument();
+    expect(screen.getByText("Goal")).toBeInTheDocument();
+    expect(screen.getAllByText("Warm-up").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Main work").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Pressure reps").length).toBeGreaterThan(0);
+    expect(screen.getByText("Success criteria")).toBeInTheDocument();
+    expect(screen.getByText("Intensity · Low")).toBeInTheDocument();
+    expect(screen.getByText("Tempo · Slow")).toBeInTheDocument();
   });
 
   it("renders English content cards in zh mode with English titles and polished Chinese subtitles", () => {

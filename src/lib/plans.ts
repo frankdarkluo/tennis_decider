@@ -5,7 +5,14 @@ import { expandedContents } from "@/data/expandedContents";
 import { planTemplates } from "@/data/planTemplates";
 import { AssessmentDimension, AssessmentResult, DimensionSummary } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
-import { DayPlan, GeneratedPlan, PlanLevel, PlanTemplate } from "@/types/plan";
+import {
+  DayPlan,
+  DayPlanBlock,
+  GeneratedPlan,
+  PlanLevel,
+  PlanTemplate,
+  PlanTemplateDay
+} from "@/types/plan";
 import { SavedPlanSource } from "@/types/userData";
 
 type PlanLocale = "zh" | "en";
@@ -28,21 +35,317 @@ const PLAN_COMPATIBILITY_FALLBACKS: Record<string, string> = {
 
 const PLAN_DAY_REVIEW_TERMS = ["review", "录像", "复盘", "休息", "track"];
 
-const defaultDaysZh = [1, 2, 3, 4, 5, 6, 7].map((day) => ({
-  day,
-  focus: `第 ${day} 天稳定性训练`,
-  contentIds: [],
-  drills: ["基础挥拍 20 次", "稳定过网练习 20 球"],
-  duration: "20 分钟"
-}));
+type PlanDayInput = Pick<DayPlan, "day" | "focus" | "contentIds" | "drills" | "duration"> &
+  Partial<Pick<
+    PlanTemplateDay,
+    | "focusEn"
+    | "drillsEn"
+    | "durationEn"
+    | "goal"
+    | "goalEn"
+    | "warmupBlock"
+    | "warmupBlockEn"
+    | "mainBlock"
+    | "mainBlockEn"
+    | "pressureBlock"
+    | "pressureBlockEn"
+    | "successCriteria"
+    | "successCriteriaEn"
+    | "intensity"
+    | "tempo"
+  >>;
 
-const defaultDaysEn = [1, 2, 3, 4, 5, 6, 7].map((day) => ({
-  day,
-  focus: `Day ${day} stability training`,
-  contentIds: [],
-  drills: ["20 basic swing reps", "20 target shots — focus on clearing the net"],
-  duration: "20 minutes"
-}));
+function createBlock(title: string, items: string[]): DayPlanBlock {
+  return { title, items: [...items] };
+}
+
+function cloneBlock(block: DayPlanBlock | undefined, fallbackTitle: string, fallbackItems: string[]): DayPlanBlock {
+  const source = block ?? createBlock(fallbackTitle, fallbackItems);
+
+  return {
+    title: source.title,
+    items: [...source.items]
+  };
+}
+
+function buildDayPlan(day: PlanDayInput, locale: PlanLocale): DayPlan {
+  const isEn = locale === "en";
+  const focus = isEn ? day.focusEn ?? day.focus : day.focus;
+  const drills = [...(isEn ? day.drillsEn ?? day.drills : day.drills)];
+  const duration = isEn ? day.durationEn ?? day.duration : day.duration;
+  const warmupItems = drills.length > 0 ? [drills[0]] : [focus];
+  const pressureItems = isEn
+    ? [`Add one pressure rule to ${focus}`]
+    : [`给${focus}增加一个压力条件`];
+
+  return {
+    day: day.day,
+    focus,
+    contentIds: [...day.contentIds],
+    drills,
+    duration,
+    goal: isEn ? day.goalEn ?? `Build control in ${focus}` : day.goal ?? `围绕${focus}建立稳定执行`,
+    warmupBlock: isEn
+      ? cloneBlock(day.warmupBlockEn, "Warm-up", warmupItems)
+      : cloneBlock(day.warmupBlock, "热身", warmupItems),
+    mainBlock: isEn
+      ? cloneBlock(day.mainBlockEn, "Main work", drills)
+      : cloneBlock(day.mainBlock, "主练", drills),
+    pressureBlock: isEn
+      ? cloneBlock(day.pressureBlockEn, "Pressure reps", pressureItems)
+      : cloneBlock(day.pressureBlock, "带压力重复", pressureItems),
+    successCriteria: [
+      ...(isEn
+        ? day.successCriteriaEn ?? ["Complete the session with steady mechanics"]
+        : day.successCriteria ?? ["完成当天训练并保持动作稳定"])
+    ],
+    intensity: day.intensity ?? (day.day <= 2 ? "low" : day.day <= 5 ? "medium" : "medium_high"),
+    tempo: day.tempo ?? (day.day <= 2 ? "slow" : day.day <= 5 ? "controlled" : "match_70")
+  };
+}
+
+const FALLBACK_DAY_PRESCRIPTIONS_ZH: PlanDayInput[] = [
+  {
+    day: 1,
+    focus: "先把动作节奏和落点稳定下来",
+    contentIds: [],
+    drills: ["空挥 10 次", "分腿垫步 10 次"],
+    duration: "20 分钟",
+    goal: "先把动作节奏和落点稳定下来",
+    warmupBlock: createBlock("热身", ["空挥 10 次", "分腿垫步 10 次"]),
+    mainBlock: createBlock("主练", ["中等速度对打 12 球", "每球后停一下确认站位"]),
+    pressureBlock: createBlock("带压力重复", ["连续 3 球都进区才加快"]),
+    successCriteria: ["能连续完成 3 轮而不乱节奏"],
+    intensity: "low",
+    tempo: "slow"
+  },
+  {
+    day: 2,
+    focus: "每球前先做一次稳定准备",
+    contentIds: [],
+    drills: ["站定后再启动 8 次", "准备动作 12 次"],
+    duration: "20 分钟",
+    goal: "把每一拍前的准备动作固定住",
+    warmupBlock: createBlock("热身", ["站姿检查 8 次", "准备动作 12 次"]),
+    mainBlock: createBlock("主练", ["慢速多球 10 球", "每球前先喊一次口令"]),
+    pressureBlock: createBlock("带压力重复", ["连续 5 球都按同一准备流程"]),
+    successCriteria: ["能在不抢拍的情况下完成 2 轮"],
+    intensity: "low",
+    tempo: "slow"
+  },
+  {
+    day: 3,
+    focus: "把中间球打深一点",
+    contentIds: [],
+    drills: ["深区定点击球 10 球", "回位后再出手 10 次"],
+    duration: "20 分钟",
+    goal: "让落点先过网再变稳",
+    warmupBlock: createBlock("热身", ["对墙挥拍 10 次", "回位站姿 10 次"]),
+    mainBlock: createBlock("主练", ["中路深区 12 球", "只看落点不要加力"]),
+    pressureBlock: createBlock("带压力重复", ["连续 4 球深区才换边"]),
+    successCriteria: ["至少 8 球落在目标深区"],
+    intensity: "medium",
+    tempo: "controlled"
+  },
+  {
+    day: 4,
+    focus: "把今天的节奏复述出来",
+    contentIds: [],
+    drills: ["录像回看 5 分钟", "写下 2 条口令"],
+    duration: "15 分钟",
+    goal: "把有效节奏用一句话说清楚",
+    warmupBlock: createBlock("热身", ["慢走回位 5 次", "深呼吸 5 次"]),
+    mainBlock: createBlock("主练", ["回看 8 球录像", "写下 2 个最有用的提示"]),
+    pressureBlock: createBlock("带压力重复", ["只能保留 1 条明天继续用的口令"]),
+    successCriteria: ["能说出今天最稳的一条口令"],
+    intensity: "low",
+    tempo: "slow"
+  },
+  {
+    day: 5,
+    focus: "在轻微压力下保持同样动作",
+    contentIds: [],
+    drills: ["计数击球 8 次", "失败后重来 3 轮"],
+    duration: "20 分钟",
+    goal: "在有要求时也不改动作",
+    warmupBlock: createBlock("热身", ["空挥 8 次", "节奏口令 8 次"]),
+    mainBlock: createBlock("主练", ["计数对打 12 球", "每球都先确认呼吸"]),
+    pressureBlock: createBlock("带压力重复", ["连续 3 轮都要完成 5 个有效球"]),
+    successCriteria: ["压力下仍能维持同一击球节奏"],
+    intensity: "medium",
+    tempo: "controlled"
+  },
+  {
+    day: 6,
+    focus: "把今天练过的内容串成一组",
+    contentIds: [],
+    drills: ["热身 5 分钟", "主练 10 分钟", "收尾 5 分钟"],
+    duration: "20 分钟",
+    goal: "让你知道一节完整训练该怎么排",
+    warmupBlock: createBlock("热身", ["慢跑 3 分钟", "动态拉伸 5 次"]),
+    mainBlock: createBlock("主练", ["前 5 球只打深区", "后 5 球只看稳定性"]),
+    pressureBlock: createBlock("带压力重复", ["连续 2 组都要按同一顺序完成"]),
+    successCriteria: ["能独立排出一节完整训练"],
+    intensity: "medium",
+    tempo: "controlled"
+  },
+  {
+    day: 7,
+    focus: "留下下一周最简单的继续练法",
+    contentIds: [],
+    drills: ["整理本周记录", "选 1 个下周重点"],
+    duration: "20 分钟",
+    goal: "把可继续执行的模板留下来",
+    warmupBlock: createBlock("热身", ["回看笔记 5 分钟", "整理球感记录"]),
+    mainBlock: createBlock("主练", ["回顾本周 3 次最稳的回合", "写下下周训练重点"]),
+    pressureBlock: createBlock("带压力重复", ["只保留 1 个下周要继续练的规则"]),
+    successCriteria: ["能说清楚下周第一堂课要练什么"],
+    intensity: "low",
+    tempo: "slow"
+  }
+];
+
+const FALLBACK_DAY_PRESCRIPTIONS_EN: PlanDayInput[] = [
+  {
+    day: 1,
+    focus: "Settle your rhythm and contact before adding pace",
+    contentIds: [],
+    drills: ["10 shadow swings", "10 split-step reps"],
+    duration: "20 minutes",
+    goal: "Settle your rhythm and contact before adding pace",
+    goalEn: "Settle your rhythm and contact before adding pace",
+    warmupBlock: createBlock("Warm-up", ["10 shadow swings", "10 split-step reps"]),
+    warmupBlockEn: createBlock("Warm-up", ["10 shadow swings", "10 split-step reps"]),
+    mainBlock: createBlock("Main work", ["12 medium-tempo rally feeds", "Pause after each ball to reset your stance"]),
+    mainBlockEn: createBlock("Main work", ["12 medium-tempo rally feeds", "Pause after each ball to reset your stance"]),
+    pressureBlock: createBlock("Pressure reps", ["Only speed up after 3 clean balls in a row"]),
+    pressureBlockEn: createBlock("Pressure reps", ["Only speed up after 3 clean balls in a row"]),
+    successCriteria: ["Complete 3 rounds without losing rhythm"],
+    successCriteriaEn: ["Complete 3 rounds without losing rhythm"],
+    intensity: "low",
+    tempo: "slow"
+  },
+  {
+    day: 2,
+    focus: "Lock in a steady pre-ball routine",
+    contentIds: [],
+    drills: ["8 ready-position checks", "12 prep motions"],
+    duration: "20 minutes",
+    goal: "Make the pre-shot routine automatic",
+    goalEn: "Make the pre-shot routine automatic",
+    warmupBlock: createBlock("Warm-up", ["8 stance checks", "12 prep motions"]),
+    warmupBlockEn: createBlock("Warm-up", ["8 stance checks", "12 prep motions"]),
+    mainBlock: createBlock("Main work", ["10 slow-feeding rally balls", "Say the cue before every ball"]),
+    mainBlockEn: createBlock("Main work", ["10 slow-feeding rally balls", "Say the cue before every ball"]),
+    pressureBlock: createBlock("Pressure reps", ["Keep the same routine for 5 straight balls"]),
+    pressureBlockEn: createBlock("Pressure reps", ["Keep the same routine for 5 straight balls"]),
+    successCriteria: ["Finish 2 rounds without rushing"],
+    successCriteriaEn: ["Finish 2 rounds without rushing"],
+    intensity: "low",
+    tempo: "slow"
+  },
+  {
+    day: 3,
+    focus: "Send the middle ball deeper",
+    contentIds: [],
+    drills: ["10 deep-target hits", "10 reset-and-recover reps"],
+    duration: "20 minutes",
+    goal: "Get depth first, then build consistency",
+    goalEn: "Get depth first, then build consistency",
+    warmupBlock: createBlock("Warm-up", ["10 wall swings", "10 reset steps"]),
+    warmupBlockEn: createBlock("Warm-up", ["10 wall swings", "10 reset steps"]),
+    mainBlock: createBlock("Main work", ["12 balls to the deep middle", "Focus on depth, not pace"]),
+    mainBlockEn: createBlock("Main work", ["12 balls to the deep middle", "Focus on depth, not pace"]),
+    pressureBlock: createBlock("Pressure reps", ["Only switch sides after 4 deep balls"]),
+    pressureBlockEn: createBlock("Pressure reps", ["Only switch sides after 4 deep balls"]),
+    successCriteria: ["Land at least 8 balls in the target depth zone"],
+    successCriteriaEn: ["Land at least 8 balls in the target depth zone"],
+    intensity: "medium",
+    tempo: "controlled"
+  },
+  {
+    day: 4,
+    focus: "Say back the rhythm that worked today",
+    contentIds: [],
+    drills: ["5 minutes of video review", "Write 2 cues"],
+    duration: "15 minutes",
+    goal: "Turn one useful feel into a clear sentence",
+    goalEn: "Turn one useful feel into a clear sentence",
+    warmupBlock: createBlock("Warm-up", ["5 reset walks", "5 deep breaths"]),
+    warmupBlockEn: createBlock("Warm-up", ["5 reset walks", "5 deep breaths"]),
+    mainBlock: createBlock("Main work", ["Review 8 rally balls", "Write down the 2 most useful cues"]),
+    mainBlockEn: createBlock("Main work", ["Review 8 rally balls", "Write down the 2 most useful cues"]),
+    pressureBlock: createBlock("Pressure reps", ["Keep only 1 cue for tomorrow"]),
+    pressureBlockEn: createBlock("Pressure reps", ["Keep only 1 cue for tomorrow"]),
+    successCriteria: ["State the one cue that helped most today"],
+    successCriteriaEn: ["State the one cue that helped most today"],
+    intensity: "low",
+    tempo: "slow"
+  },
+  {
+    day: 5,
+    focus: "Hold the same swing under light pressure",
+    contentIds: [],
+    drills: ["8 counted balls", "3 restart rounds"],
+    duration: "20 minutes",
+    goal: "Keep the motion unchanged when a score is attached",
+    goalEn: "Keep the motion unchanged when a score is attached",
+    warmupBlock: createBlock("Warm-up", ["8 shadow swings", "8 rhythm cue reps"]),
+    warmupBlockEn: createBlock("Warm-up", ["8 shadow swings", "8 rhythm cue reps"]),
+    mainBlock: createBlock("Main work", ["12 counted rally balls", "Check the breath before each ball"]),
+    mainBlockEn: createBlock("Main work", ["12 counted rally balls", "Check the breath before each ball"]),
+    pressureBlock: createBlock("Pressure reps", ["Complete 5 clean balls in 3 straight rounds"]),
+    pressureBlockEn: createBlock("Pressure reps", ["Complete 5 clean balls in 3 straight rounds"]),
+    successCriteria: ["Keep the same rhythm even with a rule attached"],
+    successCriteriaEn: ["Keep the same rhythm even with a rule attached"],
+    intensity: "medium",
+    tempo: "controlled"
+  },
+  {
+    day: 6,
+    focus: "Link the pieces into one session",
+    contentIds: [],
+    drills: ["5-minute warm-up", "10-minute main block", "5-minute wrap-up"],
+    duration: "20 minutes",
+    goal: "Know how to build a complete practice session",
+    goalEn: "Know how to build a complete practice session",
+    warmupBlock: createBlock("Warm-up", ["3 minutes of easy movement", "5 dynamic stretches"]),
+    warmupBlockEn: createBlock("Warm-up", ["3 minutes of easy movement", "5 dynamic stretches"]),
+    mainBlock: createBlock("Main work", ["First 5 balls to the deep zone", "Last 5 balls for steady contact"]),
+    mainBlockEn: createBlock("Main work", ["First 5 balls to the deep zone", "Last 5 balls for steady contact"]),
+    pressureBlock: createBlock("Pressure reps", ["Repeat the same order for 2 rounds"]),
+    pressureBlockEn: createBlock("Pressure reps", ["Repeat the same order for 2 rounds"]),
+    successCriteria: ["Can build a full practice on your own"],
+    successCriteriaEn: ["Can build a full practice on your own"],
+    intensity: "medium",
+    tempo: "controlled"
+  },
+  {
+    day: 7,
+    focus: "Keep the simplest next-week template",
+    contentIds: [],
+    drills: ["Review this week", "Pick 1 priority for next week"],
+    duration: "20 minutes",
+    goal: "Leave behind one repeatable training template",
+    goalEn: "Leave behind one repeatable training template",
+    warmupBlock: createBlock("Warm-up", ["Review notes for 5 minutes", "Organize your training notes"]),
+    warmupBlockEn: createBlock("Warm-up", ["Review notes for 5 minutes", "Organize your training notes"]),
+    mainBlock: createBlock("Main work", ["Review the 3 steadiest rallies", "Write the next week's priority"]),
+    mainBlockEn: createBlock("Main work", ["Review the 3 steadiest rallies", "Write the next week's priority"]),
+    pressureBlock: createBlock("Pressure reps", ["Keep only 1 rule to carry forward"]),
+    pressureBlockEn: createBlock("Pressure reps", ["Keep only 1 rule to carry forward"]),
+    successCriteria: ["Can explain the first session for next week"],
+    successCriteriaEn: ["Can explain the first session for next week"],
+    intensity: "low",
+    tempo: "slow"
+  }
+];
+
+function createDefaultDays(locale: PlanLocale): DayPlan[] {
+  const prescriptions = locale === "en" ? FALLBACK_DAY_PRESCRIPTIONS_EN : FALLBACK_DAY_PRESCRIPTIONS_ZH;
+
+  return prescriptions.map((day) => buildDayPlan(day, locale));
+}
 
 const allPlanContents = [...contents, ...expandedContents];
 const curatedContentIds = new Set(contents.map((content) => content.id));
@@ -251,13 +554,7 @@ function toGenerated(template: PlanTemplate, locale: PlanLocale): GeneratedPlan 
     problemTag: template.problemTag,
     title: isEn ? template.titleEn : template.title,
     target: isEn ? template.targetEn : template.target,
-    days: template.days.map<DayPlan>((day) => ({
-      day: day.day,
-      focus: isEn ? day.focusEn : day.focus,
-      contentIds: day.contentIds,
-      drills: isEn ? day.drillsEn : day.drills,
-      duration: isEn ? day.durationEn : day.duration
-    }))
+    days: template.days.map<DayPlan>((day) => buildDayPlan(day, locale))
   };
 }
 
@@ -823,7 +1120,7 @@ export function parsePlanContentIds(raw: string | null | undefined): string[] {
 
 export function buildPlanHref(input: {
   problemTag?: string;
-  level?: string;
+  level?: PlanLevel;
   preferredContentIds?: string[];
   sourceType?: SavedPlanSource;
 }): string {
@@ -896,8 +1193,6 @@ export function getPlanTemplate(
     };
   }
 
-  const defaultDays = locale === "en" ? defaultDaysEn : defaultDaysZh;
-
   return applyPreferredContentIds(
     {
       source: "fallback",
@@ -910,7 +1205,7 @@ export function getPlanTemplate(
       summary: locale === "en"
         ? "Not enough context to customize yet. Starting with a general, actionable 7-day training rhythm."
         : "当前上下文不足，先使用一份通用且可执行的 7 天训练节奏。",
-      days: defaultDays
+      days: createDefaultDays(locale)
     },
     level,
     preferredContentIds

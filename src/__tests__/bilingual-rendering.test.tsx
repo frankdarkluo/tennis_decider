@@ -44,6 +44,19 @@ const translationMap = {
   "plan.day.duration": "How long",
   "plan.day.watch": "Watch this",
   "plan.day.open": "Open video",
+  "plan.day.goal": "Goal",
+  "plan.day.warmup": "Warm-up",
+  "plan.day.main": "Main work",
+  "plan.day.pressure": "Pressure reps",
+  "plan.day.success": "Success criteria",
+  "plan.day.intensity": "Intensity",
+  "plan.day.tempo": "Tempo",
+  "plan.day.intensity.low": "Low",
+  "plan.day.intensity.medium": "Medium",
+  "plan.day.intensity.medium_high": "Medium-high",
+  "plan.day.tempo.slow": "Slow",
+  "plan.day.tempo.controlled": "Controlled",
+  "plan.day.tempo.match_70": "Match pace 70%",
   "plan.day.fallback": "Start with today's drills first, then use the library as needed.",
   "plan.day.expand": "Expand",
   "plan.day.collapse": "Collapse",
@@ -180,23 +193,42 @@ describe("bilingual rendering", () => {
     expect(screen.getByText(/盖奥教练教你上旋球/)).toBeInTheDocument();
   });
 
-  it("renders an English plan day card with localized template copy", () => {
+  it("renders an English plan day card with the full prescription blocks", () => {
     render(
       <DayPlanCard
-        isToday
         day={{
-          day: 1,
+          day: 2,
           focus: "Stabilize the toss",
+          contentIds: ["content_gaiao_02"],
           drills: ["30 toss reps"],
           duration: "20 min",
-          contentIds: ["content_gaiao_02"]
+          goal: "Build a steadier serve rhythm",
+          warmupBlock: { title: "Warm-up prep", items: ["30 toss reps"] },
+          mainBlock: { title: "Serve reps", items: ["20 first serves"] },
+          pressureBlock: { title: "Pressure rule", items: ["Land 6 in a row before moving on"] },
+          successCriteria: ["Finish with stable mechanics"],
+          intensity: "medium",
+          tempo: "controlled"
         }}
       />
     );
 
-    expect(screen.getByText("Stabilize the toss")).toBeInTheDocument();
-    expect(screen.getByText("30 toss reps")).toBeInTheDocument();
-    expect(screen.getByText("20 min")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Expand" }));
+
+    expect(screen.getByText("Goal")).toBeInTheDocument();
+    expect(screen.getByText("Build a steadier serve rhythm")).toBeInTheDocument();
+    expect(screen.getByText("How long · 20 min")).toBeInTheDocument();
+    expect(screen.getByText("Intensity · Medium")).toBeInTheDocument();
+    expect(screen.getByText("Tempo · Controlled")).toBeInTheDocument();
+    expect(screen.getByText("Warm-up")).toBeInTheDocument();
+    expect(screen.getByText("Warm-up prep")).toBeInTheDocument();
+    expect(screen.getByText("Main work")).toBeInTheDocument();
+    expect(screen.getByText("Serve reps")).toBeInTheDocument();
+    expect(screen.getByText("Pressure reps")).toBeInTheDocument();
+    expect(screen.getByText("Pressure rule")).toBeInTheDocument();
+    expect(screen.getByText("Success criteria")).toBeInTheDocument();
+    expect(screen.getByText("Finish with stable mechanics")).toBeInTheDocument();
+    expect(screen.getByText("Watch this")).toBeInTheDocument();
     expect(screen.getByText("ZH")).toBeInTheDocument();
     expect(screen.getByText("No subtitles")).toBeInTheDocument();
     expect(screen.getByText("Original title")).toBeInTheDocument();
@@ -204,58 +236,36 @@ describe("bilingual rendering", () => {
     expect(screen.getByText("Focus: For players who rush the serve and lose trust in the second serve.")).toBeInTheDocument();
   });
 
-  it("renders a clearer today-card hierarchy with focus leading the section order", () => {
+  it("keeps the prescription sections ahead of featured content on today cards", () => {
     render(
       <DayPlanCard
         isToday
         day={{
           day: 1,
           focus: "固定高压准备点",
+          contentIds: ["content_gaiao_02"],
           drills: ["原地高压引拍 15 次", "高压落点控制 12 球"],
           duration: "20 分钟",
-          contentIds: ["content_cn_b_03"]
+          goal: "先把高压准备点固定住",
+          warmupBlock: { title: "高压热身", items: ["原地高压引拍 15 次"] },
+          mainBlock: { title: "高压主练", items: ["高压落点控制 12 球"] },
+          pressureBlock: { title: "高压压力", items: ["连续 5 球都要主动上步"] },
+          successCriteria: ["动作不慌，击球点稳定"],
+          intensity: "low",
+          tempo: "slow"
         }}
       />
     );
 
-    const focusHeading = screen.getByRole("heading", { name: "固定高压准备点" });
-    const whatLabel = screen.getByText("What to practice");
-    const durationLabel = screen.getByText("How long");
+    const goalLabel = screen.getByText("Goal");
     const watchLabel = screen.getByText("Watch this");
+    const featuredTitle = screen.getByText("Serve fundamentals: build rhythm before power");
 
-    expect(focusHeading).toBeInTheDocument();
-    expect(whatLabel).toBeInTheDocument();
-    expect(durationLabel).toBeInTheDocument();
+    expect(goalLabel).toBeInTheDocument();
     expect(watchLabel).toBeInTheDocument();
-    expect(focusHeading.compareDocumentPosition(whatLabel)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
-    expect(whatLabel.compareDocumentPosition(durationLabel)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
-    expect(durationLabel.compareDocumentPosition(watchLabel)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
-  });
-
-  it("shows drills before duration on expanded non-today plan cards", () => {
-    render(
-      <DayPlanCard
-        day={{
-          day: 2,
-          focus: "跑动中先到位",
-          drills: ["两点启动 15 组", "到位后停住击球 12 球"],
-          duration: "20 分钟",
-          contentIds: ["content_cn_c_02"]
-        }}
-      />
-    );
-
-    fireEvent.click(screen.getByRole("button", { name: "Expand" }));
-
-    const whatLabel = screen.getByText("What to practice");
-    const durationLabel = screen.getByText("How long");
-    const watchLabel = screen.getByText("Watch this");
-
-    expect(whatLabel).toBeInTheDocument();
-    expect(durationLabel).toBeInTheDocument();
-    expect(watchLabel).toBeInTheDocument();
-    expect(whatLabel.compareDocumentPosition(durationLabel)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
-    expect(durationLabel.compareDocumentPosition(watchLabel)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(featuredTitle).toBeInTheDocument();
+    expect(goalLabel.compareDocumentPosition(watchLabel)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(watchLabel.compareDocumentPosition(featuredTitle)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 
   it("renders diagnose recommendation cards with language cues and original-title label", () => {
