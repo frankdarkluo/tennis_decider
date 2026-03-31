@@ -6,9 +6,13 @@ import {
   DiagnosisAlias,
   DiagnosisConfidence,
   DiagnosisClause,
+  DiagnosisEffortMode,
+  DiagnosisEvidenceLevel,
   DiagnosisInternalSignal,
   DiagnosisLayeredSignals,
   DiagnosisModifier,
+  DiagnosisNarrowingSuggestion,
+  DiagnosisRefusalReasonCode,
   DiagnosisResult,
   DiagnosisRule,
   DiagnosisSignalBundle,
@@ -24,6 +28,7 @@ export type DiagnoseOptions = {
   maxRecommendations?: number;
   rules?: DiagnosisRule[];
   contentPool?: ContentItem[];
+  effortMode?: DiagnosisEffortMode;
   locale?: "zh" | "en";
 };
 
@@ -75,6 +80,21 @@ const DEFAULT_DRILLS_EN = [
 
 const DEFAULT_CONTENT_IDS = ["content_cn_c_01", "content_cn_f_02", "content_gaiao_01"];
 
+const SUMMARY_CHAR_BUDGET: Record<"zh" | "en", number> = {
+  zh: 86,
+  en: 180
+};
+
+const QUICK_SUMMARY_CHAR_BUDGET: Record<"zh" | "en", number> = {
+  zh: 64,
+  en: 132
+};
+
+const SUMMARY_FIX_CHAR_BUDGET: Record<"zh" | "en", number> = {
+  zh: 28,
+  en: 60
+};
+
 const SUPPORT_SIGNAL_CONTENT_IDS: Record<string, string[]> = {
   cant_self_practice: ["content_cn_c_03", "content_cn_f_02", "content_cn_f_03"],
   plateau_no_progress: ["content_cn_f_03", "content_cn_f_02", "content_cn_c_03"]
@@ -100,6 +120,16 @@ const LEVEL_PREFERENCE_MAP: Record<string, string[]> = {
   "3.5": ["3.0", "3.5"],
   "4.0": ["3.5", "4.0", "4.5"],
   "4.5": ["4.0", "4.5"]
+};
+
+const CONTENT_PROBLEM_TAG_ALIASES: Record<string, string[]> = {
+  "second-serve-confidence": ["second-serve-reliability"],
+  "serve-toss-inconsistent": ["serve-toss-consistency"],
+  "slice-too-high": ["backhand-slice-floating"],
+  "trouble-with-slice": ["incoming-slice-trouble"],
+  "slow-preparation": ["late-contact"],
+  "volley-errors": ["volley-floating", "volley-into-net"],
+  "doubles-net-fear": ["net-confidence"]
 };
 
 const ASSESSMENT_DIMENSION_HINTS: Record<string, { skills: string[]; problemTags: string[] }> = {
@@ -934,6 +964,15 @@ function overlapCount(left: string[], right: string[]): number {
   return left.reduce((count, value) => count + (rightSet.has(value) ? 1 : 0), 0);
 }
 
+function normalizeProblemTags(problemTags: string[]): string[] {
+  const canonical = problemTags.flatMap((tag) => CONTENT_PROBLEM_TAG_ALIASES[tag] ?? []);
+  return buildUniqueSignalList([...problemTags, ...canonical]);
+}
+
+function getNormalizedContentProblemTags(item: ContentItem): string[] {
+  return normalizeProblemTags(item.problemTags);
+}
+
 function getDiagnosisSignalBoost(signalBundle: DiagnosisSignalBundle): DiagnosisRecommendationSignalBoost {
   const contentIds: string[] = [];
   const problemTags: string[] = [];
@@ -1018,6 +1057,10 @@ function isDirectLibraryVideo(item: ContentItem): boolean {
   }
 
   return !NON_DIRECT_VIDEO_URL_PATTERNS.some((pattern) => pattern.test(item.url));
+}
+
+function filterDirectLibraryVideos(items: ContentItem[]): ContentItem[] {
+  return items.filter(isDirectLibraryVideo);
 }
 
 type RankedDiagnosisContentCandidate = {
@@ -1110,7 +1153,7 @@ function getDiagnosisRecommendedContents(input: {
     .filter((item): item is ContentItem => Boolean(item));
   const seedProblemTags = buildUniqueSignalList([
     rule.problemTag,
-    ...seedItems.flatMap((item) => item.problemTags),
+    ...seedItems.flatMap((item) => getNormalizedContentProblemTags(item)),
     ...boost.problemTags
   ]);
   const seedSkills = buildUniqueSignalList([
@@ -1130,10 +1173,11 @@ function getDiagnosisRecommendedContents(input: {
   const seedIndexMap = new Map(seedIds.map((id, index) => [id, index]));
   const preferredLevels = level ? (LEVEL_PREFERENCE_MAP[level] ?? [level]) : [];
 
-  const rankedCandidates = contentPool
+  const rankedCandidates = filterDirectLibraryVideos(contentPool)
     .map((item, index) => {
       const seedIndex = seedIndexMap.get(item.id);
       const searchText = getDiagnosisContentSearchText(item);
+      const contentProblemTags = getNormalizedContentProblemTags(item);
       let score = 0;
 
       if (seedIndex !== undefined) {
@@ -1145,13 +1189,13 @@ function getDiagnosisRecommendedContents(input: {
         }
       }
 
-      if (item.problemTags.includes(rule.problemTag)) {
+      if (contentProblemTags.includes(rule.problemTag)) {
         score += 32;
       }
 
-      score += overlapCount(item.problemTags, seedProblemTags) * 10;
+      score += overlapCount(contentProblemTags, seedProblemTags) * 10;
       score += overlapCount(item.skills, seedSkills) * 8;
-      score += overlapCount(item.problemTags, boost.problemTags) * 8;
+      score += overlapCount(contentProblemTags, boost.problemTags) * 8;
       score += overlapCount(item.skills, boost.skills) * 6;
 
       if (lexicalTerms.length > 0) {
@@ -1170,9 +1214,9 @@ function getDiagnosisRecommendedContents(input: {
       }
 
       return score > 0 && (
-        item.problemTags.includes(rule.problemTag) ||
+        getNormalizedContentProblemTags(item).includes(rule.problemTag) ||
         overlapCount(item.skills, seedSkills) > 0 ||
-        overlapCount(item.problemTags, seedProblemTags) > 0
+        overlapCount(getNormalizedContentProblemTags(item), seedProblemTags) > 0
       );
     })
     .sort((left, right) => {
@@ -1231,8 +1275,9 @@ function getGenericFallbackContents(
   maxRecommendations = 3,
   level?: string
 ): ContentItem[] {
+  const directPool = filterDirectLibraryVideos(contentPool);
   const genericContents = DEFAULT_CONTENT_IDS
-    .map((id) => contentPool.find((item) => item.id === id))
+    .map((id) => directPool.find((item) => item.id === id))
     .filter((item): item is ContentItem => Boolean(item));
 
   return prioritizeContentsByLevel(genericContents, maxRecommendations, level);
@@ -1258,8 +1303,9 @@ export function getContentsByIds(
   maxRecommendations = 3,
   level?: string
 ): ContentItem[] {
+  const directPool = filterDirectLibraryVideos(contentPool);
   const mapped = ids
-    .map((id) => contentPool.find((item) => item.id === id))
+    .map((id) => directPool.find((item) => item.id === id))
     .filter((item): item is ContentItem => Boolean(item));
 
   return prioritizeContentsByLevel(mapped, maxRecommendations, level);
@@ -1272,12 +1318,14 @@ export function getFallbackContents(
   level?: string,
   assessmentResult?: AssessmentResult | null
 ): ContentItem[] {
+  const directPool = filterDirectLibraryVideos(contentPool);
   const weakestDimension = getWeakestAssessmentDimension(assessmentResult);
 
   if (weakestDimension) {
     const hints = ASSESSMENT_DIMENSION_HINTS[weakestDimension.key];
-    const candidates = contentPool.filter((item) => {
-      const matchesProblemTag = item.problemTags.some((problemTag) => hints.problemTags.includes(problemTag));
+    const candidates = directPool.filter((item) => {
+      const matchesProblemTag = getNormalizedContentProblemTags(item)
+        .some((problemTag) => hints.problemTags.includes(problemTag));
       const matchesSkill = item.skills.some((skill) => hints.skills.includes(skill));
 
       return matchesProblemTag || matchesSkill;
@@ -1288,7 +1336,7 @@ export function getFallbackContents(
     }
   }
 
-  return getGenericFallbackContents(contentPool, maxRecommendations, level);
+  return getGenericFallbackContents(directPool, maxRecommendations, level);
 }
 
 export function getDiagnosisTitle(problemTag: string, locale: "zh" | "en" = "zh"): string {
@@ -1675,6 +1723,341 @@ function getSupportAwareFallbackCopy(
   };
 }
 
+function getDiagnosisEvidenceLevel(score: number): DiagnosisEvidenceLevel {
+  if (score >= 24) return "high";
+  if (score >= 12) return "medium";
+  return "low";
+}
+
+function shouldExposeDiagnosisRecommendations(evidenceLevel: DiagnosisEvidenceLevel): boolean {
+  return evidenceLevel !== "low";
+}
+
+function getNarrowingSeverityRank(severity: DiagnosisNarrowingSuggestion["severity"]): number {
+  if (severity === "high") {
+    return 3;
+  }
+
+  if (severity === "medium") {
+    return 2;
+  }
+
+  return 1;
+}
+
+function buildNarrowingSuggestions(
+  signalBundle: DiagnosisSignalBundle,
+  locale: "zh" | "en"
+): DiagnosisNarrowingSuggestion[] {
+  const suggestions: DiagnosisNarrowingSuggestion[] = [];
+  const slotTypes = new Set(signalBundle.slots.map((slot) => slot.type));
+  const hasPlanningSignals = signalBundle.supportSignals.some((signal) =>
+    signal === "cant_self_practice" || signal === "plateau_no_progress"
+  );
+
+  if (hasPlanningSignals) {
+    suggestions.push({
+      id: "narrowing-focus-target",
+      severity: "medium",
+      reason: locale === "en"
+        ? "Your input sounds broad and planning-heavy, so we still need one concrete court problem to route training."
+        : "你的描述偏训练规划和泛化感受，仍缺一个可执行的场上主问题。",
+      nextAction: locale === "en"
+        ? "Name one repeated match error from your last 2-3 sessions so we can lock a single training target."
+        : "先说最近 2-3 次里最重复的一种比赛失误，我们先锁定一个训练主目标。"
+    });
+  }
+
+  if (!slotTypes.has("stroke")) {
+    suggestions.push({
+      id: "narrowing-stroke-missing",
+      severity: "high",
+      reason: locale === "en"
+        ? "The affected stroke is missing, so we cannot map this to one stable diagnosis lane yet."
+        : "当前缺少受影响的技术环节，系统还无法稳定进入单一路由。",
+      nextAction: locale === "en"
+        ? "Which stroke is affected most right now: forehand, backhand, serve, volley, or movement?"
+        : "先补一句主要是哪个环节：正手、反手、发球、网前还是脚步？"
+    });
+  }
+
+  if (!slotTypes.has("outcome")) {
+    suggestions.push({
+      id: "narrowing-outcome-missing",
+      severity: "high",
+      reason: locale === "en"
+        ? "Without a miss outcome, we cannot judge whether to prioritize timing, spacing, or control first."
+        : "缺少失误结果时，系统无法判断该优先收紧时机、站位还是控制。",
+      nextAction: locale === "en"
+        ? "What is the most frequent miss outcome: into the net, long, no depth, or serve not going in?"
+        : "再补一句最常见结果：下网、出界、没深度，还是发不进？"
+    });
+  }
+
+  if (!hasSpecificContextCues(signalBundle.rawInput)) {
+    suggestions.push({
+      id: "narrowing-context-missing",
+      severity: "medium",
+      reason: locale === "en"
+        ? "The match context is still vague, so we cannot choose one actionable scenario for immediate practice."
+        : "问题场景还不够具体，暂时无法直接落到一个可执行训练场景。",
+      nextAction: locale === "en"
+        ? "Add one specific context where this gets worse (e.g. key points, under pressure, opponent at net, while moving)."
+        : "再补一个更容易出问题的场景（如关键分、对手上网、跑动中）。"
+    });
+  }
+
+  if (suggestions.length === 0) {
+    suggestions.push({
+      id: "narrowing-generic",
+      severity: "low",
+      reason: locale === "en"
+        ? "Current evidence is still not strong enough for confident routing."
+        : "当前证据仍不足以做高置信路由判断。",
+      nextAction: locale === "en"
+        ? "Rewrite this in one sentence with stroke + miss outcome + situation so we can narrow it first."
+        : "请用“技术环节 + 失误结果 + 场景”重说一句，我们先把问题收窄。"
+    });
+  }
+
+  return suggestions
+    .sort((left, right) => getNarrowingSeverityRank(right.severity) - getNarrowingSeverityRank(left.severity))
+    .slice(0, 3);
+}
+
+function buildNarrowingPrompts(suggestions: DiagnosisNarrowingSuggestion[]): string[] {
+  return buildUniqueSignalList(suggestions.map((item) => item.nextAction)).slice(0, 2);
+}
+
+function buildRefusalMetadata(options: {
+  needsNarrowing: boolean;
+  score: number;
+  signalBundle: DiagnosisSignalBundle;
+}): {
+  refusalReasonCodes: DiagnosisRefusalReasonCode[];
+  missingEvidenceSlots: DiagnosisSlotType[];
+} {
+  const { needsNarrowing, score, signalBundle } = options;
+
+  if (!needsNarrowing) {
+    return {
+      refusalReasonCodes: [],
+      missingEvidenceSlots: []
+    };
+  }
+
+  const slotTypes = new Set(signalBundle.slots.map((slot) => slot.type));
+  const requiredSlots: DiagnosisSlotType[] = ["stroke", "outcome", "context"];
+  const missingEvidenceSlots: DiagnosisSlotType[] = requiredSlots.filter(
+    (slotType) => !slotTypes.has(slotType)
+  );
+  const refusalReasonCodes: DiagnosisRefusalReasonCode[] = [];
+
+  if (missingEvidenceSlots.includes("stroke")) {
+    refusalReasonCodes.push("missing_stroke");
+  }
+
+  if (missingEvidenceSlots.includes("outcome")) {
+    refusalReasonCodes.push("missing_outcome");
+  }
+
+  if (missingEvidenceSlots.includes("context")) {
+    refusalReasonCodes.push("missing_context");
+  }
+
+  if (score < 12) {
+    refusalReasonCodes.push("low_match_score");
+  }
+
+  return {
+    refusalReasonCodes: buildUniqueSignalList(refusalReasonCodes) as DiagnosisRefusalReasonCode[],
+    missingEvidenceSlots
+  };
+}
+
+function resolvePrimaryNextStep(
+  options: {
+    needsNarrowing: boolean;
+    narrowingPrompts: string[];
+    narrowingSuggestions: DiagnosisNarrowingSuggestion[];
+    fixes: string[];
+    summary: string;
+    locale: "zh" | "en";
+  }
+): string {
+  const { needsNarrowing, narrowingPrompts, narrowingSuggestions, fixes, summary, locale } = options;
+
+  if (needsNarrowing) {
+    return narrowingSuggestions[0]?.nextAction ??
+      narrowingPrompts[0] ??
+      (locale === "en"
+        ? "Add one specific scenario first, then we will lock one next practice step."
+        : "先补一个具体场景，我们再锁定单一下一步训练动作。");
+  }
+
+  return fixes[0] ?? summary;
+}
+
+function applyEffortModePayload(options: {
+  effortMode: DiagnosisEffortMode;
+  needsNarrowing: boolean;
+  summary: string;
+  causes: string[];
+  fixes: string[];
+  drills: string[];
+  locale: "zh" | "en";
+}): {
+  summary: string;
+  causes: string[];
+  fixes: string[];
+  drills: string[];
+} {
+  const {
+    effortMode,
+    needsNarrowing,
+    summary,
+    causes,
+    fixes,
+    drills,
+    locale
+  } = options;
+
+  if (effortMode === "quick") {
+    return {
+      summary: needsNarrowing
+        ? (locale === "en"
+          ? "Evidence is still limited. Add one clear stroke + miss + situation before we diagnose further."
+          : "当前证据还不够。先补充“技术环节 + 失误结果 + 场景”，再继续诊断。")
+        : summary,
+      causes: causes.slice(0, 1),
+      fixes: fixes.slice(0, 1),
+      drills: drills.slice(0, 1)
+    };
+  }
+
+  if (effortMode === "deep") {
+    return {
+      summary,
+      causes: causes.slice(0, 3),
+      fixes: fixes.slice(0, 2),
+      drills: drills.slice(0, 3)
+    };
+  }
+
+  return {
+    summary,
+    causes: causes.slice(0, 2),
+    fixes: fixes.slice(0, 1),
+    drills: drills.slice(0, 2)
+  };
+}
+
+function clampToChars(input: string, maxChars: number): string {
+  if (maxChars <= 0) {
+    return "";
+  }
+
+  const chars = Array.from(input.trim());
+  if (chars.length <= maxChars) {
+    return input.trim();
+  }
+
+  if (maxChars <= 1) {
+    return "…";
+  }
+
+  return `${chars.slice(0, maxChars - 1).join("")}…`;
+}
+
+function getSummaryCharBudget(locale: "zh" | "en", effortMode: DiagnosisEffortMode): number {
+  if (effortMode === "quick") {
+    return QUICK_SUMMARY_CHAR_BUDGET[locale];
+  }
+
+  return SUMMARY_CHAR_BUDGET[locale];
+}
+
+function buildBudgetSummaryFromFix(fixes: string[], locale: "zh" | "en"): string {
+  const firstFix = clampToChars(fixes[0] ?? "", SUMMARY_FIX_CHAR_BUDGET[locale]);
+
+  if (locale === "en") {
+    if (firstFix) {
+      return `Primary next step: ${firstFix}.`;
+    }
+
+    return "Primary next step: start with one clear technical action and refine after feedback.";
+  }
+
+  if (firstFix) {
+    return `先做主动作：${firstFix}。`;
+  }
+
+  return "先做一个明确主动作，再根据反馈细化。";
+}
+
+function applySummaryBudget(options: {
+  summary: string;
+  fixes: string[];
+  locale: "zh" | "en";
+  effortMode: DiagnosisEffortMode;
+}): {
+  summary: string;
+  detailedSummary: string | null;
+} {
+  const { summary, fixes, locale, effortMode } = options;
+  const normalizedSummary = summary.trim();
+  const budget = getSummaryCharBudget(locale, effortMode);
+
+  if (Array.from(normalizedSummary).length <= budget) {
+    return {
+      summary: normalizedSummary,
+      detailedSummary: null
+    };
+  }
+
+  const shortSummary = clampToChars(buildBudgetSummaryFromFix(fixes, locale), budget);
+
+  return {
+    summary: shortSummary,
+    detailedSummary: normalizedSummary
+  };
+}
+
+function applyEvidenceCalibratedNarrative(options: {
+  evidenceLevel: DiagnosisEvidenceLevel;
+  title: string;
+  summary: string;
+  locale: "zh" | "en";
+}): {
+  title: string;
+  summary: string;
+} {
+  const {
+    evidenceLevel,
+    title,
+    summary,
+    locale
+  } = options;
+
+  if (evidenceLevel === "low") {
+    if (locale === "en") {
+      return {
+        title: "Collect one more clue before locking the diagnosis",
+        summary: `Current signals point toward "${title}", but evidence is still low. Add stroke + miss outcome + situation first, then we will lock one confident training route.`
+      };
+    }
+
+    return {
+      title: "先补一条关键线索，再锁定诊断",
+      summary: `当前更接近“${title}”方向，但证据仍偏弱。先补“技术环节 + 失误结果 + 场景”后，我们再锁定高置信训练路线。`
+    };
+  }
+  return {
+    title,
+    summary
+  };
+}
+
 export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): DiagnosisResult {
   const {
     level,
@@ -1682,6 +2065,7 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     maxRecommendations = 3,
     rules = diagnosisRules,
     contentPool = contents,
+    effortMode = "standard",
     locale = "zh"
   } = options;
   const eligibleContentPool = contentPool.filter(isDirectLibraryVideo);
@@ -1704,6 +2088,61 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     const defCauses = supportAwareCopy?.causes ?? (locale === "en" ? DEFAULT_CAUSES_EN : DEFAULT_CAUSES);
     const defFixes = supportAwareCopy?.fixes ?? (locale === "en" ? DEFAULT_FIXES_EN : DEFAULT_FIXES);
     const defDrills = supportAwareCopy?.drills ?? (locale === "en" ? DEFAULT_DRILLS_EN : DEFAULT_DRILLS);
+    const evidenceLevel = getDiagnosisEvidenceLevel(score);
+    const allowRecommendations = shouldExposeDiagnosisRecommendations(evidenceLevel);
+    const needsNarrowing = evidenceLevel === "low";
+    const narrowingSuggestions = needsNarrowing ? buildNarrowingSuggestions(signalBundle, locale) : [];
+    const narrowingPrompts = buildNarrowingPrompts(narrowingSuggestions);
+    const refusalMetadata = buildRefusalMetadata({
+      needsNarrowing,
+      score,
+      signalBundle
+    });
+    const primaryNextStep = resolvePrimaryNextStep({
+      needsNarrowing,
+      narrowingPrompts,
+      narrowingSuggestions,
+      fixes: defFixes,
+      summary: supportAwareCopy?.summary ?? DEFAULT_SUMMARY,
+      locale
+    });
+    const fallbackSummary = supportAwareCopy?.summary ?? (fallbackMode === "assessment"
+      ? (locale === "en"
+        ? "We could not match your problem precisely, but based on your level and current gaps these suggestions should help."
+        : "我们暂时没有精确匹配到你的问题，但根据你的水平和当前短板，这些内容可能更适合你先看。")
+      : (locale === "en"
+        ? "Try the 1-minute assessment first for more targeted advice. In the meantime, start with these general suggestions."
+        : "试试先做一次 1 分钟评估，我们能给你更准的建议。先从这些通用提升内容开始也可以。"));
+    const effortPayload = applyEffortModePayload({
+      effortMode,
+      needsNarrowing,
+      summary: fallbackSummary,
+      causes: defCauses,
+      fixes: defFixes,
+      drills: defDrills,
+      locale
+    });
+    const fallbackTitle = supportAwareCopy?.title ?? (
+      fallbackMode === "assessment"
+      ? (locale === "en"
+        ? "Let's start from the weakest area in your assessment"
+        : "我们先从你当前最值得补的一环开始")
+      : (locale === "en"
+        ? "Here is a general improvement direction to start with"
+        : "先给你一组通用提升方向")
+    );
+    const evidenceNarrative = applyEvidenceCalibratedNarrative({
+      evidenceLevel,
+      title: fallbackTitle,
+      summary: effortPayload.summary,
+      locale
+    });
+    const summaryPayload = applySummaryBudget({
+      summary: evidenceNarrative.summary,
+      fixes: effortPayload.fixes,
+      locale,
+      effortMode
+    });
 
     return {
       input,
@@ -1713,29 +2152,23 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
       matchedSynonyms: [],
       matchScore: 0,
       confidence: "较低",
+      effortMode,
+      evidenceLevel,
+      needsNarrowing,
+      narrowingPrompts,
+      narrowingSuggestions,
+      refusalReasonCodes: refusalMetadata.refusalReasonCodes,
+      missingEvidenceSlots: refusalMetadata.missingEvidenceSlots,
+      primaryNextStep,
       category: ["general", "improvement"],
       problemTag: DEFAULT_PROBLEM_TAG,
-      title: supportAwareCopy?.title ?? (
-        fallbackMode === "assessment"
-        ? (locale === "en"
-          ? "Let's start from the weakest area in your assessment"
-          : "我们先从你当前最值得补的一环开始")
-        : (locale === "en"
-          ? "Here is a general improvement direction to start with"
-          : "先给你一组通用提升方向")
-      ),
-      summary: supportAwareCopy?.summary ??
-        fallbackMode === "assessment"
-          ? (locale === "en"
-            ? "We could not match your problem precisely, but based on your level and current gaps these suggestions should help."
-            : "我们暂时没有精确匹配到你的问题，但根据你的水平和当前短板，这些内容可能更适合你先看。")
-          : (locale === "en"
-            ? "Try the 1-minute assessment first for more targeted advice. In the meantime, start with these general suggestions."
-            : "试试先做一次 1 分钟评估，我们能给你更准的建议。先从这些通用提升内容开始也可以。"),
-      causes: defCauses,
-      fixes: defFixes,
-      drills: defDrills,
-      recommendedContents: supportContents,
+      title: evidenceNarrative.title,
+      summary: summaryPayload.summary,
+      detailedSummary: summaryPayload.detailedSummary,
+      causes: effortPayload.causes,
+      fixes: effortPayload.fixes,
+      drills: effortPayload.drills,
+      recommendedContents: allowRecommendations ? supportContents : [],
       searchQueries: null,
       fallbackUsed: true,
       fallbackMode,
@@ -1752,22 +2185,66 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     rule.recommendedContentIds,
     signalBundle
   );
+  const evidenceLevel = getDiagnosisEvidenceLevel(score);
+  const allowRecommendations = shouldExposeDiagnosisRecommendations(evidenceLevel);
 
-  const recommendedContents = getDiagnosisRecommendedContents({
-    rule,
-    signalBundle,
-    seedContentIds: modifierAwareContentIds,
-    matchedKeywords,
-    matchedSynonyms,
-    contentPool: eligibleContentPool,
-    maxRecommendations,
-    level
+  const recommendedContents = allowRecommendations
+    ? getDiagnosisRecommendedContents({
+      rule,
+      signalBundle,
+      seedContentIds: modifierAwareContentIds,
+      matchedKeywords,
+      matchedSynonyms,
+      contentPool: eligibleContentPool,
+      maxRecommendations,
+      level
+    })
+    : [];
+  const needsNarrowing = evidenceLevel === "low";
+  const narrowingSuggestions = needsNarrowing ? buildNarrowingSuggestions(signalBundle, locale) : [];
+  const narrowingPrompts = buildNarrowingPrompts(narrowingSuggestions);
+  const refusalMetadata = buildRefusalMetadata({
+    needsNarrowing,
+    score,
+    signalBundle
   });
   const fallbackMode = recommendedContents.length === 0
     ? assessmentResult
       ? "assessment"
       : "no-assessment"
     : null;
+  const finalRecommendedContents = allowRecommendations ? recommendedContents : [];
+  const summary = buildDiagnosisSummary(modifierAwareCauses, modifierAwareFixes, false, locale, rule.problemTag, signalBundle);
+  const primaryNextStep = resolvePrimaryNextStep({
+    needsNarrowing,
+    narrowingPrompts,
+    narrowingSuggestions,
+    fixes: modifierAwareFixes,
+    summary,
+    locale
+  });
+  const effortPayload = applyEffortModePayload({
+    effortMode,
+    needsNarrowing,
+    summary,
+    causes: modifierAwareCauses,
+    fixes: modifierAwareFixes,
+    drills: modifierAwareDrills,
+    locale
+  });
+  const modifierAwareTitle = buildModifierAwareTitle(rule.problemTag, signalBundle, locale);
+  const evidenceNarrative = applyEvidenceCalibratedNarrative({
+    evidenceLevel,
+    title: modifierAwareTitle,
+    summary: effortPayload.summary,
+    locale
+  });
+  const summaryPayload = applySummaryBudget({
+    summary: evidenceNarrative.summary,
+    fixes: effortPayload.fixes,
+    locale,
+    effortMode
+  });
 
   return {
     input,
@@ -1777,15 +2254,24 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     matchedSynonyms,
     matchScore: score,
     confidence: getDiagnosisConfidence(score),
+    effortMode,
+    evidenceLevel,
+    needsNarrowing,
+    narrowingPrompts,
+    narrowingSuggestions,
+    refusalReasonCodes: refusalMetadata.refusalReasonCodes,
+    missingEvidenceSlots: refusalMetadata.missingEvidenceSlots,
+    primaryNextStep,
     category: rule.category,
     problemTag: rule.problemTag,
-    title: buildModifierAwareTitle(rule.problemTag, signalBundle, locale),
-    summary: buildDiagnosisSummary(modifierAwareCauses, modifierAwareFixes, false, locale, rule.problemTag, signalBundle),
-    causes: modifierAwareCauses,
-    fixes: modifierAwareFixes,
-    drills: modifierAwareDrills,
-    recommendedContents,
-    searchQueries: rule.searchQueries,
+    title: evidenceNarrative.title,
+    summary: summaryPayload.summary,
+    detailedSummary: summaryPayload.detailedSummary,
+    causes: effortPayload.causes,
+    fixes: effortPayload.fixes,
+    drills: effortPayload.drills,
+    recommendedContents: finalRecommendedContents,
+    searchQueries: needsNarrowing ? null : rule.searchQueries,
     fallbackUsed: recommendedContents.length === 0,
     fallbackMode,
     level
@@ -1798,9 +2284,10 @@ export function getDefaultDiagnosisResult(
   maxRecommendations = 3,
   locale: "zh" | "en" = "zh"
 ): DiagnosisResult {
+  const directPool = filterDirectLibraryVideos(contentPool);
   const recommendedContents = getContentsByIds(
     DEFAULT_CONTENT_IDS,
-    contentPool,
+    directPool,
     maxRecommendations,
     level
   );
@@ -1813,6 +2300,14 @@ export function getDefaultDiagnosisResult(
     matchedSynonyms: [],
     matchScore: 0,
     confidence: "较低",
+    effortMode: "standard",
+    evidenceLevel: "low",
+    needsNarrowing: false,
+    narrowingPrompts: [],
+    narrowingSuggestions: [],
+    refusalReasonCodes: [],
+    missingEvidenceSlots: [],
+    primaryNextStep: locale === "en" ? DEFAULT_FIXES_EN[0] : DEFAULT_FIXES[0],
     category: ["general", "improvement"],
     problemTag: DEFAULT_PROBLEM_TAG,
     title: locale === "en" ? "Describe your problem" : "直接描述你的问题",

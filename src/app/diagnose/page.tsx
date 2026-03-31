@@ -5,6 +5,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   diagnoseProblem,
+  getContentsByIds,
   getDefaultDiagnosisResult,
   getProblemPreviewOptions
 } from "@/lib/diagnosis";
@@ -19,9 +20,13 @@ import { persistStudyArtifact } from "@/lib/study/client";
 import { sanitizeDiagnosisArtifact } from "@/lib/study/privacy";
 import { hasStudyTaskRating } from "@/lib/study/taskRatings";
 import { getLatestAssessmentResult, saveDiagnosisHistory } from "@/lib/userData";
-import { updateLocalStudyProgress } from "@/lib/study/localData";
+import {
+  readLocalDiagnosisSnapshot,
+  updateLocalStudyProgress,
+  writeLocalDiagnosisSnapshot
+} from "@/lib/study/localData";
 import { AssessmentResult } from "@/types/assessment";
-import { DiagnosisResult } from "@/types/diagnosis";
+import { DiagnosisEffortMode, DiagnosisResult, DiagnosisSnapshot } from "@/types/diagnosis";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { DiagnoseInput } from "@/components/diagnose/DiagnoseInput";
@@ -38,15 +43,85 @@ function toConfidenceBucket(score: number) {
   return "low";
 }
 
+function createDiagnosisSnapshot(result: DiagnosisResult, locale: "zh" | "en"): DiagnosisSnapshot {
+  return {
+    inputSummary: locale === "en"
+      ? `Diagnosis snapshot: ${result.title}`
+      : `诊断快照：${result.title}`,
+    capturedAt: new Date().toISOString(),
+    matchedRuleId: result.matchedRuleId,
+    matchScore: result.matchScore,
+    confidence: result.confidence,
+    effortMode: result.effortMode,
+    evidenceLevel: result.evidenceLevel,
+    needsNarrowing: result.needsNarrowing,
+    narrowingPrompts: [...result.narrowingPrompts],
+    narrowingSuggestions: [...result.narrowingSuggestions],
+    refusalReasonCodes: [...(result.refusalReasonCodes ?? [])],
+    missingEvidenceSlots: [...(result.missingEvidenceSlots ?? [])],
+    primaryNextStep: result.primaryNextStep,
+    problemTag: result.problemTag,
+    category: [...result.category],
+    title: result.title,
+    summary: result.summary,
+    detailedSummary: result.detailedSummary ?? null,
+    causes: [...result.causes],
+    fixes: [...result.fixes],
+    drills: [...result.drills],
+    recommendedContentIds: result.recommendedContents.map((item) => item.id),
+    fallbackUsed: result.fallbackUsed,
+    fallbackMode: result.fallbackMode,
+    level: result.level
+  };
+}
+
+function replayDiagnosisFromSnapshot(
+  snapshot: DiagnosisSnapshot,
+  fallbackLevel?: string
+): DiagnosisResult {
+  return {
+    input: snapshot.inputSummary,
+    normalizedInput: snapshot.inputSummary.toLowerCase(),
+    matchedRuleId: snapshot.matchedRuleId,
+    matchedKeywords: [],
+    matchedSynonyms: [],
+    matchScore: snapshot.matchScore,
+    confidence: snapshot.confidence,
+    effortMode: snapshot.effortMode,
+    evidenceLevel: snapshot.evidenceLevel,
+    needsNarrowing: snapshot.needsNarrowing,
+    narrowingPrompts: [...snapshot.narrowingPrompts],
+    narrowingSuggestions: [...snapshot.narrowingSuggestions],
+    refusalReasonCodes: [...(snapshot.refusalReasonCodes ?? [])],
+    missingEvidenceSlots: [...(snapshot.missingEvidenceSlots ?? [])],
+    primaryNextStep: snapshot.primaryNextStep,
+    problemTag: snapshot.problemTag,
+    category: [...snapshot.category],
+    title: snapshot.title,
+    summary: snapshot.summary,
+    detailedSummary: snapshot.detailedSummary ?? null,
+    causes: [...snapshot.causes],
+    fixes: [...snapshot.fixes],
+    drills: [...snapshot.drills],
+    recommendedContents: getContentsByIds(snapshot.recommendedContentIds, undefined, 3, snapshot.level ?? fallbackLevel),
+    searchQueries: null,
+    fallbackUsed: snapshot.fallbackUsed,
+    fallbackMode: snapshot.fallbackMode,
+    level: snapshot.level ?? fallbackLevel
+  };
+}
+
 function DiagnosePageContent() {
   const searchParams = useSearchParams();
   const { user, configured, loading } = useAuth();
   const { session, studyMode, language, loading: studyLoading } = useStudy();
   const { t } = useI18n();
   const [text, setText] = useState("");
+  const [effortMode, setEffortMode] = useState<DiagnosisEffortMode>("standard");
   const [currentLevel, setCurrentLevel] = useState<string | undefined>(undefined);
   const [assessmentResult, setAssessmentResult] = useState<AssessmentResult | null>(null);
   const [result, setResult] = useState<DiagnosisResult>(getDefaultDiagnosisResult());
+  const [latestSnapshot, setLatestSnapshot] = useState<DiagnosisSnapshot | null>(null);
   const [contextReady, setContextReady] = useState(false);
   const [actionabilitySubmitted, setActionabilitySubmitted] = useState(false);
   const handledQueryRef = useRef<string | null>(null);
@@ -78,16 +153,21 @@ function DiagnosePageContent() {
       inputMethod: inputSource === "tag_click" ? "quick_tag" : "typing",
       queryLength: trimmedText.length,
       inheritedLevelBand: currentLevel ?? null,
-      usedAssessmentContext: Boolean(assessmentResult)
+      usedAssessmentContext: Boolean(assessmentResult),
+      effortMode
     }, { page: "/diagnose" });
 
     const diagnosisResult = diagnoseProblem(trimmedText, {
       level: currentLevel,
       assessmentResult,
+      effortMode,
       locale: language
     });
 
     setResult(diagnosisResult);
+    const snapshot = createDiagnosisSnapshot(diagnosisResult, language);
+    writeLocalDiagnosisSnapshot(snapshot);
+    setLatestSnapshot(snapshot);
 
     logEvent("diagnose.rule_matched", {
       matched: Boolean(diagnosisResult.matchedRuleId),
@@ -159,6 +239,7 @@ function DiagnosePageContent() {
       setCurrentLevel(nextLevel);
       setAssessmentResult(nextAssessmentResult);
       setResult(getDefaultDiagnosisResult(nextLevel, undefined, undefined, language));
+      setLatestSnapshot(readLocalDiagnosisSnapshot());
       setContextReady(true);
     }
 
@@ -257,11 +338,34 @@ function DiagnosePageContent() {
           value={text}
           quickTags={quickTags}
           quickTagsLabel={t("diagnose.quickTags")}
+          effortMode={effortMode}
           onChange={setText}
+          onEffortModeChange={setEffortMode}
           onDiagnose={onDiagnose}
           onClear={onClear}
           onQuickTagClick={(tag) => void runDiagnosis(tag, "tag_click")}
         />
+
+        {!hasDiagnosed && latestSnapshot ? (
+          <Card className="space-y-3 border-slate-200 bg-slate-50/60">
+            <p className="text-sm font-semibold text-slate-900">
+              {language === "en" ? "Latest diagnosis snapshot" : "最近一次诊断快照"}
+            </p>
+            <p className="text-sm text-slate-600">{latestSnapshot.title}</p>
+            <p className="text-sm font-medium text-slate-900">{latestSnapshot.primaryNextStep}</p>
+            <div>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setEffortMode(latestSnapshot.effortMode);
+                  setResult(replayDiagnosisFromSnapshot(latestSnapshot, currentLevel));
+                }}
+              >
+                {language === "en" ? "Replay this diagnosis" : "重演本次判断"}
+              </Button>
+            </div>
+          </Card>
+        ) : null}
 
         {hasDiagnosed ? <DiagnoseResultPanel result={result} /> : null}
         {shouldShowActionability ? (

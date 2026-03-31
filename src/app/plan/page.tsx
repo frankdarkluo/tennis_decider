@@ -4,11 +4,11 @@ import Link from "next/link";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { logEvent } from "@/lib/eventLogger";
-import { buildPlanHref, getPlanTemplate, parsePlanContentIds } from "@/lib/plans";
+import { buildPlanHref, getPlanTemplate, normalizePlanDraftSnapshot, parsePlanContentIds } from "@/lib/plans";
 import { saveGeneratedPlan } from "@/lib/userData";
 import { useI18n } from "@/lib/i18n/config";
 import { persistStudyArtifact } from "@/lib/study/client";
-import { updateLocalStudyProgress } from "@/lib/study/localData";
+import { readLocalStudyPlanDraft, updateLocalStudyProgress, writeLocalStudyPlanDraft } from "@/lib/study/localData";
 import { sanitizePlanArtifact } from "@/lib/study/privacy";
 import { getStudySnapshot } from "@/lib/study/snapshot";
 import { hasStudyTaskRating } from "@/lib/study/taskRatings";
@@ -39,9 +39,11 @@ function PlanPageContent() {
   const { openLoginModal } = useAuthModal();
   const { studyMode, session, language } = useStudy();
   const { t } = useI18n();
-  const defaultProblemTag = params.get("problemTag") ?? "no-plan";
-  const defaultLevel = normalizeLevelParam(params.get("level"));
+  const restoredDraft = useMemo(() => normalizePlanDraftSnapshot(readLocalStudyPlanDraft()), []);
+  const defaultProblemTag = params.get("problemTag") ?? restoredDraft?.problemTag ?? "no-plan";
+  const defaultLevel = normalizeLevelParam(params.get("level") ?? restoredDraft?.level ?? null);
   const preferredContentIdsParam = params.get("contentIds");
+  const primaryNextStepParam = params.get("primaryNextStep");
 
   const [problemTag, setProblemTag] = useState(defaultProblemTag);
   const [level, setLevel] = useState<PlanLevel>(defaultLevel);
@@ -49,15 +51,24 @@ function PlanPageContent() {
   const [saveMessage, setSaveMessage] = useState("");
   const [actionabilitySubmitted, setActionabilitySubmitted] = useState(false);
   const studyPersistedKeyRef = useRef<string | null>(null);
-  const preferredContentIds = useMemo(() => parsePlanContentIds(preferredContentIdsParam), [preferredContentIdsParam]);
+  const preferredContentIds = useMemo(
+    () => preferredContentIdsParam
+      ? parsePlanContentIds(preferredContentIdsParam)
+      : restoredDraft?.preferredContentIds ?? [],
+    [preferredContentIdsParam, restoredDraft?.preferredContentIds]
+  );
+  const primaryNextStep = useMemo(() => {
+    const normalized = primaryNextStepParam?.trim() ?? restoredDraft?.primaryNextStep?.trim() ?? "";
+    return normalized.length > 0 ? normalized : undefined;
+  }, [primaryNextStepParam, restoredDraft?.primaryNextStep]);
 
   const plan = useMemo(
-    () => getPlanTemplate(problemTag, level, language, preferredContentIds),
-    [language, problemTag, level, preferredContentIds]
+    () => getPlanTemplate(problemTag, level, language, preferredContentIds, { primaryNextStep }),
+    [language, problemTag, level, preferredContentIds, primaryNextStep]
   );
   const todayPlan = plan.days[0];
   const laterPlans = plan.days.slice(1);
-  const explicitSource = params.get("source");
+  const explicitSource = params.get("source") ?? restoredDraft?.sourceType ?? null;
   const sourceType: SavedPlanSource = explicitSource === "diagnosis" || explicitSource === "assessment" || explicitSource === "default"
     ? explicitSource
     : params.get("problemTag")
@@ -65,19 +76,26 @@ function PlanPageContent() {
       : params.get("level")
         ? "assessment"
         : "default";
-  const sourceLabel = preferredContentIds.length > 0
+  const sourceLabelBase = preferredContentIds.length > 0
     ? `${params.get("problemTag") ?? params.get("level") ?? `${problemTag}:${level}`}:${preferredContentIds.join(",")}`
     : params.get("problemTag") ?? params.get("level") ?? `${problemTag}:${level}`;
+  const sourceLabel = primaryNextStep ? `${sourceLabelBase}::${primaryNextStep}` : sourceLabelBase;
   const planHref = useMemo(
-    () => buildPlanHref({ problemTag: plan.problemTag, level: plan.level, preferredContentIds, sourceType }),
-    [plan.level, plan.problemTag, preferredContentIds, sourceType]
+    () => buildPlanHref({
+      problemTag: plan.problemTag,
+      level: plan.level,
+      preferredContentIds,
+      sourceType,
+      primaryNextStep
+    }),
+    [plan.level, plan.problemTag, preferredContentIds, primaryNextStep, sourceType]
   );
 
   const regenerate = () => {
     setLevel((prev) => (prev === "2.5" ? "3.0" : prev === "3.0" ? "3.5" : prev === "3.5" ? "4.0" : prev === "4.0" ? "4.5" : "2.5"));
   };
 
-  const hasSource = Boolean(params.get("problemTag") || params.get("level"));
+  const hasSource = Boolean(params.get("problemTag") || params.get("level") || restoredDraft);
   const shouldShowActionability =
     studyMode
     && Boolean(session)
@@ -146,6 +164,21 @@ function PlanPageContent() {
       setSaveMessage(t("plan.saveRecorded"));
     });
   }, [hasSource, plan, planHref, session, sourceLabel, sourceType, studyMode, t]);
+
+  useEffect(() => {
+    if (!hasSource) {
+      return;
+    }
+
+    writeLocalStudyPlanDraft({
+      problemTag: plan.problemTag,
+      level: plan.level,
+      preferredContentIds,
+      sourceType,
+      primaryNextStep,
+      updatedAt: new Date().toISOString()
+    });
+  }, [hasSource, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, sourceType]);
 
   const handleSavePlan = async () => {
     if (studyMode && session) {

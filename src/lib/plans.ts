@@ -25,6 +25,12 @@ type PlanDiagnosisContextHint = {
   terms: string[];
 };
 
+type RankedPlanContentCandidate = {
+  item: ContentItem;
+  index: number;
+  score: number;
+};
+
 const MAX_PLAN_CANDIDATES = 7;
 const MIN_PLAN_CANDIDATES = 5;
 
@@ -38,6 +44,16 @@ const PLAN_TAG_ALIASES: Record<string, string> = {
 const PLAN_COMPATIBILITY_FALLBACKS: Record<string, string> = {
   "pressure-tightness": "match-anxiety",
   "stamina-drop": "movement-slow"
+};
+
+const CONTENT_PROBLEM_TAG_ALIASES: Record<string, string[]> = {
+  "second-serve-confidence": ["second-serve-reliability"],
+  "serve-toss-inconsistent": ["serve-toss-consistency"],
+  "slice-too-high": ["backhand-slice-floating"],
+  "trouble-with-slice": ["incoming-slice-trouble"],
+  "slow-preparation": ["late-contact"],
+  "volley-errors": ["volley-floating", "volley-into-net"],
+  "doubles-net-fear": ["net-confidence"]
 };
 
 const PLAN_DAY_REVIEW_TERMS = ["review", "录像", "复盘", "休息", "track"];
@@ -688,6 +704,15 @@ function overlapCount(left: string[], right: string[]): number {
   return left.reduce((count, value) => count + (rightSet.has(value) ? 1 : 0), 0);
 }
 
+function normalizeProblemTags(problemTags: string[]): string[] {
+  const canonical = problemTags.flatMap((tag) => CONTENT_PROBLEM_TAG_ALIASES[tag] ?? []);
+  return uniqueStrings([...problemTags, ...canonical]);
+}
+
+function getNormalizedContentProblemTags(content: ContentItem): string[] {
+  return normalizeProblemTags(content.problemTags);
+}
+
 function getContentSearchText(content: ContentItem) {
   return [
     content.title,
@@ -722,8 +747,8 @@ function getContextMismatchPenalty(content: ContentItem, desiredSkills: string[]
 }
 
 function compareContentPriority(
-  left: { item: ContentItem; score: number; index: number },
-  right: { item: ContentItem; score: number; index: number }
+  left: RankedPlanContentCandidate,
+  right: RankedPlanContentCandidate
 ) {
   if (right.score !== left.score) {
     return right.score - left.score;
@@ -825,22 +850,23 @@ function scorePreferredContentForDay(
 ) {
   const signals = getDaySignals(day);
   const contentText = getContentSearchText(content);
+  const contentProblemTags = getNormalizedContentProblemTags(content);
   const desiredSkills = uniqueStrings([...signals.skills, ...signals.relatedSkills]);
   let score = 0;
 
   const daySignalScore =
     overlapCount(content.skills, signals.skills) * 3 +
-    overlapCount(content.problemTags, signals.problemTags) * 4 +
+    overlapCount(contentProblemTags, signals.problemTags) * 4 +
     (content.id === signals.seededContentId ? 8 : 0) +
     (isCuratedContent(content) ? 1 : 0);
 
   score += daySignalScore;
-  score += overlapCount(content.problemTags, signals.relatedProblemTags) * 2;
+  score += overlapCount(contentProblemTags, signals.relatedProblemTags) * 2;
   score += overlapCount(content.skills, signals.relatedSkills);
   score += overlapCount(content.skills, signals.skills) * 3;
   score += signals.matchedTerms.reduce((count, term) => count + (contentText.includes(term) ? 2 : 0), 0);
 
-  if (content.problemTags.includes(problemTag)) {
+  if (contentProblemTags.includes(problemTag)) {
     score += 2;
   }
 
@@ -888,6 +914,7 @@ function scoreContentForCandidatePool(input: {
 
   let score = 0;
   const contentText = getContentSearchText(item);
+  const contentProblemTags = getNormalizedContentProblemTags(item);
 
   if (explicitContentIdSet.has(item.id)) {
     score += 80;
@@ -897,15 +924,15 @@ function scoreContentForCandidatePool(input: {
     score += 24;
   }
 
-  if (item.problemTags.includes(problemTag)) {
+  if (contentProblemTags.includes(problemTag)) {
     score += 28;
   }
 
-  score += overlapCount(item.problemTags, seedProblemTags) * 12;
+  score += overlapCount(contentProblemTags, seedProblemTags) * 12;
   score += overlapCount(item.skills, seedSkills) * 9;
-  score += overlapCount(item.problemTags, secondaryProblemTags) * 6;
+  score += overlapCount(contentProblemTags, secondaryProblemTags) * 6;
   score += overlapCount(item.skills, secondarySkills) * 4;
-  score += overlapCount(item.problemTags, contextProblemTags) * 5;
+  score += overlapCount(contentProblemTags, contextProblemTags) * 5;
   score += overlapCount(item.skills, contextSkills) * 3;
   score += contextTerms.reduce((sum, term) => sum + (contentText.includes(term) ? 2 : 0), 0);
   score += getLevelPreferenceScore(item, level);
@@ -916,6 +943,68 @@ function scoreContentForCandidatePool(input: {
     index,
     score
   };
+}
+
+function getPlanCandidateTagSignature(content: ContentItem): string {
+  return getNormalizedContentProblemTags(content)
+    .slice()
+    .sort()
+    .join("|");
+}
+
+function selectPlanCandidatesWithDiversity(
+  rankedCandidates: RankedPlanContentCandidate[],
+  maxCandidates: number
+): string[] {
+  if (maxCandidates <= 0 || rankedCandidates.length === 0) {
+    return [];
+  }
+
+  const selected: RankedPlanContentCandidate[] = [];
+  const creatorUsage = new Map<string, number>();
+  const tagSignatureUsage = new Map<string, number>();
+  const remaining = [...rankedCandidates];
+
+  while (selected.length < maxCandidates && remaining.length > 0) {
+    let bestIndex = 0;
+    let bestAdjustedScore = Number.NEGATIVE_INFINITY;
+
+    for (let index = 0; index < remaining.length; index += 1) {
+      const candidate = remaining[index];
+      const creatorCount = creatorUsage.get(candidate.item.creatorId) ?? 0;
+      const tagSignature = getPlanCandidateTagSignature(candidate.item);
+      const signatureCount = tagSignatureUsage.get(tagSignature) ?? 0;
+      const creatorPenalty = creatorCount * (isCuratedContent(candidate.item) ? 6 : 11);
+      const signaturePenalty = signatureCount * 7;
+      const adjustedScore = candidate.score - creatorPenalty - signaturePenalty;
+      const bestCandidate = remaining[bestIndex];
+
+      if (
+        adjustedScore > bestAdjustedScore ||
+        (adjustedScore === bestAdjustedScore && candidate.score > bestCandidate.score) ||
+        (adjustedScore === bestAdjustedScore && candidate.score === bestCandidate.score && compareContentPriority(candidate, bestCandidate) < 0)
+      ) {
+        bestAdjustedScore = adjustedScore;
+        bestIndex = index;
+      }
+    }
+
+    const [picked] = remaining.splice(bestIndex, 1);
+    selected.push(picked);
+
+    creatorUsage.set(
+      picked.item.creatorId,
+      (creatorUsage.get(picked.item.creatorId) ?? 0) + 1
+    );
+
+    const pickedSignature = getPlanCandidateTagSignature(picked.item);
+    tagSignatureUsage.set(
+      pickedSignature,
+      (tagSignatureUsage.get(pickedSignature) ?? 0) + 1
+    );
+  }
+
+  return selected.map((entry) => entry.item.id);
 }
 
 function fillCandidatePoolIfNeeded(
@@ -930,8 +1019,9 @@ function fillCandidatePoolIfNeeded(
 
   const existingIds = new Set(candidateIds);
   const backfill = allPlanContents
-    .map((item, index) => {
-      const problemTagOverlap = overlapCount(item.problemTags, seedProblemTags);
+    .map((item, index): RankedPlanContentCandidate & { problemTagOverlap: number; skillOverlap: number } => {
+      const normalizedProblemTags = getNormalizedContentProblemTags(item);
+      const problemTagOverlap = overlapCount(normalizedProblemTags, seedProblemTags);
       const skillOverlap = overlapCount(item.skills, seedSkills);
       let score = 0;
       score += problemTagOverlap * 6;
@@ -947,10 +1037,11 @@ function fillCandidatePoolIfNeeded(
         (skillOverlap > 0 && score >= 10)
       )
     )
-    .sort(compareContentPriority)
-    .map(({ item }) => item.id);
+    .sort(compareContentPriority);
 
-  return uniqueStrings([...candidateIds, ...backfill]).slice(0, MAX_PLAN_CANDIDATES);
+  const diversifiedBackfill = selectPlanCandidatesWithDiversity(backfill, MAX_PLAN_CANDIDATES);
+
+  return uniqueStrings([...candidateIds, ...diversifiedBackfill]).slice(0, MAX_PLAN_CANDIDATES);
 }
 
 function getAssessmentDimensionKeySet(result: AssessmentResult): AssessmentDimension[] {
@@ -1013,7 +1104,7 @@ export function buildDiagnosisPlanCandidateIds(input: {
   const templateSeedContentIdSet = new Set(templateSeedContentIds);
 
   const rankedCandidateIds = allPlanContents
-    .map((item, index) =>
+    .map((item, index): RankedPlanContentCandidate =>
       scoreContentForCandidatePool({
         item,
         index,
@@ -1031,13 +1122,17 @@ export function buildDiagnosisPlanCandidateIds(input: {
       })
     )
     .filter(({ item, score }) => score > 0 || explicitContentIdSet.has(item.id))
-    .sort(compareContentPriority)
-    .map(({ item }) => item.id);
+    .sort(compareContentPriority);
+
+  const diversifiedRankedCandidateIds = selectPlanCandidatesWithDiversity(
+    rankedCandidateIds,
+    input.maxCandidates ?? MAX_PLAN_CANDIDATES
+  );
 
   const orderedIds = uniqueStrings([
     ...explicitContentIds.filter((id) => planContentById.has(id)),
     ...templateSeedContentIds.filter((id) => planContentById.has(id)),
-    ...rankedCandidateIds
+    ...diversifiedRankedCandidateIds
   ]);
 
   return fillCandidatePoolIfNeeded(
@@ -1087,7 +1182,7 @@ export function buildAssessmentPlanContext(result: AssessmentResult): {
   const templateSeedContentIdSet = new Set(templateSeedContentIds);
 
   const rankedCandidateIds = allPlanContents
-    .map((item, index) =>
+    .map((item, index): RankedPlanContentCandidate =>
       scoreContentForCandidatePool({
         item,
         index,
@@ -1105,13 +1200,17 @@ export function buildAssessmentPlanContext(result: AssessmentResult): {
       })
     )
     .filter(({ item, score }) => score > 0 || explicitContentIdSet.has(item.id))
-    .sort(compareContentPriority)
-    .map(({ item }) => item.id);
+    .sort(compareContentPriority);
+
+  const diversifiedRankedCandidateIds = selectPlanCandidatesWithDiversity(
+    rankedCandidateIds,
+    MAX_PLAN_CANDIDATES
+  );
 
   const orderedIds = uniqueStrings([
     ...explicitContentIds.filter((id) => planContentById.has(id)),
     ...templateSeedContentIds.filter((id) => planContentById.has(id)),
-    ...rankedCandidateIds
+    ...diversifiedRankedCandidateIds
   ]);
 
   return {
@@ -1209,6 +1308,51 @@ function applyPreferredContentIds(
   };
 }
 
+function normalizePrimaryNextStep(primaryNextStep?: string | null): string | undefined {
+  const normalized = primaryNextStep?.trim();
+  return normalized && normalized.length > 0 ? normalized : undefined;
+}
+
+function buildPrimaryNextStepSuccessCriteria(primaryNextStep: string, locale: PlanLocale): string {
+  return locale === "en"
+    ? `Complete 2 steady rounds of this primary step: ${primaryNextStep}`
+    : `能连续 2 轮稳定完成这条主动作：${primaryNextStep}`;
+}
+
+function applyPrimaryNextStepContext(
+  plan: GeneratedPlan,
+  locale: PlanLocale,
+  primaryNextStep?: string
+): GeneratedPlan {
+  const normalizedPrimaryNextStep = normalizePrimaryNextStep(primaryNextStep);
+  if (!normalizedPrimaryNextStep || plan.days.length === 0) {
+    return plan;
+  }
+
+  const firstDay = plan.days[0];
+  if (!firstDay) {
+    return plan;
+  }
+
+  const firstDayWithPrimaryStep: DayPlan = {
+    ...firstDay,
+    focus: normalizedPrimaryNextStep,
+    goal: normalizedPrimaryNextStep,
+    successCriteria: uniqueStrings([
+      buildPrimaryNextStepSuccessCriteria(normalizedPrimaryNextStep, locale),
+      ...firstDay.successCriteria
+    ])
+  };
+
+  return {
+    ...plan,
+    summary: locale === "en"
+      ? `Primary focus this week: ${normalizedPrimaryNextStep}`
+      : `本周先围绕这一个主动作推进：${normalizedPrimaryNextStep}`,
+    days: [firstDayWithPrimaryStep, ...plan.days.slice(1)]
+  };
+}
+
 export function encodePlanContentIds(contentIds: string[]): string | null {
   const normalized = uniqueStrings(contentIds.map((value) => value.trim()));
   return normalized.length > 0 ? normalized.join(",") : null;
@@ -1222,11 +1366,64 @@ export function parsePlanContentIds(raw: string | null | undefined): string[] {
   return uniqueStrings(raw.split(",").map((value) => value.trim()));
 }
 
+export type PlanDraftSnapshot = {
+  problemTag: string;
+  level: PlanLevel;
+  preferredContentIds: string[];
+  sourceType: SavedPlanSource;
+  primaryNextStep?: string;
+  updatedAt: string;
+};
+
+function normalizePlanDraftSourceType(sourceType?: string | null): SavedPlanSource {
+  if (sourceType === "diagnosis" || sourceType === "assessment" || sourceType === "default") {
+    return sourceType;
+  }
+
+  return "default";
+}
+
+function normalizePlanDraftLevel(level?: string | null): PlanLevel {
+  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.5") {
+    return level;
+  }
+
+  return "3.0";
+}
+
+export function normalizePlanDraftSnapshot(
+  draft: Partial<PlanDraftSnapshot> | null | undefined
+): PlanDraftSnapshot | null {
+  if (!draft) {
+    return null;
+  }
+
+  const problemTag = draft.problemTag?.trim();
+  if (!problemTag || problemTag === "no-plan") {
+    return null;
+  }
+
+  const preferredContentIds = uniqueStrings((draft.preferredContentIds ?? []).map((value) => value.trim()));
+  const primaryNextStep = normalizePrimaryNextStep(draft.primaryNextStep);
+
+  return {
+    problemTag,
+    level: normalizePlanDraftLevel(draft.level),
+    preferredContentIds,
+    sourceType: normalizePlanDraftSourceType(draft.sourceType),
+    ...(primaryNextStep ? { primaryNextStep } : {}),
+    updatedAt: typeof draft.updatedAt === "string" && draft.updatedAt.trim().length > 0
+      ? draft.updatedAt
+      : new Date().toISOString()
+  };
+}
+
 export function buildPlanHref(input: {
   problemTag?: string;
   level?: PlanLevel;
   preferredContentIds?: string[];
   sourceType?: SavedPlanSource;
+  primaryNextStep?: string;
 }): string {
   const params = new URLSearchParams();
 
@@ -1247,6 +1444,11 @@ export function buildPlanHref(input: {
     params.set("contentIds", contentIds);
   }
 
+  const primaryNextStep = normalizePrimaryNextStep(input.primaryNextStep);
+  if (primaryNextStep) {
+    params.set("primaryNextStep", primaryNextStep);
+  }
+
   const query = params.toString();
   return query ? `/plan?${query}` : "/plan";
 }
@@ -1255,7 +1457,10 @@ export function getPlanTemplate(
   problemTag: string,
   level: PlanLevel,
   locale: PlanLocale = "zh",
-  preferredContentIds: string[] = []
+  preferredContentIds: string[] = [],
+  options: {
+    primaryNextStep?: string;
+  } = {}
 ): GeneratedPlan {
   const normalizedProblemTag = normalizePlanProblemTag(problemTag);
   const templateLevel = normalizePlanLevel(level);
@@ -1263,13 +1468,17 @@ export function getPlanTemplate(
     .map((lookupProblemTag) => planTemplates.find((item) => item.problemTag === lookupProblemTag && item.level === templateLevel))
     .find((item): item is PlanTemplate => Boolean(item));
   if (exact) {
-    const plan = applyPreferredContentIds(
-      {
-        ...toGenerated(exact, locale),
-        level
-      },
-      level,
-      preferredContentIds
+    const plan = applyPrimaryNextStepContext(
+      applyPreferredContentIds(
+        {
+          ...toGenerated(exact, locale),
+          level
+        },
+        level,
+        preferredContentIds
+      ),
+      locale,
+      options.primaryNextStep
     );
 
     return {
@@ -1282,13 +1491,17 @@ export function getPlanTemplate(
     .map((lookupProblemTag) => planTemplates.find((item) => item.problemTag === lookupProblemTag))
     .find((item): item is PlanTemplate => Boolean(item));
   if (sameTag) {
-    const plan = applyPreferredContentIds(
-      {
-        ...toGenerated(sameTag, locale),
-        level
-      },
-      level,
-      preferredContentIds
+    const plan = applyPrimaryNextStepContext(
+      applyPreferredContentIds(
+        {
+          ...toGenerated(sameTag, locale),
+          level
+        },
+        level,
+        preferredContentIds
+      ),
+      locale,
+      options.primaryNextStep
     );
 
     return {
@@ -1297,22 +1510,26 @@ export function getPlanTemplate(
     };
   }
 
-  return applyPreferredContentIds(
-    {
-      source: "fallback",
+  return applyPrimaryNextStepContext(
+    applyPreferredContentIds(
+      {
+        source: "fallback",
+        level,
+        problemTag,
+        title: locale === "en" ? "7-day general improvement plan" : "通用 7 天基础提升计划",
+        target: locale === "en"
+          ? "Build a steady swing and a practical training rhythm within one week"
+          : "在一周内建立稳定击球与可执行训练节奏",
+        summary: locale === "en"
+          ? "Not enough context to customize yet. Starting with a general, actionable 7-day training rhythm."
+          : "当前上下文不足，先使用一份通用且可执行的 7 天训练节奏。",
+        days: createDefaultDays(locale)
+      },
       level,
-      problemTag,
-      title: locale === "en" ? "7-day general improvement plan" : "通用 7 天基础提升计划",
-      target: locale === "en"
-        ? "Build a steady swing and a practical training rhythm within one week"
-        : "在一周内建立稳定击球与可执行训练节奏",
-      summary: locale === "en"
-        ? "Not enough context to customize yet. Starting with a general, actionable 7-day training rhythm."
-        : "当前上下文不足，先使用一份通用且可执行的 7 天训练节奏。",
-      days: createDefaultDays(locale)
-    },
-    level,
-    preferredContentIds
+      preferredContentIds
+    ),
+    locale,
+    options.primaryNextStep
   );
 }
 
@@ -1342,7 +1559,9 @@ export function getPlanFromDiagnosis(input: {
   const level = input.level ?? "3.5";
   const locale = input.locale ?? "zh";
   const problemTag = input.problemTag ?? "general-improvement";
-  const base = getPlanTemplate(problemTag, level, locale);
+  const base = getPlanTemplate(problemTag, level, locale, [], {
+    primaryNextStep: input.fixes?.[0]
+  });
 
   if (locale === "en") {
     return {

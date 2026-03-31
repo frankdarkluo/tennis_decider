@@ -4,7 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { assessmentQuestions } from "@/data/assessmentQuestions";
 import { getDefaultAssessmentResult } from "@/lib/assessment";
 import { getLocalLogs } from "@/lib/eventLogger";
-import { STUDY_PROGRESS_KEY, STUDY_TASK_RATINGS_KEY } from "@/lib/study/config";
+import { STUDY_PLAN_DRAFT_KEY, STUDY_PROGRESS_KEY, STUDY_TASK_RATINGS_KEY, STUDY_DIAGNOSIS_SNAPSHOT_KEY } from "@/lib/study/config";
 import { calculateSUS } from "@/lib/survey";
 import { ASSESSMENT_DRAFT_STORAGE_KEY, ASSESSMENT_STORAGE_KEY } from "@/lib/utils";
 import type { StudySession } from "@/types/study";
@@ -323,6 +323,28 @@ describe("app smoke tests", () => {
     });
   });
 
+  it("keeps video diagnose hidden from the main navigation and profile surfaces", async () => {
+    const { Header } = await vi.importActual<typeof import("@/components/layout/Header")>("@/components/layout/Header");
+    const ProfilePage = await loadPage(() => import("@/app/profile/page"));
+
+    mockAuthContext.user = { id: "user_1", email: "player@example.com" };
+    mockAuthContext.configured = true;
+
+    const { unmount } = render(React.createElement(Header));
+
+    expect(screen.queryByRole("link", { name: "视频诊断" })).not.toBeInTheDocument();
+
+    unmount();
+    render(React.createElement(ProfilePage));
+
+    await waitFor(() => {
+      expect(screen.getByText("profile.diagnosis.title")).toBeInTheDocument();
+    });
+
+    expect(screen.queryByText("视频诊断记录")).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "去试试视频诊断" })).not.toBeInTheDocument();
+  });
+
   it("renders the current video diagnose upload flow", async () => {
     const VideoDiagnosePage = await loadPage(() => import("@/app/video-diagnose/page"));
 
@@ -622,6 +644,47 @@ describe("app smoke tests", () => {
     expect(studyProgress?.lastVisitedPath).toBe("/diagnose?q=%E6%88%91%E5%8F%8D%E6%89%8B%E6%80%BB%E4%B8%8B%E7%BD%91%EF%BC%8C%E4%B8%80%E5%BF%AB%E5%B0%B1%E6%9B%B4%E5%AE%B9%E6%98%93%E5%A4%B1%E8%AF%AF");
   });
 
+  it("replays the latest diagnosis snapshot without restoring raw input text", async () => {
+    const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
+
+    seedCompletedAssessmentInStorage();
+    window.localStorage.setItem(STUDY_DIAGNOSIS_SNAPSHOT_KEY, JSON.stringify({
+      inputSummary: "诊断快照：反手稳定性不足",
+      capturedAt: "2026-03-31T00:00:00.000Z",
+      matchedRuleId: "rule_backhand_into_net",
+      matchScore: 16,
+      confidence: "中等",
+      effortMode: "standard",
+      evidenceLevel: "medium",
+      needsNarrowing: false,
+      narrowingPrompts: [],
+      narrowingSuggestions: [],
+      refusalReasonCodes: [],
+      missingEvidenceSlots: [],
+      primaryNextStep: "更早转肩，提前准备",
+      problemTag: "backhand-into-net",
+      category: ["backhand"],
+      title: "反手稳定性不足",
+      summary: "你现在最值得先改的是反手准备节奏。",
+      causes: ["准备偏晚"],
+      fixes: ["更早转肩，提前准备"],
+      drills: ["转肩准备 20 次"],
+      recommendedContentIds: ["content_cn_a_01"],
+      fallbackUsed: false,
+      fallbackMode: null,
+      level: "3.0"
+    }));
+
+    render(React.createElement(DiagnosePage));
+
+    expect(await screen.findByText("最近一次诊断快照")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "重演本次判断" }));
+
+    expect(await screen.findByText("反手稳定性不足")).toBeInTheDocument();
+    expect(screen.getByText("更早转肩，提前准备")).toBeInTheDocument();
+    expect(screen.queryByDisplayValue("反手总下网")).not.toBeInTheDocument();
+  });
+
   it("keeps the plan CTA primary in study mode while library and rankings stay available after expand", async () => {
     const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
 
@@ -791,6 +854,26 @@ describe("app smoke tests", () => {
 
     expect(await screen.findByText(/今天/)).toBeInTheDocument();
     expect(screen.getByText("Watch this")).toBeInTheDocument();
+  });
+
+  it("restores the latest plan draft when opening plan without query params", async () => {
+    const PlanPage = await loadPage(() => import("@/app/plan/page"));
+
+    mockSearchParams = new URLSearchParams("");
+    window.localStorage.setItem(STUDY_PLAN_DRAFT_KEY, JSON.stringify({
+      problemTag: "backhand-into-net",
+      level: "3.0",
+      preferredContentIds: ["content_cn_a_01"],
+      sourceType: "diagnosis",
+      primaryNextStep: "先把引拍提前半拍再出手",
+      updatedAt: "2026-03-31T00:00:00.000Z"
+    }));
+    window.history.pushState({}, "", "/plan");
+
+    render(React.createElement(PlanPage));
+
+    expect(await screen.findByText("你的 7 天提升计划")).toBeInTheDocument();
+    expect(screen.getAllByText("先把引拍提前半拍再出手").length).toBeGreaterThan(0);
   });
 
   it("shows the actionability prompt on plan page in study mode", async () => {

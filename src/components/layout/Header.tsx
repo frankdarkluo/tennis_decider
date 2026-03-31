@@ -13,13 +13,12 @@ import { cn } from "@/lib/utils";
 import { useStudy } from "@/components/study/StudyProvider";
 import { StudyLanguage } from "@/types/study";
 
-type NavKey = "nav.home" | "nav.assessment" | "nav.diagnose" | "nav.videoDiagnose" | "nav.library" | "nav.rankings" | "nav.plan";
+type NavKey = "nav.home" | "nav.assessment" | "nav.diagnose" | "nav.library" | "nav.rankings" | "nav.plan";
 
 const navItemDefs: { href: string; labelKey: NavKey }[] = [
   { href: "/", labelKey: "nav.home" },
   { href: "/assessment", labelKey: "nav.assessment" },
   { href: "/diagnose", labelKey: "nav.diagnose" },
-  { href: "/video-diagnose", labelKey: "nav.videoDiagnose" },
   { href: "/library", labelKey: "nav.library" },
   { href: "/rankings", labelKey: "nav.rankings" },
   { href: "/plan", labelKey: "nav.plan" }
@@ -32,9 +31,7 @@ export function Header() {
   const { language, t, setLanguage, canChangeLanguage } = useI18n();
   const { studyMode } = useStudy();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const visibleNavItems = studyMode
-    ? navItemDefs.filter((item) => item.href !== "/video-diagnose")
-    : navItemDefs;
+  const visibleNavItems = navItemDefs;
 
   useEffect(() => {
     setMobileNavOpen(false);

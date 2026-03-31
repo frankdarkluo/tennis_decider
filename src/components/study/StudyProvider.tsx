@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
-import { setEventLoggerStudySession } from "@/lib/eventLogger";
+import { flushEventQueue, setEventLoggerStudySession } from "@/lib/eventLogger";
 import { clearLocalStudyData } from "@/lib/study/localData";
 import { persistStudySessionEnd, persistStudySessionStart } from "@/lib/study/client";
 import {
@@ -129,6 +129,7 @@ export function StudyProvider({ children }: { children: ReactNode }) {
       }
 
       const endedSession = markStudySessionEnded(activeSession);
+      await flushEventQueue(true);
       setEventLoggerStudySession(null);
       setSession(endedSession);
       await persistStudySessionEnd(endedSession);

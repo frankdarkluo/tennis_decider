@@ -11,11 +11,20 @@ describe("study snapshot", () => {
     const contents = getStudySnapshotContents();
     const creators = getStudySnapshotCreators();
 
-    expect(snapshot.snapshotVersion).toBe("2026-03-29-v1");
+    expect(snapshot.snapshotVersion).toBe("2026-03-31-v1");
     expect(snapshot.sortingMode).toBe("deterministic_study");
     expect(contents.length).toBeGreaterThan(0);
     expect(creators.length).toBeGreaterThan(0);
     expect(snapshot.contentSetVersion).toBe(`content-${snapshot.snapshotVersion}`);
     expect(snapshot.creatorSetVersion).toBe(`creators-${snapshot.snapshotVersion}`);
+  });
+
+  it("uses the newer creator tag taxonomy in the active study snapshot", () => {
+    const creators = getStudySnapshotCreators();
+    const racketBrothers = creators.find((entry) => entry.id === "creator_racketbrothers");
+    const fuzzyYellowBalls = creators.find((entry) => entry.id === "creator_fuzzy_yellow_balls");
+
+    expect(racketBrothers?.tags).toEqual(["网前专修", "实战拆解", "讲解透彻"]);
+    expect(fuzzyYellowBalls?.tags).toEqual(["战术拆局", "实战拆解", "进阶突破"]);
   });
 });

@@ -38,6 +38,7 @@
   ],
   "exclude": [
     "node_modules",
+    "claude-code",
     "scripts",
     "src/__tests__",
     "vitest.config.ts",

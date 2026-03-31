@@ -3,16 +3,30 @@
 import {
   STUDY_ARTIFACTS_KEY,
   STUDY_BOOKMARKS_KEY,
+  STUDY_DIAGNOSIS_SNAPSHOT_KEY,
   STUDY_LAST_PATH_KEY,
+  STUDY_PLAN_DRAFT_KEY,
   STUDY_PROGRESS_KEY,
   STUDY_TASK_RATINGS_KEY
 } from "@/lib/study/config";
+import { DiagnosisSnapshot } from "@/types/diagnosis";
 import {
   StudyArtifactRecord,
   StudyBookmarkState,
   StudyProgressState,
   StudyTaskRatingRecord
 } from "@/types/study";
+import { PlanLevel } from "@/types/plan";
+import { SavedPlanSource } from "@/types/userData";
+
+export type LocalStudyPlanDraft = {
+  problemTag: string;
+  level: PlanLevel;
+  preferredContentIds?: string[];
+  sourceType?: SavedPlanSource;
+  primaryNextStep?: string;
+  updatedAt?: string;
+};
 
 function isBrowser() {
   return typeof window !== "undefined";
@@ -91,6 +105,46 @@ export function readLocalStudyProgress() {
   return readJson<StudyProgressState | null>(STUDY_PROGRESS_KEY, null);
 }
 
+export function readLocalDiagnosisSnapshot() {
+  return readJson<DiagnosisSnapshot | null>(STUDY_DIAGNOSIS_SNAPSHOT_KEY, null);
+}
+
+export function writeLocalDiagnosisSnapshot(snapshot: DiagnosisSnapshot) {
+  writeJson(STUDY_DIAGNOSIS_SNAPSHOT_KEY, snapshot);
+  return snapshot;
+}
+
+export function readLocalStudyPlanDraft() {
+  return readJson<LocalStudyPlanDraft | null>(STUDY_PLAN_DRAFT_KEY, null);
+}
+
+export function writeLocalStudyPlanDraft(draft: LocalStudyPlanDraft) {
+  const problemTag = draft.problemTag?.trim();
+  if (!problemTag) {
+    return null;
+  }
+
+  const normalized: LocalStudyPlanDraft = {
+    problemTag,
+    level: draft.level,
+    preferredContentIds: Array.isArray(draft.preferredContentIds) ? draft.preferredContentIds : [],
+    sourceType: draft.sourceType,
+    primaryNextStep: draft.primaryNextStep,
+    updatedAt: draft.updatedAt ?? new Date().toISOString()
+  };
+
+  writeJson(STUDY_PLAN_DRAFT_KEY, normalized);
+  return normalized;
+}
+
+export function clearLocalStudyPlanDraft() {
+  if (!isBrowser()) {
+    return;
+  }
+
+  window.localStorage.removeItem(STUDY_PLAN_DRAFT_KEY);
+}
+
 export function writeLocalStudyProgress(value: StudyProgressState) {
   writeJson(STUDY_PROGRESS_KEY, value);
 }
@@ -131,7 +185,9 @@ export function clearLocalStudyData() {
   [
     STUDY_ARTIFACTS_KEY,
     STUDY_BOOKMARKS_KEY,
+    STUDY_DIAGNOSIS_SNAPSHOT_KEY,
     STUDY_PROGRESS_KEY,
+    STUDY_PLAN_DRAFT_KEY,
     STUDY_LAST_PATH_KEY,
     STUDY_TASK_RATINGS_KEY
   ].forEach((key) => {

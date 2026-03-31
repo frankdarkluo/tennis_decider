@@ -9,13 +9,16 @@ import {
   markFocusedDwellInteraction,
   updateFocusedDwellState
 } from "@/lib/study/focusedDwell";
-import { EventLog, EventType, LegacyEventType } from "@/types/research";
+import { postStudyEventsWithRetry } from "@/lib/study/events";
+import { EventLog, EventType, LegacyEventType, StudyFlushFailureReason } from "@/types/research";
 import { StudySession } from "@/types/study";
 
 const LOCAL_EVENT_LOGS_KEY = "tennislevel_events";
+const STUDY_FLUSH_FALLBACK_LOGS_KEY = "tennislevel_study_flush_fallback_logs";
 const SESSION_ID_KEY = "tennislevel_session_id";
 const MAX_LOCAL_EVENTS = 1000;
 const STUDY_FLUSH_DELAY_MS = 1200;
+const MAX_FLUSH_FALLBACK_LOGS = 50;
 
 const PRIVACY_SENSITIVE_KEYS = new Set([
   "inputText",
@@ -124,12 +127,70 @@ function appendLocalLog(event: EventLog) {
   writeLocalLogs(logs);
 }
 
+function appendFlushFallbackLog(input: {
+  reason: StudyFlushFailureReason;
+  attempts: number;
+  eventCount: number;
+  mode: "sync" | "async";
+  httpStatus?: number | null;
+}) {
+  if (!isBrowser()) {
+    return;
+  }
+
+  let current: Array<Record<string, unknown>> = [];
+  try {
+    const raw = window.localStorage.getItem(STUDY_FLUSH_FALLBACK_LOGS_KEY);
+    current = raw ? JSON.parse(raw) as Array<Record<string, unknown>> : [];
+  } catch {
+    current = [];
+  }
+
+  current.push({
+    timestamp: new Date().toISOString(),
+    ...input
+  });
+
+  if (current.length > MAX_FLUSH_FALLBACK_LOGS) {
+    current.splice(0, current.length - MAX_FLUSH_FALLBACK_LOGS);
+  }
+
+  window.localStorage.setItem(STUDY_FLUSH_FALLBACK_LOGS_KEY, JSON.stringify(current));
+}
+
 function getCurrentPath() {
   if (!isBrowser()) {
     return currentPage;
   }
 
   return sanitizeRoute(window.location.pathname || currentPage);
+}
+
+export type StudyFlushFallbackLogRecord = {
+  timestamp: string;
+  reason: StudyFlushFailureReason;
+  attempts: number;
+  eventCount: number;
+  mode: "sync" | "async";
+  httpStatus?: number | null;
+};
+
+export function getStudyFlushFallbackLogs(): StudyFlushFallbackLogRecord[] {
+  if (!isBrowser()) {
+    return [];
+  }
+
+  try {
+    const raw = window.localStorage.getItem(STUDY_FLUSH_FALLBACK_LOGS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? (parsed as StudyFlushFallbackLogRecord[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function exportStudyFlushFallbackLogs(): string {
+  return JSON.stringify(getStudyFlushFallbackLogs(), null, 2);
 }
 
 function getVisibilitySnapshot() {
@@ -242,37 +303,35 @@ async function flushStudyEvents(options: { sync?: boolean } = {}) {
   }
 
   const events = queuedStudyEvents.splice(0, queuedStudyEvents.length);
-  const body = JSON.stringify({ events });
-
-  if (options.sync && typeof navigator !== "undefined" && "sendBeacon" in navigator) {
-    const accepted = navigator.sendBeacon(
-      "/api/study/events",
-      new Blob([body], { type: "application/json" })
-    );
-
-    if (!accepted) {
-      queuedStudyEvents.unshift(...events);
-    }
-    return;
-  }
 
   flushing = true;
 
   try {
-    const response = await fetch("/api/study/events", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body,
-      keepalive: true
+    const result = await postStudyEventsWithRetry(events, {
+      sync: options.sync,
+      retryCount: options.sync ? 1 : 2,
+      retryDelayMs: 200
     });
 
-    if (!response.ok) {
+    if (!result.ok) {
       queuedStudyEvents.unshift(...events);
+      appendFlushFallbackLog({
+        reason: result.failureReason,
+        attempts: result.attempts,
+        eventCount: events.length,
+        mode: options.sync ? "sync" : "async",
+        httpStatus: result.httpStatus
+      });
     }
   } catch {
     queuedStudyEvents.unshift(...events);
+    appendFlushFallbackLog({
+      reason: "network_error",
+      attempts: 1,
+      eventCount: events.length,
+      mode: options.sync ? "sync" : "async",
+      httpStatus: null
+    });
   } finally {
     flushing = false;
     if (queuedStudyEvents.length > 0) {
@@ -387,12 +446,7 @@ export function markEventLoggerSessionCompleted() {
 }
 
 export function flushEventQueue(sync = false) {
-  if (sync) {
-    void flushStudyEvents({ sync: true });
-    return;
-  }
-
-  void flushStudyEvents();
+  return flushStudyEvents(sync ? { sync: true } : {});
 }
 
 export function logEvent(
@@ -410,11 +464,14 @@ export function logEvent(
   appendLocalLog(event);
   updateMeaningfulState(event);
 
+  if (event.studyMode) {
+    queuedStudyEvents.push(event);
+  }
+
   queueMicrotask(() => {
     persistRemoteLog(event);
 
     if (event.studyMode) {
-      queuedStudyEvents.push(event);
       scheduleStudyFlush();
     }
   });

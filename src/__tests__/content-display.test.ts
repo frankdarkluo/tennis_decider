@@ -24,6 +24,7 @@ import {
   buildDiagnosisPlanCandidateIds,
   buildPlanHref,
   getPlanTemplate,
+  normalizePlanDraftSnapshot,
   parsePlanContentIds
 } from "@/lib/plans";
 import { ContentItem } from "@/types/content";
@@ -197,6 +198,16 @@ describe("content display helpers", () => {
       intensity: expect.stringMatching(/^(low|medium|medium_high)$/),
       tempo: expect.stringMatching(/^(slow|controlled|match_70)$/)
     });
+  });
+
+  it("aligns day 1 goal and done criteria with diagnosis primary next step", () => {
+    const primaryNextStep = "先把引拍提前半拍再出手";
+    const plan = getPlanTemplate("backhand-into-net", "3.0", "zh", [], { primaryNextStep });
+
+    expect(plan.summary).toContain(primaryNextStep);
+    expect(plan.days[0]?.focus).toBe(primaryNextStep);
+    expect(plan.days[0]?.goal).toBe(primaryNextStep);
+    expect(plan.days[0]?.successCriteria[0]).toContain(primaryNextStep);
   });
 
   it("uses prescription blocks for priority study plans", () => {
@@ -405,6 +416,44 @@ describe("content display helpers", () => {
     const params = new URL(href, "https://example.com").searchParams;
     expect(params.get("source")).toBe("diagnosis");
     expect(parsePlanContentIds(params.get("contentIds"))).toEqual(["content_cn_a_01", "content_zlx_03"]);
+  });
+
+  it("serializes diagnosis primary next step into plan hrefs", () => {
+    const href = buildPlanHref({
+      problemTag: "serve-basics",
+      level: "3.0",
+      sourceType: "diagnosis",
+      primaryNextStep: "Slow the tempo and rebuild the toss."
+    });
+
+    const params = new URL(href, "https://example.com").searchParams;
+    expect(params.get("primaryNextStep")).toBe("Slow the tempo and rebuild the toss.");
+  });
+
+  it("normalizes a recoverable plan draft snapshot", () => {
+    const draft = normalizePlanDraftSnapshot({
+      problemTag: " backhand-into-net ",
+      level: "4.9" as never,
+      preferredContentIds: ["content_cn_a_01", "content_cn_a_01", " content_zlx_03 "],
+      sourceType: "unexpected",
+      primaryNextStep: "  先把引拍提前半拍再出手 ",
+      updatedAt: ""
+    });
+
+    expect(draft).toMatchObject({
+      problemTag: "backhand-into-net",
+      level: "3.0",
+      preferredContentIds: ["content_cn_a_01", "content_zlx_03"],
+      sourceType: "default",
+      primaryNextStep: "先把引拍提前半拍再出手"
+    });
+    expect(draft?.updatedAt).toBeTruthy();
+  });
+
+  it("rejects invalid plan draft snapshots", () => {
+    expect(normalizePlanDraftSnapshot(null)).toBeNull();
+    expect(normalizePlanDraftSnapshot({ problemTag: "" })).toBeNull();
+    expect(normalizePlanDraftSnapshot({ problemTag: "no-plan", level: "3.0" })).toBeNull();
   });
 
   it("expands diagnosis plan candidates beyond the base three when expanded matches exist", () => {
@@ -666,6 +715,23 @@ describe("content display helpers", () => {
 
     expect(withContext[0]).toBe("content_cn_d_01");
     expect(withContext.slice(0, 6)).toEqual(expect.arrayContaining(["content_rb_03", "content_rb_01"]));
+  });
+
+  it("keeps top candidate pools from over-concentrating on one creator for broad practice tags", () => {
+    const candidateIds = buildDiagnosisPlanCandidateIds({
+      problemTag: "cant-self-practice",
+      level: "3.0"
+    });
+    const poolById = new Map([...contents, ...expandedContents].map((entry) => [entry.id, entry]));
+    const topCreators = new Set(
+      candidateIds
+        .slice(0, 5)
+        .map((id) => poolById.get(id)?.creatorId)
+        .filter((value): value is string => Boolean(value))
+    );
+
+    expect(candidateIds.length).toBeGreaterThanOrEqual(5);
+    expect(topCreators.size).toBeGreaterThanOrEqual(2);
   });
 
   it("expands canonical problem-tag coverage for direct-library training videos", () => {

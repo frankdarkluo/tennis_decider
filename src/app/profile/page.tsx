@@ -8,6 +8,7 @@ import { useI18n } from "@/lib/i18n/config";
 import { formatLocalizedDateTime } from "@/lib/i18n/format";
 import { readAssessmentDraftFromStorage } from "@/lib/assessmentStorage";
 import { readLocalStudyArtifacts, readLocalStudyBookmarks, readLocalStudyProgress } from "@/lib/study/localData";
+import { VIDEO_DIAGNOSE_VISIBLE } from "@/lib/videoDiagnose";
 import {
   getBookmarkedContentIds,
   getDiagnosisHistory,
@@ -275,6 +276,12 @@ export default function ProfilePage() {
     }
 
     async function loadVideoHistory() {
+      if (!VIDEO_DIAGNOSE_VISIBLE) {
+        setVideoDiagnosisHistory([]);
+        setVideoHistoryLoading(false);
+        return;
+      }
+
       setVideoHistoryLoading(true);
       const response = await getVideoDiagnosisHistory(userId, 5);
 
@@ -736,41 +743,43 @@ export default function ProfilePage() {
             />
           )}
 
-          {videoHistoryLoading ? (
-            <SectionSkeleton lines={5} />
-          ) : videoDiagnosisHistory.length > 0 ? (
-            <Card className="space-y-4">
-              <div>
-                <h2 className="text-lg font-bold text-slate-900">{t("profile.videoHistory.title")}</h2>
-                <p className="mt-1 text-sm text-slate-600">{t("profile.videoHistory.subtitle")}</p>
-              </div>
-              <div className="space-y-3">
-                {videoDiagnosisHistory.map((item) => (
-                  <Link
-                    key={item.id}
-                    href="/video-diagnose"
-                    className="block rounded-xl border border-[var(--line)] px-4 py-3 transition hover:border-brand-200 hover:bg-brand-50/40"
-                  >
-                    <div className="flex flex-wrap items-center gap-2">
-                      <p className="font-semibold text-slate-900">{item.result.primaryProblem.label}</p>
-                      <Badge className="bg-slate-100 text-slate-700">
-                        {t("profile.videoHistory.confidence", { value: item.result.confidenceBand })}
-                      </Badge>
-                    </div>
-                    <p className="mt-1 text-sm text-slate-600">{item.user_description || t("profile.videoHistory.noDescription")}</p>
-                    <p className="mt-2 text-xs text-slate-500">{formatDateTime(item.created_at)}</p>
-                  </Link>
-                ))}
-              </div>
-            </Card>
-          ) : (
-            <EmptyState
-              title={t("profile.videoHistory.title")}
-              description={t("profile.videoHistory.emptyDescription")}
-              href="/video-diagnose"
-              actionLabel={t("profile.videoHistory.try")}
-            />
-          )}
+          {VIDEO_DIAGNOSE_VISIBLE ? (
+            videoHistoryLoading ? (
+              <SectionSkeleton lines={5} />
+            ) : videoDiagnosisHistory.length > 0 ? (
+              <Card className="space-y-4">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">{t("profile.videoHistory.title")}</h2>
+                  <p className="mt-1 text-sm text-slate-600">{t("profile.videoHistory.subtitle")}</p>
+                </div>
+                <div className="space-y-3">
+                  {videoDiagnosisHistory.map((item) => (
+                    <Link
+                      key={item.id}
+                      href="/video-diagnose"
+                      className="block rounded-xl border border-[var(--line)] px-4 py-3 transition hover:border-brand-200 hover:bg-brand-50/40"
+                    >
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="font-semibold text-slate-900">{item.result.primaryProblem.label}</p>
+                        <Badge className="bg-slate-100 text-slate-700">
+                          {t("profile.videoHistory.confidence", { value: item.result.confidenceBand })}
+                        </Badge>
+                      </div>
+                      <p className="mt-1 text-sm text-slate-600">{item.user_description || t("profile.videoHistory.noDescription")}</p>
+                      <p className="mt-2 text-xs text-slate-500">{formatDateTime(item.created_at)}</p>
+                    </Link>
+                  ))}
+                </div>
+              </Card>
+            ) : (
+              <EmptyState
+                title={t("profile.videoHistory.title")}
+                description={t("profile.videoHistory.emptyDescription")}
+                href="/video-diagnose"
+                actionLabel={t("profile.videoHistory.try")}
+              />
+            )
+          ) : null}
 
           {bookmarksLoading ? (
             <SectionSkeleton lines={5} />

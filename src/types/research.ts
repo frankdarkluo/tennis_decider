@@ -116,6 +116,16 @@ export type EventType = EventName | LegacyEventType;
 
 export type StudyEventPayload = Record<string, unknown>;
 
+export type StudyFlushFailureReason = "network_error" | "http_non_2xx" | "beacon_rejected";
+export type StudyFlushFallbackMode = "sync" | "async";
+
+export type StudyFlushFallbackBucketSummary = {
+  total: number;
+  byReason: Record<StudyFlushFailureReason, number>;
+  byMode: Record<StudyFlushFallbackMode, number>;
+  httpStatusCounts: Record<string, number>;
+};
+
 export type EventLog = {
   eventId: string;
   studyId: string;

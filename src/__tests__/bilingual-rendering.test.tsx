@@ -7,8 +7,10 @@ import { DiagnoseResult } from "@/components/diagnose/DiagnoseResult";
 import { HotContentSection } from "@/components/home/HotContentSection";
 import { ContentCard } from "@/components/library/ContentCard";
 import { CreatorDetailModal } from "@/components/rankings/CreatorDetailModal";
+import { CreatorCard } from "@/components/rankings/CreatorCard";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
 import LibraryPage from "@/app/library/page";
+import { getCreatorTags } from "@/lib/content/display";
 
 const openLoginModal = vi.fn();
 
@@ -178,6 +180,43 @@ describe("bilingual rendering", () => {
     expect(screen.getByText("Focus: When your forehand foundation never feels stable")).toBeInTheDocument();
   });
 
+  it("renders creator cards with the newer English tag labels", () => {
+    const creator = creators.find((entry) => entry.id === "creator_gaiao");
+
+    expect(creator).toBeTruthy();
+    if (!creator) {
+      throw new Error("Missing creator_gaiao");
+    }
+
+    render(<CreatorCard creator={creator} onDetail={() => {}} />);
+
+    expect(screen.getByText("Beginner-ready")).toBeInTheDocument();
+    expect(screen.getByText("Form building")).toBeInTheDocument();
+    expect(screen.getByText("Clear breakdowns")).toBeInTheDocument();
+  });
+
+  it("keeps creator tag order and one-to-one mapping with the newer, more varied labels", () => {
+    const creator = creators.find((entry) => entry.id === "creator_gaiao");
+
+    expect(creator).toBeTruthy();
+    if (!creator) {
+      throw new Error("Missing creator_gaiao");
+    }
+
+    expect(getCreatorTags(creator.tags, "zh")).toEqual(["入门友好", "基础筑形", "讲解透彻"]);
+    expect(getCreatorTags(creator.tags, "en")).toEqual(["Beginner-ready", "Form building", "Clear breakdowns"]);
+  });
+
+  it("migrates obvious net-play and tactical creators onto the newer raw tag taxonomy", () => {
+    const racketBrothers = creators.find((entry) => entry.id === "creator_racketbrothers");
+    const fuzzyYellowBalls = creators.find((entry) => entry.id === "creator_fuzzy_yellow_balls");
+    const edgar = creators.find((entry) => entry.id === "creator_edgar_giffenig_tennis");
+
+    expect(racketBrothers?.tags).toEqual(["网前专修", "实战拆解", "讲解透彻"]);
+    expect(fuzzyYellowBalls?.tags).toEqual(["战术拆局", "实战拆解", "进阶突破"]);
+    expect(edgar?.tags).toEqual(["战术拆局", "讲解透彻", "基础筑形"]);
+  });
+
   it("renders CreatorDetailModal content cards with language cues and original-title label", () => {
     const creator = creators.find((entry) => entry.id === "creator_topspinpro_hidden");
 
@@ -285,6 +324,12 @@ describe("bilingual rendering", () => {
           matchedSynonyms: [],
           matchScore: 0.8,
           confidence: "中等",
+          effortMode: "standard",
+          evidenceLevel: "medium",
+          needsNarrowing: false,
+          narrowingPrompts: [],
+          narrowingSuggestions: [],
+          primaryNextStep: "Slow the tempo and rebuild the toss.",
           problemTag: "serve-basics",
           category: ["serve"],
           title: "Serve diagnosis",
@@ -303,10 +348,22 @@ describe("bilingual rendering", () => {
 
     fireEvent.click(screen.getByText("See why and what to watch"));
 
+    const planLink = screen.getByRole("link", { name: "Build a plan" });
+    const planHref = planLink.getAttribute("href");
+
+    expect(screen.getByText("Evidence: medium")).toBeInTheDocument();
+    expect(screen.queryByText(/Confidence: Medium\./)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "View" }));
+    expect(screen.getByText(/Confidence: Medium\./)).toBeInTheDocument();
     expect(screen.getByText("ZH")).toBeInTheDocument();
     expect(screen.getByText("No subtitles")).toBeInTheDocument();
     expect(screen.getByText("Original title")).toBeInTheDocument();
     expect(screen.getByText(/网球发球/)).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Upload a video for a more precise diagnosis" })).not.toBeInTheDocument();
+    expect(planHref).toBeTruthy();
+
+    const planUrl = new URL(planHref ?? "", "https://example.com");
+    expect(planUrl.searchParams.get("primaryNextStep")).toBe("Slow the tempo and rebuild the toss.");
   });
 
   it("uses the translated library bookmark login prompt in English mode", async () => {

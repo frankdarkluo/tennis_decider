@@ -207,7 +207,7 @@ describe("surface localization", () => {
     });
 
     expect(screen.getByText("Diagnosis history")).toBeInTheDocument();
-    expect(screen.getByText("Video diagnosis history")).toBeInTheDocument();
+    expect(screen.queryByText("Video diagnosis history")).not.toBeInTheDocument();
     expect(screen.getByText("Bookmarks")).toBeInTheDocument();
     expect(screen.getByText("Saved practice plans")).toBeInTheDocument();
   });
@@ -407,6 +407,7 @@ describe("surface localization", () => {
     renderWithI18n(<Header />);
 
     expect(screen.getAllByText("研究模式").length).toBeGreaterThan(0);
+    expect(screen.queryByText("视频诊断")).not.toBeInTheDocument();
     expect(screen.queryByText("测试 (Beta)")).not.toBeInTheDocument();
   });
 

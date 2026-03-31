@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { useStudy } from "@/components/study/StudyProvider";
 import { useI18n } from "@/lib/i18n/config";
-import { logEvent, markEventLoggerSessionCompleted } from "@/lib/eventLogger";
+import { flushEventQueue, logEvent, markEventLoggerSessionCompleted } from "@/lib/eventLogger";
 
 export default function StudyEndPage() {
   const { session, endStudySession, clearStudyData } = useStudy();
@@ -26,6 +26,7 @@ export default function StudyEndPage() {
         totalDurationMs
       }, { page: "/study/end" });
       markEventLoggerSessionCompleted();
+      await flushEventQueue(true);
       await endStudySession();
       setEnded(true);
     })();

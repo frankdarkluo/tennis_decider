@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { buildStudyExportBundle, deriveStudyMetrics } from "@/lib/researchData";
+import {
+  buildStudyExportBundle,
+  deriveStudyMetrics,
+  summarizeStudyFlushFallbackBuckets
+} from "@/lib/researchData";
 
 describe("research export helpers", () => {
   const events = [
@@ -219,5 +223,23 @@ describe("research export helpers", () => {
         language: "zh"
       })
     ]);
+  });
+
+  it("buckets flush fallback diagnostics by reason and mode", () => {
+    const summary = summarizeStudyFlushFallbackBuckets([
+      { reason: "network_error", mode: "async" },
+      { reason: "http_non_2xx", mode: "sync", httpStatus: 503 },
+      { reason: "http_non_2xx", mode: "sync", httpStatus: 503 },
+      { reason: "beacon_rejected", mode: "sync" },
+      { reason: "unknown_reason", mode: "async" }
+    ]);
+
+    expect(summary.total).toBe(4);
+    expect(summary.byReason.network_error).toBe(1);
+    expect(summary.byReason.http_non_2xx).toBe(2);
+    expect(summary.byReason.beacon_rejected).toBe(1);
+    expect(summary.byMode.sync).toBe(3);
+    expect(summary.byMode.async).toBe(1);
+    expect(summary.httpStatusCounts["503"]).toBe(2);
   });
 });

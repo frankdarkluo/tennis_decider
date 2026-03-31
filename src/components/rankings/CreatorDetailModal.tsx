@@ -64,17 +64,29 @@ const SKILL_CARD_MAP: Record<string, { title: string; title_en: string; summary:
 
 const TAG_TO_SKILL_MAP: Record<string, string[]> = {
   "新手友好": ["basics"],
+  "入门友好": ["basics"],
   "细节导向": ["grip", "backhand"],
+  "细节纠偏": ["grip", "backhand"],
   "讲解清晰": ["basics"],
+  "讲解透彻": ["basics"],
   "实战导向": ["matchplay"],
+  "实战拆解": ["matchplay"],
   "基础导向": ["basics"],
+  "基础筑形": ["basics"],
   "进阶提升": ["topspin", "matchplay"],
+  "进阶突破": ["topspin", "matchplay"],
   "双打专项": ["doubles"],
+  "战术拆局": ["matchplay"],
+  "网前专修": ["net", "doubles"],
   "节奏训练": ["serve"],
   "发球专项": ["serve"],
+  "发球专修": ["serve"],
   "正手专项": ["forehand"],
+  "正手专修": ["forehand"],
   "反手专项": ["backhand"],
-  "脚步移动": ["movement"]
+  "反手专修": ["backhand"],
+  "脚步移动": ["movement"],
+  "步法启动": ["movement"]
 };
 
 export function CreatorDetailModal({ creator, open, onClose }: { creator: Creator | null; open: boolean; onClose: () => void }) {

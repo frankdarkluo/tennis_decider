@@ -16,11 +16,82 @@ import {
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
+import { getDiagnosisConfidenceLabel } from "@/lib/diagnosis";
 import { buildDiagnosisPlanCandidateIds, buildPlanHref } from "@/lib/plans";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
+import { VIDEO_DIAGNOSE_VISIBLE } from "@/lib/videoDiagnose";
 import { PlanLevel } from "@/types/plan";
 import { useStudy } from "@/components/study/StudyProvider";
 import { Badge } from "@/components/ui/Badge";
+
+function getNarrowingSeverityRank(severity: "high" | "medium" | "low"): number {
+  if (severity === "high") {
+    return 3;
+  }
+
+  if (severity === "medium") {
+    return 2;
+  }
+
+  return 1;
+}
+
+function getMissingSlotLabel(slot: "stroke" | "outcome" | "context" | "condition", language: "zh" | "en") {
+  if (language === "en") {
+    if (slot === "stroke") return "stroke";
+    if (slot === "outcome") return "miss outcome";
+    if (slot === "context") return "match context";
+    return "condition";
+  }
+
+  if (slot === "stroke") return "技术环节";
+  if (slot === "outcome") return "失误结果";
+  if (slot === "context") return "场景";
+  return "条件";
+}
+
+function getEvidenceToneViewModel(
+  result: DiagnosisResultType,
+  language: "zh" | "en"
+): {
+  wrapperClassName: string;
+  titleClassName: string;
+  title: string;
+  description: string;
+} {
+  const confidenceLabel = getDiagnosisConfidenceLabel(result.confidence, language);
+
+  if (result.evidenceLevel === "low") {
+    return {
+      wrapperClassName: "rounded-xl border border-amber-200 bg-amber-50/70 p-3 text-sm text-slate-700",
+      titleClassName: "font-semibold text-amber-900",
+      title: language === "en" ? "Evidence: low" : "当前证据：较低",
+      description: language === "en"
+        ? `Confidence: ${confidenceLabel}. Add one concrete clue first, then we can give a tighter technical direction.`
+        : `置信表达：${confidenceLabel}。先补一条关键线索，再进入更明确的技术建议。`
+    };
+  }
+
+  if (result.evidenceLevel === "medium") {
+    return {
+      wrapperClassName: "rounded-xl border border-sky-200 bg-sky-50/70 p-3 text-sm text-slate-700",
+      titleClassName: "font-semibold text-sky-900",
+      title: language === "en" ? "Evidence: medium" : "当前证据：中等",
+      description: language === "en"
+        ? `Confidence: ${confidenceLabel}. Execute the primary next step first, then refine with feedback.`
+        : `置信表达：${confidenceLabel}。先按主动作执行，再根据反馈微调。`
+    };
+  }
+
+  return {
+    wrapperClassName: "rounded-xl border border-emerald-200 bg-emerald-50/70 p-3 text-sm text-slate-700",
+    titleClassName: "font-semibold text-emerald-900",
+    title: language === "en" ? "Evidence: high" : "当前证据：较高",
+    description: language === "en"
+      ? `Confidence: ${confidenceLabel}. Run the primary action now and validate with one measurable result.`
+      : `置信表达：${confidenceLabel}。优先完成主动作，并用一个结果指标做验收。`
+  };
+}
 
 function normalizePlanLevel(level?: string): PlanLevel {
   if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.5") {
@@ -133,7 +204,10 @@ function RecommendationCard({
 
 export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
   const { language, t } = useI18n();
+  const locale: "zh" | "en" = language === "en" ? "en" : "zh";
   const { studyMode } = useStudy();
+  const primaryFix = result.fixes[0] ?? result.summary;
+  const primaryNextStep = result.primaryNextStep ?? primaryFix;
   const normalizedPlanLevel = normalizePlanLevel(result.level);
   const candidateIds = buildDiagnosisPlanCandidateIds({
     problemTag: result.problemTag,
@@ -145,16 +219,48 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
     problemTag: result.problemTag,
     level: normalizedPlanLevel,
     preferredContentIds: candidateIds,
-    sourceType: "diagnosis"
+    sourceType: "diagnosis",
+    primaryNextStep
   });
   const canGeneratePlan = Boolean(result.input.trim());
   const [layer, setLayer] = useState<1 | 2 | 3>(1);
-  const primaryFix = result.fixes[0] ?? result.summary;
+  const [evidenceExpanded, setEvidenceExpanded] = useState(false);
+  const isNarrowingMode = result.needsNarrowing ?? false;
+  const isQuickMode = result.effortMode === "quick";
+  const isDeepMode = result.effortMode === "deep";
+  const detailedSummary = result.detailedSummary?.trim() || null;
+  const canExpandLayerTwo = !isNarrowingMode && (!isQuickMode || Boolean(detailedSummary));
+  const narrowingPrompts = (result.narrowingPrompts ?? []).slice(0, 2);
+  const narrowingSuggestions = (result.narrowingSuggestions ?? [])
+    .slice()
+    .sort((left, right) => getNarrowingSeverityRank(right.severity) - getNarrowingSeverityRank(left.severity));
+  const missingEvidenceSlots = (result.missingEvidenceSlots ?? []).filter(
+    (slot): slot is "stroke" | "outcome" | "context" | "condition" =>
+      slot === "stroke" || slot === "outcome" || slot === "context" || slot === "condition"
+  );
+  const refusalSummary = (() => {
+    if (!isNarrowingMode) {
+      return null;
+    }
+
+    if (missingEvidenceSlots.length > 0) {
+      const missingLabels = missingEvidenceSlots.map((slot) => getMissingSlotLabel(slot, locale));
+      return locale === "en"
+        ? `I cannot make a high-confidence diagnosis yet. Missing: ${missingLabels.join(", ")}.`
+        : `我现在还不能高置信判断，主要缺：${missingLabels.join("、")}。`;
+    }
+
+    return locale === "en"
+      ? "I cannot make a high-confidence diagnosis yet because evidence is still limited."
+      : "我现在还不能高置信判断，因为当前证据仍不足。";
+  })();
+  const evidenceTone = getEvidenceToneViewModel(result, locale);
   const featuredContent = result.recommendedContents[0];
   const moreContents = result.recommendedContents.slice(1);
 
   useEffect(() => {
     setLayer(1);
+    setEvidenceExpanded(false);
   }, [result.input, result.problemTag]);
 
   if (!canGeneratePlan) {
@@ -166,9 +272,32 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
       <div className="space-y-3">
         <p className="text-sm font-semibold text-brand-700">{t("diagnose.result.badge")}</p>
         <h2 className="text-2xl font-black text-slate-900">{result.title}</h2>
+        <p className="text-sm leading-6 text-slate-600">{result.summary}</p>
         <div className="rounded-2xl bg-[var(--surface-soft)] p-4">
           <p className="text-sm font-semibold text-slate-700">{t("diagnose.result.today")}</p>
-          <p className="mt-2 text-base font-medium text-slate-900">{primaryFix}</p>
+          <p className="mt-2 text-base font-medium text-slate-900">{primaryNextStep}</p>
+        </div>
+        <div className={evidenceTone.wrapperClassName}>
+          <div className="flex items-center justify-between gap-3">
+            <p className={evidenceTone.titleClassName}>{evidenceTone.title}</p>
+            <button
+              type="button"
+              className="text-xs font-semibold text-slate-600 transition hover:text-slate-900"
+              onClick={() => {
+                if (!evidenceExpanded) {
+                  logEvent("diagnose.why_this_viewed", { targetType: "evidence" }, { page: "/diagnose" });
+                }
+                setEvidenceExpanded((prev) => !prev);
+              }}
+            >
+              {evidenceExpanded
+                ? (language === "en" ? "Hide" : "收起")
+                : (language === "en" ? "View" : "展开")}
+            </button>
+          </div>
+          {evidenceExpanded ? (
+            <p className="mt-2">{evidenceTone.description}</p>
+          ) : null}
         </div>
         {result.fallbackUsed && result.fallbackMode ? (
           <div className="rounded-xl border border-brand-100 bg-brand-50/70 p-3 text-sm text-slate-700">
@@ -188,7 +317,60 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
             ) : null}
           </div>
         ) : null}
-        {layer === 1 ? (
+        {isNarrowingMode ? (
+          <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-3 text-sm text-slate-700">
+            <p className="font-semibold text-slate-900">
+              {language === "en" ? "Before recommendations, clarify these first:" : "在推荐之前，请先补充这两点："}
+            </p>
+            {refusalSummary ? (
+              <p className="mt-2 text-sm leading-6 text-slate-700">{refusalSummary}</p>
+            ) : null}
+            {narrowingSuggestions.length > 0 ? (
+              <div className="mt-3 space-y-2">
+                {narrowingSuggestions.map((item) => {
+                  const severityLabel = item.severity === "high"
+                    ? (language === "en" ? "High priority" : "高优先")
+                    : item.severity === "medium"
+                      ? (language === "en" ? "Medium priority" : "中优先")
+                      : (language === "en" ? "Low priority" : "低优先");
+
+                  return (
+                    <div key={item.id} className="rounded-lg border border-amber-200 bg-white/70 p-3">
+                      <p className="text-xs font-semibold uppercase tracking-[0.08em] text-amber-700">{severityLabel}</p>
+                      <p className="mt-1 text-sm text-slate-600">
+                        {language === "en" ? "Reason: " : "原因："}
+                        {item.reason}
+                      </p>
+                      <p className="mt-1 text-sm font-medium text-slate-900">
+                        {language === "en" ? "Next action: " : "下一步："}
+                        {item.nextAction}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : narrowingPrompts.length > 0 ? (
+              <ul className="mt-2 list-disc space-y-1 pl-5">
+                {narrowingPrompts.map((prompt) => (
+                  <li key={prompt}>{prompt}</li>
+                ))}
+              </ul>
+            ) : null}
+            <div className="mt-3">
+              <button
+                type="button"
+                className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
+                onClick={() => {
+                  logEvent("diagnose.why_this_viewed", { targetType: "narrowing" }, { page: "/diagnose" });
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                {language === "en" ? "I will refine my description" : "我来补充更具体的描述"}
+              </button>
+            </div>
+          </div>
+        ) : null}
+        {layer === 1 && canExpandLayerTwo ? (
           <button
             type="button"
             className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
@@ -203,16 +385,38 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
         ) : null}
       </div>
 
-      {layer >= 2 ? (
+      {layer >= 2 && !isNarrowingMode ? (
         <div className="space-y-4 border-t border-[var(--line)] pt-4">
+          {detailedSummary ? (
+            <div>
+              <p className="mb-2 text-sm font-semibold text-slate-900">
+                {language === "en" ? "Expanded reasoning" : "展开说明"}
+              </p>
+              <p className="text-sm leading-6 text-slate-700">{detailedSummary}</p>
+            </div>
+          ) : null}
+
           <div>
             <p className="mb-2 text-sm font-semibold text-slate-900">{t("diagnose.result.why")}</p>
             <ul className="list-disc space-y-1 pl-5 text-sm text-slate-700">
-              {result.causes.slice(0, 2).map((cause) => (
+              {result.causes.map((cause) => (
                 <li key={cause}>{cause}</li>
               ))}
             </ul>
           </div>
+
+          {isDeepMode && result.drills.length > 0 ? (
+            <div>
+              <p className="mb-2 text-sm font-semibold text-slate-900">
+                {language === "en" ? "Training cues" : "训练提示"}
+              </p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-slate-700">
+                {result.drills.map((drill) => (
+                  <li key={drill}>{drill}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           {featuredContent ? (
             <div>
@@ -268,7 +472,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
         </div>
       ) : null}
 
-      {layer >= 3 ? (
+      {layer >= 3 && !isNarrowingMode ? (
         <div className="space-y-4 border-t border-[var(--line)] pt-4">
           {moreContents.length > 0 ? (
             <div className="space-y-2">
@@ -297,7 +501,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
             >
               {t("diagnose.result.continue")}
             </button>
-            {!studyMode ? (
+            {!studyMode && VIDEO_DIAGNOSE_VISIBLE ? (
               <Link
                 href="/video-diagnose"
                 onClick={() => logEvent("cta_click", { ctaLabel: t("cta.videoUpgrade"), ctaLocation: "diagnosis_result", targetPage: "/video-diagnose" })}

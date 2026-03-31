@@ -2,8 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { exportLocalLogs, logEvent } from "@/lib/eventLogger";
-import { buildStudyExportBundle, downloadJsonFile, fetchAllExportRows } from "@/lib/researchData";
+import { exportLocalLogs, getStudyFlushFallbackLogs, logEvent } from "@/lib/eventLogger";
+import {
+  buildStudyExportBundle,
+  downloadJsonFile,
+  fetchAllExportRows,
+  summarizeStudyFlushFallbackBuckets
+} from "@/lib/researchData";
 import { ADMIN_EMAILS, isAdminEmail } from "@/lib/researchConfig";
 import { ResearchExportTable } from "@/types/research";
 import { getStudySnapshot } from "@/lib/study/snapshot";
@@ -59,7 +64,19 @@ export default function AdminExportPage() {
   };
 
   const handleLocalExport = () => {
-    downloadJsonFile(getExportFileName("local_events"), exportLocalLogs());
+    let localEvents: unknown = [];
+    try {
+      localEvents = JSON.parse(exportLocalLogs());
+    } catch {
+      localEvents = [];
+    }
+
+    const flushFallbackLogs = getStudyFlushFallbackLogs();
+    downloadJsonFile(getExportFileName("local_events"), JSON.stringify({
+      events: localEvents,
+      studyFlushFallbackLogs: flushFallbackLogs,
+      studyFlushFallbackSummary: summarizeStudyFlushFallbackBuckets(flushFallbackLogs)
+    }, null, 2));
     logEvent("cta_click", { ctaLabel: "导出本地日志", ctaLocation: "admin_export", targetPage: "/admin/export#local_events" });
     setStatusMessage("本地日志已导出。");
   };

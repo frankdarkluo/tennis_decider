@@ -1,7 +1,8 @@
 import {
   CONTENT_ENGLISH_OVERRIDES,
   CREATOR_ENGLISH_OVERRIDES,
-  CREATOR_TAG_LABELS_EN
+  CREATOR_TAG_LABELS_EN,
+  CREATOR_TAG_LABELS_ZH
 } from "@/lib/content/localization";
 import { CREATOR_FEATURED_VIDEO_CHINESE_SUBTITLE_OVERRIDES } from "@/lib/content/chineseSubtitleOverrides";
 import { ContentItem, ContentSubtitleAvailability } from "@/types/content";
@@ -1351,7 +1352,7 @@ export function getCreatorTagLabel(tag: string, locale: Locale) {
     return CREATOR_TAG_LABELS_EN[tag] ?? tag;
   }
 
-  return tag;
+  return CREATOR_TAG_LABELS_ZH[tag] ?? tag;
 }
 
 export function getCreatorTags(tags: string[], locale: Locale) {

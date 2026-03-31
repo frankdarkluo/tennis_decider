@@ -83,6 +83,24 @@ export type DiagnosisRule = {
 
 export type DiagnosisConfidence = "较低" | "中等" | "较高";
 
+export type DiagnosisEvidenceLevel = "low" | "medium" | "high";
+export type DiagnosisEffortMode = "quick" | "standard" | "deep";
+
+export type DiagnosisNarrowingSeverity = "high" | "medium" | "low";
+
+export type DiagnosisNarrowingSuggestion = {
+  id: string;
+  severity: DiagnosisNarrowingSeverity;
+  reason: string;
+  nextAction: string;
+};
+
+export type DiagnosisRefusalReasonCode =
+  | "missing_stroke"
+  | "missing_outcome"
+  | "missing_context"
+  | "low_match_score";
+
 export type DiagnosisResult = {
   input: string;
   normalizedInput: string;
@@ -91,15 +109,52 @@ export type DiagnosisResult = {
   matchedSynonyms: string[];
   matchScore: number;
   confidence: DiagnosisConfidence;
+  effortMode: DiagnosisEffortMode;
+  evidenceLevel: DiagnosisEvidenceLevel;
+  needsNarrowing: boolean;
+  narrowingPrompts: string[];
+  narrowingSuggestions: DiagnosisNarrowingSuggestion[];
+  refusalReasonCodes?: DiagnosisRefusalReasonCode[];
+  missingEvidenceSlots?: DiagnosisSlotType[];
+  primaryNextStep: string;
   problemTag: string;
   category: string[];
   title: string;
   summary: string;
+  detailedSummary?: string | null;
   causes: string[];
   fixes: string[];
   drills: string[];
   recommendedContents: ContentItem[];
   searchQueries: DiagnosisSearchQueries | null;
+  fallbackUsed: boolean;
+  fallbackMode: "assessment" | "no-assessment" | null;
+  level?: string;
+};
+
+export type DiagnosisSnapshot = {
+  inputSummary: string;
+  capturedAt: string;
+  matchedRuleId: string | null;
+  matchScore: number;
+  confidence: DiagnosisConfidence;
+  effortMode: DiagnosisEffortMode;
+  evidenceLevel: DiagnosisEvidenceLevel;
+  needsNarrowing: boolean;
+  narrowingPrompts: string[];
+  narrowingSuggestions: DiagnosisNarrowingSuggestion[];
+  refusalReasonCodes?: DiagnosisRefusalReasonCode[];
+  missingEvidenceSlots?: DiagnosisSlotType[];
+  primaryNextStep: string;
+  problemTag: string;
+  category: string[];
+  title: string;
+  summary: string;
+  detailedSummary?: string | null;
+  causes: string[];
+  fixes: string[];
+  drills: string[];
+  recommendedContentIds: string[];
   fallbackUsed: boolean;
   fallbackMode: "assessment" | "no-assessment" | null;
   level?: string;

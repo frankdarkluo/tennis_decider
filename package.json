@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
+    "normalize:tags": "ts-node --project tsconfig.scripts.json scripts/normalize-content-tags.ts --check",
+    "normalize:tags:apply": "ts-node --project tsconfig.scripts.json scripts/normalize-content-tags.ts --apply",
+    "normalize:tags:report": "ts-node --project tsconfig.scripts.json scripts/normalize-content-tags.ts --include-expanded",
     "validate:data": "ts-node --project tsconfig.scripts.json scripts/validate-data.ts",
+    "validate:data:strict": "ts-node --project tsconfig.scripts.json scripts/validate-data.ts --strict-warnings",
     "validate:study-docs": "ts-node --project tsconfig.scripts.json scripts/validate-study-docs.ts",
     "validate:study-remote": "ts-node --project tsconfig.scripts.json scripts/verify-study-remote.ts",
     "generate:translation-backlog": "ts-node --project tsconfig.scripts.json scripts/generate-content-translation-backlog.ts"

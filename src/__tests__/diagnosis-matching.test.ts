@@ -178,14 +178,24 @@ describe("diagnosis alias normalization", () => {
     expect(result.rule).toBeNull();
   });
 
-  it("routes support-only inputs through a support-aware fallback without changing the public result shape", () => {
+  it("routes support-only inputs through a narrowing gate before any recommendation", () => {
     const result = diagnoseProblem("练了很久没进步，不知道自己该练什么");
 
     expect(result.matchedRuleId).toBeNull();
     expect(result.problemTag).toBe("general-improvement");
     expect(result.fallbackUsed).toBe(true);
+    expect(result.evidenceLevel).toBe("low");
+    expect(result.needsNarrowing).toBe(true);
+    expect(result.narrowingPrompts.length).toBeGreaterThan(0);
+    expect(result.narrowingSuggestions.length).toBeGreaterThan(0);
+    expect(result.narrowingSuggestions[0]?.severity).toBe("high");
+    expect(result.narrowingSuggestions[0]?.reason.length).toBeGreaterThan(0);
+    expect(result.primaryNextStep).toBe(result.narrowingSuggestions[0]?.nextAction);
+    expect(result.narrowingPrompts).toEqual(result.narrowingSuggestions.slice(0, 2).map((item) => item.nextAction));
+    expect(result.missingEvidenceSlots).toEqual(expect.arrayContaining(["stroke", "outcome", "context"]));
+    expect(result.refusalReasonCodes).toEqual(expect.arrayContaining(["missing_stroke", "missing_outcome", "missing_context", "low_match_score"]));
     expect(result.title).not.toBe("先给你一组通用提升方向");
-    expect(result.recommendedContents.some((item) => item.problemTags.includes("cant-self-practice"))).toBe(true);
+    expect(result.recommendedContents).toHaveLength(0);
   });
 
   it("does not let support phrasing beat a stronger stroke diagnosis", () => {
@@ -238,9 +248,12 @@ describe("diagnosis alias normalization", () => {
     const result = diagnoseProblem("反手总下网");
 
     expect(result.problemTag).toBe("backhand-into-net");
+    expect(result.needsNarrowing).toBe(false);
+    expect(result.narrowingSuggestions).toEqual([]);
     expect(result.title).toBe("反手稳定性不足");
     expect(result.summary).not.toContain("关键分");
     expect(result.fixes[0]).toBe("更早转肩，提前准备");
+    expect(result.primaryNextStep).toBe(result.fixes[0]);
   });
 
   it("renders a pressure-aware second-serve diagnosis when the score matters", () => {
@@ -290,6 +303,157 @@ describe("diagnosis alias normalization", () => {
     expect(result.drills[0]).toContain("关键分二发 12 组");
     expect(result.recommendedContents.length).toBeGreaterThan(0);
     expect(result.recommendedContents.every((item) => !item.url.includes("search.bilibili.com/all?keyword="))).toBe(true);
+  });
+
+  it("keeps medium/high-evidence recommendations on direct sources only", () => {
+    const result = diagnoseProblem("关键分二发总双误");
+
+    expect(result.evidenceLevel).not.toBe("low");
+    expect(result.recommendedContents.length).toBeGreaterThan(0);
+    expect(result.recommendedContents.every((item) => !item.url.includes("search.bilibili.com/all?keyword="))).toBe(true);
+    expect(result.recommendedContents.every((item) => !item.url.includes("youtube.com/results?search_query="))).toBe(true);
+  });
+
+  it("keeps problemTag stable across effort modes while changing explanation depth", () => {
+    const quick = diagnoseProblem("关键分二发总双误", { effortMode: "quick" });
+    const standard = diagnoseProblem("关键分二发总双误", { effortMode: "standard" });
+    const deep = diagnoseProblem("关键分二发总双误", { effortMode: "deep" });
+
+    expect(quick.problemTag).toBe(standard.problemTag);
+    expect(standard.problemTag).toBe(deep.problemTag);
+    expect(quick.effortMode).toBe("quick");
+    expect(standard.effortMode).toBe("standard");
+    expect(deep.effortMode).toBe("deep");
+    expect(quick.causes.length).toBe(1);
+    expect(quick.fixes.length).toBe(1);
+    expect(standard.causes.length).toBeGreaterThanOrEqual(2);
+    expect(deep.causes.length).toBeGreaterThanOrEqual(standard.causes.length);
+    expect(quick.primaryNextStep).toBe(standard.primaryNextStep);
+    expect(standard.primaryNextStep).toBe(deep.primaryNextStep);
+  });
+
+  it("keeps narrowing primary step stable across effort modes under low evidence", () => {
+    const input = "练了很久没进步，不知道自己该练什么";
+    const quick = diagnoseProblem(input, { effortMode: "quick" });
+    const standard = diagnoseProblem(input, { effortMode: "standard" });
+    const deep = diagnoseProblem(input, { effortMode: "deep" });
+
+    expect(quick.needsNarrowing).toBe(true);
+    expect(standard.needsNarrowing).toBe(true);
+    expect(deep.needsNarrowing).toBe(true);
+    expect(quick.primaryNextStep).toBe(standard.primaryNextStep);
+    expect(standard.primaryNextStep).toBe(deep.primaryNextStep);
+    expect(quick.refusalReasonCodes).toEqual(expect.arrayContaining(["low_match_score"]));
+    expect(deep.refusalReasonCodes).toEqual(expect.arrayContaining(["low_match_score"]));
+  });
+
+  it("keeps deep mode conservative when evidence is low", () => {
+    const result = diagnoseProblem("我最近总打不好", { effortMode: "deep" });
+
+    expect(result.effortMode).toBe("deep");
+    expect(result.evidenceLevel).toBe("low");
+    expect(result.needsNarrowing).toBe(true);
+    expect(result.confidence).toBe("较低");
+    expect(result.title).toBe("先补一条关键线索，再锁定诊断");
+    expect(result.summary).toContain("证据仍偏弱");
+    expect(result.missingEvidenceSlots?.length).toBeGreaterThan(0);
+    expect(result.refusalReasonCodes).toEqual(expect.arrayContaining(["low_match_score"]));
+    expect(result.recommendedContents).toHaveLength(0);
+  });
+
+  it("keeps summary focused on action, while evidence wording moves to the evidence card", () => {
+    const result = diagnoseProblem("关键分二发总双误", { effortMode: "standard" });
+
+    expect(["medium", "high"]).toContain(result.evidenceLevel);
+    expect(result.summary).not.toContain("当前证据较高");
+    expect(result.summary).not.toContain("当前证据中等");
+    expect(result.summary.length).toBeGreaterThan(0);
+  });
+
+  it("applies summary budget and moves long narrative into detailedSummary", () => {
+    const longRule: DiagnosisRule = {
+      id: "rule_summary_budget_probe",
+      keywords: ["alpha", "beta", "gamma"],
+      synonyms: [],
+      category: ["basics"],
+      problemTag: "late-contact",
+      causes: ["这个原因描述故意写得很长，用于验证默认层文案预算是否生效并触发摘要折叠机制"],
+      fixes: ["把准备动作提前半拍并把击球点稳定在身体前侧，再逐步加速而不是一次发力到顶"],
+      recommendedContentIds: ["content_summary_budget_probe_01"],
+      drills: ["test drill"],
+      searchQueries: { bilibili: [], youtube: [] }
+    };
+
+    const directContent: ContentItem = {
+      id: "content_summary_budget_probe_01",
+      title: "Summary budget probe",
+      creatorId: "creator_furao",
+      platform: "Bilibili",
+      type: "video",
+      levels: ["3.0"],
+      skills: ["basics"],
+      problemTags: ["late-contact"],
+      language: "zh",
+      summary: "",
+      reason: "",
+      useCases: [],
+      coachReason: "",
+      url: "https://www.bilibili.com/video/BV1SummaryBudgetProbe"
+    };
+
+    const result = diagnoseProblem("alpha beta gamma", {
+      rules: [longRule],
+      contentPool: [directContent],
+      effortMode: "standard"
+    });
+
+    expect(result.summary).toContain("先做主动作：");
+    expect(result.detailedSummary).toBeTruthy();
+    expect(result.detailedSummary).toContain("文案预算");
+    expect(Array.from(result.summary).length).toBeLessThanOrEqual(86);
+  });
+
+  it("uses a high-confidence actionable tone when evidence is strong", () => {
+    const highConfidenceRule: DiagnosisRule = {
+      id: "rule_high_confidence_probe",
+      keywords: ["alpha", "beta", "gamma"],
+      synonyms: [],
+      category: ["basics"],
+      problemTag: "late-contact",
+      causes: ["test cause"],
+      fixes: ["test fix"],
+      recommendedContentIds: ["content_high_confidence_probe_01"],
+      drills: ["test drill"],
+      searchQueries: { bilibili: [], youtube: [] }
+    };
+
+    const highConfidenceContent: ContentItem = {
+      id: "content_high_confidence_probe_01",
+      title: "High-confidence probe",
+      creatorId: "creator_furao",
+      platform: "Bilibili",
+      type: "video",
+      levels: ["3.0"],
+      skills: ["basics"],
+      problemTags: ["late-contact"],
+      language: "zh",
+      summary: "",
+      reason: "",
+      useCases: [],
+      coachReason: "",
+      url: "https://www.bilibili.com/video/BV1HighConfidenceProbe"
+    };
+
+    const result = diagnoseProblem("alpha beta gamma", {
+      rules: [highConfidenceRule],
+      contentPool: [highConfidenceContent],
+      effortMode: "standard"
+    });
+
+    expect(result.evidenceLevel).toBe("high");
+    expect(result.confidence).toBe("较高");
+    expect(result.summary).not.toContain("当前证据较高");
+    expect(result.needsNarrowing).toBe(false);
   });
 
   it("keeps moonball analysis tied to spacing decisions and adds a defensive support resource", () => {
@@ -343,6 +507,46 @@ describe("diagnosis alias normalization", () => {
     expect(result.problemTag).toBe("general-improvement");
     expect(result.recommendedContents).toEqual([]);
     expect(result.fallbackUsed).toBe(true);
+  });
+
+  it("treats legacy slice tags as canonical equivalents when ranking recommendations", () => {
+    const rule: DiagnosisRule = {
+      id: "rule_slice_canonicalization_probe",
+      keywords: ["slice"],
+      synonyms: [],
+      category: ["mental"],
+      problemTag: "backhand-slice-floating",
+      causes: ["test cause"],
+      fixes: ["test fix"],
+      recommendedContentIds: [],
+      drills: ["test drill"],
+      searchQueries: { bilibili: [], youtube: [] }
+    };
+
+    const legacyTaggedDirectContent: ContentItem = {
+      id: "content_legacy_slice_only_01",
+      title: "Legacy slice tag resource",
+      creatorId: "creator_furao",
+      platform: "Bilibili",
+      type: "video",
+      levels: ["3.0"],
+      skills: ["mental"],
+      problemTags: ["slice-too-high"],
+      language: "zh",
+      summary: "",
+      reason: "",
+      useCases: [],
+      coachReason: "",
+      url: "https://www.bilibili.com/video/BV1legacySliceProbe"
+    };
+
+    const result = diagnoseProblem("slice", {
+      rules: [rule],
+      contentPool: [legacyTaggedDirectContent]
+    });
+
+    expect(result.problemTag).toBe("backhand-slice-floating");
+    expect(result.recommendedContents.map((item) => item.id)).toContain("content_legacy_slice_only_01");
   });
 
   it("understands English break-point plus poaching phrasing as a key-point forehand pressure scene", () => {

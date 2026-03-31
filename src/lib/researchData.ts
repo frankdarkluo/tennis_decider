@@ -1,6 +1,8 @@
 import { getSupabaseBrowserClient } from "@/lib/supabase";
 import {
   ResearchExportTable,
+  StudyFlushFallbackBucketSummary,
+  StudyFlushFailureReason,
   StudyDerivedMetric,
   SurveyResponses
 } from "@/types/research";
@@ -28,6 +30,71 @@ function getErrorMessage(error: unknown, fallback: string) {
   }
 
   return fallback;
+}
+
+type StudyEventsPageResponse = {
+  ok?: boolean;
+  message?: string;
+  data?: Record<string, unknown>[];
+  page?: {
+    nextCursor?: number | null;
+  };
+};
+
+function buildStudyEventsPageUrl(limit: number, cursor: number) {
+  const search = new URLSearchParams({
+    limit: String(limit),
+    cursor: String(cursor)
+  });
+
+  return `/api/study/events?${search.toString()}`;
+}
+
+async function fetchEventLogsViaPagedApi(options: {
+  pageSize: number;
+  accessToken?: string | null;
+}) {
+  const rows: Record<string, unknown>[] = [];
+  let cursor = 0;
+
+  while (true) {
+    const response = await fetch(buildStudyEventsPageUrl(options.pageSize, cursor), {
+      headers: options.accessToken
+        ? {
+          Authorization: `Bearer ${options.accessToken}`
+        }
+        : undefined
+    });
+
+    let body: StudyEventsPageResponse | null = null;
+    try {
+      body = (await response.json()) as StudyEventsPageResponse;
+    } catch {
+      body = null;
+    }
+
+    if (!response.ok || !body?.ok) {
+      return {
+        data: [] as Record<string, unknown>[],
+        error: body?.message ?? "导出 event_logs 时发生未知错误。"
+      };
+    }
+
+    const batch = Array.isArray(body.data) ? body.data : [];
+    rows.push(...batch);
+
+    const nextCursor = typeof body.page?.nextCursor === "number"
+      ? body.page.nextCursor
+      : null;
+
+    if (nextCursor === null || nextCursor <= cursor || batch.length === 0) {
+      break;
+    }
+
+    cursor = nextCursor;
+  }
+
+  return { data: rows };
 }
 
 export async function saveSurveyResponse(input: {
@@ -64,6 +131,15 @@ export async function fetchAllExportRows(table: ResearchExportTable) {
   }
 
   const pageSize = 1000;
+
+  if (table === "event_logs") {
+    const { data } = await supabase.auth.getSession();
+    return fetchEventLogsViaPagedApi({
+      pageSize,
+      accessToken: data.session?.access_token ?? null
+    });
+  }
+
   const rows: Record<string, unknown>[] = [];
   let from = 0;
   const orderColumnByTable: Record<ResearchExportTable, string> = {
@@ -142,6 +218,60 @@ function normalizeEventRow(row: Record<string, unknown>): NormalizedEventRow | n
     tsClient: Number.isFinite(tsClient) ? tsClient : fallbackTs,
     payload: payload ?? {}
   };
+}
+
+function normalizeFlushFallbackReason(value: unknown): StudyFlushFailureReason | null {
+  if (value === "network_error" || value === "http_non_2xx" || value === "beacon_rejected") {
+    return value;
+  }
+
+  return null;
+}
+
+export function summarizeStudyFlushFallbackBuckets(
+  rows: unknown[]
+): StudyFlushFallbackBucketSummary {
+  const summary: StudyFlushFallbackBucketSummary = {
+    total: 0,
+    byReason: {
+      network_error: 0,
+      http_non_2xx: 0,
+      beacon_rejected: 0
+    },
+    byMode: {
+      sync: 0,
+      async: 0
+    },
+    httpStatusCounts: {}
+  };
+
+  rows.forEach((row) => {
+    if (!row || typeof row !== "object") {
+      return;
+    }
+
+    const entry = row as Record<string, unknown>;
+    const reason = normalizeFlushFallbackReason(entry.reason);
+    if (!reason) {
+      return;
+    }
+
+    summary.total += 1;
+    summary.byReason[reason] += 1;
+
+    const mode = entry.mode === "sync" ? "sync" : entry.mode === "async" ? "async" : null;
+    if (mode) {
+      summary.byMode[mode] += 1;
+    }
+
+    const httpStatus = toNumber(entry.httpStatus);
+    if (Number.isFinite(httpStatus)) {
+      const bucketKey = String(httpStatus);
+      summary.httpStatusCounts[bucketKey] = (summary.httpStatusCounts[bucketKey] ?? 0) + 1;
+    }
+  });
+
+  return summary;
 }
 
 export function deriveStudyMetrics(
