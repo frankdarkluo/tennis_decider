@@ -1,4 +1,5 @@
 import { contents } from "@/data/contents";
+import { expandedContents } from "@/data/expandedContents";
 import { diagnosisRules } from "@/data/diagnosisRules";
 import { AssessmentResult } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
@@ -79,6 +80,7 @@ const DEFAULT_DRILLS_EN = [
 ];
 
 const DEFAULT_CONTENT_IDS = ["content_cn_c_01", "content_cn_f_02", "content_gaiao_01"];
+const ALL_DIAGNOSIS_CONTENTS = [...contents, ...expandedContents];
 
 const SUMMARY_CHAR_BUDGET: Record<"zh" | "en", number> = {
   zh: 86,
@@ -2064,7 +2066,7 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     assessmentResult,
     maxRecommendations = 3,
     rules = diagnosisRules,
-    contentPool = contents,
+    contentPool = ALL_DIAGNOSIS_CONTENTS,
     effortMode = "standard",
     locale = "zh"
   } = options;
@@ -2280,7 +2282,7 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
 
 export function getDefaultDiagnosisResult(
   level?: string,
-  contentPool: ContentItem[] = contents,
+  contentPool: ContentItem[] = ALL_DIAGNOSIS_CONTENTS,
   maxRecommendations = 3,
   locale: "zh" | "en" = "zh"
 ): DiagnosisResult {

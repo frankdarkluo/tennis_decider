@@ -46,3 +46,18 @@ Update local docs only when they help future agent work:
 - boundaries change
 - completion criteria change
 - a non-obvious local workflow decision is introduced
+
+## Content expansion acceptance
+
+For content expansion slices, every newly added content item must satisfy:
+
+1. content authenticity: URL is reachable and points to a real video
+2. tag accuracy: category and tags match the actual video focus
+3. code consistency: platform/videoId/URL fields follow project format conventions
+
+For YouTube items, also require:
+
+- `videoId` is an 11-character YouTube video id
+- `platform` is `youtube` in both creator and content data
+- thumbnail uses `https://img.youtube.com/vi/<videoId>/maxresdefault.jpg`
+- if max resolution is unavailable, fallback to `hqdefault.jpg`

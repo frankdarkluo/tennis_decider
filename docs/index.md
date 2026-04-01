@@ -25,6 +25,7 @@ TennisLevel is currently focused on a study-ready workflow for SportsHCI-style r
 - Reusable templates: `docs/templates/`
 
 ## Recent Progress Files
+- `docs/progress/2026-04-01.md`
 - `docs/progress/2026-03-30.md`
 - `docs/progress/2026-03-31.md`
 - `docs/weekly/project-progress-summary.md`
@@ -41,6 +42,7 @@ TennisLevel is currently focused on a study-ready workflow for SportsHCI-style r
 
 ## Roadmap Entrypoints
 - `docs/roadmap/current.md`
+- `docs/roadmap/content-expansion-1000.md`
 - `docs/roadmap/routing-first-3-step-execution-2026-03-31.md`
 - `docs/roadmap/codex-7-point-execution-2026-03-31.md`
 
@@ -53,5 +55,6 @@ TennisLevel is currently focused on a study-ready workflow for SportsHCI-style r
 - `docs/CLAUDE_UI_REDESIGN_BRIEF.md`
 - `docs/DEPLOY_VERCEL_SUPABASE.md`
 - `docs/REMAINING_SEARCH_ENTRY_AUDIT.md`
+- `docs/features/youtube-platform-spec.md`
 - `docs/superpowers/specs/2026-03-30-diagnosis-usability-upgrade-design.md`
 - `docs/superpowers/plans/2026-03-30-diagnosis-usability-upgrade.md`

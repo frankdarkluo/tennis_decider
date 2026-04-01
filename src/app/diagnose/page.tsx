@@ -160,6 +160,7 @@ function DiagnosePageContent() {
     const diagnosisResult = diagnoseProblem(trimmedText, {
       level: currentLevel,
       assessmentResult,
+      maxRecommendations: 5,
       effortMode,
       locale: language
     });

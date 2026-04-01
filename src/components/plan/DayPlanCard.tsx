@@ -26,6 +26,64 @@ function compactFocus(value: string, maxLength = 24) {
   return `${value.slice(0, maxLength)}…`;
 }
 
+function compactPrompt(value: string, language: "zh" | "en") {
+  const normalized = value
+    .replace(/\s+/g, " ")
+    .replace(/^[\-\*\d\.\s]+/, "")
+    .trim();
+
+  if (language === "zh") {
+    const cuePrefix = (() => {
+      if (/关键分|压力/.test(normalized)) return "关键分：";
+      if (/发球|二发|一发|抛球/.test(normalized)) return "发球：";
+      if (/网前|截击|上网/.test(normalized)) return "网前：";
+      if (/脚步|移动|跑动|回位/.test(normalized)) return "脚步：";
+      return "";
+    })();
+
+    const cleaned = normalized
+      .replace(/^先(?:把|将)?/, "")
+      .replace(/^把/, "")
+      .replace(/^在/, "")
+      .replace(/^然后/, "")
+      .replace(/^再/, "")
+      .replace(/^能/, "")
+      .replace(/(，|,)?\s*(再|然后|并且|并)\s*.*$/, "")
+      .replace(/(，|,)\s*先.*$/, "")
+      .replace(/稳定下来/g, "稳住")
+      .replace(/建立起来/g, "建立")
+      .replace(/保持住/g, "保持")
+      .replace(/不要急着/g, "先别")
+      .replace(/优先/g, "先")
+      .replace(/[。！!]+$/, "")
+      .trim();
+
+    const cueText = `${cuePrefix}${cleaned}`.trim();
+
+    if (cueText.length <= 24) {
+      return cueText;
+    }
+
+    return `${cueText.slice(0, 24)}…`;
+  }
+
+  const cleaned = normalized
+    .replace(/^first\s+/i, "")
+    .replace(/^then\s+/i, "")
+    .replace(/^focus on\s+/i, "")
+    .replace(/^aim to\s+/i, "")
+    .replace(/^try to\s+/i, "")
+    .replace(/,\s*then\s+.*$/i, "")
+    .replace(/\.+$/, "")
+    .trim();
+
+  if (cleaned.length <= 52) {
+    return cleaned;
+  }
+
+  return `${cleaned.slice(0, 52)}…`;
+}
+
 const contentById = new Map([...contents, ...expandedContents].map((content) => [content.id, content]));
 
 function PrescriptionBlock({
@@ -79,9 +137,11 @@ function PrescriptionMetadata({
 
 function PrescriptionPlan({
   day,
+  language,
   t
 }: {
   day: DayPlan;
+  language: "zh" | "en";
   t: ReturnType<typeof useI18n>["t"];
 }) {
   const practiceItems = [...day.mainBlock.items, ...day.pressureBlock.items]
@@ -93,7 +153,7 @@ function PrescriptionPlan({
     <div className="space-y-4">
       <div className="space-y-2">
         <p className="text-sm font-semibold text-slate-900">{t("plan.day.goal")}</p>
-        <p className="text-sm leading-6 text-slate-700">{day.goal}</p>
+        <p className="text-sm leading-6 text-slate-700">{compactPrompt(day.goal, language)}</p>
       </div>
 
       <PrescriptionMetadata
@@ -107,7 +167,7 @@ function PrescriptionPlan({
           label={practiceLabel}
           block={{
             title: practiceLabel,
-            items: practiceItems
+            items: practiceItems.map((item) => compactPrompt(item, language))
           }}
         />
       </div>
@@ -116,7 +176,7 @@ function PrescriptionPlan({
         <p className="text-sm font-semibold text-slate-900">{t("plan.day.success")}</p>
         <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
           {day.successCriteria.map((criteria, index) => (
-            <li key={`success-${day.day}-${index}`}>{criteria}</li>
+            <li key={`success-${day.day}-${index}`}>{compactPrompt(criteria, language)}</li>
           ))}
         </ul>
       </div>
@@ -238,7 +298,7 @@ export function DayPlanCard({
           <h3 className="mt-1 text-xl font-bold text-slate-900">{day.focus}</h3>
         </div>
 
-        <PrescriptionPlan day={day} t={t} />
+        <PrescriptionPlan day={day} language={language} t={t} />
 
         <div>
           <p className="mb-2 text-sm font-semibold text-slate-900">{t("plan.day.watch")}</p>
@@ -270,7 +330,7 @@ export function DayPlanCard({
 
       {displayExpanded ? (
         <div id={detailsId} className="mt-4 space-y-3 border-t border-[var(--line)] pt-4">
-          <PrescriptionPlan day={day} t={t} />
+          <PrescriptionPlan day={day} language={language} t={t} />
           <div className="space-y-2">
             <p className="text-sm font-medium text-slate-700">{t("plan.day.watch")}</p>
             {featuredContentCard ?? (

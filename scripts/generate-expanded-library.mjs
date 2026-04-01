@@ -10,10 +10,21 @@ const creatorsPath = path.join(projectRoot, "src", "data", "creators.ts");
 const contentsPath = path.join(projectRoot, "src", "data", "contents.ts");
 const outputPath = path.join(projectRoot, "src", "data", "expandedContents.ts");
 const envPath = path.join(projectRoot, ".env.local");
-const BILIBILI_MIN_COUNT = 200;
-const YOUTUBE_MIN_COUNT = 200;
-const TARGET_PER_CREATOR = 20;
 const require = createRequire(import.meta.url);
+
+function getNumericEnv(name, fallback) {
+  const raw = process.env[name];
+  if (!raw) {
+    return fallback;
+  }
+
+  const value = Number.parseInt(raw, 10);
+  if (!Number.isFinite(value) || value <= 0) {
+    return fallback;
+  }
+
+  return value;
+}
 
 const zhIncludeKeywords = [
   "教学",
@@ -126,6 +137,16 @@ const enExcludeKeywords = [
   "travel",
   "behind the scenes"
 ];
+
+const CONTENT_PROBLEM_TAG_ALIASES = {
+  "second-serve-confidence": ["second-serve-reliability"],
+  "serve-toss-inconsistent": ["serve-toss-consistency"],
+  "slice-too-high": ["backhand-slice-floating"],
+  "trouble-with-slice": ["incoming-slice-trouble"],
+  "slow-preparation": ["late-contact"],
+  "volley-errors": ["volley-floating", "volley-into-net"],
+  "doubles-net-fear": ["net-confidence"]
+};
 
 const skillRules = [
   { skill: "serve", zh: ["发球", "二发", "一发", "抛球", "侧旋", "平击", "kick serve", "serve"], en: ["serve", "kick serve", "second serve", "slice serve"] },
@@ -298,6 +319,15 @@ function matchesAny(text, keywords) {
   return keywords.some((keyword) => text.includes(keyword));
 }
 
+function uniqueStrings(values) {
+  return Array.from(new Set(values.filter(Boolean)));
+}
+
+function normalizeProblemTags(problemTags) {
+  const canonicalTags = problemTags.flatMap((tag) => CONTENT_PROBLEM_TAG_ALIASES[tag] ?? []);
+  return uniqueStrings([...problemTags, ...canonicalTags]);
+}
+
 function detectSkills(title, creator) {
   const lower = title.toLowerCase();
   const detected = [];
@@ -350,7 +380,7 @@ function buildProblemTags(title, creator) {
   for (const skill of detectSkills(title, creator)) {
     tags.push(...(problemTagsBySkill[skill] ?? []));
   }
-  return [...new Set(tags)].slice(0, 3);
+  return normalizeProblemTags([...new Set(tags)]).slice(0, 6);
 }
 
 function getPrimarySkill(title, creator) {
@@ -584,6 +614,10 @@ function stripMeta(items) {
 async function main() {
   await loadLocalEnv();
 
+  const bilibiliMinCount = getNumericEnv("EXPANDED_BILIBILI_MIN_COUNT", 200);
+  const youtubeMinCount = getNumericEnv("EXPANDED_YOUTUBE_MIN_COUNT", 200);
+  const targetPerCreator = getNumericEnv("EXPANDED_TARGET_PER_CREATOR", 20);
+
   const creators = await loadTsExport(creatorsPath, "creators");
   const contents = await loadTsExport(contentsPath, "contents");
   const derivedFeaturedItems = creators.flatMap((creator, index) =>
@@ -654,7 +688,7 @@ async function main() {
       verified
         .filter((item) => item.strong)
         .map((item) => ({ ...item, primarySkill: getPrimarySkill(item.title, creator) })),
-      TARGET_PER_CREATOR
+      targetPerCreator
     );
 
     const selectedUrls = new Set(primarySelected.map((item) => normalizeUrl(item.url)));
@@ -662,7 +696,7 @@ async function main() {
       verified
         .filter((item) => !selectedUrls.has(normalizeUrl(item.url)))
         .map((item) => ({ ...item, primarySkill: getPrimarySkill(item.title, creator) })),
-      TARGET_PER_CREATOR - primarySelected.length
+      targetPerCreator - primarySelected.length
     );
 
     for (const item of [...primarySelected, ...fallbackSelected]) {
@@ -741,11 +775,11 @@ async function main() {
 
     candidates.sort((a, b) => Number(b.strong) - Number(a.strong) || b.score - a.score);
 
-    const primarySelected = diversifySelection(candidates.filter((item) => item.strong), TARGET_PER_CREATOR);
+    const primarySelected = diversifySelection(candidates.filter((item) => item.strong), targetPerCreator);
     const selectedUrls = new Set(primarySelected.map((item) => normalizeUrl(item.url)));
     const fallbackSelected = diversifySelection(
       candidates.filter((item) => !selectedUrls.has(normalizeUrl(item.url))),
-      TARGET_PER_CREATOR - primarySelected.length
+      targetPerCreator - primarySelected.length
     );
 
     for (const item of [...primarySelected, ...fallbackSelected]) {
@@ -763,7 +797,7 @@ async function main() {
   const totalYouTubeCount = baseYouTubeCount + youtubeCount;
   const allItems = [...stripMeta(bilibiliItems), ...stripMeta(youtubeItems)].sort((a, b) => a.id.localeCompare(b.id));
 
-  if (totalBilibiliCount < BILIBILI_MIN_COUNT || totalYouTubeCount < YOUTUBE_MIN_COUNT) {
+  if (totalBilibiliCount < bilibiliMinCount || totalYouTubeCount < youtubeMinCount) {
     throw new Error(
       `Library totals did not reach target counts. Bilibili=${totalBilibiliCount}, YouTube=${totalYouTubeCount}.`
     );
@@ -780,6 +814,7 @@ async function main() {
   console.log(`Total Bilibili items: ${totalBilibiliCount}`);
   console.log(`Total YouTube items: ${totalYouTubeCount}`);
   console.log(`Total expanded items: ${allItems.length}`);
+  console.log(`Target per creator: ${targetPerCreator}`);
 }
 
 main().catch((error) => {

@@ -121,6 +121,17 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
   } satisfies Record<string, string>
 }));
 
+const translationMapEn = {
+  "diagnose.title": "Describe your issue in one sentence",
+  "diagnose.subtitle": "Describe stroke, error, and situation, then we can route your next practice step.",
+  "diagnose.placeholder": "e.g. My forehand goes long on key points when they poach",
+  "diagnose.result.badge": "Diagnosis",
+  "diagnose.result.today": "Try this first",
+  "diagnose.result.expand1": "See why and what to watch",
+  "diagnose.button.start": "Start diagnosis",
+  "study.actionability.prompt": "After this task, I know what to practice next."
+} satisfies Record<string, string>;
+
 let mockSearchParams = new URLSearchParams();
 const mockSearchParamsAdapter = {
   get: (key: string) => mockSearchParams.get(key)
@@ -218,10 +229,11 @@ vi.mock("@/components/study/StudyProvider", () => ({
 
 vi.mock("@/lib/i18n/config", () => ({
   useI18n: () => ({
-    language: "zh",
+    language: mockStudyContext.language,
     studyMode: false,
     t: (key: string, replacements?: Record<string, string | number>) => {
-      const template = translationMap[key] ?? key;
+      const activeMap = mockStudyContext.language === "en" ? translationMapEn : translationMap;
+      const template = activeMap[key] ?? key;
       if (!replacements) {
         return template;
       }
@@ -254,6 +266,7 @@ describe("app smoke tests", () => {
     mockPrefetch.mockReset();
     mockStudyContext.session = null;
     mockStudyContext.studyMode = false;
+    mockStudyContext.language = "zh";
     mockAuthContext.user = null;
     mockAuthContext.configured = false;
     mockUserDataState.latestAssessmentResult = null;
@@ -622,6 +635,108 @@ describe("app smoke tests", () => {
     fireEvent.click(screen.getByRole("button", { name: "diagnose.button.start" }));
 
     expect(await screen.findByText("完成这个任务后，我知道我下一步该练什么了。")).toBeInTheDocument();
+  });
+
+  it("walks through zh study diagnose flow with low-density summary by default and expanded detailed summary on demand", async () => {
+    const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
+
+    mockStudyContext.session = baseStudySession;
+    mockStudyContext.studyMode = true;
+    mockStudyContext.language = "zh";
+    seedCompletedAssessmentInStorage();
+    window.localStorage.setItem(STUDY_DIAGNOSIS_SNAPSHOT_KEY, JSON.stringify({
+      inputSummary: "诊断快照：关键分正手控制不足",
+      capturedAt: "2026-03-31T00:00:00.000Z",
+      matchedRuleId: "rule_forehand_out",
+      matchScore: 22,
+      confidence: "中等",
+      effortMode: "standard",
+      evidenceLevel: "medium",
+      needsNarrowing: false,
+      narrowingPrompts: [],
+      narrowingSuggestions: [],
+      refusalReasonCodes: [],
+      missingEvidenceSlots: [],
+      primaryNextStep: "关键分先把球打高深中路，不要先追求一拍穿越。",
+      problemTag: "forehand-out",
+      category: ["forehand"],
+      title: "关键分下的正手出界更明显",
+      summary: "先做主动作：关键分先把球打高深中路，不要先追求一拍穿越。",
+      detailedSummary: "你的主问题仍是正手出界，在关键分和对手上网时更明显，先保住高深中路再考虑变线。",
+      causes: ["关键分时过早发力"],
+      fixes: ["关键分先保高深中路"],
+      drills: ["关键分场景正手 12 组"],
+      recommendedContentIds: ["content_cn_d_01"],
+      fallbackUsed: false,
+      fallbackMode: null,
+      level: "3.0"
+    }));
+
+    render(React.createElement(DiagnosePage));
+
+    expect(await screen.findByText("最近一次诊断快照")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "重演本次判断" }));
+
+    expect(await screen.findByText(/先做主动作：/)).toBeInTheDocument();
+    expect(screen.queryByText("展开说明")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "diagnose.result.expand1" }));
+
+    expect(await screen.findByText("展开说明")).toBeInTheDocument();
+    expect(screen.getByText("你的主问题仍是正手出界，在关键分和对手上网时更明显，先保住高深中路再考虑变线。")).toBeInTheDocument();
+  });
+
+  it("walks through en study diagnose flow with low-density summary by default and expanded detailed summary on demand", async () => {
+    const DiagnosePage = await loadPage(() => import("@/app/diagnose/page"));
+
+    mockStudyContext.session = {
+      ...baseStudySession,
+      language: "en",
+      condition: "lang_en"
+    };
+    mockStudyContext.studyMode = true;
+    mockStudyContext.language = "en";
+    seedCompletedAssessmentInStorage();
+    window.localStorage.setItem(STUDY_DIAGNOSIS_SNAPSHOT_KEY, JSON.stringify({
+      inputSummary: "Diagnosis snapshot: Forehand control under pressure",
+      capturedAt: "2026-03-31T00:00:00.000Z",
+      matchedRuleId: "rule_forehand_out",
+      matchScore: 23,
+      confidence: "中等",
+      effortMode: "standard",
+      evidenceLevel: "medium",
+      needsNarrowing: false,
+      narrowingPrompts: [],
+      narrowingSuggestions: [],
+      refusalReasonCodes: [],
+      missingEvidenceSlots: [],
+      primaryNextStep: "Play higher and deeper through the middle first on key points.",
+      problemTag: "forehand-out",
+      category: ["forehand"],
+      title: "Forehand errors show up more on key points",
+      summary: "Primary next step: Play higher and deeper through the middle first on key points.",
+      detailedSummary: "The core issue is still forehand control, and it gets worse on key points when the opponent is at net because pressure increases overhitting.",
+      causes: ["Rushed swing under pressure"],
+      fixes: ["Raise margin before changing direction"],
+      drills: ["12 key-point forehand sequences"],
+      recommendedContentIds: ["content_cn_d_01"],
+      fallbackUsed: false,
+      fallbackMode: null,
+      level: "3.0"
+    }));
+
+    render(React.createElement(DiagnosePage));
+
+    expect(await screen.findByText("Latest diagnosis snapshot")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Replay this diagnosis" }));
+
+    expect(await screen.findByText(/Primary next step:/)).toBeInTheDocument();
+    expect(screen.queryByText("Expanded reasoning")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "See why and what to watch" }));
+
+    expect(await screen.findByText("Expanded reasoning")).toBeInTheDocument();
+    expect(screen.getByText("The core issue is still forehand control, and it gets worse on key points when the opponent is at net because pressure increases overhitting.")).toBeInTheDocument();
   });
 
   it("stores the exact diagnose query path in study progress after a study diagnosis", async () => {

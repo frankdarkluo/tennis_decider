@@ -1,3 +1,9 @@
+## Cross-doc constraints
+
+- Boundaries guardrail source: `docs/boundaries.md`
+- Product identity and anti-drift source: `docs/product-principles.md`
+- Definition-of-done source: `docs/definition-of-done.md`
+
 请帮我开发一个网球学习推荐网站 MVP，名称暂定为 TennisLevel。
 
 一、项目目标

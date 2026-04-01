@@ -31,8 +31,8 @@ type RankedPlanContentCandidate = {
   score: number;
 };
 
-const MAX_PLAN_CANDIDATES = 7;
-const MIN_PLAN_CANDIDATES = 5;
+const MAX_PLAN_CANDIDATES = 10;
+const MIN_PLAN_CANDIDATES = 7;
 
 const PLAN_TAG_ALIASES: Record<string, string> = {
   "second-serve-confidence": "second-serve-reliability",
@@ -857,7 +857,7 @@ function scorePreferredContentForDay(
   const daySignalScore =
     overlapCount(content.skills, signals.skills) * 3 +
     overlapCount(contentProblemTags, signals.problemTags) * 4 +
-    (content.id === signals.seededContentId ? 8 : 0) +
+    (content.id === signals.seededContentId ? 18 : 0) +
     (isCuratedContent(content) ? 1 : 0);
 
   score += daySignalScore;
