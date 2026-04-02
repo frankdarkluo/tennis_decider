@@ -2,6 +2,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import type { StudySession } from "@/types/study";
+import zhDictionary from "@/lib/i18n/dictionaries/zh";
 
 const useStudy = vi.fn();
 const useI18n = vi.fn();
@@ -59,24 +60,7 @@ describe("survey localization", () => {
     useI18n.mockReturnValue({
       language: "zh",
       t: (key: string) => {
-        const table: Record<string, string> = {
-          "survey.badge": "研究问卷",
-          "survey.title": "TennisLevel 使用体验问卷",
-          "survey.subtitle": "请根据刚刚的体验完成问卷。",
-          "survey.part.basic.title": "Part 1: Background",
-          "survey.part.basic.body": "Tell us a little about your tennis background.",
-          "survey.part.sus.title": "Part 2: SUS",
-          "survey.part.sus.body": "Rate the usability of the system.",
-          "survey.part.product.title": "Part 3: Product",
-          "survey.part.product.body": "Rate the core product flow.",
-          "survey.part.open.title": "Part 4: Open feedback",
-          "survey.part.open.body": "Share anything else you noticed.",
-          "survey.placeholder": "Type your answer",
-          "survey.submit": "Submit",
-          "survey.submitting": "Submitting...",
-          "survey.answerAll": "Please answer every question."
-        };
-        return table[key] ?? key;
+        return (zhDictionary as Record<string, string>)[key] ?? key;
       }
     });
     persistStudyArtifact.mockResolvedValue({ artifact: { id: "artifact_1" } });
@@ -84,13 +68,17 @@ describe("survey localization", () => {
     logEvent.mockReset();
   });
 
-  it("uses the study session language for question copy during an English study session", async () => {
+  it("renders the updated survey structure and English question set during an English study session", async () => {
     const SurveyPage = (await import("@/app/survey/page")).default;
 
     render(<SurveyPage />);
 
     expect(screen.getByText("TennisLevel experience survey")).toBeInTheDocument();
-    expect(screen.getByText("Q1. How long have you been playing tennis?")).toBeInTheDocument();
-    expect(screen.getByText("Q6. I think that I would like to use this system frequently")).toBeInTheDocument();
+    expect(screen.queryByText("Part 1: Background")).not.toBeInTheDocument();
+    expect(screen.queryByText("How long have you been playing tennis?")).not.toBeInTheDocument();
+    expect(screen.getByText(/Part 1: SUS(?: usability scale)?/)).toBeInTheDocument();
+    expect(screen.getByText("The coach's reasoning made me more confident these recommendations were suitable for me")).toBeInTheDocument();
+    expect(screen.getByText("What information or feature most influences your confidence in the recommendations?")).toBeInTheDocument();
+    expect(screen.queryByText("I would recommend this tool to my tennis friends")).not.toBeInTheDocument();
   });
 });

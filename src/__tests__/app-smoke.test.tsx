@@ -29,7 +29,7 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "assessment.resumeDraft": "已恢复你刚才做到一半的评估进度。",
     "assessment.result.ctaStart": "去完成水平评估 →",
     "assessment.result.ctaPlan": "生成训练计划 →",
-    "study.actionability.prompt": "完成这个任务后，我知道我下一步该练什么了。",
+    "study.actionability.prompt": "完成这一步后，我比之前更清楚下一步该练什么了。",
     "study.actionability.submit": "提交评分",
     "study.actionability.submitting": "提交中...",
     "study.actionability.saved": "评分已记录。",
@@ -116,7 +116,7 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "profile.assessment.openLibrary": "去看推荐内容",
     "profile.plans.toggleExpand": "查看计划",
     "survey.title": "TennisLevel 使用体验问卷",
-    "survey.part.sus.title": "Part 2：SUS 系统可用性量表",
+    "survey.part.sus.title": "Part 1: SUS usability scale",
     "modal.close": "关闭"
   } satisfies Record<string, string>
 }));
@@ -129,7 +129,7 @@ const translationMapEn = {
   "diagnose.result.today": "Try this first",
   "diagnose.result.expand1": "See why and what to watch",
   "diagnose.button.start": "Start diagnosis",
-  "study.actionability.prompt": "After this task, I know what to practice next."
+  "study.actionability.prompt": "After this step, I am clearer than before about what I should practice next."
 } satisfies Record<string, string>;
 
 let mockSearchParams = new URLSearchParams();
@@ -576,7 +576,7 @@ describe("app smoke tests", () => {
 
     render(React.createElement(AssessmentResultPage));
 
-    expect(await screen.findByText("完成这个任务后，我知道我下一步该练什么了。")).toBeInTheDocument();
+    expect(await screen.findByText("完成这一步后，我比之前更清楚下一步该练什么了。")).toBeInTheDocument();
   });
 
   it("renders diagnose page with input box", async () => {
@@ -634,7 +634,7 @@ describe("app smoke tests", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "diagnose.button.start" }));
 
-    expect(await screen.findByText("完成这个任务后，我知道我下一步该练什么了。")).toBeInTheDocument();
+    expect(await screen.findByText("完成这一步后，我比之前更清楚下一步该练什么了。")).toBeInTheDocument();
   });
 
   it("walks through zh study diagnose flow with low-density summary by default and expanded detailed summary on demand", async () => {
@@ -753,7 +753,7 @@ describe("app smoke tests", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "diagnose.button.start" }));
 
-    await screen.findByText("完成这个任务后，我知道我下一步该练什么了。");
+    await screen.findByText("完成这一步后，我比之前更清楚下一步该练什么了。");
 
     const studyProgress = JSON.parse(window.localStorage.getItem(STUDY_PROGRESS_KEY) ?? "null");
     expect(studyProgress?.lastVisitedPath).toBe("/diagnose?q=%E6%88%91%E5%8F%8D%E6%89%8B%E6%80%BB%E4%B8%8B%E7%BD%91%EF%BC%8C%E4%B8%80%E5%BF%AB%E5%B0%B1%E6%9B%B4%E5%AE%B9%E6%98%93%E5%A4%B1%E8%AF%AF");
@@ -1003,7 +1003,7 @@ describe("app smoke tests", () => {
 
     render(React.createElement(PlanPage));
 
-    expect(await screen.findByText("完成这个任务后，我知道我下一步该练什么了。")).toBeInTheDocument();
+    expect(await screen.findByText("完成这一步后，我比之前更清楚下一步该练什么了。")).toBeInTheDocument();
   });
 
   it("offers diagnose and profile follow-up CTAs for an assessment-based study plan", async () => {
@@ -1047,7 +1047,7 @@ describe("app smoke tests", () => {
     render(React.createElement(PlanPage));
 
     await screen.findByText("你的 7 天提升计划");
-    expect(screen.queryByText("完成这个任务后，我知道我下一步该练什么了。")).not.toBeInTheDocument();
+    expect(screen.queryByText("完成这一步后，我比之前更清楚下一步该练什么了。")).not.toBeInTheDocument();
   });
 
   it("renders profile page login prompt when user is not signed in", () => {
@@ -1201,7 +1201,16 @@ describe("app smoke tests", () => {
     render(React.createElement(SurveyPage));
 
     expect(screen.getByText("TennisLevel 使用体验问卷")).toBeInTheDocument();
-    expect(screen.getByText("Part 2：SUS 系统可用性量表")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /SUS/ })).toBeInTheDocument();
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("renders study start with the coach-history background question", async () => {
+    const StudyStartPage = await loadPage(() => import("@/app/study/start/page"));
+
+    render(React.createElement(StudyStartPage));
+
+    expect(screen.getByText("你有没有请过教练？")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 

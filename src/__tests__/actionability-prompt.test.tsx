@@ -2,6 +2,8 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import type { StudySession } from "@/types/study";
+import enDictionary from "@/lib/i18n/dictionaries/en";
+import zhDictionary from "@/lib/i18n/dictionaries/zh";
 
 const logEvent = vi.fn();
 const persistStudyTaskRating = vi.fn();
@@ -52,14 +54,7 @@ describe("ActionabilityPrompt", () => {
     useI18n.mockReturnValue({
       language: "zh",
       t: (key: string) => {
-        const table: Record<string, string> = {
-          "study.actionability.title": "任务完成后的单题",
-          "study.actionability.prompt": "完成这个任务后，我知道我下一步该练什么了。",
-          "study.actionability.scale.min": "非常不同意",
-          "study.actionability.scale.max": "非常同意",
-          "study.actionability.submit": "提交评分"
-        };
-        return table[key] ?? key;
+        return (zhDictionary as Record<string, string>)[key] ?? key;
       }
     });
     persistStudyTaskRating.mockResolvedValue({ rating: { score: 6 } });
@@ -73,7 +68,7 @@ describe("ActionabilityPrompt", () => {
       onSubmitted: vi.fn()
     }));
 
-    expect(await screen.findByText("完成这个任务后，我知道我下一步该练什么了。")).toBeInTheDocument();
+    expect(await screen.findByText("完成这一步后，我比之前更清楚下一步该练什么了。")).toBeInTheDocument();
     expect(logEvent).toHaveBeenCalledWith(
       "task.actionability_prompt_viewed",
       expect.objectContaining({
@@ -119,14 +114,7 @@ describe("ActionabilityPrompt", () => {
     useI18n.mockReturnValue({
       language: "en",
       t: (key: string) => {
-        const table: Record<string, string> = {
-          "study.actionability.title": "One quick question after the task",
-          "study.actionability.prompt": "After this task, I know what to practise next.",
-          "study.actionability.scale.min": "Strongly disagree",
-          "study.actionability.scale.max": "Strongly agree",
-          "study.actionability.submit": "Submit rating"
-        };
-        return table[key] ?? key;
+        return (enDictionary as Record<string, string>)[key] ?? key;
       }
     });
 
@@ -134,7 +122,7 @@ describe("ActionabilityPrompt", () => {
 
     render(React.createElement(ActionabilityPrompt, { taskId: "task_2_assessment_entry" }));
 
-    expect(await screen.findByText("After this task, I know what to practise next.")).toBeInTheDocument();
+    expect(await screen.findByText("After this step, I am clearer than before about what I should practice next.")).toBeInTheDocument();
     expect(logEvent).toHaveBeenCalledWith(
       "task.actionability_prompt_viewed",
       expect.objectContaining({
