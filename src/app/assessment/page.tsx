@@ -57,7 +57,7 @@ export default function AssessmentPage() {
     hasSession: Boolean(session)
   });
   const postAssessmentHref = getPostAssessmentHref(appEnvironment);
-  const [entryState, setEntryState] = useState<"checking" | "questionnaire" | "redirecting">("checking");
+  const [entryState, setEntryState] = useState<"checking" | "questionnaire">("checking");
   const [searchReady, setSearchReady] = useState(false);
   const [retakeRequested, setRetakeRequested] = useState(false);
   const [draftRestored, setDraftRestored] = useState(false);
@@ -185,15 +185,8 @@ export default function AssessmentPage() {
       return;
     }
 
-    const storedResult = readAssessmentResultFromStorage();
-    if (storedResult?.answeredCount) {
-      setEntryState("redirecting");
-      router.push(postAssessmentHref);
-      return;
-    }
-
     setEntryState("questionnaire");
-  }, [language, postAssessmentHref, retakeRequested, router, searchReady]);
+  }, [language, retakeRequested, searchReady, totalSteps]);
 
   useEffect(() => {
     if (entryState !== "questionnaire") {

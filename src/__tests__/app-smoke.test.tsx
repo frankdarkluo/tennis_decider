@@ -423,16 +423,15 @@ describe("app smoke tests", () => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("redirects back to the saved assessment result on revisit", async () => {
+  it("still allows re-entering assessment even when a saved result exists", async () => {
     const AssessmentPage = await loadPage(() => import("@/app/assessment/page"));
 
     window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({ answeredCount: 6 }));
 
     render(React.createElement(AssessmentPage));
 
-    await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith("/");
-    });
+    expect(await screen.findByText("你的性别？")).toBeInTheDocument();
+    expect(mockPush).not.toHaveBeenCalled();
   });
 
   it("still allows an explicit retake even if a saved assessment result exists", async () => {
