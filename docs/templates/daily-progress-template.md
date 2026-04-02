@@ -1,4 +1,17 @@
+---
+tags:
+  - type/template
+  - area/process
+  - status/reference
+---
+
 # YYYY-MM-DD Progress
+
+## Related docs
+- [[index]]
+- [[roadmap/current]]
+- [[weekly/project-progress-summary]]
+- 补充一个最相关的 `[[features/...]]`、`[[research/...]]` 或 `[[roadmap/...]]` 文档
 
 ## 今日核心进展
 - 

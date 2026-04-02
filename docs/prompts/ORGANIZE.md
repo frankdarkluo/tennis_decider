@@ -1,10 +1,45 @@
+---
+tags:
+  - type/prompt
+  - area/process
+  - status/reference
+---
+
 # ORGANIZE
+
+## Related docs
+- [[index]]
+- [[roadmap/current]]
+- [[product-principles]]
+- [[templates/daily-progress-template]]
+- [[templates/weekly-review-template]]
+- [[templates/decision-template]]
+- [[skills/WORKFLOW]]
+
+## Obsidian linking rules
+- `docs/` 视为 vault 根目录，内部链接默认使用 `[[folder/file]]`。
+- 持久文档优先加轻量 frontmatter：
+  - 一个 `type/...` tag
+  - 一个 `area/...` tag
+  - 一个简单状态 tag
+- 每个核心文档顶部增加 `## Related docs`，避免知识孤岛。
 
 你现在在 `TENNIS_LEVEL` 仓库中工作。请把当前仓库中的项目文档整理成一个适合 Obsidian + VS Code + AI 协同的结构，但不要误伤代码文件。
 
 ## 目标
 
 建立稳定的知识文档结构，使项目进展、功能专题、决策、问题、路线图能够持续沉淀。
+
+## 触发条件
+
+只有在其他流程明确检测到文档结构问题时，才执行本 prompt。允许的触发条件包括：
+
+- broken internal wiki links
+- stale references to deleted notes
+- dangling skill / prompt / template references
+- orphaned operational notes with no backlinks
+
+不要因为“文档似乎还能更整齐”就推测性执行。
 
 ## 你要做的事情
 
@@ -88,4 +123,3 @@ docs/prompts/
 让 `docs/` 成为这个项目真正的知识入口和项目记忆系统。
 
 ---
-

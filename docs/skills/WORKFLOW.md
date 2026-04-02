@@ -1,4 +1,31 @@
+---
+aliases:
+  - AI Workflow
+tags:
+  - type/workflow
+  - area/process
+  - status/reference
+---
+
 # TENNIS_LEVEL AI 工作流说明
+
+## Related docs
+- [[index]]
+- [[roadmap/current]]
+- [[prompts/DAILY_PROGRESS_PROMPT]]
+- [[prompts/ORGANIZE]]
+- [[prompts/WEEKLY_REVIEW_PROMPT]]
+- [[templates/daily-progress-template]]
+- [[templates/weekly-review-template]]
+- [[templates/decision-template]]
+
+## Obsidian conventions
+- `docs/` 作为 vault 根目录，内部链接优先使用 `[[folder/file]]`。
+- 核心文档顶部使用轻量 frontmatter：
+  - 一个 `type/...` tag
+  - 一个 `area/...` tag
+  - 一个简单状态 tag
+- 持久文档增加 `## Related docs`，优先链接 hub、上游约束和下游执行文档。
 
 这份文件用于直接指导 GitHub Copilot / Codex（`gpt-5.3-codex medium`）在你的 `TENNIS_LEVEL` 仓库里完成以下事情：
 

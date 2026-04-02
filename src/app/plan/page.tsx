@@ -37,7 +37,7 @@ function PlanPageContent() {
   const params = useSearchParams();
   const { user, configured } = useAuth();
   const { openLoginModal } = useAuthModal();
-  const { studyMode, session, language } = useStudy();
+  const { environment, studyMode, session, language } = useStudy();
   const { t } = useI18n();
   const restoredDraft = useMemo(() => normalizePlanDraftSnapshot(readLocalStudyPlanDraft()), []);
   const defaultProblemTag = params.get("problemTag") ?? restoredDraft?.problemTag ?? "no-plan";
@@ -63,8 +63,8 @@ function PlanPageContent() {
   }, [primaryNextStepParam, restoredDraft?.primaryNextStep]);
 
   const plan = useMemo(
-    () => getPlanTemplate(problemTag, level, language, preferredContentIds, { primaryNextStep }),
-    [language, problemTag, level, preferredContentIds, primaryNextStep]
+    () => getPlanTemplate(problemTag, level, language, preferredContentIds, { primaryNextStep, environment }),
+    [environment, language, problemTag, level, preferredContentIds, primaryNextStep]
   );
   const todayPlan = plan.days[0];
   const laterPlans = plan.days.slice(1);

@@ -17,6 +17,10 @@ const searchQueriesByRule = {
     bilibili: ["发球抛球 不稳 纠正 网球", "冠军教练-莫拉托格鲁 发球 抛球", "盖奥网球 抛球 教学"],
     youtube: ["tennis serve toss fix", "serve toss consistency drill", "tennis toss placement lesson"]
   },
+  rule_serve_timing: {
+    bilibili: ["发球 节奏 时机 网球", "发球 动作 节奏 控制", "发球 timing 训练"],
+    youtube: ["tennis serve rhythm timing", "serve timing drills", "how to improve serve timing"]
+  },
   rule_late_contact: {
     bilibili: ["是佩恩呀 击球点 晚 网球", "准备慢 击球点偏晚 纠正", "分腿垫步 提前准备 网球"],
     youtube: ["tennis late contact point fix", "early preparation tennis", "tennis timing drill"]
@@ -130,7 +134,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 shadow swings — focus on hitting out front", "30 slow-feed backhand down-the-line shots", "20 two-point movement drills followed by backhand clearance"],
     recommendedContentIds: ["content_fr_01", "content_cn_a_01", "content_gaiao_03"],
     searchQueries: searchQueriesByRule.rule_backhand_net,
-    fallbackLevel: ["3.0", "3.5"]
+    fallbackLevel: ["3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_forehand_out",
@@ -146,7 +151,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["30 forehand rallies — just aim high over the net", "20 fixed-target forehand topspin shots", "20 forehands landing 1 metre inside the baseline"],
     recommendedContentIds: ["content_cn_d_01", "content_cn_d_03", "content_gaiao_01"],
     searchQueries: searchQueriesByRule.rule_forehand_out,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_second_serve_confidence",
@@ -162,7 +168,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["30 toss-only reps — no hitting", "20 half-motion serves — find the spin feel", "20 safe second serves into the ad court — goal: 100% in"],
     recommendedContentIds: ["content_gaiao_02", "content_zlx_01", "content_zlx_02"],
     searchQueries: searchQueriesByRule.rule_second_serve_confidence,
-    fallbackLevel: ["3.0", "3.5"]
+    fallbackLevel: ["3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_first_serve_in",
@@ -178,7 +185,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 first serves to the deuce court", "20 first serves to the ad court", "Track only the make rate"],
     recommendedContentIds: ["content_gaiao_02", "content_ttt_01", "content_zlx_01"],
     searchQueries: searchQueriesByRule.rule_first_serve_in,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_serve_toss",
@@ -194,7 +202,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["30 toss-only reps — no hitting", "20 toss-and-catch reps — note where each one falls", "15 toss-plus-shadow-swing reps"],
     recommendedContentIds: ["content_gaiao_02", "content_zlx_01", "content_ttt_01"],
     searchQueries: searchQueriesByRule.rule_serve_toss,
-    fallbackLevel: ["3.0", "3.5"]
+    fallbackLevel: ["3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_rally_consistency",
@@ -210,6 +219,30 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["12 sets starting from 6-ball middle rallies", "20 alternating forehand-backhand rally balls tracking depth only", "10 error-reset-restart sequences"],
     recommendedContentIds: ["content_fr_02", "content_fr_03", "content_fr_01"],
     searchQueries: searchQueriesByRule.rule_rally_consistency,
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
+  },
+  {
+    id: "rule_serve_timing",
+    keywords: ["发球", "节奏", "时机", "serve", "timing", "rhythm"],
+    synonyms: ["发球节奏总断", "发球时机不稳", "发球动作衔接不顺", "my serve timing is off", "my serve rhythm breaks down", "I mistime my serve"],
+    category: ["serve", "timing"],
+    problemTag: "serve-timing",
+    causes: ["抛球、引拍和发力节奏脱节", "发力意图过强导致时机乱", "缺少可重复的发球节奏口令"],
+    causes_en: ["Toss, take-back, and acceleration are out of sync", "Power intent is too high and breaks timing", "No repeatable serve-rhythm cue"],
+    fixes: ["先把动作节奏放慢并固定顺序", "先保证可重复触球时机再加速", "每次发球只保留一个节奏提醒词"],
+    fixes_en: ["Slow down and lock in the sequence first", "Stabilize contact timing before adding pace", "Use one rhythm cue before each serve"],
+    drills: ["发球节奏分段练习 15 组", "抛球到击球点时机练习 20 次", "一区二区交替节奏发球各 12 球"],
+    drills_en: ["15 segmented serve-rhythm reps", "20 toss-to-contact timing reps", "12 alternating deuce/ad rhythm serves"],
+    recommendedContentIds: [
+      "content_expanded_youtube_creator_tenniswithtyler_zxizdcpkhbg",
+      "content_expanded_youtube_creator_the_game_of_tennis_0l6vuf46vj0",
+      "content_expanded_youtube_creator_the_game_of_tennis_bff2emdrhmk",
+      "content_gaiao_02",
+      "content_zlx_01"
+    ],
+    environment: ["testing", "production"],
+    searchQueries: searchQueriesByRule.rule_serve_timing,
     fallbackLevel: ["3.0", "3.5", "4.0"]
   },
   {
@@ -226,7 +259,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 split-step + turn-and-set drills", "15 feed-and-prepare reps — no hitting, just set up", "20 small-step positioning drills followed by a hit"],
     recommendedContentIds: ["content_fr_02", "content_cn_a_02", "content_cn_c_02"],
     searchQueries: searchQueriesByRule.rule_late_contact,
-    fallbackLevel: ["3.0", "3.5"]
+    fallbackLevel: ["3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_net_errors",
@@ -242,7 +276,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 close-up block volleys", "15 forehand volleys + 15 backhand volleys", "10 doubles net reaction drills"],
     recommendedContentIds: ["content_rb_01", "content_cn_b_01", "content_cn_b_03"],
     searchQueries: searchQueriesByRule.rule_net_errors,
-    fallbackLevel: ["3.0", "3.5"]
+    fallbackLevel: ["3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_volley_floating",
@@ -258,7 +293,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 short-court block volleys", "15 forehand and 15 backhand volleys", "10 doubles net drills focused on keeping the volley low"],
     recommendedContentIds: ["content_rb_01", "content_cn_b_01", "content_cn_b_03"],
     searchQueries: searchQueriesByRule.rule_volley_floating,
-    fallbackLevel: ["3.0", "3.5"]
+    fallbackLevel: ["3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_volley_into_net",
@@ -274,7 +310,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 short-court block volleys", "15 forehand and 15 backhand volleys focused on clearance", "10 doubles reaction-volley drills"],
     recommendedContentIds: ["content_rb_01", "content_cn_b_03", "content_cn_b_01"],
     searchQueries: searchQueriesByRule.rule_volley_into_net,
-    fallbackLevel: ["3.0", "3.5"]
+    fallbackLevel: ["3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_overhead_timing",
@@ -288,7 +325,16 @@ export const diagnosisRules: DiagnosisRule[] = [
     fixes_en: ["Use crossover steps to get behind the ball earlier", "Set the racquet sooner", "Keep the contact point in front and above the head"],
     drills: ["高压调步 15 组", "高压定点击球 15 球", "高压后回位 10 组"],
     drills_en: ["15 overhead footwork sets", "15 fed overheads from a fixed spot", "10 overhead-plus-recovery reps"],
-    recommendedContentIds: ["content_rb_01", "content_cn_b_03", "content_fr_02"],
+    recommendedContentIds: [
+      "content_expanded_youtube_creator_patrick_mouratoglou_dkasdyrsseu",
+      "content_expanded_youtube_creator_coach_ben_zink_9gx0iuhaivu",
+      "content_expanded_youtube_creator_performance_plus_tennis_rynzrqflp94",
+      "content_expanded_youtube_creator_2minute_tennis_rzggh0ynlzq",
+      "content_expanded_youtube_creator_2minute_tennis_qenjamtncmc",
+      "content_expanded_youtube_creator_top_tennis_training_pdm6cmb3ef4",
+      "content_expanded_youtube_creator_iron_will_tennis_bzyp0kv8fjg"
+    ],
+    environment: ["testing", "production"],
     searchQueries: searchQueriesByRule.rule_overhead_timing,
     fallbackLevel: ["3.0", "3.5", "4.0"]
   },
@@ -306,7 +352,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["10 pre-serve rhythm reps", "10 minutes of serve-and-return live points", "Practice set using only high-percentage targets"],
     recommendedContentIds: ["content_rb_03", "content_cn_f_01", "content_cn_e_02"],
     searchQueries: searchQueriesByRule.rule_match_anxiety,
-    fallbackLevel: ["3.0", "3.5"]
+    fallbackLevel: ["3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_pressure_tightness",
@@ -322,7 +369,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["10 key-point cue rehearsals", "10 minutes starting every game at 30-30", "Take one reset breath before every point"],
     recommendedContentIds: ["content_cn_f_01", "content_cn_e_02", "content_rb_03"],
     searchQueries: searchQueriesByRule.rule_pressure_tightness,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_forehand_no_power",
@@ -338,7 +386,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 no-ball rotation swings", "20 fixed-target forehands at 70% power", "20 forehands with a natural follow-through"],
     recommendedContentIds: ["content_fr_03", "content_cn_d_02", "content_gaiao_01"],
     searchQueries: searchQueriesByRule.rule_forehand_no_power,
-    fallbackLevel: ["3.0", "3.5"]
+    fallbackLevel: ["3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_running_forehand",
@@ -354,7 +403,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["15 lateral two-point movement sets", "20 forehands after movement", "10 running-forehand plus recovery reps"],
     recommendedContentIds: ["content_cn_a_03", "content_cn_d_03", "content_fr_02"],
     searchQueries: searchQueriesByRule.rule_running_forehand,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_running_backhand",
@@ -370,7 +420,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["15 backhand-side movement sets", "20 backhands after movement", "10 running-backhand plus recovery reps"],
     recommendedContentIds: ["content_cn_a_03", "content_cn_a_01", "content_fr_02"],
     searchQueries: searchQueriesByRule.rule_running_backhand,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_balls_too_short",
@@ -386,7 +437,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 shots into a target zone inside the baseline", "20 alternating forehand-backhand depth drills", "15 first-ball-after-serve depth drills"],
     recommendedContentIds: ["content_cn_c_01", "content_cn_e_03", "content_et_01"],
     searchQueries: searchQueriesByRule.rule_balls_too_short,
-    fallbackLevel: ["3.0", "3.5"]
+    fallbackLevel: ["3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_return_under_pressure",
@@ -402,7 +454,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 compact-swing returns", "20 returns aimed deep down the middle", "10 serve-and-return live points"],
     recommendedContentIds: ["content_rb_02", "content_cn_e_01", "content_cn_e_03"],
     searchQueries: searchQueriesByRule.rule_return_under_pressure,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_slice_too_high",
@@ -418,7 +471,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 no-ball slice shadow swings", "20 medium-pace slices aimed deep", "Slice target practice — land within 2 metres of the baseline"],
     recommendedContentIds: ["content_common_03", "content_zlx_03", "content_it_01"],
     searchQueries: searchQueriesByRule.rule_slice_too_high,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_topspin_low",
@@ -434,7 +488,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 no-ball brush swings — feel the low-to-high", "20 high-arc forehands — just aim for net clearance", "20 forehands landing 1 metre inside the baseline"],
     recommendedContentIds: ["content_cn_d_03", "content_cn_d_01", "content_fr_03"],
     searchQueries: searchQueriesByRule.rule_topspin_low,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_serve_accuracy",
@@ -450,7 +505,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 half-motion serves — just get them in", "20 serves to a single target zone", "10 in a row before switching sides"],
     recommendedContentIds: ["content_gaiao_02", "content_zlx_01", "content_ttt_01"],
     searchQueries: searchQueriesByRule.rule_serve_accuracy,
-    fallbackLevel: ["2.5", "3.0", "3.5"]
+    fallbackLevel: ["2.5", "3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_movement_slow",
@@ -466,7 +522,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 split-step drills", "15 two-point first-step drills", "20 feed drills — get in position before you hit"],
     recommendedContentIds: ["content_cn_c_02", "content_cn_a_03", "content_fr_02"],
     searchQueries: searchQueriesByRule.rule_movement_slow,
-    fallbackLevel: ["2.5", "3.0", "3.5"]
+    fallbackLevel: ["2.5", "3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_mobility_limit",
@@ -482,7 +539,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["15 left-right first-step sets", "20 recovery-step reps", "10 short high-quality movement intervals"],
     recommendedContentIds: ["content_cn_c_02", "content_fr_02", "content_cn_a_03"],
     searchQueries: searchQueriesByRule.rule_mobility_limit,
-    fallbackLevel: ["2.5", "3.0", "3.5"]
+    fallbackLevel: ["2.5", "3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_stamina_drop",
@@ -498,7 +556,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["8 sets of 20 seconds on, 40 seconds recovery", "15 rally-plus-recovery-step reps", "Track only whether technique breaks down late"],
     recommendedContentIds: ["content_cn_c_02", "content_fr_02", "content_cn_c_01"],
     searchQueries: searchQueriesByRule.rule_stamina_drop,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_doubles_positioning",
@@ -514,7 +573,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["10 doubles shadow movement drills", "15 post-return positioning drills", "Practice doubles set — only track positioning errors"],
     recommendedContentIds: ["content_cn_b_02", "content_rb_01", "content_rb_03"],
     searchQueries: searchQueriesByRule.rule_doubles_positioning,
-    fallbackLevel: ["3.0", "3.5"]
+    fallbackLevel: ["3.0", "3.5"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_trouble_with_slice",
@@ -530,7 +590,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 low-ball feeds — practise hitting in front", "20 low-ball lifts — track net clearance height", "10 slice-exchange rallies — focus on reading and positioning"],
     recommendedContentIds: ["content_common_02", "content_cn_a_02", "content_fr_02"],
     searchQueries: searchQueriesByRule.rule_trouble_with_slice,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_moonball_trouble",
@@ -546,7 +607,8 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["15 moonball adjustment-step sets", "20 fed high-bounce contact drills", "10 moonball rally sets"],
     recommendedContentIds: ["content_fr_02", "content_cn_a_02", "content_cn_c_01"],
     searchQueries: searchQueriesByRule.rule_moonball_trouble,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_cant_hit_lob",
@@ -562,6 +624,7 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["15 defensive lobs from the baseline", "10 deep-lob-only drills when pushed back", "10 lob-and-recover drills"],
     recommendedContentIds: ["content_common_01", "content_cn_c_01", "content_rb_03"],
     searchQueries: searchQueriesByRule.rule_cant_hit_lob,
-    fallbackLevel: ["3.0", "3.5", "4.0"]
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   }
 ];

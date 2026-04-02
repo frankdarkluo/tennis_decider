@@ -1,4 +1,5 @@
 import { ContentItem } from "@/types/content";
+import { EnvironmentValue } from "@/types/environment";
 
 export type DiagnosisSearchQueries = {
   bilibili: string[];
@@ -79,6 +80,7 @@ export type DiagnosisRule = {
   drills: string[];
   searchQueries: DiagnosisSearchQueries;
   fallbackLevel?: string[];
+  environment?: EnvironmentValue;
 };
 
 export type DiagnosisConfidence = "较低" | "中等" | "较高";

@@ -1,4 +1,22 @@
+---
+aliases:
+  - Definition of Done
+  - DoD
+tags:
+  - type/policy
+  - area/process
+  - status/reference
+---
+
 # Definition of Done — TennisLevel
+
+## Related docs
+- [[index]]
+- [[boundaries]]
+- [[product-principles]]
+- [[roadmap/current]]
+- [[roadmap/content-expansion-1000]]
+- [[features/youtube-platform-spec]]
 
 ## Task done
 

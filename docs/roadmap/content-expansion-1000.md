@@ -1,11 +1,28 @@
+---
+aliases:
+  - Content Expansion 1000
+tags:
+  - type/roadmap
+  - area/content
+  - status/active
+---
+
 # 内容库扩充至1000条方案
 
 > **文档状态**：草稿 v2
 > **最后更新**：2026-04-01
 > **所属里程碑**：P2.3 研究执行闭环
-> **关联文档**：见第七章 docs/ 知识图谱
+> **关联文档**：[[roadmap/current]] · [[roadmap/requirements]] · [[index]] · [[features/youtube-platform-spec]]
 
 ---
+
+## 关联文档
+- [[index]]
+- [[roadmap/current]]
+- [[roadmap/requirements]]
+- [[research/study-mode]]
+- [[features/youtube-platform-spec]]
+- [[definition-of-done]]
 
 ## 一、现状与目标
 
@@ -195,57 +212,43 @@
 
 **核心导航节点**
 
-```
-docs/index.md                          <- 全库入口，所有文档应能从这里找到
-docs/product-principles.md             <- 产品身份与反漂移约束
-docs/boundaries.md                     <- 明确 out-of-scope 边界
-docs/definition-of-done.md            <- 验收标准定义
-```
+- [[index]] <- 全库入口，所有文档应能从这里找到
+- [[product-principles]] <- 产品身份与反漂移约束
+- [[boundaries]] <- 明确 out-of-scope 边界
+- [[definition-of-done]] <- 验收标准定义
 
 **路线图节点**
 
-```
-docs/roadmap/requirements.md           <- P1-P4 功能需求全集（最重要的单文件）
-docs/roadmap/current.md               <- 当前冲刺状态（应每日维护）
-docs/roadmap/content-expansion-1000.md <- 本文档
-docs/roadmap/codex-7-point-execution-2026-03-31.md
-docs/roadmap/routing-first-3-step-execution-2026-03-31.md
-```
+- [[roadmap/requirements]] <- P1-P4 功能需求全集（最重要的单文件）
+- [[roadmap/current]] <- 当前冲刺状态（应每日维护）
+- [[roadmap/content-expansion-1000]] <- 本文档
+- [[roadmap/codex-7-point-execution-2026-03-31]]
+- [[roadmap/routing-first-3-step-execution-2026-03-31]]
 
 **研究节点**
 
-```
-docs/research/study-mode.md
-docs/research/study-remote-migration-checklist.md
-docs/research/study-snapshot-note.md
-docs/research/study-facilitator-checklist.md
-```
+- [[research/study-mode]]
+- [[research/study-remote-migration-checklist]]
+- [[research/study-snapshot-note]]
+- [[research/study-facilitator-checklist]]
 
 **进度节点**
 
-```
-docs/progress/2026-03-30.md
-docs/progress/2026-03-31.md
-docs/weekly/project-progress-summary.md
-docs/weekly/2026-W14.md
-```
+- [[progress/2026-03-30]]
+- [[progress/2026-03-31]]
+- [[weekly/project-progress-summary]]
+- [[weekly/2026-W14]]
 
 **功能节点**
 
-```
-docs/features/diagnosis-study-observability.md
-docs/features/youtube-platform-spec.md          <- 已建
-docs/superpowers/specs/2026-03-30-diagnosis-usability-upgrade-design.md
-docs/superpowers/plans/2026-03-30-diagnosis-usability-upgrade.md
-```
+- [[features/diagnosis-study-observability]]
+- [[features/youtube-platform-spec]] <- 已建
 
 **提示词节点**
 
-```
-docs/prompts/ORGANIZE.md
-docs/prompts/DAILY_PROGRESS_PROMPT.md
-docs/prompts/WEEKLY_REVIEW_PROMPT.md
-```
+- [[prompts/ORGANIZE]]
+- [[prompts/DAILY_PROGRESS_PROMPT]]
+- [[prompts/WEEKLY_REVIEW_PROMPT]]
 
 ### 7.2 引用关系图
 
@@ -264,8 +267,6 @@ index.md
 |   +-- research/study-snapshot-note.md
 |   +-- research/study-facilitator-checklist.md
 +-- features/diagnosis-study-observability.md
-|   +-- superpowers/specs/...diagnosis-design.md
-|       +-- superpowers/plans/...diagnosis.md
 +-- features/youtube-platform-spec.md   [已建]
 +-- progress/ & weekly/         [进度日志，只写不引用]
 ```
@@ -274,26 +275,21 @@ index.md
 
 | 缺口描述 | 建议补充文档 | 优先级 |
 |---------|------------|--------|
-| 内容库扩充计划在 index.md 中无入口 | 在 index.md `Roadmap Entrypoints` 下追加本文档链接（已完成） | 高 |
-| `boundaries.md` 未被 roadmap 文档引用 | 在 requirements.md 顶部加引用（已完成） | 高 |
-| YouTube 平台处理规范无文档 | 新建 `docs/features/youtube-platform-spec.md`（已完成） | 中 |
-| `definition-of-done.md` 验收标准与本方案未同步 | 将第六章三项验收标准同步写入 DoD（已完成） | 中 |
+| 内容库扩充计划在 [[index]] 中无入口 | 在 [[index]] 的 `Roadmap Entrypoints` 下追加本文档链接（已完成） | 高 |
+| [[boundaries]] 未被 roadmap 文档引用 | 在 [[roadmap/requirements]] 顶部加引用（已完成） | 高 |
+| YouTube 平台处理规范无文档 | 新建 [[features/youtube-platform-spec]]（已完成） | 中 |
+| [[definition-of-done]] 验收标准与本方案未同步 | 将第六章三项验收标准同步写入 DoD（已完成） | 中 |
 | skills/ 和 templates/ 目录为空 | 待 P2.3 后补充 | 低 |
 
 ### 7.4 index.md 需要追加的引用（可直接提交）
 
-在 `docs/index.md` 的 `## Roadmap Entrypoints` 章节追加：
+在 [[index]] 的 `## Roadmap Entrypoints` 章节追加：
 
-```markdown
-- `docs/roadmap/content-expansion-1000.md` — 内容库扩充至1000条执行方案
-```
+- [[roadmap/content-expansion-1000]] — 内容库扩充至1000条执行方案
 
-在 `## Related Existing Docs` 章节追加：
+在 `## Feature Entrypoints` 章节确保包含：
 
-```markdown
-- `docs/features/youtube-platform-spec.md` — YouTube平台技术处理规范（待建）
-- `docs/features/youtube-platform-spec.md` — YouTube平台技术处理规范（已建）
-```
+- [[features/youtube-platform-spec]] — YouTube平台技术处理规范（已建）
 
 ---
 
@@ -315,5 +311,5 @@ index.md
 
 ---
 
-*本文档落地路径：`docs/roadmap/content-expansion-1000.md`*
+*本文档落地路径：[[roadmap/content-expansion-1000]]*
 *下一个关联里程碑：P2.3 研究执行闭环*

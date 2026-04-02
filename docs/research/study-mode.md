@@ -1,3 +1,12 @@
+---
+aliases:
+  - Study Mode
+tags:
+  - type/research
+  - area/study
+  - status/reference
+---
+
 # TennisLevel Study Mode
 
 This file is local-only and should not be committed.
@@ -5,6 +14,15 @@ This file is local-only and should not be committed.
 ## Goal
 
 Run reproducible pilot sessions without forcing sign-in, while keeping exports structured and privacy-safe.
+
+## Related docs
+- [[index]]
+- [[roadmap/current]]
+- [[research/study-remote-migration-checklist]]
+- [[research/study-snapshot-note]]
+- [[research/study-facilitator-checklist]]
+- [[features/diagnosis-study-observability]]
+- [[weekly/project-progress-summary]]
 
 ## Canonical Entry
 

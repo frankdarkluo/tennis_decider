@@ -36,7 +36,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/600c2b8f18b6a715adf4c55c484b8ca114534ffa.jpg",
     "duration": "0:52",
     "viewCount": 8237,
-    "url": "https://www.bilibili.com/video/BV1ewQ8YyEii/"
+    "url": "https://www.bilibili.com/video/BV1ewQ8YyEii/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_austin_camp_bv1ftqzyuem6",
@@ -73,7 +77,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/cc45fd02899d37e0826bc2ae6e5117267fc00e9a.jpg",
     "duration": "1:21",
     "viewCount": 11626,
-    "url": "https://www.bilibili.com/video/BV1FtQzYUEm6/"
+    "url": "https://www.bilibili.com/video/BV1FtQzYUEm6/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_braden_tennis_academy_bv19z4y117qi",
@@ -108,7 +116,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/c380b21b97d313fd693c9ae07eb4304a5845724a.jpg",
     "duration": "1:29",
     "viewCount": 5976,
-    "url": "https://www.bilibili.com/video/BV19z4y117Qi/"
+    "url": "https://www.bilibili.com/video/BV19z4y117Qi/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_braden_tennis_academy_bv1e54y1c7t7",
@@ -145,7 +157,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/7a0d44d06baec18a532cb40ac5150e268d5765b5.jpg",
     "duration": "3:54",
     "viewCount": 3683,
-    "url": "https://www.bilibili.com/video/BV1e54y1c7T7/"
+    "url": "https://www.bilibili.com/video/BV1e54y1c7T7/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_braden_tennis_academy_bv1eo4y1j7rw",
@@ -179,7 +195,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/8daca0d77d7bf109c62b71285eafc4ebc071ac1f.jpg",
     "duration": "2:17",
     "viewCount": 7919,
-    "url": "https://www.bilibili.com/video/BV1Eo4y1j7rw/"
+    "url": "https://www.bilibili.com/video/BV1Eo4y1j7rw/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_braden_tennis_academy_bv1f3411s7pb",
@@ -216,7 +236,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/da70473f5ad650112a7c90c2ac9b7f226824c045.jpg",
     "duration": "13:02",
     "viewCount": 35890,
-    "url": "https://www.bilibili.com/video/BV1f3411s7Pb/"
+    "url": "https://www.bilibili.com/video/BV1f3411s7Pb/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_braden_tennis_academy_bv1hh411x7nr",
@@ -248,7 +272,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/432fb1821b10ab7ce875b8de890db618e877395e.jpg",
     "duration": "22:56",
     "viewCount": 9512,
-    "url": "https://www.bilibili.com/video/BV1hh411x7nR/"
+    "url": "https://www.bilibili.com/video/BV1hh411x7nR/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_braden_tennis_academy_bv1jm4y127c2",
@@ -282,7 +310,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/70c8eed49b21b8310d6504fe2fa569b93f4af83c.jpg",
     "duration": "2:29",
     "viewCount": 7869,
-    "url": "https://www.bilibili.com/video/BV1jm4y127C2/"
+    "url": "https://www.bilibili.com/video/BV1jm4y127C2/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_braden_tennis_academy_bv1s54y1p79n",
@@ -314,7 +346,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/40f85eea1dcf920bb2aa81f3e6116a787be577d5.jpg",
     "duration": "2:45",
     "viewCount": 9685,
-    "url": "https://www.bilibili.com/video/BV1s54y1P79N/"
+    "url": "https://www.bilibili.com/video/BV1s54y1P79N/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_bugu_tennis_bv1aaxybcetc",
@@ -351,7 +387,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/7943b2d44a029e12dbf3fba1130a63b3bfd9a28f.jpg",
     "duration": "1:51",
     "viewCount": 300,
-    "url": "https://www.bilibili.com/video/BV1aAXyBCEtc/"
+    "url": "https://www.bilibili.com/video/BV1aAXyBCEtc/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv11s421x7yc",
@@ -381,7 +421,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/f52e3ae35d94b09287d2021327ad22ae2ec22301.jpg",
     "duration": "1:33",
     "viewCount": 17262,
-    "url": "https://www.bilibili.com/video/BV11S421X7YC/"
+    "url": "https://www.bilibili.com/video/BV11S421X7YC/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1384y1q74o",
@@ -411,7 +455,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/2e0eef053cc20d0369b669ff7025c2aae55d5e13.jpg",
     "duration": "1:27",
     "viewCount": 4539,
-    "url": "https://www.bilibili.com/video/BV1384y1Q74o/"
+    "url": "https://www.bilibili.com/video/BV1384y1Q74o/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv14a4y1w7td",
@@ -443,7 +491,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/2e78e52d5f42b39dcda62fb4911f1641f0a7519c.jpg",
     "duration": "0:58",
     "viewCount": 19661,
-    "url": "https://www.bilibili.com/video/BV14a4y1w7td/"
+    "url": "https://www.bilibili.com/video/BV14a4y1w7td/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv16z4y1w7ei",
@@ -478,7 +530,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/d86a3426052a6e0eb96d010d4260a3dca1e623f3.jpg",
     "duration": "1:53",
     "viewCount": 3105,
-    "url": "https://www.bilibili.com/video/BV16z4y1w7Ei/"
+    "url": "https://www.bilibili.com/video/BV16z4y1w7Ei/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv17i421h7re",
@@ -508,7 +564,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/cbf099cfaf0e448cb331a51864f14db1f6892b49.jpg",
     "duration": "2:15",
     "viewCount": 10970,
-    "url": "https://www.bilibili.com/video/BV17i421h7Re/"
+    "url": "https://www.bilibili.com/video/BV17i421h7Re/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv18z4y1c7wy",
@@ -538,7 +598,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/4bf4e0a1d0d8f9eba40fe3a3da2b47ffb4184b8c.jpg",
     "duration": "1:25",
     "viewCount": 3784,
-    "url": "https://www.bilibili.com/video/BV18z4y1c7wY/"
+    "url": "https://www.bilibili.com/video/BV18z4y1c7wY/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1ay411e7f7",
@@ -568,7 +632,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/328599bf5894047e1e5474626a16a1cac33b04c2.jpg",
     "duration": "0:29",
     "viewCount": 12278,
-    "url": "https://www.bilibili.com/video/BV1ay411e7F7/"
+    "url": "https://www.bilibili.com/video/BV1ay411e7F7/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1du4y1u7a4",
@@ -598,7 +666,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/4f18b48a990f82e2c3464fc45ba112325967f803.jpg",
     "duration": "2:11",
     "viewCount": 7363,
-    "url": "https://www.bilibili.com/video/BV1du4y1U7A4/"
+    "url": "https://www.bilibili.com/video/BV1du4y1U7A4/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1ei421a7ks",
@@ -628,7 +700,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/47f6e15364cd335eb9d2143f37d76f95d5bed1b5.jpg",
     "duration": "2:13",
     "viewCount": 12859,
-    "url": "https://www.bilibili.com/video/BV1Ei421a7Ks/"
+    "url": "https://www.bilibili.com/video/BV1Ei421a7Ks/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1fw411y78u",
@@ -660,7 +736,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/10e95851921a899412b5618017a45e123f7609a6.jpg",
     "duration": "3:59",
     "viewCount": 8768,
-    "url": "https://www.bilibili.com/video/BV1Fw411y78U/"
+    "url": "https://www.bilibili.com/video/BV1Fw411y78U/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1fwhge2ehs",
@@ -692,7 +772,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/d73a43f77a74a582c49b6af3d615de4c0ca57e0d.jpg",
     "duration": "1:12",
     "viewCount": 18918,
-    "url": "https://www.bilibili.com/video/BV1FwHGe2Ehs/"
+    "url": "https://www.bilibili.com/video/BV1FwHGe2Ehs/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1gotoeueeq",
@@ -724,7 +808,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/41f89d8bf5658f2ef9032afe64c529c3845ae9a6.jpg",
     "duration": "1:14",
     "viewCount": 8399,
-    "url": "https://www.bilibili.com/video/BV1gotoeuEEq/"
+    "url": "https://www.bilibili.com/video/BV1gotoeuEEq/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1hf41167rf",
@@ -754,7 +842,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/ce70a22a0bcfbac9d1c86f7d69dfbf0665600765.jpg",
     "duration": "1:03",
     "viewCount": 3348,
-    "url": "https://www.bilibili.com/video/BV1hF41167RF/"
+    "url": "https://www.bilibili.com/video/BV1hF41167RF/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1hg4y1x7yd",
@@ -784,7 +876,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/c897d1e9496c75fea51092f4459d3c189a3f8e99.jpg",
     "duration": "1:16",
     "viewCount": 7771,
-    "url": "https://www.bilibili.com/video/BV1hg4y1X7yD/"
+    "url": "https://www.bilibili.com/video/BV1hg4y1X7yD/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1ie411f7y7",
@@ -814,7 +910,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/3c1e9ecc317f827fcec3d3675d2fdf98e9c776d7.jpg",
     "duration": "2:36",
     "viewCount": 8714,
-    "url": "https://www.bilibili.com/video/BV1ie411f7Y7/"
+    "url": "https://www.bilibili.com/video/BV1ie411f7Y7/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1jk411f73b",
@@ -844,7 +944,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/4af26c457dd09c99de4b60bf0e8d08efcff88c3a.jpg",
     "duration": "1:35",
     "viewCount": 1309,
-    "url": "https://www.bilibili.com/video/BV1jK411f73B/"
+    "url": "https://www.bilibili.com/video/BV1jK411f73B/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1jq4y1h7lv",
@@ -874,7 +978,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/7ee66939d219acb8267231c04099dd51512847cf.jpg",
     "duration": "1:03",
     "viewCount": 1471,
-    "url": "https://www.bilibili.com/video/BV1JQ4y1H7LV/"
+    "url": "https://www.bilibili.com/video/BV1JQ4y1H7LV/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1ms4y1m7th",
@@ -908,7 +1016,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/f18773e8c54beff2e5eac4be86a485f6e1f2c933.jpg",
     "duration": "1:05",
     "viewCount": 14059,
-    "url": "https://www.bilibili.com/video/BV1Ms4y1M7Th/"
+    "url": "https://www.bilibili.com/video/BV1Ms4y1M7Th/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1n1pcere4z",
@@ -938,7 +1050,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/ca1d2dbfdd55b15b16ced5f90729eac237e90fb8.jpg",
     "duration": "1:59",
     "viewCount": 10549,
-    "url": "https://www.bilibili.com/video/BV1n1pCerE4Z/"
+    "url": "https://www.bilibili.com/video/BV1n1pCerE4Z/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1obsmeue1b",
@@ -970,7 +1086,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/eafb396ad11173294b9cac3d3d0553dc2e70336d.jpg",
     "duration": "0:31",
     "viewCount": 9080,
-    "url": "https://www.bilibili.com/video/BV1oBsmeUE1B/"
+    "url": "https://www.bilibili.com/video/BV1oBsmeUE1B/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1pw42197y2",
@@ -1003,7 +1123,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/bd995d9b61b8cffda9586c417770dc8260e6fee7.jpg",
     "duration": "6:50",
     "viewCount": 8420,
-    "url": "https://www.bilibili.com/video/BV1pW42197y2/"
+    "url": "https://www.bilibili.com/video/BV1pW42197y2/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1rz4y1p7nf",
@@ -1036,7 +1160,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/26cfc464df8dadc4d30234700224c1fb80ceeee0.jpg",
     "duration": "1:48",
     "viewCount": 16193,
-    "url": "https://www.bilibili.com/video/BV1rz4y1P7Nf/"
+    "url": "https://www.bilibili.com/video/BV1rz4y1P7Nf/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1teh6ezewj",
@@ -1068,7 +1196,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/28cb372d4ef8d7c9c8b61a4ddbabab2c4edafd20.jpg",
     "duration": "0:34",
     "viewCount": 39698,
-    "url": "https://www.bilibili.com/video/BV1TEH6ezEwj/"
+    "url": "https://www.bilibili.com/video/BV1TEH6ezEwj/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1th4y1a73a",
@@ -1100,7 +1232,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/2d8070e878be23d061283b15fa364fdc89f1488a.jpg",
     "duration": "1:21",
     "viewCount": 14163,
-    "url": "https://www.bilibili.com/video/BV1th4y1a73A/"
+    "url": "https://www.bilibili.com/video/BV1th4y1a73A/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1v14jehebd",
@@ -1133,7 +1269,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/6838876e2bc0cded60b6c5f753bf70a58d43cd76.jpg",
     "duration": "2:58",
     "viewCount": 8098,
-    "url": "https://www.bilibili.com/video/BV1V14jehEbD/"
+    "url": "https://www.bilibili.com/video/BV1V14jehEbD/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1vr4y1x7pj",
@@ -1163,7 +1303,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/ceddb891db91a32e59d0914b5bef926272105645.jpg",
     "duration": "0:42",
     "viewCount": 6545,
-    "url": "https://www.bilibili.com/video/BV1vr4y1X7pj/"
+    "url": "https://www.bilibili.com/video/BV1vr4y1X7pj/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1xm4m127dp",
@@ -1193,7 +1337,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/95870e3dd53b4b6fc805da810da205be38126cbe.jpg",
     "duration": "5:12",
     "viewCount": 8698,
-    "url": "https://www.bilibili.com/video/BV1xM4m127dp/"
+    "url": "https://www.bilibili.com/video/BV1xM4m127dp/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_cn_a_bv1xm4y1l7fv",
@@ -1223,7 +1371,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/04c269be289f7947303d149959e8c69c6d9d360a.jpg",
     "duration": "0:59",
     "viewCount": 21561,
-    "url": "https://www.bilibili.com/video/BV1XM4y1L7FV/"
+    "url": "https://www.bilibili.com/video/BV1XM4y1L7FV/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_furao_bv12q4y1s763",
@@ -1258,7 +1410,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/91bc56f127c08101a0ab92a03a29dcac5940a1e2.jpg",
     "duration": "8:26",
     "viewCount": 6661,
-    "url": "https://www.bilibili.com/video/BV12q4y1S763/"
+    "url": "https://www.bilibili.com/video/BV12q4y1S763/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_furao_bv16v411j7so",
@@ -1289,7 +1445,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/8a427a8445ad79f3bef5679f3c846a97c7e7c47b.jpg",
     "duration": "3:44",
     "viewCount": 13500,
-    "url": "https://www.bilibili.com/video/BV16V411J7So/"
+    "url": "https://www.bilibili.com/video/BV16V411J7So/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_furao_bv19r4y1x7az",
@@ -1320,7 +1480,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/5583c62d918bd4ee2b7ae7354aab27cab0ca80e5.jpg",
     "duration": "16:42",
     "viewCount": 23784,
-    "url": "https://www.bilibili.com/video/BV19R4y1x7aZ/"
+    "url": "https://www.bilibili.com/video/BV19R4y1x7aZ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_furao_bv1fr4y1y7lt",
@@ -1356,7 +1520,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/bcf6dc4ef15aa98c30aa50a6396112d5c257013e.jpg",
     "duration": "13:02",
     "viewCount": 13375,
-    "url": "https://www.bilibili.com/video/BV1fR4y1y7Lt/"
+    "url": "https://www.bilibili.com/video/BV1fR4y1y7Lt/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_furao_bv1fy4y1d7cq",
@@ -1392,7 +1560,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/2214786ce1ff1e254627247fd5ef33084b92ac86.jpg",
     "duration": "12:10",
     "viewCount": 30369,
-    "url": "https://www.bilibili.com/video/BV1Fy4y1D7cQ/"
+    "url": "https://www.bilibili.com/video/BV1Fy4y1D7cQ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_furao_bv1hh411i7yc",
@@ -1428,7 +1600,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/46ee866e106cc44d34476da5eea604fd87749b5d.jpg",
     "duration": "7:27",
     "viewCount": 13300,
-    "url": "https://www.bilibili.com/video/BV1hh411i7yC/"
+    "url": "https://www.bilibili.com/video/BV1hh411i7yC/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_furao_bv1no4y1g7p7",
@@ -1459,7 +1635,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/d8f8a1b8025403815be272361b8660a503f1a3be.jpg",
     "duration": "12:58",
     "viewCount": 30555,
-    "url": "https://www.bilibili.com/video/BV1no4y1g7P7/"
+    "url": "https://www.bilibili.com/video/BV1no4y1g7P7/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_furao_bv1qh411b7eb",
@@ -1490,7 +1670,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/9549e35b1259e5eeeb6e21fd443eeecfc75710be.jpg",
     "duration": "6:08",
     "viewCount": 9345,
-    "url": "https://www.bilibili.com/video/BV1qh411B7eB/"
+    "url": "https://www.bilibili.com/video/BV1qh411B7eB/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_furao_bv1xm4y1i7hr",
@@ -1526,7 +1710,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/3258e95f2cdf3192cc727606cd7954daddfd0cd6.jpg",
     "duration": "9:18",
     "viewCount": 7533,
-    "url": "https://www.bilibili.com/video/BV1Xm4y1i7Hr/"
+    "url": "https://www.bilibili.com/video/BV1Xm4y1i7Hr/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_furao_bv1yv411z71i",
@@ -1562,7 +1750,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/6aba50f1af785d5f8e0b5822be6e2b0f75c07b6f.jpg",
     "duration": "8:29",
     "viewCount": 14261,
-    "url": "https://www.bilibili.com/video/BV1yV411z71i/"
+    "url": "https://www.bilibili.com/video/BV1yV411z71i/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_furao_bv1zo4y1c71y",
@@ -1596,7 +1788,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/85b96ac22ee84166455667b776d603e93a1f8416.jpg",
     "duration": "11:53",
     "viewCount": 21305,
-    "url": "https://www.bilibili.com/video/BV1Zo4y1c71Y/"
+    "url": "https://www.bilibili.com/video/BV1Zo4y1c71Y/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_furao_bv1zp4y1a7qf",
@@ -1630,7 +1826,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/2fcb8ce235b589c097f6ebe3eaa7a1031999f9ed.jpg",
     "duration": "9:13",
     "viewCount": 11756,
-    "url": "https://www.bilibili.com/video/BV1zP4y1A7qf/"
+    "url": "https://www.bilibili.com/video/BV1zP4y1A7qf/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv11u411o77s",
@@ -1662,7 +1862,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/1610fd334344c5eb4dd1ca069301b6bd28da5909.jpg",
     "duration": "19:58",
     "viewCount": 9200,
-    "url": "https://www.bilibili.com/video/BV11U411o77S/"
+    "url": "https://www.bilibili.com/video/BV11U411o77S/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv16m411b71j",
@@ -1694,7 +1898,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/89fe9c9a7ee5685c3bbf0c01800c73118cee24ee.jpg",
     "duration": "10:46",
     "viewCount": 9217,
-    "url": "https://www.bilibili.com/video/BV16M411b71J/"
+    "url": "https://www.bilibili.com/video/BV16M411b71J/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv17h4y1g7u3",
@@ -1731,7 +1939,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/6a047bd1fa2930a70fff72f7a6ec571600d5c3f9.jpg",
     "duration": "9:23",
     "viewCount": 1856,
-    "url": "https://www.bilibili.com/video/BV17H4y1g7U3/"
+    "url": "https://www.bilibili.com/video/BV17H4y1g7U3/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv17t411c7xk",
@@ -1764,7 +1976,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/8b6b76538dddbab5196f12929146783e2637a3db.jpg",
     "duration": "13:10",
     "viewCount": 8064,
-    "url": "https://www.bilibili.com/video/BV17T411C7xk/"
+    "url": "https://www.bilibili.com/video/BV17T411C7xk/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv18y4y1q7pq",
@@ -1796,7 +2012,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/dcd5deffad8468e5c4daff0d12b0be63ca7a27e7.jpg",
     "duration": "7:28",
     "viewCount": 5876,
-    "url": "https://www.bilibili.com/video/BV18y4y1Q7pQ/"
+    "url": "https://www.bilibili.com/video/BV18y4y1Q7pQ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1bj4m137bl",
@@ -1831,7 +2051,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/ce671880f650fc9ad8888ee86e5f08b840d43d02.jpg",
     "duration": "10:29",
     "viewCount": 5043,
-    "url": "https://www.bilibili.com/video/BV1bJ4m137BL/"
+    "url": "https://www.bilibili.com/video/BV1bJ4m137BL/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1bx4y1m7th",
@@ -1863,7 +2087,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/f039e56df88f2cb4d1fbf4c5a629ff7f9b2f4271.jpg",
     "duration": "14:40",
     "viewCount": 7932,
-    "url": "https://www.bilibili.com/video/BV1Bx4y1M7Th/"
+    "url": "https://www.bilibili.com/video/BV1Bx4y1M7Th/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1c84y157f9",
@@ -1895,7 +2123,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/64254ddfc5208b0e091b09b189768c73ab44b608.jpg",
     "duration": "7:30",
     "viewCount": 8463,
-    "url": "https://www.bilibili.com/video/BV1C84y157f9/"
+    "url": "https://www.bilibili.com/video/BV1C84y157f9/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1ca411d7v8",
@@ -1927,7 +2159,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/a5410360476b222175038d04fbd039d48fe157bc.jpg",
     "duration": "7:19",
     "viewCount": 4931,
-    "url": "https://www.bilibili.com/video/BV1CA411d7v8/"
+    "url": "https://www.bilibili.com/video/BV1CA411d7v8/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1cb8kzhefz",
@@ -1959,7 +2195,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/de7c8f5e7e71343a05dbf0500f2a963a8f991eb0.jpg",
     "duration": "11:02",
     "viewCount": 479,
-    "url": "https://www.bilibili.com/video/BV1CB8kzHEfZ/"
+    "url": "https://www.bilibili.com/video/BV1CB8kzHEfZ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1cd4y1h7ne",
@@ -1991,7 +2231,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/b349b76535774f68db6bb16263b5fa24029f29ee.jpg",
     "duration": "9:11",
     "viewCount": 9498,
-    "url": "https://www.bilibili.com/video/BV1CD4y1H7NE/"
+    "url": "https://www.bilibili.com/video/BV1CD4y1H7NE/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1de411e7du",
@@ -2026,7 +2270,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/f668834b8a5672e79b9eedbf95bed2d23ca27730.jpg",
     "duration": "18:42",
     "viewCount": 19122,
-    "url": "https://www.bilibili.com/video/BV1De411e7dU/"
+    "url": "https://www.bilibili.com/video/BV1De411e7dU/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1ga411d7lc",
@@ -2058,7 +2306,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/a3896ec17ca995631931d7d6b92344ba95a5fe6f.jpg",
     "duration": "10:46",
     "viewCount": 21623,
-    "url": "https://www.bilibili.com/video/BV1GA411d7LC/"
+    "url": "https://www.bilibili.com/video/BV1GA411d7LC/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1hdmfzoerj",
@@ -2090,7 +2342,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/d55fdb6301aeab617c299fcbc1b4cef0fb69866a.jpg",
     "duration": "10:23",
     "viewCount": 4457,
-    "url": "https://www.bilibili.com/video/BV1hDMFzoERJ/"
+    "url": "https://www.bilibili.com/video/BV1hDMFzoERJ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1px4y1f7qr",
@@ -2127,7 +2383,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/3001d1ee70b36522cdf6ef154147d0acee4360e4.jpg",
     "duration": "0:12",
     "viewCount": 4607,
-    "url": "https://www.bilibili.com/video/BV1pX4y1f7qr/"
+    "url": "https://www.bilibili.com/video/BV1pX4y1f7qr/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1rwksyqeex",
@@ -2159,7 +2419,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/9f7ae1c0932319989973090661dac131548afa2b.jpg",
     "duration": "7:06",
     "viewCount": 3538,
-    "url": "https://www.bilibili.com/video/BV1rWksYQEEX/"
+    "url": "https://www.bilibili.com/video/BV1rWksYQEEX/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1s84y1v7vq",
@@ -2196,7 +2460,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/0473cb6a5e885658f889d1140b3c3b509d8b4f3c.jpg",
     "duration": "5:44",
     "viewCount": 4509,
-    "url": "https://www.bilibili.com/video/BV1s84y1V7VQ/"
+    "url": "https://www.bilibili.com/video/BV1s84y1V7VQ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1tt4y1t7jv",
@@ -2231,7 +2499,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/70e0b3f2a5b36817fa1ed27eefb6abe340a97fc9.jpg",
     "duration": "17:38",
     "viewCount": 1787,
-    "url": "https://www.bilibili.com/video/BV1tT4y1t7jV/"
+    "url": "https://www.bilibili.com/video/BV1tT4y1t7jV/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1uh4y1s79e",
@@ -2268,7 +2540,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/5ca3561301458a4a61e498df6fdbe9d5d3269f26.jpg",
     "duration": "16:02",
     "viewCount": 1357,
-    "url": "https://www.bilibili.com/video/BV1UH4y1s79E/"
+    "url": "https://www.bilibili.com/video/BV1UH4y1s79E/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1wm411h7fd",
@@ -2305,7 +2581,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/ace7b8dee8f3fd80a99303aeb7948c52bb838686.jpg",
     "duration": "5:03",
     "viewCount": 2448,
-    "url": "https://www.bilibili.com/video/BV1wM411H7fd/"
+    "url": "https://www.bilibili.com/video/BV1wM411H7fd/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1xn4y197kl",
@@ -2342,7 +2622,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/f17ba623cfb201466d1d0884bf9aab0348d8eb5e.jpg",
     "duration": "17:18",
     "viewCount": 10077,
-    "url": "https://www.bilibili.com/video/BV1xn4y197kL/"
+    "url": "https://www.bilibili.com/video/BV1xn4y197kL/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1xwcwyaemv",
@@ -2376,7 +2660,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/b1b351d80b8e8106077472418f6932420ae986b5.jpg",
     "duration": "9:45",
     "viewCount": 2168,
-    "url": "https://www.bilibili.com/video/BV1xwCwYaEMV/"
+    "url": "https://www.bilibili.com/video/BV1xwCwYaEMV/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_james_bv1xx421q75g",
@@ -2413,7 +2701,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/afe3a4766bd2bd11d60a7b2b2700d7d40115e1c6.jpg",
     "duration": "13:46",
     "viewCount": 1599,
-    "url": "https://www.bilibili.com/video/BV1xx421Q75G/"
+    "url": "https://www.bilibili.com/video/BV1xx421Q75G/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv12gxny3epa",
@@ -2445,7 +2737,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/f7b092241fc57abad3159be3896dec6e6bf52513.jpg",
     "duration": "13:24",
     "viewCount": 6366,
-    "url": "https://www.bilibili.com/video/BV12gXnY3EPA/"
+    "url": "https://www.bilibili.com/video/BV12gXnY3EPA/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv18dasepe4u",
@@ -2480,7 +2776,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/a1ed2d400a0a932d0857f278aa2670f199eba6a0.jpg",
     "duration": "8:48",
     "viewCount": 1682,
-    "url": "https://www.bilibili.com/video/BV18dAsepE4u/"
+    "url": "https://www.bilibili.com/video/BV18dAsepE4u/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1d2lizdegu",
@@ -2517,7 +2817,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/66225a5f84129c95f9e6966e2396fbe33e8775d0.jpg",
     "duration": "6:00",
     "viewCount": 2047,
-    "url": "https://www.bilibili.com/video/BV1d2LizDEGU/"
+    "url": "https://www.bilibili.com/video/BV1d2LizDEGU/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1d3wje4ew9",
@@ -2554,7 +2858,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/a8be5c6c109572f91426c8f9d52a4bb64784bd52.jpg",
     "duration": "6:55",
     "viewCount": 3515,
-    "url": "https://www.bilibili.com/video/BV1D3wje4Ew9/"
+    "url": "https://www.bilibili.com/video/BV1D3wje4Ew9/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1gzj7zke57",
@@ -2586,7 +2894,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/f15141ae8c56a30a88b8b4230938cad006330ba8.jpg",
     "duration": "4:59",
     "viewCount": 1447,
-    "url": "https://www.bilibili.com/video/BV1gZJ7zKE57/"
+    "url": "https://www.bilibili.com/video/BV1gZJ7zKE57/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1h4411p7en",
@@ -2623,7 +2935,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/11924587e06ad5f6d4411c473f15d27340b3a362.jpg",
     "duration": "5:45",
     "viewCount": 3956,
-    "url": "https://www.bilibili.com/video/BV1h4411p7eN/"
+    "url": "https://www.bilibili.com/video/BV1h4411p7eN/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1j4411h7my",
@@ -2660,7 +2976,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/6f98c4e1626f67edd11f981b7cc734ac94b2cc58.jpg",
     "duration": "6:00",
     "viewCount": 4537,
-    "url": "https://www.bilibili.com/video/BV1J4411H7My/"
+    "url": "https://www.bilibili.com/video/BV1J4411H7My/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1m4411n7pc",
@@ -2697,7 +3017,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/ee0f7205b4f53e5b2a03eadc6573d9fb9b27731b.jpg",
     "duration": "5:19",
     "viewCount": 4547,
-    "url": "https://www.bilibili.com/video/BV1m4411n7PC/"
+    "url": "https://www.bilibili.com/video/BV1m4411n7PC/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1n441157bd",
@@ -2729,7 +3053,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/633e298275fd743407711b68b17d24a5f1b6334b.jpg",
     "duration": "5:44",
     "viewCount": 6455,
-    "url": "https://www.bilibili.com/video/BV1N441157bd/"
+    "url": "https://www.bilibili.com/video/BV1N441157bd/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1ppxqynejk",
@@ -2761,7 +3089,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/a0c65283cb66a3be962e23fda0819f3769b34569.jpg",
     "duration": "5:42",
     "viewCount": 1214,
-    "url": "https://www.bilibili.com/video/BV1PPXqYnEJk/"
+    "url": "https://www.bilibili.com/video/BV1PPXqYnEJk/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1q6aseye63",
@@ -2797,7 +3129,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/e44ae22d1e00ddee323a2c0d76765a57eed216a1.jpg",
     "duration": "12:04",
     "viewCount": 5803,
-    "url": "https://www.bilibili.com/video/BV1q6AseYE63/"
+    "url": "https://www.bilibili.com/video/BV1q6AseYE63/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1ufj7zvenq",
@@ -2832,7 +3168,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/e791a7fc667232edb09b8f60a5484fb7c876e4b2.jpg",
     "duration": "10:27",
     "viewCount": 8054,
-    "url": "https://www.bilibili.com/video/BV1ufJ7zvEnq/"
+    "url": "https://www.bilibili.com/video/BV1ufJ7zvEnq/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1um8uztezp",
@@ -2866,7 +3206,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/0121dad35e378906b650b86c09a21c3df1500a39.jpg",
     "duration": "15:10",
     "viewCount": 3356,
-    "url": "https://www.bilibili.com/video/BV1um8uzTEzp/"
+    "url": "https://www.bilibili.com/video/BV1um8uzTEzp/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1uwyfz2ehs",
@@ -2901,7 +3245,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/9ae64fcbf358d12ca1ffaf55dc1b96f2327d8444.jpg",
     "duration": "6:08",
     "viewCount": 1509,
-    "url": "https://www.bilibili.com/video/BV1UWYfz2EHS/"
+    "url": "https://www.bilibili.com/video/BV1UWYfz2EHS/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1w4411n7rs",
@@ -2938,7 +3286,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/73b58307a114a390db6ee43606fe8f9a387dcb33.jpg",
     "duration": "5:42",
     "viewCount": 3085,
-    "url": "https://www.bilibili.com/video/BV1W4411N7RS/"
+    "url": "https://www.bilibili.com/video/BV1W4411N7RS/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_leontv_cn_bv1x4411g7p5",
@@ -2975,7 +3327,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/798624a38cb0765d5241a72a588f4e31f39bcd82.jpg",
     "duration": "5:44",
     "viewCount": 2597,
-    "url": "https://www.bilibili.com/video/BV1x4411G7p5/"
+    "url": "https://www.bilibili.com/video/BV1x4411G7p5/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_liuliu_bv11hfwzxesa",
@@ -3010,7 +3366,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/95b7022a267e3b78d1600775415f45b5da392361.jpg",
     "duration": "0:56",
     "viewCount": 2117,
-    "url": "https://www.bilibili.com/video/BV11HFWzxEsA/"
+    "url": "https://www.bilibili.com/video/BV11HFWzxEsA/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_liuliu_bv13lymbney8",
@@ -3041,7 +3401,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/15a142ca734d26020ef06f7210ec9e1c47592e87.jpg",
     "duration": "0:24",
     "viewCount": 5689,
-    "url": "https://www.bilibili.com/video/BV13LyMBnEY8/"
+    "url": "https://www.bilibili.com/video/BV13LyMBnEY8/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_liuliu_bv16vxsbne1q",
@@ -3075,7 +3439,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/16b90f3982f71c671935d44b4804ea7abc9547e6.jpg",
     "duration": "0:23",
     "viewCount": 820,
-    "url": "https://www.bilibili.com/video/BV16VXsBNE1q/"
+    "url": "https://www.bilibili.com/video/BV16VXsBNE1q/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_liuliu_bv18zaczvecs",
@@ -3106,7 +3474,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/d190d2c1355dcb9de80a1b43f27831e663452215.jpg",
     "duration": "0:25",
     "viewCount": 1272,
-    "url": "https://www.bilibili.com/video/BV18ZAczVEcs/"
+    "url": "https://www.bilibili.com/video/BV18ZAczVEcs/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_liuliu_bv1dkcwbue9j",
@@ -3140,7 +3512,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/08d0fbef972e5f957aa1550cadc686565aa6768f.jpg",
     "duration": "0:34",
     "viewCount": 6342,
-    "url": "https://www.bilibili.com/video/BV1dKCwBuE9j/"
+    "url": "https://www.bilibili.com/video/BV1dKCwBuE9j/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_liuliu_bv1f1xpzbews",
@@ -3174,7 +3550,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/68778988e31536344d4a286826a732ef9dc09fd9.jpg",
     "duration": "6:13",
     "viewCount": 80180,
-    "url": "https://www.bilibili.com/video/BV1F1xPzbEWs/"
+    "url": "https://www.bilibili.com/video/BV1F1xPzbEWs/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_liuliu_bv1mrqobaeyw",
@@ -3209,7 +3589,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/cc5a044c0b4222bfe623b5a46ac0e5cf9ceac566.jpg",
     "duration": "0:53",
     "viewCount": 2647,
-    "url": "https://www.bilibili.com/video/BV1mRqoBaEYw/"
+    "url": "https://www.bilibili.com/video/BV1mRqoBaEYw/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_liuliu_bv1na1ybzelq",
@@ -3242,7 +3626,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/273bbca7c594e3c6c864238e0a55ab7a917692ba.jpg",
     "duration": "3:23",
     "viewCount": 20379,
-    "url": "https://www.bilibili.com/video/BV1na1YBzELQ/"
+    "url": "https://www.bilibili.com/video/BV1na1YBzELQ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_liuliu_bv1pxcubzec5",
@@ -3276,7 +3664,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/94e89e39c26493bc3182a9128dfc01612c87d2f4.jpg",
     "duration": "5:40",
     "viewCount": 23036,
-    "url": "https://www.bilibili.com/video/BV1PxCuBzEc5/"
+    "url": "https://www.bilibili.com/video/BV1PxCuBzEc5/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv144l4zcemk",
@@ -3311,7 +3703,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/7380258e4a0530e3ad06029977687121bab211c0.jpg",
     "duration": "16:01",
     "viewCount": 4101,
-    "url": "https://www.bilibili.com/video/BV144L4zCEMk/"
+    "url": "https://www.bilibili.com/video/BV144L4zCEMk/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv14tljz2ejh",
@@ -3346,7 +3742,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/4bcfcbb9252c89564073414e58420372165088a2.jpg",
     "duration": "16:53",
     "viewCount": 7139,
-    "url": "https://www.bilibili.com/video/BV14TLjz2EjH/"
+    "url": "https://www.bilibili.com/video/BV14TLjz2EjH/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv15g1jbseud",
@@ -3386,7 +3786,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/29b8ab02251fc1e1761c14e3cbea991706ad7d33.jpg",
     "duration": "17:03",
     "viewCount": 11128,
-    "url": "https://www.bilibili.com/video/BV15g1jBSEud/"
+    "url": "https://www.bilibili.com/video/BV15g1jBSEud/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv15zelzeeaa",
@@ -3421,7 +3825,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/d8a0d6623ec8ec9998e75010348b6dcd574410c1.jpg",
     "duration": "11:08",
     "viewCount": 4635,
-    "url": "https://www.bilibili.com/video/BV15ZELzeEAa/"
+    "url": "https://www.bilibili.com/video/BV15ZELzeEAa/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv17zwmzwe7y",
@@ -3458,7 +3866,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/fd841ba68704b6d6836b9db6ea3fdb8f4fda382c.jpg",
     "duration": "14:01",
     "viewCount": 9043,
-    "url": "https://www.bilibili.com/video/BV17zWMzwE7y/"
+    "url": "https://www.bilibili.com/video/BV17zWMzwE7y/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1bd5vzkexj",
@@ -3494,7 +3906,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/4dc054b4989049b09425de19b2be630cd7f4ccdb.jpg",
     "duration": "8:38",
     "viewCount": 3472,
-    "url": "https://www.bilibili.com/video/BV1bD5vzKExJ/"
+    "url": "https://www.bilibili.com/video/BV1bD5vzKExJ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1bkffyneal",
@@ -3526,7 +3942,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/9ae158505dc8e43de09060f7a7bfe7f6818441a5.jpg",
     "duration": "10:25",
     "viewCount": 5132,
-    "url": "https://www.bilibili.com/video/BV1BkfFYnEAL/"
+    "url": "https://www.bilibili.com/video/BV1BkfFYnEAL/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1djrcynekb",
@@ -3563,7 +3983,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/facd5da826d3b81b7dc7088eea1c5bbac584345e.jpg",
     "duration": "8:32",
     "viewCount": 5877,
-    "url": "https://www.bilibili.com/video/BV1DJRCYnEKb/"
+    "url": "https://www.bilibili.com/video/BV1DJRCYnEKb/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1dkxnyjeq7",
@@ -3595,7 +4019,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/b45b0c8662bd6f4ae4499f877b5e39b6ff873e09.jpg",
     "duration": "10:40",
     "viewCount": 20729,
-    "url": "https://www.bilibili.com/video/BV1DkXnYJEq7/"
+    "url": "https://www.bilibili.com/video/BV1DkXnYJEq7/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1ec95yee1i",
@@ -3632,7 +4060,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/6b2bae6b7d2a0ab6f487dc9a800638a98bf086f2.jpg",
     "duration": "12:05",
     "viewCount": 12377,
-    "url": "https://www.bilibili.com/video/BV1EC95YEE1i/"
+    "url": "https://www.bilibili.com/video/BV1EC95YEE1i/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1eddyyzep1",
@@ -3670,7 +4102,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/7a67bba087c0a69e990ae6a249695f265d04ffc6.jpg",
     "duration": "25:17",
     "viewCount": 13195,
-    "url": "https://www.bilibili.com/video/BV1EddyYzEp1/"
+    "url": "https://www.bilibili.com/video/BV1EddyYzEp1/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1fu4vzqelk",
@@ -3702,7 +4138,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/439b31848c203759e528bc4da9a7f7a72e2b0572.jpg",
     "duration": "24:56",
     "viewCount": 5492,
-    "url": "https://www.bilibili.com/video/BV1FU4vzQELk/"
+    "url": "https://www.bilibili.com/video/BV1FU4vzQELk/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1furvy1eej",
@@ -3738,7 +4178,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/f632abcee9783164fb4df085615830693bdade50.jpg",
     "duration": "8:18",
     "viewCount": 8848,
-    "url": "https://www.bilibili.com/video/BV1fuRVY1EeJ/"
+    "url": "https://www.bilibili.com/video/BV1fuRVY1EeJ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1g3j7zoehi",
@@ -3773,7 +4217,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/481af920699f8c5d05d05f30c65087ef761f43b4.jpg",
     "duration": "9:27",
     "viewCount": 5457,
-    "url": "https://www.bilibili.com/video/BV1g3j7zoEhi/"
+    "url": "https://www.bilibili.com/video/BV1g3j7zoEhi/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1hv9syeezb",
@@ -3808,7 +4256,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/535e55d7df532199071e698abeba3f6aaa05e320.jpg",
     "duration": "8:09",
     "viewCount": 11444,
-    "url": "https://www.bilibili.com/video/BV1hv9sYeEZb/"
+    "url": "https://www.bilibili.com/video/BV1hv9sYeEZb/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1ie8wzpehu",
@@ -3845,7 +4297,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/3a54704edff1cfd6b28c573a0fc01a33abfaa9bc.jpg",
     "duration": "10:51",
     "viewCount": 5728,
-    "url": "https://www.bilibili.com/video/BV1iE8WzpEHu/"
+    "url": "https://www.bilibili.com/video/BV1iE8WzpEHu/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1ja9ky9ets",
@@ -3879,7 +4335,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/35576c6843bee5abddb70651ddaa82b4c7fd2136.jpg",
     "duration": "10:04",
     "viewCount": 4202,
-    "url": "https://www.bilibili.com/video/BV1ja9KY9EtS/"
+    "url": "https://www.bilibili.com/video/BV1ja9KY9EtS/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1jaqcyheyd",
@@ -3914,7 +4374,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/68cdb222b511df00043f0e558a6f0685e74a7162.jpg",
     "duration": "12:45",
     "viewCount": 18180,
-    "url": "https://www.bilibili.com/video/BV1jAQCYHEyd/"
+    "url": "https://www.bilibili.com/video/BV1jAQCYHEyd/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1jrxsycef1",
@@ -3950,7 +4414,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/f497f57e60f894dd1582f7f2669646d5f196bc28.jpg",
     "duration": "11:31",
     "viewCount": 8714,
-    "url": "https://www.bilibili.com/video/BV1jrXSYCEf1/"
+    "url": "https://www.bilibili.com/video/BV1jrXSYCEf1/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1kbsxzee8z",
@@ -3987,7 +4455,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/6e88e799404a1283b3b7fbc424ff02eae4b7266f.jpg",
     "duration": "12:23",
     "viewCount": 10218,
-    "url": "https://www.bilibili.com/video/BV1kBsXzeE8z/"
+    "url": "https://www.bilibili.com/video/BV1kBsXzeE8z/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1mexzynep7",
@@ -4019,7 +4491,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/7327364e0af1d52868a263265ee7991b8ac707cc.jpg",
     "duration": "9:17",
     "viewCount": 4701,
-    "url": "https://www.bilibili.com/video/BV1MeXZYnEP7/"
+    "url": "https://www.bilibili.com/video/BV1MeXZYnEP7/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1mmrcyzer1",
@@ -4051,7 +4527,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/70cf015d586f7491e102619ba9abefeeca28c3d7.jpg",
     "duration": "9:17",
     "viewCount": 28212,
-    "url": "https://www.bilibili.com/video/BV1mMRcYZEr1/"
+    "url": "https://www.bilibili.com/video/BV1mMRcYZEr1/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1moqtybenj",
@@ -4089,7 +4569,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/1a151907b9e66b6a40359fcbb92071050dc60a60.jpg",
     "duration": "9:14",
     "viewCount": 5779,
-    "url": "https://www.bilibili.com/video/BV1moQTYBENj/"
+    "url": "https://www.bilibili.com/video/BV1moQTYBENj/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1n3zmydee8",
@@ -4121,7 +4605,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/46ef84c75779b43c80f053b309e9ca4cccbf6860.jpg",
     "duration": "8:34",
     "viewCount": 5831,
-    "url": "https://www.bilibili.com/video/BV1N3ZMYDEE8/"
+    "url": "https://www.bilibili.com/video/BV1N3ZMYDEE8/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1n5eyzoe3s",
@@ -4156,7 +4644,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/0261b86e12eea63ca829b8c591a670c77fb6ab08.jpg",
     "duration": "23:14",
     "viewCount": 5634,
-    "url": "https://www.bilibili.com/video/BV1n5EYzoE3s/"
+    "url": "https://www.bilibili.com/video/BV1n5EYzoE3s/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1p8zjy6egi",
@@ -4190,7 +4682,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/2390b0f2ac89fe761acf39ec41b4cfd66e82b0b4.jpg",
     "duration": "8:51",
     "viewCount": 3911,
-    "url": "https://www.bilibili.com/video/BV1P8ZjY6EGi/"
+    "url": "https://www.bilibili.com/video/BV1P8ZjY6EGi/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1q4kvb8e3q",
@@ -4222,7 +4718,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/8753f3bde2600c7a772f8bdd19e1a9352dd219db.jpg",
     "duration": "10:07",
     "viewCount": 9391,
-    "url": "https://www.bilibili.com/video/BV1Q4kVB8E3Q/"
+    "url": "https://www.bilibili.com/video/BV1Q4kVB8E3Q/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1rngnzkeqj",
@@ -4254,7 +4754,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/a2caa1221fb2086526b54fee43c5a83a4995276e.jpg",
     "duration": "13:25",
     "viewCount": 4169,
-    "url": "https://www.bilibili.com/video/BV1rnGnzkEqJ/"
+    "url": "https://www.bilibili.com/video/BV1rnGnzkEqJ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1tbqjygeqf",
@@ -4290,7 +4794,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/a6e8ae3ee9b90eed39c15be14591a406844ed8eb.jpg",
     "duration": "10:15",
     "viewCount": 8247,
-    "url": "https://www.bilibili.com/video/BV1TBQJYgEqF/"
+    "url": "https://www.bilibili.com/video/BV1TBQJYgEqF/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1tnphzpejh",
@@ -4326,7 +4834,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/0646ee911d3c3ab68162bd11c4f39ec724a2b04d.jpg",
     "duration": "10:30",
     "viewCount": 4998,
-    "url": "https://www.bilibili.com/video/BV1TNPHzPEJh/"
+    "url": "https://www.bilibili.com/video/BV1TNPHzPEJh/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1vtzable5w",
@@ -4360,7 +4872,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/3cea70deffb08cd1da25484b7819db2509c20af1.jpg",
     "duration": "7:07",
     "viewCount": 2803,
-    "url": "https://www.bilibili.com/video/BV1vTzaBLE5w/"
+    "url": "https://www.bilibili.com/video/BV1vTzaBLE5w/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1x9kweken8",
@@ -4392,7 +4908,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/18c18b4afa197737d04d9f9d38d0ee4facf766a9.jpg",
     "duration": "14:42",
     "viewCount": 6676,
-    "url": "https://www.bilibili.com/video/BV1X9KweKEN8/"
+    "url": "https://www.bilibili.com/video/BV1X9KweKEN8/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1xyiwbyenp",
@@ -4424,7 +4944,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/4563d14d43e7fb58ad881cbc7d2a3d4def68cfa3.jpg",
     "duration": "11:25",
     "viewCount": 7959,
-    "url": "https://www.bilibili.com/video/BV1XYiWByENp/"
+    "url": "https://www.bilibili.com/video/BV1XYiWByENp/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1y4hgzyenn",
@@ -4463,7 +4987,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/af56467eb9a8778aed5e576a57b253d3528d9c48.jpg",
     "duration": "9:39",
     "viewCount": 3600,
-    "url": "https://www.bilibili.com/video/BV1y4hgzYEnn/"
+    "url": "https://www.bilibili.com/video/BV1y4hgzYEnn/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1y7pwzwexm",
@@ -4495,7 +5023,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/344904a635fdd7f10c5f4f5e378691a8a6523ea2.jpg",
     "duration": "15:41",
     "viewCount": 3798,
-    "url": "https://www.bilibili.com/video/BV1Y7PwzWEXM/"
+    "url": "https://www.bilibili.com/video/BV1Y7PwzWEXM/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_matsuo_yuki_cn_bv1znvqzdejx",
@@ -4530,7 +5062,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/b56df85f182416e516e577a589d5dc98ef38f649.jpg",
     "duration": "10:04",
     "viewCount": 18853,
-    "url": "https://www.bilibili.com/video/BV1ZNVqzDEjX/"
+    "url": "https://www.bilibili.com/video/BV1ZNVqzDEjX/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv14f41197h7",
@@ -4568,7 +5104,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/cd9aeba6a2a8c1cc22bea5a4acc3c698c1ab3de3.jpg",
     "duration": "0:45",
     "viewCount": 14525,
-    "url": "https://www.bilibili.com/video/BV14F41197H7/"
+    "url": "https://www.bilibili.com/video/BV14F41197H7/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv18g41187wy",
@@ -4606,7 +5146,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/35cf8b8315a91a80272d9982caa73aa485317981.jpg",
     "duration": "1:15",
     "viewCount": 4221,
-    "url": "https://www.bilibili.com/video/BV18G41187wy/"
+    "url": "https://www.bilibili.com/video/BV18G41187wy/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv18m4y1h71h",
@@ -4638,7 +5182,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/6804dd49c68b1c9baec0ef2ecd55ac2bb098309b.jpg",
     "duration": "0:50",
     "viewCount": 44895,
-    "url": "https://www.bilibili.com/video/BV18M4y1H71H/"
+    "url": "https://www.bilibili.com/video/BV18M4y1H71H/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv1ax4y1r7ms",
@@ -4670,7 +5218,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/4a6089cadfbd2979460fb3d7fa1fa26a50714013.jpg",
     "duration": "0:42",
     "viewCount": 24252,
-    "url": "https://www.bilibili.com/video/BV1ax4y1R7mS/"
+    "url": "https://www.bilibili.com/video/BV1ax4y1R7mS/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv1cx4y1j7bp",
@@ -4702,7 +5254,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/be78d27a7fc6ff2a5d87dc6ea55c2a30e0194c1a.jpg",
     "duration": "0:57",
     "viewCount": 15737,
-    "url": "https://www.bilibili.com/video/BV1CX4y1J7bP/"
+    "url": "https://www.bilibili.com/video/BV1CX4y1J7bP/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv1ds4y1t7ed",
@@ -4740,7 +5296,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/1f2359e0673609dccf01b98493ebbfc9e1f0f1aa.jpg",
     "duration": "1:00",
     "viewCount": 13246,
-    "url": "https://www.bilibili.com/video/BV1dS4y1t7eD/"
+    "url": "https://www.bilibili.com/video/BV1dS4y1t7eD/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv1fg4y1w7vi",
@@ -4778,7 +5338,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/afb0f6a1a5325261644407efaf047e4fa3de0add.jpg",
     "duration": "0:56",
     "viewCount": 57235,
-    "url": "https://www.bilibili.com/video/BV1fg4y1w7Vi/"
+    "url": "https://www.bilibili.com/video/BV1fg4y1w7Vi/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv1fu411g7ye",
@@ -4816,7 +5380,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/e27113ae2000b8f1df27a5bb67d63527474d1774.jpg",
     "duration": "1:17",
     "viewCount": 19007,
-    "url": "https://www.bilibili.com/video/BV1Fu411G7yE/"
+    "url": "https://www.bilibili.com/video/BV1Fu411G7yE/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv1ihzwboee7",
@@ -4854,7 +5422,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/b9604ab4793a581aaa8ec4fecbf829a3c2b10edf.jpg",
     "duration": "7:49",
     "viewCount": 3059,
-    "url": "https://www.bilibili.com/video/BV1ihzWBoEE7/"
+    "url": "https://www.bilibili.com/video/BV1ihzWBoEE7/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv1in4y1f7ke",
@@ -4892,7 +5464,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/8eab6e9a7ad4046513717cee3cf2fb553a251a41.jpg",
     "duration": "1:40",
     "viewCount": 9004,
-    "url": "https://www.bilibili.com/video/BV1iN4y1F7KE/"
+    "url": "https://www.bilibili.com/video/BV1iN4y1F7KE/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv1lx4y177am",
@@ -4926,7 +5502,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/1388d4db16f28be186c5872ec292f2612576f0d8.jpg",
     "duration": "0:31",
     "viewCount": 16492,
-    "url": "https://www.bilibili.com/video/BV1LX4y177AM/"
+    "url": "https://www.bilibili.com/video/BV1LX4y177AM/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv1rd4y1n7qf",
@@ -4958,7 +5538,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/4ff0eb0681d1b3f84483ffa33e9eea36f86e8788.jpg",
     "duration": "1:17",
     "viewCount": 5158,
-    "url": "https://www.bilibili.com/video/BV1Rd4y1N7qf/"
+    "url": "https://www.bilibili.com/video/BV1Rd4y1N7qf/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv1yg411h7wf",
@@ -4993,7 +5577,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/9b8af2e1c85f8cc685ffa1558b63b1330bb6150a.jpg",
     "duration": "0:40",
     "viewCount": 9163,
-    "url": "https://www.bilibili.com/video/BV1Yg411H7wF/"
+    "url": "https://www.bilibili.com/video/BV1Yg411H7wF/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mouratoglou_cn_bv1yv411v78f",
@@ -5027,7 +5615,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/9ebae4fece5ab671add3dcbb28ee058d4af502b5.jpg",
     "duration": "1:00",
     "viewCount": 15555,
-    "url": "https://www.bilibili.com/video/BV1yV411V78f/"
+    "url": "https://www.bilibili.com/video/BV1yV411V78f/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv147411673r",
@@ -5062,7 +5654,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/435c89bea5d76d6cf2e695bed382fcb956c2d48e.jpg",
     "duration": "4:34",
     "viewCount": 15558,
-    "url": "https://www.bilibili.com/video/BV147411673R/"
+    "url": "https://www.bilibili.com/video/BV147411673R/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv18e411x7nn",
@@ -5094,7 +5690,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/9e396955dbcdb1660d8c2e3b41d038825cbc987c.jpg",
     "duration": "1:32",
     "viewCount": 3977,
-    "url": "https://www.bilibili.com/video/BV18e411x7Nn/"
+    "url": "https://www.bilibili.com/video/BV18e411x7Nn/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv18j411578t",
@@ -5129,7 +5729,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/c80cbf7fcf73c1d84c181e174222d53f256d123d.jpg",
     "duration": "4:01",
     "viewCount": 382498,
-    "url": "https://www.bilibili.com/video/BV18J411578t/"
+    "url": "https://www.bilibili.com/video/BV18J411578t/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv1b7411t7h3",
@@ -5161,7 +5765,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/37b340aa180e03d3e98dbdb953665b1bce8f0318.jpg",
     "duration": "0:55",
     "viewCount": 3713,
-    "url": "https://www.bilibili.com/video/BV1b7411T7h3/"
+    "url": "https://www.bilibili.com/video/BV1b7411T7h3/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv1hj411c73z",
@@ -5201,7 +5809,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/80949de3fd1aab10b89a2870618921af2a7da78f.jpg",
     "duration": "13:10",
     "viewCount": 3647,
-    "url": "https://www.bilibili.com/video/BV1HJ411C73z/"
+    "url": "https://www.bilibili.com/video/BV1HJ411C73z/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv1ij411j7mn",
@@ -5235,7 +5847,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/4189ad27a0ac3e5c9d01dd7a9eb40b26c596912c.jpg",
     "duration": "7:19",
     "viewCount": 34228,
-    "url": "https://www.bilibili.com/video/BV1iJ411j7MN/"
+    "url": "https://www.bilibili.com/video/BV1iJ411j7MN/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv1mj411v7eu",
@@ -5273,7 +5889,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/c56f3aa3599bbd27db31c1bab21c4448c61c830b.jpg",
     "duration": "6:55",
     "viewCount": 4421,
-    "url": "https://www.bilibili.com/video/BV1MJ411V7EU/"
+    "url": "https://www.bilibili.com/video/BV1MJ411V7EU/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv1nj411r7vg",
@@ -5311,7 +5931,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/ed7bbe99b6e10d7cf0beef7a11fbc577375ba36a.jpg",
     "duration": "7:37",
     "viewCount": 8955,
-    "url": "https://www.bilibili.com/video/BV1NJ411R7VG/"
+    "url": "https://www.bilibili.com/video/BV1NJ411R7VG/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv1pj411h7pq",
@@ -5343,7 +5967,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/880719a60046d15cda946a349c9ae0d87d9e0c8d.jpg",
     "duration": "4:30",
     "viewCount": 15301,
-    "url": "https://www.bilibili.com/video/BV1pJ411H7Pq/"
+    "url": "https://www.bilibili.com/video/BV1pJ411H7Pq/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv1rj411r7in",
@@ -5378,7 +6006,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/ae4af2b45c7c85076baebf37ab20ef95d8102410.jpg",
     "duration": "4:37",
     "viewCount": 32172,
-    "url": "https://www.bilibili.com/video/BV1RJ411R7in/"
+    "url": "https://www.bilibili.com/video/BV1RJ411R7in/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv1t7411m73x",
@@ -5416,7 +6048,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/a8a01fee82c19a0f1c06784cfe868e72b39fd806.jpg",
     "duration": "8:56",
     "viewCount": 3625,
-    "url": "https://www.bilibili.com/video/BV1T7411m73x/"
+    "url": "https://www.bilibili.com/video/BV1T7411m73x/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv1u7411t7cq",
@@ -5453,7 +6089,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/48416015a6bfdcd4ad608a17ceb0669d0b382cdd.jpg",
     "duration": "1:05",
     "viewCount": 2299,
-    "url": "https://www.bilibili.com/video/BV1U7411T7cq/"
+    "url": "https://www.bilibili.com/video/BV1U7411T7cq/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_mt_tennis_cn_bv1uj411b7sw",
@@ -5490,7 +6130,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/4b4f35d41de457b712b343af735395b5245c71fb.jpg",
     "duration": "11:18",
     "viewCount": 4363,
-    "url": "https://www.bilibili.com/video/BV1uJ411b7SW/"
+    "url": "https://www.bilibili.com/video/BV1uJ411b7SW/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv11m421v7jn",
@@ -5523,7 +6167,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/fd5ed3396171b3be3eb82668cc57fbe81be62c3c.jpg",
     "duration": "1:14",
     "viewCount": 16471,
-    "url": "https://www.bilibili.com/video/BV11m421V7Jn/"
+    "url": "https://www.bilibili.com/video/BV11m421V7Jn/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv12pvrzlejs",
@@ -5558,7 +6206,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/80e56bd38ac88de7a168272fcdbba180f99b3204.jpg",
     "duration": "4:49",
     "viewCount": 44980,
-    "url": "https://www.bilibili.com/video/BV12PVRzLEJs/"
+    "url": "https://www.bilibili.com/video/BV12PVRzLEJs/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv12zctzseds",
@@ -5592,7 +6244,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/68dec1437a03e50d46c9da1d782fe9a6ad3b4636.jpg",
     "duration": "0:29",
     "viewCount": 9892,
-    "url": "https://www.bilibili.com/video/BV12ZcTzSEDS/"
+    "url": "https://www.bilibili.com/video/BV12ZcTzSEDS/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv14i4y1q7at",
@@ -5627,7 +6283,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/65a79fbbf383cdb2ef18f72f0747a3216ef75458.jpg",
     "duration": "0:32",
     "viewCount": 2137832,
-    "url": "https://www.bilibili.com/video/BV14i4y1q7aT/"
+    "url": "https://www.bilibili.com/video/BV14i4y1q7aT/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv158hcezeik",
@@ -5662,7 +6322,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/f00bdb2762fb85fa1c55065b740cf7adb243ee61.jpg",
     "duration": "0:56",
     "viewCount": 32880,
-    "url": "https://www.bilibili.com/video/BV158HCeZEiK/"
+    "url": "https://www.bilibili.com/video/BV158HCeZEiK/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv188pkzgegh",
@@ -5697,7 +6361,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/b8337789de86b5e5a1ca16e00456b9c378afda89.jpg",
     "duration": "7:06",
     "viewCount": 52425,
-    "url": "https://www.bilibili.com/video/BV188pkzGEGH/"
+    "url": "https://www.bilibili.com/video/BV188pkzGEGH/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1arwwziesp",
@@ -5732,7 +6400,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/bbd6a174dd39ba84a523eb6acabc3eb0b64ca35d.jpg",
     "duration": "3:51",
     "viewCount": 22454,
-    "url": "https://www.bilibili.com/video/BV1arWwziEsp/"
+    "url": "https://www.bilibili.com/video/BV1arWwziEsp/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1b2sdyxefx",
@@ -5763,7 +6435,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/588d35ea44ac69d577d649dcd537a04f220dcd69.jpg",
     "duration": "1:23",
     "viewCount": 29061,
-    "url": "https://www.bilibili.com/video/BV1B2SdYXEfx/"
+    "url": "https://www.bilibili.com/video/BV1B2SdYXEfx/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1b3rkbees5",
@@ -5798,7 +6474,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/c790a92c71e84ca0ea1a52d55622b257deee3a1a.jpg",
     "duration": "0:21",
     "viewCount": 679812,
-    "url": "https://www.bilibili.com/video/BV1b3rKBeEs5/"
+    "url": "https://www.bilibili.com/video/BV1b3rKBeEs5/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1bgpkz9efg",
@@ -5833,7 +6513,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/5d6ebb57c19165f5c91f043e2baac195105736f0.jpg",
     "duration": "1:22",
     "viewCount": 40971,
-    "url": "https://www.bilibili.com/video/BV1BGpkz9EFG/"
+    "url": "https://www.bilibili.com/video/BV1BGpkz9EFG/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1bkzsy6eiz",
@@ -5867,7 +6551,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/6c32dedf3aa7db46132b6b1380bf0e9e222f1330.jpg",
     "duration": "0:35",
     "viewCount": 13908,
-    "url": "https://www.bilibili.com/video/BV1bkZSY6Eiz/"
+    "url": "https://www.bilibili.com/video/BV1bkZSY6Eiz/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1cmfczget1",
@@ -5898,7 +6586,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/2b1a777cfb0ce2d5618f966429c427f013a06bb1.jpg",
     "duration": "0:26",
     "viewCount": 11002,
-    "url": "https://www.bilibili.com/video/BV1cmFCzgET1/"
+    "url": "https://www.bilibili.com/video/BV1cmFCzgET1/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1dmbxyneng",
@@ -5929,7 +6621,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/ebc7c7908ec58e3ae147fabb1cf81ddc91644476.jpg",
     "duration": "1:26",
     "viewCount": 9492,
-    "url": "https://www.bilibili.com/video/BV1DmBXYNENG/"
+    "url": "https://www.bilibili.com/video/BV1DmBXYNENG/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1dvguzyewd",
@@ -5962,7 +6658,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/cf856c7cf648a6d639d4ffdf56e7224a553f34bf.jpg",
     "duration": "0:28",
     "viewCount": 12570,
-    "url": "https://www.bilibili.com/video/BV1dvGuzYEWD/"
+    "url": "https://www.bilibili.com/video/BV1dvGuzYEWD/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1g6uxynex7",
@@ -5993,7 +6693,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/23e569d0036d55d194640aed0e00a7da75e3758e.jpg",
     "duration": "0:36",
     "viewCount": 26697,
-    "url": "https://www.bilibili.com/video/BV1g6UxYnEX7/"
+    "url": "https://www.bilibili.com/video/BV1g6UxYnEX7/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1gcsuehehe",
@@ -6026,7 +6730,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/35b010d0b43e6b863c1d183c96b0034932b7373e.jpg",
     "duration": "1:57",
     "viewCount": 18439,
-    "url": "https://www.bilibili.com/video/BV1gcsuehEhE/"
+    "url": "https://www.bilibili.com/video/BV1gcsuehEhE/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1ki421q7f5",
@@ -6057,7 +6765,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/05ecc274b8d96183e49b20e6fed45d185e801245.jpg",
     "duration": "1:15",
     "viewCount": 23407,
-    "url": "https://www.bilibili.com/video/BV1ki421Q7F5/"
+    "url": "https://www.bilibili.com/video/BV1ki421Q7F5/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1lm411c7sv",
@@ -6092,7 +6804,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/00dadd7f4c874af4ee584642c1637769157763d8.jpg",
     "duration": "0:46",
     "viewCount": 7704,
-    "url": "https://www.bilibili.com/video/BV1LM411C7sv/"
+    "url": "https://www.bilibili.com/video/BV1LM411C7sv/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1mj3uzdec6",
@@ -6126,7 +6842,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/c5400d888109dcf2f6e00501c24a49b9c941880f.jpg",
     "duration": "0:25",
     "viewCount": 41058,
-    "url": "https://www.bilibili.com/video/BV1MJ3uzDEC6/"
+    "url": "https://www.bilibili.com/video/BV1MJ3uzDEC6/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1mpcvzhe42",
@@ -6157,7 +6877,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/0b59909cfca1f56df15f44795df49057f005ac0c.jpg",
     "duration": "0:52",
     "viewCount": 3576,
-    "url": "https://www.bilibili.com/video/BV1MPcvzhE42/"
+    "url": "https://www.bilibili.com/video/BV1MPcvzhE42/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1nrwxzfepw",
@@ -6188,7 +6912,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/2aaf1121e9834563b15d7e6fd6b001669563c3c3.jpg",
     "duration": "0:27",
     "viewCount": 17683,
-    "url": "https://www.bilibili.com/video/BV1nRWXzfEpw/"
+    "url": "https://www.bilibili.com/video/BV1nRWXzfEpw/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1nyupymer4",
@@ -6219,7 +6947,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/00bafc864f95ced3c452dff1c87e45d55f740fdf.jpg",
     "duration": "0:53",
     "viewCount": 63732,
-    "url": "https://www.bilibili.com/video/BV1NYUPYmEr4/"
+    "url": "https://www.bilibili.com/video/BV1NYUPYmEr4/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1qtqbyze5v",
@@ -6251,7 +6983,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/7ddf61ecefd8c9666512ea068e1da2dc9cdde2cb.jpg",
     "duration": "1:04",
     "viewCount": 13460,
-    "url": "https://www.bilibili.com/video/BV1QtqBYZE5v/"
+    "url": "https://www.bilibili.com/video/BV1QtqBYZE5v/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1syspzxegg",
@@ -6283,7 +7019,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/6ee2a8034bbee48359b79617097feae1c6e0aba2.jpg",
     "duration": "1:41",
     "viewCount": 11294,
-    "url": "https://www.bilibili.com/video/BV1SYspzxEgG/"
+    "url": "https://www.bilibili.com/video/BV1SYspzxEgG/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1u4o2ycev5",
@@ -6317,7 +7057,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/94b5a07a87cb53857c15d92ba9f79bb7811c8d3d.jpg",
     "duration": "0:34",
     "viewCount": 18401,
-    "url": "https://www.bilibili.com/video/BV1u4o2YcEv5/"
+    "url": "https://www.bilibili.com/video/BV1u4o2YcEv5/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1vy411q7q9",
@@ -6348,7 +7092,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/a88c5fcd74bccb29be0db04a18e8334955ee0eef.jpg",
     "duration": "1:11",
     "viewCount": 24134,
-    "url": "https://www.bilibili.com/video/BV1vy411q7q9/"
+    "url": "https://www.bilibili.com/video/BV1vy411q7q9/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1wm4m127us",
@@ -6381,7 +7129,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/58d6928f3bb71a15812d00c1d33294db94831ca8.jpg",
     "duration": "0:51",
     "viewCount": 14784,
-    "url": "https://www.bilibili.com/video/BV1WM4m127Us/"
+    "url": "https://www.bilibili.com/video/BV1WM4m127Us/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1x4421d728",
@@ -6415,7 +7167,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/602847585fd23a55c07d3c85527fab7665265426.jpg",
     "duration": "1:00",
     "viewCount": 30773,
-    "url": "https://www.bilibili.com/video/BV1x4421D728/"
+    "url": "https://www.bilibili.com/video/BV1x4421D728/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1xqgmzkex1",
@@ -6446,7 +7202,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/f277686d7d87a3d49d0b3509f49cb0b864e944ad.jpg",
     "duration": "0:29",
     "viewCount": 213302,
-    "url": "https://www.bilibili.com/video/BV1XQGmzKEx1/"
+    "url": "https://www.bilibili.com/video/BV1XQGmzKEx1/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1xqspzxezt",
@@ -6478,7 +7238,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/5d570028c0334909bee8574a401e295d8b3737d0.jpg",
     "duration": "9:52",
     "viewCount": 14795,
-    "url": "https://www.bilibili.com/video/BV1xqspzXEZT/"
+    "url": "https://www.bilibili.com/video/BV1xqspzXEZT/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_pikachu_bv1yqtdzaegb",
@@ -6514,7 +7278,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/4f4598af759d541432e3152e3fb4feec68dadcfc.jpg",
     "duration": "0:27",
     "viewCount": 15620,
-    "url": "https://www.bilibili.com/video/BV1YQtdzAEGB/"
+    "url": "https://www.bilibili.com/video/BV1YQtdzAEGB/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv15g411k77b",
@@ -6552,7 +7320,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/8fc8585b45a12655c05aba439bd9920352bb2520.jpg",
     "duration": "2:11",
     "viewCount": 6152,
-    "url": "https://www.bilibili.com/video/BV15G411K77b/"
+    "url": "https://www.bilibili.com/video/BV15G411K77b/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1784y1k7ey",
@@ -6584,7 +7356,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/c7ed5d21c60d7c24c7ce604815a5e248e3dcde7e.jpg",
     "duration": "5:29",
     "viewCount": 18816,
-    "url": "https://www.bilibili.com/video/BV1784y1k7EY/"
+    "url": "https://www.bilibili.com/video/BV1784y1k7EY/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv18m411b7kd",
@@ -6622,7 +7398,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/c9dda6573e77e39553e416042d12d2bf1eacef77.jpg",
     "duration": "2:01",
     "viewCount": 37609,
-    "url": "https://www.bilibili.com/video/BV18M411B7kD/"
+    "url": "https://www.bilibili.com/video/BV18M411B7kD/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1ae4y1t755",
@@ -6657,7 +7437,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/cfa82f29304a5b36319af5d17089bed639ad3b94.jpg",
     "duration": "7:13",
     "viewCount": 21678,
-    "url": "https://www.bilibili.com/video/BV1ae4y1T755/"
+    "url": "https://www.bilibili.com/video/BV1ae4y1T755/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1ap4y1s77t",
@@ -6689,7 +7473,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/7d47b9f0332cfd4cfd8e14f65fd43f6562382218.jpg",
     "duration": "5:25",
     "viewCount": 8751,
-    "url": "https://www.bilibili.com/video/BV1AP4y1S77T/"
+    "url": "https://www.bilibili.com/video/BV1AP4y1S77T/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1eg411m7sz",
@@ -6725,7 +7513,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/f863498259efb8b88745c54fb4d8a1f8331eb685.jpg",
     "duration": "12:49",
     "viewCount": 21331,
-    "url": "https://www.bilibili.com/video/BV1EG411M7Sz/"
+    "url": "https://www.bilibili.com/video/BV1EG411M7Sz/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1gd4y1t7yl",
@@ -6757,7 +7549,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/d02f91ba96d8e93a9bcdf8112e31c24e59d6f62b.jpg",
     "duration": "12:16",
     "viewCount": 19682,
-    "url": "https://www.bilibili.com/video/BV1Gd4y1t7yL/"
+    "url": "https://www.bilibili.com/video/BV1Gd4y1t7yL/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1gg4y1d7kg",
@@ -6798,7 +7594,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/256afce0702cb266cdf8fc406cf4a766485fcf40.jpg",
     "duration": "13:56",
     "viewCount": 37464,
-    "url": "https://www.bilibili.com/video/BV1gG4y1d7Kg/"
+    "url": "https://www.bilibili.com/video/BV1gG4y1d7Kg/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1gk411z7ed",
@@ -6830,7 +7630,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/1c09636a0ed370994f36cd1f7e711980361bec86.jpg",
     "duration": "16:03",
     "viewCount": 9525,
-    "url": "https://www.bilibili.com/video/BV1GK411z7Ed/"
+    "url": "https://www.bilibili.com/video/BV1GK411z7Ed/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1gv4y1v7ok",
@@ -6862,7 +7666,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/d3c8b3a994c5a66817c1b8099c676ecea96bfbad.jpg",
     "duration": "6:43",
     "viewCount": 27870,
-    "url": "https://www.bilibili.com/video/BV1Gv4y1v7ok/"
+    "url": "https://www.bilibili.com/video/BV1Gv4y1v7ok/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1h14y1p7m9",
@@ -6894,7 +7702,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/bc0bcd0936d919b8553b071b68115bb8e7f78446.jpg",
     "duration": "8:23",
     "viewCount": 25654,
-    "url": "https://www.bilibili.com/video/BV1h14y1P7M9/"
+    "url": "https://www.bilibili.com/video/BV1h14y1P7M9/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1ha4y1u7jb",
@@ -6928,7 +7740,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/f1507d5c49eb6725475cc06dfc28ac43e9404e5d.jpg",
     "duration": "6:41",
     "viewCount": 34262,
-    "url": "https://www.bilibili.com/video/BV1ha4y1u7jb/"
+    "url": "https://www.bilibili.com/video/BV1ha4y1u7jb/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1ir4y1z7wq",
@@ -6962,7 +7778,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/60aed33264bdadac72953ed5dbbf07453efef940.jpg",
     "duration": "8:29",
     "viewCount": 19610,
-    "url": "https://www.bilibili.com/video/BV1iR4y1Z7wq/"
+    "url": "https://www.bilibili.com/video/BV1iR4y1Z7wq/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1kg411t7be",
@@ -6994,7 +7814,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/e8d8f88c1a816e1b49bf014cef151e70382c54fe.jpg",
     "duration": "11:02",
     "viewCount": 10518,
-    "url": "https://www.bilibili.com/video/BV1KG411T7Be/"
+    "url": "https://www.bilibili.com/video/BV1KG411T7Be/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1kw4y1u7xb",
@@ -7032,7 +7856,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/800240a5ff4aa5b0e4a7feacfb395b8da4c3923c.jpg",
     "duration": "3:09",
     "viewCount": 4504,
-    "url": "https://www.bilibili.com/video/BV1kW4y1u7Xb/"
+    "url": "https://www.bilibili.com/video/BV1kW4y1u7Xb/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1ny411z7vk",
@@ -7067,7 +7895,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/e7c6b4a69b6bce455cfb90b4a101206f048d648b.jpg",
     "duration": "10:15",
     "viewCount": 16586,
-    "url": "https://www.bilibili.com/video/BV1NY411Z7VK/"
+    "url": "https://www.bilibili.com/video/BV1NY411Z7VK/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1rd4y177ur",
@@ -7103,7 +7935,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/4d70c732f2eb2e4f9962d36aa980fb405d9e550a.jpg",
     "duration": "15:21",
     "viewCount": 10777,
-    "url": "https://www.bilibili.com/video/BV1RD4y177Ur/"
+    "url": "https://www.bilibili.com/video/BV1RD4y177Ur/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1ug411t7je",
@@ -7135,7 +7971,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/da26aa0dd5b1a0ee9b0715d0bde5803b5131959d.jpg",
     "duration": "14:51",
     "viewCount": 10235,
-    "url": "https://www.bilibili.com/video/BV1UG411T7jE/"
+    "url": "https://www.bilibili.com/video/BV1UG411T7jE/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1ug411w7vg",
@@ -7167,7 +8007,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/fefa670fd23d65d7f344125114aa93472799c1e7.jpg",
     "duration": "8:19",
     "viewCount": 9806,
-    "url": "https://www.bilibili.com/video/BV1ug411W7vg/"
+    "url": "https://www.bilibili.com/video/BV1ug411W7vg/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1vd4y147ks",
@@ -7199,7 +8043,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/c91a41ae0bd96b979c834f47e70ef4d894ee2e76.jpg",
     "duration": "11:20",
     "viewCount": 15815,
-    "url": "https://www.bilibili.com/video/BV1vd4y147ks/"
+    "url": "https://www.bilibili.com/video/BV1vd4y147ks/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1x84y1r7rx",
@@ -7237,7 +8085,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/0d989150d0df51639eb7cd98417716e63bbbfcd2.jpg",
     "duration": "7:00",
     "viewCount": 4688,
-    "url": "https://www.bilibili.com/video/BV1X84y1r7rX/"
+    "url": "https://www.bilibili.com/video/BV1X84y1r7rX/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_qingying_tennis_bv1xm411478d",
@@ -7269,7 +8121,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/80ae419269857006c1531ae88d25dfbc11419053.jpg",
     "duration": "10:15",
     "viewCount": 13345,
-    "url": "https://www.bilibili.com/video/BV1XM411478d/"
+    "url": "https://www.bilibili.com/video/BV1XM411478d/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv11swxewebe",
@@ -7303,7 +8159,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/a0e127f555e2048dcc3fec8ef4553738401694f6.jpg",
     "duration": "4:54",
     "viewCount": 715,
-    "url": "https://www.bilibili.com/video/BV11swXeWEbE/"
+    "url": "https://www.bilibili.com/video/BV11swXeWEbE/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1384y1u7zf",
@@ -7336,7 +8196,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/d4b72450d3248782a9978019b47cd65a4b552b96.jpg",
     "duration": "7:02",
     "viewCount": 89,
-    "url": "https://www.bilibili.com/video/BV1384y1U7zf/"
+    "url": "https://www.bilibili.com/video/BV1384y1U7zf/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv14en8zpet4",
@@ -7372,7 +8236,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/706071482b383343d3fdce5002d450b4d507889b.jpg",
     "duration": "6:54",
     "viewCount": 140,
-    "url": "https://www.bilibili.com/video/BV14en8zPEt4/"
+    "url": "https://www.bilibili.com/video/BV14en8zPEt4/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv14zrgyheqb",
@@ -7408,7 +8276,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/2593f06542b379689d713810ae00f2a0a58036f3.jpg",
     "duration": "14:25",
     "viewCount": 4361,
-    "url": "https://www.bilibili.com/video/BV14zrgYHEqB/"
+    "url": "https://www.bilibili.com/video/BV14zrgYHEqB/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv14zrgyheru",
@@ -7444,7 +8316,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/334de23373b0b557e34f908ee09e18c288043672.jpg",
     "duration": "8:28",
     "viewCount": 2158,
-    "url": "https://www.bilibili.com/video/BV14zrgYHERU/"
+    "url": "https://www.bilibili.com/video/BV14zrgYHERU/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv17echypef7",
@@ -7477,7 +8353,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/647c77a374d7bff674cc9ae420612f0f1b6da4ce.jpg",
     "duration": "5:04",
     "viewCount": 50,
-    "url": "https://www.bilibili.com/video/BV17eChYPEF7/"
+    "url": "https://www.bilibili.com/video/BV17eChYPEF7/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv18briywe7p",
@@ -7511,7 +8391,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/004c6bf753ae2a6ca21621e3509d63a5f943758e.jpg",
     "duration": "6:12",
     "viewCount": 1208,
-    "url": "https://www.bilibili.com/video/BV18bRiYwE7p/"
+    "url": "https://www.bilibili.com/video/BV18bRiYwE7p/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1cvfpyreqz",
@@ -7547,7 +8431,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/ce2fdbbea040a7e87ad47e09abec228d6b633a19.jpg",
     "duration": "5:53",
     "viewCount": 311,
-    "url": "https://www.bilibili.com/video/BV1CvfPYrEQZ/"
+    "url": "https://www.bilibili.com/video/BV1CvfPYrEQZ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1e897yret7",
@@ -7579,7 +8467,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/9859e0a47dcbb8e450553e7928a384d714149b6a.jpg",
     "duration": "2:46",
     "viewCount": 238,
-    "url": "https://www.bilibili.com/video/BV1E897YRET7/"
+    "url": "https://www.bilibili.com/video/BV1E897YRET7/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1eo4y1g7jy",
@@ -7610,7 +8502,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/36a0332fe9dc214555f2270af380369b89b05b93.jpg",
     "duration": "14:34",
     "viewCount": 2020,
-    "url": "https://www.bilibili.com/video/BV1eo4y1G7jY/"
+    "url": "https://www.bilibili.com/video/BV1eo4y1G7jY/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1ffneeweqw",
@@ -7647,7 +8543,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/ae42dbaf0aee820dc41cb9d99ef7e491211538b3.jpg",
     "duration": "4:17",
     "viewCount": 300,
-    "url": "https://www.bilibili.com/video/BV1fFNEeWEQW/"
+    "url": "https://www.bilibili.com/video/BV1fFNEeWEQW/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1fgcnesedq",
@@ -7678,7 +8578,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/47c46df5aba0e87a5b2ef5f0f660ed39dfb8f294.jpg",
     "duration": "7:24",
     "viewCount": 976,
-    "url": "https://www.bilibili.com/video/BV1fgcneSEDq/"
+    "url": "https://www.bilibili.com/video/BV1fgcneSEDq/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1fradewe4t",
@@ -7711,7 +8615,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/d9587e68ea8fe59871bd197bda51f1e288f9d6cc.jpg",
     "duration": "3:06",
     "viewCount": 860,
-    "url": "https://www.bilibili.com/video/BV1fRAdeWE4T/"
+    "url": "https://www.bilibili.com/video/BV1fRAdeWE4T/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1g8411v75e",
@@ -7742,7 +8650,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/da71d1e438ef49202af0d5cade1d509f647bb354.jpg",
     "duration": "7:36",
     "viewCount": 488,
-    "url": "https://www.bilibili.com/video/BV1g8411v75e/"
+    "url": "https://www.bilibili.com/video/BV1g8411v75e/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1h4riyyevv",
@@ -7775,7 +8687,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/7ca67ec0a33ccc9ea7ad7cfd5b80bda4b057a846.jpg",
     "duration": "6:51",
     "viewCount": 1163,
-    "url": "https://www.bilibili.com/video/BV1h4RiYYEVV/"
+    "url": "https://www.bilibili.com/video/BV1h4RiYYEVV/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1ikcvyve6w",
@@ -7806,7 +8722,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/4e5627430ef4ed8785bf9f85a3025804f872c252.jpg",
     "duration": "2:50",
     "viewCount": 123,
-    "url": "https://www.bilibili.com/video/BV1ikCvYVE6w/"
+    "url": "https://www.bilibili.com/video/BV1ikCvYVE6w/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1mariyfeus",
@@ -7840,7 +8760,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/aeac86d7b76effb7a1843b5adb22e9336f58646a.jpg",
     "duration": "7:34",
     "viewCount": 495,
-    "url": "https://www.bilibili.com/video/BV1MaRiYFEus/"
+    "url": "https://www.bilibili.com/video/BV1MaRiYFEus/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1mf411d7sj",
@@ -7871,7 +8795,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/9fe84c9fcbdee489dc4c601f2865bab3bd6bce30.jpg",
     "duration": "7:45",
     "viewCount": 2626,
-    "url": "https://www.bilibili.com/video/BV1mF411D7sJ/"
+    "url": "https://www.bilibili.com/video/BV1mF411D7sJ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1mz4y1l7mj",
@@ -7907,7 +8835,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/5fc2c080b4112ebf8bca8f0d1cf3d7ad15ea88ef.jpg",
     "duration": "13:07",
     "viewCount": 1627,
-    "url": "https://www.bilibili.com/video/BV1Mz4y1L7MJ/"
+    "url": "https://www.bilibili.com/video/BV1Mz4y1L7MJ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1nswxesedw",
@@ -7938,7 +8870,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/a971c6b8d48bea403d72b08dba08830ccf81b365.jpg",
     "duration": "8:08",
     "viewCount": 289,
-    "url": "https://www.bilibili.com/video/BV1NswXesEDW/"
+    "url": "https://www.bilibili.com/video/BV1NswXesEDW/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1o94y1h7jq",
@@ -7976,7 +8912,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/bd3d74281608a313ad4d67dc214282e313d7e6ca.jpg",
     "duration": "0:16",
     "viewCount": 885,
-    "url": "https://www.bilibili.com/video/BV1o94y1H7Jq/"
+    "url": "https://www.bilibili.com/video/BV1o94y1H7Jq/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1pa9zy1egr",
@@ -8012,7 +8952,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/537a6f79d7dbb28a25e2c81c0bb251e1d2405f1f.jpg",
     "duration": "3:17",
     "viewCount": 210,
-    "url": "https://www.bilibili.com/video/BV1Pa9ZY1EGr/"
+    "url": "https://www.bilibili.com/video/BV1Pa9ZY1EGr/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1pgcpyyevt",
@@ -8043,7 +8987,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/c3721ec492ff31d73b7b6ae05da157285566909b.jpg",
     "duration": "12:28",
     "viewCount": 39,
-    "url": "https://www.bilibili.com/video/BV1pGCPYYEvt/"
+    "url": "https://www.bilibili.com/video/BV1pGCPYYEvt/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1pkn4epeky",
@@ -8074,7 +9022,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/a21dd134102d65976b4c5c74bf02e16bf439ca10.jpg",
     "duration": "46:29",
     "viewCount": 268,
-    "url": "https://www.bilibili.com/video/BV1PKN4epEkY/"
+    "url": "https://www.bilibili.com/video/BV1PKN4epEkY/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1qp4y1m7hg",
@@ -8105,7 +9057,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/d43e0402444e850cab211ab64a4ebca51df4598e.jpg",
     "duration": "7:29",
     "viewCount": 714,
-    "url": "https://www.bilibili.com/video/BV1qp4y1M7Hg/"
+    "url": "https://www.bilibili.com/video/BV1qp4y1M7Hg/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1rm4y1v7xz",
@@ -8140,7 +9096,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/dc89d02e331508c966b5419dec4ae5e3fa892c4e.jpg",
     "duration": "8:03",
     "viewCount": 234,
-    "url": "https://www.bilibili.com/video/BV1Rm4y1V7Xz/"
+    "url": "https://www.bilibili.com/video/BV1Rm4y1V7Xz/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1ru4y167sc",
@@ -8176,7 +9136,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/70ea29ca0582e5e56209c2527ee12f9a6ec358e3.jpg",
     "duration": "9:22",
     "viewCount": 444,
-    "url": "https://www.bilibili.com/video/BV1ru4y167Sc/"
+    "url": "https://www.bilibili.com/video/BV1ru4y167Sc/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1tm4y1g7zn",
@@ -8207,7 +9171,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/096833e2978282412a1801dca29aea3fed0352c2.jpg",
     "duration": "1:41",
     "viewCount": 262,
-    "url": "https://www.bilibili.com/video/BV1tm4y1G7zn/"
+    "url": "https://www.bilibili.com/video/BV1tm4y1G7zn/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1trcmewejn",
@@ -8238,7 +9206,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/9114a5519751ea97aef266a4bd93776c714d83ba.jpg",
     "duration": "8:07",
     "viewCount": 1200,
-    "url": "https://www.bilibili.com/video/BV1tRcMewEjn/"
+    "url": "https://www.bilibili.com/video/BV1tRcMewEjn/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1un4y1q738",
@@ -8274,7 +9246,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/74df375ed0f6fb19c4aa8f95f8f91fce9ac53230.jpg",
     "duration": "7:21",
     "viewCount": 918,
-    "url": "https://www.bilibili.com/video/BV1UN4y1Q738/"
+    "url": "https://www.bilibili.com/video/BV1UN4y1Q738/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1wh4y1e7ds",
@@ -8309,7 +9285,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/e68237e4c490a17de258a459bf98c6d1ce688dcb.jpg",
     "duration": "0:25",
     "viewCount": 356,
-    "url": "https://www.bilibili.com/video/BV1Wh4y1e7Ds/"
+    "url": "https://www.bilibili.com/video/BV1Wh4y1e7Ds/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1wkrkyvemp",
@@ -8340,7 +9320,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/829dc467a07e686c3afb25b0bf1f162e40f6e1db.jpg",
     "duration": "2:17",
     "viewCount": 454,
-    "url": "https://www.bilibili.com/video/BV1WKRKYvEmp/"
+    "url": "https://www.bilibili.com/video/BV1WKRKYvEmp/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1wmq9yzeny",
@@ -8374,7 +9358,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/acf9e3828563279232947ae594e185fe237fdd60.jpg",
     "duration": "3:38",
     "viewCount": 237,
-    "url": "https://www.bilibili.com/video/BV1WMQ9YZENY/"
+    "url": "https://www.bilibili.com/video/BV1WMQ9YZENY/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1wzx8ycefz",
@@ -8407,7 +9395,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/e574fc8856e4d359c6a83f0aecf3e3fd438fb110.jpg",
     "duration": "4:50",
     "viewCount": 376,
-    "url": "https://www.bilibili.com/video/BV1wZX8YcEFz/"
+    "url": "https://www.bilibili.com/video/BV1wZX8YcEFz/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1x89ryjend",
@@ -8438,7 +9430,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/301425e17fd7344297cf3057418b944960153034.jpg",
     "duration": "2:35",
     "viewCount": 322,
-    "url": "https://www.bilibili.com/video/BV1X89RYJEnd/"
+    "url": "https://www.bilibili.com/video/BV1X89RYJEnd/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_quanshui_hanshansi_hidden_bv1zw411e79f",
@@ -8469,7 +9465,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/d21d86ff91068d17fcc3f969dbd510c21027c629.jpg",
     "duration": "15:23",
     "viewCount": 384,
-    "url": "https://www.bilibili.com/video/BV1Zw411e79f/"
+    "url": "https://www.bilibili.com/video/BV1Zw411e79f/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv15g411i7ay",
@@ -8500,7 +9500,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/9cbd4fe0f145d0ff7a9923dcab3eb37f1d0f80e0.jpg",
     "duration": "10:27",
     "viewCount": 57371,
-    "url": "https://www.bilibili.com/video/BV15G411i7AY/"
+    "url": "https://www.bilibili.com/video/BV15G411i7AY/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv1asjdzgeap",
@@ -8539,7 +9543,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/af2065267a9c8305de0113148b6ca867842efb9a.jpg",
     "duration": "10:00",
     "viewCount": 51998,
-    "url": "https://www.bilibili.com/video/BV1asJdzGEap/"
+    "url": "https://www.bilibili.com/video/BV1asJdzGEap/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv1hdmezhe6z",
@@ -8578,7 +9586,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/27c032b57e331d529235624a35e659000538e6a1.jpg",
     "duration": "15:36",
     "viewCount": 12144,
-    "url": "https://www.bilibili.com/video/BV1hdMezHE6z/"
+    "url": "https://www.bilibili.com/video/BV1hdMezHE6z/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv1ji4y1h7yy",
@@ -8609,7 +9621,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/a2773dd36f1f8b5ee41433a251d8444e539ccdff.jpg",
     "duration": "11:59",
     "viewCount": 47932,
-    "url": "https://www.bilibili.com/video/BV1Ji4y1h7YY/"
+    "url": "https://www.bilibili.com/video/BV1Ji4y1h7YY/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv1jie7zhe1u",
@@ -8648,7 +9664,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/e4556510a4072b1eca634a52aaf7e5339589cac7.jpg",
     "duration": "9:28",
     "viewCount": 190601,
-    "url": "https://www.bilibili.com/video/BV1Jie7zHE1U/"
+    "url": "https://www.bilibili.com/video/BV1Jie7zHE1U/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv1k5411y7q3",
@@ -8682,7 +9702,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/b104675b93a01de4ef79900b0b39f0d05bcdd3ae.jpg",
     "duration": "14:23",
     "viewCount": 56479,
-    "url": "https://www.bilibili.com/video/BV1k5411y7Q3/"
+    "url": "https://www.bilibili.com/video/BV1k5411y7Q3/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv1q94y1n7kh",
@@ -8721,7 +9745,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/c7779d50f7045a28baec44dbc624b4302529d38e.jpg",
     "duration": "15:50",
     "viewCount": 260548,
-    "url": "https://www.bilibili.com/video/BV1q94y1N7kH/"
+    "url": "https://www.bilibili.com/video/BV1q94y1N7kH/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv1qk4y1e79a",
@@ -8760,7 +9788,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/582d1c23ccba3a2628e7702f2ffc478a67d53b5b.jpg",
     "duration": "21:55",
     "viewCount": 99029,
-    "url": "https://www.bilibili.com/video/BV1qk4y1E79a/"
+    "url": "https://www.bilibili.com/video/BV1qk4y1E79a/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv1rp421u7jx",
@@ -8799,7 +9831,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/8fbfb682d26bf5e3927f95389917250b2d79007d.jpg",
     "duration": "13:14",
     "viewCount": 59504,
-    "url": "https://www.bilibili.com/video/BV1Rp421U7jx/"
+    "url": "https://www.bilibili.com/video/BV1Rp421U7jx/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv1sugczqevb",
@@ -8832,7 +9868,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/0efb0ac23fe27b2b00f8c36ce5ce272775c08186.jpg",
     "duration": "16:04",
     "viewCount": 56951,
-    "url": "https://www.bilibili.com/video/BV1SUGCzQEvB/"
+    "url": "https://www.bilibili.com/video/BV1SUGCzQEvB/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv1wu411e7wz",
@@ -8870,7 +9910,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/9bdaf9bdcb64df28fafab2d1aefa755d2c70de28.jpg",
     "duration": "9:46",
     "viewCount": 65254,
-    "url": "https://www.bilibili.com/video/BV1Wu411E7wZ/"
+    "url": "https://www.bilibili.com/video/BV1Wu411E7wZ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv1xn4y1x73d",
@@ -8909,7 +9953,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/8e2ef38361c21aee8894ed8b0dc7892c1e6118a2.jpg",
     "duration": "14:39",
     "viewCount": 96125,
-    "url": "https://www.bilibili.com/video/BV1Xn4y1X73D/"
+    "url": "https://www.bilibili.com/video/BV1Xn4y1X73D/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_racketbrothers_bv1yf4m1j7wi",
@@ -8940,7 +9988,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/850e248a94e4e96791a8bc949a47c16c5dd80c41.jpg",
     "duration": "10:32",
     "viewCount": 35060,
-    "url": "https://www.bilibili.com/video/BV1YF4m1j7wi/"
+    "url": "https://www.bilibili.com/video/BV1YF4m1j7wi/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv115411s7ba",
@@ -8981,7 +10033,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/5d13757147ce944a82deb10cf3ce66e1b200dbea.jpg",
     "duration": "13:02",
     "viewCount": 8451,
-    "url": "https://www.bilibili.com/video/BV115411S7BA/"
+    "url": "https://www.bilibili.com/video/BV115411S7BA/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv12w4y147mu",
@@ -9016,7 +10072,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/e7631cf60e7fa532edc4c589ec97d44fad8a8aca.jpg",
     "duration": "11:09",
     "viewCount": 2697,
-    "url": "https://www.bilibili.com/video/BV12W4y147MU/"
+    "url": "https://www.bilibili.com/video/BV12W4y147MU/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1314y1n7gz",
@@ -9050,7 +10110,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/6ea00ce1631ad8d88bc35d0c69b9f12803e48d26.jpg",
     "duration": "7:35",
     "viewCount": 2966,
-    "url": "https://www.bilibili.com/video/BV1314y1n7Gz/"
+    "url": "https://www.bilibili.com/video/BV1314y1n7Gz/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv17g411v7ed",
@@ -9090,7 +10154,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/3f958251a502cb434dd09d3212f095144f21f1b8.jpg",
     "duration": "11:54",
     "viewCount": 2321,
-    "url": "https://www.bilibili.com/video/BV17G411V7Ed/"
+    "url": "https://www.bilibili.com/video/BV17G411V7Ed/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1ay411z7ww",
@@ -9125,7 +10193,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/f97fa4fb6190458a611d24bd65230dec2a528898.jpg",
     "duration": "2:05",
     "viewCount": 1743,
-    "url": "https://www.bilibili.com/video/BV1AY411Z7wW/"
+    "url": "https://www.bilibili.com/video/BV1AY411Z7wW/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1b34y1x78t",
@@ -9165,7 +10237,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/88d5dc52da526b49d4f9d4ab8bff184cfa803f1e.jpg",
     "duration": "14:04",
     "viewCount": 5330,
-    "url": "https://www.bilibili.com/video/BV1B34y1x78T/"
+    "url": "https://www.bilibili.com/video/BV1B34y1x78T/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1bw4y1p7gf",
@@ -9202,7 +10278,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/5a3d053980ab180f0c2f58a08a6393178a436c2f.jpg",
     "duration": "7:36",
     "viewCount": 2607,
-    "url": "https://www.bilibili.com/video/BV1bW4y1p7Gf/"
+    "url": "https://www.bilibili.com/video/BV1bW4y1p7Gf/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1df411s7vc",
@@ -9241,7 +10321,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/9ecb8f871360072f592ce0f037c2d7cf02090c16.jpg",
     "duration": "11:32",
     "viewCount": 5922,
-    "url": "https://www.bilibili.com/video/BV1dF411s7vC/"
+    "url": "https://www.bilibili.com/video/BV1dF411s7vC/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1ffhgeueu6",
@@ -9276,7 +10360,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/55e3cf4efdddf4896e6a1f3fc6524b71ed706963.jpg",
     "duration": "1:19",
     "viewCount": 3517,
-    "url": "https://www.bilibili.com/video/BV1fFHgeuEU6/"
+    "url": "https://www.bilibili.com/video/BV1fFHgeuEU6/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1ft4y1n7r4",
@@ -9314,7 +10402,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/998c63d14f3a5852aae6930f5e33e4947f69028a.jpg",
     "duration": "13:43",
     "viewCount": 2352,
-    "url": "https://www.bilibili.com/video/BV1ft4y1N7r4/"
+    "url": "https://www.bilibili.com/video/BV1ft4y1N7r4/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1h5411u7dp",
@@ -9351,7 +10443,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/10965a741ba890624388c24a986b23794e1309e3.jpg",
     "duration": "13:23",
     "viewCount": 21435,
-    "url": "https://www.bilibili.com/video/BV1h5411U7Dp/"
+    "url": "https://www.bilibili.com/video/BV1h5411U7Dp/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1hr4y1j7is",
@@ -9386,7 +10482,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/d33eebc0f3dae92b1da37192081d3c76ed76715f.jpg",
     "duration": "10:30",
     "viewCount": 12706,
-    "url": "https://www.bilibili.com/video/BV1Hr4y1J7is/"
+    "url": "https://www.bilibili.com/video/BV1Hr4y1J7is/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1ig4y157qh",
@@ -9421,7 +10521,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/79ee03c0cb78d94822a0f4d145203948cffbd97d.jpg",
     "duration": "15:17",
     "viewCount": 7980,
-    "url": "https://www.bilibili.com/video/BV1iG4y157QH/"
+    "url": "https://www.bilibili.com/video/BV1iG4y157QH/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1ix4y1t7y9",
@@ -9459,7 +10563,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/712102eefbcb6e6444a3c5108073c3443d2b06e2.jpg",
     "duration": "2:04",
     "viewCount": 1342,
-    "url": "https://www.bilibili.com/video/BV1ix4y1t7y9/"
+    "url": "https://www.bilibili.com/video/BV1ix4y1t7y9/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1jehcekerf",
@@ -9491,7 +10599,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/3b1acdaa18b6eb9642fcffe3a7a4326cde9f43fe.jpg",
     "duration": "0:50",
     "viewCount": 6266,
-    "url": "https://www.bilibili.com/video/BV1JEHCeKErf/"
+    "url": "https://www.bilibili.com/video/BV1JEHCeKErf/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1mh4y1w7pr",
@@ -9525,7 +10637,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/1ae356f7b788b4dcc31ea7321ac5670247ffbf50.jpg",
     "duration": "3:38",
     "viewCount": 2936,
-    "url": "https://www.bilibili.com/video/BV1MH4y1w7Pr/"
+    "url": "https://www.bilibili.com/video/BV1MH4y1w7Pr/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1mp4y117er",
@@ -9560,7 +10676,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/de316f25bf9103b1442a354cca85cfb05815002e.jpg",
     "duration": "8:26",
     "viewCount": 12791,
-    "url": "https://www.bilibili.com/video/BV1mP4y117er/"
+    "url": "https://www.bilibili.com/video/BV1mP4y117er/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1ol4y177mx",
@@ -9592,7 +10712,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/83e2de0bda615c4e4f29f9ac577f7da78c9c73c6.jpg",
     "duration": "4:27",
     "viewCount": 4583,
-    "url": "https://www.bilibili.com/video/BV1oL4y177mX/"
+    "url": "https://www.bilibili.com/video/BV1oL4y177mX/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1pe4y1y7vd",
@@ -9628,7 +10752,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/184e44075224cc9385e908ed948fbd39d359f621.jpg",
     "duration": "13:38",
     "viewCount": 886,
-    "url": "https://www.bilibili.com/video/BV1pe4y1y7vD/"
+    "url": "https://www.bilibili.com/video/BV1pe4y1y7vD/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1pr4y1n7jc",
@@ -9666,7 +10794,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/8dad37ad3cbeda127f97e865c3507e28532dafcb.jpg",
     "duration": "11:35",
     "viewCount": 2918,
-    "url": "https://www.bilibili.com/video/BV1Pr4y1n7JC/"
+    "url": "https://www.bilibili.com/video/BV1Pr4y1n7JC/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1pr4y1z7pd",
@@ -9700,7 +10832,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/244fc5311efea63850ff2ef2ec0e5d9d4bc538a2.jpg",
     "duration": "4:47",
     "viewCount": 1908,
-    "url": "https://www.bilibili.com/video/BV1PR4y1Z7pD/"
+    "url": "https://www.bilibili.com/video/BV1PR4y1Z7pD/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1ql4y1v7en",
@@ -9732,7 +10868,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/eac5e4ec701159b82b82d463efbaa3caac14a2be.jpg",
     "duration": "4:28",
     "viewCount": 2886,
-    "url": "https://www.bilibili.com/video/BV1qL4y1V7EN/"
+    "url": "https://www.bilibili.com/video/BV1qL4y1V7EN/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1rg4y1d7vo",
@@ -9764,7 +10904,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/1a2edd9a814c056f74fbd2794ab6c324ae1f685f.jpg",
     "duration": "4:13",
     "viewCount": 418,
-    "url": "https://www.bilibili.com/video/BV1rg4y1d7Vo/"
+    "url": "https://www.bilibili.com/video/BV1rg4y1d7Vo/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1s14y1s7pw",
@@ -9802,7 +10946,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/372060d503f27378a9bf4cf55686a5ab9c846042.jpg",
     "duration": "10:28",
     "viewCount": 600,
-    "url": "https://www.bilibili.com/video/BV1S14y1s7pw/"
+    "url": "https://www.bilibili.com/video/BV1S14y1s7pw/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1sq4y1y7ng",
@@ -9841,7 +10989,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/e9585835ab43561387d509a758cd36a6a1d68db4.jpg",
     "duration": "10:15",
     "viewCount": 3792,
-    "url": "https://www.bilibili.com/video/BV1sq4y1Y7Ng/"
+    "url": "https://www.bilibili.com/video/BV1sq4y1Y7Ng/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1t94y1z74g",
@@ -9873,7 +11025,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/7b4aecbdb3b21d24c5d9049d534444ad8921b01d.jpg",
     "duration": "14:31",
     "viewCount": 2601,
-    "url": "https://www.bilibili.com/video/BV1t94y1Z74g/"
+    "url": "https://www.bilibili.com/video/BV1t94y1Z74g/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1ta41147kl",
@@ -9911,7 +11067,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/fd9ef1b45b52d8519025fc1c926949a32623e77d.jpg",
     "duration": "10:16",
     "viewCount": 7132,
-    "url": "https://www.bilibili.com/video/BV1ta41147kL/"
+    "url": "https://www.bilibili.com/video/BV1ta41147kL/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1tb4y1s7tm",
@@ -9946,7 +11106,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/ae251703832e103be29983b79faefb10e985ae8f.jpg",
     "duration": "5:18",
     "viewCount": 18158,
-    "url": "https://www.bilibili.com/video/BV1tb4y1s7TM/"
+    "url": "https://www.bilibili.com/video/BV1tb4y1s7TM/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1uy411e7vu",
@@ -9978,7 +11142,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/b3a096fadd0b822c10c84898782c38d56cd612fe.jpg",
     "duration": "14:55",
     "viewCount": 1382,
-    "url": "https://www.bilibili.com/video/BV1uY411E7vU/"
+    "url": "https://www.bilibili.com/video/BV1uY411E7vU/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1xd4y1y7dj",
@@ -10013,7 +11181,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/6d012de50b6ce361ef1d3f41d95364afbac288a5.jpg",
     "duration": "13:11",
     "viewCount": 3183,
-    "url": "https://www.bilibili.com/video/BV1XD4y1Y7Dj/"
+    "url": "https://www.bilibili.com/video/BV1XD4y1Y7Dj/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1zn411w7sn",
@@ -10048,7 +11220,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/5e2fa636d3e542e2d77d518cfcac4945a6582648.jpg",
     "duration": "3:17",
     "viewCount": 504,
-    "url": "https://www.bilibili.com/video/BV1ZN411W7SN/"
+    "url": "https://www.bilibili.com/video/BV1ZN411W7SN/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspin_zhixuan_bv1zt4y1f7fh",
@@ -10083,7 +11259,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/c977a458407666ef857906b4c5d6c69c363000fe.jpg",
     "duration": "11:18",
     "viewCount": 6299,
-    "url": "https://www.bilibili.com/video/BV1zt4y1F7FH/"
+    "url": "https://www.bilibili.com/video/BV1zt4y1F7FH/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspinpro_hidden_bv12f421z7wp",
@@ -10120,7 +11300,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/54e2b4608ceb365540f73971c8136b2a51a94642.png",
     "duration": "2:19",
     "viewCount": 1243,
-    "url": "https://www.bilibili.com/video/BV12f421Z7wp/"
+    "url": "https://www.bilibili.com/video/BV12f421Z7wp/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_topspinpro_hidden_bv1vp421m7dq",
@@ -10158,7 +11342,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/ddf3e7fc840a9c1fcd9a8a802413a82f26957f9f.png",
     "duration": "0:11",
     "viewCount": 146,
-    "url": "https://www.bilibili.com/video/BV1vp421m7dq/"
+    "url": "https://www.bilibili.com/video/BV1vp421m7dq/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_wangdong_tennis_bv1swicbpeku",
@@ -10196,7 +11384,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/294d901e774f6bf8d3027c899a5334c8e930f1e3.jpg",
     "duration": "1:32",
     "viewCount": 1322,
-    "url": "https://www.bilibili.com/video/BV1sWiCBpEkU/"
+    "url": "https://www.bilibili.com/video/BV1sWiCBpEkU/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_wangdong_tennis_bv1wjzzbne7e",
@@ -10234,7 +11426,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/8e42ccf37928664dbcd78352885065938fd4c1d6.jpg",
     "duration": "2:26",
     "viewCount": 663,
-    "url": "https://www.bilibili.com/video/BV1WjzZBNE7E/"
+    "url": "https://www.bilibili.com/video/BV1WjzZBNE7E/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv11cnuzkexw",
@@ -10266,7 +11462,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/c0db30b0b0f7dc40461e06b57c87d549f8e5170c.jpg",
     "duration": "8:31",
     "viewCount": 3015,
-    "url": "https://www.bilibili.com/video/BV11cnuzKEXw/"
+    "url": "https://www.bilibili.com/video/BV11cnuzKEXw/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv12jynykevj",
@@ -10298,7 +11498,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/db15e436274037fc53db655b9779a77e85e30a47.jpg",
     "duration": "5:57",
     "viewCount": 2195,
-    "url": "https://www.bilibili.com/video/BV12jyNYkEvJ/"
+    "url": "https://www.bilibili.com/video/BV12jyNYkEvJ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv12yxrbxe3r",
@@ -10333,7 +11537,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/bef2d86528b54814d645f9a51b098857b756347f.jpg",
     "duration": "8:36",
     "viewCount": 338,
-    "url": "https://www.bilibili.com/video/BV12YXrBxE3R/"
+    "url": "https://www.bilibili.com/video/BV12YXrBxE3R/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv13lpxzzewg",
@@ -10367,7 +11575,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/33a48c3c23a57ae818db3b20405963e9d45df979.jpg",
     "duration": "10:09",
     "viewCount": 1795,
-    "url": "https://www.bilibili.com/video/BV13LPXzZEwG/"
+    "url": "https://www.bilibili.com/video/BV13LPXzZEwG/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv15gztyqevg",
@@ -10402,7 +11614,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/100a654a82a133b4a5f94c828c2ab35d1100f333.jpg",
     "duration": "6:50",
     "viewCount": 2495,
-    "url": "https://www.bilibili.com/video/BV15GZtYQEVg/"
+    "url": "https://www.bilibili.com/video/BV15GZtYQEVg/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv17puczfemp",
@@ -10437,7 +11653,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/ea8009961779776d0909d3849816f047e27a4d0a.jpg",
     "duration": "6:48",
     "viewCount": 5095,
-    "url": "https://www.bilibili.com/video/BV17puCzfEmP/"
+    "url": "https://www.bilibili.com/video/BV17puCzfEmP/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv18qtzzeerd",
@@ -10477,7 +11697,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/610d73514bfbe8d4a671068ff4b67617de58d652.jpg",
     "duration": "11:34",
     "viewCount": 5558,
-    "url": "https://www.bilibili.com/video/BV18QTZzEErd/"
+    "url": "https://www.bilibili.com/video/BV18QTZzEErd/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv19ckcbfewu",
@@ -10509,7 +11733,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/56c947688ffa766bc88af2188458d262b2f97c4e.jpg",
     "duration": "10:17",
     "viewCount": 1619,
-    "url": "https://www.bilibili.com/video/BV19ckcBfEWU/"
+    "url": "https://www.bilibili.com/video/BV19ckcBfEWU/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1a56bbzez3",
@@ -10545,7 +11773,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/ed317ecc67a9e352b1d2f82fc2f4f0b6118bde1c.jpg",
     "duration": "12:41",
     "viewCount": 493,
-    "url": "https://www.bilibili.com/video/BV1a56BBZEz3/"
+    "url": "https://www.bilibili.com/video/BV1a56BBZEz3/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1akcmzlevl",
@@ -10580,7 +11812,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/44049a154fd418e3f37ad0cbb3b692fbe5c11b93.jpg",
     "duration": "4:55",
     "viewCount": 1209,
-    "url": "https://www.bilibili.com/video/BV1AKcMzLEvL/"
+    "url": "https://www.bilibili.com/video/BV1AKcMzLEvL/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1bbt9zmepq",
@@ -10612,7 +11848,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/1af0446cde6711231967c399679624d8ff1f82df.jpg",
     "duration": "13:47",
     "viewCount": 1391,
-    "url": "https://www.bilibili.com/video/BV1BbT9zmEPq/"
+    "url": "https://www.bilibili.com/video/BV1BbT9zmEPq/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1cdckbheaf",
@@ -10644,7 +11884,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/b6b412961716d78f0c47047447920b49e6f7b753.jpg",
     "duration": "15:13",
     "viewCount": 1811,
-    "url": "https://www.bilibili.com/video/BV1cDCkBhEAf/"
+    "url": "https://www.bilibili.com/video/BV1cDCkBhEAf/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1d5c4zdej9",
@@ -10676,7 +11920,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/d6d9fc43f41a48f1cd4f93ee73e1bd0726dec69c.jpg",
     "duration": "13:13",
     "viewCount": 5130,
-    "url": "https://www.bilibili.com/video/BV1d5c4zDEJ9/"
+    "url": "https://www.bilibili.com/video/BV1d5c4zDEJ9/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1dgayzpeuc",
@@ -10715,7 +11963,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/36cf802b73aa19ff44df7753911fecc9471cf636.jpg",
     "duration": "9:41",
     "viewCount": 1387,
-    "url": "https://www.bilibili.com/video/BV1DGAYzPEUc/"
+    "url": "https://www.bilibili.com/video/BV1DGAYzPEUc/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1dvflzyezw",
@@ -10749,7 +12001,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/ef4cc26b3d947e0182850c6f04fe13e556a056ed.jpg",
     "duration": "9:40",
     "viewCount": 576,
-    "url": "https://www.bilibili.com/video/BV1DvFLzyEZw/"
+    "url": "https://www.bilibili.com/video/BV1DvFLzyEZw/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1eqcuzledv",
@@ -10786,7 +12042,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/25df9f43af4a7f74006a3ad9509f6a670e59f730.jpg",
     "duration": "6:27",
     "viewCount": 929,
-    "url": "https://www.bilibili.com/video/BV1eqcUzLEDv/"
+    "url": "https://www.bilibili.com/video/BV1eqcUzLEDv/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1esmzbme2s",
@@ -10822,7 +12082,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/4b66e963144ccd6a298389c1dafd707fd406b699.jpg",
     "duration": "5:52",
     "viewCount": 1584,
-    "url": "https://www.bilibili.com/video/BV1esmZBME2s/"
+    "url": "https://www.bilibili.com/video/BV1esmZBME2s/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1exygysexd",
@@ -10861,7 +12125,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/01b4dc177c61bca3e1872bcfe993d84f1bedee04.jpg",
     "duration": "6:26",
     "viewCount": 2157,
-    "url": "https://www.bilibili.com/video/BV1ExyGYSExd/"
+    "url": "https://www.bilibili.com/video/BV1ExyGYSExd/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1fnsmbyeov",
@@ -10895,7 +12163,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/371583d23bcecd2367cb86616d8a8d735bb01557.jpg",
     "duration": "10:00",
     "viewCount": 909,
-    "url": "https://www.bilibili.com/video/BV1fnSMByEoV/"
+    "url": "https://www.bilibili.com/video/BV1fnSMByEoV/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1gmnwzweyj",
@@ -10930,7 +12202,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/d1b9d6321342be4f8894a71bb9540a54d14cdec4.jpg",
     "duration": "7:22",
     "viewCount": 1376,
-    "url": "https://www.bilibili.com/video/BV1GMNwzWEYJ/"
+    "url": "https://www.bilibili.com/video/BV1GMNwzWEYJ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1gnzfb7ek7",
@@ -10965,7 +12241,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/4a44d4c84e2436dafe1d18aa350f11ca2e845886.jpg",
     "duration": "8:02",
     "viewCount": 1451,
-    "url": "https://www.bilibili.com/video/BV1gnzFB7Ek7/"
+    "url": "https://www.bilibili.com/video/BV1gnzFB7Ek7/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1gyy7ynejo",
@@ -11004,7 +12284,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/c5e163cbd96ea3850d24e1380999a71a79f9a963.jpg",
     "duration": "13:20",
     "viewCount": 921,
-    "url": "https://www.bilibili.com/video/BV1gYy7YnEJo/"
+    "url": "https://www.bilibili.com/video/BV1gYy7YnEJo/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1heptzweie",
@@ -11038,7 +12322,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/67de20de5ea77327c5b329bcb9bac6fc5ef9bbfc.jpg",
     "duration": "10:12",
     "viewCount": 4318,
-    "url": "https://www.bilibili.com/video/BV1HEptzWEie/"
+    "url": "https://www.bilibili.com/video/BV1HEptzWEie/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1hjqdycer3",
@@ -11073,7 +12361,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/100a654a82a133b4a5f94c828c2ab35d1100f333.jpg",
     "duration": "6:50",
     "viewCount": 3656,
-    "url": "https://www.bilibili.com/video/BV1HjQdYcEr3/"
+    "url": "https://www.bilibili.com/video/BV1HjQdYcEr3/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1hmu6bpefb",
@@ -11105,7 +12397,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/f46905e9a0e9fc36a4d99b60b0d4cbdb256127ff.jpg",
     "duration": "11:55",
     "viewCount": 838,
-    "url": "https://www.bilibili.com/video/BV1hmU6BpEfB/"
+    "url": "https://www.bilibili.com/video/BV1hmU6BpEfB/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1k5u8zoe5g",
@@ -11137,7 +12433,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/b7550525855fcaabc0c73d23da30efab31fe4b5e.jpg",
     "duration": "10:30",
     "viewCount": 1417,
-    "url": "https://www.bilibili.com/video/BV1k5u8zoE5g/"
+    "url": "https://www.bilibili.com/video/BV1k5u8zoE5g/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1ku3qztehc",
@@ -11171,7 +12471,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/988f8ee426c5e8aade1fec8eb2a7e130a5c5f4a3.jpg",
     "duration": "21:56",
     "viewCount": 1500,
-    "url": "https://www.bilibili.com/video/BV1ku3QztEhC/"
+    "url": "https://www.bilibili.com/video/BV1ku3QztEhC/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1n7aqzceep",
@@ -11207,7 +12511,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/0d34fd131d6b438d898dbca8c3c7455e0915ee6f.jpg",
     "duration": "11:38",
     "viewCount": 1289,
-    "url": "https://www.bilibili.com/video/BV1N7AQzCEEP/"
+    "url": "https://www.bilibili.com/video/BV1N7AQzCEEP/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1ntthzkerz",
@@ -11242,7 +12550,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/d64edccc38b7ae0bf6c4c40939b4d5879a3b2e34.jpg",
     "duration": "9:29",
     "viewCount": 3599,
-    "url": "https://www.bilibili.com/video/BV1ntthzkERZ/"
+    "url": "https://www.bilibili.com/video/BV1ntthzkERZ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1q5zcyve5e",
@@ -11277,7 +12589,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/380bbe7392710ce10ed0e07504ace84196b1dd94.jpg",
     "duration": "9:40",
     "viewCount": 2118,
-    "url": "https://www.bilibili.com/video/BV1q5ZCYvE5e/"
+    "url": "https://www.bilibili.com/video/BV1q5ZCYvE5e/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1r3zlbvee6",
@@ -11314,7 +12630,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/828996577487be88af0e14109486ec89c2c6c5c8.jpg",
     "duration": "6:45",
     "viewCount": 1390,
-    "url": "https://www.bilibili.com/video/BV1R3ZLBVEe6/"
+    "url": "https://www.bilibili.com/video/BV1R3ZLBVEe6/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1tvksb9etl",
@@ -11349,7 +12669,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/b2a2f53724630416332ff9f767d3a9e64edaec01.jpg",
     "duration": "19:07",
     "viewCount": 2040,
-    "url": "https://www.bilibili.com/video/BV1tvksB9EtL/"
+    "url": "https://www.bilibili.com/video/BV1tvksB9EtL/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1vuagz2ess",
@@ -11388,7 +12712,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/5ea4e6d4ab913a5e9a88ab5c07ac70419b9d8746.jpg",
     "duration": "15:03",
     "viewCount": 1020,
-    "url": "https://www.bilibili.com/video/BV1VuAGz2Ess/"
+    "url": "https://www.bilibili.com/video/BV1VuAGz2Ess/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1wjqpbbeyg",
@@ -11425,7 +12753,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/c648b3c8fb24d08d56c6bd01f5416a573bce88ed.jpg",
     "duration": "8:10",
     "viewCount": 1925,
-    "url": "https://www.bilibili.com/video/BV1WJqpBbEyG/"
+    "url": "https://www.bilibili.com/video/BV1WJqpBbEyG/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1xcnuzkers",
@@ -11461,7 +12793,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/5b3fefe35fe11f8a22b033d88ab79a4337dadb6a.jpg",
     "duration": "14:27",
     "viewCount": 1584,
-    "url": "https://www.bilibili.com/video/BV1xcnuzKErS/"
+    "url": "https://www.bilibili.com/video/BV1xcnuzKErS/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_weiwei_tennis_bv1zbc1bkex6",
@@ -11493,7 +12829,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/1ab30f2933b918d52a75a49043db1078879c9bc2.jpg",
     "duration": "9:49",
     "viewCount": 3217,
-    "url": "https://www.bilibili.com/video/BV1zBC1BKEX6/"
+    "url": "https://www.bilibili.com/video/BV1zBC1BKEX6/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yang_xiaohan_bv1gj41167ar",
@@ -11533,7 +12873,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/475cb8d9a37b67acbc451c8a5443fdcc96b4fc75.jpg",
     "duration": "1:26",
     "viewCount": 1612,
-    "url": "https://www.bilibili.com/video/BV1GJ41167aR/"
+    "url": "https://www.bilibili.com/video/BV1GJ41167aR/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yang_xiaohan_bv1ne41117sa",
@@ -11573,7 +12917,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/c70c261adb95ded29c3537ca38ff0f4272b77a43.jpg",
     "duration": "2:19",
     "viewCount": 1965,
-    "url": "https://www.bilibili.com/video/BV1nE41117Sa/"
+    "url": "https://www.bilibili.com/video/BV1nE41117Sa/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yang_xiaohan_bv1oj41167gn",
@@ -11605,7 +12953,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/9eeda1fd90c9b19b86eb350025bfbbd40c376e2e.jpg",
     "duration": "18:52",
     "viewCount": 4314,
-    "url": "https://www.bilibili.com/video/BV1oJ41167gN/"
+    "url": "https://www.bilibili.com/video/BV1oJ41167gN/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yang_xiaohan_bv1wj411q7rt",
@@ -11645,7 +12997,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/31df8aabff542c058ba7d61b6f3a9b53770d1e7a.jpg",
     "duration": "0:38",
     "viewCount": 2556,
-    "url": "https://www.bilibili.com/video/BV1WJ411q7Rt/"
+    "url": "https://www.bilibili.com/video/BV1WJ411q7Rt/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv12f421z7wn",
@@ -11677,7 +13033,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/1f515e11db5f5917864871f31098398701e96d95.jpg",
     "duration": "30:00",
     "viewCount": 54374,
-    "url": "https://www.bilibili.com/video/BV12f421Z7Wn/"
+    "url": "https://www.bilibili.com/video/BV12f421Z7Wn/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv14i42117h6",
@@ -11709,7 +13069,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/4e37d9c0de16c0d871b154bf5f00d415f010b743.png",
     "duration": "19:06",
     "viewCount": 11246,
-    "url": "https://www.bilibili.com/video/BV14i42117h6/"
+    "url": "https://www.bilibili.com/video/BV14i42117h6/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1534y1e7yt",
@@ -11745,7 +13109,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/154c7b4528fa652c696d623bd8d9f11e96d96ad0.jpg",
     "duration": "15:03",
     "viewCount": 3662,
-    "url": "https://www.bilibili.com/video/BV1534y1E7Yt/"
+    "url": "https://www.bilibili.com/video/BV1534y1E7Yt/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv15m4y1x7yn",
@@ -11777,7 +13145,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/e97d3e633a50bb33c10d89154c558a80d50304f6.jpg",
     "duration": "12:02",
     "viewCount": 920,
-    "url": "https://www.bilibili.com/video/BV15m4y1X7yN/"
+    "url": "https://www.bilibili.com/video/BV15m4y1X7yN/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1bm421575k",
@@ -11812,7 +13184,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/a41914d5e5d4eca131571652ffa599f04b144be6.jpg",
     "duration": "47:55",
     "viewCount": 12783,
-    "url": "https://www.bilibili.com/video/BV1Bm421575k/"
+    "url": "https://www.bilibili.com/video/BV1Bm421575k/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1bp4y1m7vj",
@@ -11848,7 +13224,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/fb28a4a30222d8c1f4c181bfe92a9b8bd80d95ce.jpg",
     "duration": "19:17",
     "viewCount": 4786,
-    "url": "https://www.bilibili.com/video/BV1bP4y1M7VJ/"
+    "url": "https://www.bilibili.com/video/BV1bP4y1M7VJ/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1br4y177g8",
@@ -11884,7 +13264,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/21d7b692b00f620a0b1631e8204993b29491aca3.jpg",
     "duration": "9:29",
     "viewCount": 5188,
-    "url": "https://www.bilibili.com/video/BV1Br4y177g8/"
+    "url": "https://www.bilibili.com/video/BV1Br4y177g8/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1fp421s7bm",
@@ -11918,7 +13302,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/69a624365a20103ffb7d1d22e194a3a49f67fd8c.png",
     "duration": "4:25",
     "viewCount": 33922,
-    "url": "https://www.bilibili.com/video/BV1fp421S7BM/"
+    "url": "https://www.bilibili.com/video/BV1fp421S7BM/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1gi421y7fv",
@@ -11954,7 +13342,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/0d1552d3077ec7bb966fbcdcf5a39b93d651c116.jpg",
     "duration": "24:55",
     "viewCount": 6939,
-    "url": "https://www.bilibili.com/video/BV1gi421Y7fV/"
+    "url": "https://www.bilibili.com/video/BV1gi421Y7fV/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1gp4y1f7zh",
@@ -11990,7 +13382,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/ab3f3c081ef792b6f6a024c0c94e37a755498d87.jpg",
     "duration": "8:33",
     "viewCount": 7412,
-    "url": "https://www.bilibili.com/video/BV1GP4y1F7ZH/"
+    "url": "https://www.bilibili.com/video/BV1GP4y1F7ZH/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1jhtbzjenw",
@@ -12026,7 +13422,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/fa2965ee4e1edcee980d10d6f8f730168f6432a0.jpg",
     "duration": "15:43",
     "viewCount": 4034,
-    "url": "https://www.bilibili.com/video/BV1JHTbzjENW/"
+    "url": "https://www.bilibili.com/video/BV1JHTbzjENW/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1kp421x77n",
@@ -12058,7 +13458,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/0b5173a9673c14a3ae1e6b09ff46df9cf4c4a693.png",
     "duration": "32:02",
     "viewCount": 21354,
-    "url": "https://www.bilibili.com/video/BV1Kp421X77N/"
+    "url": "https://www.bilibili.com/video/BV1Kp421X77N/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1kt4y1m7ti",
@@ -12090,7 +13494,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/2db0fd860f5e939190dc8306c494d93b80cce090.jpg",
     "duration": "9:38",
     "viewCount": 919,
-    "url": "https://www.bilibili.com/video/BV1KT4y1m7ti/"
+    "url": "https://www.bilibili.com/video/BV1KT4y1m7ti/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1lr4y1n7m5",
@@ -12126,7 +13534,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/6fd671477f40845b5f31d7f409f1e461ea2fe294.jpg",
     "duration": "33:51",
     "viewCount": 4029,
-    "url": "https://www.bilibili.com/video/BV1Lr4y1n7m5/"
+    "url": "https://www.bilibili.com/video/BV1Lr4y1n7m5/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1qr4y1j7th",
@@ -12161,7 +13573,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/ce6670f2bce9e03d5c14e5ed767517f646e4c226.jpg",
     "duration": "9:26",
     "viewCount": 7962,
-    "url": "https://www.bilibili.com/video/BV1qr4y1j7th/"
+    "url": "https://www.bilibili.com/video/BV1qr4y1j7th/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1ra411z7ga",
@@ -12193,7 +13609,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/a4efa43fd5cf3dea1cf1c4027dc40db4b81eb3cd.jpg",
     "duration": "13:45",
     "viewCount": 2534,
-    "url": "https://www.bilibili.com/video/BV1ra411z7gA/"
+    "url": "https://www.bilibili.com/video/BV1ra411z7gA/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1ra4m1w7al",
@@ -12225,7 +13645,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/926922c6c82269a5ddb96975135910d57225d463.jpg",
     "duration": "48:29",
     "viewCount": 9609,
-    "url": "https://www.bilibili.com/video/BV1rA4m1w7AL/"
+    "url": "https://www.bilibili.com/video/BV1rA4m1w7AL/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1rp421x7qm",
@@ -12257,7 +13681,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/ffcfff8ec1cd31fed9f7482b111cbee68fe985c7.png",
     "duration": "25:14",
     "viewCount": 28067,
-    "url": "https://www.bilibili.com/video/BV1Rp421X7qM/"
+    "url": "https://www.bilibili.com/video/BV1Rp421X7qM/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1rt421g7ke",
@@ -12289,7 +13717,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/c1be08da8167f107b233d7c6562ed99897eef2c3.jpg",
     "duration": "6:43",
     "viewCount": 19088,
-    "url": "https://www.bilibili.com/video/BV1rt421g7KE/"
+    "url": "https://www.bilibili.com/video/BV1rt421g7KE/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1tp4y1e7qw",
@@ -12321,7 +13753,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/af599743b8873eda35ea58a3341d3174101f1122.jpg",
     "duration": "19:03",
     "viewCount": 987,
-    "url": "https://www.bilibili.com/video/BV1tP4y1E7Qw/"
+    "url": "https://www.bilibili.com/video/BV1tP4y1E7Qw/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1v3411e73k",
@@ -12353,7 +13789,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/ef5a3e8b896e4d337580d074be8b5280ba74d4ba.jpg",
     "duration": "18:10",
     "viewCount": 9658,
-    "url": "https://www.bilibili.com/video/BV1V3411e73K/"
+    "url": "https://www.bilibili.com/video/BV1V3411e73K/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1vv4y177nh",
@@ -12388,7 +13828,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i0.hdslb.com/bfs/archive/58b6fd6fd01c7b687e20f60639b707e78306eecc.jpg",
     "duration": "13:40",
     "viewCount": 6309,
-    "url": "https://www.bilibili.com/video/BV1vV4y177nh/"
+    "url": "https://www.bilibili.com/video/BV1vV4y177nh/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1wz421n7tt",
@@ -12423,7 +13867,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/73fc9bb1e4cbb59ea36681da3328e35e667bce52.png",
     "duration": "6:59",
     "viewCount": 66295,
-    "url": "https://www.bilibili.com/video/BV1WZ421n7tt/"
+    "url": "https://www.bilibili.com/video/BV1WZ421n7tt/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1xb4y1e75t",
@@ -12455,7 +13903,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i2.hdslb.com/bfs/archive/5a65920eccc75ca56cbccf7e8e8234a7f651b4dc.jpg",
     "duration": "8:02",
     "viewCount": 2955,
-    "url": "https://www.bilibili.com/video/BV1xb4y1e75t/"
+    "url": "https://www.bilibili.com/video/BV1xb4y1e75t/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_bilibili_creator_yexiu_gege_bv1zj4m1a7sc",
@@ -12492,7 +13944,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i1.hdslb.com/bfs/archive/cb79537ab1e6236be113458710ea7e5ad7cbe8ac.png",
     "duration": "9:51",
     "viewCount": 21905,
-    "url": "https://www.bilibili.com/video/BV1zJ4m1A7Sc/"
+    "url": "https://www.bilibili.com/video/BV1zJ4m1A7Sc/",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis__xhamb9vgxw",
@@ -12524,7 +13980,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/_XhAMb9Vgxw/mqdefault.jpg",
     "duration": "34:46",
     "viewCount": 18118,
-    "url": "https://www.youtube.com/watch?v=_XhAMb9Vgxw"
+    "url": "https://www.youtube.com/watch?v=_XhAMb9Vgxw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_0kcp9clvpj0",
@@ -12560,7 +14020,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/0Kcp9cLvPj0/mqdefault.jpg",
     "duration": "57:27",
     "viewCount": 7418,
-    "url": "https://www.youtube.com/watch?v=0Kcp9cLvPj0"
+    "url": "https://www.youtube.com/watch?v=0Kcp9cLvPj0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_2tqhroe4wdo",
@@ -12592,7 +14056,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/2TqHroE4wdo/mqdefault.jpg",
     "duration": "5:10",
     "viewCount": 17793,
-    "url": "https://www.youtube.com/watch?v=2TqHroE4wdo"
+    "url": "https://www.youtube.com/watch?v=2TqHroE4wdo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_3g8jk8bzgra",
@@ -12624,7 +14092,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/3g8JK8BZGrA/mqdefault.jpg",
     "duration": "3:57",
     "viewCount": 6226,
-    "url": "https://www.youtube.com/watch?v=3g8JK8BZGrA"
+    "url": "https://www.youtube.com/watch?v=3g8JK8BZGrA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_4mv8wnp2dje",
@@ -12656,7 +14128,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/4Mv8wnP2DjE/mqdefault.jpg",
     "duration": "6:24",
     "viewCount": 16212,
-    "url": "https://www.youtube.com/watch?v=4Mv8wnP2DjE"
+    "url": "https://www.youtube.com/watch?v=4Mv8wnP2DjE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_5zsjlffw__i",
@@ -12688,7 +14164,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/5zSJlfFw__I/mqdefault.jpg",
     "duration": "6:18",
     "viewCount": 6291,
-    "url": "https://www.youtube.com/watch?v=5zSJlfFw__I"
+    "url": "https://www.youtube.com/watch?v=5zSJlfFw__I",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_64h0wocrogm",
@@ -12724,7 +14204,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/64h0wOCRogM/mqdefault.jpg",
     "duration": "3:32",
     "viewCount": 4805,
-    "url": "https://www.youtube.com/watch?v=64h0wOCRogM"
+    "url": "https://www.youtube.com/watch?v=64h0wOCRogM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_6acuovxyxlk",
@@ -12757,7 +14241,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/6AcuOVxYxlk/mqdefault.jpg",
     "duration": "9:01",
     "viewCount": 12259,
-    "url": "https://www.youtube.com/watch?v=6AcuOVxYxlk"
+    "url": "https://www.youtube.com/watch?v=6AcuOVxYxlk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_9qskpnwgdma",
@@ -12792,7 +14280,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/9qSkpNWgDmA/mqdefault.jpg",
     "duration": "8:19",
     "viewCount": 12648,
-    "url": "https://www.youtube.com/watch?v=9qSkpNWgDmA"
+    "url": "https://www.youtube.com/watch?v=9qSkpNWgDmA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_adfcdcqwlm8",
@@ -12826,7 +14318,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ADFcdcQWlM8/mqdefault.jpg",
     "duration": "8:23",
     "viewCount": 6637,
-    "url": "https://www.youtube.com/watch?v=ADFcdcQWlM8"
+    "url": "https://www.youtube.com/watch?v=ADFcdcQWlM8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_bkunbymkq8g",
@@ -12866,7 +14362,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/bkUnBYMkQ8g/mqdefault.jpg",
     "duration": "5:55",
     "viewCount": 4532,
-    "url": "https://www.youtube.com/watch?v=bkUnBYMkQ8g"
+    "url": "https://www.youtube.com/watch?v=bkUnBYMkQ8g",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_c45w1jsb45o",
@@ -12901,7 +14401,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/C45w1Jsb45o/mqdefault.jpg",
     "duration": "5:31",
     "viewCount": 10134,
-    "url": "https://www.youtube.com/watch?v=C45w1Jsb45o"
+    "url": "https://www.youtube.com/watch?v=C45w1Jsb45o",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_cwhyshlzgry",
@@ -12933,7 +14437,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/CwHysHLZgrY/mqdefault.jpg",
     "duration": "4:38",
     "viewCount": 5466,
-    "url": "https://www.youtube.com/watch?v=CwHysHLZgrY"
+    "url": "https://www.youtube.com/watch?v=CwHysHLZgrY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_dsxivii5bnc",
@@ -12969,7 +14477,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/DsXivii5bnc/mqdefault.jpg",
     "duration": "2:31",
     "viewCount": 5578,
-    "url": "https://www.youtube.com/watch?v=DsXivii5bnc"
+    "url": "https://www.youtube.com/watch?v=DsXivii5bnc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_eh49wypdba8",
@@ -13001,7 +14513,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/eH49WYPDBa8/mqdefault.jpg",
     "duration": "5:29",
     "viewCount": 15164,
-    "url": "https://www.youtube.com/watch?v=eH49WYPDBa8"
+    "url": "https://www.youtube.com/watch?v=eH49WYPDBa8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_esjykd3c2e0",
@@ -13038,7 +14554,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/esJyKD3C2e0/mqdefault.jpg",
     "duration": "3:00",
     "viewCount": 7217,
-    "url": "https://www.youtube.com/watch?v=esJyKD3C2e0"
+    "url": "https://www.youtube.com/watch?v=esJyKD3C2e0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_ful1gt-4aam",
@@ -13073,7 +14593,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/FUl1gt-4AaM/mqdefault.jpg",
     "duration": "5:02",
     "viewCount": 8440,
-    "url": "https://www.youtube.com/watch?v=FUl1gt-4AaM"
+    "url": "https://www.youtube.com/watch?v=FUl1gt-4AaM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_gcnedepefrm",
@@ -13109,7 +14633,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/GCNEdePeFRM/mqdefault.jpg",
     "duration": "5:51",
     "viewCount": 18350,
-    "url": "https://www.youtube.com/watch?v=GCNEdePeFRM"
+    "url": "https://www.youtube.com/watch?v=GCNEdePeFRM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_hbqm8icooo4",
@@ -13142,7 +14670,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Hbqm8iCoOO4/mqdefault.jpg",
     "duration": "5:28",
     "viewCount": 11178,
-    "url": "https://www.youtube.com/watch?v=Hbqm8iCoOO4"
+    "url": "https://www.youtube.com/watch?v=Hbqm8iCoOO4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_iquc20ikhkk",
@@ -13179,7 +14711,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/iqUc20IKhkk/mqdefault.jpg",
     "duration": "3:22",
     "viewCount": 6085,
-    "url": "https://www.youtube.com/watch?v=iqUc20IKhkk"
+    "url": "https://www.youtube.com/watch?v=iqUc20IKhkk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_jhotwwohll8",
@@ -13211,7 +14747,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/JHotWWoHlL8/mqdefault.jpg",
     "duration": "10:30",
     "viewCount": 66143,
-    "url": "https://www.youtube.com/watch?v=JHotWWoHlL8"
+    "url": "https://www.youtube.com/watch?v=JHotWWoHlL8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_kcwzmmqjiay",
@@ -13243,7 +14783,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/KcWzMMqJIAY/mqdefault.jpg",
     "duration": "3:22",
     "viewCount": 15504,
-    "url": "https://www.youtube.com/watch?v=KcWzMMqJIAY"
+    "url": "https://www.youtube.com/watch?v=KcWzMMqJIAY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_kjlxi82zk0k",
@@ -13275,7 +14819,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/kJLXi82ZK0k/mqdefault.jpg",
     "duration": "6:11",
     "viewCount": 3231,
-    "url": "https://www.youtube.com/watch?v=kJLXi82ZK0k"
+    "url": "https://www.youtube.com/watch?v=kJLXi82ZK0k",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_lodwbuyawhg",
@@ -13308,7 +14856,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/lOdwbUYAWHg/mqdefault.jpg",
     "duration": "0:52",
     "viewCount": 25106,
-    "url": "https://www.youtube.com/watch?v=lOdwbUYAWHg"
+    "url": "https://www.youtube.com/watch?v=lOdwbUYAWHg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_nkdj_d4v0fi",
@@ -13340,7 +14892,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/nkdj_d4V0FI/mqdefault.jpg",
     "duration": "3:59",
     "viewCount": 22590,
-    "url": "https://www.youtube.com/watch?v=nkdj_d4V0FI"
+    "url": "https://www.youtube.com/watch?v=nkdj_d4V0FI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_nq2dtdnmeyo",
@@ -13378,7 +14934,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Nq2DtdnMeYo/mqdefault.jpg",
     "duration": "4:58",
     "viewCount": 3246,
-    "url": "https://www.youtube.com/watch?v=Nq2DtdnMeYo"
+    "url": "https://www.youtube.com/watch?v=Nq2DtdnMeYo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_ocrbxoxpu1e",
@@ -13411,7 +14971,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/OcRbxoxpu1E/mqdefault.jpg",
     "duration": "4:39",
     "viewCount": 6513,
-    "url": "https://www.youtube.com/watch?v=OcRbxoxpu1E"
+    "url": "https://www.youtube.com/watch?v=OcRbxoxpu1E",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_q6a3fcelsiu",
@@ -13451,7 +15015,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Q6A3fCElSIU/mqdefault.jpg",
     "duration": "6:31",
     "viewCount": 14295,
-    "url": "https://www.youtube.com/watch?v=Q6A3fCElSIU"
+    "url": "https://www.youtube.com/watch?v=Q6A3fCElSIU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_qd76mutgfm4",
@@ -13483,7 +15051,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Qd76muTGFM4/mqdefault.jpg",
     "duration": "4:58",
     "viewCount": 19751,
-    "url": "https://www.youtube.com/watch?v=Qd76muTGFM4"
+    "url": "https://www.youtube.com/watch?v=Qd76muTGFM4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_qjtl8n20cxe",
@@ -13517,7 +15089,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/qJTL8N20CxE/mqdefault.jpg",
     "duration": "6:04",
     "viewCount": 6106,
-    "url": "https://www.youtube.com/watch?v=qJTL8N20CxE"
+    "url": "https://www.youtube.com/watch?v=qJTL8N20CxE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_s-rnl4qtmk4",
@@ -13549,7 +15125,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/s-rNl4qTMk4/mqdefault.jpg",
     "duration": "10:22",
     "viewCount": 63931,
-    "url": "https://www.youtube.com/watch?v=s-rNl4qTMk4"
+    "url": "https://www.youtube.com/watch?v=s-rNl4qTMk4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_udsjfx-mtiy",
@@ -13581,7 +15161,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/UdsJfx-mtIY/mqdefault.jpg",
     "duration": "6:11",
     "viewCount": 14259,
-    "url": "https://www.youtube.com/watch?v=UdsJfx-mtIY"
+    "url": "https://www.youtube.com/watch?v=UdsJfx-mtIY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_wfihjgekqgw",
@@ -13613,7 +15197,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/WFIhJgEkQgw/mqdefault.jpg",
     "duration": "12:07",
     "viewCount": 6829,
-    "url": "https://www.youtube.com/watch?v=WFIhJgEkQgw"
+    "url": "https://www.youtube.com/watch?v=WFIhJgEkQgw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_xlefo0fjuoe",
@@ -13649,7 +15237,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/XLefO0FJuoE/mqdefault.jpg",
     "duration": "7:49",
     "viewCount": 3875,
-    "url": "https://www.youtube.com/watch?v=XLefO0FJuoE"
+    "url": "https://www.youtube.com/watch?v=XLefO0FJuoE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_xqvtyh4tccs",
@@ -13681,7 +15273,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/xQvtYh4tcCs/mqdefault.jpg",
     "duration": "8:07",
     "viewCount": 10980,
-    "url": "https://www.youtube.com/watch?v=xQvtYh4tcCs"
+    "url": "https://www.youtube.com/watch?v=xQvtYh4tcCs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_2minute_tennis_z2_4sttfiuo",
@@ -13715,7 +15311,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/z2_4SttFIUo/mqdefault.jpg",
     "duration": "3:14",
     "viewCount": 4229,
-    "url": "https://www.youtube.com/watch?v=z2_4SttFIUo"
+    "url": "https://www.youtube.com/watch?v=z2_4SttFIUo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_-qdqenwlwri",
@@ -13748,7 +15348,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/-QDQenwLwrI/mqdefault.jpg",
     "duration": "6:09",
     "viewCount": 484,
-    "url": "https://www.youtube.com/watch?v=-QDQenwLwrI"
+    "url": "https://www.youtube.com/watch?v=-QDQenwLwrI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_-vdp95n1fzg",
@@ -13781,7 +15385,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/-VdP95n1fzg/mqdefault.jpg",
     "duration": "0:26",
     "viewCount": 457,
-    "url": "https://www.youtube.com/watch?v=-VdP95n1fzg"
+    "url": "https://www.youtube.com/watch?v=-VdP95n1fzg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_-vyxh8odwfs",
@@ -13815,7 +15423,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/-VYxh8odWfs/mqdefault.jpg",
     "duration": "17:06",
     "viewCount": 4773,
-    "url": "https://www.youtube.com/watch?v=-VYxh8odWfs"
+    "url": "https://www.youtube.com/watch?v=-VYxh8odWfs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_0qi0kyp-lm8",
@@ -13852,7 +15464,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/0Qi0kyP-Lm8/mqdefault.jpg",
     "duration": "2:04",
     "viewCount": 1220,
-    "url": "https://www.youtube.com/watch?v=0Qi0kyP-Lm8"
+    "url": "https://www.youtube.com/watch?v=0Qi0kyP-Lm8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_28i7hs0ysae",
@@ -13890,7 +15506,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/28i7hs0ySaE/mqdefault.jpg",
     "duration": "0:20",
     "viewCount": 2965,
-    "url": "https://www.youtube.com/watch?v=28i7hs0ySaE"
+    "url": "https://www.youtube.com/watch?v=28i7hs0ySaE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_3yefxa-stae",
@@ -13926,7 +15546,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/3yEFxa-stAE/mqdefault.jpg",
     "duration": "0:08",
     "viewCount": 13486,
-    "url": "https://www.youtube.com/watch?v=3yEFxa-stAE"
+    "url": "https://www.youtube.com/watch?v=3yEFxa-stAE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_680r6zrdjyo",
@@ -13961,7 +15585,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/680r6ZRdjYo/mqdefault.jpg",
     "duration": "24:18",
     "viewCount": 1162,
-    "url": "https://www.youtube.com/watch?v=680r6ZRdjYo"
+    "url": "https://www.youtube.com/watch?v=680r6ZRdjYo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_7-hyan1m7bi",
@@ -13999,7 +15627,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/7-hyan1m7BI/mqdefault.jpg",
     "duration": "0:28",
     "viewCount": 2100,
-    "url": "https://www.youtube.com/watch?v=7-hyan1m7BI"
+    "url": "https://www.youtube.com/watch?v=7-hyan1m7BI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_8kn1l6se0m0",
@@ -14032,7 +15664,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8kN1l6se0M0/mqdefault.jpg",
     "duration": "56:19",
     "viewCount": 1691,
-    "url": "https://www.youtube.com/watch?v=8kN1l6se0M0"
+    "url": "https://www.youtube.com/watch?v=8kN1l6se0M0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_8pao0wpm6em",
@@ -14065,7 +15701,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8PAO0Wpm6EM/mqdefault.jpg",
     "duration": "0:56",
     "viewCount": 1298,
-    "url": "https://www.youtube.com/watch?v=8PAO0Wpm6EM"
+    "url": "https://www.youtube.com/watch?v=8PAO0Wpm6EM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_9wyzwk-ublm",
@@ -14098,7 +15738,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/9Wyzwk-UBlM/mqdefault.jpg",
     "duration": "1:17",
     "viewCount": 2150,
-    "url": "https://www.youtube.com/watch?v=9Wyzwk-UBlM"
+    "url": "https://www.youtube.com/watch?v=9Wyzwk-UBlM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_c2r2mnaggjm",
@@ -14131,7 +15775,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/c2R2mnaGGJM/mqdefault.jpg",
     "duration": "15:06",
     "viewCount": 21849,
-    "url": "https://www.youtube.com/watch?v=c2R2mnaGGJM"
+    "url": "https://www.youtube.com/watch?v=c2R2mnaGGJM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_cataghcv6pc",
@@ -14164,7 +15812,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/caTAghcv6Pc/mqdefault.jpg",
     "duration": "0:10",
     "viewCount": 448,
-    "url": "https://www.youtube.com/watch?v=caTAghcv6Pc"
+    "url": "https://www.youtube.com/watch?v=caTAghcv6Pc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_ey-hr8uew90",
@@ -14197,7 +15849,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/EY-hr8UEW90/mqdefault.jpg",
     "duration": "25:21",
     "viewCount": 586,
-    "url": "https://www.youtube.com/watch?v=EY-hr8UEW90"
+    "url": "https://www.youtube.com/watch?v=EY-hr8UEW90",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_gj_qgrhd18c",
@@ -14234,7 +15890,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Gj_qGRHd18c/mqdefault.jpg",
     "duration": "0:56",
     "viewCount": 309,
-    "url": "https://www.youtube.com/watch?v=Gj_qGRHd18c"
+    "url": "https://www.youtube.com/watch?v=Gj_qGRHd18c",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_grrj-dhbe34",
@@ -14267,7 +15927,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/gRRj-dhBe34/mqdefault.jpg",
     "duration": "0:46",
     "viewCount": 1721,
-    "url": "https://www.youtube.com/watch?v=gRRj-dhBe34"
+    "url": "https://www.youtube.com/watch?v=gRRj-dhBe34",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_h6oxpnez47s",
@@ -14302,7 +15966,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/H6Oxpnez47s/mqdefault.jpg",
     "duration": "0:56",
     "viewCount": 7146,
-    "url": "https://www.youtube.com/watch?v=H6Oxpnez47s"
+    "url": "https://www.youtube.com/watch?v=H6Oxpnez47s",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_j06tdle8pya",
@@ -14335,7 +16003,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/j06tdLe8pYA/mqdefault.jpg",
     "duration": "1:04:56",
     "viewCount": 3132,
-    "url": "https://www.youtube.com/watch?v=j06tdLe8pYA"
+    "url": "https://www.youtube.com/watch?v=j06tdLe8pYA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_koat7txftzc",
@@ -14372,7 +16044,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/KOaT7TXFtZc/mqdefault.jpg",
     "duration": "2:17",
     "viewCount": 1643,
-    "url": "https://www.youtube.com/watch?v=KOaT7TXFtZc"
+    "url": "https://www.youtube.com/watch?v=KOaT7TXFtZc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_l7pvcbbwpfc",
@@ -14410,7 +16086,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/L7PVcbBWPFc/mqdefault.jpg",
     "duration": "0:04",
     "viewCount": 9503,
-    "url": "https://www.youtube.com/watch?v=L7PVcbBWPFc"
+    "url": "https://www.youtube.com/watch?v=L7PVcbBWPFc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_lp57wwafoke",
@@ -14446,7 +16126,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/LP57WWAfOkE/mqdefault.jpg",
     "duration": "0:56",
     "viewCount": 305,
-    "url": "https://www.youtube.com/watch?v=LP57WWAfOkE"
+    "url": "https://www.youtube.com/watch?v=LP57WWAfOkE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_mwydrlwvv1q",
@@ -14479,7 +16163,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/MWYDRLwVV1Q/mqdefault.jpg",
     "duration": "13:58",
     "viewCount": 23597,
-    "url": "https://www.youtube.com/watch?v=MWYDRLwVV1Q"
+    "url": "https://www.youtube.com/watch?v=MWYDRLwVV1Q",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_np8otydv_jg",
@@ -14512,7 +16200,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/nP8otYDV_Jg/mqdefault.jpg",
     "duration": "51:30",
     "viewCount": 1831,
-    "url": "https://www.youtube.com/watch?v=nP8otYDV_Jg"
+    "url": "https://www.youtube.com/watch?v=nP8otYDV_Jg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_ogoesrwagrm",
@@ -14546,7 +16238,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/OgOESRWagrM/mqdefault.jpg",
     "duration": "2:58",
     "viewCount": 1993,
-    "url": "https://www.youtube.com/watch?v=OgOESRWagrM"
+    "url": "https://www.youtube.com/watch?v=OgOESRWagrM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_osc59t_ut-y",
@@ -14580,7 +16276,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/osC59t_ut-Y/mqdefault.jpg",
     "duration": "5:38",
     "viewCount": 1674,
-    "url": "https://www.youtube.com/watch?v=osC59t_ut-Y"
+    "url": "https://www.youtube.com/watch?v=osC59t_ut-Y",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_qytvmhg6lgk",
@@ -14617,7 +16317,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Qytvmhg6Lgk/mqdefault.jpg",
     "duration": "6:38",
     "viewCount": 1509,
-    "url": "https://www.youtube.com/watch?v=Qytvmhg6Lgk"
+    "url": "https://www.youtube.com/watch?v=Qytvmhg6Lgk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_r9ipnpbkfro",
@@ -14651,7 +16355,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/r9IPNPbkfro/mqdefault.jpg",
     "duration": "0:22",
     "viewCount": 5285,
-    "url": "https://www.youtube.com/watch?v=r9IPNPbkfro"
+    "url": "https://www.youtube.com/watch?v=r9IPNPbkfro",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_rfveuzwotog",
@@ -14689,7 +16397,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/rfveuzWOTOg/mqdefault.jpg",
     "duration": "0:06",
     "viewCount": 24324,
-    "url": "https://www.youtube.com/watch?v=rfveuzWOTOg"
+    "url": "https://www.youtube.com/watch?v=rfveuzWOTOg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_s-kjjxtm7du",
@@ -14724,7 +16436,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/s-KjjXTm7DU/mqdefault.jpg",
     "duration": "0:29",
     "viewCount": 948,
-    "url": "https://www.youtube.com/watch?v=s-KjjXTm7DU"
+    "url": "https://www.youtube.com/watch?v=s-KjjXTm7DU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_s5y6-vi6mek",
@@ -14757,7 +16473,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/S5Y6-vI6MEk/mqdefault.jpg",
     "duration": "1:23:12",
     "viewCount": 1888,
-    "url": "https://www.youtube.com/watch?v=S5Y6-vI6MEk"
+    "url": "https://www.youtube.com/watch?v=S5Y6-vI6MEk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_swiul617m1k",
@@ -14790,7 +16510,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/SwiuL617m1k/mqdefault.jpg",
     "duration": "25:20",
     "viewCount": 192,
-    "url": "https://www.youtube.com/watch?v=SwiuL617m1k"
+    "url": "https://www.youtube.com/watch?v=SwiuL617m1k",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_tu-aw8ejego",
@@ -14829,7 +16553,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/TU-Aw8ejego/mqdefault.jpg",
     "duration": "0:49",
     "viewCount": 539,
-    "url": "https://www.youtube.com/watch?v=TU-Aw8ejego"
+    "url": "https://www.youtube.com/watch?v=TU-Aw8ejego",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_tzxvina389i",
@@ -14864,7 +16592,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/TzxViNA389I/mqdefault.jpg",
     "duration": "0:09",
     "viewCount": 44568,
-    "url": "https://www.youtube.com/watch?v=TzxViNA389I"
+    "url": "https://www.youtube.com/watch?v=TzxViNA389I",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_vn6ppmqgjcu",
@@ -14897,7 +16629,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/vN6pPmqgjcU/mqdefault.jpg",
     "duration": "0:56",
     "viewCount": 1376,
-    "url": "https://www.youtube.com/watch?v=vN6pPmqgjcU"
+    "url": "https://www.youtube.com/watch?v=vN6pPmqgjcU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_w9rpn_dtvp0",
@@ -14930,7 +16666,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/w9Rpn_DtVP0/mqdefault.jpg",
     "duration": "0:13",
     "viewCount": 10566,
-    "url": "https://www.youtube.com/watch?v=w9Rpn_DtVP0"
+    "url": "https://www.youtube.com/watch?v=w9Rpn_DtVP0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_crunch_time_coaching_xo7tfzoorkq",
@@ -14968,7 +16708,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/xO7TFZOoRKQ/mqdefault.jpg",
     "duration": "2:10",
     "viewCount": 25483,
-    "url": "https://www.youtube.com/watch?v=xO7TFZOoRKQ"
+    "url": "https://www.youtube.com/watch?v=xO7TFZOoRKQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis__gdmn1xzlis",
@@ -15004,7 +16748,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/_GdMN1XZLis/mqdefault.jpg",
     "duration": "13:01",
     "viewCount": 14121,
-    "url": "https://www.youtube.com/watch?v=_GdMN1XZLis"
+    "url": "https://www.youtube.com/watch?v=_GdMN1XZLis",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis__ofstxgxc5g",
@@ -15037,7 +16785,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/_oFsTxgXc5g/mqdefault.jpg",
     "duration": "8:25",
     "viewCount": 5163,
-    "url": "https://www.youtube.com/watch?v=_oFsTxgXc5g"
+    "url": "https://www.youtube.com/watch?v=_oFsTxgXc5g",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_-c5bk_or99i",
@@ -15069,7 +16821,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/-C5Bk_OR99I/mqdefault.jpg",
     "duration": "0:52",
     "viewCount": 29869,
-    "url": "https://www.youtube.com/watch?v=-C5Bk_OR99I"
+    "url": "https://www.youtube.com/watch?v=-C5Bk_OR99I",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_17frpzo90ty",
@@ -15102,7 +16858,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/17fRPzo90tY/mqdefault.jpg",
     "duration": "17:42",
     "viewCount": 45861,
-    "url": "https://www.youtube.com/watch?v=17fRPzo90tY"
+    "url": "https://www.youtube.com/watch?v=17fRPzo90tY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_2urbygbtl48",
@@ -15134,7 +16894,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/2uRBygbtL48/mqdefault.jpg",
     "duration": "0:51",
     "viewCount": 12226,
-    "url": "https://www.youtube.com/watch?v=2uRBygbtL48"
+    "url": "https://www.youtube.com/watch?v=2uRBygbtL48",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_35yorwjbico",
@@ -15168,7 +16932,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/35YOrWJbiCo/mqdefault.jpg",
     "duration": "10:14",
     "viewCount": 18582,
-    "url": "https://www.youtube.com/watch?v=35YOrWJbiCo"
+    "url": "https://www.youtube.com/watch?v=35YOrWJbiCo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_37_ixsxh9jc",
@@ -15200,7 +16968,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/37_ixSxH9Jc/mqdefault.jpg",
     "duration": "8:02",
     "viewCount": 7573,
-    "url": "https://www.youtube.com/watch?v=37_ixSxH9Jc"
+    "url": "https://www.youtube.com/watch?v=37_ixSxH9Jc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_3rkkubzvhz8",
@@ -15233,7 +17005,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/3RkkUbZVhz8/mqdefault.jpg",
     "duration": "0:55",
     "viewCount": 6816,
-    "url": "https://www.youtube.com/watch?v=3RkkUbZVhz8"
+    "url": "https://www.youtube.com/watch?v=3RkkUbZVhz8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_3rvvlb8hjpg",
@@ -15267,7 +17043,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/3RVvlb8HJPg/mqdefault.jpg",
     "duration": "12:41",
     "viewCount": 15636,
-    "url": "https://www.youtube.com/watch?v=3RVvlb8HJPg"
+    "url": "https://www.youtube.com/watch?v=3RVvlb8HJPg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_4m3sqwxx9ke",
@@ -15302,7 +17082,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/4m3sqwXX9KE/mqdefault.jpg",
     "duration": "9:31",
     "viewCount": 6034,
-    "url": "https://www.youtube.com/watch?v=4m3sqwXX9KE"
+    "url": "https://www.youtube.com/watch?v=4m3sqwXX9KE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_5w01umda6mc",
@@ -15340,7 +17124,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/5w01uMDa6mc/mqdefault.jpg",
     "duration": "0:58",
     "viewCount": 2687,
-    "url": "https://www.youtube.com/watch?v=5w01uMDa6mc"
+    "url": "https://www.youtube.com/watch?v=5w01uMDa6mc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_7eyfebg1aee",
@@ -15372,7 +17160,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/7eyfebG1AeE/mqdefault.jpg",
     "duration": "7:36",
     "viewCount": 43411,
-    "url": "https://www.youtube.com/watch?v=7eyfebG1AeE"
+    "url": "https://www.youtube.com/watch?v=7eyfebG1AeE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_8elnq5y0nzq",
@@ -15408,7 +17200,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8ELnQ5y0nzQ/mqdefault.jpg",
     "duration": "16:08",
     "viewCount": 4986,
-    "url": "https://www.youtube.com/watch?v=8ELnQ5y0nzQ"
+    "url": "https://www.youtube.com/watch?v=8ELnQ5y0nzQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_8wvywor9_f0",
@@ -15441,7 +17237,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8WVYwOr9_F0/mqdefault.jpg",
     "duration": "0:59",
     "viewCount": 17708,
-    "url": "https://www.youtube.com/watch?v=8WVYwOr9_F0"
+    "url": "https://www.youtube.com/watch?v=8WVYwOr9_F0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_buzysdnmnei",
@@ -15473,7 +17273,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/buZYSdnMneI/mqdefault.jpg",
     "duration": "10:22",
     "viewCount": 38124,
-    "url": "https://www.youtube.com/watch?v=buZYSdnMneI"
+    "url": "https://www.youtube.com/watch?v=buZYSdnMneI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_dhpi-mzemw4",
@@ -15505,7 +17309,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/DHpI-MzemW4/mqdefault.jpg",
     "duration": "9:58",
     "viewCount": 20781,
-    "url": "https://www.youtube.com/watch?v=DHpI-MzemW4"
+    "url": "https://www.youtube.com/watch?v=DHpI-MzemW4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_dmcsvnsehda",
@@ -15537,7 +17345,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/DmCSVNSEhDA/mqdefault.jpg",
     "duration": "1:56",
     "viewCount": 45476,
-    "url": "https://www.youtube.com/watch?v=DmCSVNSEhDA"
+    "url": "https://www.youtube.com/watch?v=DmCSVNSEhDA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_drdabvtguvy",
@@ -15569,7 +17381,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/drdaBvtGUVY/mqdefault.jpg",
     "duration": "8:17",
     "viewCount": 13658,
-    "url": "https://www.youtube.com/watch?v=drdaBvtGUVY"
+    "url": "https://www.youtube.com/watch?v=drdaBvtGUVY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_huicwnzfhyo",
@@ -15603,7 +17419,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/hUiCwnZfHYo/mqdefault.jpg",
     "duration": "2:32",
     "viewCount": 8647,
-    "url": "https://www.youtube.com/watch?v=hUiCwnZfHYo"
+    "url": "https://www.youtube.com/watch?v=hUiCwnZfHYo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_ifl7s0oomce",
@@ -15635,7 +17455,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/iFL7S0OoMCE/mqdefault.jpg",
     "duration": "2:25",
     "viewCount": 13551,
-    "url": "https://www.youtube.com/watch?v=iFL7S0OoMCE"
+    "url": "https://www.youtube.com/watch?v=iFL7S0OoMCE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_ioabvipfuhw",
@@ -15667,7 +17491,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ioabvIpFUHw/mqdefault.jpg",
     "duration": "10:46",
     "viewCount": 17784,
-    "url": "https://www.youtube.com/watch?v=ioabvIpFUHw"
+    "url": "https://www.youtube.com/watch?v=ioabvIpFUHw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_ldwsq2gwtvk",
@@ -15702,7 +17530,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Ldwsq2gwTVk/mqdefault.jpg",
     "duration": "7:26",
     "viewCount": 10401,
-    "url": "https://www.youtube.com/watch?v=Ldwsq2gwTVk"
+    "url": "https://www.youtube.com/watch?v=Ldwsq2gwTVk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_lqvsolevkju",
@@ -15735,7 +17567,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/LQvsolevkJU/mqdefault.jpg",
     "duration": "7:13",
     "viewCount": 22617,
-    "url": "https://www.youtube.com/watch?v=LQvsolevkJU"
+    "url": "https://www.youtube.com/watch?v=LQvsolevkJU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_mcstxtecxv8",
@@ -15770,7 +17606,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/mCstXteCxV8/mqdefault.jpg",
     "duration": "0:59",
     "viewCount": 12032,
-    "url": "https://www.youtube.com/watch?v=mCstXteCxV8"
+    "url": "https://www.youtube.com/watch?v=mCstXteCxV8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_mwnj2jqnm5w",
@@ -15805,7 +17645,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/mWnJ2JqNM5w/mqdefault.jpg",
     "duration": "10:37",
     "viewCount": 14957,
-    "url": "https://www.youtube.com/watch?v=mWnJ2JqNM5w"
+    "url": "https://www.youtube.com/watch?v=mWnJ2JqNM5w",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_pnqpsxk-omk",
@@ -15837,7 +17681,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/PnQpSXk-Omk/mqdefault.jpg",
     "duration": "1:55",
     "viewCount": 9613,
-    "url": "https://www.youtube.com/watch?v=PnQpSXk-Omk"
+    "url": "https://www.youtube.com/watch?v=PnQpSXk-Omk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_pyoax2iinau",
@@ -15872,7 +17720,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/pYoAX2IInaU/mqdefault.jpg",
     "duration": "1:18",
     "viewCount": 5198,
-    "url": "https://www.youtube.com/watch?v=pYoAX2IInaU"
+    "url": "https://www.youtube.com/watch?v=pYoAX2IInaU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_sq1l3zy210q",
@@ -15907,7 +17759,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Sq1L3Zy210Q/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 15612,
-    "url": "https://www.youtube.com/watch?v=Sq1L3Zy210Q"
+    "url": "https://www.youtube.com/watch?v=Sq1L3Zy210Q",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_sruoonqdxly",
@@ -15939,7 +17795,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/sRuoonqdxLY/mqdefault.jpg",
     "duration": "19:54",
     "viewCount": 21467,
-    "url": "https://www.youtube.com/watch?v=sRuoonqdxLY"
+    "url": "https://www.youtube.com/watch?v=sRuoonqdxLY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_v2gwaoclme4",
@@ -15971,7 +17831,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/v2GwaoClme4/mqdefault.jpg",
     "duration": "13:37",
     "viewCount": 19310,
-    "url": "https://www.youtube.com/watch?v=v2GwaoClme4"
+    "url": "https://www.youtube.com/watch?v=v2GwaoClme4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_v2ngeilzcmu",
@@ -16006,7 +17870,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/v2NGEiLzcMU/mqdefault.jpg",
     "duration": "2:40",
     "viewCount": 48015,
-    "url": "https://www.youtube.com/watch?v=v2NGEiLzcMU"
+    "url": "https://www.youtube.com/watch?v=v2NGEiLzcMU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_wqffygqecr0",
@@ -16038,7 +17906,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/wqFfygqEcr0/mqdefault.jpg",
     "duration": "1:34",
     "viewCount": 14711,
-    "url": "https://www.youtube.com/watch?v=wqFfygqEcr0"
+    "url": "https://www.youtube.com/watch?v=wqFfygqEcr0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_xee_k3ileok",
@@ -16070,7 +17942,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/xEE_K3ILEOk/mqdefault.jpg",
     "duration": "5:37",
     "viewCount": 5169,
-    "url": "https://www.youtube.com/watch?v=xEE_K3ILEOk"
+    "url": "https://www.youtube.com/watch?v=xEE_K3ILEOk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_yly1tx0zvbu",
@@ -16104,7 +17980,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/YLy1tX0zvBU/mqdefault.jpg",
     "duration": "19:53",
     "viewCount": 19120,
-    "url": "https://www.youtube.com/watch?v=YLy1tX0zvBU"
+    "url": "https://www.youtube.com/watch?v=YLy1tX0zvBU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_yyqiwmcuazi",
@@ -16142,7 +18022,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/yYQiWMcUAzI/mqdefault.jpg",
     "duration": "0:55",
     "viewCount": 4259,
-    "url": "https://www.youtube.com/watch?v=yYQiWMcUAzI"
+    "url": "https://www.youtube.com/watch?v=yYQiWMcUAzI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_essential_tennis_zyappmiavo0",
@@ -16174,7 +18058,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ZyapPmIAVo0/mqdefault.jpg",
     "duration": "0:39",
     "viewCount": 5513,
-    "url": "https://www.youtube.com/watch?v=ZyapPmIAVo0"
+    "url": "https://www.youtube.com/watch?v=ZyapPmIAVo0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_10f1yrgkcag",
@@ -16206,7 +18094,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/10F1YrGKcAg/mqdefault.jpg",
     "duration": "1:29",
     "viewCount": 65619,
-    "url": "https://www.youtube.com/watch?v=10F1YrGKcAg"
+    "url": "https://www.youtube.com/watch?v=10F1YrGKcAg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_2anljeii7ro",
@@ -16238,7 +18130,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/2ANlJEii7ro/mqdefault.jpg",
     "duration": "0:55",
     "viewCount": 12580,
-    "url": "https://www.youtube.com/watch?v=2ANlJEii7ro"
+    "url": "https://www.youtube.com/watch?v=2ANlJEii7ro",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_2d7ulpqhce4",
@@ -16270,7 +18166,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/2D7UlPQHce4/mqdefault.jpg",
     "duration": "14:12",
     "viewCount": 68499,
-    "url": "https://www.youtube.com/watch?v=2D7UlPQHce4"
+    "url": "https://www.youtube.com/watch?v=2D7UlPQHce4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_3yd2del6hky",
@@ -16302,7 +18202,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/3yD2DEL6HkY/mqdefault.jpg",
     "duration": "12:57",
     "viewCount": 37887,
-    "url": "https://www.youtube.com/watch?v=3yD2DEL6HkY"
+    "url": "https://www.youtube.com/watch?v=3yD2DEL6HkY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_5rtg-uxwmsg",
@@ -16337,7 +18241,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/5rTG-uxWmsg/mqdefault.jpg",
     "duration": "13:53",
     "viewCount": 420375,
-    "url": "https://www.youtube.com/watch?v=5rTG-uxWmsg"
+    "url": "https://www.youtube.com/watch?v=5rTG-uxWmsg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_6vgsyelpy2y",
@@ -16371,7 +18279,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/6vgsYelPy2Y/mqdefault.jpg",
     "duration": "22:10",
     "viewCount": 23916,
-    "url": "https://www.youtube.com/watch?v=6vgsYelPy2Y"
+    "url": "https://www.youtube.com/watch?v=6vgsYelPy2Y",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_7gcppzodjno",
@@ -16406,7 +18318,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/7GCppzoDJNo/mqdefault.jpg",
     "duration": "0:57",
     "viewCount": 18687,
-    "url": "https://www.youtube.com/watch?v=7GCppzoDJNo"
+    "url": "https://www.youtube.com/watch?v=7GCppzoDJNo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_8u4ltwfvrt0",
@@ -16441,7 +18357,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8u4LTWfVrt0/mqdefault.jpg",
     "duration": "2:35",
     "viewCount": 32276,
-    "url": "https://www.youtube.com/watch?v=8u4LTWfVrt0"
+    "url": "https://www.youtube.com/watch?v=8u4LTWfVrt0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_b7zqw6wnksi",
@@ -16477,7 +18397,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/B7ZqW6wnKSI/mqdefault.jpg",
     "duration": "18:50",
     "viewCount": 23088,
-    "url": "https://www.youtube.com/watch?v=B7ZqW6wnKSI"
+    "url": "https://www.youtube.com/watch?v=B7ZqW6wnKSI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_bxcli5_em_m",
@@ -16509,7 +18433,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/BxCLi5_Em_M/mqdefault.jpg",
     "duration": "0:59",
     "viewCount": 94876,
-    "url": "https://www.youtube.com/watch?v=BxCLi5_Em_M"
+    "url": "https://www.youtube.com/watch?v=BxCLi5_Em_M",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_cwwkllw9mii",
@@ -16541,7 +18469,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/cwwKLLw9mII/mqdefault.jpg",
     "duration": "11:58",
     "viewCount": 26050,
-    "url": "https://www.youtube.com/watch?v=cwwKLLw9mII"
+    "url": "https://www.youtube.com/watch?v=cwwKLLw9mII",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_dhzjsllgxa0",
@@ -16573,7 +18505,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/dHZjsllgXa0/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 10893,
-    "url": "https://www.youtube.com/watch?v=dHZjsllgXa0"
+    "url": "https://www.youtube.com/watch?v=dHZjsllgXa0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_ek36icnudmy",
@@ -16614,7 +18550,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ek36icnudmY/mqdefault.jpg",
     "duration": "16:10",
     "viewCount": 78360,
-    "url": "https://www.youtube.com/watch?v=ek36icnudmY"
+    "url": "https://www.youtube.com/watch?v=ek36icnudmY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_fcuywh1jpji",
@@ -16646,7 +18586,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/fCuywh1JPJI/mqdefault.jpg",
     "duration": "0:49",
     "viewCount": 12248,
-    "url": "https://www.youtube.com/watch?v=fCuywh1JPJI"
+    "url": "https://www.youtube.com/watch?v=fCuywh1JPJI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_ftx-z7ebtp4",
@@ -16684,7 +18628,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/fTX-Z7Ebtp4/mqdefault.jpg",
     "duration": "11:59",
     "viewCount": 13461,
-    "url": "https://www.youtube.com/watch?v=fTX-Z7Ebtp4"
+    "url": "https://www.youtube.com/watch?v=fTX-Z7Ebtp4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_gltwqikxkt0",
@@ -16716,7 +18664,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/GltWqIKxkt0/mqdefault.jpg",
     "duration": "34:52",
     "viewCount": 81999,
-    "url": "https://www.youtube.com/watch?v=GltWqIKxkt0"
+    "url": "https://www.youtube.com/watch?v=GltWqIKxkt0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_idxhbllxrzs",
@@ -16750,7 +18702,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/IDxHblLXRzs/mqdefault.jpg",
     "duration": "0:57",
     "viewCount": 15555,
-    "url": "https://www.youtube.com/watch?v=IDxHblLXRzs"
+    "url": "https://www.youtube.com/watch?v=IDxHblLXRzs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_k82skcijhfg",
@@ -16790,7 +18746,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/k82sKciJhFg/mqdefault.jpg",
     "duration": "0:19",
     "viewCount": 163209,
-    "url": "https://www.youtube.com/watch?v=k82sKciJhFg"
+    "url": "https://www.youtube.com/watch?v=k82sKciJhFg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_kbdkmahrzno",
@@ -16825,7 +18785,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/kBDKMAHrzNo/mqdefault.jpg",
     "duration": "19:10",
     "viewCount": 175151,
-    "url": "https://www.youtube.com/watch?v=kBDKMAHrzNo"
+    "url": "https://www.youtube.com/watch?v=kBDKMAHrzNo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_ly_ojoyeku8",
@@ -16857,7 +18821,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/LY_oJoyEKu8/mqdefault.jpg",
     "duration": "15:16",
     "viewCount": 23642,
-    "url": "https://www.youtube.com/watch?v=LY_oJoyEKu8"
+    "url": "https://www.youtube.com/watch?v=LY_oJoyEKu8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_nfjnvn3dhf4",
@@ -16889,7 +18857,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/nFJnVN3dhf4/mqdefault.jpg",
     "duration": "22:40",
     "viewCount": 50988,
-    "url": "https://www.youtube.com/watch?v=nFJnVN3dhf4"
+    "url": "https://www.youtube.com/watch?v=nFJnVN3dhf4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_nwbxznlexyq",
@@ -16921,7 +18893,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/NwbxznLExyQ/mqdefault.jpg",
     "duration": "13:44",
     "viewCount": 68102,
-    "url": "https://www.youtube.com/watch?v=NwbxznLExyQ"
+    "url": "https://www.youtube.com/watch?v=NwbxznLExyQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_q4apvjdkneu",
@@ -16953,7 +18929,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Q4ApvJdKneU/mqdefault.jpg",
     "duration": "0:59",
     "viewCount": 51944,
-    "url": "https://www.youtube.com/watch?v=Q4ApvJdKneU"
+    "url": "https://www.youtube.com/watch?v=Q4ApvJdKneU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_q7rejj-vxwa",
@@ -16985,7 +18965,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Q7Rejj-VXWA/mqdefault.jpg",
     "duration": "21:46",
     "viewCount": 111679,
-    "url": "https://www.youtube.com/watch?v=Q7Rejj-VXWA"
+    "url": "https://www.youtube.com/watch?v=Q7Rejj-VXWA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_qrztjghefvg",
@@ -17019,7 +19003,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/qRzTJGHEfVg/mqdefault.jpg",
     "duration": "11:21",
     "viewCount": 11966,
-    "url": "https://www.youtube.com/watch?v=qRzTJGHEfVg"
+    "url": "https://www.youtube.com/watch?v=qRzTJGHEfVg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_se2gaqtx6rc",
@@ -17051,7 +19039,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/SE2GAQTx6rc/mqdefault.jpg",
     "duration": "1:22",
     "viewCount": 28908,
-    "url": "https://www.youtube.com/watch?v=SE2GAQTx6rc"
+    "url": "https://www.youtube.com/watch?v=SE2GAQTx6rc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_sjtkthakmmq",
@@ -17083,7 +19075,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/sJTkThAKMMQ/mqdefault.jpg",
     "duration": "25:27",
     "viewCount": 56618,
-    "url": "https://www.youtube.com/watch?v=sJTkThAKMMQ"
+    "url": "https://www.youtube.com/watch?v=sJTkThAKMMQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_sn_fs3stmli",
@@ -17115,7 +19111,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/SN_Fs3sTmLI/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 16263,
-    "url": "https://www.youtube.com/watch?v=SN_Fs3sTmLI"
+    "url": "https://www.youtube.com/watch?v=SN_Fs3sTmLI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_wanduoxvtj8",
@@ -17147,7 +19147,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/wAnduOxVtJ8/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 25397,
-    "url": "https://www.youtube.com/watch?v=wAnduOxVtJ8"
+    "url": "https://www.youtube.com/watch?v=wAnduOxVtJ8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_wda29yz6vkc",
@@ -17179,7 +19183,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/wda29YZ6VKc/mqdefault.jpg",
     "duration": "13:06",
     "viewCount": 18142,
-    "url": "https://www.youtube.com/watch?v=wda29YZ6VKc"
+    "url": "https://www.youtube.com/watch?v=wda29YZ6VKc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_wpuwvwrxwtc",
@@ -17211,7 +19219,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/WPuWVWRXwTc/mqdefault.jpg",
     "duration": "15:54",
     "viewCount": 19912,
-    "url": "https://www.youtube.com/watch?v=WPuWVWRXwTc"
+    "url": "https://www.youtube.com/watch?v=WPuWVWRXwTc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_xi7nvhlqzny",
@@ -17246,7 +19258,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/xI7nvHLqZNY/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 67370,
-    "url": "https://www.youtube.com/watch?v=xI7nvHLqZNY"
+    "url": "https://www.youtube.com/watch?v=xI7nvHLqZNY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_xustr77mkxi",
@@ -17279,7 +19295,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/xusTR77mkXI/mqdefault.jpg",
     "duration": "0:58",
     "viewCount": 41654,
-    "url": "https://www.youtube.com/watch?v=xusTR77mkXI"
+    "url": "https://www.youtube.com/watch?v=xusTR77mkXI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_xyybwljxev4",
@@ -17314,7 +19334,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/xYYbwLjXeV4/mqdefault.jpg",
     "duration": "12:20",
     "viewCount": 16099,
-    "url": "https://www.youtube.com/watch?v=xYYbwLjXeV4"
+    "url": "https://www.youtube.com/watch?v=xYYbwLjXeV4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_y1ruxwvccm0",
@@ -17346,7 +19370,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/y1ruxwVccM0/mqdefault.jpg",
     "duration": "0:54",
     "viewCount": 9999,
-    "url": "https://www.youtube.com/watch?v=y1ruxwVccM0"
+    "url": "https://www.youtube.com/watch?v=y1ruxwVccM0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_feel_tennis_instruction_ydg-_b0qpeg",
@@ -17380,7 +19408,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/YDg-_B0qpEg/mqdefault.jpg",
     "duration": "1:30",
     "viewCount": 31316,
-    "url": "https://www.youtube.com/watch?v=YDg-_B0qpEg"
+    "url": "https://www.youtube.com/watch?v=YDg-_B0qpEg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_-srccxohfrg",
@@ -17415,7 +19447,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/-srcCXohFrg/mqdefault.jpg",
     "duration": "2:02",
     "viewCount": 26556,
-    "url": "https://www.youtube.com/watch?v=-srcCXohFrg"
+    "url": "https://www.youtube.com/watch?v=-srcCXohFrg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_-vkf4uwgquy",
@@ -17446,7 +19482,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/-VKF4uwgQuY/mqdefault.jpg",
     "duration": "0:24",
     "viewCount": 16928,
-    "url": "https://www.youtube.com/watch?v=-VKF4uwgQuY"
+    "url": "https://www.youtube.com/watch?v=-VKF4uwgQuY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_3baxgojrqpi",
@@ -17477,7 +19517,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/3BAxgOJrqPI/mqdefault.jpg",
     "duration": "0:18",
     "viewCount": 19131,
-    "url": "https://www.youtube.com/watch?v=3BAxgOJrqPI"
+    "url": "https://www.youtube.com/watch?v=3BAxgOJrqPI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_7l7gzqt3bwo",
@@ -17514,7 +19558,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/7l7GzqT3Bwo/mqdefault.jpg",
     "duration": "8:33",
     "viewCount": 13068,
-    "url": "https://www.youtube.com/watch?v=7l7GzqT3Bwo"
+    "url": "https://www.youtube.com/watch?v=7l7GzqT3Bwo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_8hg18ws1tc0",
@@ -17545,7 +19593,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8hG18ws1Tc0/mqdefault.jpg",
     "duration": "0:24",
     "viewCount": 7439,
-    "url": "https://www.youtube.com/watch?v=8hG18ws1Tc0"
+    "url": "https://www.youtube.com/watch?v=8hG18ws1Tc0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_8shfsk6j7gc",
@@ -17582,7 +19634,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8ShFSK6j7Gc/mqdefault.jpg",
     "duration": "1:30",
     "viewCount": 17573,
-    "url": "https://www.youtube.com/watch?v=8ShFSK6j7Gc"
+    "url": "https://www.youtube.com/watch?v=8ShFSK6j7Gc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_9r9yvh19rwk",
@@ -17618,7 +19674,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/9R9YVh19RWk/mqdefault.jpg",
     "duration": "1:21",
     "viewCount": 19611,
-    "url": "https://www.youtube.com/watch?v=9R9YVh19RWk"
+    "url": "https://www.youtube.com/watch?v=9R9YVh19RWk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_9zaikgotacq",
@@ -17649,7 +19709,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/9zAIkGOTACQ/mqdefault.jpg",
     "duration": "0:12",
     "viewCount": 55947,
-    "url": "https://www.youtube.com/watch?v=9zAIkGOTACQ"
+    "url": "https://www.youtube.com/watch?v=9zAIkGOTACQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_b7qxvjapohi",
@@ -17680,7 +19744,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/B7QXVjApOhI/mqdefault.jpg",
     "duration": "0:18",
     "viewCount": 27065,
-    "url": "https://www.youtube.com/watch?v=B7QXVjApOhI"
+    "url": "https://www.youtube.com/watch?v=B7QXVjApOhI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_bdjyakgnuei",
@@ -17713,7 +19781,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/bDjyaKgNueI/mqdefault.jpg",
     "duration": "9:09",
     "viewCount": 12484,
-    "url": "https://www.youtube.com/watch?v=bDjyaKgNueI"
+    "url": "https://www.youtube.com/watch?v=bDjyaKgNueI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_ccb683qisza",
@@ -17748,7 +19820,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/CCB683qIszA/mqdefault.jpg",
     "duration": "0:38",
     "viewCount": 8450,
-    "url": "https://www.youtube.com/watch?v=CCB683qIszA"
+    "url": "https://www.youtube.com/watch?v=CCB683qIszA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_cfp45p6sgxs",
@@ -17779,7 +19855,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/cfp45P6sgXs/mqdefault.jpg",
     "duration": "0:23",
     "viewCount": 5256,
-    "url": "https://www.youtube.com/watch?v=cfp45P6sgXs"
+    "url": "https://www.youtube.com/watch?v=cfp45P6sgXs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_cuivrwj-3au",
@@ -17810,7 +19890,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/cUIVRwJ-3aU/mqdefault.jpg",
     "duration": "12:59",
     "viewCount": 21816,
-    "url": "https://www.youtube.com/watch?v=cUIVRwJ-3aU"
+    "url": "https://www.youtube.com/watch?v=cUIVRwJ-3aU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_feln1se71v8",
@@ -17849,7 +19933,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/FELn1Se71V8/mqdefault.jpg",
     "duration": "0:50",
     "viewCount": 19281,
-    "url": "https://www.youtube.com/watch?v=FELn1Se71V8"
+    "url": "https://www.youtube.com/watch?v=FELn1Se71V8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_gglgycrxidg",
@@ -17884,7 +19972,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/gGLGyCRXIDg/mqdefault.jpg",
     "duration": "13:07",
     "viewCount": 6195,
-    "url": "https://www.youtube.com/watch?v=gGLGyCRXIDg"
+    "url": "https://www.youtube.com/watch?v=gGLGyCRXIDg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_h1aebqrxhfg",
@@ -17919,7 +20011,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/H1AeBqRxhFg/mqdefault.jpg",
     "duration": "0:19",
     "viewCount": 18525,
-    "url": "https://www.youtube.com/watch?v=H1AeBqRxhFg"
+    "url": "https://www.youtube.com/watch?v=H1AeBqRxhFg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_hqoi1bearue",
@@ -17950,7 +20046,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Hqoi1bEarUE/mqdefault.jpg",
     "duration": "0:22",
     "viewCount": 32117,
-    "url": "https://www.youtube.com/watch?v=Hqoi1bEarUE"
+    "url": "https://www.youtube.com/watch?v=Hqoi1bEarUE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_hvnw6fmzqlo",
@@ -17981,7 +20081,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/HvNW6FmZQLo/mqdefault.jpg",
     "duration": "0:09",
     "viewCount": 18283,
-    "url": "https://www.youtube.com/watch?v=HvNW6FmZQLo"
+    "url": "https://www.youtube.com/watch?v=HvNW6FmZQLo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_i_s9rhxtrxq",
@@ -18017,7 +20121,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/i_s9rHXTrxQ/mqdefault.jpg",
     "duration": "15:12",
     "viewCount": 30664,
-    "url": "https://www.youtube.com/watch?v=i_s9rHXTrxQ"
+    "url": "https://www.youtube.com/watch?v=i_s9rHXTrxQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_j5yzt2los2m",
@@ -18048,7 +20156,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/j5Yzt2LOS2M/mqdefault.jpg",
     "duration": "0:11",
     "viewCount": 28204,
-    "url": "https://www.youtube.com/watch?v=j5Yzt2LOS2M"
+    "url": "https://www.youtube.com/watch?v=j5Yzt2LOS2M",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_kildk-jw2pi",
@@ -18079,7 +20191,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/kILdK-jw2PI/mqdefault.jpg",
     "duration": "19:17",
     "viewCount": 11250,
-    "url": "https://www.youtube.com/watch?v=kILdK-jw2PI"
+    "url": "https://www.youtube.com/watch?v=kILdK-jw2PI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_mckjyqds-we",
@@ -18115,7 +20231,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/mCkJYqDs-wE/mqdefault.jpg",
     "duration": "13:52",
     "viewCount": 13369,
-    "url": "https://www.youtube.com/watch?v=mCkJYqDs-wE"
+    "url": "https://www.youtube.com/watch?v=mCkJYqDs-wE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_ns4hgefdqze",
@@ -18151,7 +20271,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Ns4HGEFdqZE/mqdefault.jpg",
     "duration": "8:35",
     "viewCount": 40256,
-    "url": "https://www.youtube.com/watch?v=Ns4HGEFdqZE"
+    "url": "https://www.youtube.com/watch?v=Ns4HGEFdqZE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_nz_4z4jdxg8",
@@ -18182,7 +20306,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Nz_4z4jDxg8/mqdefault.jpg",
     "duration": "8:41",
     "viewCount": 32514,
-    "url": "https://www.youtube.com/watch?v=Nz_4z4jDxg8"
+    "url": "https://www.youtube.com/watch?v=Nz_4z4jDxg8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_o0-fakajfvk",
@@ -18220,7 +20348,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/o0-FakAjfVk/mqdefault.jpg",
     "duration": "0:23",
     "viewCount": 14840,
-    "url": "https://www.youtube.com/watch?v=o0-FakAjfVk"
+    "url": "https://www.youtube.com/watch?v=o0-FakAjfVk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_obwpejz1btc",
@@ -18256,7 +20388,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/oBWPEJz1bTc/mqdefault.jpg",
     "duration": "25:35",
     "viewCount": 12420,
-    "url": "https://www.youtube.com/watch?v=oBWPEJz1bTc"
+    "url": "https://www.youtube.com/watch?v=oBWPEJz1bTc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_oezorv1um_8",
@@ -18287,7 +20423,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/oeZOrv1um_8/mqdefault.jpg",
     "duration": "1:15",
     "viewCount": 12232,
-    "url": "https://www.youtube.com/watch?v=oeZOrv1um_8"
+    "url": "https://www.youtube.com/watch?v=oeZOrv1um_8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_okldeqnkra4",
@@ -18320,7 +20460,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/oKldeqNkrA4/mqdefault.jpg",
     "duration": "3:00",
     "viewCount": 18600,
-    "url": "https://www.youtube.com/watch?v=oKldeqNkrA4"
+    "url": "https://www.youtube.com/watch?v=oKldeqNkrA4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_pq6aci6h06m",
@@ -18356,7 +20500,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/PQ6aCI6H06M/mqdefault.jpg",
     "duration": "14:39",
     "viewCount": 4104,
-    "url": "https://www.youtube.com/watch?v=PQ6aCI6H06M"
+    "url": "https://www.youtube.com/watch?v=PQ6aCI6H06M",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_rbrlqivuxls",
@@ -18392,7 +20540,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/RbrLQIvuXls/mqdefault.jpg",
     "duration": "7:28",
     "viewCount": 25077,
-    "url": "https://www.youtube.com/watch?v=RbrLQIvuXls"
+    "url": "https://www.youtube.com/watch?v=RbrLQIvuXls",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_uhqgg5zqyzw",
@@ -18427,7 +20579,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/UHqGg5zQYzw/mqdefault.jpg",
     "duration": "1:48",
     "viewCount": 9066,
-    "url": "https://www.youtube.com/watch?v=UHqGg5zQYzw"
+    "url": "https://www.youtube.com/watch?v=UHqGg5zQYzw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_vsn3g6ktqxa",
@@ -18458,7 +20614,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/vSn3g6ktqxA/mqdefault.jpg",
     "duration": "0:17",
     "viewCount": 26149,
-    "url": "https://www.youtube.com/watch?v=vSn3g6ktqxA"
+    "url": "https://www.youtube.com/watch?v=vSn3g6ktqxA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_wqsnmqrd0xq",
@@ -18494,7 +20654,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/WQSnMQRD0XQ/mqdefault.jpg",
     "duration": "20:38",
     "viewCount": 10695,
-    "url": "https://www.youtube.com/watch?v=WQSnMQRD0XQ"
+    "url": "https://www.youtube.com/watch?v=WQSnMQRD0XQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_xjxrg_dxabq",
@@ -18527,7 +20691,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/xJXrG_dXAbQ/mqdefault.jpg",
     "duration": "0:12",
     "viewCount": 29278,
-    "url": "https://www.youtube.com/watch?v=xJXrG_dXAbQ"
+    "url": "https://www.youtube.com/watch?v=xJXrG_dXAbQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_y4ew9mxzivm",
@@ -18558,7 +20726,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/y4EW9MXzivM/mqdefault.jpg",
     "duration": "5:35",
     "viewCount": 24363,
-    "url": "https://www.youtube.com/watch?v=y4EW9MXzivM"
+    "url": "https://www.youtube.com/watch?v=y4EW9MXzivM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_intuitive_tennis_zhh-4jnhf0m",
@@ -18597,7 +20769,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/zhh-4jnHF0M/mqdefault.jpg",
     "duration": "18:10",
     "viewCount": 18676,
-    "url": "https://www.youtube.com/watch?v=zhh-4jnHF0M"
+    "url": "https://www.youtube.com/watch?v=zhh-4jnHF0M",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell__6qwtzthzdo",
@@ -18633,7 +20809,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/_6QwTZThzDo/mqdefault.jpg",
     "duration": "0:42",
     "viewCount": 15731,
-    "url": "https://www.youtube.com/watch?v=_6QwTZThzDo"
+    "url": "https://www.youtube.com/watch?v=_6QwTZThzDo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_-s_c0jk5nmk",
@@ -18664,7 +20844,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/-s_C0JK5Nmk/mqdefault.jpg",
     "duration": "0:36",
     "viewCount": 19756,
-    "url": "https://www.youtube.com/watch?v=-s_C0JK5Nmk"
+    "url": "https://www.youtube.com/watch?v=-s_C0JK5Nmk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_5-ax5trybkk",
@@ -18697,7 +20881,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/5-Ax5trYbKk/mqdefault.jpg",
     "duration": "0:09",
     "viewCount": 86646,
-    "url": "https://www.youtube.com/watch?v=5-Ax5trYbKk"
+    "url": "https://www.youtube.com/watch?v=5-Ax5trYbKk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_bdhtlaqfnnu",
@@ -18731,7 +20919,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/bdhtlaqfnNU/mqdefault.jpg",
     "duration": "0:43",
     "viewCount": 31998,
-    "url": "https://www.youtube.com/watch?v=bdhtlaqfnNU"
+    "url": "https://www.youtube.com/watch?v=bdhtlaqfnNU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_bm1foihq1kg",
@@ -18762,7 +20954,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/bm1FoiHQ1Kg/mqdefault.jpg",
     "duration": "0:48",
     "viewCount": 112026,
-    "url": "https://www.youtube.com/watch?v=bm1FoiHQ1Kg"
+    "url": "https://www.youtube.com/watch?v=bm1FoiHQ1Kg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_c9wh-0ymcsm",
@@ -18793,7 +20989,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/C9wH-0YMCsM/mqdefault.jpg",
     "duration": "0:41",
     "viewCount": 88789,
-    "url": "https://www.youtube.com/watch?v=C9wH-0YMCsM"
+    "url": "https://www.youtube.com/watch?v=C9wH-0YMCsM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_csr2hud0ngg",
@@ -18824,7 +21024,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/cSr2hUD0NGg/mqdefault.jpg",
     "duration": "0:21",
     "viewCount": 22228,
-    "url": "https://www.youtube.com/watch?v=cSr2hUD0NGg"
+    "url": "https://www.youtube.com/watch?v=cSr2hUD0NGg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_ebyqi9eulfg",
@@ -18855,7 +21059,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ebYqi9EuLFg/mqdefault.jpg",
     "duration": "0:29",
     "viewCount": 11883,
-    "url": "https://www.youtube.com/watch?v=ebYqi9EuLFg"
+    "url": "https://www.youtube.com/watch?v=ebYqi9EuLFg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_euujm8bpm4m",
@@ -18886,7 +21094,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/EuUJM8Bpm4M/mqdefault.jpg",
     "duration": "0:17",
     "viewCount": 127188,
-    "url": "https://www.youtube.com/watch?v=EuUJM8Bpm4M"
+    "url": "https://www.youtube.com/watch?v=EuUJM8Bpm4M",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_fr5ddey48ck",
@@ -18917,7 +21129,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/fR5DDey48ck/mqdefault.jpg",
     "duration": "0:31",
     "viewCount": 45500,
-    "url": "https://www.youtube.com/watch?v=fR5DDey48ck"
+    "url": "https://www.youtube.com/watch?v=fR5DDey48ck",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_haq3yzrtch8",
@@ -18948,7 +21164,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Haq3YZrTcH8/mqdefault.jpg",
     "duration": "38:13",
     "viewCount": 108660,
-    "url": "https://www.youtube.com/watch?v=Haq3YZrTcH8"
+    "url": "https://www.youtube.com/watch?v=Haq3YZrTcH8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_hera-phzepo",
@@ -18979,7 +21199,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/hERA-pHZEpo/mqdefault.jpg",
     "duration": "0:16",
     "viewCount": 62846,
-    "url": "https://www.youtube.com/watch?v=hERA-pHZEpo"
+    "url": "https://www.youtube.com/watch?v=hERA-pHZEpo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_i85g8igsj7e",
@@ -19010,7 +21234,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/i85G8IGSj7E/mqdefault.jpg",
     "duration": "1:12",
     "viewCount": 283253,
-    "url": "https://www.youtube.com/watch?v=i85G8IGSj7E"
+    "url": "https://www.youtube.com/watch?v=i85G8IGSj7E",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_ib33hgltmcc",
@@ -19043,7 +21271,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ib33hGLtmCc/mqdefault.jpg",
     "duration": "0:23",
     "viewCount": 136573,
-    "url": "https://www.youtube.com/watch?v=ib33hGLtmCc"
+    "url": "https://www.youtube.com/watch?v=ib33hGLtmCc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_ilqxjgooxua",
@@ -19082,7 +21314,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/IlqXjgOoxUA/mqdefault.jpg",
     "duration": "13:31",
     "viewCount": 49354,
-    "url": "https://www.youtube.com/watch?v=IlqXjgOoxUA"
+    "url": "https://www.youtube.com/watch?v=IlqXjgOoxUA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_itvslodls_w",
@@ -19113,7 +21349,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ItVsLODls_w/mqdefault.jpg",
     "duration": "0:23",
     "viewCount": 27499,
-    "url": "https://www.youtube.com/watch?v=ItVsLODls_w"
+    "url": "https://www.youtube.com/watch?v=ItVsLODls_w",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_iusrwdf8v6g",
@@ -19144,7 +21384,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/iuSRwDF8V6g/mqdefault.jpg",
     "duration": "10:31",
     "viewCount": 45254,
-    "url": "https://www.youtube.com/watch?v=iuSRwDF8V6g"
+    "url": "https://www.youtube.com/watch?v=iuSRwDF8V6g",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_iyxosxm5ix8",
@@ -19175,7 +21419,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/IyXoSxm5IX8/mqdefault.jpg",
     "duration": "0:42",
     "viewCount": 35973,
-    "url": "https://www.youtube.com/watch?v=IyXoSxm5IX8"
+    "url": "https://www.youtube.com/watch?v=IyXoSxm5IX8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_j7fv1vkim3s",
@@ -19209,7 +21457,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/J7Fv1vKim3s/mqdefault.jpg",
     "duration": "1:09",
     "viewCount": 59297,
-    "url": "https://www.youtube.com/watch?v=J7Fv1vKim3s"
+    "url": "https://www.youtube.com/watch?v=J7Fv1vKim3s",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_k2keriigju0",
@@ -19240,7 +21492,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/k2kerIIgJU0/mqdefault.jpg",
     "duration": "18:35",
     "viewCount": 24595,
-    "url": "https://www.youtube.com/watch?v=k2kerIIgJU0"
+    "url": "https://www.youtube.com/watch?v=k2kerIIgJU0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_k5bew3znpv4",
@@ -19271,7 +21527,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/K5BEW3ZnPV4/mqdefault.jpg",
     "duration": "0:15",
     "viewCount": 41254,
-    "url": "https://www.youtube.com/watch?v=K5BEW3ZnPV4"
+    "url": "https://www.youtube.com/watch?v=K5BEW3ZnPV4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_k5jkxlmy0iu",
@@ -19302,7 +21562,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/K5JkxlMY0IU/mqdefault.jpg",
     "duration": "1:24",
     "viewCount": 10611,
-    "url": "https://www.youtube.com/watch?v=K5JkxlMY0IU"
+    "url": "https://www.youtube.com/watch?v=K5JkxlMY0IU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_kf5r7cmy5kk",
@@ -19341,7 +21605,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Kf5r7cMY5kk/mqdefault.jpg",
     "duration": "0:14",
     "viewCount": 36692,
-    "url": "https://www.youtube.com/watch?v=Kf5r7cMY5kk"
+    "url": "https://www.youtube.com/watch?v=Kf5r7cMY5kk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_krjexk-w66c",
@@ -19372,7 +21640,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/krJEXk-W66c/mqdefault.jpg",
     "duration": "0:16",
     "viewCount": 30424,
-    "url": "https://www.youtube.com/watch?v=krJEXk-W66c"
+    "url": "https://www.youtube.com/watch?v=krJEXk-W66c",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_mllpjs0hovy",
@@ -19409,7 +21681,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/mLlPjs0hOVY/mqdefault.jpg",
     "duration": "16:28",
     "viewCount": 56227,
-    "url": "https://www.youtube.com/watch?v=mLlPjs0hOVY"
+    "url": "https://www.youtube.com/watch?v=mLlPjs0hOVY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_mqn-ydjydrc",
@@ -19446,7 +21722,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/mQN-YDjYdRc/mqdefault.jpg",
     "duration": "0:31",
     "viewCount": 51908,
-    "url": "https://www.youtube.com/watch?v=mQN-YDjYdRc"
+    "url": "https://www.youtube.com/watch?v=mQN-YDjYdRc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_nrx3dolbgy0",
@@ -19480,7 +21760,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/NRx3dOLbgy0/mqdefault.jpg",
     "duration": "0:26",
     "viewCount": 113448,
-    "url": "https://www.youtube.com/watch?v=NRx3dOLbgy0"
+    "url": "https://www.youtube.com/watch?v=NRx3dOLbgy0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_paz-qt-e2v0",
@@ -19511,7 +21795,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/pAz-Qt-E2V0/mqdefault.jpg",
     "duration": "0:19",
     "viewCount": 23862,
-    "url": "https://www.youtube.com/watch?v=pAz-Qt-E2V0"
+    "url": "https://www.youtube.com/watch?v=pAz-Qt-E2V0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_saypemeudfi",
@@ -19548,7 +21836,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/sAYPemEUDfI/mqdefault.jpg",
     "duration": "0:55",
     "viewCount": 95678,
-    "url": "https://www.youtube.com/watch?v=sAYPemEUDfI"
+    "url": "https://www.youtube.com/watch?v=sAYPemEUDfI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_spbiquawfsi",
@@ -19579,7 +21871,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/SpBIQuAWfSI/mqdefault.jpg",
     "duration": "0:30",
     "viewCount": 38537,
-    "url": "https://www.youtube.com/watch?v=SpBIQuAWfSI"
+    "url": "https://www.youtube.com/watch?v=SpBIQuAWfSI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_sqpql9kvmcg",
@@ -19610,7 +21906,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/sqPql9kVMCg/mqdefault.jpg",
     "duration": "0:23",
     "viewCount": 85220,
-    "url": "https://www.youtube.com/watch?v=sqPql9kVMCg"
+    "url": "https://www.youtube.com/watch?v=sqPql9kVMCg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_titf9rtsg-a",
@@ -19641,7 +21941,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/tiTf9RtsG-A/mqdefault.jpg",
     "duration": "1:11",
     "viewCount": 78027,
-    "url": "https://www.youtube.com/watch?v=tiTf9RtsG-A"
+    "url": "https://www.youtube.com/watch?v=tiTf9RtsG-A",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_tlqsbjaai_c",
@@ -19672,7 +21976,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/TlQsBJaaI_c/mqdefault.jpg",
     "duration": "1:09",
     "viewCount": 34877,
-    "url": "https://www.youtube.com/watch?v=TlQsBJaaI_c"
+    "url": "https://www.youtube.com/watch?v=TlQsBJaaI_c",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_uo87gwpl4li",
@@ -19707,7 +22015,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Uo87gWpL4lI/mqdefault.jpg",
     "duration": "0:29",
     "viewCount": 21693,
-    "url": "https://www.youtube.com/watch?v=Uo87gWpL4lI"
+    "url": "https://www.youtube.com/watch?v=Uo87gWpL4lI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_vkcvpcmnnie",
@@ -19738,7 +22050,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/VKCVpCmNnIE/mqdefault.jpg",
     "duration": "0:29",
     "viewCount": 154008,
-    "url": "https://www.youtube.com/watch?v=VKCVpCmNnIE"
+    "url": "https://www.youtube.com/watch?v=VKCVpCmNnIE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_karue_sell_zb5zjqohnto",
@@ -19769,7 +22085,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Zb5ZJQOhnto/mqdefault.jpg",
     "duration": "27:12",
     "viewCount": 60063,
-    "url": "https://www.youtube.com/watch?v=Zb5ZJQOhnto"
+    "url": "https://www.youtube.com/watch?v=Zb5ZJQOhnto",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_-sr00e9ttge",
@@ -19806,7 +22126,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/-sR00E9TtGE/mqdefault.jpg",
     "duration": "15:26",
     "viewCount": 15899,
-    "url": "https://www.youtube.com/watch?v=-sR00E9TtGE"
+    "url": "https://www.youtube.com/watch?v=-sR00E9TtGE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_0lzjs2lgbvk",
@@ -19838,7 +22162,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/0LZjS2LGbVk/mqdefault.jpg",
     "duration": "0:40",
     "viewCount": 2272,
-    "url": "https://www.youtube.com/watch?v=0LZjS2LGbVk"
+    "url": "https://www.youtube.com/watch?v=0LZjS2LGbVk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_7s01_nrobui",
@@ -19870,7 +22198,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/7s01_nROBUI/mqdefault.jpg",
     "duration": "0:57",
     "viewCount": 3545,
-    "url": "https://www.youtube.com/watch?v=7s01_nROBUI"
+    "url": "https://www.youtube.com/watch?v=7s01_nROBUI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_8vjrcexnmyu",
@@ -19902,7 +22234,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8VjrCExNMyU/mqdefault.jpg",
     "duration": "0:49",
     "viewCount": 2033,
-    "url": "https://www.youtube.com/watch?v=8VjrCExNMyU"
+    "url": "https://www.youtube.com/watch?v=8VjrCExNMyU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_98qiaft0zp4",
@@ -19934,7 +22270,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/98qiafT0zp4/mqdefault.jpg",
     "duration": "0:49",
     "viewCount": 1017,
-    "url": "https://www.youtube.com/watch?v=98qiafT0zp4"
+    "url": "https://www.youtube.com/watch?v=98qiafT0zp4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_ay-yuo3sk4o",
@@ -19966,7 +22306,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/aY-yuo3sK4o/mqdefault.jpg",
     "duration": "0:37",
     "viewCount": 6669,
-    "url": "https://www.youtube.com/watch?v=aY-yuo3sK4o"
+    "url": "https://www.youtube.com/watch?v=aY-yuo3sK4o",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_cgmcnp_9u7s",
@@ -19999,7 +22343,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/CgmCnP_9U7s/mqdefault.jpg",
     "duration": "11:21",
     "viewCount": 12044,
-    "url": "https://www.youtube.com/watch?v=CgmCnP_9U7s"
+    "url": "https://www.youtube.com/watch?v=CgmCnP_9U7s",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_gczw8bmxyv8",
@@ -20031,7 +22379,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/GCZW8bMxYv8/mqdefault.jpg",
     "duration": "0:57",
     "viewCount": 1953,
-    "url": "https://www.youtube.com/watch?v=GCZW8bMxYv8"
+    "url": "https://www.youtube.com/watch?v=GCZW8bMxYv8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_htqdpspmmda",
@@ -20065,7 +22417,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/HTqDPSPmMDA/mqdefault.jpg",
     "duration": "1:27",
     "viewCount": 663,
-    "url": "https://www.youtube.com/watch?v=HTqDPSPmMDA"
+    "url": "https://www.youtube.com/watch?v=HTqDPSPmMDA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_ixn2hxl1qoq",
@@ -20099,7 +22455,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/IXN2hxL1QoQ/mqdefault.jpg",
     "duration": "0:58",
     "viewCount": 4987,
-    "url": "https://www.youtube.com/watch?v=IXN2hxL1QoQ"
+    "url": "https://www.youtube.com/watch?v=IXN2hxL1QoQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_jsrk5oyyeqe",
@@ -20131,7 +22491,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/jsrk5OyyEQE/mqdefault.jpg",
     "duration": "0:57",
     "viewCount": 3988,
-    "url": "https://www.youtube.com/watch?v=jsrk5OyyEQE"
+    "url": "https://www.youtube.com/watch?v=jsrk5OyyEQE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_kuzi_8bmzay",
@@ -20163,7 +22527,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/KUZI_8bmZaY/mqdefault.jpg",
     "duration": "0:56",
     "viewCount": 988,
-    "url": "https://www.youtube.com/watch?v=KUZI_8bmZaY"
+    "url": "https://www.youtube.com/watch?v=KUZI_8bmZaY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_o279jpfvlvw",
@@ -20195,7 +22563,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/O279jPFvlVw/mqdefault.jpg",
     "duration": "0:42",
     "viewCount": 2714,
-    "url": "https://www.youtube.com/watch?v=O279jPFvlVw"
+    "url": "https://www.youtube.com/watch?v=O279jPFvlVw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_q-xdpaabtbc",
@@ -20227,7 +22599,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/q-xDPaabTBc/mqdefault.jpg",
     "duration": "10:18",
     "viewCount": 11181,
-    "url": "https://www.youtube.com/watch?v=q-xDPaabTBc"
+    "url": "https://www.youtube.com/watch?v=q-xDPaabTBc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_qmcxcinttl4",
@@ -20259,7 +22635,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/QmCxcIntTL4/mqdefault.jpg",
     "duration": "0:36",
     "viewCount": 2068,
-    "url": "https://www.youtube.com/watch?v=QmCxcIntTL4"
+    "url": "https://www.youtube.com/watch?v=QmCxcIntTL4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_s_z-opejax4",
@@ -20293,7 +22673,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/s_z-opeJAx4/mqdefault.jpg",
     "duration": "0:56",
     "viewCount": 2043,
-    "url": "https://www.youtube.com/watch?v=s_z-opeJAx4"
+    "url": "https://www.youtube.com/watch?v=s_z-opeJAx4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_slyjpycc0z4",
@@ -20325,7 +22709,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/sLyJpyCC0z4/mqdefault.jpg",
     "duration": "0:53",
     "viewCount": 1121,
-    "url": "https://www.youtube.com/watch?v=sLyJpyCC0z4"
+    "url": "https://www.youtube.com/watch?v=sLyJpyCC0z4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_t2kru_ra5mu",
@@ -20360,7 +22748,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/t2kru_RA5MU/mqdefault.jpg",
     "duration": "0:57",
     "viewCount": 2272,
-    "url": "https://www.youtube.com/watch?v=t2kru_RA5MU"
+    "url": "https://www.youtube.com/watch?v=t2kru_RA5MU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_t6q280yt_a8",
@@ -20394,7 +22786,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/T6q280yT_A8/mqdefault.jpg",
     "duration": "0:43",
     "viewCount": 1929,
-    "url": "https://www.youtube.com/watch?v=T6q280yT_A8"
+    "url": "https://www.youtube.com/watch?v=T6q280yT_A8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_ukh1jhzuvpa",
@@ -20426,7 +22822,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/UkH1JhzUVPA/mqdefault.jpg",
     "duration": "5:27",
     "viewCount": 21168,
-    "url": "https://www.youtube.com/watch?v=UkH1JhzUVPA"
+    "url": "https://www.youtube.com/watch?v=UkH1JhzUVPA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_ur-92g_idxg",
@@ -20458,7 +22858,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/uR-92g_idXg/mqdefault.jpg",
     "duration": "8:39",
     "viewCount": 24222,
-    "url": "https://www.youtube.com/watch?v=uR-92g_idXg"
+    "url": "https://www.youtube.com/watch?v=uR-92g_idXg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_vfucw9q4rjw",
@@ -20492,7 +22896,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/vfUCw9Q4Rjw/mqdefault.jpg",
     "duration": "13:12",
     "viewCount": 7086,
-    "url": "https://www.youtube.com/watch?v=vfUCw9Q4Rjw"
+    "url": "https://www.youtube.com/watch?v=vfUCw9Q4Rjw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_vxwdc5osqwy",
@@ -20526,7 +22934,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/VxWDC5OsQWY/mqdefault.jpg",
     "duration": "1:19",
     "viewCount": 2299,
-    "url": "https://www.youtube.com/watch?v=VxWDC5OsQWY"
+    "url": "https://www.youtube.com/watch?v=VxWDC5OsQWY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_vzuu7rjmmf8",
@@ -20558,7 +22970,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/vzuu7Rjmmf8/mqdefault.jpg",
     "duration": "0:33",
     "viewCount": 2163,
-    "url": "https://www.youtube.com/watch?v=vzuu7Rjmmf8"
+    "url": "https://www.youtube.com/watch?v=vzuu7Rjmmf8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_wuasxw_6qws",
@@ -20590,7 +23006,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/wUaSxW_6Qws/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 3796,
-    "url": "https://www.youtube.com/watch?v=wUaSxW_6Qws"
+    "url": "https://www.youtube.com/watch?v=wUaSxW_6Qws",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_x2tayfcpjgy",
@@ -20624,7 +23044,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/X2TAYFCpJgY/mqdefault.jpg",
     "duration": "1:47",
     "viewCount": 874,
-    "url": "https://www.youtube.com/watch?v=X2TAYFCpJgY"
+    "url": "https://www.youtube.com/watch?v=X2TAYFCpJgY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_ylp2r5scbr0",
@@ -20656,7 +23080,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/YLP2R5ScBr0/mqdefault.jpg",
     "duration": "0:34",
     "viewCount": 3326,
-    "url": "https://www.youtube.com/watch?v=YLP2R5ScBr0"
+    "url": "https://www.youtube.com/watch?v=YLP2R5ScBr0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_leontv_cn_ysv5pe_b1bc",
@@ -20690,7 +23118,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/YSV5pE_b1bc/mqdefault.jpg",
     "duration": "0:36",
     "viewCount": 905,
-    "url": "https://www.youtube.com/watch?v=YSV5pE_b1bc"
+    "url": "https://www.youtube.com/watch?v=YSV5pE_b1bc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official__byn9yyeawu",
@@ -20722,7 +23154,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/_byn9yYEawU/mqdefault.jpg",
     "duration": "0:29",
     "viewCount": 206804,
-    "url": "https://www.youtube.com/watch?v=_byn9yYEawU"
+    "url": "https://www.youtube.com/watch?v=_byn9yYEawU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_0_qhow1pxoa",
@@ -20754,7 +23190,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/0_Qhow1PxoA/mqdefault.jpg",
     "duration": "0:46",
     "viewCount": 52778,
-    "url": "https://www.youtube.com/watch?v=0_Qhow1PxoA"
+    "url": "https://www.youtube.com/watch?v=0_Qhow1PxoA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_2z47-cjz-y8",
@@ -20786,7 +23226,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/2z47-cjz-Y8/mqdefault.jpg",
     "duration": "0:30",
     "viewCount": 65835,
-    "url": "https://www.youtube.com/watch?v=2z47-cjz-Y8"
+    "url": "https://www.youtube.com/watch?v=2z47-cjz-Y8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_3e5kd3ah7jk",
@@ -20818,7 +23262,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/3e5Kd3aH7jk/mqdefault.jpg",
     "duration": "0:10",
     "viewCount": 35755,
-    "url": "https://www.youtube.com/watch?v=3e5Kd3aH7jk"
+    "url": "https://www.youtube.com/watch?v=3e5Kd3aH7jk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_3t0h9f1ttf8",
@@ -20852,7 +23300,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/3T0h9f1ttf8/mqdefault.jpg",
     "duration": "1:01",
     "viewCount": 52839,
-    "url": "https://www.youtube.com/watch?v=3T0h9f1ttf8"
+    "url": "https://www.youtube.com/watch?v=3T0h9f1ttf8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_47s4suke6se",
@@ -20884,7 +23336,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/47s4SUke6sE/mqdefault.jpg",
     "duration": "0:55",
     "viewCount": 797045,
-    "url": "https://www.youtube.com/watch?v=47s4SUke6sE"
+    "url": "https://www.youtube.com/watch?v=47s4SUke6sE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_8zldqt6lk10",
@@ -20916,7 +23372,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8zldQt6Lk10/mqdefault.jpg",
     "duration": "0:30",
     "viewCount": 30842,
-    "url": "https://www.youtube.com/watch?v=8zldQt6Lk10"
+    "url": "https://www.youtube.com/watch?v=8zldQt6Lk10",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_92fztlxgfoe",
@@ -20949,7 +23409,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/92FZTlxGFoE/mqdefault.jpg",
     "duration": "0:38",
     "viewCount": 116770,
-    "url": "https://www.youtube.com/watch?v=92FZTlxGFoE"
+    "url": "https://www.youtube.com/watch?v=92FZTlxGFoE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_a70rdml4268",
@@ -20983,7 +23447,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/a70rDML4268/mqdefault.jpg",
     "duration": "0:58",
     "viewCount": 37647,
-    "url": "https://www.youtube.com/watch?v=a70rDML4268"
+    "url": "https://www.youtube.com/watch?v=a70rDML4268",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_b54ag-sav6o",
@@ -21021,7 +23489,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/B54AG-sav6o/mqdefault.jpg",
     "duration": "0:40",
     "viewCount": 323751,
-    "url": "https://www.youtube.com/watch?v=B54AG-sav6o"
+    "url": "https://www.youtube.com/watch?v=B54AG-sav6o",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_bqcgmm5p9hw",
@@ -21056,7 +23528,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/BqcGMM5p9Hw/mqdefault.jpg",
     "duration": "1:08",
     "viewCount": 102693,
-    "url": "https://www.youtube.com/watch?v=BqcGMM5p9Hw"
+    "url": "https://www.youtube.com/watch?v=BqcGMM5p9Hw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_cohhxuohskq",
@@ -21088,7 +23564,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/CoHhXUohskQ/mqdefault.jpg",
     "duration": "1:29",
     "viewCount": 94638,
-    "url": "https://www.youtube.com/watch?v=CoHhXUohskQ"
+    "url": "https://www.youtube.com/watch?v=CoHhXUohskQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_cxz9vfkqcgs",
@@ -21122,7 +23602,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Cxz9vFKQCGs/mqdefault.jpg",
     "duration": "0:33",
     "viewCount": 34594,
-    "url": "https://www.youtube.com/watch?v=Cxz9vFKQCGs"
+    "url": "https://www.youtube.com/watch?v=Cxz9vFKQCGs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_e6a9dpofdsq",
@@ -21156,7 +23640,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/e6A9DPOfDsQ/mqdefault.jpg",
     "duration": "0:41",
     "viewCount": 184258,
-    "url": "https://www.youtube.com/watch?v=e6A9DPOfDsQ"
+    "url": "https://www.youtube.com/watch?v=e6A9DPOfDsQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_eyp2ay0mdiw",
@@ -21194,7 +23682,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/EyP2Ay0MDIw/mqdefault.jpg",
     "duration": "0:49",
     "viewCount": 306067,
-    "url": "https://www.youtube.com/watch?v=EyP2Ay0MDIw"
+    "url": "https://www.youtube.com/watch?v=EyP2Ay0MDIw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_i65bayrgoaa",
@@ -21229,7 +23721,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/i65BaYrgoaA/mqdefault.jpg",
     "duration": "0:42",
     "viewCount": 62549,
-    "url": "https://www.youtube.com/watch?v=i65BaYrgoaA"
+    "url": "https://www.youtube.com/watch?v=i65BaYrgoaA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_ijmqilism0y",
@@ -21261,7 +23757,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ijMqIlISM0Y/mqdefault.jpg",
     "duration": "1:20",
     "viewCount": 49730,
-    "url": "https://www.youtube.com/watch?v=ijMqIlISM0Y"
+    "url": "https://www.youtube.com/watch?v=ijMqIlISM0Y",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_iqsod9ynfn4",
@@ -21298,7 +23798,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/iqSOd9yNfN4/mqdefault.jpg",
     "duration": "0:48",
     "viewCount": 51110,
-    "url": "https://www.youtube.com/watch?v=iqSOd9yNfN4"
+    "url": "https://www.youtube.com/watch?v=iqSOd9yNfN4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_jfrxklhm_me",
@@ -21330,7 +23834,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/JfRXKlHM_mE/mqdefault.jpg",
     "duration": "0:51",
     "viewCount": 49504,
-    "url": "https://www.youtube.com/watch?v=JfRXKlHM_mE"
+    "url": "https://www.youtube.com/watch?v=JfRXKlHM_mE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_meqlmvawiow",
@@ -21367,7 +23875,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/meqLmvaWiOw/mqdefault.jpg",
     "duration": "0:24",
     "viewCount": 47100,
-    "url": "https://www.youtube.com/watch?v=meqLmvaWiOw"
+    "url": "https://www.youtube.com/watch?v=meqLmvaWiOw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_mvkwicvcggi",
@@ -21401,7 +23913,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/MvkWiCvCGGI/mqdefault.jpg",
     "duration": "0:34",
     "viewCount": 206839,
-    "url": "https://www.youtube.com/watch?v=MvkWiCvCGGI"
+    "url": "https://www.youtube.com/watch?v=MvkWiCvCGGI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_ntgidw6_ulo",
@@ -21433,7 +23949,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/NtGIdw6_ULo/mqdefault.jpg",
     "duration": "1:18",
     "viewCount": 121058,
-    "url": "https://www.youtube.com/watch?v=NtGIdw6_ULo"
+    "url": "https://www.youtube.com/watch?v=NtGIdw6_ULo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_odv1rjyjmxs",
@@ -21465,7 +23985,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ODV1rJYjmxs/mqdefault.jpg",
     "duration": "0:37",
     "viewCount": 41138,
-    "url": "https://www.youtube.com/watch?v=ODV1rJYjmxs"
+    "url": "https://www.youtube.com/watch?v=ODV1rJYjmxs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_oop39i4p1rm",
@@ -21497,7 +24021,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ooP39I4P1RM/mqdefault.jpg",
     "duration": "0:50",
     "viewCount": 81717,
-    "url": "https://www.youtube.com/watch?v=ooP39I4P1RM"
+    "url": "https://www.youtube.com/watch?v=ooP39I4P1RM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_rfjndq3verk",
@@ -21529,7 +24057,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/RFJNdq3Verk/mqdefault.jpg",
     "duration": "1:22",
     "viewCount": 97500,
-    "url": "https://www.youtube.com/watch?v=RFJNdq3Verk"
+    "url": "https://www.youtube.com/watch?v=RFJNdq3Verk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_tkdw6xqnqxo",
@@ -21567,7 +24099,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Tkdw6XqnQXo/mqdefault.jpg",
     "duration": "1:53",
     "viewCount": 401597,
-    "url": "https://www.youtube.com/watch?v=Tkdw6XqnQXo"
+    "url": "https://www.youtube.com/watch?v=Tkdw6XqnQXo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_v6bl1-0qgs8",
@@ -21599,7 +24135,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/v6bl1-0qGS8/mqdefault.jpg",
     "duration": "0:28",
     "viewCount": 126540,
-    "url": "https://www.youtube.com/watch?v=v6bl1-0qGS8"
+    "url": "https://www.youtube.com/watch?v=v6bl1-0qGS8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_vaodb4hnj5y",
@@ -21631,7 +24171,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/vaOdB4hnJ5Y/mqdefault.jpg",
     "duration": "0:45",
     "viewCount": 49470,
-    "url": "https://www.youtube.com/watch?v=vaOdB4hnJ5Y"
+    "url": "https://www.youtube.com/watch?v=vaOdB4hnJ5Y",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_vhhefhgezfu",
@@ -21669,7 +24213,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/VhheFhgEZFU/mqdefault.jpg",
     "duration": "0:33",
     "viewCount": 405685,
-    "url": "https://www.youtube.com/watch?v=VhheFhgEZFU"
+    "url": "https://www.youtube.com/watch?v=VhheFhgEZFU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_w3fnbafv2ik",
@@ -21701,7 +24249,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/W3FnbafV2ik/mqdefault.jpg",
     "duration": "1:09",
     "viewCount": 96593,
-    "url": "https://www.youtube.com/watch?v=W3FnbafV2ik"
+    "url": "https://www.youtube.com/watch?v=W3FnbafV2ik",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_wrqhim5tszm",
@@ -21738,7 +24290,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/WRqhiM5TSzM/mqdefault.jpg",
     "duration": "0:38",
     "viewCount": 512800,
-    "url": "https://www.youtube.com/watch?v=WRqhiM5TSzM"
+    "url": "https://www.youtube.com/watch?v=WRqhiM5TSzM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_x704dgnya1s",
@@ -21772,7 +24328,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/x704DgnYA1s/mqdefault.jpg",
     "duration": "0:59",
     "viewCount": 123874,
-    "url": "https://www.youtube.com/watch?v=x704DgnYA1s"
+    "url": "https://www.youtube.com/watch?v=x704DgnYA1s",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_xdhq5qsxzhc",
@@ -21806,7 +24366,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/XdHQ5qSXZhc/mqdefault.jpg",
     "duration": "1:38",
     "viewCount": 80899,
-    "url": "https://www.youtube.com/watch?v=XdHQ5qSXZhc"
+    "url": "https://www.youtube.com/watch?v=XdHQ5qSXZhc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_xuyfeesqhrw",
@@ -21838,7 +24402,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/xUYFeESQHRw/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 338580,
-    "url": "https://www.youtube.com/watch?v=xUYFeESQHRw"
+    "url": "https://www.youtube.com/watch?v=xUYFeESQHRw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_yirxalihueo",
@@ -21873,7 +24441,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/YiRxalihUeo/mqdefault.jpg",
     "duration": "0:53",
     "viewCount": 103232,
-    "url": "https://www.youtube.com/watch?v=YiRxalihUeo"
+    "url": "https://www.youtube.com/watch?v=YiRxalihUeo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_mouratoglou_official_zkoexhi-now",
@@ -21905,7 +24477,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ZKOeXhi-nOw/mqdefault.jpg",
     "duration": "0:56",
     "viewCount": 134509,
-    "url": "https://www.youtube.com/watch?v=ZKOeXhi-nOw"
+    "url": "https://www.youtube.com/watch?v=ZKOeXhi-nOw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_0djuaqifzgk",
@@ -21937,7 +24513,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/0DJUaQiFZgk/mqdefault.jpg",
     "duration": "4:21",
     "viewCount": 3688,
-    "url": "https://www.youtube.com/watch?v=0DJUaQiFZgk"
+    "url": "https://www.youtube.com/watch?v=0DJUaQiFZgk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_1dhzuvt6yw4",
@@ -21969,7 +24549,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/1DhzUvT6YW4/mqdefault.jpg",
     "duration": "5:41",
     "viewCount": 9203,
-    "url": "https://www.youtube.com/watch?v=1DhzUvT6YW4"
+    "url": "https://www.youtube.com/watch?v=1DhzUvT6YW4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_1nsy6qj-upy",
@@ -22003,7 +24587,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/1nSy6QJ-UPY/mqdefault.jpg",
     "duration": "6:07",
     "viewCount": 1671,
-    "url": "https://www.youtube.com/watch?v=1nSy6QJ-UPY"
+    "url": "https://www.youtube.com/watch?v=1nSy6QJ-UPY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_4va6habusxw",
@@ -22035,7 +24623,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/4VA6HABuSXw/mqdefault.jpg",
     "duration": "4:41",
     "viewCount": 2844,
-    "url": "https://www.youtube.com/watch?v=4VA6HABuSXw"
+    "url": "https://www.youtube.com/watch?v=4VA6HABuSXw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_8j2ue7w50pe",
@@ -22067,7 +24659,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8J2ue7w50PE/mqdefault.jpg",
     "duration": "5:44",
     "viewCount": 6618,
-    "url": "https://www.youtube.com/watch?v=8J2ue7w50PE"
+    "url": "https://www.youtube.com/watch?v=8J2ue7w50PE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_93zz6uxqbdm",
@@ -22099,7 +24695,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/93zz6uXQBdM/mqdefault.jpg",
     "duration": "2:58",
     "viewCount": 841,
-    "url": "https://www.youtube.com/watch?v=93zz6uXQBdM"
+    "url": "https://www.youtube.com/watch?v=93zz6uXQBdM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_adjx44bxbis",
@@ -22131,7 +24731,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ADjX44BXBis/mqdefault.jpg",
     "duration": "6:34",
     "viewCount": 2045,
-    "url": "https://www.youtube.com/watch?v=ADjX44BXBis"
+    "url": "https://www.youtube.com/watch?v=ADjX44BXBis",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_amv9psm51-4",
@@ -22163,7 +24767,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/amv9PSM51-4/mqdefault.jpg",
     "duration": "4:43",
     "viewCount": 14550,
-    "url": "https://www.youtube.com/watch?v=amv9PSM51-4"
+    "url": "https://www.youtube.com/watch?v=amv9PSM51-4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_blczkugl2ai",
@@ -22200,7 +24808,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/BLCzkUgl2aI/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 2589,
-    "url": "https://www.youtube.com/watch?v=BLCzkUgl2aI"
+    "url": "https://www.youtube.com/watch?v=BLCzkUgl2aI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_bnmvsa9dwz0",
@@ -22240,7 +24852,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/BnmVSa9dWz0/mqdefault.jpg",
     "duration": "4:39",
     "viewCount": 10636,
-    "url": "https://www.youtube.com/watch?v=BnmVSa9dWz0"
+    "url": "https://www.youtube.com/watch?v=BnmVSa9dWz0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_bz1izmxmqwg",
@@ -22272,7 +24888,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/bZ1IZmXmQwg/mqdefault.jpg",
     "duration": "3:50",
     "viewCount": 1366,
-    "url": "https://www.youtube.com/watch?v=bZ1IZmXmQwg"
+    "url": "https://www.youtube.com/watch?v=bZ1IZmXmQwg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_cesvhled2zm",
@@ -22304,7 +24924,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/cESVhled2zM/mqdefault.jpg",
     "duration": "7:16",
     "viewCount": 9661,
-    "url": "https://www.youtube.com/watch?v=cESVhled2zM"
+    "url": "https://www.youtube.com/watch?v=cESVhled2zM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_ch2nhs7i9ku",
@@ -22336,7 +24960,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Ch2nHs7i9kU/mqdefault.jpg",
     "duration": "6:32",
     "viewCount": 4261,
-    "url": "https://www.youtube.com/watch?v=Ch2nHs7i9kU"
+    "url": "https://www.youtube.com/watch?v=Ch2nHs7i9kU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_d-kir8iw7z0",
@@ -22368,7 +24996,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/D-kIr8iW7z0/mqdefault.jpg",
     "duration": "3:07",
     "viewCount": 4081,
-    "url": "https://www.youtube.com/watch?v=D-kIr8iW7z0"
+    "url": "https://www.youtube.com/watch?v=D-kIr8iW7z0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_dmwy9rwd6jm",
@@ -22400,7 +25032,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/dmwy9RwD6jM/mqdefault.jpg",
     "duration": "3:59",
     "viewCount": 3860,
-    "url": "https://www.youtube.com/watch?v=dmwy9RwD6jM"
+    "url": "https://www.youtube.com/watch?v=dmwy9RwD6jM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_eqdkog8l-zo",
@@ -22432,7 +25068,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/EQDKog8L-zo/mqdefault.jpg",
     "duration": "5:16",
     "viewCount": 4474,
-    "url": "https://www.youtube.com/watch?v=EQDKog8L-zo"
+    "url": "https://www.youtube.com/watch?v=EQDKog8L-zo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_fjz9hg7djda",
@@ -22469,7 +25109,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/FjZ9hG7DjdA/mqdefault.jpg",
     "duration": "3:25",
     "viewCount": 1719,
-    "url": "https://www.youtube.com/watch?v=FjZ9hG7DjdA"
+    "url": "https://www.youtube.com/watch?v=FjZ9hG7DjdA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_fzuse31mjng",
@@ -22501,7 +25145,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/fZuSe31mjNg/mqdefault.jpg",
     "duration": "5:14",
     "viewCount": 6628,
-    "url": "https://www.youtube.com/watch?v=fZuSe31mjNg"
+    "url": "https://www.youtube.com/watch?v=fZuSe31mjNg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_fzwjpr8mpya",
@@ -22535,7 +25183,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/FZwJpr8mpYA/mqdefault.jpg",
     "duration": "5:08",
     "viewCount": 3448,
-    "url": "https://www.youtube.com/watch?v=FZwJpr8mpYA"
+    "url": "https://www.youtube.com/watch?v=FZwJpr8mpYA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_g_lqcmw96uq",
@@ -22567,7 +25219,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/g_lQcMw96UQ/mqdefault.jpg",
     "duration": "5:51",
     "viewCount": 2987,
-    "url": "https://www.youtube.com/watch?v=g_lQcMw96UQ"
+    "url": "https://www.youtube.com/watch?v=g_lQcMw96UQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_glrpyld8zpo",
@@ -22599,7 +25255,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/glrpYld8zpo/mqdefault.jpg",
     "duration": "7:15",
     "viewCount": 14563,
-    "url": "https://www.youtube.com/watch?v=glrpYld8zpo"
+    "url": "https://www.youtube.com/watch?v=glrpYld8zpo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_i9fjri7a8ik",
@@ -22634,7 +25294,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/I9FjRI7a8Ik/mqdefault.jpg",
     "duration": "6:22",
     "viewCount": 5064,
-    "url": "https://www.youtube.com/watch?v=I9FjRI7a8Ik"
+    "url": "https://www.youtube.com/watch?v=I9FjRI7a8Ik",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_itoiiyi245g",
@@ -22666,7 +25330,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/iTOiiyI245g/mqdefault.jpg",
     "duration": "0:57",
     "viewCount": 4343,
-    "url": "https://www.youtube.com/watch?v=iTOiiyI245g"
+    "url": "https://www.youtube.com/watch?v=iTOiiyI245g",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_jetcquwzq3c",
@@ -22701,7 +25369,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/JeTcQUwzQ3c/mqdefault.jpg",
     "duration": "1:01",
     "viewCount": 3334,
-    "url": "https://www.youtube.com/watch?v=JeTcQUwzQ3c"
+    "url": "https://www.youtube.com/watch?v=JeTcQUwzQ3c",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_kc3nqcwz1xk",
@@ -22733,7 +25405,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/kc3nQCWz1xk/mqdefault.jpg",
     "duration": "4:09",
     "viewCount": 984,
-    "url": "https://www.youtube.com/watch?v=kc3nQCWz1xk"
+    "url": "https://www.youtube.com/watch?v=kc3nQCWz1xk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_lmu56txbmsq",
@@ -22765,7 +25441,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Lmu56tXbMSQ/mqdefault.jpg",
     "duration": "6:14",
     "viewCount": 12586,
-    "url": "https://www.youtube.com/watch?v=Lmu56tXbMSQ"
+    "url": "https://www.youtube.com/watch?v=Lmu56tXbMSQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_nb-klfgtdfe",
@@ -22799,7 +25479,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Nb-klfgtdFE/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 4372,
-    "url": "https://www.youtube.com/watch?v=Nb-klfgtdFE"
+    "url": "https://www.youtube.com/watch?v=Nb-klfgtdFE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_olwi4ama1ya",
@@ -22831,7 +25515,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/OlWI4Ama1yA/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 4262,
-    "url": "https://www.youtube.com/watch?v=OlWI4Ama1yA"
+    "url": "https://www.youtube.com/watch?v=OlWI4Ama1yA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_orvkir11qcq",
@@ -22863,7 +25551,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/OrVkiR11qcQ/mqdefault.jpg",
     "duration": "2:58",
     "viewCount": 17,
-    "url": "https://www.youtube.com/watch?v=OrVkiR11qcQ"
+    "url": "https://www.youtube.com/watch?v=OrVkiR11qcQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_pf_m42s0y8e",
@@ -22897,7 +25589,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Pf_m42s0y8E/mqdefault.jpg",
     "duration": "0:55",
     "viewCount": 2602,
-    "url": "https://www.youtube.com/watch?v=Pf_m42s0y8E"
+    "url": "https://www.youtube.com/watch?v=Pf_m42s0y8E",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_q113doxchqa",
@@ -22929,7 +25625,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/q113doxChqA/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 2584,
-    "url": "https://www.youtube.com/watch?v=q113doxChqA"
+    "url": "https://www.youtube.com/watch?v=q113doxChqA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_q7kfb6zwply",
@@ -22961,7 +25661,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/q7KfB6ZwpLY/mqdefault.jpg",
     "duration": "0:55",
     "viewCount": 1698,
-    "url": "https://www.youtube.com/watch?v=q7KfB6ZwpLY"
+    "url": "https://www.youtube.com/watch?v=q7KfB6ZwpLY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_qc7ns_v-ne0",
@@ -22993,7 +25697,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/qc7nS_v-nE0/mqdefault.jpg",
     "duration": "4:42",
     "viewCount": 3957,
-    "url": "https://www.youtube.com/watch?v=qc7nS_v-nE0"
+    "url": "https://www.youtube.com/watch?v=qc7nS_v-nE0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_t50q9yrfxj0",
@@ -23025,7 +25733,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/T50Q9yrfxj0/mqdefault.jpg",
     "duration": "5:54",
     "viewCount": 6594,
-    "url": "https://www.youtube.com/watch?v=T50Q9yrfxj0"
+    "url": "https://www.youtube.com/watch?v=T50Q9yrfxj0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_uwlubflcqms",
@@ -23057,7 +25769,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/uWLuBflCqMs/mqdefault.jpg",
     "duration": "4:20",
     "viewCount": 12504,
-    "url": "https://www.youtube.com/watch?v=uWLuBflCqMs"
+    "url": "https://www.youtube.com/watch?v=uWLuBflCqMs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_one_minute_tennis_v3ctivxisia",
@@ -23094,7 +25810,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/v3CtivxIsIA/mqdefault.jpg",
     "duration": "1:01",
     "viewCount": 3383,
-    "url": "https://www.youtube.com/watch?v=v3CtivxIsIA"
+    "url": "https://www.youtube.com/watch?v=v3CtivxIsIA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction__8xm_xts6xg",
@@ -23126,7 +25846,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/_8xM_XTs6Xg/mqdefault.jpg",
     "duration": "0:22",
     "viewCount": 26377,
-    "url": "https://www.youtube.com/watch?v=_8xM_XTs6Xg"
+    "url": "https://www.youtube.com/watch?v=_8xM_XTs6Xg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction__ieqnxlnpf8",
@@ -23158,7 +25882,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/_ieqNxlNpF8/mqdefault.jpg",
     "duration": "0:45",
     "viewCount": 1283,
-    "url": "https://www.youtube.com/watch?v=_ieqNxlNpF8"
+    "url": "https://www.youtube.com/watch?v=_ieqNxlNpF8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_1otaczumgry",
@@ -23196,7 +25924,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/1OTaCZuMgRY/mqdefault.jpg",
     "duration": "0:19",
     "viewCount": 16016,
-    "url": "https://www.youtube.com/watch?v=1OTaCZuMgRY"
+    "url": "https://www.youtube.com/watch?v=1OTaCZuMgRY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_2l39tcitpa8",
@@ -23228,7 +25960,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/2l39tciTPa8/mqdefault.jpg",
     "duration": "0:58",
     "viewCount": 11094,
-    "url": "https://www.youtube.com/watch?v=2l39tciTPa8"
+    "url": "https://www.youtube.com/watch?v=2l39tciTPa8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_3go0wjm4ueu",
@@ -23260,7 +25996,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/3GO0Wjm4ueU/mqdefault.jpg",
     "duration": "0:56",
     "viewCount": 8703,
-    "url": "https://www.youtube.com/watch?v=3GO0Wjm4ueU"
+    "url": "https://www.youtube.com/watch?v=3GO0Wjm4ueU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_4d55clzfqcc",
@@ -23292,7 +26032,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/4d55ClzFQCc/mqdefault.jpg",
     "duration": "0:35",
     "viewCount": 3228,
-    "url": "https://www.youtube.com/watch?v=4d55ClzFQCc"
+    "url": "https://www.youtube.com/watch?v=4d55ClzFQCc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_5mhyt3ruxfi",
@@ -23324,7 +26068,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/5mhYT3ruxfI/mqdefault.jpg",
     "duration": "0:57",
     "viewCount": 43239,
-    "url": "https://www.youtube.com/watch?v=5mhYT3ruxfI"
+    "url": "https://www.youtube.com/watch?v=5mhYT3ruxfI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_8342pul4bio",
@@ -23356,7 +26104,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8342pul4Bio/mqdefault.jpg",
     "duration": "1:40",
     "viewCount": 618,
-    "url": "https://www.youtube.com/watch?v=8342pul4Bio"
+    "url": "https://www.youtube.com/watch?v=8342pul4Bio",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_8g0wkdunsuw",
@@ -23388,7 +26140,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8G0wKduNsUw/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 9148,
-    "url": "https://www.youtube.com/watch?v=8G0wKduNsUw"
+    "url": "https://www.youtube.com/watch?v=8G0wKduNsUw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_94szgowx2tg",
@@ -23420,7 +26176,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/94szgowx2tg/mqdefault.jpg",
     "duration": "0:35",
     "viewCount": 16216,
-    "url": "https://www.youtube.com/watch?v=94szgowx2tg"
+    "url": "https://www.youtube.com/watch?v=94szgowx2tg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_9qptlbmc_6q",
@@ -23452,7 +26212,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/9QpTLBMc_6Q/mqdefault.jpg",
     "duration": "17:34",
     "viewCount": 8689,
-    "url": "https://www.youtube.com/watch?v=9QpTLBMc_6Q"
+    "url": "https://www.youtube.com/watch?v=9QpTLBMc_6Q",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_9v_k1fux2q8",
@@ -23484,7 +26248,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/9v_k1FUx2q8/mqdefault.jpg",
     "duration": "0:22",
     "viewCount": 23464,
-    "url": "https://www.youtube.com/watch?v=9v_k1FUx2q8"
+    "url": "https://www.youtube.com/watch?v=9v_k1FUx2q8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_bevr0a13ooq",
@@ -23516,7 +26284,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/bEvr0a13ooQ/mqdefault.jpg",
     "duration": "0:35",
     "viewCount": 18338,
-    "url": "https://www.youtube.com/watch?v=bEvr0a13ooQ"
+    "url": "https://www.youtube.com/watch?v=bEvr0a13ooQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_crlex_0svla",
@@ -23555,7 +26327,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/CRLEx_0svLA/mqdefault.jpg",
     "duration": "0:20",
     "viewCount": 1076,
-    "url": "https://www.youtube.com/watch?v=CRLEx_0svLA"
+    "url": "https://www.youtube.com/watch?v=CRLEx_0svLA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_eghqv_qzmwk",
@@ -23589,7 +26365,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/EgHqV_qZMWk/mqdefault.jpg",
     "duration": "0:37",
     "viewCount": 8723,
-    "url": "https://www.youtube.com/watch?v=EgHqV_qZMWk"
+    "url": "https://www.youtube.com/watch?v=EgHqV_qZMWk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_fxgeq-1yjz0",
@@ -23621,7 +26401,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/fXGEQ-1YjZ0/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 19086,
-    "url": "https://www.youtube.com/watch?v=fXGEQ-1YjZ0"
+    "url": "https://www.youtube.com/watch?v=fXGEQ-1YjZ0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_gdljj84ca0a",
@@ -23653,7 +26437,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/GDLjj84CA0A/mqdefault.jpg",
     "duration": "2:50",
     "viewCount": 3474,
-    "url": "https://www.youtube.com/watch?v=GDLjj84CA0A"
+    "url": "https://www.youtube.com/watch?v=GDLjj84CA0A",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_glas-wljrze",
@@ -23687,7 +26475,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/GlAs-WlJRZE/mqdefault.jpg",
     "duration": "0:31",
     "viewCount": 1326,
-    "url": "https://www.youtube.com/watch?v=GlAs-WlJRZE"
+    "url": "https://www.youtube.com/watch?v=GlAs-WlJRZE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_ifrqej97gje",
@@ -23724,7 +26516,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/IFRqEj97GjE/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 3868,
-    "url": "https://www.youtube.com/watch?v=IFRqEj97GjE"
+    "url": "https://www.youtube.com/watch?v=IFRqEj97GjE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_kj7a9ztagma",
@@ -23756,7 +26552,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/KJ7a9ztAgmA/mqdefault.jpg",
     "duration": "0:27",
     "viewCount": 1754,
-    "url": "https://www.youtube.com/watch?v=KJ7a9ztAgmA"
+    "url": "https://www.youtube.com/watch?v=KJ7a9ztAgmA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_m7sqrzlfn4w",
@@ -23788,7 +26588,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/m7SQRzLFn4w/mqdefault.jpg",
     "duration": "1:04",
     "viewCount": 4006,
-    "url": "https://www.youtube.com/watch?v=m7SQRzLFn4w"
+    "url": "https://www.youtube.com/watch?v=m7SQRzLFn4w",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_mj2_degphqk",
@@ -23820,7 +26624,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Mj2_dEgphqk/mqdefault.jpg",
     "duration": "1:01",
     "viewCount": 29802,
-    "url": "https://www.youtube.com/watch?v=Mj2_dEgphqk"
+    "url": "https://www.youtube.com/watch?v=Mj2_dEgphqk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_mvc1-udfaz8",
@@ -23852,7 +26660,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/mVC1-Udfaz8/mqdefault.jpg",
     "duration": "1:03",
     "viewCount": 3988,
-    "url": "https://www.youtube.com/watch?v=mVC1-Udfaz8"
+    "url": "https://www.youtube.com/watch?v=mVC1-Udfaz8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_pxmrpyytkyq",
@@ -23884,7 +26696,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/PXmRPYYtkyQ/mqdefault.jpg",
     "duration": "0:30",
     "viewCount": 2614,
-    "url": "https://www.youtube.com/watch?v=PXmRPYYtkyQ"
+    "url": "https://www.youtube.com/watch?v=PXmRPYYtkyQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_ry7ff2uaf_i",
@@ -23916,7 +26732,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/RY7FF2UaF_I/mqdefault.jpg",
     "duration": "0:13",
     "viewCount": 136172,
-    "url": "https://www.youtube.com/watch?v=RY7FF2UaF_I"
+    "url": "https://www.youtube.com/watch?v=RY7FF2UaF_I",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_s__3fibsebe",
@@ -23948,7 +26768,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/S__3fiBSEBE/mqdefault.jpg",
     "duration": "35:49",
     "viewCount": 8187,
-    "url": "https://www.youtube.com/watch?v=S__3fiBSEBE"
+    "url": "https://www.youtube.com/watch?v=S__3fiBSEBE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_sob8uyyiksk",
@@ -23980,7 +26804,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/SOB8UyyiKSk/mqdefault.jpg",
     "duration": "0:20",
     "viewCount": 22333,
-    "url": "https://www.youtube.com/watch?v=SOB8UyyiKSk"
+    "url": "https://www.youtube.com/watch?v=SOB8UyyiKSk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_udntrsa1dnk",
@@ -24012,7 +26840,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/UDntRsA1dnk/mqdefault.jpg",
     "duration": "2:11",
     "viewCount": 8846,
-    "url": "https://www.youtube.com/watch?v=UDntRsA1dnk"
+    "url": "https://www.youtube.com/watch?v=UDntRsA1dnk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_wf90jq6_nrq",
@@ -24044,7 +26876,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/wf90Jq6_NRQ/mqdefault.jpg",
     "duration": "1:09",
     "viewCount": 952,
-    "url": "https://www.youtube.com/watch?v=wf90Jq6_NRQ"
+    "url": "https://www.youtube.com/watch?v=wf90Jq6_NRQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_x60zvlzq5vw",
@@ -24078,7 +26914,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/X60zvLzQ5Vw/mqdefault.jpg",
     "duration": "0:32",
     "viewCount": 12367,
-    "url": "https://www.youtube.com/watch?v=X60zvLzQ5Vw"
+    "url": "https://www.youtube.com/watch?v=X60zvLzQ5Vw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_yrnc9hwnszu",
@@ -24115,7 +26955,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/YRNc9HWNsZU/mqdefault.jpg",
     "duration": "1:13",
     "viewCount": 14458,
-    "url": "https://www.youtube.com/watch?v=YRNc9HWNsZU"
+    "url": "https://www.youtube.com/watch?v=YRNc9HWNsZU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_zdggcqjw2vy",
@@ -24147,7 +26991,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ZdGGCqjW2vY/mqdefault.jpg",
     "duration": "46:27",
     "viewCount": 1166,
-    "url": "https://www.youtube.com/watch?v=ZdGGCqjW2vY"
+    "url": "https://www.youtube.com/watch?v=ZdGGCqjW2vY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_online_tennis_instruction_zps_-ivkftw",
@@ -24179,7 +27027,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/zps_-Ivkftw/mqdefault.jpg",
     "duration": "0:17",
     "viewCount": 2095,
-    "url": "https://www.youtube.com/watch?v=zps_-Ivkftw"
+    "url": "https://www.youtube.com/watch?v=zps_-Ivkftw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_-khixiipmio",
@@ -24211,7 +27063,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/-KhIxiIPMio/mqdefault.jpg",
     "duration": "0:12",
     "viewCount": 3301,
-    "url": "https://www.youtube.com/watch?v=-KhIxiIPMio"
+    "url": "https://www.youtube.com/watch?v=-KhIxiIPMio",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_-nmymag1wui",
@@ -24246,7 +27102,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/-NmymAG1WUI/mqdefault.jpg",
     "duration": "0:13",
     "viewCount": 5646,
-    "url": "https://www.youtube.com/watch?v=-NmymAG1WUI"
+    "url": "https://www.youtube.com/watch?v=-NmymAG1WUI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_1t2mjyluyiq",
@@ -24281,7 +27141,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/1t2mjyLUYiQ/mqdefault.jpg",
     "duration": "4:16",
     "viewCount": 10448,
-    "url": "https://www.youtube.com/watch?v=1t2mjyLUYiQ"
+    "url": "https://www.youtube.com/watch?v=1t2mjyLUYiQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_3t8ttcki7xq",
@@ -24316,7 +27180,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/3T8ttcKi7xQ/mqdefault.jpg",
     "duration": "7:34",
     "viewCount": 17938,
-    "url": "https://www.youtube.com/watch?v=3T8ttcKi7xQ"
+    "url": "https://www.youtube.com/watch?v=3T8ttcKi7xQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_6-nuzkgjo98",
@@ -24348,7 +27216,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/6-NUzkGjO98/mqdefault.jpg",
     "duration": "0:45",
     "viewCount": 45636,
-    "url": "https://www.youtube.com/watch?v=6-NUzkGjO98"
+    "url": "https://www.youtube.com/watch?v=6-NUzkGjO98",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_7_hww-ry2qq",
@@ -24380,7 +27252,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/7_hwW-RY2qQ/mqdefault.jpg",
     "duration": "0:44",
     "viewCount": 29891,
-    "url": "https://www.youtube.com/watch?v=7_hwW-RY2qQ"
+    "url": "https://www.youtube.com/watch?v=7_hwW-RY2qQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_7uarorktzew",
@@ -24412,7 +27288,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/7UarorKTZEw/mqdefault.jpg",
     "duration": "0:08",
     "viewCount": 5823,
-    "url": "https://www.youtube.com/watch?v=7UarorKTZEw"
+    "url": "https://www.youtube.com/watch?v=7UarorKTZEw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_8joco1euylo",
@@ -24447,7 +27327,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8jOCO1EuyLo/mqdefault.jpg",
     "duration": "0:45",
     "viewCount": 26992,
-    "url": "https://www.youtube.com/watch?v=8jOCO1EuyLo"
+    "url": "https://www.youtube.com/watch?v=8jOCO1EuyLo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_8u759qxjre0",
@@ -24479,7 +27363,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8U759QxJRe0/mqdefault.jpg",
     "duration": "0:06",
     "viewCount": 6453,
-    "url": "https://www.youtube.com/watch?v=8U759QxJRe0"
+    "url": "https://www.youtube.com/watch?v=8U759QxJRe0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_9ujlwdg7v8i",
@@ -24516,7 +27404,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/9UJlWdg7V8I/mqdefault.jpg",
     "duration": "0:40",
     "viewCount": 11175,
-    "url": "https://www.youtube.com/watch?v=9UJlWdg7V8I"
+    "url": "https://www.youtube.com/watch?v=9UJlWdg7V8I",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_by24skj_ghw",
@@ -24548,7 +27440,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/By24sKJ_GHw/mqdefault.jpg",
     "duration": "0:13",
     "viewCount": 4800,
-    "url": "https://www.youtube.com/watch?v=By24sKJ_GHw"
+    "url": "https://www.youtube.com/watch?v=By24sKJ_GHw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_czisxtuquku",
@@ -24580,7 +27476,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/cZiSXtUQuKU/mqdefault.jpg",
     "duration": "0:12",
     "viewCount": 40592,
-    "url": "https://www.youtube.com/watch?v=cZiSXtUQuKU"
+    "url": "https://www.youtube.com/watch?v=cZiSXtUQuKU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_dbbb8g3g4qu",
@@ -24615,7 +27515,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/DbBB8g3G4QU/mqdefault.jpg",
     "duration": "9:31",
     "viewCount": 16457,
-    "url": "https://www.youtube.com/watch?v=DbBB8g3G4QU"
+    "url": "https://www.youtube.com/watch?v=DbBB8g3G4QU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_e5xfnshiju4",
@@ -24652,7 +27556,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/e5XfnSHiJu4/mqdefault.jpg",
     "duration": "0:49",
     "viewCount": 2755,
-    "url": "https://www.youtube.com/watch?v=e5XfnSHiJu4"
+    "url": "https://www.youtube.com/watch?v=e5XfnSHiJu4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_egmlq_ufxfs",
@@ -24684,7 +27592,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/egMLQ_ufXFs/mqdefault.jpg",
     "duration": "8:49",
     "viewCount": 3243,
-    "url": "https://www.youtube.com/watch?v=egMLQ_ufXFs"
+    "url": "https://www.youtube.com/watch?v=egMLQ_ufXFs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_ejggpshj9q8",
@@ -24716,7 +27628,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ejggpshj9Q8/mqdefault.jpg",
     "duration": "14:03",
     "viewCount": 19616,
-    "url": "https://www.youtube.com/watch?v=ejggpshj9Q8"
+    "url": "https://www.youtube.com/watch?v=ejggpshj9Q8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_fashl1abg2s",
@@ -24751,7 +27667,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/fAsHL1aBg2s/mqdefault.jpg",
     "duration": "0:54",
     "viewCount": 10379,
-    "url": "https://www.youtube.com/watch?v=fAsHL1aBg2s"
+    "url": "https://www.youtube.com/watch?v=fAsHL1aBg2s",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_fcnvztjdfaa",
@@ -24783,7 +27703,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/fCNvzTJDfAA/mqdefault.jpg",
     "duration": "0:45",
     "viewCount": 35370,
-    "url": "https://www.youtube.com/watch?v=fCNvzTJDfAA"
+    "url": "https://www.youtube.com/watch?v=fCNvzTJDfAA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_fnzejskspv0",
@@ -24815,7 +27739,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/fnZEjskSPv0/mqdefault.jpg",
     "duration": "6:33",
     "viewCount": 7649,
-    "url": "https://www.youtube.com/watch?v=fnZEjskSPv0"
+    "url": "https://www.youtube.com/watch?v=fnZEjskSPv0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_i4atw2m0iua",
@@ -24847,7 +27775,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/i4atW2M0IuA/mqdefault.jpg",
     "duration": "0:38",
     "viewCount": 10977,
-    "url": "https://www.youtube.com/watch?v=i4atW2M0IuA"
+    "url": "https://www.youtube.com/watch?v=i4atW2M0IuA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_icqc73ehndo",
@@ -24879,7 +27811,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/icqC73ehNdo/mqdefault.jpg",
     "duration": "8:17",
     "viewCount": 3723,
-    "url": "https://www.youtube.com/watch?v=icqC73ehNdo"
+    "url": "https://www.youtube.com/watch?v=icqC73ehNdo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_ijytwsvocm4",
@@ -24913,7 +27849,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/IjyTwsVOcM4/mqdefault.jpg",
     "duration": "0:54",
     "viewCount": 7790,
-    "url": "https://www.youtube.com/watch?v=IjyTwsVOcM4"
+    "url": "https://www.youtube.com/watch?v=IjyTwsVOcM4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_izprlllvcwy",
@@ -24949,7 +27889,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/IZPRlLLVCWY/mqdefault.jpg",
     "duration": "12:54",
     "viewCount": 59039,
-    "url": "https://www.youtube.com/watch?v=IZPRlLLVCWY"
+    "url": "https://www.youtube.com/watch?v=IZPRlLLVCWY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_jxvek8jdw_c",
@@ -24981,7 +27925,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/jXVEK8JDW_c/mqdefault.jpg",
     "duration": "8:16",
     "viewCount": 18864,
-    "url": "https://www.youtube.com/watch?v=jXVEK8JDW_c"
+    "url": "https://www.youtube.com/watch?v=jXVEK8JDW_c",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_jzbpqag7t60",
@@ -25013,7 +27961,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/jZBPQAG7T60/mqdefault.jpg",
     "duration": "5:16",
     "viewCount": 1852,
-    "url": "https://www.youtube.com/watch?v=jZBPQAG7T60"
+    "url": "https://www.youtube.com/watch?v=jZBPQAG7T60",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_lziwrgzqo4y",
@@ -25045,7 +27997,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/LZIWrgZQO4Y/mqdefault.jpg",
     "duration": "0:50",
     "viewCount": 3592,
-    "url": "https://www.youtube.com/watch?v=LZIWrgZQO4Y"
+    "url": "https://www.youtube.com/watch?v=LZIWrgZQO4Y",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_mqoavnrdp_8",
@@ -25077,7 +28033,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/mqoAVNrDp_8/mqdefault.jpg",
     "duration": "11:28",
     "viewCount": 19126,
-    "url": "https://www.youtube.com/watch?v=mqoAVNrDp_8"
+    "url": "https://www.youtube.com/watch?v=mqoAVNrDp_8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_n3xieg0pnvi",
@@ -25109,7 +28069,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/N3XiEG0pnVI/mqdefault.jpg",
     "duration": "0:50",
     "viewCount": 6407,
-    "url": "https://www.youtube.com/watch?v=N3XiEG0pnVI"
+    "url": "https://www.youtube.com/watch?v=N3XiEG0pnVI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_pgctq_grsxw",
@@ -25141,7 +28105,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/pgctQ_grsXw/mqdefault.jpg",
     "duration": "0:08",
     "viewCount": 20516,
-    "url": "https://www.youtube.com/watch?v=pgctQ_grsXw"
+    "url": "https://www.youtube.com/watch?v=pgctQ_grsXw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_qt7tdxht4t4",
@@ -25173,7 +28141,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/QT7tDxHT4T4/mqdefault.jpg",
     "duration": "9:45",
     "viewCount": 12758,
-    "url": "https://www.youtube.com/watch?v=QT7tDxHT4T4"
+    "url": "https://www.youtube.com/watch?v=QT7tDxHT4T4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_rrwnf_30df8",
@@ -25208,7 +28180,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/rRWnf_30df8/mqdefault.jpg",
     "duration": "6:26",
     "viewCount": 17867,
-    "url": "https://www.youtube.com/watch?v=rRWnf_30df8"
+    "url": "https://www.youtube.com/watch?v=rRWnf_30df8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_rslzywev3ss",
@@ -25242,7 +28218,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/RSlZywev3Ss/mqdefault.jpg",
     "duration": "0:22",
     "viewCount": 1775,
-    "url": "https://www.youtube.com/watch?v=RSlZywev3Ss"
+    "url": "https://www.youtube.com/watch?v=RSlZywev3Ss",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_t5y9d0nxtci",
@@ -25274,7 +28254,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/t5y9D0nXTcI/mqdefault.jpg",
     "duration": "0:11",
     "viewCount": 23857,
-    "url": "https://www.youtube.com/watch?v=t5y9D0nXTcI"
+    "url": "https://www.youtube.com/watch?v=t5y9D0nXTcI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_performance_plus_tennis_tcdps8utvdw",
@@ -25305,7 +28289,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/tcdpS8uTvdw/mqdefault.jpg",
     "duration": "19:46",
     "viewCount": 3086,
-    "url": "https://www.youtube.com/watch?v=tcdpS8uTvdw"
+    "url": "https://www.youtube.com/watch?v=tcdpS8uTvdw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_1gmtwgqc1uw",
@@ -25342,7 +28330,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/1GMTwGQc1Uw/mqdefault.jpg",
     "duration": "8:51",
     "viewCount": 28457,
-    "url": "https://www.youtube.com/watch?v=1GMTwGQc1Uw"
+    "url": "https://www.youtube.com/watch?v=1GMTwGQc1Uw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_1jc6rejo64c",
@@ -25373,7 +28365,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/1jc6rEjo64c/mqdefault.jpg",
     "duration": "14:58",
     "viewCount": 8133,
-    "url": "https://www.youtube.com/watch?v=1jc6rEjo64c"
+    "url": "https://www.youtube.com/watch?v=1jc6rEjo64c",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_2qxy3yxpb1g",
@@ -25404,7 +28400,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/2Qxy3YxPb1g/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 22605,
-    "url": "https://www.youtube.com/watch?v=2Qxy3YxPb1g"
+    "url": "https://www.youtube.com/watch?v=2Qxy3YxPb1g",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_2tfvdjgjjgy",
@@ -25435,7 +28435,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/2TfVDjGJJGY/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 14989,
-    "url": "https://www.youtube.com/watch?v=2TfVDjGJJGY"
+    "url": "https://www.youtube.com/watch?v=2TfVDjGJJGY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_2yvxbshskqg",
@@ -25466,7 +28470,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/2yvXbsHskQg/mqdefault.jpg",
     "duration": "0:20",
     "viewCount": 23429,
-    "url": "https://www.youtube.com/watch?v=2yvXbsHskQg"
+    "url": "https://www.youtube.com/watch?v=2yvXbsHskQg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_3yp94fkjbdc",
@@ -25497,7 +28505,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/3yP94FkJbDc/mqdefault.jpg",
     "duration": "20:10",
     "viewCount": 28977,
-    "url": "https://www.youtube.com/watch?v=3yP94FkJbDc"
+    "url": "https://www.youtube.com/watch?v=3yP94FkJbDc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_6wirdaaf6ji",
@@ -25528,7 +28540,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/6WiRdaaF6JI/mqdefault.jpg",
     "duration": "12:27",
     "viewCount": 23710,
-    "url": "https://www.youtube.com/watch?v=6WiRdaaF6JI"
+    "url": "https://www.youtube.com/watch?v=6WiRdaaF6JI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_8d6snog2-ac",
@@ -25562,7 +28578,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8d6snOg2-ac/mqdefault.jpg",
     "duration": "10:20",
     "viewCount": 21349,
-    "url": "https://www.youtube.com/watch?v=8d6snOg2-ac"
+    "url": "https://www.youtube.com/watch?v=8d6snOg2-ac",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_8kdlhftvt5c",
@@ -25596,7 +28616,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8kDLHFtVT5c/mqdefault.jpg",
     "duration": "17:07",
     "viewCount": 45561,
-    "url": "https://www.youtube.com/watch?v=8kDLHFtVT5c"
+    "url": "https://www.youtube.com/watch?v=8kDLHFtVT5c",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_a1a-pqxidvy",
@@ -25630,7 +28654,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/a1a-PqxIDVY/mqdefault.jpg",
     "duration": "0:39",
     "viewCount": 25861,
-    "url": "https://www.youtube.com/watch?v=a1a-PqxIDVY"
+    "url": "https://www.youtube.com/watch?v=a1a-PqxIDVY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_c9yomalpzz4",
@@ -25661,7 +28689,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/c9yOmaLPZz4/mqdefault.jpg",
     "duration": "0:54",
     "viewCount": 2037,
-    "url": "https://www.youtube.com/watch?v=c9yOmaLPZz4"
+    "url": "https://www.youtube.com/watch?v=c9yOmaLPZz4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_cavuhiofs5k",
@@ -25692,7 +28724,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/CAvuhiOFS5k/mqdefault.jpg",
     "duration": "0:44",
     "viewCount": 3224,
-    "url": "https://www.youtube.com/watch?v=CAvuhiOFS5k"
+    "url": "https://www.youtube.com/watch?v=CAvuhiOFS5k",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_dlfqzuyt074",
@@ -25723,7 +28759,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/DlfQzuYt074/mqdefault.jpg",
     "duration": "0:23",
     "viewCount": 17645,
-    "url": "https://www.youtube.com/watch?v=DlfQzuYt074"
+    "url": "https://www.youtube.com/watch?v=DlfQzuYt074",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_fdx8coamila",
@@ -25754,7 +28794,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/fdx8coaMilA/mqdefault.jpg",
     "duration": "3:16",
     "viewCount": 2308,
-    "url": "https://www.youtube.com/watch?v=fdx8coaMilA"
+    "url": "https://www.youtube.com/watch?v=fdx8coaMilA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_g53ltauwp60",
@@ -25786,7 +28830,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/g53lTAuwP60/mqdefault.jpg",
     "duration": "12:21",
     "viewCount": 3062,
-    "url": "https://www.youtube.com/watch?v=g53lTAuwP60"
+    "url": "https://www.youtube.com/watch?v=g53lTAuwP60",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_g5s6lmbwzxu",
@@ -25820,7 +28868,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/G5S6lMBwzXU/mqdefault.jpg",
     "duration": "6:00",
     "viewCount": 23165,
-    "url": "https://www.youtube.com/watch?v=G5S6lMBwzXU"
+    "url": "https://www.youtube.com/watch?v=G5S6lMBwzXU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_g618woujsco",
@@ -25854,7 +28906,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/g618wouJSCo/mqdefault.jpg",
     "duration": "14:58",
     "viewCount": 26440,
-    "url": "https://www.youtube.com/watch?v=g618wouJSCo"
+    "url": "https://www.youtube.com/watch?v=g618wouJSCo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_hwfkx3fbgyi",
@@ -25888,7 +28944,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/hWFKx3FBgYI/mqdefault.jpg",
     "duration": "8:39",
     "viewCount": 38444,
-    "url": "https://www.youtube.com/watch?v=hWFKx3FBgYI"
+    "url": "https://www.youtube.com/watch?v=hWFKx3FBgYI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_ix6n6xrdo_m",
@@ -25924,7 +28984,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ix6N6XrDO_M/mqdefault.jpg",
     "duration": "4:49",
     "viewCount": 11015,
-    "url": "https://www.youtube.com/watch?v=ix6N6XrDO_M"
+    "url": "https://www.youtube.com/watch?v=ix6N6XrDO_M",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_j-wxk7jdrre",
@@ -25958,7 +29022,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/j-WXk7jDrRE/mqdefault.jpg",
     "duration": "0:20",
     "viewCount": 11215,
-    "url": "https://www.youtube.com/watch?v=j-WXk7jDrRE"
+    "url": "https://www.youtube.com/watch?v=j-WXk7jDrRE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_jtxdrajxfja",
@@ -25989,7 +29057,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/jTXDrAjxFJA/mqdefault.jpg",
     "duration": "0:54",
     "viewCount": 129413,
-    "url": "https://www.youtube.com/watch?v=jTXDrAjxFJA"
+    "url": "https://www.youtube.com/watch?v=jTXDrAjxFJA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_k_n-hot6c6w",
@@ -26020,7 +29092,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/K_N-HOt6c6w/mqdefault.jpg",
     "duration": "0:18",
     "viewCount": 17529,
-    "url": "https://www.youtube.com/watch?v=K_N-HOt6c6w"
+    "url": "https://www.youtube.com/watch?v=K_N-HOt6c6w",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_kzvznublujy",
@@ -26053,7 +29129,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/KZVZnUblujY/mqdefault.jpg",
     "duration": "12:30",
     "viewCount": 26625,
-    "url": "https://www.youtube.com/watch?v=KZVZnUblujY"
+    "url": "https://www.youtube.com/watch?v=KZVZnUblujY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_lddc3coda3q",
@@ -26086,7 +29166,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/LDDc3CoDA3Q/mqdefault.jpg",
     "duration": "13:49",
     "viewCount": 12010,
-    "url": "https://www.youtube.com/watch?v=LDDc3CoDA3Q"
+    "url": "https://www.youtube.com/watch?v=LDDc3CoDA3Q",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_ltcij08edxo",
@@ -26117,7 +29201,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/LTcIJ08Edxo/mqdefault.jpg",
     "duration": "11:54",
     "viewCount": 719,
-    "url": "https://www.youtube.com/watch?v=LTcIJ08Edxo"
+    "url": "https://www.youtube.com/watch?v=LTcIJ08Edxo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_mdlno_v5afm",
@@ -26148,7 +29236,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/MDLnO_v5afM/mqdefault.jpg",
     "duration": "0:58",
     "viewCount": 22387,
-    "url": "https://www.youtube.com/watch?v=MDLnO_v5afM"
+    "url": "https://www.youtube.com/watch?v=MDLnO_v5afM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_ngdbaaxajiy",
@@ -26179,7 +29271,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ngDBaaxAjiY/mqdefault.jpg",
     "duration": "11:54",
     "viewCount": 13325,
-    "url": "https://www.youtube.com/watch?v=ngDBaaxAjiY"
+    "url": "https://www.youtube.com/watch?v=ngDBaaxAjiY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_nhnns6ieuoo",
@@ -26212,7 +29308,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/NhNNs6ieUOo/mqdefault.jpg",
     "duration": "12:01",
     "viewCount": 8239,
-    "url": "https://www.youtube.com/watch?v=NhNNs6ieUOo"
+    "url": "https://www.youtube.com/watch?v=NhNNs6ieUOo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_ptkmliknblm",
@@ -26243,7 +29343,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/pTKMlIknblM/mqdefault.jpg",
     "duration": "19:32",
     "viewCount": 27754,
-    "url": "https://www.youtube.com/watch?v=pTKMlIknblM"
+    "url": "https://www.youtube.com/watch?v=pTKMlIknblM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_qtkmgipd9rw",
@@ -26274,7 +29378,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/QTkMGipD9rw/mqdefault.jpg",
     "duration": "6:36",
     "viewCount": 18235,
-    "url": "https://www.youtube.com/watch?v=QTkMGipD9rw"
+    "url": "https://www.youtube.com/watch?v=QTkMGipD9rw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_skgv0rur6he",
@@ -26307,7 +29415,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/SkGV0Rur6hE/mqdefault.jpg",
     "duration": "6:42",
     "viewCount": 8591,
-    "url": "https://www.youtube.com/watch?v=SkGV0Rur6hE"
+    "url": "https://www.youtube.com/watch?v=SkGV0Rur6hE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_ssfc4yluf9i",
@@ -26338,7 +29450,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/SSfC4yluF9I/mqdefault.jpg",
     "duration": "0:54",
     "viewCount": 5726,
-    "url": "https://www.youtube.com/watch?v=SSfC4yluF9I"
+    "url": "https://www.youtube.com/watch?v=SSfC4yluF9I",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_uwsvgb9uhbm",
@@ -26369,7 +29485,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/uwSvGB9UHBM/mqdefault.jpg",
     "duration": "34:40",
     "viewCount": 408,
-    "url": "https://www.youtube.com/watch?v=uwSvGB9UHBM"
+    "url": "https://www.youtube.com/watch?v=uwSvGB9UHBM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_wknexa8pnjm",
@@ -26403,7 +29523,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/wKnExa8pnjM/mqdefault.jpg",
     "duration": "5:17",
     "viewCount": 7316,
-    "url": "https://www.youtube.com/watch?v=wKnExa8pnjM"
+    "url": "https://www.youtube.com/watch?v=wKnExa8pnjM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_yojxki2zhkm",
@@ -26437,7 +29561,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Yojxki2zHkM/mqdefault.jpg",
     "duration": "0:20",
     "viewCount": 7841,
-    "url": "https://www.youtube.com/watch?v=Yojxki2zHkM"
+    "url": "https://www.youtube.com/watch?v=Yojxki2zHkM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_evolution_zbv-vzmoaos",
@@ -26471,7 +29599,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ZBv-VzMoAos/mqdefault.jpg",
     "duration": "0:30",
     "viewCount": 28685,
-    "url": "https://www.youtube.com/watch?v=ZBv-VzMoAos"
+    "url": "https://www.youtube.com/watch?v=ZBv-VzMoAos",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan__4q4uakkc0w",
@@ -26502,7 +29634,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/_4q4UAKKC0w/mqdefault.jpg",
     "duration": "0:30",
     "viewCount": 11768,
-    "url": "https://www.youtube.com/watch?v=_4q4UAKKC0w"
+    "url": "https://www.youtube.com/watch?v=_4q4UAKKC0w",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan__cdlfuv65eo",
@@ -26533,7 +29669,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/_Cdlfuv65Eo/mqdefault.jpg",
     "duration": "0:20",
     "viewCount": 50830,
-    "url": "https://www.youtube.com/watch?v=_Cdlfuv65Eo"
+    "url": "https://www.youtube.com/watch?v=_Cdlfuv65Eo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_01ns_7rrwhm",
@@ -26569,7 +29709,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/01NS_7RRWHM/mqdefault.jpg",
     "duration": "0:16",
     "viewCount": 20284,
-    "url": "https://www.youtube.com/watch?v=01NS_7RRWHM"
+    "url": "https://www.youtube.com/watch?v=01NS_7RRWHM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_4ickn6nprce",
@@ -26600,7 +29744,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/4ICkN6nprcE/mqdefault.jpg",
     "duration": "17:30",
     "viewCount": 18851,
-    "url": "https://www.youtube.com/watch?v=4ICkN6nprcE"
+    "url": "https://www.youtube.com/watch?v=4ICkN6nprcE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_6er5l3-omyi",
@@ -26631,7 +29779,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/6er5L3-OMyI/mqdefault.jpg",
     "duration": "0:39",
     "viewCount": 6570,
-    "url": "https://www.youtube.com/watch?v=6er5L3-OMyI"
+    "url": "https://www.youtube.com/watch?v=6er5L3-OMyI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_78dnpax7mxi",
@@ -26665,7 +29817,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/78dnpAX7mXI/mqdefault.jpg",
     "duration": "0:38",
     "viewCount": 45380,
-    "url": "https://www.youtube.com/watch?v=78dnpAX7mXI"
+    "url": "https://www.youtube.com/watch?v=78dnpAX7mXI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_90r-wq01rbi",
@@ -26696,7 +29852,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/90r-wQ01rbI/mqdefault.jpg",
     "duration": "0:35",
     "viewCount": 23723,
-    "url": "https://www.youtube.com/watch?v=90r-wQ01rbI"
+    "url": "https://www.youtube.com/watch?v=90r-wQ01rbI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_94o8kwm6isk",
@@ -26727,7 +29887,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/94O8kwM6ISk/mqdefault.jpg",
     "duration": "0:19",
     "viewCount": 222866,
-    "url": "https://www.youtube.com/watch?v=94O8kwM6ISk"
+    "url": "https://www.youtube.com/watch?v=94O8kwM6ISk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_abrmo_oinri",
@@ -26761,7 +29925,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/aBRmO_oinrI/mqdefault.jpg",
     "duration": "1:42",
     "viewCount": 24115,
-    "url": "https://www.youtube.com/watch?v=aBRmO_oinrI"
+    "url": "https://www.youtube.com/watch?v=aBRmO_oinrI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_bq1mhskjqm4",
@@ -26792,7 +29960,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Bq1MhSkJQm4/mqdefault.jpg",
     "duration": "0:31",
     "viewCount": 15779,
-    "url": "https://www.youtube.com/watch?v=Bq1MhSkJQm4"
+    "url": "https://www.youtube.com/watch?v=Bq1MhSkJQm4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_cbrgm1kxftc",
@@ -26828,7 +30000,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/cbRgm1KXftc/mqdefault.jpg",
     "duration": "0:55",
     "viewCount": 25882,
-    "url": "https://www.youtube.com/watch?v=cbRgm1KXftc"
+    "url": "https://www.youtube.com/watch?v=cbRgm1KXftc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_dygoqsxjeyc",
@@ -26859,7 +30035,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/DyGoQSxJeYc/mqdefault.jpg",
     "duration": "0:31",
     "viewCount": 17466,
-    "url": "https://www.youtube.com/watch?v=DyGoQSxJeYc"
+    "url": "https://www.youtube.com/watch?v=DyGoQSxJeYc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_fprzxmdlove",
@@ -26890,7 +30070,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/fpRzxMDloVE/mqdefault.jpg",
     "duration": "0:20",
     "viewCount": 16092,
-    "url": "https://www.youtube.com/watch?v=fpRzxMDloVE"
+    "url": "https://www.youtube.com/watch?v=fpRzxMDloVE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_i_agvreg-8o",
@@ -26926,7 +30110,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/I_aGvReG-8o/mqdefault.jpg",
     "duration": "0:59",
     "viewCount": 21519,
-    "url": "https://www.youtube.com/watch?v=I_aGvReG-8o"
+    "url": "https://www.youtube.com/watch?v=I_aGvReG-8o",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_ibf4nrtjqoe",
@@ -26957,7 +30145,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/IBf4nrTJqOE/mqdefault.jpg",
     "duration": "4:15",
     "viewCount": 6852,
-    "url": "https://www.youtube.com/watch?v=IBf4nrTJqOE"
+    "url": "https://www.youtube.com/watch?v=IBf4nrTJqOE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_k0xp3mkjib0",
@@ -26994,7 +30186,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/K0Xp3mKjiB0/mqdefault.jpg",
     "duration": "0:42",
     "viewCount": 12328,
-    "url": "https://www.youtube.com/watch?v=K0Xp3mKjiB0"
+    "url": "https://www.youtube.com/watch?v=K0Xp3mKjiB0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_l_yrpjafzs8",
@@ -27028,7 +30224,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/l_yRpjaFZs8/mqdefault.jpg",
     "duration": "0:20",
     "viewCount": 30599,
-    "url": "https://www.youtube.com/watch?v=l_yRpjaFZs8"
+    "url": "https://www.youtube.com/watch?v=l_yRpjaFZs8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_l2oehi-udjs",
@@ -27064,7 +30264,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/L2oehi-UDjs/mqdefault.jpg",
     "duration": "1:28",
     "viewCount": 5478,
-    "url": "https://www.youtube.com/watch?v=L2oehi-UDjs"
+    "url": "https://www.youtube.com/watch?v=L2oehi-UDjs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_m_cgdg2pazm",
@@ -27098,7 +30302,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/M_CgDg2PazM/mqdefault.jpg",
     "duration": "1:42",
     "viewCount": 31854,
-    "url": "https://www.youtube.com/watch?v=M_CgDg2PazM"
+    "url": "https://www.youtube.com/watch?v=M_CgDg2PazM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_m8mx70ucyr0",
@@ -27129,7 +30337,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/m8mX70uCYR0/mqdefault.jpg",
     "duration": "0:22",
     "viewCount": 13691,
-    "url": "https://www.youtube.com/watch?v=m8mX70uCYR0"
+    "url": "https://www.youtube.com/watch?v=m8mX70uCYR0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_mexvmpfcmpc",
@@ -27160,7 +30372,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/mexVMPfcMpc/mqdefault.jpg",
     "duration": "1:03",
     "viewCount": 3308,
-    "url": "https://www.youtube.com/watch?v=mexVMPfcMpc"
+    "url": "https://www.youtube.com/watch?v=mexVMPfcMpc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_n7i7m6xv3_g",
@@ -27191,7 +30407,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/n7I7M6xV3_g/mqdefault.jpg",
     "duration": "0:29",
     "viewCount": 26771,
-    "url": "https://www.youtube.com/watch?v=n7I7M6xV3_g"
+    "url": "https://www.youtube.com/watch?v=n7I7M6xV3_g",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_ncfgk99nvey",
@@ -27222,7 +30442,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ncFgK99nVEY/mqdefault.jpg",
     "duration": "1:05",
     "viewCount": 21544,
-    "url": "https://www.youtube.com/watch?v=ncFgK99nVEY"
+    "url": "https://www.youtube.com/watch?v=ncFgK99nVEY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_ntmu1tvykb0",
@@ -27259,7 +30483,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Ntmu1TVYKb0/mqdefault.jpg",
     "duration": "0:18",
     "viewCount": 17330,
-    "url": "https://www.youtube.com/watch?v=Ntmu1TVYKb0"
+    "url": "https://www.youtube.com/watch?v=Ntmu1TVYKb0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_odpjl2d3ffc",
@@ -27290,7 +30518,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/oDPjL2d3FFc/mqdefault.jpg",
     "duration": "0:24",
     "viewCount": 11510,
-    "url": "https://www.youtube.com/watch?v=oDPjL2d3FFc"
+    "url": "https://www.youtube.com/watch?v=oDPjL2d3FFc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_qtlh1vwc_nm",
@@ -27321,7 +30553,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/QTLH1vwC_nM/mqdefault.jpg",
     "duration": "0:31",
     "viewCount": 26666,
-    "url": "https://www.youtube.com/watch?v=QTLH1vwC_nM"
+    "url": "https://www.youtube.com/watch?v=QTLH1vwC_nM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_rihvzr_e7io",
@@ -27352,7 +30588,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/riHvZR_E7Io/mqdefault.jpg",
     "duration": "0:12",
     "viewCount": 15954,
-    "url": "https://www.youtube.com/watch?v=riHvZR_E7Io"
+    "url": "https://www.youtube.com/watch?v=riHvZR_E7Io",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_sijcyk1hfxs",
@@ -27386,7 +30626,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/SIjCyK1hfXs/mqdefault.jpg",
     "duration": "0:19",
     "viewCount": 16895,
-    "url": "https://www.youtube.com/watch?v=SIjCyK1hfXs"
+    "url": "https://www.youtube.com/watch?v=SIjCyK1hfXs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_uexbikrvy_4",
@@ -27417,7 +30661,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/uexbiKRvY_4/mqdefault.jpg",
     "duration": "0:19",
     "viewCount": 28904,
-    "url": "https://www.youtube.com/watch?v=uexbiKRvY_4"
+    "url": "https://www.youtube.com/watch?v=uexbiKRvY_4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_vbmjruq6brq",
@@ -27453,7 +30701,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Vbmjruq6BRQ/mqdefault.jpg",
     "duration": "1:28",
     "viewCount": 6786,
-    "url": "https://www.youtube.com/watch?v=Vbmjruq6BRQ"
+    "url": "https://www.youtube.com/watch?v=Vbmjruq6BRQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_wj3l0lyyiq4",
@@ -27487,7 +30739,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/wJ3l0LyYiq4/mqdefault.jpg",
     "duration": "0:21",
     "viewCount": 19598,
-    "url": "https://www.youtube.com/watch?v=wJ3l0LyYiq4"
+    "url": "https://www.youtube.com/watch?v=wJ3l0LyYiq4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_x20fm8i_3jy",
@@ -27523,7 +30779,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/x20Fm8I_3JY/mqdefault.jpg",
     "duration": "0:59",
     "viewCount": 8595,
-    "url": "https://www.youtube.com/watch?v=x20Fm8I_3JY"
+    "url": "https://www.youtube.com/watch?v=x20Fm8I_3JY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_xizmnoly6jy",
@@ -27554,7 +30814,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/xIZMNOLy6JY/mqdefault.jpg",
     "duration": "0:46",
     "viewCount": 20342,
-    "url": "https://www.youtube.com/watch?v=xIZMNOLy6JY"
+    "url": "https://www.youtube.com/watch?v=xIZMNOLy6JY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_y_wbuqlt2ym",
@@ -27585,7 +30849,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Y_wBuQLt2YM/mqdefault.jpg",
     "duration": "0:18",
     "viewCount": 13301,
-    "url": "https://www.youtube.com/watch?v=Y_wBuQLt2YM"
+    "url": "https://www.youtube.com/watch?v=Y_wBuQLt2YM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_zdv4qoseltc",
@@ -27616,7 +30884,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Zdv4qoseltc/mqdefault.jpg",
     "duration": "0:15",
     "viewCount": 19069,
-    "url": "https://www.youtube.com/watch?v=Zdv4qoseltc"
+    "url": "https://www.youtube.com/watch?v=Zdv4qoseltc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tennis_with_dylan_zno8vjbjq4q",
@@ -27647,7 +30919,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/zNO8VjbjQ4Q/mqdefault.jpg",
     "duration": "0:21",
     "viewCount": 3101,
-    "url": "https://www.youtube.com/watch?v=zNO8VjbjQ4Q"
+    "url": "https://www.youtube.com/watch?v=zNO8VjbjQ4Q",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_1segocqzfpq",
@@ -27679,7 +30955,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/1SEgoCQzfpQ/mqdefault.jpg",
     "duration": "0:22",
     "viewCount": 8625,
-    "url": "https://www.youtube.com/watch?v=1SEgoCQzfpQ"
+    "url": "https://www.youtube.com/watch?v=1SEgoCQzfpQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_2avc3pqeb4a",
@@ -27714,7 +30994,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/2AVc3PqEb4A/mqdefault.jpg",
     "duration": "14:59",
     "viewCount": 17296,
-    "url": "https://www.youtube.com/watch?v=2AVc3PqEb4A"
+    "url": "https://www.youtube.com/watch?v=2AVc3PqEb4A",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_5ayxoutjqym",
@@ -27749,7 +31033,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/5AyxouTjqYM/mqdefault.jpg",
     "duration": "1:25",
     "viewCount": 36753,
-    "url": "https://www.youtube.com/watch?v=5AyxouTjqYM"
+    "url": "https://www.youtube.com/watch?v=5AyxouTjqYM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_bciepampsli",
@@ -27781,7 +31069,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/bciePAMPslI/mqdefault.jpg",
     "duration": "1:09",
     "viewCount": 10915,
-    "url": "https://www.youtube.com/watch?v=bciePAMPslI"
+    "url": "https://www.youtube.com/watch?v=bciePAMPslI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_blyalc1gjrq",
@@ -27816,7 +31108,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/BLyalC1gjrQ/mqdefault.jpg",
     "duration": "8:05",
     "viewCount": 138423,
-    "url": "https://www.youtube.com/watch?v=BLyalC1gjrQ"
+    "url": "https://www.youtube.com/watch?v=BLyalC1gjrQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_dpesbed0axc",
@@ -27848,7 +31144,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/DpESbed0Axc/mqdefault.jpg",
     "duration": "0:57",
     "viewCount": 10320,
-    "url": "https://www.youtube.com/watch?v=DpESbed0Axc"
+    "url": "https://www.youtube.com/watch?v=DpESbed0Axc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_ekqiaa38r14",
@@ -27880,7 +31180,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/eKqIaa38r14/mqdefault.jpg",
     "duration": "16:10",
     "viewCount": 43387,
-    "url": "https://www.youtube.com/watch?v=eKqIaa38r14"
+    "url": "https://www.youtube.com/watch?v=eKqIaa38r14",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_f4qdcd9purw",
@@ -27912,7 +31216,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/F4QDCD9PURw/mqdefault.jpg",
     "duration": "8:18",
     "viewCount": 20795,
-    "url": "https://www.youtube.com/watch?v=F4QDCD9PURw"
+    "url": "https://www.youtube.com/watch?v=F4QDCD9PURw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_haxoa7cbnoa",
@@ -27950,7 +31258,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/haxoa7CBnOA/mqdefault.jpg",
     "duration": "0:33",
     "viewCount": 439770,
-    "url": "https://www.youtube.com/watch?v=haxoa7CBnOA"
+    "url": "https://www.youtube.com/watch?v=haxoa7CBnOA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_ijqjq29hjgq",
@@ -27984,7 +31296,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/IjqJQ29HJGQ/mqdefault.jpg",
     "duration": "0:47",
     "viewCount": 13918,
-    "url": "https://www.youtube.com/watch?v=IjqJQ29HJGQ"
+    "url": "https://www.youtube.com/watch?v=IjqJQ29HJGQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_jwz9cppqjtq",
@@ -28016,7 +31332,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Jwz9cPpqJtQ/mqdefault.jpg",
     "duration": "0:22",
     "viewCount": 30880,
-    "url": "https://www.youtube.com/watch?v=Jwz9cPpqJtQ"
+    "url": "https://www.youtube.com/watch?v=Jwz9cPpqJtQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_k189lfo3syw",
@@ -28048,7 +31368,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/k189lFo3SYw/mqdefault.jpg",
     "duration": "1:23",
     "viewCount": 19225,
-    "url": "https://www.youtube.com/watch?v=k189lFo3SYw"
+    "url": "https://www.youtube.com/watch?v=k189lFo3SYw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_laslbgo3evi",
@@ -28080,7 +31404,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/LASlbgo3evI/mqdefault.jpg",
     "duration": "12:58",
     "viewCount": 8939,
-    "url": "https://www.youtube.com/watch?v=LASlbgo3evI"
+    "url": "https://www.youtube.com/watch?v=LASlbgo3evI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_lrcnveqoi24",
@@ -28112,7 +31440,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/lrCNvEQOI24/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 26654,
-    "url": "https://www.youtube.com/watch?v=lrCNvEQOI24"
+    "url": "https://www.youtube.com/watch?v=lrCNvEQOI24",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_lsj_lwgzbwe",
@@ -28146,7 +31478,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/lsJ_LwGzbwE/mqdefault.jpg",
     "duration": "0:19",
     "viewCount": 30068,
-    "url": "https://www.youtube.com/watch?v=lsJ_LwGzbwE"
+    "url": "https://www.youtube.com/watch?v=lsJ_LwGzbwE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_mj2hfltytki",
@@ -28179,7 +31515,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/mj2HFltYtKI/mqdefault.jpg",
     "duration": "0:44",
     "viewCount": 5285,
-    "url": "https://www.youtube.com/watch?v=mj2HFltYtKI"
+    "url": "https://www.youtube.com/watch?v=mj2HFltYtKI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_nh_ivyic5bo",
@@ -28211,7 +31551,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Nh_IvYIC5bo/mqdefault.jpg",
     "duration": "1:25",
     "viewCount": 22304,
-    "url": "https://www.youtube.com/watch?v=Nh_IvYIC5bo"
+    "url": "https://www.youtube.com/watch?v=Nh_IvYIC5bo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_nm1nfu15swk",
@@ -28246,7 +31590,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Nm1nfu15Swk/mqdefault.jpg",
     "duration": "29:14",
     "viewCount": 11740,
-    "url": "https://www.youtube.com/watch?v=Nm1nfu15Swk"
+    "url": "https://www.youtube.com/watch?v=Nm1nfu15Swk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_nojb6kswqe0",
@@ -28284,7 +31632,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Nojb6kSwqE0/mqdefault.jpg",
     "duration": "1:09",
     "viewCount": 38879,
-    "url": "https://www.youtube.com/watch?v=Nojb6kSwqE0"
+    "url": "https://www.youtube.com/watch?v=Nojb6kSwqE0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_nuh6kmbwnwa",
@@ -28316,7 +31668,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/nuh6KMBwnwA/mqdefault.jpg",
     "duration": "1:40",
     "viewCount": 28809,
-    "url": "https://www.youtube.com/watch?v=nuh6KMBwnwA"
+    "url": "https://www.youtube.com/watch?v=nuh6KMBwnwA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_omfejuwwoys",
@@ -28348,7 +31704,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/oMFEJUWwOYs/mqdefault.jpg",
     "duration": "8:10",
     "viewCount": 24080,
-    "url": "https://www.youtube.com/watch?v=oMFEJUWwOYs"
+    "url": "https://www.youtube.com/watch?v=oMFEJUWwOYs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_pdcdbmiv5qy",
@@ -28382,7 +31742,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/pDCdBMiV5qY/mqdefault.jpg",
     "duration": "0:28",
     "viewCount": 32386,
-    "url": "https://www.youtube.com/watch?v=pDCdBMiV5qY"
+    "url": "https://www.youtube.com/watch?v=pDCdBMiV5qY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_r71g4fzkrnk",
@@ -28419,7 +31783,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/r71g4FZKrNk/mqdefault.jpg",
     "duration": "1:30",
     "viewCount": 23235,
-    "url": "https://www.youtube.com/watch?v=r71g4FZKrNk"
+    "url": "https://www.youtube.com/watch?v=r71g4FZKrNk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_ryrhitamlo0",
@@ -28451,7 +31819,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ryrhiTamlo0/mqdefault.jpg",
     "duration": "0:51",
     "viewCount": 6039,
-    "url": "https://www.youtube.com/watch?v=ryrhiTamlo0"
+    "url": "https://www.youtube.com/watch?v=ryrhiTamlo0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_te-k5eaqb8k",
@@ -28482,7 +31854,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/tE-K5eAqB8k/mqdefault.jpg",
     "duration": "0:50",
     "viewCount": 5071,
-    "url": "https://www.youtube.com/watch?v=tE-K5eAqB8k"
+    "url": "https://www.youtube.com/watch?v=tE-K5eAqB8k",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_trltanfyb-a",
@@ -28517,7 +31893,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/trlTanFyB-A/mqdefault.jpg",
     "duration": "0:35",
     "viewCount": 82101,
-    "url": "https://www.youtube.com/watch?v=trlTanFyB-A"
+    "url": "https://www.youtube.com/watch?v=trlTanFyB-A",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_tsqu_c-tgtu",
@@ -28549,7 +31929,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/TsqU_c-tgTU/mqdefault.jpg",
     "duration": "0:11",
     "viewCount": 22032,
-    "url": "https://www.youtube.com/watch?v=TsqU_c-tgTU"
+    "url": "https://www.youtube.com/watch?v=TsqU_c-tgTU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_u40lwl3tutq",
@@ -28581,7 +31965,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/u40lWL3TuTQ/mqdefault.jpg",
     "duration": "9:13",
     "viewCount": 33059,
-    "url": "https://www.youtube.com/watch?v=u40lWL3TuTQ"
+    "url": "https://www.youtube.com/watch?v=u40lWL3TuTQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_vjwoov3kgqe",
@@ -28613,7 +32001,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/VJwoOv3kGqE/mqdefault.jpg",
     "duration": "1:30",
     "viewCount": 11543,
-    "url": "https://www.youtube.com/watch?v=VJwoOv3kGqE"
+    "url": "https://www.youtube.com/watch?v=VJwoOv3kGqE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_wk4cgaktcd0",
@@ -28645,7 +32037,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/WK4cGAKtcD0/mqdefault.jpg",
     "duration": "0:57",
     "viewCount": 123309,
-    "url": "https://www.youtube.com/watch?v=WK4cGAKtcD0"
+    "url": "https://www.youtube.com/watch?v=WK4cGAKtcD0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_wyg4ufo6toc",
@@ -28677,7 +32073,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/WYG4uFo6Toc/mqdefault.jpg",
     "duration": "1:15",
     "viewCount": 13258,
-    "url": "https://www.youtube.com/watch?v=WYG4uFo6Toc"
+    "url": "https://www.youtube.com/watch?v=WYG4uFo6Toc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_yiv2noikl7w",
@@ -28709,7 +32109,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/yiv2NOiKl7w/mqdefault.jpg",
     "duration": "0:19",
     "viewCount": 20062,
-    "url": "https://www.youtube.com/watch?v=yiv2NOiKl7w"
+    "url": "https://www.youtube.com/watch?v=yiv2NOiKl7w",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_ynlpjlsvspw",
@@ -28744,7 +32148,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/YnlpjLSvSpw/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 2210217,
-    "url": "https://www.youtube.com/watch?v=YnlpjLSvSpw"
+    "url": "https://www.youtube.com/watch?v=YnlpjLSvSpw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_the_tennis_mentor_zt1csdwkbke",
@@ -28776,7 +32184,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Zt1cSDwkbkE/mqdefault.jpg",
     "duration": "1:06",
     "viewCount": 26422,
-    "url": "https://www.youtube.com/watch?v=Zt1cSDwkbkE"
+    "url": "https://www.youtube.com/watch?v=Zt1cSDwkbkE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_5nhrotvrglw",
@@ -28811,7 +32223,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/5nhROTVrgLw/mqdefault.jpg",
     "duration": "6:26",
     "viewCount": 146560,
-    "url": "https://www.youtube.com/watch?v=5nhROTVrgLw"
+    "url": "https://www.youtube.com/watch?v=5nhROTVrgLw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_aq5bmpwcbra",
@@ -28845,7 +32261,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/AQ5BmPwCBRA/mqdefault.jpg",
     "duration": "7:51",
     "viewCount": 117543,
-    "url": "https://www.youtube.com/watch?v=AQ5BmPwCBRA"
+    "url": "https://www.youtube.com/watch?v=AQ5BmPwCBRA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_b4ae2gwewlo",
@@ -28882,7 +32302,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/B4aE2GweWlo/mqdefault.jpg",
     "duration": "8:13",
     "viewCount": 98034,
-    "url": "https://www.youtube.com/watch?v=B4aE2GweWlo"
+    "url": "https://www.youtube.com/watch?v=B4aE2GweWlo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_bihd-_g65i4",
@@ -28914,7 +32338,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/BIHD-_G65I4/mqdefault.jpg",
     "duration": "7:35",
     "viewCount": 5504,
-    "url": "https://www.youtube.com/watch?v=BIHD-_G65I4"
+    "url": "https://www.youtube.com/watch?v=BIHD-_G65I4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_bunqfm8mcji",
@@ -28946,7 +32374,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/bUnqFM8mCjI/mqdefault.jpg",
     "duration": "8:53",
     "viewCount": 12902,
-    "url": "https://www.youtube.com/watch?v=bUnqFM8mCjI"
+    "url": "https://www.youtube.com/watch?v=bUnqFM8mCjI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_bzh-ie1rxkm",
@@ -28978,7 +32410,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/BZh-iE1RXKM/mqdefault.jpg",
     "duration": "6:27",
     "viewCount": 5196,
-    "url": "https://www.youtube.com/watch?v=BZh-iE1RXKM"
+    "url": "https://www.youtube.com/watch?v=BZh-iE1RXKM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_de2oqmsa8he",
@@ -29010,7 +32446,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/De2oqmSa8HE/mqdefault.jpg",
     "duration": "4:39",
     "viewCount": 16828,
-    "url": "https://www.youtube.com/watch?v=De2oqmSa8HE"
+    "url": "https://www.youtube.com/watch?v=De2oqmSa8HE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_fblcyumjw6o",
@@ -29042,7 +32482,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/fBlCYUmjW6o/mqdefault.jpg",
     "duration": "8:44",
     "viewCount": 20603,
-    "url": "https://www.youtube.com/watch?v=fBlCYUmjW6o"
+    "url": "https://www.youtube.com/watch?v=fBlCYUmjW6o",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_fywue09get0",
@@ -29077,7 +32521,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/fYwUE09get0/mqdefault.jpg",
     "duration": "8:26",
     "viewCount": 99443,
-    "url": "https://www.youtube.com/watch?v=fYwUE09get0"
+    "url": "https://www.youtube.com/watch?v=fYwUE09get0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_gklnsxdef3u",
@@ -29109,7 +32557,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/GKlNsxdEf3U/mqdefault.jpg",
     "duration": "6:30",
     "viewCount": 387697,
-    "url": "https://www.youtube.com/watch?v=GKlNsxdEf3U"
+    "url": "https://www.youtube.com/watch?v=GKlNsxdEf3U",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_gq0kkg8lfow",
@@ -29146,7 +32598,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Gq0kKG8LFOw/mqdefault.jpg",
     "duration": "8:04",
     "viewCount": 161297,
-    "url": "https://www.youtube.com/watch?v=Gq0kKG8LFOw"
+    "url": "https://www.youtube.com/watch?v=Gq0kKG8LFOw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_hafadqprwes",
@@ -29181,7 +32637,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/HaFadqPrWEs/mqdefault.jpg",
     "duration": "6:44",
     "viewCount": 7087,
-    "url": "https://www.youtube.com/watch?v=HaFadqPrWEs"
+    "url": "https://www.youtube.com/watch?v=HaFadqPrWEs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_ho5zz-zewkk",
@@ -29213,7 +32673,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/hO5zz-zeWkk/mqdefault.jpg",
     "duration": "7:33",
     "viewCount": 177214,
-    "url": "https://www.youtube.com/watch?v=hO5zz-zeWkk"
+    "url": "https://www.youtube.com/watch?v=hO5zz-zeWkk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_kdeqoflr4_c",
@@ -29245,7 +32709,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/kdeqofLr4_c/mqdefault.jpg",
     "duration": "5:32",
     "viewCount": 2637,
-    "url": "https://www.youtube.com/watch?v=kdeqofLr4_c"
+    "url": "https://www.youtube.com/watch?v=kdeqofLr4_c",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_mnbazff6a3i",
@@ -29277,7 +32745,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Mnbazff6a3I/mqdefault.jpg",
     "duration": "17:39",
     "viewCount": 24649,
-    "url": "https://www.youtube.com/watch?v=Mnbazff6a3I"
+    "url": "https://www.youtube.com/watch?v=Mnbazff6a3I",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_ns_scoysf0k",
@@ -29314,7 +32786,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/NS_scoYsF0k/mqdefault.jpg",
     "duration": "10:45",
     "viewCount": 140509,
-    "url": "https://www.youtube.com/watch?v=NS_scoYsF0k"
+    "url": "https://www.youtube.com/watch?v=NS_scoYsF0k",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_phfn_mmnbzy",
@@ -29349,7 +32825,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/PhFN_MMnbzY/mqdefault.jpg",
     "duration": "10:49",
     "viewCount": 13182,
-    "url": "https://www.youtube.com/watch?v=PhFN_MMnbzY"
+    "url": "https://www.youtube.com/watch?v=PhFN_MMnbzY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_rz3zmpu1g2e",
@@ -29388,7 +32868,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/rZ3zmpu1G2E/mqdefault.jpg",
     "duration": "10:39",
     "viewCount": 93589,
-    "url": "https://www.youtube.com/watch?v=rZ3zmpu1G2E"
+    "url": "https://www.youtube.com/watch?v=rZ3zmpu1G2E",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_sjc5k9dv0um",
@@ -29422,7 +32906,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/SJC5k9DV0UM/mqdefault.jpg",
     "duration": "5:07",
     "viewCount": 5694,
-    "url": "https://www.youtube.com/watch?v=SJC5k9DV0UM"
+    "url": "https://www.youtube.com/watch?v=SJC5k9DV0UM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_t-nn_kj_718",
@@ -29459,7 +32947,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/t-nN_KJ_718/mqdefault.jpg",
     "duration": "8:47",
     "viewCount": 403198,
-    "url": "https://www.youtube.com/watch?v=t-nN_KJ_718"
+    "url": "https://www.youtube.com/watch?v=t-nN_KJ_718",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_t1_c3yttbh0",
@@ -29491,7 +32983,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/T1_C3yTtBH0/mqdefault.jpg",
     "duration": "5:39",
     "viewCount": 5390,
-    "url": "https://www.youtube.com/watch?v=T1_C3yTtBH0"
+    "url": "https://www.youtube.com/watch?v=T1_C3yTtBH0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_t3zplkr5cei",
@@ -29530,7 +33026,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/t3zpLkR5cEI/mqdefault.jpg",
     "duration": "8:43",
     "viewCount": 97629,
-    "url": "https://www.youtube.com/watch?v=t3zpLkR5cEI"
+    "url": "https://www.youtube.com/watch?v=t3zpLkR5cEI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_tfkam2iggnu",
@@ -29564,7 +33064,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/tfkAm2IGGnU/mqdefault.jpg",
     "duration": "9:07",
     "viewCount": 8728,
-    "url": "https://www.youtube.com/watch?v=tfkAm2IGGnU"
+    "url": "https://www.youtube.com/watch?v=tfkAm2IGGnU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_uajf-yh17ww",
@@ -29600,7 +33104,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Uajf-yH17Ww/mqdefault.jpg",
     "duration": "8:43",
     "viewCount": 240837,
-    "url": "https://www.youtube.com/watch?v=Uajf-yH17Ww"
+    "url": "https://www.youtube.com/watch?v=Uajf-yH17Ww",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_ub9e-wovkt0",
@@ -29639,7 +33147,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ub9E-WOVKT0/mqdefault.jpg",
     "duration": "6:08",
     "viewCount": 61910,
-    "url": "https://www.youtube.com/watch?v=ub9E-WOVKT0"
+    "url": "https://www.youtube.com/watch?v=ub9E-WOVKT0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_ubo8zu27cpe",
@@ -29671,7 +33183,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/uBo8zu27CPE/mqdefault.jpg",
     "duration": "6:33",
     "viewCount": 12128,
-    "url": "https://www.youtube.com/watch?v=uBo8zu27CPE"
+    "url": "https://www.youtube.com/watch?v=uBo8zu27CPE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_uijq10lfhdo",
@@ -29703,7 +33219,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/UiJq10LFhdo/mqdefault.jpg",
     "duration": "4:54",
     "viewCount": 5154,
-    "url": "https://www.youtube.com/watch?v=UiJq10LFhdo"
+    "url": "https://www.youtube.com/watch?v=UiJq10LFhdo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_ukyrxoplbaa",
@@ -29735,7 +33255,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/uKYrxOpLbAA/mqdefault.jpg",
     "duration": "6:53",
     "viewCount": 24286,
-    "url": "https://www.youtube.com/watch?v=uKYrxOpLbAA"
+    "url": "https://www.youtube.com/watch?v=uKYrxOpLbAA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_ussgqcqqcag",
@@ -29772,7 +33296,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/USsGqcQqcAg/mqdefault.jpg",
     "duration": "7:39",
     "viewCount": 7555,
-    "url": "https://www.youtube.com/watch?v=USsGqcQqcAg"
+    "url": "https://www.youtube.com/watch?v=USsGqcQqcAg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_vhcf4vmteow",
@@ -29804,7 +33332,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/vhCF4vmtEow/mqdefault.jpg",
     "duration": "5:43",
     "viewCount": 11830,
-    "url": "https://www.youtube.com/watch?v=vhCF4vmtEow"
+    "url": "https://www.youtube.com/watch?v=vhCF4vmtEow",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_vijndipq6am",
@@ -29836,7 +33368,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ViJNDiPQ6aM/mqdefault.jpg",
     "duration": "12:46",
     "viewCount": 52411,
-    "url": "https://www.youtube.com/watch?v=ViJNDiPQ6aM"
+    "url": "https://www.youtube.com/watch?v=ViJNDiPQ6aM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_vu5jwzfn6pe",
@@ -29871,7 +33407,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/VU5JWzFn6PE/mqdefault.jpg",
     "duration": "10:30",
     "viewCount": 634956,
-    "url": "https://www.youtube.com/watch?v=VU5JWzFn6PE"
+    "url": "https://www.youtube.com/watch?v=VU5JWzFn6PE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_zlzta8bceoa",
@@ -29903,7 +33443,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/zLZTA8BcEOA/mqdefault.jpg",
     "duration": "6:34",
     "viewCount": 9345,
-    "url": "https://www.youtube.com/watch?v=zLZTA8BcEOA"
+    "url": "https://www.youtube.com/watch?v=zLZTA8BcEOA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_zsrzplab1bg",
@@ -29935,7 +33479,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/zSrzpLAB1Bg/mqdefault.jpg",
     "duration": "12:11",
     "viewCount": 16847,
-    "url": "https://www.youtube.com/watch?v=zSrzpLAB1Bg"
+    "url": "https://www.youtube.com/watch?v=zSrzpLAB1Bg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_zuwozaknejw",
@@ -29967,7 +33515,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ZUwOzaKnejw/mqdefault.jpg",
     "duration": "6:08",
     "viewCount": 137968,
-    "url": "https://www.youtube.com/watch?v=ZUwOzaKnejw"
+    "url": "https://www.youtube.com/watch?v=ZUwOzaKnejw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_time_value_of_tennis_zvw2vx7hqg8",
@@ -29999,7 +33551,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/zVw2vx7hQg8/mqdefault.jpg",
     "duration": "9:46",
     "viewCount": 41495,
-    "url": "https://www.youtube.com/watch?v=zVw2vx7hQg8"
+    "url": "https://www.youtube.com/watch?v=zVw2vx7hQg8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training__e9grhbxko8",
@@ -30035,7 +33591,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/_E9grHBXKo8/mqdefault.jpg",
     "duration": "0:18",
     "viewCount": 92197,
-    "url": "https://www.youtube.com/watch?v=_E9grHBXKo8"
+    "url": "https://www.youtube.com/watch?v=_E9grHBXKo8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_32gi4dcflbk",
@@ -30066,7 +33626,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/32gi4DCfLbk/mqdefault.jpg",
     "duration": "0:10",
     "viewCount": 98332,
-    "url": "https://www.youtube.com/watch?v=32gi4DCfLbk"
+    "url": "https://www.youtube.com/watch?v=32gi4DCfLbk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_4j8eq3yz0hu",
@@ -30099,7 +33663,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/4j8eQ3Yz0hU/mqdefault.jpg",
     "duration": "0:08",
     "viewCount": 158929,
-    "url": "https://www.youtube.com/watch?v=4j8eQ3Yz0hU"
+    "url": "https://www.youtube.com/watch?v=4j8eQ3Yz0hU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_4ni3iexugx8",
@@ -30133,7 +33701,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/4NI3IExugX8/mqdefault.jpg",
     "duration": "0:15",
     "viewCount": 189190,
-    "url": "https://www.youtube.com/watch?v=4NI3IExugX8"
+    "url": "https://www.youtube.com/watch?v=4NI3IExugX8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_9ssbdc-cdes",
@@ -30164,7 +33736,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/9sSBdC-cDEs/mqdefault.jpg",
     "duration": "17:00",
     "viewCount": 18469,
-    "url": "https://www.youtube.com/watch?v=9sSBdC-cDEs"
+    "url": "https://www.youtube.com/watch?v=9sSBdC-cDEs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_a8eut6ord9g",
@@ -30200,7 +33776,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/a8eut6oRd9g/mqdefault.jpg",
     "duration": "0:18",
     "viewCount": 51061,
-    "url": "https://www.youtube.com/watch?v=a8eut6oRd9g"
+    "url": "https://www.youtube.com/watch?v=a8eut6oRd9g",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_acnb7ku4eac",
@@ -30233,7 +33813,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/aCNB7Ku4eac/mqdefault.jpg",
     "duration": "0:11",
     "viewCount": 46569,
-    "url": "https://www.youtube.com/watch?v=aCNB7Ku4eac"
+    "url": "https://www.youtube.com/watch?v=aCNB7Ku4eac",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_d67ya7vcrmc",
@@ -30266,7 +33850,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/d67YA7vCrmc/mqdefault.jpg",
     "duration": "0:34",
     "viewCount": 338106,
-    "url": "https://www.youtube.com/watch?v=d67YA7vCrmc"
+    "url": "https://www.youtube.com/watch?v=d67YA7vCrmc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_e1bmvuf_age",
@@ -30297,7 +33885,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/E1BMVUF_aGE/mqdefault.jpg",
     "duration": "0:55",
     "viewCount": 37621,
-    "url": "https://www.youtube.com/watch?v=E1BMVUF_aGE"
+    "url": "https://www.youtube.com/watch?v=E1BMVUF_aGE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_eunmfjm5ywo",
@@ -30328,7 +33920,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/euNmfjm5Ywo/mqdefault.jpg",
     "duration": "0:12",
     "viewCount": 123628,
-    "url": "https://www.youtube.com/watch?v=euNmfjm5Ywo"
+    "url": "https://www.youtube.com/watch?v=euNmfjm5Ywo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_fuylytvmhyi",
@@ -30359,7 +33955,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/FUYLYTVmHyI/mqdefault.jpg",
     "duration": "2:17",
     "viewCount": 129629,
-    "url": "https://www.youtube.com/watch?v=FUYLYTVmHyI"
+    "url": "https://www.youtube.com/watch?v=FUYLYTVmHyI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_ggws2dgq_1a",
@@ -30390,7 +33990,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/GGWs2dGQ_1A/mqdefault.jpg",
     "duration": "0:44",
     "viewCount": 172561,
-    "url": "https://www.youtube.com/watch?v=GGWs2dGQ_1A"
+    "url": "https://www.youtube.com/watch?v=GGWs2dGQ_1A",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_h4ez7shmrwe",
@@ -30421,7 +34025,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/H4Ez7sHmRWE/mqdefault.jpg",
     "duration": "0:12",
     "viewCount": 327986,
-    "url": "https://www.youtube.com/watch?v=H4Ez7sHmRWE"
+    "url": "https://www.youtube.com/watch?v=H4Ez7sHmRWE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_i0pgzddjzh4",
@@ -30455,7 +34063,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/i0PGzddJzh4/mqdefault.jpg",
     "duration": "0:07",
     "viewCount": 313207,
-    "url": "https://www.youtube.com/watch?v=i0PGzddJzh4"
+    "url": "https://www.youtube.com/watch?v=i0PGzddJzh4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_irfsabjvto4",
@@ -30491,7 +34103,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/iRFSaBjVTO4/mqdefault.jpg",
     "duration": "0:22",
     "viewCount": 67831,
-    "url": "https://www.youtube.com/watch?v=iRFSaBjVTO4"
+    "url": "https://www.youtube.com/watch?v=iRFSaBjVTO4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_jezj_8boljw",
@@ -30524,7 +34140,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/jeZj_8BOLJw/mqdefault.jpg",
     "duration": "0:26",
     "viewCount": 61441,
-    "url": "https://www.youtube.com/watch?v=jeZj_8BOLJw"
+    "url": "https://www.youtube.com/watch?v=jeZj_8BOLJw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_k-yrjbz1kdq",
@@ -30560,7 +34180,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/K-YRjbZ1kdQ/mqdefault.jpg",
     "duration": "0:25",
     "viewCount": 143890,
-    "url": "https://www.youtube.com/watch?v=K-YRjbZ1kdQ"
+    "url": "https://www.youtube.com/watch?v=K-YRjbZ1kdQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_kp3ryv7bubc",
@@ -30593,7 +34217,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Kp3rYV7bubc/mqdefault.jpg",
     "duration": "0:16",
     "viewCount": 55118,
-    "url": "https://www.youtube.com/watch?v=Kp3rYV7bubc"
+    "url": "https://www.youtube.com/watch?v=Kp3rYV7bubc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_m_6adxecj74",
@@ -30624,7 +34252,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/M_6AdXECJ74/mqdefault.jpg",
     "duration": "0:39",
     "viewCount": 70812,
-    "url": "https://www.youtube.com/watch?v=M_6AdXECJ74"
+    "url": "https://www.youtube.com/watch?v=M_6AdXECJ74",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_mpfz7qvosgm",
@@ -30659,7 +34291,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/MPfZ7qvoSgM/mqdefault.jpg",
     "duration": "0:43",
     "viewCount": 49021,
-    "url": "https://www.youtube.com/watch?v=MPfZ7qvoSgM"
+    "url": "https://www.youtube.com/watch?v=MPfZ7qvoSgM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_n96zllcbyuo",
@@ -30690,7 +34326,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/n96zlLCBYuo/mqdefault.jpg",
     "duration": "0:17",
     "viewCount": 45304,
-    "url": "https://www.youtube.com/watch?v=n96zlLCBYuo"
+    "url": "https://www.youtube.com/watch?v=n96zlLCBYuo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_ptql4tt0qye",
@@ -30721,7 +34361,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ptqL4TT0QyE/mqdefault.jpg",
     "duration": "0:19",
     "viewCount": 333345,
-    "url": "https://www.youtube.com/watch?v=ptqL4TT0QyE"
+    "url": "https://www.youtube.com/watch?v=ptqL4TT0QyE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_pvlfcyi5kdy",
@@ -30752,7 +34396,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/pVlFcYI5KDY/mqdefault.jpg",
     "duration": "0:11",
     "viewCount": 43475,
-    "url": "https://www.youtube.com/watch?v=pVlFcYI5KDY"
+    "url": "https://www.youtube.com/watch?v=pVlFcYI5KDY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_q-a_r8xezkw",
@@ -30787,7 +34435,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Q-A_r8xezKw/mqdefault.jpg",
     "duration": "0:28",
     "viewCount": 21134,
-    "url": "https://www.youtube.com/watch?v=Q-A_r8xezKw"
+    "url": "https://www.youtube.com/watch?v=Q-A_r8xezKw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_q-sgy5qzs5e",
@@ -30818,7 +34470,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/q-sGY5qZs5E/mqdefault.jpg",
     "duration": "0:28",
     "viewCount": 47177,
-    "url": "https://www.youtube.com/watch?v=q-sGY5qZs5E"
+    "url": "https://www.youtube.com/watch?v=q-sGY5qZs5E",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_qbzsyoaa0ig",
@@ -30849,7 +34505,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/QBZsyOAA0ig/mqdefault.jpg",
     "duration": "0:46",
     "viewCount": 268461,
-    "url": "https://www.youtube.com/watch?v=QBZsyOAA0ig"
+    "url": "https://www.youtube.com/watch?v=QBZsyOAA0ig",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_qqvjge8nllg",
@@ -30880,7 +34540,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/qqvJGE8NlLg/mqdefault.jpg",
     "duration": "0:23",
     "viewCount": 177662,
-    "url": "https://www.youtube.com/watch?v=qqvJGE8NlLg"
+    "url": "https://www.youtube.com/watch?v=qqvJGE8NlLg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_ruxevmdq050",
@@ -30916,7 +34580,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/RUxevMDq050/mqdefault.jpg",
     "duration": "0:25",
     "viewCount": 137870,
-    "url": "https://www.youtube.com/watch?v=RUxevMDq050"
+    "url": "https://www.youtube.com/watch?v=RUxevMDq050",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_scf9lpuk-8g",
@@ -30951,7 +34619,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ScF9Lpuk-8g/mqdefault.jpg",
     "duration": "0:45",
     "viewCount": 27847,
-    "url": "https://www.youtube.com/watch?v=ScF9Lpuk-8g"
+    "url": "https://www.youtube.com/watch?v=ScF9Lpuk-8g",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_st_rhldtgy4",
@@ -30982,7 +34654,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/St_RhLdtgy4/mqdefault.jpg",
     "duration": "0:38",
     "viewCount": 71067,
-    "url": "https://www.youtube.com/watch?v=St_RhLdtgy4"
+    "url": "https://www.youtube.com/watch?v=St_RhLdtgy4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_umitsc6m98c",
@@ -31013,7 +34689,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/umITsC6m98c/mqdefault.jpg",
     "duration": "9:59",
     "viewCount": 37052,
-    "url": "https://www.youtube.com/watch?v=umITsC6m98c"
+    "url": "https://www.youtube.com/watch?v=umITsC6m98c",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_vzxryktkd94",
@@ -31044,7 +34724,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/VZXRyktkd94/mqdefault.jpg",
     "duration": "14:54",
     "viewCount": 6137,
-    "url": "https://www.youtube.com/watch?v=VZXRyktkd94"
+    "url": "https://www.youtube.com/watch?v=VZXRyktkd94",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_xsg0s6zpp2y",
@@ -31075,7 +34759,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/xsG0S6zpp2Y/mqdefault.jpg",
     "duration": "0:14",
     "viewCount": 136560,
-    "url": "https://www.youtube.com/watch?v=xsG0S6zpp2Y"
+    "url": "https://www.youtube.com/watch?v=xsG0S6zpp2Y",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_z0aa4ssywd4",
@@ -31108,7 +34796,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/z0aa4SSywd4/mqdefault.jpg",
     "duration": "0:17",
     "viewCount": 86606,
-    "url": "https://www.youtube.com/watch?v=z0aa4SSywd4"
+    "url": "https://www.youtube.com/watch?v=z0aa4SSywd4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_zgul7aviewm",
@@ -31139,7 +34831,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ZGUL7aVieWM/mqdefault.jpg",
     "duration": "0:57",
     "viewCount": 826420,
-    "url": "https://www.youtube.com/watch?v=ZGUL7aVieWM"
+    "url": "https://www.youtube.com/watch?v=ZGUL7aVieWM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_top_tennis_training_zj3h89ajycu",
@@ -31173,7 +34869,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Zj3h89ajYcU/mqdefault.jpg",
     "duration": "0:27",
     "viewCount": 397175,
-    "url": "https://www.youtube.com/watch?v=Zj3h89ajYcU"
+    "url": "https://www.youtube.com/watch?v=Zj3h89ajYcU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_30bpi43tlvc",
@@ -31205,7 +34905,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/30bpI43TlVc/mqdefault.jpg",
     "duration": "3:56",
     "viewCount": 7970,
-    "url": "https://www.youtube.com/watch?v=30bpI43TlVc"
+    "url": "https://www.youtube.com/watch?v=30bpI43TlVc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_4cxll63dccm",
@@ -31242,7 +34946,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/4CXLL63dcCM/mqdefault.jpg",
     "duration": "0:30",
     "viewCount": 4985,
-    "url": "https://www.youtube.com/watch?v=4CXLL63dcCM"
+    "url": "https://www.youtube.com/watch?v=4CXLL63dcCM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_7tfuiliitku",
@@ -31279,7 +34987,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/7TfuiliITKU/mqdefault.jpg",
     "duration": "8:14",
     "viewCount": 6484,
-    "url": "https://www.youtube.com/watch?v=7TfuiliITKU"
+    "url": "https://www.youtube.com/watch?v=7TfuiliITKU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_8tawutm_1jm",
@@ -31311,7 +35023,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8TAwuTM_1JM/mqdefault.jpg",
     "duration": "3:24",
     "viewCount": 5129,
-    "url": "https://www.youtube.com/watch?v=8TAwuTM_1JM"
+    "url": "https://www.youtube.com/watch?v=8TAwuTM_1JM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_9qhurpx_stw",
@@ -31345,7 +35061,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/9qHURpX_sTw/mqdefault.jpg",
     "duration": "3:06",
     "viewCount": 18775,
-    "url": "https://www.youtube.com/watch?v=9qHURpX_sTw"
+    "url": "https://www.youtube.com/watch?v=9qHURpX_sTw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_an27qdla4sg",
@@ -31382,7 +35102,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/aN27QDla4Sg/mqdefault.jpg",
     "duration": "0:23",
     "viewCount": 23444,
-    "url": "https://www.youtube.com/watch?v=aN27QDla4Sg"
+    "url": "https://www.youtube.com/watch?v=aN27QDla4Sg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_bhpydnklfjc",
@@ -31414,7 +35138,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/bHpydnkLfJc/mqdefault.jpg",
     "duration": "0:19",
     "viewCount": 55080,
-    "url": "https://www.youtube.com/watch?v=bHpydnkLfJc"
+    "url": "https://www.youtube.com/watch?v=bHpydnkLfJc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_br6ok3fz8io",
@@ -31446,7 +35174,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/br6OK3fz8Io/mqdefault.jpg",
     "duration": "4:09",
     "viewCount": 1616,
-    "url": "https://www.youtube.com/watch?v=br6OK3fz8Io"
+    "url": "https://www.youtube.com/watch?v=br6OK3fz8Io",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_cte5szntpxy",
@@ -31480,7 +35212,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/CTE5szNtPXY/mqdefault.jpg",
     "duration": "8:04",
     "viewCount": 5598,
-    "url": "https://www.youtube.com/watch?v=CTE5szNtPXY"
+    "url": "https://www.youtube.com/watch?v=CTE5szNtPXY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_dtw6ai-sha4",
@@ -31512,7 +35248,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/DTW6Ai-shA4/mqdefault.jpg",
     "duration": "0:12",
     "viewCount": 4487,
-    "url": "https://www.youtube.com/watch?v=DTW6Ai-shA4"
+    "url": "https://www.youtube.com/watch?v=DTW6Ai-shA4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_dw4hymptl9k",
@@ -31544,7 +35284,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/dw4hymptl9k/mqdefault.jpg",
     "duration": "8:02",
     "viewCount": 36093,
-    "url": "https://www.youtube.com/watch?v=dw4hymptl9k"
+    "url": "https://www.youtube.com/watch?v=dw4hymptl9k",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_egehlpoxslk",
@@ -31576,7 +35320,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/eGEhLpoXsLk/mqdefault.jpg",
     "duration": "1:42",
     "viewCount": 5654,
-    "url": "https://www.youtube.com/watch?v=eGEhLpoXsLk"
+    "url": "https://www.youtube.com/watch?v=eGEhLpoXsLk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_gax7glftkf4",
@@ -31608,7 +35356,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Gax7gLfTkf4/mqdefault.jpg",
     "duration": "5:22",
     "viewCount": 18826,
-    "url": "https://www.youtube.com/watch?v=Gax7gLfTkf4"
+    "url": "https://www.youtube.com/watch?v=Gax7gLfTkf4",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_go4v7yrmtqm",
@@ -31646,7 +35398,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/GO4V7YrMtqM/mqdefault.jpg",
     "duration": "4:01",
     "viewCount": 11853,
-    "url": "https://www.youtube.com/watch?v=GO4V7YrMtqM"
+    "url": "https://www.youtube.com/watch?v=GO4V7YrMtqM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_hvu5l6e2dvy",
@@ -31680,7 +35436,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/hVU5L6e2DVY/mqdefault.jpg",
     "duration": "17:08",
     "viewCount": 10526,
-    "url": "https://www.youtube.com/watch?v=hVU5L6e2DVY"
+    "url": "https://www.youtube.com/watch?v=hVU5L6e2DVY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_k7ry2pcljym",
@@ -31713,7 +35473,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/K7RY2PCLJYM/mqdefault.jpg",
     "duration": "0:25",
     "viewCount": 4642,
-    "url": "https://www.youtube.com/watch?v=K7RY2PCLJYM"
+    "url": "https://www.youtube.com/watch?v=K7RY2PCLJYM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_kdmkdwpq2lo",
@@ -31745,7 +35509,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/KdMKdwpq2lo/mqdefault.jpg",
     "duration": "0:16",
     "viewCount": 9477,
-    "url": "https://www.youtube.com/watch?v=KdMKdwpq2lo"
+    "url": "https://www.youtube.com/watch?v=KdMKdwpq2lo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_l2hy74ehcaq",
@@ -31777,7 +35545,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/L2Hy74EHcaQ/mqdefault.jpg",
     "duration": "8:02",
     "viewCount": 12843,
-    "url": "https://www.youtube.com/watch?v=L2Hy74EHcaQ"
+    "url": "https://www.youtube.com/watch?v=L2Hy74EHcaQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_msstawgryzg",
@@ -31815,7 +35587,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/mSsTAWgrYzg/mqdefault.jpg",
     "duration": "0:21",
     "viewCount": 3221,
-    "url": "https://www.youtube.com/watch?v=mSsTAWgrYzg"
+    "url": "https://www.youtube.com/watch?v=mSsTAWgrYzg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_njdym6awn7g",
@@ -31847,7 +35623,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/NjDyM6AWn7g/mqdefault.jpg",
     "duration": "6:44",
     "viewCount": 27358,
-    "url": "https://www.youtube.com/watch?v=NjDyM6AWn7g"
+    "url": "https://www.youtube.com/watch?v=NjDyM6AWn7g",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_peekclg6ske",
@@ -31879,7 +35659,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/PeEkclg6SKE/mqdefault.jpg",
     "duration": "3:10",
     "viewCount": 18658,
-    "url": "https://www.youtube.com/watch?v=PeEkclg6SKE"
+    "url": "https://www.youtube.com/watch?v=PeEkclg6SKE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_pp_ux3gjozk",
@@ -31911,7 +35695,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/pP_uX3GJOZk/mqdefault.jpg",
     "duration": "0:08",
     "viewCount": 16536,
-    "url": "https://www.youtube.com/watch?v=pP_uX3GJOZk"
+    "url": "https://www.youtube.com/watch?v=pP_uX3GJOZk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_ptcvblxqgxu",
@@ -31943,7 +35731,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ptcVBlXqGXU/mqdefault.jpg",
     "duration": "0:21",
     "viewCount": 4626,
-    "url": "https://www.youtube.com/watch?v=ptcVBlXqGXU"
+    "url": "https://www.youtube.com/watch?v=ptcVBlXqGXU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_s4956ulrr3y",
@@ -31975,7 +35767,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/s4956UlRR3Y/mqdefault.jpg",
     "duration": "0:17",
     "viewCount": 6483,
-    "url": "https://www.youtube.com/watch?v=s4956UlRR3Y"
+    "url": "https://www.youtube.com/watch?v=s4956UlRR3Y",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_suxk3zcspic",
@@ -32007,7 +35803,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/SUxk3ZcSPIc/mqdefault.jpg",
     "duration": "8:09",
     "viewCount": 4818,
-    "url": "https://www.youtube.com/watch?v=SUxk3ZcSPIc"
+    "url": "https://www.youtube.com/watch?v=SUxk3ZcSPIc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_t4uvc_9ondc",
@@ -32039,7 +35839,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/T4uvc_9ondc/mqdefault.jpg",
     "duration": "3:39",
     "viewCount": 15362,
-    "url": "https://www.youtube.com/watch?v=T4uvc_9ondc"
+    "url": "https://www.youtube.com/watch?v=T4uvc_9ondc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_tdg2-qiuftw",
@@ -32071,7 +35875,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Tdg2-QiUfTw/mqdefault.jpg",
     "duration": "1:11",
     "viewCount": 12288,
-    "url": "https://www.youtube.com/watch?v=Tdg2-QiUfTw"
+    "url": "https://www.youtube.com/watch?v=Tdg2-QiUfTw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_uapuz5hiu1u",
@@ -32103,7 +35911,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/UaPuZ5HIU1U/mqdefault.jpg",
     "duration": "4:59",
     "viewCount": 24498,
-    "url": "https://www.youtube.com/watch?v=UaPuZ5HIU1U"
+    "url": "https://www.youtube.com/watch?v=UaPuZ5HIU1U",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_ub4qpxeali8",
@@ -32135,7 +35947,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ub4qPxEalI8/mqdefault.jpg",
     "duration": "3:19",
     "viewCount": 43722,
-    "url": "https://www.youtube.com/watch?v=ub4qPxEalI8"
+    "url": "https://www.youtube.com/watch?v=ub4qPxEalI8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_vlv3pxlc0sk",
@@ -32167,7 +35983,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/vLV3PXLc0sk/mqdefault.jpg",
     "duration": "0:22",
     "viewCount": 33491,
-    "url": "https://www.youtube.com/watch?v=vLV3PXLc0sk"
+    "url": "https://www.youtube.com/watch?v=vLV3PXLc0sk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_vpho3vpgcdm",
@@ -32204,7 +36024,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/VPho3VpgCDM/mqdefault.jpg",
     "duration": "0:08",
     "viewCount": 252124,
-    "url": "https://www.youtube.com/watch?v=VPho3VpgCDM"
+    "url": "https://www.youtube.com/watch?v=VPho3VpgCDM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_wicvqnaobow",
@@ -32239,7 +36063,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/WIcVQnaoBow/mqdefault.jpg",
     "duration": "4:57",
     "viewCount": 10711,
-    "url": "https://www.youtube.com/watch?v=WIcVQnaoBow"
+    "url": "https://www.youtube.com/watch?v=WIcVQnaoBow",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_xen9tu_r-7m",
@@ -32271,7 +36099,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/xEN9Tu_r-7M/mqdefault.jpg",
     "duration": "0:34",
     "viewCount": 12026,
-    "url": "https://www.youtube.com/watch?v=xEN9Tu_r-7M"
+    "url": "https://www.youtube.com/watch?v=xEN9Tu_r-7M",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_tpa_tennis_xwxsj2as2ua",
@@ -32303,7 +36135,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/XWXsJ2aS2UA/mqdefault.jpg",
     "duration": "0:12",
     "viewCount": 25334,
-    "url": "https://www.youtube.com/watch?v=XWXsJ2aS2UA"
+    "url": "https://www.youtube.com/watch?v=XWXsJ2aS2UA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams__6p7yb27t7c",
@@ -32338,7 +36174,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/_6P7yb27t7c/mqdefault.jpg",
     "duration": "4:39",
     "viewCount": 126441,
-    "url": "https://www.youtube.com/watch?v=_6P7yb27t7c"
+    "url": "https://www.youtube.com/watch?v=_6P7yb27t7c",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_21gwiugpbro",
@@ -32373,7 +36213,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/21gWiUGpBro/mqdefault.jpg",
     "duration": "5:39",
     "viewCount": 74418,
-    "url": "https://www.youtube.com/watch?v=21gWiUGpBro"
+    "url": "https://www.youtube.com/watch?v=21gWiUGpBro",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_2yxrv7mpumy",
@@ -32404,7 +36248,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/2YXrv7MPUMY/mqdefault.jpg",
     "duration": "0:53",
     "viewCount": 36202,
-    "url": "https://www.youtube.com/watch?v=2YXrv7MPUMY"
+    "url": "https://www.youtube.com/watch?v=2YXrv7MPUMY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_5jx4dxs-s8q",
@@ -32439,7 +36287,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/5jx4DXs-S8Q/mqdefault.jpg",
     "duration": "0:42",
     "viewCount": 183496,
-    "url": "https://www.youtube.com/watch?v=5jx4DXs-S8Q"
+    "url": "https://www.youtube.com/watch?v=5jx4DXs-S8Q",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_5penkn_egpo",
@@ -32470,7 +36322,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/5PenKN_eGPo/mqdefault.jpg",
     "duration": "10:23",
     "viewCount": 93769,
-    "url": "https://www.youtube.com/watch?v=5PenKN_eGPo"
+    "url": "https://www.youtube.com/watch?v=5PenKN_eGPo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_6ditkemctvg",
@@ -32502,7 +36358,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/6ditkEMCtvg/mqdefault.jpg",
     "duration": "5:41",
     "viewCount": 86455,
-    "url": "https://www.youtube.com/watch?v=6ditkEMCtvg"
+    "url": "https://www.youtube.com/watch?v=6ditkEMCtvg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_84qbys239bc",
@@ -32538,7 +36398,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/84qBYS239Bc/mqdefault.jpg",
     "duration": "0:41",
     "viewCount": 6163,
-    "url": "https://www.youtube.com/watch?v=84qBYS239Bc"
+    "url": "https://www.youtube.com/watch?v=84qBYS239Bc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_8eipcfnfvbq",
@@ -32573,7 +36437,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8EipCfNfvbQ/mqdefault.jpg",
     "duration": "0:22",
     "viewCount": 6190,
-    "url": "https://www.youtube.com/watch?v=8EipCfNfvbQ"
+    "url": "https://www.youtube.com/watch?v=8EipCfNfvbQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_8w5idyn_k_8",
@@ -32604,7 +36472,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/8W5idYn_K_8/mqdefault.jpg",
     "duration": "10:49",
     "viewCount": 70664,
-    "url": "https://www.youtube.com/watch?v=8W5idYn_K_8"
+    "url": "https://www.youtube.com/watch?v=8W5idYn_K_8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_9qezlm38lgw",
@@ -32637,7 +36509,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/9QEZLM38Lgw/mqdefault.jpg",
     "duration": "2:54",
     "viewCount": 10180,
-    "url": "https://www.youtube.com/watch?v=9QEZLM38Lgw"
+    "url": "https://www.youtube.com/watch?v=9QEZLM38Lgw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_ak9qkqsz5ki",
@@ -32672,7 +36548,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ak9QKqSZ5KI/mqdefault.jpg",
     "duration": "11:52",
     "viewCount": 77699,
-    "url": "https://www.youtube.com/watch?v=ak9QKqSZ5KI"
+    "url": "https://www.youtube.com/watch?v=ak9QKqSZ5KI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_awoazvhgyyi",
@@ -32707,7 +36587,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/awoaZvHgYYI/mqdefault.jpg",
     "duration": "11:27",
     "viewCount": 69473,
-    "url": "https://www.youtube.com/watch?v=awoaZvHgYYI"
+    "url": "https://www.youtube.com/watch?v=awoaZvHgYYI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_dlzqyy0vtdi",
@@ -32738,7 +36622,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/DlzqyY0VtdI/mqdefault.jpg",
     "duration": "0:21",
     "viewCount": 12058,
-    "url": "https://www.youtube.com/watch?v=DlzqyY0VtdI"
+    "url": "https://www.youtube.com/watch?v=DlzqyY0VtdI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_e4mjw0eck14",
@@ -32769,7 +36657,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/e4mJW0eck14/mqdefault.jpg",
     "duration": "0:16",
     "viewCount": 1263216,
-    "url": "https://www.youtube.com/watch?v=e4mJW0eck14"
+    "url": "https://www.youtube.com/watch?v=e4mJW0eck14",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_efufagtlpq0",
@@ -32804,7 +36696,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/efuFAGTLpq0/mqdefault.jpg",
     "duration": "13:27",
     "viewCount": 71818,
-    "url": "https://www.youtube.com/watch?v=efuFAGTLpq0"
+    "url": "https://www.youtube.com/watch?v=efuFAGTLpq0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_eohlptotxgk",
@@ -32837,7 +36733,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/EohlptOTXgk/mqdefault.jpg",
     "duration": "10:37",
     "viewCount": 28886,
-    "url": "https://www.youtube.com/watch?v=EohlptOTXgk"
+    "url": "https://www.youtube.com/watch?v=EohlptOTXgk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_g9j1jt9dikq",
@@ -32868,7 +36768,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/G9j1Jt9DIkQ/mqdefault.jpg",
     "duration": "18:17",
     "viewCount": 54226,
-    "url": "https://www.youtube.com/watch?v=G9j1Jt9DIkQ"
+    "url": "https://www.youtube.com/watch?v=G9j1Jt9DIkQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_gujbjqk92wy",
@@ -32904,7 +36808,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/GuJbJqk92WY/mqdefault.jpg",
     "duration": "16:09",
     "viewCount": 30350,
-    "url": "https://www.youtube.com/watch?v=GuJbJqk92WY"
+    "url": "https://www.youtube.com/watch?v=GuJbJqk92WY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_htnm0gdldj8",
@@ -32935,7 +36843,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/htNM0gDlDJ8/mqdefault.jpg",
     "duration": "4:22",
     "viewCount": 14232,
-    "url": "https://www.youtube.com/watch?v=htNM0gDlDJ8"
+    "url": "https://www.youtube.com/watch?v=htNM0gDlDJ8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_jvjeknay8gc",
@@ -32973,7 +36885,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/JvJekNAy8Gc/mqdefault.jpg",
     "duration": "0:24",
     "viewCount": 20242,
-    "url": "https://www.youtube.com/watch?v=JvJekNAy8Gc"
+    "url": "https://www.youtube.com/watch?v=JvJekNAy8Gc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_l6dhdipppju",
@@ -33007,7 +36923,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/l6dHDippPJU/mqdefault.jpg",
     "duration": "0:16",
     "viewCount": 5645,
-    "url": "https://www.youtube.com/watch?v=l6dHDippPJU"
+    "url": "https://www.youtube.com/watch?v=l6dHDippPJU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_ogz-o1qhko8",
@@ -33038,7 +36958,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/OgZ-o1QHKo8/mqdefault.jpg",
     "duration": "2:06",
     "viewCount": 88523,
-    "url": "https://www.youtube.com/watch?v=OgZ-o1QHKo8"
+    "url": "https://www.youtube.com/watch?v=OgZ-o1QHKo8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_ovuy-feocv8",
@@ -33070,7 +36994,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ovUy-FeoCv8/mqdefault.jpg",
     "duration": "18:45",
     "viewCount": 103817,
-    "url": "https://www.youtube.com/watch?v=ovUy-FeoCv8"
+    "url": "https://www.youtube.com/watch?v=ovUy-FeoCv8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_psuty3funns",
@@ -33103,7 +37031,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/pSuTy3funNs/mqdefault.jpg",
     "duration": "12:08",
     "viewCount": 10493,
-    "url": "https://www.youtube.com/watch?v=pSuTy3funNs"
+    "url": "https://www.youtube.com/watch?v=pSuTy3funNs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_pxxupv-7fs0",
@@ -33134,7 +37066,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/PXXuPV-7fS0/mqdefault.jpg",
     "duration": "0:33",
     "viewCount": 5595,
-    "url": "https://www.youtube.com/watch?v=PXXuPV-7fS0"
+    "url": "https://www.youtube.com/watch?v=PXXuPV-7fS0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_r5wdbdouwxs",
@@ -33165,7 +37101,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/R5wDbDoUwxs/mqdefault.jpg",
     "duration": "0:14",
     "viewCount": 15582,
-    "url": "https://www.youtube.com/watch?v=R5wDbDoUwxs"
+    "url": "https://www.youtube.com/watch?v=R5wDbDoUwxs",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_t4nllzs4klk",
@@ -33195,7 +37135,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/t4nllzS4KLk/mqdefault.jpg",
     "duration": "0:46",
     "viewCount": 7652,
-    "url": "https://www.youtube.com/watch?v=t4nllzS4KLk"
+    "url": "https://www.youtube.com/watch?v=t4nllzS4KLk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_ttt9kb-zaze",
@@ -33226,7 +37170,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/tTt9kb-zazE/mqdefault.jpg",
     "duration": "9:07",
     "viewCount": 230759,
-    "url": "https://www.youtube.com/watch?v=tTt9kb-zazE"
+    "url": "https://www.youtube.com/watch?v=tTt9kb-zazE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_uewv6qsimay",
@@ -33257,7 +37205,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/uEwV6qsImaY/mqdefault.jpg",
     "duration": "0:29",
     "viewCount": 13067,
-    "url": "https://www.youtube.com/watch?v=uEwV6qsImaY"
+    "url": "https://www.youtube.com/watch?v=uEwV6qsImaY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_xbkfzfqyrco",
@@ -33287,7 +37239,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/xBKfzFqyRco/mqdefault.jpg",
     "duration": "0:15",
     "viewCount": 8109,
-    "url": "https://www.youtube.com/watch?v=xBKfzFqyRco"
+    "url": "https://www.youtube.com/watch?v=xBKfzFqyRco",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_venus_williams_zcccvbv1nmi",
@@ -33318,7 +37274,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ZcCcvBV1NmI/mqdefault.jpg",
     "duration": "0:23",
     "viewCount": 20276,
-    "url": "https://www.youtube.com/watch?v=ZcCcvBV1NmI"
+    "url": "https://www.youtube.com/watch?v=ZcCcvBV1NmI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach__jwxubknle0",
@@ -33352,7 +37312,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/_JwXUbkNlE0/mqdefault.jpg",
     "duration": "10:44",
     "viewCount": 1313,
-    "url": "https://www.youtube.com/watch?v=_JwXUbkNlE0"
+    "url": "https://www.youtube.com/watch?v=_JwXUbkNlE0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_-3of0uw7jjo",
@@ -33386,7 +37350,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/-3of0uw7jjo/mqdefault.jpg",
     "duration": "3:21",
     "viewCount": 735,
-    "url": "https://www.youtube.com/watch?v=-3of0uw7jjo"
+    "url": "https://www.youtube.com/watch?v=-3of0uw7jjo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_06xjxq3fsqw",
@@ -33420,7 +37388,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/06XjxQ3FSQw/mqdefault.jpg",
     "duration": "39:42",
     "viewCount": 261,
-    "url": "https://www.youtube.com/watch?v=06XjxQ3FSQw"
+    "url": "https://www.youtube.com/watch?v=06XjxQ3FSQw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_3gw2yj9tpuo",
@@ -33452,7 +37424,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/3Gw2YJ9tpUo/mqdefault.jpg",
     "duration": "2:12",
     "viewCount": 1427,
-    "url": "https://www.youtube.com/watch?v=3Gw2YJ9tpUo"
+    "url": "https://www.youtube.com/watch?v=3Gw2YJ9tpUo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_4c3_1wmug9a",
@@ -33489,7 +37465,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/4C3_1WMuG9A/mqdefault.jpg",
     "duration": "20:57",
     "viewCount": 1855,
-    "url": "https://www.youtube.com/watch?v=4C3_1WMuG9A"
+    "url": "https://www.youtube.com/watch?v=4C3_1WMuG9A",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_5rx6z8rzwf8",
@@ -33521,7 +37501,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/5RX6Z8rZwF8/mqdefault.jpg",
     "duration": "1:00",
     "viewCount": 1028,
-    "url": "https://www.youtube.com/watch?v=5RX6Z8rZwF8"
+    "url": "https://www.youtube.com/watch?v=5RX6Z8rZwF8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_5u6up49i2ig",
@@ -33558,7 +37542,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/5U6UP49I2Ig/mqdefault.jpg",
     "duration": "12:40",
     "viewCount": 16042,
-    "url": "https://www.youtube.com/watch?v=5U6UP49I2Ig"
+    "url": "https://www.youtube.com/watch?v=5U6UP49I2Ig",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_6wdj39azqsw",
@@ -33591,7 +37579,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/6WdJ39azQSw/mqdefault.jpg",
     "duration": "13:05",
     "viewCount": 1862,
-    "url": "https://www.youtube.com/watch?v=6WdJ39azQSw"
+    "url": "https://www.youtube.com/watch?v=6WdJ39azQSw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_88sxsbfdfu0",
@@ -33623,7 +37615,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/88SXsbfDFU0/mqdefault.jpg",
     "duration": "14:59",
     "viewCount": 6082,
-    "url": "https://www.youtube.com/watch?v=88SXsbfDFU0"
+    "url": "https://www.youtube.com/watch?v=88SXsbfDFU0",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_9cnlkfttjoq",
@@ -33658,7 +37654,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/9cnLkFttjoQ/mqdefault.jpg",
     "duration": "1:53",
     "viewCount": 2101,
-    "url": "https://www.youtube.com/watch?v=9cnLkFttjoQ"
+    "url": "https://www.youtube.com/watch?v=9cnLkFttjoQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_9hzsvvvgnzo",
@@ -33690,7 +37690,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/9HZsVVvgNzo/mqdefault.jpg",
     "duration": "10:44",
     "viewCount": 8546,
-    "url": "https://www.youtube.com/watch?v=9HZsVVvgNzo"
+    "url": "https://www.youtube.com/watch?v=9HZsVVvgNzo",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_a36sousmh_o",
@@ -33722,7 +37726,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/A36SouSMh_o/mqdefault.jpg",
     "duration": "12:39",
     "viewCount": 3416,
-    "url": "https://www.youtube.com/watch?v=A36SouSMh_o"
+    "url": "https://www.youtube.com/watch?v=A36SouSMh_o",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_aoll4myyvyq",
@@ -33754,7 +37762,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/Aoll4MyyvYQ/mqdefault.jpg",
     "duration": "1:01",
     "viewCount": 637,
-    "url": "https://www.youtube.com/watch?v=Aoll4MyyvYQ"
+    "url": "https://www.youtube.com/watch?v=Aoll4MyyvYQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_cihxanfqw0a",
@@ -33786,7 +37798,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/CIhXaNFQw0A/mqdefault.jpg",
     "duration": "5:36",
     "viewCount": 7104,
-    "url": "https://www.youtube.com/watch?v=CIhXaNFQw0A"
+    "url": "https://www.youtube.com/watch?v=CIhXaNFQw0A",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_d3wgqm7wd8c",
@@ -33818,7 +37834,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/d3WgQm7wd8c/mqdefault.jpg",
     "duration": "1:10",
     "viewCount": 1383,
-    "url": "https://www.youtube.com/watch?v=d3WgQm7wd8c"
+    "url": "https://www.youtube.com/watch?v=d3WgQm7wd8c",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_dwd8hkczwrq",
@@ -33850,7 +37870,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/dwD8HKCzWrQ/mqdefault.jpg",
     "duration": "5:27",
     "viewCount": 558,
-    "url": "https://www.youtube.com/watch?v=dwD8HKCzWrQ"
+    "url": "https://www.youtube.com/watch?v=dwD8HKCzWrQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_e2d7fwg02oc",
@@ -33884,7 +37908,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/e2d7fWg02Oc/mqdefault.jpg",
     "duration": "9:36",
     "viewCount": 2074,
-    "url": "https://www.youtube.com/watch?v=e2d7fWg02Oc"
+    "url": "https://www.youtube.com/watch?v=e2d7fWg02Oc",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_eunl17u9pxw",
@@ -33919,7 +37947,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/eUNL17U9Pxw/mqdefault.jpg",
     "duration": "48:23",
     "viewCount": 343,
-    "url": "https://www.youtube.com/watch?v=eUNL17U9Pxw"
+    "url": "https://www.youtube.com/watch?v=eUNL17U9Pxw",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_fwhwxo8mngu",
@@ -33951,7 +37983,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/FwhWxo8MNgU/mqdefault.jpg",
     "duration": "5:30",
     "viewCount": 209,
-    "url": "https://www.youtube.com/watch?v=FwhWxo8MNgU"
+    "url": "https://www.youtube.com/watch?v=FwhWxo8MNgU",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_gst0mfcpbes",
@@ -33986,7 +38022,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/GsT0MfcPbes/mqdefault.jpg",
     "duration": "17:51",
     "viewCount": 818,
-    "url": "https://www.youtube.com/watch?v=GsT0MfcPbes"
+    "url": "https://www.youtube.com/watch?v=GsT0MfcPbes",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_gzdydunn1ki",
@@ -34018,7 +38058,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/gZDyDunN1KI/mqdefault.jpg",
     "duration": "13:06",
     "viewCount": 1681,
-    "url": "https://www.youtube.com/watch?v=gZDyDunN1KI"
+    "url": "https://www.youtube.com/watch?v=gZDyDunN1KI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_hgjmj_rtnja",
@@ -34052,7 +38096,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/hgJMj_rTNjA/mqdefault.jpg",
     "duration": "3:53",
     "viewCount": 194,
-    "url": "https://www.youtube.com/watch?v=hgJMj_rTNjA"
+    "url": "https://www.youtube.com/watch?v=hgJMj_rTNjA",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_hkjuq2t9g4s",
@@ -34092,7 +38140,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/hkjuq2t9G4s/mqdefault.jpg",
     "duration": "19:13",
     "viewCount": 542,
-    "url": "https://www.youtube.com/watch?v=hkjuq2t9G4s"
+    "url": "https://www.youtube.com/watch?v=hkjuq2t9G4s",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_iep-da_e1no",
@@ -34129,7 +38181,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/IeP-DA_E1no/mqdefault.jpg",
     "duration": "4:50",
     "viewCount": 2117,
-    "url": "https://www.youtube.com/watch?v=IeP-DA_E1no"
+    "url": "https://www.youtube.com/watch?v=IeP-DA_E1no",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_ij1ghk1imsy",
@@ -34165,7 +38221,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/IJ1GhK1IMSY/mqdefault.jpg",
     "duration": "8:48",
     "viewCount": 1080,
-    "url": "https://www.youtube.com/watch?v=IJ1GhK1IMSY"
+    "url": "https://www.youtube.com/watch?v=IJ1GhK1IMSY",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_ivztpum9jzk",
@@ -34197,7 +38257,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/iVZTPUm9jZk/mqdefault.jpg",
     "duration": "1:11",
     "viewCount": 3914,
-    "url": "https://www.youtube.com/watch?v=iVZTPUm9jZk"
+    "url": "https://www.youtube.com/watch?v=iVZTPUm9jZk",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_jnezajdgm2w",
@@ -34229,7 +38293,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/jnEZajdGM2w/mqdefault.jpg",
     "duration": "18:20",
     "viewCount": 31206,
-    "url": "https://www.youtube.com/watch?v=jnEZajdGM2w"
+    "url": "https://www.youtube.com/watch?v=jnEZajdGM2w",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_ko7dcqa0h6g",
@@ -34261,7 +38329,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/ko7DCQA0H6g/mqdefault.jpg",
     "duration": "16:06",
     "viewCount": 5534,
-    "url": "https://www.youtube.com/watch?v=ko7DCQA0H6g"
+    "url": "https://www.youtube.com/watch?v=ko7DCQA0H6g",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_lvg3juza0u8",
@@ -34293,7 +38365,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/lvG3juZa0U8/mqdefault.jpg",
     "duration": "38:34",
     "viewCount": 2928,
-    "url": "https://www.youtube.com/watch?v=lvG3juZa0U8"
+    "url": "https://www.youtube.com/watch?v=lvG3juZa0U8",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_oxzgi28fi6k",
@@ -34325,7 +38401,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/OXZGI28Fi6k/mqdefault.jpg",
     "duration": "11:46",
     "viewCount": 7520,
-    "url": "https://www.youtube.com/watch?v=OXZGI28Fi6k"
+    "url": "https://www.youtube.com/watch?v=OXZGI28Fi6k",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_oz9bfriefam",
@@ -34359,7 +38439,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/oZ9bfRieFAM/mqdefault.jpg",
     "duration": "10:23",
     "viewCount": 91,
-    "url": "https://www.youtube.com/watch?v=oZ9bfRieFAM"
+    "url": "https://www.youtube.com/watch?v=oZ9bfRieFAM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_pwcjv44s3jm",
@@ -34393,7 +38477,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/PWcjv44s3jM/mqdefault.jpg",
     "duration": "2:41",
     "viewCount": 666,
-    "url": "https://www.youtube.com/watch?v=PWcjv44s3jM"
+    "url": "https://www.youtube.com/watch?v=PWcjv44s3jM",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_qczbmjqxome",
@@ -34427,7 +38515,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/QczBMJQxOmE/mqdefault.jpg",
     "duration": "0:24",
     "viewCount": 1431,
-    "url": "https://www.youtube.com/watch?v=QczBMJQxOmE"
+    "url": "https://www.youtube.com/watch?v=QczBMJQxOmE",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_wkr_wcmjgui",
@@ -34459,7 +38551,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/wKr_WCmJGUI/mqdefault.jpg",
     "duration": "2:25",
     "viewCount": 1675,
-    "url": "https://www.youtube.com/watch?v=wKr_WCmJGUI"
+    "url": "https://www.youtube.com/watch?v=wKr_WCmJGUI",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_x3q48_lyg0e",
@@ -34491,7 +38587,11 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/X3Q48_lYG0E/mqdefault.jpg",
     "duration": "12:04",
     "viewCount": 2245,
-    "url": "https://www.youtube.com/watch?v=X3Q48_lYG0E"
+    "url": "https://www.youtube.com/watch?v=X3Q48_lYG0E",
+    "environment": [
+      "testing",
+      "production"
+    ]
   },
   {
     "id": "content_expanded_youtube_creator_your_online_tennis_coach_yynbmm0_7oa",
@@ -34528,6 +38628,434 @@ export const expandedContents: ContentItem[] = [
     "thumbnail": "https://i.ytimg.com/vi/YYNBMM0_7oA/mqdefault.jpg",
     "duration": "19:19",
     "viewCount": 15037,
-    "url": "https://www.youtube.com/watch?v=YYNBMM0_7oA"
+    "url": "https://www.youtube.com/watch?v=YYNBMM0_7oA",
+    "environment": [
+      "testing",
+      "production"
+    ]
+  },
+  {
+    "id": "content_expanded_youtube_creator_tenniswithtyler_zxizdcpkhbg",
+    "title": "Serving Rhythm & Timing",
+    "sourceTitle": "Serving Rhythm & Timing",
+    "displayTitleEn": "Serving Rhythm & Timing",
+    "focusLineEn": "For serves whose rhythm breaks apart before contact.",
+    "creatorId": "creator_tenniswithtyler",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    "skills": [
+      "serve",
+      "footwork",
+      "training"
+    ],
+    "problemTags": [
+      "serve-timing",
+      "serve-rhythm"
+    ],
+    "language": "en",
+    "summary": "围绕节奏触发与击球时机控制，提供可直接执行的 timing 校准练习。",
+    "reason": "适合作为 timing-off 的基础训练入口，帮助先建立稳定时机感。",
+    "useCases": [
+      "动作衔接经常断拍、节奏忽快忽慢",
+      "时机判断不稳定，容易慢半拍"
+    ],
+    "coachReason": "短平快讲清 timing 的基础触发点，适合先把时机感觉练稳再迁移到专项动作。",
+    "thumbnail": "https://i.ytimg.com/vi/ZxIzdcpKhBg/hqdefault.jpg",
+    "duration": "5:00",
+    "viewCount": 66000,
+    "url": "https://www.youtube.com/watch?v=ZxIzdcpKhBg",
+    "environment": [
+      "testing",
+      "production"
+    ]
+  },
+  {
+    "id": "content_expanded_youtube_creator_the_game_of_tennis_0l6vuf46vj0",
+    "title": "Serve Power Timing — Lessons from Alcaraz and Rune",
+    "sourceTitle": "Serve Power Timing — Lessons from Alcaraz and Rune",
+    "displayTitleEn": "Serve Power Timing — Lessons from Alcaraz and Rune",
+    "focusLineEn": "For serves that lose rhythm as soon as you swing harder.",
+    "creatorId": "creator_the_game_of_tennis",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    "skills": [
+      "serve",
+      "footwork",
+      "matchplay"
+    ],
+    "problemTags": [
+      "serve-timing",
+      "serve-rhythm"
+    ],
+    "language": "en",
+    "summary": "通过职业案例拆解爆发前的节奏窗口，强调时机先于发力。",
+    "reason": "适合作为 timing-off 的进阶样本，帮助理解高强度击球中的时机控制。",
+    "useCases": [
+      "强度一上来动作节奏就散",
+      "发力和触球时机经常脱节"
+    ],
+    "coachReason": "用高水平案例讲清 timing 与力量传递关系，适合 3.5+ 做精细化校准。",
+    "thumbnail": "https://i.ytimg.com/vi/0L6VuF46vj0/hqdefault.jpg",
+    "duration": "8:00",
+    "viewCount": 32000,
+    "url": "https://www.youtube.com/watch?v=0L6VuF46vj0",
+    "environment": [
+      "testing",
+      "production"
+    ]
+  },
+  {
+    "id": "content_expanded_youtube_creator_the_game_of_tennis_bff2emdrhmk",
+    "title": "I Found a Better Way to Teach Serve Timing",
+    "sourceTitle": "I Found a Better Way to Teach Serve Timing",
+    "displayTitleEn": "I Found a Better Way to Teach Serve Timing",
+    "focusLineEn": "For players who know the mechanics but still cannot repeat the timing.",
+    "creatorId": "creator_the_game_of_tennis",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    "skills": [
+      "serve",
+      "footwork",
+      "training"
+    ],
+    "problemTags": [
+      "serve-timing",
+      "serve-rhythm"
+    ],
+    "language": "en",
+    "summary": "从教学法角度给出可复现的 timing 训练路径，强调可执行与可迁移。",
+    "reason": "补充 timing-off 的方法论视角，适合把时机训练落到日常练习中。",
+    "useCases": [
+      "知道动作要领但时机感不稳定",
+      "需要可复现的 timing 训练流程"
+    ],
+    "coachReason": "强调如何训练时机而不只纠动作细节，适合自练和带练场景。",
+    "thumbnail": "https://i.ytimg.com/vi/BFF2emdrHmk/hqdefault.jpg",
+    "duration": "10:00",
+    "viewCount": 18000,
+    "url": "https://www.youtube.com/watch?v=BFF2emdrHmk",
+    "environment": [
+      "testing",
+      "production"
+    ]
+  },
+  {
+    "id": "content_expanded_youtube_creator_patrick_mouratoglou_dkasdyrsseu",
+    "title": "Overhead Smash Tutorial - Patrick Mouratoglou",
+    "sourceTitle": "Overhead Smash Tutorial - Patrick Mouratoglou",
+    "displayTitleEn": "Overhead Smash Tutorial - Patrick Mouratoglou",
+    "focusLineEn": "For overheads that arrive late and get contacted behind the body.",
+    "creatorId": "creator_patrick_mouratoglou",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    "skills": [
+      "overhead",
+      "smash",
+      "timing",
+      "footwork"
+    ],
+    "problemTags": [
+      "overhead-timing",
+      "timing-off",
+      "late-contact"
+    ],
+    "language": "en",
+    "summary": "系统讲解高压球的准备节奏、击球时机和触球点控制。",
+    "reason": "高压球时机专项内容，直接补足 overhead-timing 候选深度。",
+    "useCases": [
+      "高压球总慢半拍",
+      "高压击球点总在身体后侧"
+    ],
+    "coachReason": "强调先到位再出手，适合把高压时机从感性改成可复现流程。",
+    "thumbnail": "https://i.ytimg.com/vi/DkaSdyRSseU/hqdefault.jpg",
+    "duration": "8:30",
+    "viewCount": 42000,
+    "url": "https://www.youtube.com/watch?v=DkaSdyRSseU",
+    "environment": [
+      "testing",
+      "production"
+    ]
+  },
+  {
+    "id": "content_expanded_youtube_creator_coach_ben_zink_9gx0iuhaivu",
+    "title": "Tennis Overhead Smash - How To Hit Perfect Smash In 3 Steps",
+    "sourceTitle": "Tennis Overhead Smash - How To Hit Perfect Smash In 3 Steps",
+    "displayTitleEn": "Tennis Overhead Smash - How To Hit Perfect Smash In 3 Steps",
+    "focusLineEn": "For overhead setups that stay disorganized from the first step.",
+    "creatorId": "creator_coach_ben_zink",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    "skills": [
+      "overhead",
+      "smash",
+      "timing",
+      "footwork"
+    ],
+    "problemTags": [
+      "overhead-timing",
+      "timing-off",
+      "late-contact"
+    ],
+    "language": "en",
+    "summary": "用三步法拆解高压球时机，突出读球、转身和出手顺序。",
+    "reason": "适合作为 overhead-timing 的入门到进阶过渡内容。",
+    "useCases": [
+      "高压球总打框",
+      "高压准备顺序混乱"
+    ],
+    "coachReason": "结构简单、执行清晰，适合 2.5-4.0 快速建立高压时机框架。",
+    "thumbnail": "https://i.ytimg.com/vi/9gx0IUHAIVU/hqdefault.jpg",
+    "duration": "7:20",
+    "viewCount": 36000,
+    "url": "https://www.youtube.com/watch?v=9gx0IUHAIVU",
+    "environment": [
+      "testing",
+      "production"
+    ]
+  },
+  {
+    "id": "content_expanded_youtube_creator_performance_plus_tennis_rynzrqflp94",
+    "title": "How To Hit OVERHEADS ANYWHERE On The Court",
+    "sourceTitle": "How To Hit OVERHEADS ANYWHERE On The Court",
+    "displayTitleEn": "How To Hit Overheads Anywhere On The Court",
+    "focusLineEn": "For overhead timing that breaks down once court position changes.",
+    "creatorId": "creator_performance_plus_tennis",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    "skills": [
+      "overhead",
+      "smash",
+      "timing",
+      "matchplay"
+    ],
+    "problemTags": [
+      "overhead-timing",
+      "timing-off",
+      "late-contact"
+    ],
+    "language": "en",
+    "summary": "覆盖不同落点下的高压球时机处理，强调步法与出手窗口。",
+    "reason": "补强 overhead-timing 在多场景应用下的候选覆盖。",
+    "useCases": [
+      "跑动中高压时机总不准",
+      "不同区域高压稳定性差"
+    ],
+    "coachReason": "把高压从固定点训练扩展到实战位置变化，适合 3.0+ 用户。",
+    "thumbnail": "https://i.ytimg.com/vi/RynZrqFLP94/hqdefault.jpg",
+    "duration": "9:40",
+    "viewCount": 28000,
+    "url": "https://www.youtube.com/watch?v=RynZrqFLP94",
+    "environment": [
+      "testing",
+      "production"
+    ]
+  },
+  {
+    "id": "content_expanded_youtube_creator_2minute_tennis_rzggh0ynlzq",
+    "title": "Perfect Overhead Smash - Technique, Footwork, Timing",
+    "sourceTitle": "Perfect Overhead Smash - Technique, Footwork, Timing",
+    "displayTitleEn": "Perfect Overhead Smash - Technique, Footwork, Timing",
+    "focusLineEn": "For overheads where the footwork and strike timing never sync up.",
+    "creatorId": "creator_2minute_tennis",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    "skills": [
+      "overhead",
+      "smash",
+      "timing",
+      "footwork"
+    ],
+    "problemTags": [
+      "overhead-timing",
+      "timing-off",
+      "late-contact"
+    ],
+    "language": "en",
+    "summary": "聚焦高压球技术、步法与时机的一体化修正。",
+    "reason": "高相关 overhead-timing 内容，适合补足规则候选质量。",
+    "useCases": [
+      "高压动作有但时机不稳定",
+      "步法和击球点经常不同步"
+    ],
+    "coachReason": "短平快拆解高压关键动作链，适合中级用户快速纠偏。",
+    "thumbnail": "https://i.ytimg.com/vi/rzggh0YNlzQ/hqdefault.jpg",
+    "duration": "6:50",
+    "viewCount": 25000,
+    "url": "https://www.youtube.com/watch?v=rzggh0YNlzQ",
+    "environment": [
+      "testing",
+      "production"
+    ]
+  },
+  {
+    "id": "content_expanded_youtube_creator_2minute_tennis_qenjamtncmc",
+    "title": "Perfect Overhead Technique (3 Easy Tennis Tips)",
+    "sourceTitle": "Perfect Overhead Technique (3 Easy Tennis Tips)",
+    "displayTitleEn": "Perfect Overhead Technique (3 Easy Tennis Tips)",
+    "focusLineEn": "For players who still cannot find a clean overhead contact point.",
+    "creatorId": "creator_2minute_tennis",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "2.5",
+      "3.0",
+      "3.5",
+      "4.0"
+    ],
+    "skills": [
+      "overhead",
+      "timing",
+      "basics"
+    ],
+    "problemTags": [
+      "overhead-timing",
+      "timing-off",
+      "late-contact"
+    ],
+    "language": "en",
+    "summary": "用三条易执行提示修正高压球准备和触球时机。",
+    "reason": "作为 overhead-timing 的低门槛补充内容，利于快速应用。",
+    "useCases": [
+      "高压总找不到舒服击球点",
+      "高压准备动作经常晚"
+    ],
+    "coachReason": "轻量提示型内容，适合初中级用户快速建立高压时机感。",
+    "thumbnail": "https://i.ytimg.com/vi/qENjaMTnCmc/hqdefault.jpg",
+    "duration": "5:45",
+    "viewCount": 21000,
+    "url": "https://www.youtube.com/watch?v=qENjaMTnCmc",
+    "environment": [
+      "testing",
+      "production"
+    ]
+  },
+  {
+    "id": "content_expanded_youtube_creator_top_tennis_training_pdm6cmb3ef4",
+    "title": "Overhead Smash - How To Kill That Lob",
+    "sourceTitle": "Overhead Smash - How To Kill That Lob",
+    "displayTitleEn": "Overhead Smash - How To Kill That Lob",
+    "focusLineEn": "For overhead timing that falls apart in live lob situations.",
+    "creatorId": "creator_top_tennis_training",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    "skills": [
+      "overhead",
+      "smash",
+      "timing",
+      "matchplay"
+    ],
+    "problemTags": [
+      "overhead-timing",
+      "timing-off",
+      "late-contact"
+    ],
+    "language": "en",
+    "summary": "围绕处理高球来球的节奏与时机，提升高压球实战转换效率。",
+    "reason": "补强 overhead-timing 在实战处理高球场景下的候选内容。",
+    "useCases": [
+      "对手挑高后处理总犹豫",
+      "高压击球和下一拍衔接差"
+    ],
+    "coachReason": "以比赛场景导向讲高压时机，适合想把高球转化为主动分的用户。",
+    "thumbnail": "https://i.ytimg.com/vi/PdM6cmb3ef4/hqdefault.jpg",
+    "duration": "9:10",
+    "viewCount": 54000,
+    "url": "https://www.youtube.com/watch?v=PdM6cmb3ef4",
+    "environment": [
+      "testing",
+      "production"
+    ]
+  },
+  {
+    "id": "content_expanded_youtube_creator_iron_will_tennis_bzyp0kv8fjg",
+    "title": "The Perfect Overhead Smash",
+    "sourceTitle": "The Perfect Overhead Smash",
+    "displayTitleEn": "The Perfect Overhead Smash",
+    "focusLineEn": "For overheads that keep arriving late with the contact point too far back.",
+    "creatorId": "creator_iron_will_tennis",
+    "platform": "YouTube",
+    "type": "video",
+    "levels": [
+      "3.0",
+      "3.5",
+      "4.0",
+      "4.5"
+    ],
+    "skills": [
+      "overhead",
+      "smash",
+      "timing"
+    ],
+    "problemTags": [
+      "overhead-timing",
+      "timing-off",
+      "late-contact"
+    ],
+    "language": "en",
+    "summary": "从动作链完整性讲高压球时机，强调提前转身与前上方触球。",
+    "reason": "提供 overhead-timing 的稳定补充样本，覆盖常见节奏错误。",
+    "useCases": [
+      "高压总晚到位",
+      "高压触球点偏后"
+    ],
+    "coachReason": "结构化讲解高压动作节奏，适合中级球员复盘与对照。",
+    "thumbnail": "https://i.ytimg.com/vi/Bzyp0Kv8fJg/hqdefault.jpg",
+    "duration": "8:20",
+    "viewCount": 17000,
+    "url": "https://www.youtube.com/watch?v=Bzyp0Kv8fJg",
+    "environment": [
+      "testing",
+      "production"
+    ]
   }
 ];

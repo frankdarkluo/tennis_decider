@@ -1,7 +1,24 @@
+---
+aliases:
+  - Project Progress Summary
+tags:
+  - type/weekly
+  - area/process
+  - status/log
+---
+
 # TennisLevel Research Build Progress Summary
 
 This file is a local working summary for the current research-ready build.
 It is intentionally not meant for GitHub.
+
+## Related docs
+- [[index]]
+- [[roadmap/current]]
+- [[research/study-mode]]
+- [[features/diagnosis-study-observability]]
+- [[weekly/2026-W14]]
+- [[progress/2026-04-01]]
 
 ## As Of March 29, 2026
 

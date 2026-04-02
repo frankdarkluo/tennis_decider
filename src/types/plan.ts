@@ -1,3 +1,5 @@
+import { EnvironmentValue } from "@/types/environment";
+
 export type PlanLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.5";
 
 export type PlanIntensity = "low" | "medium" | "medium_high";
@@ -55,6 +57,7 @@ export type PlanTemplate = {
   target: string;
   targetEn: string;
   days: PlanTemplateDay[];
+  environment?: EnvironmentValue;
 };
 
 export type GeneratedPlan = {

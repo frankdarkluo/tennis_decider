@@ -1,4 +1,16 @@
+---
+tags:
+  - type/template
+  - area/process
+  - status/reference
+---
+
 # DEC-XXX-title
+
+## Related docs
+- [[index]]
+- [[roadmap/current]]
+- 补充受影响的 `[[features/...]]`、`[[research/...]]` 或 `[[roadmap/...]]` 文档
 
 ## 状态
 - Proposed

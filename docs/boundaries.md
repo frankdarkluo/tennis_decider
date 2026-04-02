@@ -1,4 +1,21 @@
+---
+aliases:
+  - Boundaries
+  - Agent Guardrails
+tags:
+  - type/policy
+  - area/process
+  - status/reference
+---
+
 # Boundaries — TennisLevel Local Agent Guardrails
+
+## Related docs
+- [[index]]
+- [[product-principles]]
+- [[definition-of-done]]
+- [[roadmap/requirements]]
+- [[roadmap/current]]
 
 ## Absolute no-go zones
 

@@ -1,4 +1,20 @@
+---
+aliases:
+  - YouTube Platform Spec
+tags:
+  - type/feature
+  - area/content
+  - status/reference
+---
+
 # YouTube Platform Spec
+
+## Related docs
+- [[index]]
+- [[definition-of-done]]
+- [[roadmap/current]]
+- [[roadmap/content-expansion-1000]]
+- [[progress/2026-04-01]]
 
 ## Scope
 

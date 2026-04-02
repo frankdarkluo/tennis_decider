@@ -1,4 +1,17 @@
+---
+tags:
+  - type/template
+  - area/process
+  - status/reference
+---
+
 # YYYY-Www Weekly Review
+
+## Related docs
+- [[index]]
+- [[roadmap/current]]
+- [[weekly/project-progress-summary]]
+- 补充本周汇总到的 `[[progress/...]]` 日报
 
 ## 本周最重要的进展
 - 

@@ -3,10 +3,14 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { contents } from "@/data/contents";
 import { creators } from "@/data/creators";
+import { diagnosisRules } from "@/data/diagnosisRules";
 import { expandedContents } from "@/data/expandedContents";
+import { planTemplates } from "@/data/planTemplates";
 import { CREATOR_FEATURED_VIDEO_CHINESE_SUBTITLE_OVERRIDES } from "@/lib/content/chineseSubtitleOverrides";
 import {
   formatCompactViewCount,
+  getCreatorBio,
+  getCreatorShortDescription,
   getContentFocusLine,
   getContentPrimaryTitle,
   getContentSecondaryTitle,
@@ -257,6 +261,120 @@ describe("content display helpers", () => {
         successCriteria: expect.any(Array)
       });
     }
+  });
+
+  it("filters plan templates by environment before resolving the selected plan", () => {
+    planTemplates.push({
+      problemTag: "environment-probe",
+      level: "3.0",
+      title: "Production environment plan",
+      titleEn: "Production environment plan",
+      target: "prod",
+      targetEn: "prod",
+      environment: "production",
+      days: [
+        {
+          day: 1,
+          focus: "prod",
+          focusEn: "prod",
+          contentIds: [],
+          drills: ["prod"],
+          drillsEn: ["prod"],
+          duration: "20 分钟",
+          durationEn: "20 min"
+        }
+      ]
+    });
+    planTemplates.push({
+      problemTag: "environment-probe",
+      level: "3.0",
+      title: "Testing environment plan",
+      titleEn: "Testing environment plan",
+      target: "test",
+      targetEn: "test",
+      environment: "testing",
+      days: [
+        {
+          day: 1,
+          focus: "test",
+          focusEn: "test",
+          contentIds: [],
+          drills: ["test"],
+          drillsEn: ["test"],
+          duration: "20 分钟",
+          durationEn: "20 min"
+        }
+      ]
+    });
+
+    try {
+      const plan = getPlanTemplate("environment-probe", "3.0", "en", [], { environment: "testing" });
+
+      expect(plan.title).toBe("Testing environment plan");
+      expect(plan.days[0]?.focus).toBe("test");
+    } finally {
+      planTemplates.pop();
+      planTemplates.pop();
+    }
+  });
+
+  it("gives new serve-timing content explicit English metadata and environment coverage", () => {
+    const item = expandedContents.find((entry) => entry.id === "content_expanded_youtube_creator_tenniswithtyler_zxizdcpkhbg");
+
+    expect(item).toBeTruthy();
+    if (!item) {
+      throw new Error("Missing content_expanded_youtube_creator_tenniswithtyler_zxizdcpkhbg");
+    }
+
+    expect(item.environment).toEqual(["testing", "production"]);
+    expect(item.displayTitleEn).toBeTruthy();
+    expect(item.focusLineEn).toBeTruthy();
+    expect(getContentPrimaryTitle(item, "en")).toBe(item.displayTitleEn);
+    expect(/[\u3400-\u9fff]/.test(getContentFocusLine(item, "en"))).toBe(false);
+  });
+
+  it("gives new study-facing creators explicit English metadata and environment coverage", () => {
+    const creator = creators.find((entry) => entry.id === "creator_tenniswithtyler");
+    const secondaryCreator = creators.find((entry) => entry.id === "creator_best_tennis_tv");
+
+    expect(creator).toBeTruthy();
+    expect(secondaryCreator).toBeTruthy();
+    if (!creator || !secondaryCreator) {
+      throw new Error("Missing new study-facing creator");
+    }
+
+    expect(creator.environment).toEqual(["testing", "production"]);
+    expect(secondaryCreator.environment).toEqual(["testing", "production"]);
+    expect(creator.shortDescriptionEn).toBeTruthy();
+    expect(creator.bioEn).toBeTruthy();
+    expect(secondaryCreator.shortDescriptionEn).toBeTruthy();
+    expect(secondaryCreator.bioEn).toBeTruthy();
+    expect(/[\u3400-\u9fff]/.test(getCreatorShortDescription(creator, "en"))).toBe(false);
+    expect(/[\u3400-\u9fff]/.test(getCreatorBio(secondaryCreator, "en"))).toBe(false);
+  });
+
+  it("keeps new overhead timing candidates on the canonical overhead lane and tags new rule/template entries for both environments", () => {
+    const overheadIds = [
+      "content_expanded_youtube_creator_patrick_mouratoglou_dkasdyrsseu",
+      "content_expanded_youtube_creator_coach_ben_zink_9gx0iuhaivu",
+      "content_expanded_youtube_creator_performance_plus_tennis_rynzrqflp94",
+      "content_expanded_youtube_creator_2minute_tennis_rzggh0ynlzq",
+      "content_expanded_youtube_creator_2minute_tennis_qenjamtncmc",
+      "content_expanded_youtube_creator_top_tennis_training_pdm6cmb3ef4",
+      "content_expanded_youtube_creator_iron_will_tennis_bzyp0kv8fjg"
+    ];
+
+    for (const id of overheadIds) {
+      const item = expandedContents.find((entry) => entry.id === id);
+
+      expect(item?.problemTags).toContain("overhead-timing");
+      expect(item?.environment).toEqual(["testing", "production"]);
+    }
+
+    expect(diagnosisRules.find((entry) => entry.id === "rule_serve_timing")?.environment).toEqual(["testing", "production"]);
+    expect(diagnosisRules.find((entry) => entry.id === "rule_overhead_timing")?.environment).toEqual(["testing", "production"]);
+    expect(planTemplates.find((entry) => entry.problemTag === "serve-timing" && entry.level === "3.0")?.environment).toEqual(["testing", "production"]);
+    expect(planTemplates.find((entry) => entry.problemTag === "overhead-timing" && entry.level === "3.0")?.environment).toEqual(["testing", "production"]);
   });
 
   it("keeps second-serve English target-box copy aligned with the Chinese side order", () => {

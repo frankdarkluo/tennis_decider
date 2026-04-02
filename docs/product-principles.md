@@ -1,4 +1,20 @@
+---
+aliases:
+  - Product Principles
+tags:
+  - type/policy
+  - area/product
+  - status/reference
+---
+
 # Product Principles
+
+## Related docs
+- [[index]]
+- [[boundaries]]
+- [[definition-of-done]]
+- [[roadmap/current]]
+- [[roadmap/requirements]]
 
 ## Core positioning
 TennisLevel is not a tennis content platform.
@@ -19,9 +35,9 @@ Primary interaction flow:
 
 ## Governance split
 - AGENTS.md: high-leverage product laws and prohibitions only.
-- docs/product-principles.md: cross-feature product principles and quality standards.
-- docs/design/: execution rules for visual hierarchy, density, spacing, and responsive readability.
-- docs/copy/: execution rules for zh/en semantics, fallback wording, diagnosis explanation tone, and plan copy style.
+- [[product-principles]]: cross-feature product principles and quality standards.
+- Future `docs/design/` notes can hold visual hierarchy, density, spacing, and responsive readability rules when that cluster exists.
+- Future `docs/copy/` notes can hold zh/en semantics, fallback wording, diagnosis explanation tone, and plan copy style rules when that cluster exists.
 
 ## Detailed standards kept in docs (not AGENTS)
 - Button size, information density, above-the-fold block count, and cognitive load.

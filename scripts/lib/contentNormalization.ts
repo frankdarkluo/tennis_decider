@@ -7,8 +7,25 @@ export const CONTENT_PROBLEM_TAG_ALIASES: Record<string, string[]> = {
   "trouble-with-slice": ["incoming-slice-trouble"],
   "slow-preparation": ["late-contact"],
   "volley-errors": ["volley-floating", "volley-into-net"],
-  "doubles-net-fear": ["net-confidence"]
+  "doubles-net-fear": ["net-confidence"],
+  "serve-basics": ["first-serve-in", "serve-accuracy"],
+  "serve-rhythm": ["first-serve-in"],
+  "serve-toss-consistency": ["serve-accuracy"],
+  "timing-off": ["overhead-timing"],
+  "forehand-basics": ["running-forehand"],
+  "backhand-basics": ["running-backhand"],
+  "movement-slow": ["running-forehand", "running-backhand", "mobility-limit", "stamina-drop"]
 };
+
+const CANONICAL_ENFORCED_LEGACY_TAGS = new Set([
+  "second-serve-confidence",
+  "serve-toss-inconsistent",
+  "slice-too-high",
+  "trouble-with-slice",
+  "slow-preparation",
+  "volley-errors",
+  "doubles-net-fear"
+]);
 
 const NON_DIRECT_VIDEO_URL_PATTERNS = [
   /search\.bilibili\.com\/all\?keyword=/i,
@@ -29,6 +46,10 @@ export function getMissingCanonicalTagPairs(problemTags: string[]): Array<{ lega
   const missingPairs: Array<{ legacyTag: string; canonicalTag: string }> = [];
 
   for (const [legacyTag, canonicalTags] of Object.entries(CONTENT_PROBLEM_TAG_ALIASES)) {
+    if (!CANONICAL_ENFORCED_LEGACY_TAGS.has(legacyTag)) {
+      continue;
+    }
+
     if (!tagSet.has(legacyTag)) {
       continue;
     }

@@ -16,6 +16,7 @@ import {
   writeAssessmentDraftToStorage,
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
+import { getPostAssessmentHref, resolveAppEnvironment } from "@/lib/environment";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { formatAssessmentYearsLabel, getAssessmentOptionLabel } from "@/lib/i18n/assessmentCopy";
@@ -49,8 +50,13 @@ function getSourceRoute() {
 export default function AssessmentPage() {
   const router = useRouter();
   const { user, configured } = useAuth();
-  const { session, studyMode } = useStudy();
+  const { environment, session, studyMode } = useStudy();
   const { language, t } = useI18n();
+  const appEnvironment = environment ?? resolveAppEnvironment({
+    studyMode,
+    hasSession: Boolean(session)
+  });
+  const postAssessmentHref = getPostAssessmentHref(appEnvironment);
   const [entryState, setEntryState] = useState<"checking" | "questionnaire" | "redirecting">("checking");
   const [searchReady, setSearchReady] = useState(false);
   const [retakeRequested, setRetakeRequested] = useState(false);
@@ -182,12 +188,12 @@ export default function AssessmentPage() {
     const storedResult = readAssessmentResultFromStorage();
     if (storedResult?.answeredCount) {
       setEntryState("redirecting");
-      router.push("/assessment/result");
+      router.push(postAssessmentHref);
       return;
     }
 
     setEntryState("questionnaire");
-  }, [language, retakeRequested, router, searchReady]);
+  }, [language, postAssessmentHref, retakeRequested, router, searchReady]);
 
   useEffect(() => {
     if (entryState !== "questionnaire") {
@@ -316,8 +322,8 @@ export default function AssessmentPage() {
     clearAssessmentDraftFromStorage();
     if (studyMode) {
       updateLocalStudyProgress({
-        lastVisitedPath: "/assessment/result",
-        lastAssessmentPath: "/assessment/result",
+        lastVisitedPath: postAssessmentHref,
+        lastAssessmentPath: postAssessmentHref,
         lastAssessmentLevel: result.level,
         lastAssessmentCompletedAt: new Date().toISOString(),
         assessmentDraftInProgress: false,
@@ -345,7 +351,7 @@ export default function AssessmentPage() {
       weakestAreaCodes: weakestDimensions.slice(0, 2).map((dimension) => dimension.key)
     }, { page: "/assessment" });
 
-    router.push("/assessment/result");
+    router.push(postAssessmentHref);
   };
 
   const handleChoiceSelect = (value: number) => {

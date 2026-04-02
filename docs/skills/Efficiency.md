@@ -1,4 +1,21 @@
+---
+aliases:
+  - Efficiency
+  - Codex Efficiency Prompt
+tags:
+  - type/workflow
+  - area/process
+  - status/reference
+---
+
 # CODEX_HIGH_EFFICIENCY_TOKEN_MASTER_PROMPT.md
+
+## Related docs
+- [[index]]
+- [[skills/WORKFLOW]]
+- [[roadmap/current]]
+- [[prompts/DAILY_PROGRESS_PROMPT]]
+- [[prompts/WEEKLY_REVIEW_PROMPT]]
 
 > 用途：作为 TennisLevel 仓库里给 Codex 的总提示模板  
 > 目标：尽量减少重复上下文、降低无效 token 消耗、提高执行稳定性  

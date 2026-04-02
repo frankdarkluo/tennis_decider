@@ -114,7 +114,7 @@ function replayDiagnosisFromSnapshot(
 function DiagnosePageContent() {
   const searchParams = useSearchParams();
   const { user, configured, loading } = useAuth();
-  const { session, studyMode, language, loading: studyLoading } = useStudy();
+  const { environment, session, studyMode, language, loading: studyLoading } = useStudy();
   const { t } = useI18n();
   const [text, setText] = useState("");
   const [effortMode, setEffortMode] = useState<DiagnosisEffortMode>("standard");
@@ -162,7 +162,8 @@ function DiagnosePageContent() {
       assessmentResult,
       maxRecommendations: 5,
       effortMode,
-      locale: language
+      locale: language,
+      environment
     });
 
     setResult(diagnosisResult);

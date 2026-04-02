@@ -1,4 +1,19 @@
+---
+aliases:
+  - Codex 7 Point Execution
+tags:
+  - type/roadmap
+  - area/diagnosis
+  - status/reference
+---
+
 # Codex 可执行方案：7 点逐点执行（2026-03-31）
+
+## Related docs
+- [[index]]
+- [[roadmap/current]]
+- [[features/diagnosis-study-observability]]
+- [[progress/2026-03-31]]
 
 ## 目标
 把诊断体验从“信息多但分散”升级到“默认简洁、证据可控、过程可复盘、版本可回归”。

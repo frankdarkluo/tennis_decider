@@ -86,7 +86,12 @@ export const creators: Creator[] = [
       catalogScore: 0.9,
       authorityScore: 0.9,
       curatorBoost: 1
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Gaiao Tennis",
+    shortDescriptionEn: "Clear, all-around lessons for beginners building fundamentals",
+    bioEn: "Clear, wide-ranging instruction for beginners who want a solid base and a reliable self-study path.",
+    suitableForEn: ["Complete beginners","Building a forehand foundation","Serve basics"]
   },
   {
     id: "creator_mouratoglou_cn",
@@ -170,7 +175,12 @@ export const creators: Creator[] = [
       catalogScore: 0.75,
       authorityScore: 1,
       curatorBoost: 0.95
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Coach Mouratoglou",
+    shortDescriptionEn: "Pro-level serve framework breakdowns",
+    bioEn: "A professional-coach perspective with high-quality technical breakdowns, great for players who want more systematic training logic and stroke structure.",
+    suitableForEn: ["Advanced technique structure","Pro training perspective","Match execution"]
   },
   {
     id: "creator_furao",
@@ -254,7 +264,12 @@ export const creators: Creator[] = [
       catalogScore: 0.7,
       authorityScore: 0.75,
       curatorBoost: 0.82
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Fu Rao Tennis",
+    shortDescriptionEn: "Technical fixes for contact point and mechanics",
+    bioEn: "Detail-driven technique corrections, especially useful for backhand stability, contact point, and footwork problems.",
+    suitableForEn: ["Backhands into the net","Late contact","Basic stroke corrections"]
   },
   {
     id: "creator_racketbrothers",
@@ -338,7 +353,11 @@ export const creators: Creator[] = [
       catalogScore: 0.68,
       authorityScore: 0.76,
       curatorBoost: 0.77
-    }
+    },
+    environment: ["testing", "production"],
+    shortDescriptionEn: "Doubles tactics and match execution",
+    bioEn: "Match-play and doubles-oriented instruction, especially useful for volley control, returns, and on-court decision-making.",
+    suitableForEn: ["Doubles net play","Returns under pressure","Executing match tactics"]
   },
   {
     id: "creator_cn_a",
@@ -422,7 +441,12 @@ export const creators: Creator[] = [
       catalogScore: 0.58,
       authorityScore: 0.7,
       curatorBoost: 0.56
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Peien Tennis",
+    shortDescriptionEn: "Backhand preparation and footwork basics",
+    bioEn: "Breaks down fundamental stroke prep and ready-position habits, a strong fit for recreational players who want to clean up backhand and footwork issues first.",
+    suitableForEn: ["Backhand net errors","Slow preparation"]
   },
   {
     id: "creator_leontv_cn",
@@ -507,7 +531,12 @@ export const creators: Creator[] = [
       catalogScore: 0.66,
       authorityScore: 0.72,
       curatorBoost: 0.72
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "LeonTV Tennis",
+    shortDescriptionEn: "Systematic forehand and backhand fundamentals",
+    bioEn: "Structured teaching with clear practice frameworks, good for players who want to organize both groundstrokes, basic rhythm, and match understanding together.",
+    suitableForEn: ["Stroke fundamentals","Forehand and backhand stability","Practical match understanding"]
   },
   {
     id: "creator_james",
@@ -592,7 +621,12 @@ export const creators: Creator[] = [
       catalogScore: 0.55,
       authorityScore: 0.55,
       curatorBoost: 0.55
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Prince James",
+    shortDescriptionEn: "All-around improvement for 3.0 to 3.5 players",
+    bioEn: "A recreational-player perspective on mechanics and decision-making, helpful when you want cleaner fundamentals plus better on-court understanding.",
+    suitableForEn: ["2.5 to 4.0 players","Basic stroke framework","Match understanding"]
   },
   {
     id: "creator_liuliu",
@@ -677,7 +711,12 @@ export const creators: Creator[] = [
       catalogScore: 0.6,
       authorityScore: 0.6,
       curatorBoost: 0.6
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Liuliu Tennis",
+    shortDescriptionEn: "Beginner-friendly footwork and consistency",
+    bioEn: "Focused on basic practice organization and steadier footwork, a good fit for beginners who want more structured sessions.",
+    suitableForEn: ["Solo practice structure","Footwork basics","Consistency"]
   },
   {
     id: "creator_pikachu",
@@ -762,7 +801,12 @@ export const creators: Creator[] = [
       catalogScore: 0.56,
       authorityScore: 0.58,
       curatorBoost: 0.58
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Pikachu Tennis",
+    shortDescriptionEn: "Relatable practice logs and real-play examples",
+    bioEn: "Real-player practice and match recordings that help recreational players learn from believable sessions and small improvements.",
+    suitableForEn: ["Practice ideas","Match feel","Beginner improvement"]
   },
   {
     id: "creator_matsuo_yuki_cn",
@@ -846,7 +890,12 @@ export const creators: Creator[] = [
       catalogScore: 0.5,
       authorityScore: 0.86,
       curatorBoost: 0.8
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Yuki Matsuo Pro",
+    shortDescriptionEn: "Advanced technique details and corrections",
+    bioEn: "Professional-player and coach-level breakdowns for players who want more refined technical detail.",
+    suitableForEn: ["Advanced technique details","Forehand and backhand corrections","Serve structure"]
   },
   {
     id: "creator_austin_camp",
@@ -930,7 +979,12 @@ export const creators: Creator[] = [
       catalogScore: 0.58,
       authorityScore: 0.62,
       curatorBoost: 0.6
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Austin Tennis Camp",
+    shortDescriptionEn: "Serve basics and structured training",
+    bioEn: "Camp-style content and drill design, useful for linking serve basics, footwork, and session structure.",
+    suitableForEn: ["Training plans","Serve basics","Footwork drills"]
   },
   {
     id: "creator_yexiu_gege",
@@ -1015,7 +1069,12 @@ export const creators: Creator[] = [
       catalogScore: 0.7,
       authorityScore: 0.64,
       curatorBoost: 0.64
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Yexiu Tennis",
+    shortDescriptionEn: "Self-practice structure for everyday players",
+    bioEn: "Organized, from-zero practice lessons for players who want a clearer framework for footwork, net play, and daily sessions.",
+    suitableForEn: ["Solo practice structure","Footwork and setup","Training plans"]
   },
   {
     id: "creator_sara_airehan",
@@ -1100,7 +1159,12 @@ export const creators: Creator[] = [
       catalogScore: 0.54,
       authorityScore: 0.72,
       curatorBoost: 0.66
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Sara Tennis",
+    shortDescriptionEn: "Former-pro perspective on serve and footwork",
+    bioEn: "A former-pro perspective on serving, warm-up, and footwork, especially helpful for players who want cleaner sequencing and better movement feel.",
+    suitableForEn: ["Serve basics","Footwork drills","Warm-up follow-alongs"]
   },
   {
     id: "creator_braden_tennis_academy",
@@ -1185,7 +1249,12 @@ export const creators: Creator[] = [
       catalogScore: 0.62,
       authorityScore: 0.61,
       curatorBoost: 0.62
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Braden Tennis Academy",
+    shortDescriptionEn: "Grip, spacing, and power explained clearly",
+    bioEn: "Detailed breakdowns of grip, court positioning, power generation, and strike mechanics, strong for rebuilding fundamentals.",
+    suitableForEn: ["Grip reset","Basic positioning","Understanding power generation"]
   },
   {
     id: "creator_topspin_zhixuan",
@@ -1322,7 +1391,12 @@ export const creators: Creator[] = [
       catalogScore: 0.58,
       authorityScore: 0.67,
       curatorBoost: 0.6
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "TOPSPIN Tennis",
+    shortDescriptionEn: "Camp-style footwork and serve systems",
+    bioEn: "Original drill-based content around footwork, wall training, serve organization, and one-handed backhand progressions, useful for players building practice structure.",
+    suitableForEn: ["Footwork training","One-handed backhand progressions","Serve organization"]
   },
   {
     id: "creator_yang_xiaohan",
@@ -1441,7 +1515,12 @@ export const creators: Creator[] = [
       catalogScore: 0.32,
       authorityScore: 0.66,
       curatorBoost: 0.52
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Xiaohan Tennis",
+    shortDescriptionEn: "Demonstration-led forehand, backhand, and volley lessons",
+    bioEn: "A former provincial-team background with demonstration-heavy teaching, helpful for players who learn best by watching real mechanics.",
+    suitableForEn: ["Forehand topspin","Backhand basics","Volleys at net"]
   },
   {
     id: "creator_bugu_tennis",
@@ -1513,7 +1592,12 @@ export const creators: Creator[] = [
       catalogScore: 0.25,
       authorityScore: 0.44,
       curatorBoost: 0.48
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Bugu Tennis",
+    shortDescriptionEn: "Patient explanations from beginner to intermediate",
+    bioEn: "Original, step-by-step explanations with an emphasis on spacing, balance, and foundational technique for players building slowly.",
+    suitableForEn: ["Hitting position","Beginner-to-intermediate progress","Rhythm building"]
   },
   {
     id: "creator_wangdong_tennis",
@@ -1648,7 +1732,12 @@ export const creators: Creator[] = [
       catalogScore: 0.3,
       authorityScore: 0.46,
       curatorBoost: 0.44
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Wangdong Tennis",
+    shortDescriptionEn: "Power-chain and training-list style lessons",
+    bioEn: "A coaching-team account focused on forehand power chains, topspin basics, ball tracking, and at-home training ideas, useful as a practice checklist and review tool.",
+    suitableForEn: ["Forehand power chain","At-home training","Topspin basics"]
   },
   {
     id: "creator_yin_coach_tennis",
@@ -1702,7 +1791,12 @@ export const creators: Creator[] = [
       catalogScore: 0.32,
       authorityScore: 0.45,
       curatorBoost: 0.42
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Coach Yin Tennis",
+    shortDescriptionEn: "Training methods and youth-court coaching",
+    bioEn: "More about junior training, physical preparation, and coaching methods. Stable direct teaching videos are limited for now, but the account is still useful on the rankings page.",
+    suitableForEn: ["Junior training","Training methods","Lesson review"]
   },
   {
     id: "creator_yi_laoshi_sport",
@@ -1755,7 +1849,12 @@ export const creators: Creator[] = [
       catalogScore: 0.24,
       authorityScore: 0.4,
       curatorBoost: 0.41
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Coach Yi Tennis",
+    shortDescriptionEn: "Short, fast fixes for common technique errors",
+    bioEn: "One-minute corrections, quick tips, and serve details. Stable direct teaching videos are limited for now, but the account is still worth surfacing in rankings.",
+    suitableForEn: ["Quick corrections","Serve tips","Footwork details"]
   },
   {
     id: "creator_qingying_tennis",
@@ -1889,7 +1988,12 @@ export const creators: Creator[] = [
       catalogScore: 0.76,
       authorityScore: 0.48,
       curatorBoost: 0.52
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Qingying Tennis",
+    shortDescriptionEn: "A Chinese-subtitled teaching library with strong fundamentals",
+    bioEn: "Primarily curates Chinese-subtitled versions of strong overseas tennis instruction. It is not an original Chinese teaching channel, but it is very practical as a learning library.",
+    suitableForEn: ["Chinese-subtitled lessons","Fundamentals","Serve and forehand basics"]
   },
   {
     id: "creator_weiwei_tennis",
@@ -2025,7 +2129,12 @@ export const creators: Creator[] = [
       catalogScore: 0.48,
       authorityScore: 0.46,
       curatorBoost: 0.49
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "Weiwei Tennis",
+    shortDescriptionEn: "Subtitled teaching focused on serve and contact point",
+    bioEn: "Curates high-quality overseas lessons with Chinese subtitles, especially around contact point, serve, and backhand technique.",
+    suitableForEn: ["Chinese-subtitled lessons","Contact-point improvement","Serve and backhand"]
   },
   {
     id: "creator_mt_tennis_cn",
@@ -2161,7 +2270,12 @@ export const creators: Creator[] = [
       catalogScore: 0.4,
       authorityScore: 0.41,
       curatorBoost: 0.38
-    }
+    },
+    environment: ["testing", "production"],
+    nameEn: "MT Tennis",
+    shortDescriptionEn: "Slow motion and subtitled model-based study",
+    bioEn: "Uses Chinese-subtitled overseas teaching plus slow-motion breakdowns, useful for studying forehand power and technical models.",
+    suitableForEn: ["Slow-motion study","Chinese-subtitled library","Technique model analysis"]
   },
   {
     id: "creator_topspinpro_hidden",
@@ -2188,7 +2302,8 @@ export const creators: Creator[] = [
       catalogScore: 0,
       authorityScore: 0,
       curatorBoost: 0
-    }
+    },
+    environment: ["testing", "production"]
   },
   {
     id: "creator_quanshui_hanshansi_hidden",
@@ -2215,7 +2330,8 @@ export const creators: Creator[] = [
       catalogScore: 0,
       authorityScore: 0,
       curatorBoost: 0
-    }
+    },
+    environment: ["testing", "production"]
   },
   {
     id: "creator_search_curated",
@@ -2247,7 +2363,8 @@ export const creators: Creator[] = [
       catalogScore: 0,
       authorityScore: 0,
       curatorBoost: 0
-    }
+    },
+    environment: ["testing", "production"]
   },
   {
     id: "creator_mouratoglou_official",
@@ -2332,7 +2449,12 @@ export const creators: Creator[] = [
       catalogScore: 0.82,
       authorityScore: 1,
       curatorBoost: 0.98
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "莫拉托格鲁教练",
+    shortDescriptionEn: "World-class coach breakdowns on serve and tactics",
+    bioEn: "Systematic coaching from one of the top coaches in professional tennis, covering serve mechanics, match strategy, and shot selection.",
+    suitableForEn: ["Serve mechanics","Match tactics","Advanced technique"]
   },
   {
     id: "creator_venus_williams",
@@ -2417,7 +2539,12 @@ export const creators: Creator[] = [
       catalogScore: 0.58,
       authorityScore: 1,
       curatorBoost: 0.95
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "维纳斯·威廉姆斯",
+    shortDescriptionEn: "Pro player insights on match mentality",
+    bioEn: "A Grand Slam champion sharing first-hand experience on competition mindset, shot selection, and what it takes to compete at a high level.",
+    suitableForEn: ["Match mentality","Pro perspective","Serve and power"]
   },
   {
     id: "creator_tennis_with_dylan",
@@ -2502,7 +2629,12 @@ export const creators: Creator[] = [
       catalogScore: 0.74,
       authorityScore: 0.82,
       curatorBoost: 1
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "迪伦网球",
+    shortDescriptionEn: "Serve, footwork, and live drill sessions",
+    bioEn: "Energetic drills and footwork-focused practice sessions, useful for players who want to sharpen movement and serve rhythm.",
+    suitableForEn: ["Footwork drills","Serve rhythm","Live practice"]
   },
   {
     id: "creator_top_tennis_training",
@@ -2587,7 +2719,12 @@ export const creators: Creator[] = [
       catalogScore: 0.88,
       authorityScore: 0.84,
       curatorBoost: 0.82
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "顶级网球训练",
+    shortDescriptionEn: "Structured forehand and backhand lessons",
+    bioEn: "Methodical groundstroke instruction covering forehand and backhand fundamentals with clear progressions.",
+    suitableForEn: ["Forehand fundamentals","Backhand stability","Clear progressions"]
   },
   {
     id: "creator_essential_tennis",
@@ -2672,7 +2809,12 @@ export const creators: Creator[] = [
       catalogScore: 1,
       authorityScore: 0.82,
       curatorBoost: 0.8
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "Essential网球",
+    shortDescriptionEn: "Rally depth and match strategy for club players",
+    bioEn: "Strategy-first teaching focused on rally consistency, court positioning, and smart shot selection for recreational competitors.",
+    suitableForEn: ["Rally depth","Court positioning","Match strategy"]
   },
   {
     id: "creator_online_tennis_instruction",
@@ -2757,7 +2899,12 @@ export const creators: Creator[] = [
       catalogScore: 0.9,
       authorityScore: 0.82,
       curatorBoost: 0.78
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "在线网球教学",
+    shortDescriptionEn: "Long-form technique rebuilds and frameworks",
+    bioEn: "In-depth stroke reconstruction lessons for players who want to rebuild their technique from the ground up.",
+    suitableForEn: ["Technique rebuild","Serve framework","Stroke structure"]
   },
   {
     id: "creator_performance_plus_tennis",
@@ -2842,7 +2989,12 @@ export const creators: Creator[] = [
       catalogScore: 0.72,
       authorityScore: 0.78,
       curatorBoost: 0.76
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "进阶网球训练",
+    shortDescriptionEn: "Movement corrections and stroke adjustments",
+    bioEn: "Detail-oriented coaching focused on fixing movement patterns and refining stroke mechanics.",
+    suitableForEn: ["Movement fixes","Stroke refinement","Footwork basics"]
   },
   {
     id: "creator_karue_sell",
@@ -2927,7 +3079,12 @@ export const creators: Creator[] = [
       catalogScore: 0.7,
       authorityScore: 0.86,
       curatorBoost: 0.76
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "卡鲁·塞尔",
+    shortDescriptionEn: "Modern strokes and live match details",
+    bioEn: "A modern-game perspective with insights on shot shaping, timing, and real match execution.",
+    suitableForEn: ["Modern technique","Forehand power","Match execution"]
   },
   {
     id: "creator_intuitive_tennis",
@@ -3012,7 +3169,12 @@ export const creators: Creator[] = [
       catalogScore: 0.78,
       authorityScore: 0.84,
       curatorBoost: 0.78
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "直觉网球",
+    shortDescriptionEn: "Real student corrections at the 4.0–4.5 level",
+    bioEn: "On-court lesson recordings showing real-time corrections for intermediate to advanced recreational players.",
+    suitableForEn: ["Live corrections","Backhand fixes","4.0+ improvement"]
   },
   {
     id: "creator_tennis_evolution",
@@ -3097,7 +3259,12 @@ export const creators: Creator[] = [
       catalogScore: 0.76,
       authorityScore: 0.68,
       curatorBoost: 0.68
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "网球进化",
+    shortDescriptionEn: "Beginner-friendly stroke rebuilds",
+    bioEn: "Step-by-step fundamentals for players who want to rebuild their strokes with a clean, repeatable framework.",
+    suitableForEn: ["Stroke rebuild","Beginner fundamentals","Clean technique"]
   },
   {
     id: "creator_time_value_of_tennis",
@@ -3182,7 +3349,12 @@ export const creators: Creator[] = [
       catalogScore: 0.7,
       authorityScore: 0.7,
       curatorBoost: 0.68
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "网球时间价值",
+    shortDescriptionEn: "Technical detail paired with match IQ",
+    bioEn: "Balances fine-grained technique with tactical understanding, useful for players who want both cleaner strokes and smarter play.",
+    suitableForEn: ["Technique + tactics","Advanced detail","Match understanding"]
   },
   {
     id: "creator_the_tennis_mentor",
@@ -3267,7 +3439,12 @@ export const creators: Creator[] = [
       catalogScore: 0.74,
       authorityScore: 0.66,
       curatorBoost: 0.7
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "网球导师",
+    shortDescriptionEn: "Solid fundamentals and training logic",
+    bioEn: "Clear, well-structured lessons on basic mechanics and practice organization for recreational players.",
+    suitableForEn: ["Fundamentals","Practice structure","Training logic"]
   }
 ,
   {
@@ -3388,7 +3565,12 @@ export const creators: Creator[] = [
       catalogScore: 0.72,
       authorityScore: 0.7,
       curatorBoost: 0.74
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "两分钟网球",
+    shortDescriptionEn: "Quick, precise tips on match-play details",
+    bioEn: "Short, high-density videos that zero in on specific technique points and match situations.",
+    suitableForEn: ["Quick tips","Match-play details","Forehand fixes"]
   },
   {
     id: "creator_feel_tennis_instruction",
@@ -3508,7 +3690,12 @@ export const creators: Creator[] = [
       catalogScore: 0.7,
       authorityScore: 0.72,
       curatorBoost: 0.73
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "感觉网球",
+    shortDescriptionEn: "Deep, thorough technique breakdowns",
+    bioEn: "Detailed stroke analysis that goes beyond the surface, useful for players who want to truly understand why a technique works.",
+    suitableForEn: ["Deep technique","Stroke analysis","Advanced detail"]
   },
   {
     id: "creator_total_tennis_domination",
@@ -3628,7 +3815,12 @@ export const creators: Creator[] = [
       catalogScore: 0.68,
       authorityScore: 0.69,
       curatorBoost: 0.72
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "全面制胜网球",
+    shortDescriptionEn: "Power generation and match connections",
+    bioEn: "Focused on how to generate power efficiently and connect technique to real match situations.",
+    suitableForEn: ["Power generation","Match application","Advanced technique"]
   },
   {
     id: "creator_fuzzy_yellow_balls",
@@ -3748,7 +3940,12 @@ export const creators: Creator[] = [
       catalogScore: 0.74,
       authorityScore: 0.92,
       curatorBoost: 0.78
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "毛绒黄球",
+    shortDescriptionEn: "Sharp match breakdowns with tactical depth",
+    bioEn: "Pro match analysis with clear explanations of tactics, patterns, and decision-making at the highest level.",
+    suitableForEn: ["Match analysis","Tactical patterns","Strategy insights"]
   },
   {
     id: "creator_daily_tennis_lesson",
@@ -3868,7 +4065,12 @@ export const creators: Creator[] = [
       catalogScore: 0.66,
       authorityScore: 0.62,
       curatorBoost: 0.66
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "每日网球课",
+    shortDescriptionEn: "Systematic basics organized by topic",
+    bioEn: "Well-organized lessons covering fundamental strokes topic by topic, good for building a solid base.",
+    suitableForEn: ["Organized basics","Topic-based learning","Beginner-friendly"]
   },
   {
     id: "creator_tennis_hacker",
@@ -3988,7 +4190,12 @@ export const creators: Creator[] = [
       catalogScore: 0.68,
       authorityScore: 0.66,
       curatorBoost: 0.69
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "网球黑客",
+    shortDescriptionEn: "Adult player perspective with direct fixes",
+    bioEn: "A recreational player's coaching perspective with practical, no-nonsense corrections.",
+    suitableForEn: ["Adult learners","Direct corrections","Practical fixes"]
   },
   {
     id: "creator_meike_babel_tennis",
@@ -4108,7 +4315,12 @@ export const creators: Creator[] = [
       catalogScore: 0.63,
       authorityScore: 0.7,
       curatorBoost: 0.68
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "迈克·巴贝尔网球",
+    shortDescriptionEn: "Match patterns and doubles strategy",
+    bioEn: "Detailed match-pattern breakdowns and doubles tactics from a coaching perspective.",
+    suitableForEn: ["Match patterns","Doubles strategy","Advanced play"]
   }
 ,
   {
@@ -4229,7 +4441,12 @@ export const creators: Creator[] = [
       catalogScore: 0.69,
       authorityScore: 0.69,
       curatorBoost: 0.72
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "球拍力学",
+    shortDescriptionEn: "Serve and stroke mechanics explained in depth",
+    bioEn: "Physics-informed breakdowns of serve mechanics and hitting principles.",
+    suitableForEn: ["Serve mechanics","Stroke physics","Detailed analysis"]
   },
   {
     id: "creator_tpa_tennis",
@@ -4349,7 +4566,12 @@ export const creators: Creator[] = [
       catalogScore: 0.66,
       authorityScore: 0.67,
       curatorBoost: 0.7
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "TPA网球",
+    shortDescriptionEn: "Practical modern forehand and serve lessons",
+    bioEn: "Practical instruction on modern forehand technique and serve development.",
+    suitableForEn: ["Modern forehand","Serve development","Practical tips"]
   },
   {
     id: "creator_edgar_giffenig_tennis",
@@ -4469,7 +4691,12 @@ export const creators: Creator[] = [
       catalogScore: 0.72,
       authorityScore: 0.7,
       curatorBoost: 0.66
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "埃德加网球教学",
+    shortDescriptionEn: "Tactics and fundamentals explained clearly",
+    bioEn: "Coaching-focused content that ties tactics to fundamentals with clear, structured explanations.",
+    suitableForEn: ["Tactics","Fundamentals","Structured coaching"]
   },
   {
     id: "creator_patrick_smith_tennis_coaching",
@@ -4589,7 +4816,12 @@ export const creators: Creator[] = [
       catalogScore: 0.69,
       authorityScore: 0.68,
       curatorBoost: 0.7
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "帕特里克教练",
+    shortDescriptionEn: "Doubles timing and shot selection insights",
+    bioEn: "Useful doubles coaching on timing, positioning, and shot selection.",
+    suitableForEn: ["Doubles coaching","Timing","Shot selection"]
   },
   {
     id: "creator_one_minute_tennis",
@@ -4709,7 +4941,12 @@ export const creators: Creator[] = [
       catalogScore: 0.65,
       authorityScore: 0.64,
       curatorBoost: 0.67
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "一分钟网球",
+    shortDescriptionEn: "Dense short videos on specific technique points",
+    bioEn: "Bite-sized videos that each target one specific technique detail or footwork issue.",
+    suitableForEn: ["Short format","Specific fixes","Footwork details"]
   },
   {
     id: "creator_your_online_tennis_coach",
@@ -4829,7 +5066,12 @@ export const creators: Creator[] = [
       catalogScore: 0.63,
       authorityScore: 0.65,
       curatorBoost: 0.67
-    }
+    },
+    environment: ["testing", "production"],
+    nameZh: "你的网球教练",
+    shortDescriptionEn: "Timing, vision, and volley details explained well",
+    bioEn: "Focused on timing, ball tracking, and volley mechanics with clear explanations.",
+    suitableForEn: ["Timing","Ball tracking","Volley mechanics"]
   },
   {
     id: "creator_crunch_time_coaching",
@@ -4951,6 +5193,209 @@ export const creators: Creator[] = [
       catalogScore: 0.66,
       authorityScore: 0.66,
       curatorBoost: 0.68
+    },
+    environment: ["testing", "production"],
+    nameZh: "关键时刻教练",
+    shortDescriptionEn: "Real lesson footage with serve and forehand focus",
+    bioEn: "On-court lesson recordings emphasizing serve and forehand development.",
+    suitableForEn: ["Lesson footage","Serve focus","Forehand development"]
+  },
+  {
+    id: "creator_tenniswithtyler",
+    name: "TenniswithTyler",
+    shortDescription: "发球节奏和训练结构讲得直给，适合快速上手",
+    shortDescriptionEn: "Straightforward serve-rhythm teaching with practical session structure",
+    tags: ["发球节奏", "训练导向", "入门友好"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["2.5", "3.0", "3.5", "4.0", "4.5"],
+    specialties: ["serve", "training", "footwork"],
+    styleTags: ["短平快", "训练导向", "讲解透彻"],
+    bio: "偏发球节奏与训练练法拆解，适合想快速稳定发球 timing 的业余球员。",
+    bioEn: "Focused on serve rhythm and practice structure, ideal for recreational players trying to stabilize serve timing quickly.",
+    suitableFor: ["发球节奏", "基础 timing", "训练上手"],
+    suitableForEn: ["Serve rhythm", "Timing basics", "Practice structure"],
+    featuredContentIds: [],
+    featuredVideos: [],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@TenniswithTyler",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@TenniswithTyler"
+    },
+    avatar: youtubeAvatar("@TenniswithTyler"),
+    environment: ["testing", "production"],
+    rankingSignals: {
+      subscriberScore: 0.45,
+      averageViewsScore: 0.55,
+      activityScore: 0.68,
+      catalogScore: 0.58,
+      authorityScore: 0.56,
+      curatorBoost: 0.6
+    }
+  },
+  {
+    id: "creator_the_game_of_tennis",
+    name: "The Game of Tennis",
+    shortDescription: "以职业案例讲发球 timing 与力量转换",
+    shortDescriptionEn: "Uses pro examples to explain serve timing and power transfer",
+    tags: ["进阶突破", "发球专修", "案例拆解"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["serve", "matchplay", "training"],
+    styleTags: ["案例拆解", "技术原理", "讲解透彻"],
+    bio: "偏职业案例和技术原理拆解，适合希望把发球 timing 与爆发力真正对齐的球员。",
+    bioEn: "Breaks down pro patterns and technical principles for players who want cleaner serve timing and better power sequencing.",
+    suitableFor: ["发球时机", "发球力量", "进阶优化"],
+    suitableForEn: ["Serve timing", "Serve power", "Advanced refinement"],
+    featuredContentIds: [],
+    featuredVideos: [],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@thegameoftennis9660",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@thegameoftennis9660"
+    },
+    avatar: youtubeAvatar("@thegameoftennis9660"),
+    environment: ["testing", "production"],
+    rankingSignals: {
+      subscriberScore: 0.47,
+      averageViewsScore: 0.56,
+      activityScore: 0.64,
+      catalogScore: 0.57,
+      authorityScore: 0.58,
+      curatorBoost: 0.61
+    }
+  },
+  {
+    id: "creator_patrick_mouratoglou",
+    name: "Patrick Mouratoglou",
+    shortDescription: "职业级教学视角，技术要点拆解清晰",
+    shortDescriptionEn: "Elite coaching perspective with clear technical breakdowns",
+    tags: ["进阶突破", "讲解透彻", "职业视角"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["serve", "overhead", "matchplay", "footwork"],
+    styleTags: ["职业视角", "动作拆解", "系统化"],
+    bio: "偏职业训练视角和动作细节拆解，适合想做进阶技术优化的球员。",
+    bioEn: "Brings a pro-level training lens and detailed technical explanations for players making higher-level refinements.",
+    suitableFor: ["高压球时机", "发球技术", "比赛执行"],
+    suitableForEn: ["Overhead timing", "Serve technique", "Match execution"],
+    featuredContentIds: [],
+    featuredVideos: [],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@MouratoglouTennis",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@MouratoglouTennis"
+    },
+    avatar: youtubeAvatar("@MouratoglouTennis"),
+    environment: ["testing", "production"],
+    rankingSignals: {
+      subscriberScore: 0.72,
+      averageViewsScore: 0.7,
+      activityScore: 0.65,
+      catalogScore: 0.68,
+      authorityScore: 0.78,
+      curatorBoost: 0.76
+    }
+  },
+  {
+    id: "creator_coach_ben_zink",
+    name: "Coach Ben Zink",
+    shortDescription: "基础到进阶连接顺滑，节奏类讲解直观",
+    shortDescriptionEn: "Smooth from fundamentals to progression, with intuitive rhythm cues",
+    tags: ["入门友好", "动作拆解", "节奏训练"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["2.5", "3.0", "3.5", "4.0"],
+    specialties: ["overhead", "serve", "footwork", "basics"],
+    styleTags: ["结构化", "步骤化", "练习导向"],
+    bio: "偏步骤化教学和纠错流程，适合把复杂动作拆成可执行步骤。",
+    bioEn: "Favors step-by-step teaching and correction sequences that turn complex mechanics into practical reps.",
+    suitableFor: ["高压球基础", "发球节奏", "步法入门"],
+    suitableForEn: ["Overhead basics", "Serve rhythm", "Footwork basics"],
+    featuredContentIds: [],
+    featuredVideos: [],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@CoachBenZink",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@CoachBenZink"
+    },
+    avatar: youtubeAvatar("@CoachBenZink"),
+    environment: ["testing", "production"],
+    rankingSignals: {
+      subscriberScore: 0.48,
+      averageViewsScore: 0.54,
+      activityScore: 0.63,
+      catalogScore: 0.57,
+      authorityScore: 0.55,
+      curatorBoost: 0.58
+    }
+  },
+  {
+    id: "creator_iron_will_tennis",
+    name: "Iron Will Tennis",
+    shortDescription: "训练思路清楚，动作节奏强调到位",
+    shortDescriptionEn: "Clear training logic with strong emphasis on timing and sequencing",
+    tags: ["训练导向", "讲解透彻", "时机控制"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["3.0", "3.5", "4.0", "4.5"],
+    specialties: ["overhead", "serve", "training", "footwork"],
+    styleTags: ["训练导向", "动作细节", "节奏控制"],
+    bio: "偏训练场景应用和时机控制，适合希望稳定执行动作的球员。",
+    bioEn: "Leans on training applications and timing control for players who want more repeatable execution.",
+    suitableFor: ["高压球稳定", "发球时机", "训练结构"],
+    suitableForEn: ["Overhead stability", "Serve timing", "Practice structure"],
+    featuredContentIds: [],
+    featuredVideos: [],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@IronWillTennis",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@IronWillTennis"
+    },
+    avatar: youtubeAvatar("@IronWillTennis"),
+    environment: ["testing", "production"],
+    rankingSignals: {
+      subscriberScore: 0.44,
+      averageViewsScore: 0.5,
+      activityScore: 0.6,
+      catalogScore: 0.55,
+      authorityScore: 0.52,
+      curatorBoost: 0.56
+    }
+  },
+  {
+    id: "creator_best_tennis_tv",
+    name: "BestTennisTV",
+    shortDescription: "全流程教学内容多，覆盖基础到进阶",
+    shortDescriptionEn: "Plenty of full-process instruction from basics through progression",
+    tags: ["入门友好", "系统化", "全流程"],
+    region: "overseas",
+    platforms: ["YouTube"],
+    levels: ["2.5", "3.0", "3.5", "4.0"],
+    specialties: ["overhead", "serve", "basics", "training"],
+    styleTags: ["系统化", "全流程", "教学导向"],
+    bio: "偏完整动作流程教学，适合需要从头到尾建立技术框架的球员。",
+    bioEn: "Focuses on complete technical sequences for players who want to build a skill from start to finish.",
+    suitableFor: ["高压球全流程", "基础动作梳理", "训练执行"],
+    suitableForEn: ["Full overhead process", "Fundamental technique cleanup", "Practice execution"],
+    featuredContentIds: [],
+    featuredVideos: [],
+    recommendedCount: 0,
+    profileUrl: "https://www.youtube.com/@BestTennisTV",
+    platformLinks: {
+      YouTube: "https://www.youtube.com/@BestTennisTV"
+    },
+    avatar: youtubeAvatar("@BestTennisTV"),
+    environment: ["testing", "production"],
+    rankingSignals: {
+      subscriberScore: 0.42,
+      averageViewsScore: 0.48,
+      activityScore: 0.58,
+      catalogScore: 0.56,
+      authorityScore: 0.51,
+      curatorBoost: 0.54
     }
   }
 

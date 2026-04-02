@@ -1,4 +1,19 @@
+---
+aliases:
+  - Routing First 3 Step Execution
+tags:
+  - type/roadmap
+  - area/product
+  - status/reference
+---
+
 # Routing-First 三步执行方案（2026-03-31）
+
+## Related docs
+- [[index]]
+- [[product-principles]]
+- [[boundaries]]
+- [[roadmap/current]]
 
 ## 目标
 把 TennisLevel 稳定推进为“训练决策路由层”，而不是内容仓库。

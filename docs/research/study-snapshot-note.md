@@ -1,4 +1,19 @@
+---
+aliases:
+  - Study Snapshot Note
+tags:
+  - type/research
+  - area/study
+  - status/reference
+---
+
 # Study Snapshot Note
+
+## Related docs
+- [[index]]
+- [[research/study-mode]]
+- [[research/study-remote-migration-checklist]]
+- [[weekly/project-progress-summary]]
 
 This file is local-only and should not be committed.
 

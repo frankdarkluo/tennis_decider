@@ -1,3 +1,12 @@
+---
+aliases:
+  - Current Roadmap
+tags:
+  - type/roadmap
+  - area/planning
+  - status/active
+---
+
 # Current Roadmap — TennisLevel
 
 > Last updated: 2026-03-31
@@ -5,6 +14,15 @@
 ## Current goal
 
 Improve TennisLevel's core study-ready experience so users can finish a session, understand the diagnosis, and follow a credible next-step training plan.
+
+## Related docs
+- [[index]]
+- [[roadmap/requirements]]
+- [[roadmap/content-expansion-1000]]
+- [[research/study-mode]]
+- [[features/diagnosis-study-observability]]
+- [[progress/2026-04-01]]
+- [[weekly/project-progress-summary]]
 
 ## Priority 1 — active
 
@@ -45,7 +63,7 @@ Improve TennisLevel's core study-ready experience so users can finish a session,
   - summary copy budget with detail overflow
   - cross-effort consistency constraints
   - study flush failure reason buckets and export aggregation
-- See: `docs/roadmap/codex-7-point-execution-2026-03-31.md`
+- See: [[roadmap/codex-7-point-execution-2026-03-31]]
 
 ## Priority 2 — next
 

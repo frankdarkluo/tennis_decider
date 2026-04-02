@@ -1,6 +1,21 @@
+---
+aliases:
+  - Study Facilitator Checklist
+tags:
+  - type/research
+  - area/study
+  - status/checklist
+---
+
 1. what changed  
 - 无代码改动。  
 - 我给你整理一份可直接口头引导参与者的“开始前检查清单”。
+
+## Related docs
+- [[index]]
+- [[research/study-mode]]
+- [[research/study-snapshot-note]]
+- [[weekly/project-progress-summary]]
 
 2. files touched  
 - 无。

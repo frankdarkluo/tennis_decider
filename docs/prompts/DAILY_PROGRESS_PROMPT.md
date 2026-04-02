@@ -1,4 +1,26 @@
+---
+tags:
+  - type/prompt
+  - area/process
+  - status/reference
+---
+
 # DAILY_PROGRESS_PROMPT
+
+## Related docs
+- [[index]]
+- [[templates/daily-progress-template]]
+- [[weekly/project-progress-summary]]
+- [[progress/2026-04-01]]
+
+## Obsidian linking rules
+- 内部文档默认使用 folder-prefixed wiki links，例如 `[[roadmap/current]]`。
+- 生成的 daily note 顶部应包含 `## Related docs`。
+- daily note 至少链接：
+  - [[index]]
+  - [[roadmap/current]]
+  - [[weekly/project-progress-summary]]
+  - 一个最相关的 [[features/...]]、[[research/...]] 或 [[roadmap/...]] 文档
 
 你现在在 `TENNIS_LEVEL` 仓库中工作。请自动整理“今天”的项目进展，并生成或更新当天的 daily progress 文档。
 
@@ -44,6 +66,13 @@
 - 今日文档更新
 - 今日 SQL / schema 变化
 - 今日功能实现或逻辑调整
+
+自动化运行时，wrapper 会额外提供结构化上下文，通常包括：
+
+- 当日 commit log
+- 当前 working tree status
+- 当天已有的 progress note（如果存在）
+- 轻量验证输出（如果本次运行捕获到了）
 
 ## 跳过规则
 
@@ -105,10 +134,15 @@
 1. 如果今天出现新的关键产品决策，建议新建一条 decision 文档。
 2. 如果今天明显推进了某个已有功能，建议更新对应 feature 文档。
 3. 如果今天暴露了持续性问题，建议更新 issue 文档。
-4. 不要自动大范围改写无关文件。
+4. 只有在明确检测到文档结构问题时，才允许调用 `[[prompts/ORGANIZE]]`。
+5. 可触发 `[[prompts/ORGANIZE]]` 的情况包括：
+   - broken internal wiki links
+   - stale references to deleted notes
+   - dangling skill / prompt / template references
+   - orphaned operational notes with no backlinks
+6. 不要自动大范围改写无关文件，也不要因为“也许可以更整齐”而推测性整理文档。
 
 最终目标：
 这份 daily progress 必须能让人一眼看出“今天这个项目到底真实往前走了什么”。
 
 ---
-

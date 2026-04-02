@@ -1,8 +1,10 @@
 import { contents } from "@/data/contents";
 import { expandedContents } from "@/data/expandedContents";
 import { diagnosisRules } from "@/data/diagnosisRules";
+import { filterByEnvironment } from "@/lib/environment";
 import { AssessmentResult } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
+import { AppEnvironment } from "@/types/environment";
 import {
   DiagnosisAlias,
   DiagnosisConfidence,
@@ -31,6 +33,7 @@ export type DiagnoseOptions = {
   contentPool?: ContentItem[];
   effortMode?: DiagnosisEffortMode;
   locale?: "zh" | "en";
+  environment?: AppEnvironment;
 };
 
 export type ProblemPreviewOption = {
@@ -220,6 +223,7 @@ const TITLE_MAP_ZH: Record<string, string> = {
   "first-serve-in": "一发进区率不足",
   "second-serve-reliability": "二发稳定性不足",
   "serve-toss-consistency": "发球抛球稳定性不足",
+  "serve-timing": "发球节奏与触球时机不足",
   "late-contact": "准备偏慢 / 击球点偏晚",
   "net-confidence": "网前信心和动作控制不足",
   "volley-floating": "截击控制不稳，回球容易冒高",
@@ -254,6 +258,7 @@ const TITLE_MAP_EN: Record<string, string> = {
   "first-serve-in": "First-serve make rate",
   "second-serve-reliability": "Second-serve reliability",
   "serve-toss-consistency": "Serve toss consistency",
+  "serve-timing": "Serve timing and rhythm",
   "late-contact": "Late preparation and contact point",
   "net-confidence": "Net play confidence and control",
   "volley-floating": "Volley height control",
@@ -2068,9 +2073,11 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     rules = diagnosisRules,
     contentPool = ALL_DIAGNOSIS_CONTENTS,
     effortMode = "standard",
-    locale = "zh"
+    locale = "zh",
+    environment = "production"
   } = options;
-  const eligibleContentPool = contentPool.filter(isDirectLibraryVideo);
+  const activeRules = filterByEnvironment(rules, environment);
+  const eligibleContentPool = filterByEnvironment(contentPool, environment).filter(isDirectLibraryVideo);
 
   const signalBundle = extractDiagnosisSignalBundle(input);
   const normalizedInput = signalBundle.normalizedInput;
@@ -2079,7 +2086,7 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     return getDefaultDiagnosisResult(level, eligibleContentPool, maxRecommendations, locale);
   }
 
-  const { rule, matchedKeywords, matchedSynonyms, score } = findBestDiagnosisRule(input, rules);
+  const { rule, matchedKeywords, matchedSynonyms, score } = findBestDiagnosisRule(input, activeRules);
 
   if (!rule || score <= 0) {
     const supportAwareCopy = getSupportAwareFallbackCopy(signalBundle.supportSignals, locale);

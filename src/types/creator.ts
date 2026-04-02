@@ -1,3 +1,5 @@
+import { EnvironmentValue } from "@/types/environment";
+
 export type CreatorRegion = "domestic" | "overseas";
 export type CreatorPlatformName = "Bilibili" | "YouTube" | "Xiaohongshu" | "Zhihu" | "Instagram";
 
@@ -55,4 +57,5 @@ export type Creator = {
   rankingEligible?: boolean;
   discoveryEligible?: boolean;
   rankingSignals?: CreatorRankingSignals;
+  environment?: EnvironmentValue;
 };

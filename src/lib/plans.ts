@@ -3,8 +3,10 @@ import { contents } from "@/data/contents";
 import { diagnosisRules } from "@/data/diagnosisRules";
 import { expandedContents } from "@/data/expandedContents";
 import { planTemplates } from "@/data/planTemplates";
+import { filterByEnvironment } from "@/lib/environment";
 import { AssessmentDimension, AssessmentResult, DimensionSummary } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
+import { AppEnvironment } from "@/types/environment";
 import {
   DayPlan,
   DayPlanBlock,
@@ -825,6 +827,13 @@ function getDaySignals(day: DayPlan) {
   const keywordSignals = planDayKeywordSignals.filter((entry) =>
     entry.matches.some((match) => dayText.includes(match.toLowerCase()))
   );
+  const matchedTerms = uniqueStrings(
+    keywordSignals.flatMap((entry) =>
+      entry.matches
+        .map((match) => match.toLowerCase())
+        .filter((match) => dayText.includes(match))
+    )
+  );
 
   const seededSkills = uniqueStrings(items.flatMap((item) => item.skills));
   const seededProblemTags = uniqueStrings(items.flatMap((item) => item.problemTags));
@@ -837,7 +846,7 @@ function getDaySignals(day: DayPlan) {
     problemTags: seededProblemTags.length > 0 ? seededProblemTags : keywordProblemTags,
     relatedSkills: uniqueStrings([...seededSkills, ...keywordSkills]),
     relatedProblemTags: uniqueStrings([...seededProblemTags, ...keywordProblemTags]),
-    matchedTerms: uniqueStrings(keywordSignals.flatMap((entry) => entry.matches.map((match) => match.toLowerCase())))
+    matchedTerms
   };
 }
 
@@ -1460,12 +1469,14 @@ export function getPlanTemplate(
   preferredContentIds: string[] = [],
   options: {
     primaryNextStep?: string;
+    environment?: AppEnvironment;
   } = {}
 ): GeneratedPlan {
   const normalizedProblemTag = normalizePlanProblemTag(problemTag);
   const templateLevel = normalizePlanLevel(level);
+  const activePlanTemplates = filterByEnvironment(planTemplates, options.environment ?? "production");
   const exact = getPlanLookupProblemTags(problemTag)
-    .map((lookupProblemTag) => planTemplates.find((item) => item.problemTag === lookupProblemTag && item.level === templateLevel))
+    .map((lookupProblemTag) => activePlanTemplates.find((item) => item.problemTag === lookupProblemTag && item.level === templateLevel))
     .find((item): item is PlanTemplate => Boolean(item));
   if (exact) {
     const plan = applyPrimaryNextStepContext(
@@ -1488,7 +1499,7 @@ export function getPlanTemplate(
   }
 
   const sameTag = getPlanLookupProblemTags(problemTag)
-    .map((lookupProblemTag) => planTemplates.find((item) => item.problemTag === lookupProblemTag))
+    .map((lookupProblemTag) => activePlanTemplates.find((item) => item.problemTag === lookupProblemTag))
     .find((item): item is PlanTemplate => Boolean(item));
   if (sameTag) {
     const plan = applyPrimaryNextStepContext(

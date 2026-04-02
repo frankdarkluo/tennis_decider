@@ -1,4 +1,21 @@
+---
+aliases:
+  - Diagnosis Study Observability
+tags:
+  - type/feature
+  - area/diagnosis
+  - status/reference
+---
+
 # Diagnosis Study Observability
+
+## Related docs
+- [[index]]
+- [[roadmap/current]]
+- [[research/study-mode]]
+- [[roadmap/codex-7-point-execution-2026-03-31]]
+- [[weekly/project-progress-summary]]
+- [[progress/2026-04-01]]
 
 ## 功能说明
 

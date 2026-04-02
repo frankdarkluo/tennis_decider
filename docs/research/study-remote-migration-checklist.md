@@ -1,4 +1,19 @@
+---
+aliases:
+  - Study Remote Migration Checklist
+tags:
+  - type/research
+  - area/study
+  - status/checklist
+---
+
 # TennisLevel Study Remote Migration Checklist
+
+## Related docs
+- [[index]]
+- [[research/study-mode]]
+- [[research/study-snapshot-note]]
+- [[weekly/project-progress-summary]]
 
 This file is local-only and should not be committed.
 

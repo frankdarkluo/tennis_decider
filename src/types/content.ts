@@ -1,3 +1,5 @@
+import { EnvironmentValue } from "@/types/environment";
+
 export type ContentType = "video" | "article" | "post";
 export type ContentPlatform = "Bilibili" | "Xiaohongshu" | "Zhihu" | "YouTube" | "Instagram";
 export type ContentLanguageCode = "zh" | "en";
@@ -29,4 +31,5 @@ export type ContentItem = {
   duration?: string;
   viewCount?: number;
   url: string;
+  environment?: EnvironmentValue;
 };

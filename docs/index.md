@@ -1,3 +1,13 @@
+---
+aliases:
+  - Docs Index
+  - Knowledge Hub
+tags:
+  - type/hub
+  - area/docs
+  - status/active
+---
+
 # TennisLevel Docs Index
 
 ## Project Overview
@@ -10,51 +20,62 @@ TennisLevel is currently focused on a study-ready workflow for SportsHCI-style r
 - Frozen ranking and library behavior for controlled studies
 - Core bilingual consistency where it affects active study tasks
 
+## Graph Hubs
+- [[roadmap/current]]
+- [[roadmap/requirements]]
+- [[research/study-mode]]
+- [[weekly/project-progress-summary]]
+- [[progress/2026-04-01]]
+- [[roadmap/content-expansion-1000]]
+
 ## Product identity
-- Product principles and anti-drift constraints: `docs/product-principles.md`
+- [[product-principles]]
+- [[boundaries]]
+- [[definition-of-done]]
 
 ## Navigation
-- Progress logs: `docs/progress/`
-- Weekly reviews: `docs/weekly/`
-- Decisions: `docs/decisions/`
-- Features: `docs/features/`
-- Issues and risks: `docs/issues/`
-- Roadmap: `docs/roadmap/`
-- Research notes: `docs/research/`
-- Prompt files: `docs/prompts/`
-- Reusable templates: `docs/templates/`
+- Progress logs: `progress/`
+- Weekly reviews: `weekly/`
+- Decisions: `decisions/`
+- Features: `features/`
+- Issues and risks: `issues/`
+- Roadmap: `roadmap/`
+- Research notes: `research/`
+- Prompt files: `prompts/`
+- Reusable templates: `templates/`
+- Workflow guides: `skills/`
 
 ## Recent Progress Files
-- `docs/progress/2026-04-01.md`
-- `docs/progress/2026-03-30.md`
-- `docs/progress/2026-03-31.md`
-- `docs/weekly/project-progress-summary.md`
-- `docs/weekly/2026-W14.md`
+- [[progress/2026-04-01]]
+- [[progress/2026-03-30]]
+- [[progress/2026-03-31]]
+- [[weekly/project-progress-summary]]
+- [[weekly/2026-W14]]
 
 ## Feature Entrypoints
-- `docs/research/study-mode.md`
-- `docs/features/diagnosis-study-observability.md`
+- [[research/study-mode]]
+- [[features/diagnosis-study-observability]]
+- [[features/youtube-platform-spec]]
 
 ## Research Entrypoints
-- `docs/research/study-remote-migration-checklist.md`
-- `docs/research/study-snapshot-note.md`
-- `docs/research/study-facilitator-checklist.md`
+- [[research/study-remote-migration-checklist]]
+- [[research/study-snapshot-note]]
+- [[research/study-facilitator-checklist]]
 
 ## Roadmap Entrypoints
-- `docs/roadmap/current.md`
-- `docs/roadmap/content-expansion-1000.md`
-- `docs/roadmap/routing-first-3-step-execution-2026-03-31.md`
-- `docs/roadmap/codex-7-point-execution-2026-03-31.md`
+- [[roadmap/current]]
+- [[roadmap/requirements]]
+- [[roadmap/content-expansion-1000]]
+- [[roadmap/routing-first-3-step-execution-2026-03-31]]
+- [[roadmap/codex-7-point-execution-2026-03-31]]
 
 ## Prompt Entrypoints
-- `docs/prompts/ORGANIZE.md`
-- `docs/prompts/DAILY_PROGRESS_PROMPT.md`
-- `docs/prompts/WEEKLY_REVIEW_PROMPT.md`
+- [[prompts/ORGANIZE]]
+- [[prompts/DAILY_PROGRESS_PROMPT]]
+- [[prompts/WEEKLY_REVIEW_PROMPT]]
 
-## Related Existing Docs
-- `docs/CLAUDE_UI_REDESIGN_BRIEF.md`
-- `docs/DEPLOY_VERCEL_SUPABASE.md`
-- `docs/REMAINING_SEARCH_ENTRY_AUDIT.md`
-- `docs/features/youtube-platform-spec.md`
-- `docs/superpowers/specs/2026-03-30-diagnosis-usability-upgrade-design.md`
-- `docs/superpowers/plans/2026-03-30-diagnosis-usability-upgrade.md`
+## Templates and Workflow
+- [[templates/daily-progress-template]]
+- [[templates/weekly-review-template]]
+- [[templates/decision-template]]
+- [[skills/WORKFLOW]]

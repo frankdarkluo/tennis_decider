@@ -418,7 +418,7 @@ describe("app smoke tests", () => {
     }
 
     await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith("/assessment/result");
+      expect(mockPush).toHaveBeenCalledWith("/");
     });
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
@@ -431,7 +431,7 @@ describe("app smoke tests", () => {
     render(React.createElement(AssessmentPage));
 
     await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith("/assessment/result");
+      expect(mockPush).toHaveBeenCalledWith("/");
     });
   });
 

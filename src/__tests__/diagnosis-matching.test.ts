@@ -233,6 +233,41 @@ describe("diagnosis alias normalization", () => {
     expect(result.rule?.problemTag).toBe("pressure-tightness");
   });
 
+  it("filters diagnosis rules by environment before selecting the winning rule", () => {
+    const productionRule: DiagnosisRule = {
+      id: "rule_environment_production",
+      keywords: ["testprobe"],
+      category: ["serve"],
+      problemTag: "first-serve-in",
+      causes: ["prod"],
+      fixes: ["prod"],
+      recommendedContentIds: [],
+      drills: [],
+      environment: "production",
+      searchQueries: { bilibili: [], youtube: [] }
+    };
+    const testingRule: DiagnosisRule = {
+      id: "rule_environment_testing",
+      keywords: ["testprobe"],
+      category: ["serve"],
+      problemTag: "second-serve-reliability",
+      causes: ["test"],
+      fixes: ["test"],
+      recommendedContentIds: [],
+      drills: [],
+      environment: "testing",
+      searchQueries: { bilibili: [], youtube: [] }
+    };
+    const result = diagnoseProblem("testprobe", {
+      rules: [productionRule, testingRule],
+      contentPool: [],
+      environment: "testing"
+    });
+
+    expect(result.problemTag).toBe("second-serve-reliability");
+    expect(result.matchedRuleId).toBe("rule_environment_testing");
+  });
+
   it("renders a more scene-aware title, summary, and first fix for mixed pressure forehand input", () => {
     const result = diagnoseProblem("正手在关键分的时候，如果对手在网前，我容易紧张，一发力就出界");
 

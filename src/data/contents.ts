@@ -34,7 +34,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/f141ebcafbe7565d32be6b26d6854fe6d3bf845c.jpg',
     viewCount: 150980,
     duration: '1:14',
-    url: "https://www.bilibili.com/video/BV1XM4y187mR"
+    url: "https://www.bilibili.com/video/BV1XM4y187mR",
+    environment: ["testing", "production"],
+    displayTitleEn: "Forehand fundamentals: build a repeatable swing shape",
+    focusLineEn: "For players whose forehand mechanics still feel unsettled."
   },
   {
     id: "content_gaiao_02",
@@ -54,7 +57,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/2f68ad0409688f7462d23fc37751422bf036b0f1.jpg',
     viewCount: 8640,
     duration: '9:24',
-    url: "https://www.bilibili.com/video/BV1q7411L7cD"
+    url: "https://www.bilibili.com/video/BV1q7411L7cD",
+    environment: ["testing", "production"],
+    displayTitleEn: "Serve fundamentals: build rhythm before power",
+    focusLineEn: "For players who rush the serve and lose trust in the second serve."
   },
   {
     id: "content_gaiao_03",
@@ -73,7 +79,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/e4600b2ca3cd245f33ad97fb5d03cb74ccb2006e.jpg',
     viewCount: 39526,
     duration: '1:03',
-    url: "https://www.bilibili.com/video/BV1YL411d7oX"
+    url: "https://www.bilibili.com/video/BV1YL411d7oX",
+    environment: ["testing", "production"],
+    displayTitleEn: "Backhand basics: why the contact never feels solid",
+    focusLineEn: "For players whose backhand contact stays weak or inconsistent."
   },
   {
     id: "content_gaiao_04",
@@ -93,7 +102,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/7c278f743d09ee825fcf31ce9dd1bef8d018e60f.jpg',
     viewCount: 2908,
     duration: '1:00',
-    url: "https://www.bilibili.com/video/BV1qM4y1k7Lo"
+    url: "https://www.bilibili.com/video/BV1qM4y1k7Lo",
+    environment: ["testing", "production"],
+    displayTitleEn: "Forehand topspin: start with the right grip and arc",
+    focusLineEn: "For flat forehands that fly long when you try to add spin."
   },
   {
     id: "content_gaiao_05",
@@ -112,7 +124,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/040a19ed2bc864e2d9101347b15782f7e0e36bc4.jpg',
     viewCount: 60772,
     duration: '1:27',
-    url: "https://www.bilibili.com/video/BV1Tg4y1w7Xe"
+    url: "https://www.bilibili.com/video/BV1Tg4y1w7Xe",
+    environment: ["testing", "production"],
+    displayTitleEn: "Movement basics: build your split step and arrival rhythm",
+    focusLineEn: "For slow starters who never feel balanced at contact."
   },
   {
     id: "content_gaiao_06",
@@ -131,7 +146,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/51f03db09cb87e128474d2ece17fbbdf2ea2f057.jpg',
     viewCount: 36917,
     duration: '0:32',
-    url: "https://www.bilibili.com/video/BV1YA4y1D7YR"
+    url: "https://www.bilibili.com/video/BV1YA4y1D7YR",
+    environment: ["testing", "production"],
+    displayTitleEn: "Serve variation: add sidespin with grip and brush direction",
+    focusLineEn: "For players who want spin on the serve but cannot create rotation."
   },
   {
     id: "content_zlx_01",
@@ -151,7 +169,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/aa0f06a058fe455eb6058d42862de5f3a0ff7295.jpg',
     viewCount: 364,
     duration: '0:54',
-    url: "https://www.bilibili.com/video/BV1aN4y1f7NC"
+    url: "https://www.bilibili.com/video/BV1aN4y1f7NC",
+    environment: ["testing", "production"],
+    displayTitleEn: "Serve rhythm: feel the pause instead of forcing pace",
+    focusLineEn: "For second serves that lose rhythm as soon as you try to hit harder."
   },
   {
     id: "content_zlx_02",
@@ -167,7 +188,10 @@ export const contents: ContentItem[] = [
     reason: "适合作为发球节奏类问题的定向推荐内容。",
     useCases: ["上步发球时总踩不顺", "发球上下肢节奏老是对不上"],
     coachReason: "上步节奏对了发球自然顺，这条把脚步和抛球的配合拆得很细。",
-    url: bilibiliSearchUrl("奥斯汀-冬令营 上步发球 节奏 网球")
+    url: bilibiliSearchUrl("奥斯汀-冬令营 上步发球 节奏 网球"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Step-in serve rhythm: coordinate the feet and upper body",
+    focusLineEn: "For players who cannot sync the step-in serve."
   },
   {
     id: "content_zlx_03",
@@ -183,7 +207,10 @@ export const contents: ContentItem[] = [
     reason: "适合作为 3.5 左右球员的细节提升样本。",
     useCases: ["反手和上网衔接不顺", "中前场处理总是慢半拍"],
     coachReason: "反手打完不知道怎么跟进是3.0-3.5很典型的断层，这条专门解决衔接。",
-    url: bilibiliSearchUrl("松尾友贵Pro 反手 上网 过渡 网球")
+    url: bilibiliSearchUrl("松尾友贵Pro 反手 上网 过渡 网球"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Technical details: connect the backhand to transition play",
+    focusLineEn: "For players who struggle to link the backhand to movement into the front court."
   },
   {
     id: "content_ttt_01",
@@ -203,7 +230,10 @@ export const contents: ContentItem[] = [
     thumbnail: 'https://img.youtube.com/vi/IiRGdagtOKE/mqdefault.jpg',
     viewCount: 1662697,
     duration: '16:42',
-    url: "https://www.youtube.com/watch?v=IiRGdagtOKE"
+    url: "https://www.youtube.com/watch?v=IiRGdagtOKE",
+    environment: ["testing", "production"],
+    displayTitleEn: "Serve masterclass for beginners: toss, rhythm, and body position",
+    focusLineEn: "For unstable tosses that throw off the entire serve motion."
   },
   {
     id: "content_et_01",
@@ -223,7 +253,10 @@ export const contents: ContentItem[] = [
     thumbnail: 'https://img.youtube.com/vi/rqvhgHDx-lE/mqdefault.jpg',
     viewCount: 173776,
     duration: '6:43',
-    url: "https://www.youtube.com/watch?v=rqvhgHDx-lE"
+    url: "https://www.youtube.com/watch?v=rqvhgHDx-lE",
+    environment: ["testing", "production"],
+    displayTitleEn: "How to control groundstroke depth",
+    focusLineEn: "For rally balls that keep landing short near the service line."
   },
   {
     id: "content_it_01",
@@ -243,7 +276,10 @@ export const contents: ContentItem[] = [
     thumbnail: 'https://img.youtube.com/vi/d-VvKDgoIew/mqdefault.jpg',
     viewCount: 458190,
     duration: '11:13',
-    url: "https://www.youtube.com/watch?v=d-VvKDgoIew"
+    url: "https://www.youtube.com/watch?v=d-VvKDgoIew",
+    environment: ["testing", "production"],
+    displayTitleEn: "Backhand slice lesson with a 4.5 student",
+    focusLineEn: "For slices that float up and land short with no pressure."
   },
 
   {
@@ -261,7 +297,10 @@ export const contents: ContentItem[] = [
     useCases: ["反手一发力就下网", "反手拍面总是控不住"],
     coachReason: "反手下网先别想着提拍面，先看这条把击球点位置调对。",
     duration: "04:50",
-    url: bilibiliSearchUrl("是佩恩呀 反手 下网 网球")
+    url: bilibiliSearchUrl("是佩恩呀 反手 下网 网球"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Backhand into the net? Fix contact before adding pace",
+    focusLineEn: "For backhands that dive into the net as soon as you swing harder."
   },
   {
     id: "content_cn_a_02",
@@ -278,7 +317,10 @@ export const contents: ContentItem[] = [
     useCases: ["来球一快就慢半拍", "总在身体后侧才碰到球"],
     coachReason: "准备慢不是反应慢，是启动时机不对，这条能帮你提前半拍。",
     duration: "05:20",
-    url: bilibiliSearchUrl("是佩恩呀 击球点 晚 准备 网球")
+    url: bilibiliSearchUrl("是佩恩呀 击球点 晚 准备 网球"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Late contact? Prepare earlier and meet the ball out front",
+    focusLineEn: "For players who feel rushed and keep contacting the ball beside or behind the body."
   },
   {
     id: "content_cn_a_03",
@@ -297,7 +339,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/95a16864f40364f032e3ffa7989717aa9ab9cf21.jpg',
     viewCount: 20949,
     duration: '1:58',
-    url: "https://www.bilibili.com/video/BV1SZ6qYFEVS/"
+    url: "https://www.bilibili.com/video/BV1SZ6qYFEVS/",
+    environment: ["testing", "production"],
+    displayTitleEn: "Slow, messy footwork? Clean up these four foundation patterns",
+    focusLineEn: "For players who freeze on the first step or never find a comfortable hitting position."
   },
 
   {
@@ -314,7 +359,10 @@ export const contents: ContentItem[] = [
     reason: "更适合新手双打网前建立信心。",
     useCases: ["双打站上网前就紧张", "网前只会硬挡不会处理"],
     coachReason: "双打网前不需要你打出漂亮截击，先学会站稳和挡住就能赢很多分。",
-    url: bilibiliSearchUrl("RacketBrothers 双打 网前 封网 截击")
+    url: bilibiliSearchUrl("RacketBrothers 双打 网前 封网 截击"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Doubles net play: learn to hold position and block first",
+    focusLineEn: "For players who freeze or panic when standing at the net in doubles."
   },
   {
     id: "content_cn_b_02",
@@ -330,7 +378,10 @@ export const contents: ContentItem[] = [
     reason: "对双打初学者非常友好。",
     useCases: ["双打里总不知道该站哪", "和搭档总撞位或漏位"],
     coachReason: "双打输球很多时候不是技术差而是站位乱，这条把基础阵型讲透了。",
-    url: bilibiliSearchUrl("RacketBrothers 双打 站位 轮转 配合")
+    url: bilibiliSearchUrl("RacketBrothers 双打 站位 轮转 配合"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Doubles positioning: the basic formations every pair needs",
+    focusLineEn: "For doubles players who keep overlapping with a partner or leaving open space."
   },
   {
     id: "content_cn_b_03",
@@ -346,7 +397,10 @@ export const contents: ContentItem[] = [
     reason: "直接对应网前失误和截击成功率低的问题。",
     useCases: ["截击动作总是太大", "网前球总弹飞或下网"],
     coachReason: "截击最怕动作大，这条教你缩小挥拍幅度，成功率马上能感觉到变化。",
-    url: bilibiliSearchUrl("RacketBrothers 截击 动作 缩小 挥拍 网球")
+    url: bilibiliSearchUrl("RacketBrothers 截击 动作 缩小 挥拍 网球"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Volleys: shorten the motion and raise your success rate",
+    focusLineEn: "For volley swings that get too big and send the ball long or into the net."
   },
 
   {
@@ -364,7 +418,10 @@ export const contents: ContentItem[] = [
     useCases: ["相持里总把球打浅", "只顾过网没有深度目标"],
     coachReason: "3.0-3.5最容易赢球的方式不是打得狠而是打得深，先看这条建立深度意识。",
     duration: "05:00",
-    url: bilibiliSearchUrl("网球 稳定性 打深 底线 深度")
+    url: bilibiliSearchUrl("网球 稳定性 打深 底线 深度"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Consistency first: hit deeper before chasing power",
+    focusLineEn: "For rally balls that land short and never push the opponent back."
   },
   {
     id: "content_cn_c_02",
@@ -383,7 +440,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/bcd585e7eb1eb34b3f90ec584d18425635997e30.jpg',
     viewCount: 25228,
     duration: '7:25',
-    url: "https://www.bilibili.com/video/BV1PN4y1R7jL"
+    url: "https://www.bilibili.com/video/BV1PN4y1R7jL",
+    environment: ["testing", "production"],
+    displayTitleEn: "Split-step timing: why you keep arriving late",
+    focusLineEn: "For slow first steps and split steps that happen at the wrong moment."
   },
   {
     id: "content_cn_c_03",
@@ -402,7 +462,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/49156c0240cb1bee00a0cda1498f18a984bf3527.jpg',
     viewCount: 53846,
     duration: '1:06',
-    url: "https://www.bilibili.com/video/BV1LvS3YWEnL/"
+    url: "https://www.bilibili.com/video/BV1LvS3YWEnL/",
+    environment: ["testing", "production"],
+    displayTitleEn: "No hitting partner? Five solo drills you can start today",
+    focusLineEn: "For players who do not know how to structure a useful session alone."
   },
 
   {
@@ -419,7 +482,10 @@ export const contents: ContentItem[] = [
     reason: "适合用来解释上旋和控制的关系。",
     useCases: ["正手一发力就出界", "正手弧线太平压不住球"],
     coachReason: "正手出界多数是弧线不够而不是力量太大，先看这条调整过网高度。",
-    url: "https://www.bilibili.com/video/av220842429"
+    url: "https://www.bilibili.com/video/av220842429",
+    environment: ["testing", "production"],
+    displayTitleEn: "Forehand flying long? Build arc before adding speed",
+    focusLineEn: "For forehands that sail long once you try to accelerate."
   },
   {
     id: "content_cn_d_02",
@@ -438,7 +504,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/8ec3416ebcfbb18422c57f72fa81f2acab2bb791.jpg',
     viewCount: 309390,
     duration: '13:16',
-    url: "https://www.bilibili.com/video/BV1h64y1D78J"
+    url: "https://www.bilibili.com/video/BV1h64y1D78J",
+    environment: ["testing", "production"],
+    displayTitleEn: "Forehand power: stop blaming your arm",
+    focusLineEn: "For forehands where only the arm swings and the body does not join in."
   },
   {
     id: "content_cn_d_03",
@@ -457,7 +526,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/7e035fbef7f29ef5cff1dac5f7a84bcd72e8b445.jpg',
     viewCount: 38862,
     duration: '8:06',
-    url: "https://www.bilibili.com/video/BV1QRLizLEnv"
+    url: "https://www.bilibili.com/video/BV1QRLizLEnv",
+    environment: ["testing", "production"],
+    displayTitleEn: "Feel the topspin: brush up the back of the ball",
+    focusLineEn: "For players who cannot create a safe, repeatable topspin arc."
   },
 
   {
@@ -475,7 +547,10 @@ export const contents: ContentItem[] = [
     useCases: ["接发总被对手先压住", "接发准备总是不够早"],
     coachReason: "接发被动大多不是反应慢而是准备姿势和站位不对，这条从根上解决。",
     duration: "06:20",
-    url: bilibiliSearchUrl("网球 接发球 站位 准备")
+    url: bilibiliSearchUrl("网球 接发球 站位 准备"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Passive on returns? Fix the setup and court position first",
+    focusLineEn: "For return games where the server controls the first shot before you settle in."
   },
   {
     id: "content_cn_e_02",
@@ -491,7 +566,10 @@ export const contents: ContentItem[] = [
     reason: "适合作为比赛心理和发接发专题的桥梁内容。",
     useCases: ["比赛一开始就乱节奏", "发接发之间没有固定流程"],
     coachReason: "比赛前几局建立节奏感特别重要，这条教你用固定流程稳住开局。",
-    url: bilibiliSearchUrl("网球 比赛 开局 发接发 流程")
+    url: bilibiliSearchUrl("网球 比赛 开局 发接发 流程"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Stop losing the opening games: lock in your serve-return routine",
+    focusLineEn: "For matches that get chaotic before your first few points feel organized."
   },
   {
     id: "content_cn_e_03",
@@ -507,7 +585,10 @@ export const contents: ContentItem[] = [
     reason: "适合搭配接发球和深度不足类问题。",
     useCases: ["接发回球总是太短", "接发后第一拍总给对手舒服进攻"],
     coachReason: "接发不需要打出制胜球，送深就是最好的接发，这条帮你降低失误。",
-    url: bilibiliSearchUrl("网球 接发球 第一拍 送深")
+    url: bilibiliSearchUrl("网球 接发球 第一拍 送深"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Do not rush the return: send the first ball deep",
+    focusLineEn: "For return balls that land short and hand over the attack immediately."
   },
 
   {
@@ -524,7 +605,10 @@ export const contents: ContentItem[] = [
     reason: "适合作为比赛心理问题的基础阅读。",
     useCases: ["一记分就手紧", "比赛里越失误越不敢打"],
     coachReason: "紧张的根源是盯着比分而不是盯着下一拍该做什么，这条帮你切换注意力。",
-    url: bilibiliSearchUrl("网球 比赛 紧张 执行 心态")
+    url: bilibiliSearchUrl("网球 比赛 紧张 执行 心态"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Under pressure, stop watching the score and play the next ball",
+    focusLineEn: "For players who tighten up as soon as the score starts to matter."
   },
   {
     id: "content_cn_f_02",
@@ -543,7 +627,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/9b9d88aec4933ae8c7d31db2bec9ac08f114ba31.jpg',
     viewCount: 24778,
     duration: '1:03',
-    url: "https://www.bilibili.com/video/BV16uHizBEp2/"
+    url: "https://www.bilibili.com/video/BV16uHizBEp2/",
+    environment: ["testing", "production"],
+    displayTitleEn: "Practice feels random? Build a cleaner training menu",
+    focusLineEn: "For players who get to the court without a clear session structure."
   },
   {
     id: "content_cn_f_03",
@@ -560,7 +647,10 @@ export const contents: ContentItem[] = [
     useCases: ["每次训练都改太多点", "练了很多但没有连续进步"],
     coachReason: "每次只改一个点坚持两周比一次改五个点有效十倍，这条帮你学会聚焦。",
     duration: "04:35",
-    url: bilibiliSearchUrl("网球 练了很多 没进步 训练 聚焦")
+    url: bilibiliSearchUrl("网球 练了很多 没进步 训练 聚焦"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Practising a lot but not improving? Narrow the goal",
+    focusLineEn: "For players who try to change too many things in one session."
   },
 
   {
@@ -578,7 +668,10 @@ export const contents: ContentItem[] = [
     useCases: ["防守时只会平打回去", "不会用高球争取调整时间"],
     coachReason: "高球是3.0-3.5最被低估的防守武器，学会了能帮你多撑住很多被动球。",
     duration: "05:12",
-    url: bilibiliSearchUrl("网球 高球 弧线 落点 防守")
+    url: bilibiliSearchUrl("网球 高球 弧线 落点 防守"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Lobs: understand arc and placement before you hit",
+    focusLineEn: "For defensive shots that always go flat instead of buying recovery time."
   },
   {
     id: "content_common_02",
@@ -595,7 +688,10 @@ export const contents: ContentItem[] = [
     useCases: ["遇到下旋来球就仓促出手", "击球点总掉到身体后面"],
     coachReason: "打下旋来球的关键是早准备和在前点迎球，这条把时机讲得很到位。",
     duration: "05:05",
-    url: bilibiliSearchUrl("是佩恩呀 下旋 来球 击球点 网球")
+    url: bilibiliSearchUrl("是佩恩呀 下旋 来球 击球点 网球"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Handling underspin: do not let the contact point drift behind you",
+    focusLineEn: "For players whose form breaks down against incoming slice or underspin."
   },
   {
     id: "content_common_03",
@@ -611,7 +707,10 @@ export const contents: ContentItem[] = [
     reason: "适合作为 3.5 球员的专项问题内容。",
     useCases: ["反手切削总飘起来", "切削落点浅且没有压迫感"],
     coachReason: "切削飘多数是送拍方向往上了，这条教你往前送而不是往下砍。",
-    url: bilibiliSearchUrl("松尾友贵Pro 反手 切削 控制 网球")
+    url: bilibiliSearchUrl("松尾友贵Pro 反手 切削 控制 网球"),
+    environment: ["testing", "production"],
+    displayTitleEn: "Backhand slice floating? Fix racquet face and follow-through",
+    focusLineEn: "For slices that lack control and land without any pressure."
   },
   {
     id: "content_rb_01",
@@ -630,7 +729,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/8e9a2416bfa72356df1d9ce499d1221652b5c7ef.jpg',
     viewCount: 138187,
     duration: '22:03',
-    url: "https://www.bilibili.com/video/BV1954y147nF"
+    url: "https://www.bilibili.com/video/BV1954y147nF",
+    environment: ["testing", "production"],
+    displayTitleEn: "Doubles net play: positioning and volley timing",
+    focusLineEn: "For doubles players who hesitate at net or miss the poach timing."
   },
   {
     id: "content_rb_02",
@@ -649,7 +751,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/a7c193cdba7994f40ab95c947c618f94bb1f8973.jpg',
     viewCount: 285935,
     duration: '30:38',
-    url: "https://www.bilibili.com/video/BV1Ep4y1W7kc"
+    url: "https://www.bilibili.com/video/BV1Ep4y1W7kc",
+    environment: ["testing", "production"],
+    displayTitleEn: "Return of serve under pressure: positioning and first-ball choices",
+    focusLineEn: "For return games where the first shot has no quality or direction."
   },
   {
     id: "content_rb_03",
@@ -668,7 +773,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/d8bbdfd63f468624fd2530609984dbf8dea11039.jpg',
     viewCount: 36443,
     duration: '7:41',
-    url: "https://www.bilibili.com/video/BV1JN4y18792"
+    url: "https://www.bilibili.com/video/BV1JN4y18792",
+    environment: ["testing", "production"],
+    displayTitleEn: "Match execution in doubles: stabilize first, then press",
+    focusLineEn: "For players whose match decisions and doubles rhythm break down under pressure."
   },
   {
     id: "content_fr_01",
@@ -687,7 +795,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/82d0351f649ba96ee628548caafa0ae057748b00.jpg',
     viewCount: 10010,
     duration: '10:54',
-    url: "https://www.bilibili.com/video/BV1jm4y1X7yF"
+    url: "https://www.bilibili.com/video/BV1jm4y1X7yF",
+    environment: ["testing", "production"],
+    displayTitleEn: "Backhand net errors: clean up contact and racquet-face control",
+    focusLineEn: "For backhands that keep finding the net or making contact too late."
   },
   {
     id: "content_fr_02",
@@ -707,7 +818,10 @@ export const contents: ContentItem[] = [
     thumbnail: '/thumbnails/bilibili/97f31cc41477bc4c154cffde5a5206c6fb71cc83.jpg',
     viewCount: 12916,
     duration: '7:56',
-    url: "https://www.bilibili.com/video/BV1SQ4y1M7y8"
+    url: "https://www.bilibili.com/video/BV1SQ4y1M7y8",
+    environment: ["testing", "production"],
+    displayTitleEn: "Late contact? Fix your preparation timing and footwork",
+    focusLineEn: "For players who are always half a beat late getting set for the ball."
   },
   {
     id: "content_fr_03",
@@ -725,6 +839,9 @@ export const contents: ContentItem[] = [
     coachReason: "先稳再快是正手进阶的正确顺序，这条教你在不丢稳定性的前提下加速。",
     thumbnail: '/thumbnails/bilibili/7910cfd92081586293280ac5f6c4f0091ba4a6d7.jpg',
     duration: '9:22',
-    url: "https://www.bilibili.com/video/BV1Zf4y1b7aW"
+    url: "https://www.bilibili.com/video/BV1Zf4y1b7aW",
+    environment: ["testing", "production"],
+    displayTitleEn: "Forehand power chain: go from stable to faster",
+    focusLineEn: "For forehands that feel weak or break down when you add speed."
   }
 ];

@@ -2,6 +2,7 @@
 
 import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { flushEventQueue, setEventLoggerStudySession } from "@/lib/eventLogger";
+import { resolveAppEnvironment } from "@/lib/environment";
 import { clearLocalStudyData } from "@/lib/study/localData";
 import { persistStudySessionEnd, persistStudySessionStart } from "@/lib/study/client";
 import {
@@ -16,12 +17,14 @@ import {
   StudyLanguage,
   StudySession
 } from "@/types/study";
+import { AppEnvironment } from "@/types/environment";
 
 const APP_LANGUAGE_KEY = "tennislevel.app_language";
 
 type StudyContextValue = {
   session: StudySession | null;
   studyMode: boolean;
+  environment: AppEnvironment;
   language: StudyLanguage;
   canChangeLanguage: boolean;
   loading: boolean;
@@ -73,6 +76,10 @@ export function StudyProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const activeSession = session && !session.endedAt ? session : null;
+  const environment = resolveAppEnvironment({
+    studyMode: Boolean(activeSession),
+    hasSession: Boolean(activeSession)
+  });
   const language = activeSession?.language ?? appLanguage;
   const canChangeLanguage = !activeSession;
 
@@ -90,6 +97,7 @@ export function StudyProvider({ children }: { children: ReactNode }) {
   const value = useMemo<StudyContextValue>(() => ({
     session: activeSession,
     studyMode: Boolean(activeSession),
+    environment,
     language,
     canChangeLanguage,
     loading,
@@ -140,7 +148,7 @@ export function StudyProvider({ children }: { children: ReactNode }) {
       setEventLoggerStudySession(null);
       setSession(null);
     }
-  }), [activeSession, canChangeLanguage, language, loading]);
+  }), [activeSession, canChangeLanguage, environment, language, loading]);
 
   return <StudyContext.Provider value={value}>{children}</StudyContext.Provider>;
 }
