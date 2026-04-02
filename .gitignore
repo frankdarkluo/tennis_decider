@@ -27,6 +27,7 @@ pnpm-debug.log*
 # os/editor
 .DS_Store
 .vscode/
+.obsidian/
 .history/
 .worktrees/
 
