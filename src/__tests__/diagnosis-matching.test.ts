@@ -149,6 +149,18 @@ describe("diagnosis alias normalization", () => {
     expect(findBestDiagnosisRule("高压球下来总找不准点").rule?.problemTag).toBe("overhead-timing");
   });
 
+  it("recognizes more colloquial serve-toss phrasing", () => {
+    expect(findBestDiagnosisRule("发球老是扔不准球").rule?.problemTag).toBe("serve-toss-consistency");
+  });
+
+  it("recognizes more colloquial forehand-power phrasing", () => {
+    expect(findBestDiagnosisRule("正手怎么抡都不走球").rule?.problemTag).toBe("forehand-no-power");
+  });
+
+  it("recognizes more colloquial return-pressure phrasing", () => {
+    expect(findBestDiagnosisRule("接发一上来就被顶回去").rule?.problemTag).toBe("return-under-pressure");
+  });
+
   it("prefers stroke-plus-outcome over pressure fallback when a stronger technical signal exists", () => {
     const result = findBestDiagnosisRule("关键分正手老飞");
 

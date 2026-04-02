@@ -1044,6 +1044,21 @@ describe("app smoke tests", () => {
     expect(screen.getAllByText("先把引拍提前半拍再出手").length).toBeGreaterThan(0);
   });
 
+  it("shows the exact diagnosis primary next step as the plan summary headline", async () => {
+    const PlanPage = await loadPage(() => import("@/app/plan/page"));
+    const primaryNextStep = "关键分先把球打高深中路，不要先追求一拍穿越。";
+
+    mockSearchParams = new URLSearchParams(
+      `problemTag=forehand-out&level=3.0&source=diagnosis&primaryNextStep=${encodeURIComponent(primaryNextStep)}`
+    );
+    window.history.pushState({}, "", `/plan?${mockSearchParams.toString()}`);
+
+    render(React.createElement(PlanPage));
+
+    expect(await screen.findByText("你的 7 天提升计划")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: primaryNextStep })).toBeInTheDocument();
+  });
+
   it("shows the actionability prompt on plan page in study mode", async () => {
     const PlanPage = await loadPage(() => import("@/app/plan/page"));
 

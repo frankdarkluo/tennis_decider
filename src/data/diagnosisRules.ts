@@ -190,8 +190,8 @@ export const diagnosisRules: DiagnosisRule[] = [
   },
   {
     id: "rule_serve_toss",
-    keywords: ["抛球", "serve toss", "toss"],
-    synonyms: ["抛球老歪", "发球抛球不稳", "一抛球就乱", "抛球忽前忽后", "抛球老偏左", "serve toss inconsistent", "my serve toss is all over the place", "I cannot toss the ball consistently on serve", "my toss keeps drifting around"],
+    keywords: ["抛球", "扔球", "扔不准", "serve toss", "toss"],
+    synonyms: ["抛球老歪", "发球抛球不稳", "一抛球就乱", "抛球忽前忽后", "抛球老偏左", "发球老是扔不准球", "serve toss inconsistent", "my serve toss is all over the place", "I cannot toss the ball consistently on serve", "my toss keeps drifting around"],
     category: ["serve", "toss"],
     problemTag: "serve-toss-consistency",
     causes: ["抛球手臂路径不固定", "出手点不一致", "抛球前站姿和节奏变化太大"],
@@ -375,7 +375,7 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_forehand_no_power",
     keywords: ["正手", "没力量", "forehand", "no power"],
-    synonyms: ["正手打不透", "正手很费劲但球不走", "怎么打都没穿透力", "正手打不出去", "球不往前走", "forehand no power", "my forehand has no power", "my forehand feels weak", "I cannot hit through the court on my forehand"],
+    synonyms: ["正手打不透", "正手很费劲但球不走", "怎么打都没穿透力", "正手怎么抡都不走球", "正手打不出去", "球不往前走", "forehand no power", "my forehand has no power", "my forehand feels weak", "I cannot hit through the court on my forehand"],
     category: ["forehand", "power"],
     problemTag: "forehand-no-power",
     causes: ["只用手臂打球", "重心转换不足", "击球点不稳定导致不敢加速"],
@@ -443,7 +443,7 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_return_under_pressure",
     keywords: ["接发球", "被压制", "return", "jammed"],
-    synonyms: ["接发球总慢半拍", "接发球被顶住", "发接发总先丢分", "接发总是被压", "接发回球太短", "return gets jammed", "my return gets jammed", "I keep getting rushed on the return", "my return lands too short"],
+    synonyms: ["接发球总慢半拍", "接发球被顶住", "接发一上来就被顶回去", "发接发总先丢分", "接发总是被压", "接发回球太短", "return gets jammed", "my return gets jammed", "I keep getting rushed on the return", "my return lands too short"],
     category: ["return", "matchplay"],
     problemTag: "return-under-pressure",
     causes: ["站位不合适", "准备过慢", "接发想太多，动作过大"],

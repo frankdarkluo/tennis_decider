@@ -27,6 +27,7 @@ import {
   buildAssessmentPlanContext,
   buildDiagnosisPlanCandidateIds,
   buildPlanHref,
+  getPlanFromDiagnosis,
   getPlanTemplate,
   normalizePlanDraftSnapshot,
   parsePlanContentIds
@@ -209,6 +210,23 @@ describe("content display helpers", () => {
     const plan = getPlanTemplate("backhand-into-net", "3.0", "zh", [], { primaryNextStep });
 
     expect(plan.summary).toContain(primaryNextStep);
+    expect(plan.days[0]?.focus).toBe(primaryNextStep);
+    expect(plan.days[0]?.goal).toBe(primaryNextStep);
+    expect(plan.days[0]?.successCriteria[0]).toContain(primaryNextStep);
+  });
+
+  it("keeps diagnosis-origin plans on one explicit primary focus across summary target and day 1", () => {
+    const primaryNextStep = "关键分先把球打高深中路，不要先追求一拍穿越。";
+    const plan = getPlanFromDiagnosis({
+      problemTag: "forehand-out",
+      level: "3.0",
+      title: "关键分下的正手出界更明显",
+      fixes: [primaryNextStep],
+      locale: "zh"
+    });
+
+    expect(plan.summary).toContain(primaryNextStep);
+    expect(plan.target).toContain(primaryNextStep);
     expect(plan.days[0]?.focus).toBe(primaryNextStep);
     expect(plan.days[0]?.goal).toBe(primaryNextStep);
     expect(plan.days[0]?.successCriteria[0]).toContain(primaryNextStep);

@@ -281,7 +281,7 @@ function PlanPageContent() {
         </div>
 
         <PlanSummary
-          headline={plan.summary ?? plan.target}
+          headline={primaryNextStep || plan.summary || plan.target}
           supportingText={t("plan.supporting", { value: language === "en" ? plan.level : toChineseLevel(plan.level) })}
         />
 

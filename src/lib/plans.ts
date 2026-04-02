@@ -1570,24 +1570,29 @@ export function getPlanFromDiagnosis(input: {
   const level = input.level ?? "3.5";
   const locale = input.locale ?? "zh";
   const problemTag = input.problemTag ?? "general-improvement";
+  const primaryNextStep = input.fixes?.[0];
   const base = getPlanTemplate(problemTag, level, locale, [], {
-    primaryNextStep: input.fixes?.[0]
+    primaryNextStep
   });
 
   if (locale === "en") {
     return {
       ...base,
       title: input.title ? `${input.title}: 7-day improvement plan` : base.title,
-      target: input.fixes?.[0] ? `Focus on "${input.fixes[0]}" and build a consistent 7-day training rhythm.` : base.target,
-      summary: "This plan is built around your primary issue. Focus on execution over the week — do not try to fix everything at once."
+      target: primaryNextStep ? `Focus on "${primaryNextStep}" and build a consistent 7-day training rhythm.` : base.target,
+      summary: primaryNextStep
+        ? `Primary focus this week: ${primaryNextStep}`
+        : "This plan is built around your primary issue. Focus on execution over the week — do not try to fix everything at once."
     };
   }
 
   return {
     ...base,
     title: input.title ? `${input.title}：7 天提升计划` : base.title,
-    target: input.fixes?.[0] ? `先围绕"${input.fixes[0]}"建立连续 7 天的小步训练。` : base.target,
-    summary: "这份计划围绕你当前最主要的问题设计，先追求连续执行，不求一次改完。"
+    target: primaryNextStep ? `先围绕"${primaryNextStep}"建立连续 7 天的小步训练。` : base.target,
+    summary: primaryNextStep
+      ? `本周先围绕这一个主动作推进：${primaryNextStep}`
+      : "这份计划围绕你当前最主要的问题设计，先追求连续执行，不求一次改完。"
   };
 }
 
