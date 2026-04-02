@@ -229,7 +229,10 @@ export default function SurveyPage() {
           {(["sus", "product", "open"] as const).map((partKey) => (
             <Card key={partKey} className="space-y-5">
               <div>
-                <h2 className="text-xl font-bold text-slate-900">{surveyT(partTranslationKeys[partKey].title)}</h2>
+                <div className="flex items-center justify-between gap-3">
+                  <h2 className="text-xl font-bold text-slate-900">{surveyT(partTranslationKeys[partKey].title)}</h2>
+                  <span className="text-sm font-semibold text-rose-700">{surveyT("survey.requiredLabel")}</span>
+                </div>
                 <p className="mt-1 text-sm text-slate-600">{surveyT(partTranslationKeys[partKey].body)}</p>
               </div>
               <div className="space-y-5">

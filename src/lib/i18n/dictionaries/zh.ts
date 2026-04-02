@@ -356,6 +356,7 @@ const zh = {
   "survey.part.product.title": "Part 2：产品专项评价",
   "survey.part.product.body": "继续按 1-5 分作答，看看哪些环节最打动你。",
   "survey.part.open.title": "Part 3：开放式问题",
+  "survey.requiredLabel": "(必填)",
   "survey.part.open.body": "最后请尽量用自己的话说说真实感受。",
   "survey.placeholder": "请尽量具体描述你的想法",
   "survey.submit": "提交问卷",

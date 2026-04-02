@@ -356,6 +356,7 @@ const en = {
   "survey.part.product.title": "Part 2: Product-specific feedback",
   "survey.part.product.body": "Keep using the same 1-5 scale for the product-specific questions.",
   "survey.part.open.title": "Part 3: Open feedback",
+  "survey.requiredLabel": "(Required)",
   "survey.part.open.body": "Please describe your experience in your own words.",
   "survey.placeholder": "Please describe your thoughts as specifically as you can",
   "survey.submit": "Submit survey",

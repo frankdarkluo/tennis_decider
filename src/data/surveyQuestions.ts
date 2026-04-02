@@ -10,7 +10,7 @@ export type SurveySingleChoiceQuestion = {
 
 export const surveyQuestions: SurveySingleChoiceQuestion[] = [
   { id: "q6", part: "sus", prompt: "我觉得我会愿意经常使用这个系统", prompt_en: "I think that I would like to use this system frequently", type: "likert" },
-  { id: "q7", part: "sus", prompt: "我觉得这个系统不必要地复杂", prompt_en: "I found the system unnecessarily complex", type: "likert" },
+  { id: "q7", part: "sus", prompt: "这个系统的功能过于复杂", prompt_en: "I found the system unnecessarily complex", type: "likert" },
   { id: "q8", part: "sus", prompt: "我觉得这个系统很容易使用", prompt_en: "I thought the system was easy to use", type: "likert" },
   { id: "q9", part: "sus", prompt: "我觉得我需要技术人员的帮助才能使用这个系统", prompt_en: "I think that I would need the support of a technical person to be able to use this system", type: "likert" },
   { id: "q10", part: "sus", prompt: "我觉得这个系统的各项功能整合得很好", prompt_en: "I found the various functions in this system were well integrated", type: "likert" },
