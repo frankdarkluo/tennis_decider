@@ -35,6 +35,7 @@ const backgroundCopy = {
     ageBand: "年龄区间",
     yearsPlayingBand: "打球年限",
     playFrequency: "每周打球频率",
+    coachHistory: "你有没有请过教练？",
     selfReportedLevel: "自我判断水平",
     watchesTrainingVideos: "平时会看教学视频吗？",
     hasUploadedPracticeVideoBefore: "以前上传过练习视频给别人看吗？",
@@ -47,6 +48,7 @@ const backgroundCopy = {
     ageBand: "Age band",
     yearsPlayingBand: "Years playing",
     playFrequency: "Weekly play frequency",
+    coachHistory: "Have you ever taken lessons with a coach?",
     selfReportedLevel: "Self-reported level",
     watchesTrainingVideos: "Do you usually watch training videos?",
     hasUploadedPracticeVideoBefore: "Have you uploaded a practice video before?",
@@ -101,6 +103,19 @@ const playFrequencyOptions: Record<StudyLanguage, Option[]> = {
     { value: "1_2", label: "1-2 times a week" },
     { value: "3_4", label: "3-4 times a week" },
     { value: "5_plus", label: "5+ times a week" }
+  ]
+};
+
+const coachHistoryOptions: Record<StudyLanguage, Option[]> = {
+  zh: [
+    { value: "none", label: "没有" },
+    { value: "occasional", label: "偶尔请" },
+    { value: "regular", label: "固定在上课" }
+  ],
+  en: [
+    { value: "none", label: "No" },
+    { value: "occasional", label: "Occasionally" },
+    { value: "regular", label: "Taking regular lessons" }
   ]
 };
 
@@ -204,6 +219,7 @@ function StudyStartPageContent() {
     ageBand: "",
     yearsPlayingBand: "",
     playFrequency: "",
+    coachHistory: "",
     selfReportedLevel: "",
     watchesTrainingVideos: false,
     hasUploadedPracticeVideoBefore: false
@@ -236,6 +252,7 @@ function StudyStartPageContent() {
       background.ageBand &&
       background.yearsPlayingBand &&
       background.playFrequency &&
+      background.coachHistory &&
       background.selfReportedLevel &&
       backgroundBooleanReady.watchesTrainingVideos &&
       backgroundBooleanReady.hasUploadedPracticeVideoBefore
@@ -277,6 +294,7 @@ function StudyStartPageContent() {
       ageBand: background.ageBand,
       yearsPlayingBand: background.yearsPlayingBand,
       playFrequency: background.playFrequency,
+      coachHistory: background.coachHistory,
       selfReportedLevel: background.selfReportedLevel,
       watchesTrainingVideos: background.watchesTrainingVideos,
       hasUploadedPracticeVideoBefore: background.hasUploadedPracticeVideoBefore
@@ -356,6 +374,12 @@ function StudyStartPageContent() {
                 value={background.playFrequency}
                 options={playFrequencyOptions[language]}
                 onChange={(value) => setBackground((prev) => ({ ...prev, playFrequency: value }))}
+              />
+              <SelectField
+                label={localizedCopy.coachHistory}
+                value={background.coachHistory}
+                options={coachHistoryOptions[language]}
+                onChange={(value) => setBackground((prev) => ({ ...prev, coachHistory: value }))}
               />
               <SelectField
                 label={localizedCopy.selfReportedLevel}

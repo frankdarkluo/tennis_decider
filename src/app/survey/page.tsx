@@ -20,7 +20,6 @@ import { useStudy } from "@/components/study/StudyProvider";
 type DictionaryKey = keyof typeof zhDictionary;
 
 const partTranslationKeys = {
-  basic: { title: "survey.part.basic.title", body: "survey.part.basic.body" },
   sus: { title: "survey.part.sus.title", body: "survey.part.sus.body" },
   product: { title: "survey.part.product.title", body: "survey.part.product.body" },
   open: { title: "survey.part.open.title", body: "survey.part.open.body" }
@@ -52,7 +51,6 @@ export default function SurveyPage() {
 
   const groupedQuestions = useMemo(() => {
     return {
-      basic: surveyQuestions.filter((question) => question.part === "basic"),
       sus: surveyQuestions.filter((question) => question.part === "sus"),
       product: surveyQuestions.filter((question) => question.part === "product"),
       open: surveyQuestions.filter((question) => question.part === "open")
@@ -125,7 +123,10 @@ export default function SurveyPage() {
     if (question.type === "text") {
       return (
         <div key={question.id} className="space-y-2">
-          <p className="font-semibold text-slate-900">Q{displayIndex}. {effectiveLanguage === "en" && question.prompt_en ? question.prompt_en : question.prompt}</p>
+          <p className="font-semibold text-slate-900">
+            <span>Q{displayIndex}. </span>
+            <span>{effectiveLanguage === "en" && question.prompt_en ? question.prompt_en : question.prompt}</span>
+          </p>
           <Textarea
             rows={5}
             value={typeof responses[question.id] === "string" ? (responses[question.id] as string) : ""}
@@ -139,7 +140,10 @@ export default function SurveyPage() {
     if (question.type === "likert") {
       return (
         <div key={question.id} className="space-y-3">
-          <p className="font-semibold text-slate-900">Q{displayIndex}. {effectiveLanguage === "en" && question.prompt_en ? question.prompt_en : question.prompt}</p>
+          <p className="font-semibold text-slate-900">
+            <span>Q{displayIndex}. </span>
+            <span>{effectiveLanguage === "en" && question.prompt_en ? question.prompt_en : question.prompt}</span>
+          </p>
           <div className="grid gap-2 sm:grid-cols-5">
             {susLikertLabels.map((label, optionIndex) => {
               const score = optionIndex + 1;
@@ -168,7 +172,10 @@ export default function SurveyPage() {
 
   return (
     <div key={question.id} className="space-y-3">
-        <p className="font-semibold text-slate-900">Q{displayIndex}. {effectiveLanguage === "en" && question.prompt_en ? question.prompt_en : question.prompt}</p>
+        <p className="font-semibold text-slate-900">
+          <span>Q{displayIndex}. </span>
+          <span>{effectiveLanguage === "en" && question.prompt_en ? question.prompt_en : question.prompt}</span>
+        </p>
         <div className="space-y-2">
           {(effectiveLanguage === "en" && question.options_en ? question.options_en : question.options)?.map((option) => {
             const active = responses[question.id] === option;
@@ -219,7 +226,7 @@ export default function SurveyPage() {
         </Card>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {(["basic", "sus", "product", "open"] as const).map((partKey) => (
+          {(["sus", "product", "open"] as const).map((partKey) => (
             <Card key={partKey} className="space-y-5">
               <div>
                 <h2 className="text-xl font-bold text-slate-900">{surveyT(partTranslationKeys[partKey].title)}</h2>

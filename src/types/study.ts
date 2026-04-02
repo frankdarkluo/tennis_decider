@@ -40,6 +40,7 @@ export type StudyBackgroundProfile = {
   ageBand: string;
   yearsPlayingBand: string;
   playFrequency: string;
+  coachHistory: string;
   selfReportedLevel: string;
   watchesTrainingVideos: boolean;
   hasUploadedPracticeVideoBefore: boolean;
