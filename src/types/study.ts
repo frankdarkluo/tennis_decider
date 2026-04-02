@@ -42,6 +42,7 @@ export type StudyBackgroundProfile = {
   playFrequency: string;
   coachHistory: string;
   selfReportedLevel: string;
+  preferredLearningStyle: string;
   watchesTrainingVideos: boolean;
   hasUploadedPracticeVideoBefore: boolean;
 };

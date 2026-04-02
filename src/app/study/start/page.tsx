@@ -37,6 +37,7 @@ const backgroundCopy = {
     playFrequency: "每周打球频率",
     coachHistory: "你有没有请过教练？",
     selfReportedLevel: "自我判断水平",
+    preferredLearningStyle: "你更倾向于通过以下哪种方式学习网球？",
     watchesTrainingVideos: "平时会看教学视频吗？",
     hasUploadedPracticeVideoBefore: "以前上传过练习视频给别人看吗？",
     yes: "是",
@@ -50,6 +51,7 @@ const backgroundCopy = {
     playFrequency: "Weekly play frequency",
     coachHistory: "Have you ever taken lessons with a coach?",
     selfReportedLevel: "Self-reported level",
+    preferredLearningStyle: "Which learning style do you prefer for tennis?",
     watchesTrainingVideos: "Do you usually watch training videos?",
     hasUploadedPracticeVideoBefore: "Have you uploaded a practice video before?",
     yes: "Yes",
@@ -116,6 +118,21 @@ const coachHistoryOptions: Record<StudyLanguage, Option[]> = {
     { value: "none", label: "No" },
     { value: "occasional", label: "Occasionally" },
     { value: "regular", label: "Taking regular lessons" }
+  ]
+};
+
+const preferredLearningStyleOptions: Record<StudyLanguage, Option[]> = {
+  zh: [
+    { value: "self_study", label: "独立自学（看视频、自己练）" },
+    { value: "group_classes", label: "团体课程" },
+    { value: "one_on_one_coaching", label: "一对一教练" },
+    { value: "self_study_then_guidance", label: "自学后请教" }
+  ],
+  en: [
+    { value: "self_study", label: "Self-study independently (watch videos, practice on your own)" },
+    { value: "group_classes", label: "Group classes" },
+    { value: "one_on_one_coaching", label: "One-on-one coaching" },
+    { value: "self_study_then_guidance", label: "Self-study then seek guidance" }
   ]
 };
 
@@ -203,7 +220,7 @@ function BooleanField({
 function StudyStartPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { session, startStudySession, language: appLanguage } = useStudy();
+  const { session, startStudySession, language: appLanguage, setPendingStudySetup } = useStudy();
   const { setLanguage: setSiteLanguage, canChangeLanguage } = useI18n();
 
   const defaultParticipantId = searchParams.get("participantId") ?? session?.participantId ?? "";
@@ -221,6 +238,7 @@ function StudyStartPageContent() {
     playFrequency: "",
     coachHistory: "",
     selfReportedLevel: "",
+    preferredLearningStyle: "",
     watchesTrainingVideos: false,
     hasUploadedPracticeVideoBefore: false
   });
@@ -241,6 +259,10 @@ function StudyStartPageContent() {
     }
   }, [appLanguage, langParam, session]);
 
+  useEffect(() => {
+    setPendingStudySetup(!session);
+  }, [session, setPendingStudySetup]);
+
   const resumePath = useMemo(() => readLastStudyPath() ?? "/", []);
   const localizedCopy = backgroundCopy[language];
   const pageT = (key: DictionaryKey, replacements?: Record<string, string | number>) => {
@@ -254,6 +276,7 @@ function StudyStartPageContent() {
       background.playFrequency &&
       background.coachHistory &&
       background.selfReportedLevel &&
+      background.preferredLearningStyle &&
       backgroundBooleanReady.watchesTrainingVideos &&
       backgroundBooleanReady.hasUploadedPracticeVideoBefore
   );
@@ -296,6 +319,7 @@ function StudyStartPageContent() {
       playFrequency: background.playFrequency,
       coachHistory: background.coachHistory,
       selfReportedLevel: background.selfReportedLevel,
+      preferredLearningStyle: background.preferredLearningStyle,
       watchesTrainingVideos: background.watchesTrainingVideos,
       hasUploadedPracticeVideoBefore: background.hasUploadedPracticeVideoBefore
     }, { page: "/study/start" });
@@ -305,7 +329,7 @@ function StudyStartPageContent() {
       sessionId: result.session.sessionId
     }, { page: "/" });
     void persistStudyArtifact(result.session, "study_background", background);
-    router.replace("/");
+    router.replace("/assessment");
   };
 
   return (
@@ -376,16 +400,22 @@ function StudyStartPageContent() {
                 onChange={(value) => setBackground((prev) => ({ ...prev, playFrequency: value }))}
               />
               <SelectField
+                label={localizedCopy.selfReportedLevel}
+                value={background.selfReportedLevel}
+                options={levelOptions[language]}
+                onChange={(value) => setBackground((prev) => ({ ...prev, selfReportedLevel: value }))}
+              />
+              <SelectField
                 label={localizedCopy.coachHistory}
                 value={background.coachHistory}
                 options={coachHistoryOptions[language]}
                 onChange={(value) => setBackground((prev) => ({ ...prev, coachHistory: value }))}
               />
               <SelectField
-                label={localizedCopy.selfReportedLevel}
-                value={background.selfReportedLevel}
-                options={levelOptions[language]}
-                onChange={(value) => setBackground((prev) => ({ ...prev, selfReportedLevel: value }))}
+                label={localizedCopy.preferredLearningStyle}
+                value={background.preferredLearningStyle}
+                options={preferredLearningStyleOptions[language]}
+                onChange={(value) => setBackground((prev) => ({ ...prev, preferredLearningStyle: value }))}
               />
             </div>
             <div className="mt-4 grid gap-4 md:grid-cols-2">

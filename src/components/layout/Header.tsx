@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
+import { hasStoredCompletedAssessmentResult } from "@/lib/assessmentStorage";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
@@ -29,9 +30,14 @@ export function Header() {
   const { user, loading, signOut } = useAuth();
   const { openLoginModal } = useAuthModal();
   const { language, t, setLanguage, canChangeLanguage } = useI18n();
-  const { studyMode } = useStudy();
+  const { studyMode, session, pendingStudySetup } = useStudy();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const visibleNavItems = navItemDefs;
+  const assessmentLockedStudyFlow = studyMode && !hasStoredCompletedAssessmentResult();
+  const hideTaskNavigation =
+    (pathname === "/study/start" && !studyMode)
+    || (pendingStudySetup && !session)
+    || assessmentLockedStudyFlow;
+  const visibleNavItems = hideTaskNavigation ? [] : navItemDefs;
 
   useEffect(() => {
     setMobileNavOpen(false);
@@ -161,23 +167,27 @@ export function Header() {
               {loading ? t("nav.account") : t("nav.login")}
             </button>
           )}
-          <Link
-            href="/assessment"
-            className="ml-1"
-            onClick={() => logEvent("cta_click", { ctaLabel: t("cta.headerFree"), ctaLocation: "header", targetPage: "/assessment" })}
-          >
-            <Button className="rounded-full bg-brand-500 px-5 shadow-sm hover:bg-brand-600 hover:shadow-md">{t("nav.ctaFree")}</Button>
-          </Link>
+          {!hideTaskNavigation ? (
+            <Link
+              href="/assessment"
+              className="ml-1"
+              onClick={() => logEvent("cta_click", { ctaLabel: t("cta.headerFree"), ctaLocation: "header", targetPage: "/assessment" })}
+            >
+              <Button className="rounded-full bg-brand-500 px-5 shadow-sm hover:bg-brand-600 hover:shadow-md">{t("nav.ctaFree")}</Button>
+            </Link>
+          ) : null}
         </div>
 
         <div className="flex items-center gap-1.5 md:hidden">
           {languageToggle}
-          <Link
-            href="/assessment"
-            onClick={() => logEvent("cta_click", { ctaLabel: t("cta.headerMobile"), ctaLocation: "header_mobile", targetPage: "/assessment" })}
-          >
-            <Button className="rounded-full px-4 shadow-sm">{t("nav.ctaMobile")}</Button>
-          </Link>
+          {!hideTaskNavigation ? (
+            <Link
+              href="/assessment"
+              onClick={() => logEvent("cta_click", { ctaLabel: t("cta.headerMobile"), ctaLocation: "header_mobile", targetPage: "/assessment" })}
+            >
+              <Button className="rounded-full px-4 shadow-sm">{t("nav.ctaMobile")}</Button>
+            </Link>
+          ) : null}
           <Button
             type="button"
             variant="ghost"

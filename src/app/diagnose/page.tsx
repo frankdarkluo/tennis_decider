@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Suspense, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   diagnoseProblem,
   getContentsByIds,
@@ -11,6 +11,7 @@ import {
 } from "@/lib/diagnosis";
 import {
   hasCompletedAssessmentResult,
+  hasStoredCompletedAssessmentResult,
   readAssessmentResultFromStorage,
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
@@ -113,8 +114,9 @@ function replayDiagnosisFromSnapshot(
 
 function DiagnosePageContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { user, configured, loading } = useAuth();
-  const { environment, session, studyMode, language, loading: studyLoading } = useStudy();
+  const { environment, session, studyMode, language, loading: studyLoading, pendingStudySetup } = useStudy();
   const { t } = useI18n();
   const [text, setText] = useState("");
   const [effortMode, setEffortMode] = useState<DiagnosisEffortMode>("standard");
@@ -125,6 +127,8 @@ function DiagnosePageContent() {
   const [contextReady, setContextReady] = useState(false);
   const [actionabilitySubmitted, setActionabilitySubmitted] = useState(false);
   const handledQueryRef = useRef<string | null>(null);
+  const blockedByPendingStudySetup = pendingStudySetup && !session;
+  const blockedByAssessmentGate = studyMode && Boolean(session) && !hasStoredCompletedAssessmentResult();
 
   const previewOptions = getProblemPreviewOptions();
   const quickTags = previewOptions.map((item) => language === "en" ? item.label_en : item.label);
@@ -135,6 +139,22 @@ function DiagnosePageContent() {
     && hasDiagnosed
     && !actionabilitySubmitted
     && !hasStudyTaskRating(session?.sessionId ?? "", "task_1_problem_entry");
+
+  useEffect(() => {
+    if (!blockedByPendingStudySetup) {
+      return;
+    }
+
+    router.replace("/study/start");
+  }, [blockedByPendingStudySetup, router]);
+
+  useEffect(() => {
+    if (!blockedByAssessmentGate) {
+      return;
+    }
+
+    router.replace("/assessment");
+  }, [blockedByAssessmentGate, router]);
 
   const runDiagnosis = async (nextText: string, inputSource: "typed" | "tag_click" = "typed") => {
     const trimmedText = nextText.trim();
@@ -209,7 +229,7 @@ function DiagnosePageContent() {
       setText(q);
     }
 
-    if (loading) {
+    if (blockedByPendingStudySetup || blockedByAssessmentGate || loading) {
       return;
     }
 
@@ -250,7 +270,7 @@ function DiagnosePageContent() {
     return () => {
       active = false;
     };
-  }, [configured, language, loading, searchParams, studyMode, user?.id]);
+  }, [blockedByAssessmentGate, blockedByPendingStudySetup, configured, language, loading, searchParams, studyMode, user?.id]);
 
   useEffect(() => {
     if (!contextReady) {
@@ -286,7 +306,7 @@ function DiagnosePageContent() {
     setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
   };
 
-  if (studyLoading || !contextReady) {
+  if (blockedByPendingStudySetup || blockedByAssessmentGate || studyLoading || !contextReady) {
     return (
       <PageContainer>
         <Card className="text-sm text-slate-600">{t("assessment.loading")}</Card>

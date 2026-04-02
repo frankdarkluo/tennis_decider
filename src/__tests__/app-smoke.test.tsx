@@ -4,7 +4,13 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { assessmentQuestions } from "@/data/assessmentQuestions";
 import { getDefaultAssessmentResult } from "@/lib/assessment";
 import { getLocalLogs } from "@/lib/eventLogger";
-import { STUDY_PLAN_DRAFT_KEY, STUDY_PROGRESS_KEY, STUDY_TASK_RATINGS_KEY, STUDY_DIAGNOSIS_SNAPSHOT_KEY } from "@/lib/study/config";
+import {
+  STUDY_PLAN_DRAFT_KEY,
+  STUDY_PROGRESS_KEY,
+  STUDY_TASK_RATINGS_KEY,
+  STUDY_DIAGNOSIS_SNAPSHOT_KEY,
+  PENDING_STUDY_SETUP_KEY
+} from "@/lib/study/config";
 import { calculateSUS } from "@/lib/survey";
 import { ASSESSMENT_DRAFT_STORAGE_KEY, ASSESSMENT_STORAGE_KEY } from "@/lib/utils";
 import type { StudySession } from "@/types/study";
@@ -158,8 +164,10 @@ const mockStudyContext = {
   session: null as StudySession | null,
   studyMode: false,
   language: "zh" as const,
+  pendingStudySetup: false,
   loading: false,
   startStudySession: vi.fn(),
+  setPendingStudySetup: vi.fn(),
   endStudySession: vi.fn(),
   clearStudyData: vi.fn()
 };
@@ -267,6 +275,9 @@ describe("app smoke tests", () => {
     mockStudyContext.session = null;
     mockStudyContext.studyMode = false;
     mockStudyContext.language = "zh";
+    mockStudyContext.pendingStudySetup = false;
+    mockStudyContext.startStudySession.mockReset();
+    mockStudyContext.setPendingStudySetup.mockReset();
     mockAuthContext.user = null;
     mockAuthContext.configured = false;
     mockUserDataState.latestAssessmentResult = null;
@@ -418,20 +429,61 @@ describe("app smoke tests", () => {
     }
 
     await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith("/");
+      expect(mockPush).toHaveBeenCalledWith("/assessment/result");
     });
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("still allows re-entering assessment even when a saved result exists", async () => {
+  it("shows the previous assessment result by default when a saved result exists", async () => {
     const AssessmentPage = await loadPage(() => import("@/app/assessment/page"));
 
     window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({ answeredCount: 6 }));
 
     render(React.createElement(AssessmentPage));
 
-    expect(await screen.findByText("你的性别？")).toBeInTheDocument();
-    expect(mockPush).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith("/assessment/result");
+    });
+  });
+
+  it("redirects home to assessment when a study session exists but assessment is incomplete", async () => {
+    const HomePage = await loadPage(() => import("@/app/page"));
+
+    mockStudyContext.studyMode = true;
+    mockStudyContext.session = baseStudySession;
+
+    render(React.createElement(HomePage));
+
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith("/assessment");
+    });
+  });
+
+  it("redirects assessment back to study start when study setup is pending", async () => {
+    const AssessmentPage = await loadPage(() => import("@/app/assessment/page"));
+
+    window.localStorage.setItem(PENDING_STUDY_SETUP_KEY, "true");
+    mockStudyContext.pendingStudySetup = true;
+
+    render(React.createElement(AssessmentPage));
+
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith("/study/start");
+    });
+  });
+
+  it("redirects library to assessment when a study session exists but assessment is incomplete", async () => {
+    const LibraryPage = await loadPage(() => import("@/app/library/page"));
+
+    mockStudyContext.studyMode = true;
+    mockStudyContext.session = baseStudySession;
+    window.history.pushState({}, "", "/library");
+
+    render(React.createElement(LibraryPage));
+
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith("/assessment");
+    });
   });
 
   it("still allows an explicit retake even if a saved assessment result exists", async () => {
@@ -447,7 +499,7 @@ describe("app smoke tests", () => {
     expect(mockPush).not.toHaveBeenCalled();
   });
 
-  it("resumes an in-progress assessment draft instead of redirecting to the saved result", async () => {
+  it("keeps showing the previous assessment result when a retake draft exists but retake was not explicitly requested", async () => {
     const AssessmentPage = await loadPage(() => import("@/app/assessment/page"));
 
     window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({ answeredCount: 6 }));
@@ -460,9 +512,9 @@ describe("app smoke tests", () => {
 
     render(React.createElement(AssessmentPage));
 
-    expect(await screen.findByText("已恢复你刚才做到一半的评估进度。")).toBeInTheDocument();
-    expect(screen.getByText("你的发球大概什么状态？")).toBeInTheDocument();
-    expect(mockPush).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith("/assessment/result");
+    });
   });
 
   it("returns to the same question after leaving and coming back mid-assessment", async () => {
@@ -561,7 +613,7 @@ describe("app smoke tests", () => {
     expect(screen.queryByRole("heading", { name: /4\.0\+/ })).not.toBeInTheDocument();
   });
 
-  it("shows the actionability prompt on assessment result in study mode", async () => {
+  it("does not show the actionability prompt on assessment result in study mode", async () => {
     const AssessmentResultPage = await loadPage(() => import("@/app/assessment/result/page"));
 
     mockStudyContext.session = baseStudySession;
@@ -575,7 +627,8 @@ describe("app smoke tests", () => {
 
     render(React.createElement(AssessmentResultPage));
 
-    expect(await screen.findByText("完成这一步后，我比之前更清楚下一步该练什么了。")).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /3\.0/ })).toBeInTheDocument();
+    expect(screen.queryByText("完成这一步后，我比之前更清楚下一步该练什么了。")).not.toBeInTheDocument();
   });
 
   it("renders diagnose page with input box", async () => {
@@ -923,6 +976,7 @@ describe("app smoke tests", () => {
 
     mockStudyContext.session = baseStudySession;
     mockStudyContext.studyMode = true;
+    seedCompletedAssessmentInStorage();
 
     render(React.createElement(RankingsPage));
 
@@ -995,6 +1049,7 @@ describe("app smoke tests", () => {
 
     mockStudyContext.session = baseStudySession;
     mockStudyContext.studyMode = true;
+    seedCompletedAssessmentInStorage();
     mockSearchParams = new URLSearchParams(
       "problemTag=backhand-into-net&level=3.0&source=diagnosis&contentIds=content_cn_a_01"
     );
@@ -1010,6 +1065,7 @@ describe("app smoke tests", () => {
 
     mockStudyContext.session = baseStudySession;
     mockStudyContext.studyMode = true;
+    seedCompletedAssessmentInStorage();
     mockSearchParams = new URLSearchParams(
       "problemTag=second-serve-confidence&level=3.0&source=assessment&contentIds=content_cn_a_01"
     );
@@ -1027,6 +1083,7 @@ describe("app smoke tests", () => {
 
     mockStudyContext.session = baseStudySession;
     mockStudyContext.studyMode = true;
+    seedCompletedAssessmentInStorage();
     mockSearchParams = new URLSearchParams(
       "problemTag=backhand-into-net&level=3.0&source=diagnosis&contentIds=content_cn_a_01"
     );
@@ -1058,11 +1115,17 @@ describe("app smoke tests", () => {
     });
   });
 
-  it("prioritizes the unfinished assessment as the primary study resume action", async () => {
+  it("prioritizes the completed assessment result over an unfinished retake draft in study mode", async () => {
     const ProfilePage = await loadPage(() => import("@/app/profile/page"));
 
     mockStudyContext.session = baseStudySession;
     mockStudyContext.studyMode = true;
+    window.localStorage.setItem(ASSESSMENT_STORAGE_KEY, JSON.stringify({
+      ...getDefaultAssessmentResult("zh"),
+      answeredCount: 8,
+      totalQuestions: 8,
+      level: "3.0"
+    }));
     window.localStorage.setItem(STUDY_PROGRESS_KEY, JSON.stringify({
       updatedAt: "2026-03-29T00:00:00.000Z",
       lastVisitedPath: "/diagnose?q=test",
@@ -1075,7 +1138,8 @@ describe("app smoke tests", () => {
     render(React.createElement(ProfilePage));
 
     expect(await screen.findByText("当前研究会话")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "继续未完成评估" }).getAttribute("href")).toBe("/assessment");
+    expect(screen.getAllByRole("link", { name: "回到评估结果" }).every((link) => link.getAttribute("href") === "/assessment/result")).toBe(true);
+    expect(screen.queryByRole("link", { name: "继续未完成评估" })).not.toBeInTheDocument();
   });
 
   it("avoids duplicating the resume CTA when the last visited path is already the saved plan", async () => {
@@ -1204,13 +1268,38 @@ describe("app smoke tests", () => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("renders study start with the coach-history background question", async () => {
+  it("renders study start with the coach-history and preferred-learning-style background questions", async () => {
     const StudyStartPage = await loadPage(() => import("@/app/study/start/page"));
 
     render(React.createElement(StudyStartPage));
 
     expect(screen.getByText("你有没有请过教练？")).toBeInTheDocument();
+    expect(screen.getByText("你更倾向于通过以下哪种方式学习网球？")).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("starts the study session and routes directly to assessment", async () => {
+    const StudyStartPage = await loadPage(() => import("@/app/study/start/page"));
+
+    mockStudyContext.startStudySession.mockResolvedValue({ session: baseStudySession });
+
+    render(React.createElement(StudyStartPage));
+
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Ptest" } });
+    fireEvent.change(screen.getByLabelText("年龄区间"), { target: { value: "25_34" } });
+    fireEvent.change(screen.getByLabelText("打球年限"), { target: { value: "5_10" } });
+    fireEvent.change(screen.getByLabelText("每周打球频率"), { target: { value: "3_4" } });
+    fireEvent.change(screen.getByLabelText("自我判断水平"), { target: { value: "4.0_or_above" } });
+    fireEvent.change(screen.getByLabelText("你有没有请过教练？"), { target: { value: "occasional" } });
+    fireEvent.change(screen.getByLabelText("你更倾向于通过以下哪种方式学习网球？"), { target: { value: "self_study" } });
+    fireEvent.click(screen.getAllByRole("button", { name: "是" })[0]!);
+    fireEvent.click(screen.getAllByRole("button", { name: "是" })[1]!);
+    fireEvent.click(screen.getByRole("checkbox"));
+    fireEvent.click(screen.getByRole("button", { name: "开始研究" }));
+
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith("/assessment");
+    });
   });
 
   it("redirects /study to /study/start", async () => {

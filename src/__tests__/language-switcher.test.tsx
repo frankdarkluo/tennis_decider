@@ -122,6 +122,50 @@ describe("language switcher", () => {
     expect(screen.getAllByRole("button", { name: "Switch site language to Chinese" }).length).toBeGreaterThan(0);
   });
 
+  it("hides main task navigation on study start before a session exists", () => {
+    mockUsePathname.mockReturnValue("/study/start");
+
+    render(
+      <StudyProvider>
+        <I18nProvider>
+          <Header />
+        </I18nProvider>
+      </StudyProvider>
+    );
+
+    expect(screen.queryByRole("link", { name: "首页" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "水平评估" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "问题诊断" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "内容库" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "博主榜" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "训练计划" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "去做免费评估" })).not.toBeInTheDocument();
+  });
+
+  it("keeps main task navigation hidden during study mode until assessment is completed", () => {
+    mockUsePathname.mockReturnValue("/assessment");
+    writeActiveStudySession(createStudySession({
+      participantId: "P003",
+      language: "zh"
+    }));
+
+    render(
+      <StudyProvider>
+        <I18nProvider>
+          <Header />
+        </I18nProvider>
+      </StudyProvider>
+    );
+
+    expect(screen.queryByRole("link", { name: "首页" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "水平评估" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "问题诊断" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "内容库" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "博主榜" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "训练计划" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "去做免费评估" })).not.toBeInTheDocument();
+  });
+
   it("keeps the study language locked when an active study session already exists", () => {
     writeActiveStudySession(createStudySession({
       participantId: "P001",

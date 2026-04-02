@@ -31,6 +31,10 @@ export function hasCompletedAssessmentResult(result: AssessmentResult | null | u
   return Boolean(result && typeof result.answeredCount === "number" && result.answeredCount > 0);
 }
 
+export function hasStoredCompletedAssessmentResult() {
+  return hasCompletedAssessmentResult(readAssessmentResultFromStorage());
+}
+
 export function getStoredAssessmentResultOrDefault(): AssessmentResult {
   return readAssessmentResultFromStorage() ?? getDefaultAssessmentResult();
 }

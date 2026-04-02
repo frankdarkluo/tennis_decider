@@ -3,10 +3,14 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { contents } from "@/data/contents";
+import {
+  hasCompletedAssessmentResult,
+  readAssessmentDraftFromStorage,
+  readAssessmentResultFromStorage
+} from "@/lib/assessmentStorage";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { formatLocalizedDateTime } from "@/lib/i18n/format";
-import { readAssessmentDraftFromStorage } from "@/lib/assessmentStorage";
 import { readLocalStudyArtifacts, readLocalStudyBookmarks, readLocalStudyProgress } from "@/lib/study/localData";
 import { VIDEO_DIAGNOSE_VISIBLE } from "@/lib/videoDiagnose";
 import {
@@ -379,6 +383,7 @@ export default function ProfilePage() {
   }
 
   if (studyMode && session) {
+    const hasCompletedLocalAssessment = hasCompletedAssessmentResult(readAssessmentResultFromStorage());
     const artifactSummary = studyArtifacts.reduce<Record<string, number>>((acc, artifact) => {
       acc[artifact.artifactType] = (acc[artifact.artifactType] ?? 0) + 1;
       return acc;
@@ -386,7 +391,7 @@ export default function ProfilePage() {
     const activeAssessmentDraftStep = studyProgress?.assessmentDraftInProgress
       ? (studyProgress.assessmentDraftStepIndex ?? studyAssessmentDraftStep ?? 0)
       : null;
-    const hasActiveAssessmentDraft = activeAssessmentDraftStep !== null;
+    const hasActiveAssessmentDraft = activeAssessmentDraftStep !== null && !hasCompletedLocalAssessment;
     const resumeAction = deriveStudyResumeAction(studyProgress);
     const diagnosisAction = deriveStudyDiagnosisAction(studyProgress);
     const planAlreadyCoveredByResume = Boolean(
@@ -457,7 +462,14 @@ export default function ProfilePage() {
                     <h2 className="text-base font-bold text-slate-900">{t("profile.studyQuickContinue")}</h2>
                     <p className="mt-1 text-sm text-slate-600">{t("profile.studyQuickContinueHint")}</p>
                   </div>
-                  {hasActiveAssessmentDraft ? (
+                  {hasCompletedLocalAssessment && studyProgress?.lastAssessmentPath ? (
+                    <Link
+                      href={studyProgress.lastAssessmentPath}
+                      onClick={() => logEvent("profile.history_item_opened", { itemType: "assessment", itemId: studyProgress.lastAssessmentPath }, { page: "/profile" })}
+                    >
+                      <Button>{t("profile.studyContinueAssessment")}</Button>
+                    </Link>
+                  ) : hasActiveAssessmentDraft ? (
                     <Link
                       href="/assessment"
                       onClick={() => logEvent("profile.history_item_opened", { itemType: "assessment_draft", itemId: "/assessment" }, { page: "/profile" })}

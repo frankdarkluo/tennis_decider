@@ -3,7 +3,7 @@
 import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { flushEventQueue, setEventLoggerStudySession } from "@/lib/eventLogger";
 import { resolveAppEnvironment } from "@/lib/environment";
-import { clearLocalStudyData } from "@/lib/study/localData";
+import { clearLocalStudyData, readPendingStudySetup, writePendingStudySetup } from "@/lib/study/localData";
 import { persistStudySessionEnd, persistStudySessionStart } from "@/lib/study/client";
 import {
   createStudySession,
@@ -27,8 +27,10 @@ type StudyContextValue = {
   environment: AppEnvironment;
   language: StudyLanguage;
   canChangeLanguage: boolean;
+  pendingStudySetup: boolean;
   loading: boolean;
   setLanguage: (language: StudyLanguage) => void;
+  setPendingStudySetup: (value: boolean) => void;
   startStudySession: (input: {
     participantId: string;
     language: StudyLanguage;
@@ -66,12 +68,14 @@ function writeAppLanguage(language: StudyLanguage) {
 export function StudyProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<StudySession | null>(null);
   const [appLanguage, setAppLanguage] = useState<StudyLanguage>("zh");
+  const [pendingStudySetup, setPendingStudySetupState] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const nextSession = readActiveStudySession();
     setSession(nextSession);
     setAppLanguage(nextSession?.language ?? readAppLanguage());
+    setPendingStudySetupState(nextSession ? false : readPendingStudySetup());
     setLoading(false);
   }, []);
 
@@ -100,6 +104,7 @@ export function StudyProvider({ children }: { children: ReactNode }) {
     environment,
     language,
     canChangeLanguage,
+    pendingStudySetup,
     loading,
     setLanguage: (nextLanguage) => {
       if (activeSession) {
@@ -108,6 +113,14 @@ export function StudyProvider({ children }: { children: ReactNode }) {
 
       setAppLanguage(nextLanguage);
       writeAppLanguage(nextLanguage);
+    },
+    setPendingStudySetup: (value) => {
+      if (activeSession && value) {
+        return;
+      }
+
+      writePendingStudySetup(value);
+      setPendingStudySetupState(value);
     },
     startStudySession: async ({ participantId, language: nextLanguage, condition, background, consentedAt }) => {
       const normalizedParticipantId = participantId.trim();
@@ -124,8 +137,10 @@ export function StudyProvider({ children }: { children: ReactNode }) {
       });
 
       writeActiveStudySession(nextSession);
+      writePendingStudySetup(false);
       writeAppLanguage(nextLanguage);
       setAppLanguage(nextLanguage);
+      setPendingStudySetupState(false);
       setEventLoggerStudySession(nextSession);
       setSession(nextSession);
       await persistStudySessionStart(nextSession);
@@ -145,10 +160,12 @@ export function StudyProvider({ children }: { children: ReactNode }) {
     clearStudyData: () => {
       clearLocalStudyData();
       writeActiveStudySession(null);
+      writePendingStudySetup(false);
+      setPendingStudySetupState(false);
       setEventLoggerStudySession(null);
       setSession(null);
     }
-  }), [activeSession, canChangeLanguage, environment, language, loading]);
+  }), [activeSession, canChangeLanguage, environment, language, loading, pendingStudySetup]);
 
   return <StudyContext.Provider value={value}>{children}</StudyContext.Provider>;
 }

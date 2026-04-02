@@ -5,6 +5,7 @@ import {
   STUDY_BOOKMARKS_KEY,
   STUDY_DIAGNOSIS_SNAPSHOT_KEY,
   STUDY_LAST_PATH_KEY,
+  PENDING_STUDY_SETUP_KEY,
   STUDY_PLAN_DRAFT_KEY,
   STUDY_PROGRESS_KEY,
   STUDY_TASK_RATINGS_KEY
@@ -168,6 +169,27 @@ export function readLastStudyPath() {
   return window.sessionStorage.getItem(STUDY_LAST_PATH_KEY);
 }
 
+export function readPendingStudySetup() {
+  if (!isBrowser()) {
+    return false;
+  }
+
+  return window.localStorage.getItem(PENDING_STUDY_SETUP_KEY) === "true";
+}
+
+export function writePendingStudySetup(value: boolean) {
+  if (!isBrowser()) {
+    return;
+  }
+
+  if (value) {
+    window.localStorage.setItem(PENDING_STUDY_SETUP_KEY, "true");
+    return;
+  }
+
+  window.localStorage.removeItem(PENDING_STUDY_SETUP_KEY);
+}
+
 export function writeLastStudyPath(path: string) {
   if (!isBrowser()) {
     return;
@@ -189,7 +211,8 @@ export function clearLocalStudyData() {
     STUDY_PROGRESS_KEY,
     STUDY_PLAN_DRAFT_KEY,
     STUDY_LAST_PATH_KEY,
-    STUDY_TASK_RATINGS_KEY
+    STUDY_TASK_RATINGS_KEY,
+    PENDING_STUDY_SETUP_KEY
   ].forEach((key) => {
     window.localStorage.removeItem(key);
     window.sessionStorage.removeItem(key);

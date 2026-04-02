@@ -1,7 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { readAssessmentResultFromStorage, writeAssessmentResultToStorage } from "@/lib/assessmentStorage";
+import {
+  hasStoredCompletedAssessmentResult,
+  readAssessmentResultFromStorage,
+  writeAssessmentResultToStorage
+} from "@/lib/assessmentStorage";
 import {
   getCreatorBio,
   getCreatorPrimaryName,
@@ -50,8 +55,9 @@ function matchesSearch(creator: Creator, query: string, locale: "zh" | "en") {
 }
 
 export default function RankingsPage() {
+  const router = useRouter();
   const { user, configured, loading } = useAuth();
-  const { session, studyMode } = useStudy();
+  const { session, studyMode, pendingStudySetup } = useStudy();
   const { language, t } = useI18n();
   const [region, setRegion] = useState<"domestic" | "overseas">("domestic");
   const [query, setQuery] = useState("");
@@ -64,6 +70,24 @@ export default function RankingsPage() {
     () => buildRankingsCreatorsForMode({ studyMode }),
     [studyMode]
   );
+  const blockedByPendingStudySetup = pendingStudySetup && !session;
+  const blockedByAssessmentGate = studyMode && Boolean(session) && !hasStoredCompletedAssessmentResult();
+
+  useEffect(() => {
+    if (!blockedByPendingStudySetup) {
+      return;
+    }
+
+    router.replace("/study/start");
+  }, [blockedByPendingStudySetup, router]);
+
+  useEffect(() => {
+    if (!blockedByAssessmentGate) {
+      return;
+    }
+
+    router.replace("/assessment");
+  }, [blockedByAssessmentGate, router]);
 
   const list = useMemo(() => {
     const matched = creatorPool
@@ -80,13 +104,17 @@ export default function RankingsPage() {
   const visibleList = useMemo(() => list.slice(0, visibleCount), [list, visibleCount]);
 
   useEffect(() => {
+    if (blockedByPendingStudySetup || blockedByAssessmentGate) {
+      return;
+    }
+
     logEvent("rankings.viewed", {
       sourceRoute: null
     }, { page: "/rankings" });
-  }, []);
+  }, [blockedByAssessmentGate, blockedByPendingStudySetup]);
 
   useEffect(() => {
-    if (!studyMode || !session) {
+    if (blockedByPendingStudySetup || blockedByAssessmentGate || !studyMode || !session) {
       loggedSnapshotRef.current = null;
       return;
     }
@@ -106,7 +134,7 @@ export default function RankingsPage() {
       viewCountBoostDisabled: snapshot.viewCountBoostDisabled
     }, { page: "/rankings" });
     loggedSnapshotRef.current = session.snapshotId;
-  }, [session, studyMode]);
+  }, [blockedByAssessmentGate, blockedByPendingStudySetup, session, studyMode]);
 
   useEffect(() => {
     setVisibleCount(INITIAL_VISIBLE_CREATORS);
@@ -124,7 +152,7 @@ export default function RankingsPage() {
   }, [query]);
 
   useEffect(() => {
-    if (!studyMode || !session) {
+    if (blockedByPendingStudySetup || blockedByAssessmentGate || !studyMode || !session) {
       previousSortContextRef.current = null;
       return;
     }
@@ -151,7 +179,7 @@ export default function RankingsPage() {
       totalMatched: list.length
     }, { page: "/rankings" });
     previousSortContextRef.current = sortContext;
-  }, [list.length, query, region, session, studyMode, viewerLevel]);
+  }, [blockedByAssessmentGate, blockedByPendingStudySetup, list.length, query, region, session, studyMode, viewerLevel]);
 
   useEffect(() => {
     if (!selectedCreator) {
@@ -164,7 +192,7 @@ export default function RankingsPage() {
   }, [selectedCreator]);
 
   useEffect(() => {
-    if (loading) {
+    if (blockedByPendingStudySetup || blockedByAssessmentGate || loading) {
       return;
     }
 
@@ -199,9 +227,17 @@ export default function RankingsPage() {
     return () => {
       active = false;
     };
-  }, [configured, loading, user?.id]);
+  }, [blockedByAssessmentGate, blockedByPendingStudySetup, configured, loading, user?.id]);
 
   const pageTitle = t("rankings.title");
+
+  if (blockedByPendingStudySetup || blockedByAssessmentGate) {
+    return (
+      <PageContainer>
+        <div className="text-sm text-slate-600">{t("assessment.loading")}</div>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>

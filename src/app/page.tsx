@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useStudy } from "@/components/study/StudyProvider";
@@ -12,6 +13,7 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import {
   hasCompletedAssessmentResult,
+  hasStoredCompletedAssessmentResult,
   readAssessmentResultFromStorage,
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
@@ -22,12 +24,26 @@ import { getLatestAssessmentResult } from "@/lib/userData";
 type HomeGateState = "checking" | "study_session_required" | "assessment_required" | "ready";
 
 export default function HomePage() {
+  const router = useRouter();
   const { user, configured, loading } = useAuth();
-  const { studyMode, session } = useStudy();
+  const { studyMode, session, pendingStudySetup } = useStudy();
   const { t } = useI18n();
   const [gateState, setGateState] = useState<HomeGateState>("checking");
+  const blockedByPendingStudySetup = pendingStudySetup && !session;
 
   useEffect(() => {
+    if (blockedByPendingStudySetup) {
+      router.replace("/study/start");
+      setGateState("study_session_required");
+      return;
+    }
+
+    if (studyMode && session && !hasStoredCompletedAssessmentResult()) {
+      router.replace("/assessment");
+      setGateState("assessment_required");
+      return;
+    }
+
     if (studyMode && !session) {
       setGateState("study_session_required");
       return;
@@ -68,7 +84,7 @@ export default function HomePage() {
     return () => {
       active = false;
     };
-  }, [configured, loading, session, studyMode, user?.id]);
+  }, [blockedByPendingStudySetup, configured, loading, router, session, studyMode, user?.id]);
 
   if (gateState === "checking") {
     return (

@@ -10,6 +10,7 @@ import {
   getFineQuestionsForBranch
 } from "@/lib/assessment";
 import {
+  hasCompletedAssessmentResult,
   clearAssessmentDraftFromStorage,
   readAssessmentDraftFromStorage,
   readAssessmentResultFromStorage,
@@ -50,7 +51,7 @@ function getSourceRoute() {
 export default function AssessmentPage() {
   const router = useRouter();
   const { user, configured } = useAuth();
-  const { environment, session, studyMode } = useStudy();
+  const { environment, session, studyMode, pendingStudySetup } = useStudy();
   const { language, t } = useI18n();
   const appEnvironment = environment ?? resolveAppEnvironment({
     studyMode,
@@ -78,6 +79,7 @@ export default function AssessmentPage() {
   const profileRef = useRef<AssessmentProfile>(profile);
   const sliderTouchedRef = useRef(false);
   const draftArtifactStepRef = useRef<number | null>(null);
+  const blockedByPendingStudySetup = pendingStudySetup && !session;
 
   const profileQuestions = useMemo(
     () => assessmentQuestions.filter((question) => question.phase === "profile"),
@@ -151,11 +153,20 @@ export default function AssessmentPage() {
   }, []);
 
   useEffect(() => {
-    if (!searchReady) {
+    if (!blockedByPendingStudySetup) {
+      return;
+    }
+
+    router.replace("/study/start");
+  }, [blockedByPendingStudySetup, router]);
+
+  useEffect(() => {
+    if (blockedByPendingStudySetup || !searchReady) {
       return;
     }
 
     const storedDraft = readAssessmentDraftFromStorage();
+    const storedResult = readAssessmentResultFromStorage();
 
     if (retakeRequested) {
       if (storedDraft) {
@@ -169,6 +180,11 @@ export default function AssessmentPage() {
         setDraftRestored(true);
       }
       setEntryState("questionnaire");
+      return;
+    }
+
+    if (hasCompletedAssessmentResult(storedResult)) {
+      router.replace("/assessment/result");
       return;
     }
 
@@ -186,10 +202,10 @@ export default function AssessmentPage() {
     }
 
     setEntryState("questionnaire");
-  }, [language, retakeRequested, searchReady, totalSteps]);
+  }, [blockedByPendingStudySetup, language, retakeRequested, router, searchReady, totalSteps]);
 
   useEffect(() => {
-    if (entryState !== "questionnaire") {
+    if (blockedByPendingStudySetup || entryState !== "questionnaire") {
       return;
     }
 
@@ -219,10 +235,10 @@ export default function AssessmentPage() {
         assessmentDraftUpdatedAt: new Date().toISOString()
       });
     }
-  }, [answers, entryState, profile, stepIndex]);
+  }, [answers, blockedByPendingStudySetup, entryState, profile, stepIndex]);
 
   useEffect(() => {
-    if (!studyMode || !session || entryState !== "questionnaire") {
+    if (blockedByPendingStudySetup || !studyMode || !session || entryState !== "questionnaire") {
       return;
     }
 
@@ -243,10 +259,10 @@ export default function AssessmentPage() {
       answeredCount: Object.keys(answers).length,
       questionId: currentQuestion?.id ?? null
     });
-  }, [answers, currentQuestion?.id, entryState, profile.gender, profile.yearsPlaying, session, stepIndex, studyMode]);
+  }, [answers, blockedByPendingStudySetup, currentQuestion?.id, entryState, profile.gender, profile.yearsPlaying, session, stepIndex, studyMode]);
 
   useEffect(() => {
-    if (entryState !== "questionnaire") {
+    if (blockedByPendingStudySetup || entryState !== "questionnaire") {
       return;
     }
 
@@ -267,7 +283,7 @@ export default function AssessmentPage() {
         }, { page: "/assessment" });
       }
     };
-  }, [entryState]);
+  }, [blockedByPendingStudySetup, entryState]);
 
   useEffect(() => {
     if (stepIndex < 5 || branchLoggedRef.current === branch) {

@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { hasStoredCompletedAssessmentResult } from "@/lib/assessmentStorage";
 import { logEvent } from "@/lib/eventLogger";
 import { buildPlanHref, getPlanTemplate, normalizePlanDraftSnapshot, parsePlanContentIds } from "@/lib/plans";
 import { saveGeneratedPlan } from "@/lib/userData";
@@ -34,10 +35,11 @@ function normalizeLevelParam(level: string | null): PlanLevel {
 }
 
 function PlanPageContent() {
+  const router = useRouter();
   const params = useSearchParams();
   const { user, configured } = useAuth();
   const { openLoginModal } = useAuthModal();
-  const { environment, studyMode, session, language } = useStudy();
+  const { environment, studyMode, session, language, pendingStudySetup } = useStudy();
   const { t } = useI18n();
   const restoredDraft = useMemo(() => normalizePlanDraftSnapshot(readLocalStudyPlanDraft()), []);
   const defaultProblemTag = params.get("problemTag") ?? restoredDraft?.problemTag ?? "no-plan";
@@ -90,6 +92,24 @@ function PlanPageContent() {
     }),
     [plan.level, plan.problemTag, preferredContentIds, primaryNextStep, sourceType]
   );
+  const blockedByPendingStudySetup = pendingStudySetup && !session;
+  const blockedByAssessmentGate = studyMode && Boolean(session) && !hasStoredCompletedAssessmentResult();
+
+  useEffect(() => {
+    if (!blockedByPendingStudySetup) {
+      return;
+    }
+
+    router.replace("/study/start");
+  }, [blockedByPendingStudySetup, router]);
+
+  useEffect(() => {
+    if (!blockedByAssessmentGate) {
+      return;
+    }
+
+    router.replace("/assessment");
+  }, [blockedByAssessmentGate, router]);
 
   const regenerate = () => {
     setLevel((prev) => (prev === "2.5" ? "3.0" : prev === "3.0" ? "3.5" : prev === "3.5" ? "4.0" : prev === "4.0" ? "4.5" : "2.5"));
@@ -119,7 +139,7 @@ function PlanPageContent() {
   }, [plan.level, plan.problemTag, sourceType]);
 
   useEffect(() => {
-    if (!hasSource) {
+    if (blockedByPendingStudySetup || blockedByAssessmentGate || !hasSource) {
       return;
     }
 
@@ -129,10 +149,10 @@ function PlanPageContent() {
       levelBand: plan.level,
       origin: sourceType === "default" ? "direct" : sourceType
     }, { page: "/plan" });
-  }, [hasSource, plan.level, plan.problemTag, sourceLabel, sourceType]);
+  }, [blockedByAssessmentGate, blockedByPendingStudySetup, hasSource, plan.level, plan.problemTag, sourceLabel, sourceType]);
 
   useEffect(() => {
-    if (!studyMode || !session || !hasSource) {
+    if (blockedByPendingStudySetup || blockedByAssessmentGate || !studyMode || !session || !hasSource) {
       return;
     }
 
@@ -163,10 +183,10 @@ function PlanPageContent() {
       setSaveStatus("saved");
       setSaveMessage(t("plan.saveRecorded"));
     });
-  }, [hasSource, plan, planHref, session, sourceLabel, sourceType, studyMode, t]);
+  }, [blockedByAssessmentGate, blockedByPendingStudySetup, hasSource, plan, planHref, session, sourceLabel, sourceType, studyMode, t]);
 
   useEffect(() => {
-    if (!hasSource) {
+    if (blockedByPendingStudySetup || blockedByAssessmentGate || !hasSource) {
       return;
     }
 
@@ -178,7 +198,7 @@ function PlanPageContent() {
       primaryNextStep,
       updatedAt: new Date().toISOString()
     });
-  }, [hasSource, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, sourceType]);
+  }, [blockedByAssessmentGate, blockedByPendingStudySetup, hasSource, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, sourceType]);
 
   const handleSavePlan = async () => {
     if (studyMode && session) {
@@ -207,6 +227,14 @@ function PlanPageContent() {
     setSaveMessage(t("plan.saveAccount"));
     logEvent("plan.saved", { planId: `${plan.problemTag}:${plan.level}` }, { page: "/plan" });
   };
+
+  if (blockedByPendingStudySetup || blockedByAssessmentGate) {
+    return (
+      <PageContainer>
+        <p className="text-slate-600">{t("plan.loading")}</p>
+      </PageContainer>
+    );
+  }
 
   if (!hasSource && problemTag === "no-plan") {
     return (

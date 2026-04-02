@@ -12,9 +12,7 @@ import { logEvent } from "@/lib/eventLogger";
 import { getLatestAssessmentResult, saveAssessmentResult } from "@/lib/userData";
 import { useI18n } from "@/lib/i18n/config";
 import { buildAssessmentPlanContext, buildPlanHref } from "@/lib/plans";
-import { hasStudyTaskRating } from "@/lib/study/taskRatings";
 import { updateLocalStudyProgress } from "@/lib/study/localData";
-import { ActionabilityPrompt } from "@/components/study/ActionabilityPrompt";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
@@ -27,11 +25,10 @@ type AssessmentResultSource = "loading" | "remote" | "synced" | "local";
 
 export default function AssessmentResultPage() {
   const { user, configured, loading } = useAuth();
-  const { studyMode, session } = useStudy();
+  const { studyMode } = useStudy();
   const { language, t } = useI18n();
   const [result, setResult] = useState<AssessmentResult>(getDefaultAssessmentResult(language));
   const [source, setSource] = useState<AssessmentResultSource>("loading");
-  const [actionabilitySubmitted, setActionabilitySubmitted] = useState(false);
   const assessmentPlan = result.answeredCount > 0 ? buildAssessmentPlanContext(result) : null;
   const planHref = assessmentPlan
     ? buildPlanHref({
@@ -115,14 +112,6 @@ export default function AssessmentResultPage() {
     });
   }, [result, studyMode]);
 
-  const shouldShowActionability =
-    studyMode
-    && Boolean(session)
-    && result.answeredCount > 0
-    && source !== "loading"
-    && !actionabilitySubmitted
-    && !hasStudyTaskRating(session?.sessionId ?? "", "task_2_assessment_entry");
-
   return (
     <PageContainer>
       <div className="space-y-5">
@@ -159,12 +148,6 @@ export default function AssessmentResultPage() {
                   <Button variant="secondary">{t("assessment.result.ctaLibrary")}</Button>
                 </Link>
               </div>
-              {shouldShowActionability ? (
-                <ActionabilityPrompt
-                  taskId="task_2_assessment_entry"
-                  onSubmitted={() => setActionabilitySubmitted(true)}
-                />
-              ) : null}
             </>
           ) : (
             <Link

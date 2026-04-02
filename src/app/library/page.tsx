@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { creators } from "@/data/creators";
 import {
   getContentFocusLine,
@@ -11,6 +12,7 @@ import {
 } from "@/lib/content/display";
 import {
   hasCompletedAssessmentResult,
+  hasStoredCompletedAssessmentResult,
   readAssessmentResultFromStorage,
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
@@ -51,9 +53,10 @@ function inferQueryLanguage(query: string) {
 }
 
 function LibraryPageContent() {
+  const router = useRouter();
   const { user, configured, loading } = useAuth();
   const { openLoginModal } = useAuthModal();
-  const { session, studyMode } = useStudy();
+  const { session, studyMode, pendingStudySetup } = useStudy();
   const { t } = useI18n();
   const [gateState, setGateState] = useState<LibraryGateState>("checking");
   const [keyword, setKeyword] = useState("");
@@ -68,6 +71,7 @@ function LibraryPageContent() {
   const previousKeywordRef = useRef("");
   const loggedSnapshotRef = useRef<string | null>(null);
   const previousSortContextRef = useRef<string | null>(null);
+  const blockedByPendingStudySetup = pendingStudySetup && !session;
   const productSeed = useMemo(() => new Date().toLocaleDateString("en-CA"), []);
   const creatorNameById = useMemo(
     () => new Map(creators.map((creator) => [creator.id, creator.name])),
@@ -79,6 +83,18 @@ function LibraryPageContent() {
   );
 
   useEffect(() => {
+    if (blockedByPendingStudySetup) {
+      router.replace("/study/start");
+      setGateState("study_session_required");
+      return;
+    }
+
+    if (studyMode && session && !hasStoredCompletedAssessmentResult()) {
+      router.replace("/assessment");
+      setGateState("assessment_required");
+      return;
+    }
+
     if (studyMode && !session) {
       setGateState("study_session_required");
       return;
@@ -120,7 +136,7 @@ function LibraryPageContent() {
     return () => {
       active = false;
     };
-  }, [configured, loading, session, studyMode, user?.id]);
+  }, [blockedByPendingStudySetup, configured, loading, router, session, studyMode, user?.id]);
 
   useEffect(() => {
     if (gateState !== "ready") {
