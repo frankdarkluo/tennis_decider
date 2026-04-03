@@ -113,8 +113,8 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
     labels: {
       1: "Mostly waiting for their errors",
       2: "Sometimes I hit a pressuring ball",
-      3: "I can force errors with depth and pace changes",
-      4: "I build structured points and control rally tempo"
+      3: "I can force errors consistently through steady pressure",
+      4: "I create scoring opportunities through point construction"
     }
   },
   fine_c_tactical: {
