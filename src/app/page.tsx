@@ -138,6 +138,7 @@ export default function HomePage() {
           <HotCreatorsSection />
         </div>
 
+        {/*
         <div className="grid gap-4 md:grid-cols-2">
           <Link
             href="/diagnose"
@@ -177,6 +178,7 @@ export default function HomePage() {
             </Card>
           </Link>
         </div>
+        */}
       </div>
     </PageContainer>
   );
