@@ -91,12 +91,12 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
     }
   },
   fine_c_net: {
-    en: "How do you feel about coming to the net?",
+    en: "How would you describe your net play?",
     labels: {
       1: "I almost never come to the net",
-      2: "I come up sometimes but struggle with high balls and wide angles",
-      3: "I approach on purpose and my volleys are solid, though I rarely score at net",
-      4: "Net play is a regular scoring weapon \u2014 I handle volleys and overheads"
+      2: "I come to the net sometimes and can handle simple balls",
+      3: "I come to the net on purpose and feel fairly confident with my volleys",
+      4: "Net play is one of my regular ways to win points"
     }
   },
   fine_c_depth: {
