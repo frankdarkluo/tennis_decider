@@ -72,7 +72,11 @@ function LibraryPageContent() {
   const loggedSnapshotRef = useRef<string | null>(null);
   const previousSortContextRef = useRef<string | null>(null);
   const blockedByPendingStudySetup = pendingStudySetup && !session;
-  const productSeed = useMemo(() => new Date().toLocaleDateString("en-CA"), []);
+  // Use a deterministic product seed to avoid server/client ordering differences
+  // (date-based seeds can differ between server and client timezones and cause
+  // hydration mismatches). If needed, this can be changed to a server-provided
+  // daily seed later.
+  const productSeed = useMemo(() => "stable", []);
   const creatorNameById = useMemo(
     () => new Map(creators.map((creator) => [creator.id, creator.name])),
     []
