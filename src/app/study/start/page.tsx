@@ -31,7 +31,7 @@ function applyReplacements(value: string, replacements?: Record<string, string |
 const backgroundCopy = {
   zh: {
     title: "研究背景信息",
-    subtitle: "这部分只记录最少必要字段以便后续研究分析。",
+    subtitle: "",
     playFrequency: "每周打球频率",
     selfReportedLevel: "自我判断水平"
   },
@@ -374,9 +374,8 @@ function StudyStartPageContent() {
           <div className="rounded-2xl bg-slate-50 px-4 py-4 text-sm leading-6 text-slate-700">
             <p className="font-semibold text-slate-900">{pageT("study.start.noticeTitle")}</p>
             <ul className="mt-2 list-disc space-y-1 pl-5">
-              <li>{pageT("study.start.noticePrivacy")}</li>
+              <li>{pageT("study.start.noticeAcademicUse")}</li>
               <li>{pageT("study.start.noticeLock")}</li>
-              <li>{pageT("study.start.noticeExport")}</li>
             </ul>
           </div>
 
