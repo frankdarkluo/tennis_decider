@@ -118,6 +118,7 @@ function DiagnosePageContent() {
   const { environment, session, studyMode, language, loading: studyLoading, pendingStudySetup } = useStudy();
   const { t } = useI18n();
   const [text, setText] = useState("");
+  const [storedAssessmentExists, setStoredAssessmentExists] = useState(false);
   const [effortMode, setEffortMode] = useState<DiagnosisEffortMode>("standard");
   const [currentLevel, setCurrentLevel] = useState<string | undefined>(undefined);
   const [assessmentResult, setAssessmentResult] = useState<AssessmentResult | null>(null);
@@ -126,7 +127,11 @@ function DiagnosePageContent() {
   const [contextReady, setContextReady] = useState(false);
   const handledQueryRef = useRef<string | null>(null);
   const blockedByPendingStudySetup = pendingStudySetup && !session;
-  const blockedByAssessmentGate = !studyMode && !hasStoredCompletedAssessmentResult();
+  useEffect(() => {
+    setStoredAssessmentExists(hasStoredCompletedAssessmentResult());
+  }, []);
+
+  const blockedByAssessmentGate = !studyMode && !storedAssessmentExists;
 
   const previewOptions = getProblemPreviewOptions();
   const quickTags = previewOptions.map((item) => language === "en" ? item.label_en : item.label);

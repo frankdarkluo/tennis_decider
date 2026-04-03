@@ -41,6 +41,7 @@ function PlanPageContent() {
   const { openLoginModal } = useAuthModal();
   const { environment, studyMode, session, language, pendingStudySetup } = useStudy();
   const { t } = useI18n();
+  const [storedAssessmentExists, setStoredAssessmentExists] = useState(false);
   const restoredDraft = useMemo(() => normalizePlanDraftSnapshot(readLocalStudyPlanDraft()), []);
   const defaultProblemTag = params.get("problemTag") ?? restoredDraft?.problemTag ?? "no-plan";
   function mapReportedLevelToPlan(levelStr: string | null | undefined): string | null {
@@ -114,7 +115,11 @@ function PlanPageContent() {
     [plan.level, plan.problemTag, preferredContentIds, primaryNextStep, sourceType]
   );
   const blockedByPendingStudySetup = pendingStudySetup && !session;
-  const blockedByAssessmentGate = !studyMode && !hasStoredCompletedAssessmentResult();
+  useEffect(() => {
+    setStoredAssessmentExists(hasStoredCompletedAssessmentResult());
+  }, []);
+
+  const blockedByAssessmentGate = !studyMode && !storedAssessmentExists;
 
   useEffect(() => {
     if (!blockedByPendingStudySetup) {

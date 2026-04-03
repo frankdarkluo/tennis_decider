@@ -59,6 +59,7 @@ export default function RankingsPage() {
   const { user, configured, loading } = useAuth();
   const { session, studyMode, pendingStudySetup } = useStudy();
   const { language, t } = useI18n();
+  const [storedAssessmentExists, setStoredAssessmentExists] = useState(false);
   const [region, setRegion] = useState<"domestic" | "overseas">("domestic");
   const [query, setQuery] = useState("");
   const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
@@ -71,7 +72,11 @@ export default function RankingsPage() {
     [studyMode]
   );
   const blockedByPendingStudySetup = pendingStudySetup && !session;
-  const blockedByAssessmentGate = !studyMode && !hasStoredCompletedAssessmentResult();
+  useEffect(() => {
+    setStoredAssessmentExists(hasStoredCompletedAssessmentResult());
+  }, []);
+
+  const blockedByAssessmentGate = !studyMode && !storedAssessmentExists;
 
   useEffect(() => {
     if (!blockedByPendingStudySetup) {
