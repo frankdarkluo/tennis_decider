@@ -43,7 +43,29 @@ function PlanPageContent() {
   const { t } = useI18n();
   const restoredDraft = useMemo(() => normalizePlanDraftSnapshot(readLocalStudyPlanDraft()), []);
   const defaultProblemTag = params.get("problemTag") ?? restoredDraft?.problemTag ?? "no-plan";
-  const defaultLevel = normalizeLevelParam(params.get("level") ?? restoredDraft?.level ?? null);
+  function mapReportedLevelToPlan(levelStr: string | null | undefined): string | null {
+    if (!levelStr) return null;
+    switch (levelStr) {
+      case "below_3.0":
+        return "2.5";
+      case "3.0":
+        return "3.0";
+      case "3.5":
+        return "3.5";
+      case "4.0":
+        return "4.0";
+      case "above_4.0":
+        return "4.5";
+      default:
+        return null;
+    }
+  }
+
+  const sessionReportedLevel = studyMode && session?.background?.selfReportedLevel
+    ? mapReportedLevelToPlan(session.background.selfReportedLevel)
+    : null;
+
+  const defaultLevel = normalizeLevelParam(params.get("level") ?? restoredDraft?.level ?? sessionReportedLevel ?? null);
   const preferredContentIdsParam = params.get("contentIds");
   const primaryNextStepParam = params.get("primaryNextStep");
 

@@ -73,7 +73,7 @@ const zh = {
   "assessment.result.headline": "你的能力区间接近",
   "assessment.result.strength": "你的 {value} 比较强",
   "assessment.result.weakness": "可以重点提升：{value}",
-  "assessment.question.profile": "先从两个小问题开始",
+  "assessment.question.profile": "",
   "assessment.question.coarse": "核心评估",
   "assessment.question.fine": "继续了解一下",
   "assessment.question.slider": "再补一个背景信息",

@@ -15,7 +15,7 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
       1: "Up to 3 shots",
       2: "4-8 shots",
       3: "9-15 shots",
-      4: "16+ shots, with few unforced errors"
+      4: "16+ shots, without many unforced errors"
     }
   },
   coarse_serve: {

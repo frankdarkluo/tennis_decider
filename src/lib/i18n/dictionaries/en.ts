@@ -73,7 +73,7 @@ const en = {
   "assessment.result.headline": "Your current range is close to",
   "assessment.result.strength": "You are relatively stronger in {value}",
   "assessment.result.weakness": "Worth focusing on next: {value}",
-  "assessment.question.profile": "Two quick questions first",
+  "assessment.question.profile": "",
   "assessment.question.coarse": "Core assessment",
   "assessment.question.fine": "A little more detail",
   "assessment.question.slider": "One more background detail",
