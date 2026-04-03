@@ -61,7 +61,7 @@ const en = {
   "assessment.title": "A 1-minute read on your level",
   "assessment.subtitle": "Answer a few short questions and we will give you a range.",
   "assessment.loading": "Syncing your assessment record...",
-  "assessment.resumeDraft": "Your in-progress assessment has been restored.",
+  "assessment.resumeDraft": "",
   "assessment.result.retry": "← Retake assessment",
   "assessment.result.home": "Back home",
   "assessment.result.ctaPlan": "Generate a training plan →",

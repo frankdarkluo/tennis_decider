@@ -61,7 +61,7 @@ const zh = {
   "assessment.title": "1 分钟测一下你的水平",
   "assessment.subtitle": "答几个小问题，先给你一个区间。",
   "assessment.loading": "正在同步你的评估记录...",
-  "assessment.resumeDraft": "已恢复你刚才做到一半的评估进度。",
+  "assessment.resumeDraft": "",
   "assessment.result.retry": "← 重新评估",
   "assessment.result.home": "回到首页",
   "assessment.result.ctaPlan": "生成训练计划 →",

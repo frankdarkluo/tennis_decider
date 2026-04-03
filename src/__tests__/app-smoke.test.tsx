@@ -32,7 +32,7 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "assessment.title": "1 分钟测一下你的水平",
     "assessment.empty.title": "先完成一次水平评估",
     "assessment.empty.subtitle": "做完后，我们会直接告诉你大概处在哪个能力区间，以及接下来更值得优先补哪一块。",
-    "assessment.resumeDraft": "已恢复你刚才做到一半的评估进度。",
+    "assessment.resumeDraft": "",
     "assessment.result.ctaStart": "去完成水平评估 →",
     "assessment.result.ctaPlan": "生成训练计划 →",
     "study.actionability.prompt": "完成这一步后，我比之前更清楚下一步该练什么了。",

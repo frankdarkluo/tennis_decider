@@ -426,6 +426,21 @@ function createDefaultDays(locale: PlanLocale): DayPlan[] {
 const allPlanContents = [...contents, ...expandedContents];
 const curatedContentIds = new Set(contents.map((content) => content.id));
 const planContentById = new Map(allPlanContents.map((content) => [content.id, content]));
+const NON_DIRECT_PLAN_VIDEO_URL_PATTERNS = [
+  /search\.bilibili\.com\/all\?keyword=/i,
+  /youtube\.com\/results\?search_query=/i
+];
+
+function isDirectPlanVideo(item: ContentItem): boolean {
+  if (item.type !== "video") {
+    return false;
+  }
+
+  return !NON_DIRECT_PLAN_VIDEO_URL_PATTERNS.some((pattern) => pattern.test(item.url));
+}
+
+const directPlanContents = allPlanContents.filter(isDirectPlanVideo);
+const directPlanContentIds = new Set(directPlanContents.map((content) => content.id));
 
 const planDayKeywordSignals = [
   {
@@ -652,6 +667,10 @@ function normalizePlanProblemTag(problemTag: string): string {
 
 function getPlanPoolSource(contentId: string): PlanPoolSource {
   return curatedContentIds.has(contentId) ? "curated" : "expanded";
+}
+
+function isDirectPlanContentId(contentId: string): boolean {
+  return directPlanContentIds.has(contentId);
 }
 
 function isCuratedContent(item: ContentItem): boolean {
@@ -1027,7 +1046,7 @@ function fillCandidatePoolIfNeeded(
   }
 
   const existingIds = new Set(candidateIds);
-  const backfill = allPlanContents
+  const backfill = directPlanContents
     .map((item, index): RankedPlanContentCandidate & { problemTagOverlap: number; skillOverlap: number } => {
       const normalizedProblemTags = getNormalizedContentProblemTags(item);
       const problemTagOverlap = overlapCount(normalizedProblemTags, seedProblemTags);
@@ -1089,7 +1108,7 @@ export function buildDiagnosisPlanCandidateIds(input: {
     ...(input.recommendedContentIds ?? []),
     ...getRecommendedRuleContentIds(input.problemTag),
     ...contextHint.contentIds
-  ]);
+  ]).filter(isDirectPlanContentId);
   const explicitItems = explicitContentIds
     .map((id) => planContentById.get(id))
     .filter((item): item is ContentItem => Boolean(item));
@@ -1112,7 +1131,7 @@ export function buildDiagnosisPlanCandidateIds(input: {
   const explicitContentIdSet = new Set(explicitContentIds);
   const templateSeedContentIdSet = new Set(templateSeedContentIds);
 
-  const rankedCandidateIds = allPlanContents
+  const rankedCandidateIds = directPlanContents
     .map((item, index): RankedPlanContentCandidate =>
       scoreContentForCandidatePool({
         item,
@@ -1139,8 +1158,8 @@ export function buildDiagnosisPlanCandidateIds(input: {
   );
 
   const orderedIds = uniqueStrings([
-    ...explicitContentIds.filter((id) => planContentById.has(id)),
-    ...templateSeedContentIds.filter((id) => planContentById.has(id)),
+    ...explicitContentIds.filter((id) => isDirectPlanContentId(id)),
+    ...templateSeedContentIds.filter((id) => isDirectPlanContentId(id)),
     ...diversifiedRankedCandidateIds
   ]);
 
@@ -1163,11 +1182,13 @@ export function buildAssessmentPlanContext(result: AssessmentResult): {
   const secondaryKeys = allDimensionKeys.filter((key) => key !== weakestKey);
   const secondaryHints = secondaryKeys.map((key) => ASSESSMENT_DIMENSION_PLAN_HINTS[key]);
   const explicitContentIds = getRecommendedRuleContentIds(primaryHint.primaryProblemTag);
+  const directExplicitContentIds = explicitContentIds.filter(isDirectPlanContentId);
   const templateSeedContentIds = getTemplateSeedContentIds(primaryHint.primaryProblemTag, result.level);
-  const explicitItems = explicitContentIds
+  const directTemplateSeedContentIds = templateSeedContentIds.filter(isDirectPlanContentId);
+  const explicitItems = directExplicitContentIds
     .map((id) => planContentById.get(id))
     .filter((item): item is ContentItem => Boolean(item));
-  const templateSeedItems = templateSeedContentIds
+  const templateSeedItems = directTemplateSeedContentIds
     .map((id) => planContentById.get(id))
     .filter((item): item is ContentItem => Boolean(item));
   const secondaryProblemTags = uniqueStrings(
@@ -1187,10 +1208,10 @@ export function buildAssessmentPlanContext(result: AssessmentResult): {
     ...templateSeedItems.flatMap((item) => item.skills),
     ...secondarySkills
   ]);
-  const explicitContentIdSet = new Set(explicitContentIds);
-  const templateSeedContentIdSet = new Set(templateSeedContentIds);
+  const explicitContentIdSet = new Set(directExplicitContentIds);
+  const templateSeedContentIdSet = new Set(directTemplateSeedContentIds);
 
-  const rankedCandidateIds = allPlanContents
+  const rankedCandidateIds = directPlanContents
     .map((item, index): RankedPlanContentCandidate =>
       scoreContentForCandidatePool({
         item,
@@ -1217,8 +1238,8 @@ export function buildAssessmentPlanContext(result: AssessmentResult): {
   );
 
   const orderedIds = uniqueStrings([
-    ...explicitContentIds.filter((id) => planContentById.has(id)),
-    ...templateSeedContentIds.filter((id) => planContentById.has(id)),
+    ...directExplicitContentIds,
+    ...directTemplateSeedContentIds,
     ...diversifiedRankedCandidateIds
   ]);
 
@@ -1240,7 +1261,7 @@ function applyPreferredContentIds(
 ): GeneratedPlan {
   const preferredItems = uniqueStrings(preferredContentIds)
     .map((id) => planContentById.get(id))
-    .filter((item): item is ContentItem => Boolean(item));
+    .filter((item): item is ContentItem => Boolean(item && isDirectPlanVideo(item)));
 
   if (preferredItems.length === 0) {
     return plan;
@@ -1314,6 +1335,16 @@ function applyPreferredContentIds(
         ])
       };
     })
+  };
+}
+
+function sanitizePlanDayContentIds(plan: GeneratedPlan): GeneratedPlan {
+  return {
+    ...plan,
+    days: plan.days.map((day) => ({
+      ...day,
+      contentIds: day.contentIds.filter(isDirectPlanContentId)
+    }))
   };
 }
 
@@ -1480,13 +1511,15 @@ export function getPlanTemplate(
     .find((item): item is PlanTemplate => Boolean(item));
   if (exact) {
     const plan = applyPrimaryNextStepContext(
-      applyPreferredContentIds(
-        {
-          ...toGenerated(exact, locale),
-          level
-        },
-        level,
-        preferredContentIds
+      sanitizePlanDayContentIds(
+        applyPreferredContentIds(
+          {
+            ...toGenerated(exact, locale),
+            level
+          },
+          level,
+          preferredContentIds
+        )
       ),
       locale,
       options.primaryNextStep
@@ -1503,13 +1536,15 @@ export function getPlanTemplate(
     .find((item): item is PlanTemplate => Boolean(item));
   if (sameTag) {
     const plan = applyPrimaryNextStepContext(
-      applyPreferredContentIds(
-        {
-          ...toGenerated(sameTag, locale),
-          level
-        },
-        level,
-        preferredContentIds
+      sanitizePlanDayContentIds(
+        applyPreferredContentIds(
+          {
+            ...toGenerated(sameTag, locale),
+            level
+          },
+          level,
+          preferredContentIds
+        )
       ),
       locale,
       options.primaryNextStep
@@ -1522,22 +1557,24 @@ export function getPlanTemplate(
   }
 
   return applyPrimaryNextStepContext(
-    applyPreferredContentIds(
-      {
-        source: "fallback",
+    sanitizePlanDayContentIds(
+      applyPreferredContentIds(
+        {
+          source: "fallback",
+          level,
+          problemTag,
+          title: locale === "en" ? "7-day general improvement plan" : "通用 7 天基础提升计划",
+          target: locale === "en"
+            ? "Build a steady swing and a practical training rhythm within one week"
+            : "在一周内建立稳定击球与可执行训练节奏",
+          summary: locale === "en"
+            ? "Not enough context to customize yet. Starting with a general, actionable 7-day training rhythm."
+            : "当前上下文不足，先使用一份通用且可执行的 7 天训练节奏。",
+          days: createDefaultDays(locale)
+        },
         level,
-        problemTag,
-        title: locale === "en" ? "7-day general improvement plan" : "通用 7 天基础提升计划",
-        target: locale === "en"
-          ? "Build a steady swing and a practical training rhythm within one week"
-          : "在一周内建立稳定击球与可执行训练节奏",
-        summary: locale === "en"
-          ? "Not enough context to customize yet. Starting with a general, actionable 7-day training rhythm."
-          : "当前上下文不足，先使用一份通用且可执行的 7 天训练节奏。",
-        days: createDefaultDays(locale)
-      },
-      level,
-      preferredContentIds
+        preferredContentIds
+      )
     ),
     locale,
     options.primaryNextStep

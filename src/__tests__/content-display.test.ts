@@ -533,12 +533,12 @@ describe("content display helpers", () => {
   });
 
   it("prioritizes diagnosis-specific content when building a plan", () => {
-    const preferredContentIds = ["content_cn_a_01", "content_zlx_03"];
+    const preferredContentIds = ["content_fr_01", "content_gaiao_03"];
     const plan = getPlanTemplate("backhand-into-net", "3.0", "zh", preferredContentIds);
     const earlyAssignedIds = plan.days.slice(0, 5).map((day) => day.contentIds[0]);
 
-    expect(plan.days[0].contentIds[0]).toBe("content_cn_a_01");
-    expect(earlyAssignedIds).toContain("content_zlx_03");
+    expect(plan.days[0].contentIds[0]).toBe("content_fr_01");
+    expect(earlyAssignedIds).toContain("content_gaiao_03");
   });
 
   it("serializes preferred plan content ids into plan hrefs", () => {
@@ -596,12 +596,12 @@ describe("content display helpers", () => {
     const candidateIds = buildDiagnosisPlanCandidateIds({
       problemTag: "backhand-into-net",
       level: "3.0",
-      recommendedContentIds: ["content_cn_a_01", "content_zlx_03"]
+      recommendedContentIds: ["content_fr_01", "content_gaiao_03"]
     });
     const expandedIdSet = new Set(expandedContents.map((entry) => entry.id));
 
     expect(candidateIds.length).toBeGreaterThanOrEqual(5);
-    expect(candidateIds.slice(0, 2)).toEqual(["content_cn_a_01", "content_zlx_03"]);
+    expect(candidateIds.slice(0, 2)).toEqual(["content_fr_01", "content_gaiao_03"]);
     expect(candidateIds.some((id) => expandedIdSet.has(id))).toBe(true);
   });
 
@@ -683,15 +683,20 @@ describe("content display helpers", () => {
     expect(uniqueEarlyIds.size).toBeGreaterThanOrEqual(Math.min(3, candidateIds.length));
   });
 
-  it("keeps seeded review-day explainers instead of forcing a weaker unused mismatch", () => {
+  it("keeps review-day assignments on direct candidate videos", () => {
     const candidateIds = buildDiagnosisPlanCandidateIds({
       problemTag: "backhand-into-net",
       level: "3.0",
-      recommendedContentIds: ["content_cn_a_01", "content_zlx_03"]
+      recommendedContentIds: ["content_fr_01", "content_gaiao_03"]
     });
     const plan = getPlanTemplate("backhand-into-net", "3.0", "zh", candidateIds);
+    const contentById = new Map([...contents, ...expandedContents].map((entry) => [entry.id, entry]));
+    const reviewDayId = plan.days[5]?.contentIds[0];
+    const reviewDayItem = reviewDayId ? contentById.get(reviewDayId) : null;
 
-    expect(plan.days[5]?.contentIds[0]).toBe("content_cn_a_01");
+    expect(reviewDayId).toBeTruthy();
+    expect(candidateIds).toContain(reviewDayId);
+    expect(reviewDayItem?.url.includes("search.bilibili.com/all?keyword=")).toBe(false);
   });
 
   it("keeps assessment-derived second-serve plans on serve-focused content", () => {
@@ -820,10 +825,31 @@ describe("content display helpers", () => {
       problemTag: "pressure-tightness",
       level: "3.0"
     });
+    const contentById = new Map([...contents, ...expandedContents].map((entry) => [entry.id, entry]));
 
     expect(candidateIds.length).toBeGreaterThanOrEqual(5);
-    expect(candidateIds[0]).toBe("content_cn_f_01");
-    expect(candidateIds.slice(0, 3)).toEqual(expect.arrayContaining(["content_cn_e_02", "content_rb_03"]));
+    expect(candidateIds.slice(0, 3)).toEqual(expect.arrayContaining(["content_rb_03", "content_rb_02"]));
+    expect(
+      candidateIds.every((id) => {
+        const item = contentById.get(id);
+        return Boolean(item && !item.url.includes("search.bilibili.com/all?keyword="));
+      })
+    ).toBe(true);
+  });
+
+  it("keeps pressure-tightness plans on direct library videos only", () => {
+    const plan = getPlanTemplate("pressure-tightness", "3.0", "zh");
+    const contentById = new Map([...contents, ...expandedContents].map((entry) => [entry.id, entry]));
+
+    expect(plan.days.some((day) => day.contentIds.length > 0)).toBe(true);
+    expect(
+      plan.days.every((day) =>
+        day.contentIds.every((id) => {
+          const item = contentById.get(id);
+          return Boolean(item && !item.url.includes("search.bilibili.com/all?keyword="));
+        })
+      )
+    ).toBe(true);
   });
 
   it("uses diagnosis context cues to keep pressure-support content in plan candidates", () => {
