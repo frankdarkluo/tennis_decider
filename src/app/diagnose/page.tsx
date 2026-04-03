@@ -19,7 +19,7 @@ import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { persistStudyArtifact } from "@/lib/study/client";
 import { sanitizeDiagnosisArtifact } from "@/lib/study/privacy";
-import { hasStudyTaskRating } from "@/lib/study/taskRatings";
+// hasStudyTaskRating removed: actionability prompt not shown on diagnose page
 import { getLatestAssessmentResult, saveDiagnosisHistory } from "@/lib/userData";
 import {
   readLocalDiagnosisSnapshot,
@@ -32,7 +32,6 @@ import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { DiagnoseInput } from "@/components/diagnose/DiagnoseInput";
 import { DiagnoseResult as DiagnoseResultPanel } from "@/components/diagnose/DiagnoseResult";
-import { ActionabilityPrompt } from "@/components/study/ActionabilityPrompt";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useStudy } from "@/components/study/StudyProvider";
 import { Card } from "@/components/ui/Card";
@@ -125,7 +124,6 @@ function DiagnosePageContent() {
   const [result, setResult] = useState<DiagnosisResult>(getDefaultDiagnosisResult());
   const [latestSnapshot, setLatestSnapshot] = useState<DiagnosisSnapshot | null>(null);
   const [contextReady, setContextReady] = useState(false);
-  const [actionabilitySubmitted, setActionabilitySubmitted] = useState(false);
   const handledQueryRef = useRef<string | null>(null);
   const blockedByPendingStudySetup = pendingStudySetup && !session;
   const blockedByAssessmentGate = !studyMode && !hasStoredCompletedAssessmentResult();
@@ -133,12 +131,6 @@ function DiagnosePageContent() {
   const previewOptions = getProblemPreviewOptions();
   const quickTags = previewOptions.map((item) => language === "en" ? item.label_en : item.label);
   const hasDiagnosed = Boolean(result.input.trim());
-  const shouldShowActionability =
-    studyMode
-    && Boolean(session)
-    && hasDiagnosed
-    && !actionabilitySubmitted
-    && !hasStudyTaskRating(session?.sessionId ?? "", "task_1_problem_entry");
 
   useEffect(() => {
     if (!blockedByPendingStudySetup) {
@@ -390,12 +382,7 @@ function DiagnosePageContent() {
         ) : null}
 
         {hasDiagnosed ? <DiagnoseResultPanel result={result} /> : null}
-        {shouldShowActionability ? (
-          <ActionabilityPrompt
-            taskId="task_1_problem_entry"
-            onSubmitted={() => setActionabilitySubmitted(true)}
-          />
-        ) : null}
+        {/* ActionabilityPrompt removed from diagnose page per product request */}
       </div>
     </PageContainer>
   );

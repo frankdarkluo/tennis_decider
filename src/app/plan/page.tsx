@@ -12,19 +12,19 @@ import { persistStudyArtifact } from "@/lib/study/client";
 import { readLocalStudyPlanDraft, updateLocalStudyProgress, writeLocalStudyPlanDraft } from "@/lib/study/localData";
 import { sanitizePlanArtifact } from "@/lib/study/privacy";
 import { getStudySnapshot } from "@/lib/study/snapshot";
-import { hasStudyTaskRating } from "@/lib/study/taskRatings";
+// hasStudyTaskRating removed: actionability prompt not shown on plan page
 import { toChineseLevel } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
 import { useStudy } from "@/components/study/StudyProvider";
-import { ActionabilityPrompt } from "@/components/study/ActionabilityPrompt";
 import { PlanSummary } from "@/components/plan/PlanSummary";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
 import { Button } from "@/components/ui/Button";
 import { SavedPlanSource } from "@/types/userData";
 import { PlanLevel } from "@/types/plan";
+// ActionabilityPrompt intentionally not rendered on the plan page per product request.
 
 function normalizeLevelParam(level: string | null): PlanLevel {
   if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.5") {
@@ -73,7 +73,6 @@ function PlanPageContent() {
   const [level, setLevel] = useState<PlanLevel>(defaultLevel);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [saveMessage, setSaveMessage] = useState("");
-  const [actionabilitySubmitted, setActionabilitySubmitted] = useState(false);
   const studyPersistedKeyRef = useRef<string | null>(null);
   const preferredContentIds = useMemo(
     () => preferredContentIdsParam
@@ -138,12 +137,6 @@ function PlanPageContent() {
   };
 
   const hasSource = Boolean(params.get("problemTag") || params.get("level") || restoredDraft);
-  const shouldShowActionability =
-    studyMode
-    && Boolean(session)
-    && hasSource
-    && !actionabilitySubmitted
-    && !hasStudyTaskRating(session?.sessionId ?? "", "task_3_action_or_revisit");
   const backtrackHref = sourceType === "assessment" ? "/assessment/result" : "/diagnose";
   const backtrackLabel = sourceType === "assessment" ? t("plan.backAssessment") : t("plan.backDiagnosis");
 
@@ -383,12 +376,7 @@ function PlanPageContent() {
             {saveMessage}
           </div>
         ) : null}
-        {shouldShowActionability ? (
-          <ActionabilityPrompt
-            taskId="task_3_action_or_revisit"
-            onSubmitted={() => setActionabilitySubmitted(true)}
-          />
-        ) : null}
+        {/* ActionabilityPrompt removed from plan page per product request */}
       </div>
     </PageContainer>
   );
