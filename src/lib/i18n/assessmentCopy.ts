@@ -10,12 +10,12 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
     en: "How long have you been playing tennis?"
   },
   coarse_rally: {
-    en: "When rallying with a friend, how many balls can you usually keep in play?",
+    en: "How many shots can you usually hit in a rally during practice?",
     labels: {
-      1: "Within 3 shots",
-      2: "3-10 shots",
-      3: "10-20 shots",
-      4: "20+ shots without many unforced errors"
+      1: "Up to 3 shots",
+      2: "4-8 shots",
+      3: "9-15 shots",
+      4: "16+ shots, with few unforced errors"
     }
   },
   coarse_serve: {
@@ -94,7 +94,7 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
     en: "How would you describe your net play?",
     labels: {
       1: "I almost never come to the net",
-      2: "I come to the net sometimes and can handle simple balls",
+      2: "I come to the net sometimes and can handle simple volleys",
       3: "I come to the net on purpose and feel fairly confident with my volleys",
       4: "Net play is one of my regular ways to win points"
     }
