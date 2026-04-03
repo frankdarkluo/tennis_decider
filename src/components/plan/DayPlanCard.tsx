@@ -138,11 +138,13 @@ function PrescriptionMetadata({
 function PrescriptionPlan({
   day,
   language,
-  t
+  t,
+  showFull = false
 }: {
   day: DayPlan;
   language: "zh" | "en";
   t: ReturnType<typeof useI18n>["t"];
+  showFull?: boolean;
 }) {
   const practiceItems = [...day.mainBlock.items, ...day.pressureBlock.items]
     .map((item) => item.trim())
@@ -153,7 +155,7 @@ function PrescriptionPlan({
     <div className="space-y-4">
       <div className="space-y-2">
         <p className="text-sm font-semibold text-slate-900">{t("plan.day.goal")}</p>
-        <p className="text-sm leading-6 text-slate-700">{compactPrompt(day.goal, language)}</p>
+        <p className="text-sm leading-6 text-slate-700">{showFull ? day.goal.trim() : compactPrompt(day.goal, language)}</p>
       </div>
 
       <PrescriptionMetadata
@@ -163,20 +165,20 @@ function PrescriptionPlan({
       />
 
       <div className="space-y-3">
-        <PrescriptionBlock
+            <PrescriptionBlock
           label={practiceLabel}
           block={{
             title: practiceLabel,
-            items: practiceItems.map((item) => compactPrompt(item, language))
+            items: practiceItems.map((item) => (showFull ? item : compactPrompt(item, language)))
           }}
         />
       </div>
 
       <div className="space-y-2 rounded-2xl border border-[var(--line)] bg-white/70 p-4">
         <p className="text-sm font-semibold text-slate-900">{t("plan.day.success")}</p>
-        <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
+          <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
           {day.successCriteria.map((criteria, index) => (
-            <li key={`success-${day.day}-${index}`}>{compactPrompt(criteria, language)}</li>
+            <li key={`success-${day.day}-${index}`}>{showFull ? criteria.trim() : compactPrompt(criteria, language)}</li>
           ))}
         </ul>
       </div>
@@ -298,7 +300,7 @@ export function DayPlanCard({
           <h3 className="mt-1 text-xl font-bold text-slate-900">{day.focus}</h3>
         </div>
 
-        <PrescriptionPlan day={day} language={language} t={t} />
+        <PrescriptionPlan day={day} language={language} t={t} showFull={true} />
 
         <div>
           <p className="mb-2 text-sm font-semibold text-slate-900">{t("plan.day.watch")}</p>
@@ -330,7 +332,7 @@ export function DayPlanCard({
 
       {displayExpanded ? (
         <div id={detailsId} className="mt-4 space-y-3 border-t border-[var(--line)] pt-4">
-          <PrescriptionPlan day={day} language={language} t={t} />
+          <PrescriptionPlan day={day} language={language} t={t} showFull={displayExpanded} />
           <div className="space-y-2">
             <p className="text-sm font-medium text-slate-700">{t("plan.day.watch")}</p>
             {featuredContentCard ?? (
