@@ -61,7 +61,7 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     id: "coarse_awareness",
     phase: "coarse",
     type: "choice",
-    question: "你对打或比赛时脑子里在想什么？",
+    question: "你练球或者比赛时脑海里在想什么？",
     options: [
       { label: "先把球打过去就行", value: 1 },
       { label: "会想打方向但经常做不到", value: 2 },
