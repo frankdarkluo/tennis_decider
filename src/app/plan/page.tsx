@@ -93,7 +93,7 @@ function PlanPageContent() {
     [plan.level, plan.problemTag, preferredContentIds, primaryNextStep, sourceType]
   );
   const blockedByPendingStudySetup = pendingStudySetup && !session;
-  const blockedByAssessmentGate = studyMode && Boolean(session) && !hasStoredCompletedAssessmentResult();
+  const blockedByAssessmentGate = !studyMode && !hasStoredCompletedAssessmentResult();
 
   useEffect(() => {
     if (!blockedByPendingStudySetup) {

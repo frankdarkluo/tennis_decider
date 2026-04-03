@@ -38,9 +38,9 @@ export default function HomePage() {
       return;
     }
 
-    if (studyMode && session && !hasStoredCompletedAssessmentResult()) {
-      router.replace("/assessment");
-      setGateState("assessment_required");
+    // In study mode, do not force the assessment gate — allow direct entry.
+    if (studyMode && session) {
+      setGateState("ready");
       return;
     }
 
@@ -59,7 +59,7 @@ export default function HomePage() {
       const localResult = readAssessmentResultFromStorage();
       let hasCompletedAssessment = hasCompletedAssessmentResult(localResult);
 
-      if (!hasCompletedAssessment && !studyMode && user?.id && configured) {
+      if (!hasCompletedAssessment && user?.id && configured) {
         const remoteResult = await getLatestAssessmentResult(user.id);
 
         if (!active) {
@@ -138,24 +138,45 @@ export default function HomePage() {
           <HotCreatorsSection />
         </div>
 
-        <Link
-          href="/assessment"
-          className="group block"
-          onClick={() => {
-            logEvent("home.entry_selected", { entryMode: "assessment" }, { page: "/" });
-            logEvent("home.assessment_cta_clicked", { ctaPosition: "bottom_card" }, { page: "/" });
-          }}
-        >
-          <Card className="flex cursor-pointer flex-col items-start justify-between gap-4 transition-shadow group-hover:shadow-md md:flex-row md:items-center">
-            <div>
-              <p className="text-sm font-semibold text-brand-700">{t("home.assessment.ctaHint")}</p>
-              <h3 className="mt-1 text-lg font-bold text-slate-900">{t("home.assessment.ctaTitle")}</h3>
-            </div>
-            <span className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[var(--line)] bg-white px-6 py-2.5 text-sm font-semibold text-slate-800 transition group-hover:bg-slate-50">
-              {t("home.assessment.ctaButton")}
-            </span>
-          </Card>
-        </Link>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Link
+            href="/diagnose"
+            className="group block"
+            onClick={() => {
+              logEvent("home.entry_selected", { entryMode: "diagnosis" }, { page: "/" });
+              logEvent("cta_click", { ctaLabel: t("home.diagnose.ctaButton"), ctaLocation: "home_top", targetPage: "/diagnose" }, { page: "/" });
+            }}
+          >
+            <Card className="flex cursor-pointer flex-col items-start justify-between gap-4 transition-shadow group-hover:shadow-md md:flex-row md:items-center">
+              <div>
+                <p className="text-sm font-semibold text-brand-700">{t("home.diagnose.ctaHint")}</p>
+                <h3 className="mt-1 text-lg font-bold text-slate-900">{t("home.diagnose.ctaTitle")}</h3>
+              </div>
+              <span className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[var(--line)] bg-white px-6 py-2.5 text-sm font-semibold text-slate-800 transition group-hover:bg-slate-50">
+                {t("home.diagnose.ctaButton")}
+              </span>
+            </Card>
+          </Link>
+
+          <Link
+            href="/assessment"
+            className="group block"
+            onClick={() => {
+              logEvent("home.entry_selected", { entryMode: "assessment" }, { page: "/" });
+              logEvent("home.assessment_cta_clicked", { ctaPosition: "bottom_card" }, { page: "/" });
+            }}
+          >
+            <Card className="flex cursor-pointer flex-col items-start justify-between gap-4 transition-shadow group-hover:shadow-md md:flex-row md:items-center">
+              <div>
+                <p className="text-sm font-semibold text-brand-700">{t("home.assessment.ctaHint")}</p>
+                <h3 className="mt-1 text-lg font-bold text-slate-900">{t("home.assessment.ctaTitle")}</h3>
+              </div>
+              <span className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[var(--line)] bg-white px-6 py-2.5 text-sm font-semibold text-slate-800 transition group-hover:bg-slate-50">
+                {t("home.assessment.ctaButton")}
+              </span>
+            </Card>
+          </Link>
+        </div>
       </div>
     </PageContainer>
   );

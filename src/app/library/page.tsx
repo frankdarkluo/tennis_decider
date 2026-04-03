@@ -89,9 +89,9 @@ function LibraryPageContent() {
       return;
     }
 
-    if (studyMode && session && !hasStoredCompletedAssessmentResult()) {
-      router.replace("/assessment");
-      setGateState("assessment_required");
+    // In study mode, allow direct access without forcing the assessment gate.
+    if (studyMode && session) {
+      setGateState("ready");
       return;
     }
 

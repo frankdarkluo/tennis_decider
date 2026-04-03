@@ -71,7 +71,7 @@ export default function RankingsPage() {
     [studyMode]
   );
   const blockedByPendingStudySetup = pendingStudySetup && !session;
-  const blockedByAssessmentGate = studyMode && Boolean(session) && !hasStoredCompletedAssessmentResult();
+  const blockedByAssessmentGate = !studyMode && !hasStoredCompletedAssessmentResult();
 
   useEffect(() => {
     if (!blockedByPendingStudySetup) {

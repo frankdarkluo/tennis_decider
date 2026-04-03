@@ -128,7 +128,7 @@ function DiagnosePageContent() {
   const [actionabilitySubmitted, setActionabilitySubmitted] = useState(false);
   const handledQueryRef = useRef<string | null>(null);
   const blockedByPendingStudySetup = pendingStudySetup && !session;
-  const blockedByAssessmentGate = studyMode && Boolean(session) && !hasStoredCompletedAssessmentResult();
+  const blockedByAssessmentGate = !studyMode && !hasStoredCompletedAssessmentResult();
 
   const previewOptions = getProblemPreviewOptions();
   const quickTags = previewOptions.map((item) => language === "en" ? item.label_en : item.label);

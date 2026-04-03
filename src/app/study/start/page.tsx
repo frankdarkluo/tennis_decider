@@ -31,31 +31,15 @@ function applyReplacements(value: string, replacements?: Record<string, string |
 const backgroundCopy = {
   zh: {
     title: "研究背景信息",
-    subtitle: "这部分只记录匿名区间信息，用于后续研究分析。",
-    ageBand: "年龄区间",
-    yearsPlayingBand: "打球年限",
+    subtitle: "这部分只记录最少必要字段以便后续研究分析。",
     playFrequency: "每周打球频率",
-    coachHistory: "你有没有请过教练？",
-    selfReportedLevel: "自我判断水平",
-    preferredLearningStyle: "你更倾向于通过以下哪种方式学习网球？",
-    watchesTrainingVideos: "平时会看教学视频吗？",
-    hasUploadedPracticeVideoBefore: "以前上传过练习视频给别人看吗？",
-    yes: "是",
-    no: "否"
+    selfReportedLevel: "自我判断水平"
   },
   en: {
     title: "Background for this study",
-    subtitle: "We only record coarse anonymous ranges here for research analysis.",
-    ageBand: "Age band",
-    yearsPlayingBand: "Years playing",
+    subtitle: "We only record the minimal fields here for research analysis.",
     playFrequency: "Weekly play frequency",
-    coachHistory: "Have you ever taken lessons with a coach?",
-    selfReportedLevel: "Self-reported level",
-    preferredLearningStyle: "Which learning style do you prefer for tennis?",
-    watchesTrainingVideos: "Do you usually watch training videos?",
-    hasUploadedPracticeVideoBefore: "Have you uploaded a practice video before?",
-    yes: "Yes",
-    no: "No"
+    selfReportedLevel: "Self-rated level"
   }
 } as const;
 
@@ -138,18 +122,20 @@ const preferredLearningStyleOptions: Record<StudyLanguage, Option[]> = {
 
 const levelOptions: Record<StudyLanguage, Option[]> = {
   zh: [
-    { value: "2.5_or_below", label: "2.5 或以下" },
+    { value: "below_3.0", label: "低于 3.0" },
     { value: "3.0", label: "3.0" },
     { value: "3.5", label: "3.5" },
-    { value: "4.0_or_above", label: "4.0 或以上" },
-    { value: "unsure", label: "不确定" }
+    { value: "4.0", label: "4.0" },
+    { value: "above_4.0", label: "4.0 以上" },
+    { value: "unsure", label: "暂不确定" }
   ],
   en: [
-    { value: "2.5_or_below", label: "2.5 or below" },
+    { value: "below_3.0", label: "Below 3.0" },
     { value: "3.0", label: "3.0" },
     { value: "3.5", label: "3.5" },
-    { value: "4.0_or_above", label: "4.0 or above" },
-    { value: "unsure", label: "Not sure" }
+    { value: "4.0", label: "4.0" },
+    { value: "above_4.0", label: "Above 4.0" },
+    { value: "unsure", label: "Not sure yet" }
   ]
 };
 
@@ -194,7 +180,7 @@ function BooleanField({
   language: StudyLanguage;
   onChange: (nextValue: boolean) => void;
 }) {
-  const copy = backgroundCopy[language];
+  const yesNo = language === "en" ? { yes: "Yes", no: "No" } : { yes: "是", no: "否" };
 
   return (
     <div className="space-y-2">
@@ -209,7 +195,7 @@ function BooleanField({
               ? "min-h-11 rounded-xl border border-brand-500 bg-brand-50 px-4 text-sm font-semibold text-brand-700"
               : "min-h-11 rounded-xl border border-[var(--line)] bg-white px-4 text-sm font-semibold text-slate-700"}
           >
-            {option ? copy.yes : copy.no}
+            {option ? yesNo.yes : yesNo.no}
           </button>
         ))}
       </div>
@@ -242,10 +228,6 @@ function StudyStartPageContent() {
     watchesTrainingVideos: false,
     hasUploadedPracticeVideoBefore: false
   });
-  const [backgroundBooleanReady, setBackgroundBooleanReady] = useState({
-    watchesTrainingVideos: false,
-    hasUploadedPracticeVideoBefore: false
-  });
 
   useEffect(() => {
     if (defaultParticipantId && !participantId) {
@@ -271,14 +253,8 @@ function StudyStartPageContent() {
     return applyReplacements(String(translated), replacements);
   };
   const canSubmitBackground = Boolean(
-      background.ageBand &&
-      background.yearsPlayingBand &&
-      background.playFrequency &&
-      background.coachHistory &&
-      background.selfReportedLevel &&
-      background.preferredLearningStyle &&
-      backgroundBooleanReady.watchesTrainingVideos &&
-      backgroundBooleanReady.hasUploadedPracticeVideoBefore
+    background.playFrequency &&
+    background.selfReportedLevel
   );
 
   const handleLanguagePreviewChange = (nextLanguage: StudyLanguage) => {
@@ -297,10 +273,15 @@ function StudyStartPageContent() {
     setSubmitting(true);
     setMessage("");
     const consentedAt = new Date().toISOString();
+    const minimalBackground = {
+      playFrequency: background.playFrequency,
+      selfReportedLevel: background.selfReportedLevel
+    };
+
     const result = await startStudySession({
       participantId: participantId.trim(),
       language,
-      background,
+      background: minimalBackground as unknown as StudyBackgroundProfile,
       consentedAt
     });
 
@@ -314,22 +295,16 @@ function StudyStartPageContent() {
       consented: true
     }, { page: "/study/start" });
     logEvent("study.background_submitted", {
-      ageBand: background.ageBand,
-      yearsPlayingBand: background.yearsPlayingBand,
-      playFrequency: background.playFrequency,
-      coachHistory: background.coachHistory,
-      selfReportedLevel: background.selfReportedLevel,
-      preferredLearningStyle: background.preferredLearningStyle,
-      watchesTrainingVideos: background.watchesTrainingVideos,
-      hasUploadedPracticeVideoBefore: background.hasUploadedPracticeVideoBefore
+      playFrequency: minimalBackground.playFrequency,
+      selfReportedLevel: minimalBackground.selfReportedLevel
     }, { page: "/study/start" });
     logEvent("session.started", {
       ...getSessionStartClientPayload("/"),
       participantId: result.session.participantId,
       sessionId: result.session.sessionId
     }, { page: "/" });
-    void persistStudyArtifact(result.session, "study_background", background);
-    router.replace("/assessment");
+    void persistStudyArtifact(result.session, "study_background", minimalBackground);
+    router.replace("/");
   };
 
   return (
@@ -382,18 +357,6 @@ function StudyStartPageContent() {
             </div>
             <div className="mt-4 grid gap-4 md:grid-cols-2">
               <SelectField
-                label={localizedCopy.ageBand}
-                value={background.ageBand}
-                options={ageBandOptions[language]}
-                onChange={(value) => setBackground((prev) => ({ ...prev, ageBand: value }))}
-              />
-              <SelectField
-                label={localizedCopy.yearsPlayingBand}
-                value={background.yearsPlayingBand}
-                options={yearsPlayingOptions[language]}
-                onChange={(value) => setBackground((prev) => ({ ...prev, yearsPlayingBand: value }))}
-              />
-              <SelectField
                 label={localizedCopy.playFrequency}
                 value={background.playFrequency}
                 options={playFrequencyOptions[language]}
@@ -404,38 +367,6 @@ function StudyStartPageContent() {
                 value={background.selfReportedLevel}
                 options={levelOptions[language]}
                 onChange={(value) => setBackground((prev) => ({ ...prev, selfReportedLevel: value }))}
-              />
-              <SelectField
-                label={localizedCopy.coachHistory}
-                value={background.coachHistory}
-                options={coachHistoryOptions[language]}
-                onChange={(value) => setBackground((prev) => ({ ...prev, coachHistory: value }))}
-              />
-              <SelectField
-                label={localizedCopy.preferredLearningStyle}
-                value={background.preferredLearningStyle}
-                options={preferredLearningStyleOptions[language]}
-                onChange={(value) => setBackground((prev) => ({ ...prev, preferredLearningStyle: value }))}
-              />
-            </div>
-            <div className="mt-4 grid gap-4 md:grid-cols-2">
-              <BooleanField
-                label={localizedCopy.watchesTrainingVideos}
-                value={backgroundBooleanReady.watchesTrainingVideos ? background.watchesTrainingVideos : null}
-                language={language}
-                onChange={(value) => {
-                  setBackground((prev) => ({ ...prev, watchesTrainingVideos: value }));
-                  setBackgroundBooleanReady((prev) => ({ ...prev, watchesTrainingVideos: true }));
-                }}
-              />
-              <BooleanField
-                label={localizedCopy.hasUploadedPracticeVideoBefore}
-                value={backgroundBooleanReady.hasUploadedPracticeVideoBefore ? background.hasUploadedPracticeVideoBefore : null}
-                language={language}
-                onChange={(value) => {
-                  setBackground((prev) => ({ ...prev, hasUploadedPracticeVideoBefore: value }));
-                  setBackgroundBooleanReady((prev) => ({ ...prev, hasUploadedPracticeVideoBefore: true }));
-                }}
               />
             </div>
           </div>

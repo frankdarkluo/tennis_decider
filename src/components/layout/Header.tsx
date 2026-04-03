@@ -32,7 +32,7 @@ export function Header() {
   const { language, t, setLanguage, canChangeLanguage } = useI18n();
   const { studyMode, session, pendingStudySetup } = useStudy();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const assessmentLockedStudyFlow = studyMode && !hasStoredCompletedAssessmentResult();
+  const assessmentLockedStudyFlow = !studyMode && !hasStoredCompletedAssessmentResult();
   const hideTaskNavigation =
     (pathname === "/study/start" && !studyMode)
     || (pendingStudySetup && !session)
