@@ -11,6 +11,7 @@ export const assessmentQuestions: AssessmentQuestion[] = [
       { label: "女", value: 2 }
     ]
   },
+  /*
   {
     id: "years",
     phase: "profile",
@@ -29,6 +30,7 @@ export const assessmentQuestions: AssessmentQuestion[] = [
       ]
     }
   },
+  */
   {
     id: "coarse_rally",
     phase: "coarse",

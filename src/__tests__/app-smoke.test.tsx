@@ -385,7 +385,7 @@ describe("app smoke tests", () => {
 
     render(React.createElement(AssessmentPage));
 
-    expect(assessmentQuestions).toHaveLength(14);
+    expect(assessmentQuestions).toHaveLength(13);
     expect(screen.getByText("1 分钟测一下你的水平")).toBeInTheDocument();
     expect(screen.getByText("你的性别？")).toBeInTheDocument();
 
