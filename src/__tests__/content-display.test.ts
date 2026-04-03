@@ -514,9 +514,14 @@ describe("content display helpers", () => {
 
   it("keeps overhead-timing day watch content aligned with the drill theme instead of generic reuse", () => {
     const plan = getPlanTemplate("overhead-timing", "3.0", "zh");
+    const contentById = new Map([...contents, ...expandedContents].map((entry) => [entry.id, entry]));
+    const firstDayItem = contentById.get(plan.days[0].contentIds[0] ?? "");
+    const lastDayItem = contentById.get(plan.days[6].contentIds[0] ?? "");
 
-    expect(plan.days[0].contentIds[0]).toBe("content_cn_c_02");
+    expect(firstDayItem).toBeTruthy();
+    expect(firstDayItem?.url.includes("search.bilibili.com/all?keyword=")).toBe(false);
     expect(plan.days[0].contentIds[0]).not.toBe(plan.days[6].contentIds[0]);
+    expect(lastDayItem).toBeTruthy();
   });
 
   it("returns dedicated templates for upgraded movement and net-play study tags", () => {
@@ -844,6 +849,51 @@ describe("content display helpers", () => {
     expect(plan.days.some((day) => day.contentIds.length > 0)).toBe(true);
     expect(
       plan.days.every((day) =>
+        day.contentIds.every((id) => {
+          const item = contentById.get(id);
+          return Boolean(
+            item &&
+            !item.url.includes("search.bilibili.com/all?keyword=") &&
+            !item.url.includes("youtube.com/results?search_query=")
+          );
+        })
+      )
+    ).toBe(true);
+  });
+
+  it("removes search-entry ids from high-risk plan template source data", () => {
+    const riskyTags = new Set([
+      "pressure-tightness",
+      "match-anxiety",
+      "movement-slow",
+      "mobility-limit",
+      "incoming-slice-trouble",
+      "doubles-positioning",
+      "first-serve-in"
+    ]);
+    const contentById = new Map([...contents, ...expandedContents].map((entry) => [entry.id, entry]));
+    const riskyTemplateDays = planTemplates
+      .filter((template) => riskyTags.has(template.problemTag))
+      .flatMap((template) => template.days);
+
+    expect(riskyTemplateDays.length).toBeGreaterThan(0);
+    expect(
+      riskyTemplateDays.every((day) =>
+        day.contentIds.every((id) => {
+          const item = contentById.get(id);
+          return Boolean(item && !item.url.includes("search.bilibili.com/all?keyword="));
+        })
+      )
+    ).toBe(true);
+  });
+
+  it("does not leave any search-entry ids in plan template source data", () => {
+    const contentById = new Map([...contents, ...expandedContents].map((entry) => [entry.id, entry]));
+    const templateDays = planTemplates.flatMap((template) => template.days);
+
+    expect(templateDays.length).toBeGreaterThan(0);
+    expect(
+      templateDays.every((day) =>
         day.contentIds.every((id) => {
           const item = contentById.get(id);
           return Boolean(item && !item.url.includes("search.bilibili.com/all?keyword="));
