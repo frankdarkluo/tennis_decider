@@ -125,9 +125,7 @@ function PlanPageContent() {
   const sourceLabelBase = preferredContentIds.length > 0
     ? `${params.get("problemTag") ?? params.get("level") ?? `${problemTag}:${level}`}:${preferredContentIds.join(",")}`
     : params.get("problemTag") ?? params.get("level") ?? `${problemTag}:${level}`;
-  const summaryHeadline = sourceType === "assessment"
-    ? primaryNextStep || plan.target
-    : primaryNextStep || plan.target;
+  const summaryHeadline = primaryNextStep || plan.target;
   const summaryRationale = plan.summary && plan.summary !== summaryHeadline ? plan.summary : undefined;
   const sourceLabel = primaryNextStep ? `${sourceLabelBase}::${primaryNextStep}` : sourceLabelBase;
   const planHref = useMemo(

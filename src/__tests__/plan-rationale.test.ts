@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { buildDiagnosisPlanContext, getPlanTemplate } from "@/lib/plans";
+import {
+  buildAssessmentPlanContext,
+  buildDiagnosisPlanContext,
+  getAssessmentPlanFocusLine,
+  getPlanTemplate
+} from "@/lib/plans";
+import { AssessmentResult } from "@/types/assessment";
 
 type TemplateCoverageCase = {
   problemTag: string;
@@ -63,6 +69,47 @@ const templateCoverageCases: TemplateCoverageCase[] = [
   }
 ];
 
+function createAssessmentResult(): AssessmentResult {
+  return {
+    totalScore: 0,
+    maxScore: 0,
+    normalizedScore: 0,
+    answeredCount: 8,
+    uncertainCount: 0,
+    totalQuestions: 8,
+    level: "3.0",
+    confidence: "中等",
+    dimensions: [
+      {
+        key: "serve",
+        label: "发球",
+        score: 1,
+        maxScore: 4,
+        average: 1,
+        levelHint: "3.0",
+        answeredCount: 2,
+        uncertainCount: 0,
+        status: "薄弱"
+      },
+      {
+        key: "matchplay",
+        label: "比赛意识",
+        score: 2,
+        maxScore: 4,
+        average: 2,
+        levelHint: "3.0",
+        answeredCount: 2,
+        uncertainCount: 0,
+        status: "待提升"
+      }
+    ],
+    strengths: [],
+    weaknesses: ["发球"],
+    observationNeeded: ["比赛意识"],
+    summary: "发球最需要优先补强，比赛意识还需要继续观察。"
+  };
+}
+
 describe("diagnosis plan template coverage", () => {
   it("resolves the six common diagnosis tags to dedicated templates instead of the generic fallback", () => {
     for (const testCase of templateCoverageCases) {
@@ -96,5 +143,18 @@ describe("diagnosis plan template coverage", () => {
     expect(plan.summary).toContain(primaryNextStep);
     expect(plan.summary).toContain("关键分");
     expect(plan.summary).not.toBe(`本周先围绕这一个主动作推进：${primaryNextStep}`);
+  });
+
+  it("keeps assessment-origin focus and rationale split after diagnosis summary changes", () => {
+    const assessmentPlan = buildAssessmentPlanContext(createAssessmentResult());
+    const plan = getPlanTemplate(assessmentPlan.problemTag, "3.0", "zh", assessmentPlan.candidateIds, {
+      planContext: assessmentPlan.planContext
+    });
+    const focusLine = getAssessmentPlanFocusLine(assessmentPlan.planContext, "zh");
+
+    expect(focusLine).toBe("优先补强：发球。继续观察：比赛意识。");
+    expect(plan.summary).toContain("发球");
+    expect(plan.summary).toContain("比赛意识");
+    expect(plan.summary).not.toContain("主动作");
   });
 });
