@@ -695,6 +695,25 @@ function uniqueStrings(values: string[]): string[] {
   return Array.from(new Set(values.filter(Boolean)));
 }
 
+function uniqueAssessmentDimensions(values: AssessmentDimension[]): AssessmentDimension[] {
+  return Array.from(new Set(
+    values.filter((value): value is AssessmentDimension => value in ASSESSMENT_DIMENSION_PLAN_HINTS)
+  ));
+}
+
+function findAssessmentDimensionKey(label: string): AssessmentDimension | null {
+  return (Object.keys(ASSESSMENT_DIMENSION_PLAN_HINTS) as AssessmentDimension[])
+    .find((key) => getDimensionLabel(key, "zh") === label || getDimensionLabel(key, "en") === label) ?? null;
+}
+
+function getAssessmentDimensionsFromLabels(labels: string[]): AssessmentDimension[] {
+  return uniqueAssessmentDimensions(
+    labels
+      .map((label) => findAssessmentDimensionKey(label))
+      .filter((value): value is AssessmentDimension => Boolean(value))
+  );
+}
+
 function buildDiagnosisContextHint(rawInput?: string): PlanDiagnosisContextHint {
   if (!rawInput?.trim()) {
     return { skills: [], problemTags: [], contentIds: [], terms: [] };
@@ -1088,12 +1107,7 @@ function fillCandidatePoolIfNeeded(
 
 function getAssessmentDimensionKeySet(result: AssessmentResult): AssessmentDimension[] {
   const directKeys = result.dimensions.map((dimension) => dimension.key);
-  const labelKeys = result.observationNeeded
-    .map((label) =>
-      (Object.keys(ASSESSMENT_DIMENSION_PLAN_HINTS) as AssessmentDimension[])
-        .find((key) => getDimensionLabel(key, "zh") === label || getDimensionLabel(key, "en") === label)
-    )
-    .filter((key): key is AssessmentDimension => Boolean(key));
+  const labelKeys = getAssessmentDimensionsFromLabels(result.observationNeeded);
 
   return uniqueStrings([...directKeys, ...labelKeys]) as AssessmentDimension[];
 }
@@ -1106,6 +1120,108 @@ function getWeakestAssessmentDimension(result: AssessmentResult): DimensionSumma
   }
 
   return [...scored].sort((left, right) => left.average - right.average || left.label.localeCompare(right.label))[0] ?? null;
+}
+
+function getAssessmentWeakDimensions(
+  result: AssessmentResult,
+  weakestKey: AssessmentDimension
+): AssessmentDimension[] {
+  const weaknessKeys = getAssessmentDimensionsFromLabels(result.weaknesses);
+
+  return uniqueAssessmentDimensions([weakestKey, ...weaknessKeys]).slice(0, 2);
+}
+
+function getAssessmentObservationDimensions(
+  result: AssessmentResult,
+  weakDimensions: AssessmentDimension[]
+): AssessmentDimension[] {
+  const weakDimensionSet = new Set(weakDimensions);
+
+  return getAssessmentDimensionsFromLabels(result.observationNeeded)
+    .filter((dimension) => !weakDimensionSet.has(dimension))
+    .slice(0, 2);
+}
+
+function encodeAssessmentPlanRationale(
+  weakDimensions: AssessmentDimension[],
+  observationDimensions: AssessmentDimension[]
+): string | undefined {
+  const parts = [
+    weakDimensions.length > 0 ? `focus:${weakDimensions.join(",")}` : null,
+    observationDimensions.length > 0 ? `observe:${observationDimensions.join(",")}` : null
+  ].filter((value): value is string => Boolean(value));
+
+  return parts.length > 0 ? parts.join(";") : undefined;
+}
+
+function joinAssessmentDimensionLabels(dimensions: AssessmentDimension[], locale: PlanLocale): string | null {
+  if (dimensions.length === 0) {
+    return null;
+  }
+
+  const labels = dimensions.map((dimension) => getDimensionLabel(dimension, locale));
+
+  return locale === "en" ? labels.join(", ") : labels.join("、");
+}
+
+export function getAssessmentPlanFocusLine(
+  planContext: PlanContext | null | undefined,
+  locale: PlanLocale
+): string | null {
+  if (!planContext || planContext.source !== "assessment") {
+    return null;
+  }
+
+  const weakLabels = joinAssessmentDimensionLabels(planContext.weakDimensions ?? [], locale);
+  const observationLabels = joinAssessmentDimensionLabels(planContext.observationDimensions ?? [], locale);
+
+  if (weakLabels && observationLabels) {
+    return locale === "en"
+      ? `Focus first: ${weakLabels}. Keep watching: ${observationLabels}.`
+      : `优先补强：${weakLabels}。继续观察：${observationLabels}。`;
+  }
+
+  if (weakLabels) {
+    return locale === "en" ? `Focus first: ${weakLabels}.` : `优先补强：${weakLabels}。`;
+  }
+
+  if (observationLabels) {
+    return locale === "en" ? `Keep watching: ${observationLabels}.` : `继续观察：${observationLabels}。`;
+  }
+
+  return null;
+}
+
+export function getAssessmentPlanRationale(
+  planContext: PlanContext | null | undefined,
+  locale: PlanLocale
+): string | null {
+  if (!planContext || planContext.source !== "assessment") {
+    return null;
+  }
+
+  const weakLabels = joinAssessmentDimensionLabels(planContext.weakDimensions ?? [], locale);
+  const observationLabels = joinAssessmentDimensionLabels(planContext.observationDimensions ?? [], locale);
+
+  if (weakLabels && observationLabels) {
+    return locale === "en"
+      ? `Assessment surfaced ${weakLabels} as the clearest weak point, while ${observationLabels} still needs observation, so this plan starts there.`
+      : `评估里最明显的短板是${weakLabels}，而且${observationLabels}还需要继续观察，所以这周先从这里开始。`;
+  }
+
+  if (weakLabels) {
+    return locale === "en"
+      ? `Assessment surfaced ${weakLabels} as the clearest weak point, so this plan starts there.`
+      : `评估里最明显的短板是${weakLabels}，所以这周先从这里开始。`;
+  }
+
+  if (observationLabels) {
+    return locale === "en"
+      ? `Assessment still needs more observation around ${observationLabels}, so the plan stays conservative.`
+      : `${observationLabels}还需要继续观察，所以这周计划会先保持保守可执行。`;
+  }
+
+  return planContext.rationale?.trim() || null;
 }
 
 export function buildDiagnosisPlanCandidateIds(input: {
@@ -1188,6 +1304,7 @@ export function buildDiagnosisPlanCandidateIds(input: {
 export function buildAssessmentPlanContext(result: AssessmentResult): {
   problemTag: string;
   candidateIds: string[];
+  planContext: PlanContext;
 } {
   const weakestDimension = getWeakestAssessmentDimension(result);
   const weakestKey = weakestDimension?.key ?? "basics";
@@ -1256,6 +1373,8 @@ export function buildAssessmentPlanContext(result: AssessmentResult): {
     ...directTemplateSeedContentIds,
     ...diversifiedRankedCandidateIds
   ]);
+  const weakDimensions = getAssessmentWeakDimensions(result, weakestKey);
+  const observationDimensions = getAssessmentObservationDimensions(result, weakDimensions);
 
   return {
     problemTag: primaryHint.primaryProblemTag,
@@ -1264,7 +1383,20 @@ export function buildAssessmentPlanContext(result: AssessmentResult): {
       result.level,
       seedSkills,
       seedProblemTags
-    )
+    ),
+    planContext: {
+      source: "assessment",
+      primaryProblemTag: primaryHint.primaryProblemTag,
+      sessionType: "unknown",
+      pressureContext: "unknown",
+      movementContext: "unknown",
+      incomingBallDepth: "unknown",
+      outcomePattern: "unknown",
+      feelingModifiers: [],
+      weakDimensions,
+      observationDimensions,
+      rationale: encodeAssessmentPlanRationale(weakDimensions, observationDimensions)
+    }
   };
 }
 
@@ -1484,16 +1616,24 @@ function applyPlanContext(
   }
 
   const summaryContext = buildPlanContextSummary(normalizedPlanContext, locale);
+  const assessmentRationale = getAssessmentPlanRationale(normalizedPlanContext, locale);
   const pressureItem = buildPlanContextPressureItem(normalizedPlanContext, locale);
   const firstDay = plan.days[0];
-
-  return {
-    ...plan,
-    summary: summaryContext
+  const summary = assessmentRationale
+    ? summaryContext
+      ? locale === "en"
+        ? `${assessmentRationale} Context: ${summaryContext}.`
+        : `${assessmentRationale} 当前场景：${summaryContext}。`
+      : assessmentRationale
+    : summaryContext
       ? locale === "en"
         ? `${plan.summary ?? "This week's plan follows one main focus."} Context: ${summaryContext}.`
         : `${plan.summary ?? "本周计划围绕一个主动作推进。"} 当前场景：${summaryContext}。`
-      : plan.summary,
+      : plan.summary;
+
+  return {
+    ...plan,
+    summary,
     target: summaryContext
       ? locale === "en"
         ? `${plan.target} Keep the work anchored to ${summaryContext}.`
@@ -1711,7 +1851,12 @@ export function normalizePlanContext(context: Partial<PlanContext> | null | unde
       (context.feelingModifiers ?? [])
         .map((value) => normalizePlanContextFeeling(String(value)))
         .filter((value): value is PlanContextFeeling => Boolean(value))
-    )
+    ),
+    weakDimensions: uniqueAssessmentDimensions(context.weakDimensions ?? []),
+    observationDimensions: uniqueAssessmentDimensions(context.observationDimensions ?? []),
+    ...(typeof context.rationale === "string" && context.rationale.trim().length > 0
+      ? { rationale: context.rationale.trim() }
+      : {})
   };
 }
 

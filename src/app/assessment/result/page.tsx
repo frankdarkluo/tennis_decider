@@ -35,7 +35,8 @@ export default function AssessmentResultPage() {
       problemTag: assessmentPlan.problemTag,
       level: result.level,
       preferredContentIds: assessmentPlan.candidateIds,
-      sourceType: "assessment"
+      sourceType: "assessment",
+      planContext: assessmentPlan.planContext
     })
     : null;
 

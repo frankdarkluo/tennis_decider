@@ -1,3 +1,4 @@
+import { AssessmentDimension } from "@/types/assessment";
 import { EnvironmentValue } from "@/types/environment";
 
 export type PlanLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.5";
@@ -17,6 +18,9 @@ export type PlanContext = {
   incomingBallDepth: PlanContextDepth;
   outcomePattern: PlanContextOutcome;
   feelingModifiers: PlanContextFeeling[];
+  weakDimensions?: AssessmentDimension[];
+  observationDimensions?: AssessmentDimension[];
+  rationale?: string;
 };
 
 export type PlanIntensity = "low" | "medium" | "medium_high";

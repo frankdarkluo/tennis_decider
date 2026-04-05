@@ -6,7 +6,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { hasStoredCompletedAssessmentResult } from "@/lib/assessmentStorage";
 import { parseEnrichedDiagnosisContext } from "@/lib/diagnose/enrichedContext";
 import { logEvent } from "@/lib/eventLogger";
-import { buildPlanHref, getPlanTemplate, normalizePlanDraftSnapshot, parsePlanContentIds, parsePlanContext } from "@/lib/plans";
+import {
+  buildPlanHref,
+  getAssessmentPlanFocusLine,
+  getPlanTemplate,
+  normalizePlanDraftSnapshot,
+  parsePlanContentIds,
+  parsePlanContext
+} from "@/lib/plans";
 import { saveGeneratedPlan } from "@/lib/userData";
 import { useI18n } from "@/lib/i18n/config";
 import { persistStudyArtifact } from "@/lib/study/client";
@@ -101,6 +108,10 @@ function PlanPageContent() {
     () => getPlanTemplate(problemTag, level, language, preferredContentIds, { primaryNextStep, planContext, deepContext, environment }),
     [deepContext, environment, language, problemTag, level, preferredContentIds, primaryNextStep, planContext]
   );
+  const assessmentFocusLine = useMemo(
+    () => getAssessmentPlanFocusLine(planContext, language),
+    [language, planContext]
+  );
   const todayPlan = plan.days[0];
   const laterPlans = plan.days.slice(1);
   const explicitSource = params.get("source") ?? restoredDraft?.sourceType ?? null;
@@ -114,6 +125,10 @@ function PlanPageContent() {
   const sourceLabelBase = preferredContentIds.length > 0
     ? `${params.get("problemTag") ?? params.get("level") ?? `${problemTag}:${level}`}:${preferredContentIds.join(",")}`
     : params.get("problemTag") ?? params.get("level") ?? `${problemTag}:${level}`;
+  const summaryHeadline = sourceType === "assessment"
+    ? primaryNextStep || plan.target
+    : primaryNextStep || plan.summary || plan.target;
+  const summaryRationale = sourceType === "assessment" ? plan.summary : undefined;
   const sourceLabel = primaryNextStep ? `${sourceLabelBase}::${primaryNextStep}` : sourceLabelBase;
   const planHref = useMemo(
     () => buildPlanHref({
@@ -316,7 +331,9 @@ function PlanPageContent() {
         </div>
 
         <PlanSummary
-          headline={primaryNextStep || plan.summary || plan.target}
+          headline={summaryHeadline}
+          focusLine={sourceType === "assessment" ? assessmentFocusLine ?? undefined : undefined}
+          rationale={summaryRationale}
           supportingText={t("plan.supporting", { value: language === "en" ? plan.level : toChineseLevel(plan.level) })}
         />
 

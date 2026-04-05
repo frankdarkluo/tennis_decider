@@ -17,8 +17,21 @@ describe("study plan draft local persistence", () => {
       problemTag: "backhand-into-net",
       level: "3.0",
       preferredContentIds: ["content_cn_a_01"],
-      sourceType: "diagnosis",
+      sourceType: "assessment",
       primaryNextStep: "先把引拍提前半拍再出手",
+      planContext: {
+        source: "assessment",
+        primaryProblemTag: "second-serve-reliability",
+        sessionType: "unknown",
+        pressureContext: "unknown",
+        movementContext: "unknown",
+        incomingBallDepth: "unknown",
+        outcomePattern: "unknown",
+        feelingModifiers: [],
+        weakDimensions: ["serve"],
+        observationDimensions: ["matchplay"],
+        rationale: "focus:serve;observe:matchplay"
+      },
       deepContext: {
         mode: "deep",
         sourceInput: "关键分时我的二发容易下网，而且会发紧。",
@@ -42,8 +55,15 @@ describe("study plan draft local persistence", () => {
       problemTag: "backhand-into-net",
       level: "3.0",
       preferredContentIds: ["content_cn_a_01"],
-      sourceType: "diagnosis",
+      sourceType: "assessment",
       primaryNextStep: "先把引拍提前半拍再出手",
+      planContext: {
+        source: "assessment",
+        primaryProblemTag: "second-serve-reliability",
+        weakDimensions: ["serve"],
+        observationDimensions: ["matchplay"],
+        rationale: "focus:serve;observe:matchplay"
+      },
       deepContext: {
         strokeFamily: "serve",
         serveSubtype: "second_serve",
