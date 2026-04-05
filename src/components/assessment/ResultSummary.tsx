@@ -1,16 +1,8 @@
 import { AssessmentResult } from "@/types/assessment";
 import { Card } from "@/components/ui/Card";
 import { useI18n } from "@/lib/i18n/config";
-import { translateAssessmentLabel } from "@/lib/assessment";
+import { getLocalizedAssessmentResult } from "@/lib/assessment";
 import { SkillBreakdown } from "@/components/assessment/SkillBreakdown";
-
-function uniqLabels(labels: string[]) {
-  return Array.from(new Set(labels));
-}
-
-function formatLabels(labels: string[], language: "zh" | "en") {
-  return uniqLabels(labels).map((label) => translateAssessmentLabel(label, language));
-}
 
 export function ResultSummary({ result }: { result: AssessmentResult }) {
   const { language, t } = useI18n();
@@ -24,16 +16,17 @@ export function ResultSummary({ result }: { result: AssessmentResult }) {
     );
   }
 
-  const weaknesses = formatLabels(result.weaknesses, language);
-  const observationNeeded = formatLabels(result.observationNeeded, language);
+  const localizedResult = getLocalizedAssessmentResult(result, language);
+  const weaknesses = Array.from(new Set(localizedResult.weaknesses));
+  const observationNeeded = Array.from(new Set(localizedResult.observationNeeded));
 
   return (
     <Card className="space-y-5">
       <div className="space-y-3">
-        <h1 className="text-2xl font-black text-slate-900">{t("assessment.result.headline")} {result.level}</h1>
+        <h1 className="text-2xl font-black text-slate-900">{t("assessment.result.headline")} {localizedResult.level}</h1>
         <div className="rounded-2xl bg-[var(--surface-soft)] p-4">
           <p className="text-sm font-semibold text-brand-700">{t("assessment.result.summary")}</p>
-          <p className="mt-2 text-base leading-7 text-slate-800">{result.summary}</p>
+          <p className="mt-2 text-base leading-7 text-slate-800">{localizedResult.summary}</p>
         </div>
       </div>
 
@@ -75,7 +68,7 @@ export function ResultSummary({ result }: { result: AssessmentResult }) {
         </div>
       </div>
 
-      <SkillBreakdown result={result} />
+      <SkillBreakdown result={localizedResult} />
     </Card>
   );
 }

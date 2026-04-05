@@ -181,6 +181,25 @@ export function getAssessmentFallbackWeakness(locale: AssessmentLocale = "zh") {
   return locale === "en" ? "the next ball under pressure" : "比赛中的下一拍处理";
 }
 
+export function getLocalizedAssessmentResult(
+  result: AssessmentResult,
+  locale: AssessmentLocale = "zh"
+): AssessmentResult {
+  const localizedDimensions = result.dimensions.map((dimension) => ({
+    ...dimension,
+    label: getDimensionLabel(dimension.key, locale)
+  }));
+
+  return {
+    ...result,
+    dimensions: localizedDimensions,
+    strengths: result.strengths.map((label) => translateAssessmentLabel(label, locale)),
+    weaknesses: result.weaknesses.map((label) => translateAssessmentLabel(label, locale)),
+    observationNeeded: result.observationNeeded.map((label) => translateAssessmentLabel(label, locale)),
+    summary: buildSummary(result.level, localizedDimensions, locale)
+  };
+}
+
 export function getCoarseQuestions(questions: AssessmentQuestion[] = assessmentQuestions) {
   return questions.filter((question) => question.phase === "coarse");
 }

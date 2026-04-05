@@ -39,15 +39,9 @@ const SLIDER_ADVANCE_DELAY = 500;
 
 function hasProfileProgress(profile: AssessmentProfile, profileQuestions: AssessmentQuestion[]) {
   return profileQuestions.some((question) => {
-    if (question.type === "slider") {
-      return (profile.yearsPlaying ?? question.sliderConfig.default) !== question.sliderConfig.default;
-    }
-
-    if (question.type === "gender") {
-      return Boolean(profile.gender);
-    }
-
-    return false;
+    return question.type === "slider"
+      ? (profile.yearsPlaying ?? question.sliderConfig.default) !== question.sliderConfig.default
+      : false;
   });
 }
 

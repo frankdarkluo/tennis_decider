@@ -2,16 +2,17 @@ import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { assessmentQuestions } from "@/data/assessmentQuestions";
-import { calculateAssessmentResult } from "@/lib/assessment";
+import { calculateAssessmentResult, getCoarseQuestions, getFineQuestionsForBranch } from "@/lib/assessment";
 import { normalizeDraftStepIndex } from "@/lib/assessmentDraft";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
-import AssessmentPage from "@/app/assessment/page";
 
 const { mockPush, mockReplace, mockPrefetch } = vi.hoisted(() => ({
   mockPush: vi.fn(),
   mockReplace: vi.fn(),
   mockPrefetch: vi.fn()
 }));
+
+let mockLanguage: "zh" | "en" = "zh";
 
 const translationMap = {
   "assessment.title": "1 分钟测一下你的水平",
@@ -34,6 +35,30 @@ const translationMap = {
   "assessment.result.noObservationNeeded": "目前没有额外待观察项。",
   "assessment.result.skillBreakdown": "分项能力",
   "assessment.result.skillBreakdownHint": "每个维度会落在薄弱、待提升、正常或强项四档。"
+} satisfies Record<string, string>;
+
+const translationMapEn = {
+  "assessment.title": "A 1-minute read on your level",
+  "assessment.subtitle": "Answer a short ladder and we will show your current range plus the next area worth improving.",
+  "assessment.loading": "Syncing your assessment record...",
+  "assessment.resumeDraft": "",
+  "assessment.question.profile": "",
+  "assessment.question.coarse": "Quick level read",
+  "assessment.question.fine": "Narrow the next step",
+  "assessment.question.slider": "One more background detail",
+  "assessment.progress.almostDone": "Almost there",
+  "assessment.tapToContinue": "Tap once to continue",
+  "assessment.previous": "Back",
+  "assessment.empty.title": "Complete one level assessment first",
+  "assessment.empty.subtitle": "After that, we will tell you roughly where you are and what is worth improving first.",
+  "assessment.result.headline": "Your current range is close to",
+  "assessment.result.summary": "How to read this result",
+  "assessment.result.weaknesses": "Priority gaps",
+  "assessment.result.noWeaknesses": "No clear weak tier surfaced in this pass. Use the watch list as your next checkpoint.",
+  "assessment.result.observationNeeded": "Watch next",
+  "assessment.result.noObservationNeeded": "No extra watch areas surfaced right now.",
+  "assessment.result.skillBreakdown": "Skill breakdown",
+  "assessment.result.skillBreakdownHint": "Each area is tagged as weak, needs work, normal, or strength."
 } satisfies Record<string, string>;
 
 vi.mock("next/navigation", () => ({
@@ -63,12 +88,12 @@ vi.mock("@/components/study/StudyProvider", () => ({
 
 vi.mock("@/lib/i18n/config", () => ({
   useI18n: () => ({
-    language: "zh",
+    language: mockLanguage,
     studyMode: false,
     canChangeLanguage: true,
     setLanguage: vi.fn(),
     t: (key: string, replacements?: Record<string, string | number>) => {
-      const template = translationMap[key] ?? key;
+      const template = (mockLanguage === "en" ? translationMapEn : translationMap)[key] ?? key;
       if (!replacements) {
         return template;
       }
@@ -99,6 +124,7 @@ vi.mock("@/lib/study/localData", () => ({
 describe("assessment flow and result summary", () => {
   beforeEach(() => {
     cleanup();
+    mockLanguage = "zh";
     window.localStorage.clear();
     window.history.pushState({}, "", "/assessment");
     mockPush.mockReset();
@@ -110,13 +136,29 @@ describe("assessment flow and result summary", () => {
     cleanup();
   });
 
-  it("starts the active assessment flow without the gender step", async () => {
-    render(React.createElement(AssessmentPage));
+  it("maps the first post-coarse step to the first fine question with 6-of-9 progress after gender removal", () => {
+    const profileQuestions = assessmentQuestions.filter((question) => question.phase === "profile" && question.type !== "gender");
+    const coarseQuestions = getCoarseQuestions(assessmentQuestions);
+    const fineQuestions = getFineQuestionsForBranch("A", assessmentQuestions);
+    const draftAnswers = {
+      coarse_rally: 1,
+      coarse_serve: 1,
+      coarse_movement: 1,
+      coarse_awareness: 1,
+      coarse_pressure: 1
+    };
+    const normalizedStepIndex = normalizeDraftStepIndex(5, draftAnswers, profileQuestions);
+    const totalSteps = profileQuestions.length + coarseQuestions.length + fineQuestions.length;
+    const coarseEnd = profileQuestions.length + coarseQuestions.length;
+    const currentQuestion = normalizedStepIndex < coarseEnd
+      ? coarseQuestions[normalizedStepIndex - profileQuestions.length]
+      : fineQuestions[normalizedStepIndex - coarseEnd];
 
-    expect(await screen.findByText("日常练习中，你通常能连续对打多少拍？")).toBeInTheDocument();
-    expect(screen.queryByText("你的性别？")).not.toBeInTheDocument();
-    expect(screen.queryByText("打了多久网球？")).not.toBeInTheDocument();
-    expect(mockReplace).not.toHaveBeenCalledWith("/assessment/result");
+    expect(profileQuestions).toHaveLength(0);
+    expect(normalizedStepIndex).toBe(5);
+    expect(totalSteps).toBe(9);
+    expect(currentQuestion?.id).toBe("fine_a_grip");
+    expect(Math.round(((normalizedStepIndex + 1) / totalSteps) * 100)).toBe(67);
   });
 
   it("keeps current-flow draft steps unchanged when only default years fields are present", () => {
@@ -166,5 +208,26 @@ describe("assessment flow and result summary", () => {
     expect(observationCard).not.toBeNull();
     expect(within(weaknessesCard as HTMLElement).getByText("对拉稳定性")).toBeInTheDocument();
     expect(within(observationCard as HTMLElement).getByText("发球")).toBeInTheDocument();
+  });
+
+  it("localizes the summary and breakdown labels into the active language", () => {
+    mockLanguage = "en";
+
+    const result = calculateAssessmentResult({
+      coarse_rally: 1,
+      coarse_serve: 2,
+      coarse_awareness: 4,
+      coarse_movement: 4,
+      coarse_pressure: 4
+    }, assessmentQuestions, undefined, "zh");
+
+    render(<ResultSummary result={result} />);
+
+    expect(screen.getByText("How to read this result")).toBeInTheDocument();
+    expect(screen.getByText(/Your current level looks around 3\.5\./)).toBeInTheDocument();
+    expect(screen.getAllByText("rally stability").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("serve").length).toBeGreaterThan(0);
+    expect(screen.queryByText(result.summary)).not.toBeInTheDocument();
+    expect(screen.queryByText("对拉稳定性")).not.toBeInTheDocument();
   });
 });

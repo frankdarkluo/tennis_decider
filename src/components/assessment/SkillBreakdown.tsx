@@ -1,5 +1,5 @@
 import { AssessmentResult, DimensionSummary } from "@/types/assessment";
-import { getAssessmentStatusLabel } from "@/lib/assessment";
+import { getAssessmentStatusLabel, getLocalizedAssessmentResult } from "@/lib/assessment";
 import { useI18n } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 
@@ -18,8 +18,9 @@ function getStatusClasses(status: DimensionSummary["status"]) {
 
 export function SkillBreakdown({ result }: { result: AssessmentResult }) {
   const { language, t } = useI18n();
+  const localizedResult = getLocalizedAssessmentResult(result, language);
 
-  if (result.dimensions.length === 0) {
+  if (localizedResult.dimensions.length === 0) {
     return null;
   }
 
@@ -31,7 +32,7 @@ export function SkillBreakdown({ result }: { result: AssessmentResult }) {
       </div>
 
       <div className="space-y-2">
-        {result.dimensions.map((dimension) => {
+        {localizedResult.dimensions.map((dimension) => {
           const percentage = Math.round((dimension.score / dimension.maxScore) * 100);
 
           return (
@@ -42,11 +43,7 @@ export function SkillBreakdown({ result }: { result: AssessmentResult }) {
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1">
                   <p className="text-sm font-semibold text-slate-900">{dimension.label}</p>
-                  <p className="text-xs text-slate-500">
-                    {language === "en"
-                      ? `${dimension.score.toFixed(1)} / ${dimension.maxScore}`
-                      : `${dimension.score.toFixed(1)} / ${dimension.maxScore}`}
-                  </p>
+                  <p className="text-xs text-slate-500">{`${dimension.score.toFixed(1)} / ${dimension.maxScore}`}</p>
                 </div>
                 <span
                   className={cn(
