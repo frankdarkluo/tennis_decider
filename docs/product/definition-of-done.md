@@ -12,11 +12,11 @@ tags:
 
 ## Related docs
 - [[index]]
-- [[boundaries]]
-- [[product-principles]]
+- [[product/boundaries]]
+- [[product/principles]]
 - [[roadmap/current]]
-- [[roadmap/content-expansion-1000]]
-- [[features/youtube-platform-spec]]
+- [[roadmap/content-expansion]]
+- [[engineering/youtube-spec]]
 
 ## Task done
 

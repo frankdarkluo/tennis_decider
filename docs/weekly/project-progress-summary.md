@@ -9,15 +9,16 @@ tags:
 
 # TennisLevel Research Build Progress Summary
 
-This file is a local working summary for the current research-ready build.
-It is intentionally not meant for GitHub.
+Living summary of the current research-ready build state. Update this after major milestones; daily detail lives in `progress/`.
 
 ## Related docs
 - [[index]]
 - [[roadmap/current]]
 - [[research/study-mode]]
-- [[features/diagnosis-study-observability]]
+- [[engineering/diagnosis-observability]]
 - [[weekly/2026-W14]]
+- [[progress/2026-04-04]]
+- [[progress/2026-04-02]]
 - [[progress/2026-04-01]]
 
 ## As Of March 29, 2026
@@ -353,15 +354,13 @@ Relevant files:
 - `src/app/profile/page.tsx`
 - `src/components/layout/Header.tsx`
 
-### 5. Some local docs are stale relative to code
+### 5. Some local docs may lag the code
 
-The current code should be treated as the source of truth over a few older local notes.
-Examples already observed:
+The current code should be treated as the source of truth over local notes.
+When in doubt, verify against `src/` rather than docs.
 
-- `docs_local/STUDY_MODE.md` still lists `/video-diagnose` in the pilot flow
-- `docs_local/STUDY_SNAPSHOT_NOTE.md` still shows older snapshot identifiers
-
-This is exactly why `PROJECT_PROGRESS_SUMMARY.md` needs to be rewritten from current code state rather than older notes.
+- [[research/study-mode]] — check for `/video-diagnose` references if the pilot flow is updated
+- [[research/study-snapshot]] — verify snapshot identifiers match current `snapshotId`
 
 ## Best Candidates For The Next Interaction-Logic Upgrade
 

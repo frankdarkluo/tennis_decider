@@ -12,7 +12,7 @@ tags:
 ## Related docs
 - [[index]]
 - [[research/study-mode]]
-- [[research/study-snapshot-note]]
+- [[research/study-snapshot]]
 - [[weekly/project-progress-summary]]
 
 This file is local-only and should not be committed.

@@ -9,9 +9,9 @@ tags:
 
 ## Related docs
 
-- [[boundaries]]
-- [[product-principles]]
-- [[definition-of-done]]
+- [[product/boundaries]]
+- [[product/principles]]
+- [[product/definition-of-done]]
 - [[roadmap/current]]
 
 请帮我开发一个网球学习推荐网站 MVP，名称暂定为 TennisLevel。

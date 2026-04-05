@@ -20,7 +20,7 @@ tags:
   - [[index]]
   - [[roadmap/current]]
   - [[weekly/project-progress-summary]]
-  - 一个最相关的 [[features/...]]、[[research/...]] 或 [[roadmap/...]] 文档
+  - 一个最相关的 [[engineering/...]]、[[research/...]] 或 [[roadmap/...]] 文档
 
 你现在在 `TENNIS_LEVEL` 仓库中工作。请自动整理“今天”的项目进展，并生成或更新当天的 daily progress 文档。
 

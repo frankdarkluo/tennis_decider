@@ -75,11 +75,13 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 
 ## 文档入口
 
-- `docs/index.md`
-- `docs/roadmap/current.md`
-- `docs/product-principles.md`
-- `docs/boundaries.md`
-- `docs/research/study-mode.md`
+- `docs/index.md` — 知识图谱总入口
+- `docs/product/principles.md` — 产品定位与核心原则
+- `docs/product/boundaries.md` — Agent 操作边界与禁区
+- `docs/roadmap/current.md` — 当前冲刺状态
+- `docs/research/study-mode.md` — 研究模式说明
+
+文档结构说明见 `docs/README.md`。
 
 ## 仓库结构
 

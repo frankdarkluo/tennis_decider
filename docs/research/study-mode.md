@@ -18,10 +18,10 @@ Run reproducible pilot sessions without forcing sign-in, while keeping exports s
 ## Related docs
 - [[index]]
 - [[roadmap/current]]
-- [[research/study-remote-migration-checklist]]
-- [[research/study-snapshot-note]]
-- [[research/study-facilitator-checklist]]
-- [[features/diagnosis-study-observability]]
+- [[research/study-setup]]
+- [[research/study-snapshot]]
+- [[research/study-facilitator]]
+- [[engineering/diagnosis-observability]]
 - [[weekly/project-progress-summary]]
 
 ## Canonical Entry

@@ -12,7 +12,7 @@ tags:
 ## Related docs
 - [[index]]
 - [[roadmap/current]]
-- [[features/diagnosis-study-observability]]
+- [[engineering/diagnosis-observability]]
 - [[progress/2026-03-31]]
 
 ## 目标

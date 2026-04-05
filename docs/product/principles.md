@@ -11,10 +11,10 @@ tags:
 
 ## Related docs
 - [[index]]
-- [[boundaries]]
-- [[definition-of-done]]
+- [[product/boundaries]]
+- [[product/definition-of-done]]
 - [[roadmap/current]]
-- [[roadmap/requirements]]
+- [[product/requirements]]
 
 ## Core positioning
 TennisLevel is not a tennis content platform.
@@ -35,7 +35,7 @@ Primary interaction flow:
 
 ## Governance split
 - AGENTS.md: high-leverage product laws and prohibitions only.
-- [[product-principles]]: cross-feature product principles and quality standards.
+- [[product/principles]]: cross-feature product principles and quality standards.
 - Future `docs/design/` notes can hold visual hierarchy, density, spacing, and responsive readability rules when that cluster exists.
 - Future `docs/copy/` notes can hold zh/en semantics, fallback wording, diagnosis explanation tone, and plan copy style rules when that cluster exists.
 

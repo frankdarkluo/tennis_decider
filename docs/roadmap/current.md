@@ -17,10 +17,10 @@ Improve TennisLevel's core study-ready experience so users can finish a session,
 
 ## Related docs
 - [[index]]
-- [[roadmap/requirements]]
-- [[roadmap/content-expansion-1000]]
+- [[product/requirements]]
+- [[roadmap/content-expansion]]
 - [[research/study-mode]]
-- [[features/diagnosis-study-observability]]
+- [[engineering/diagnosis-observability]]
 - [[progress/2026-04-01]]
 - [[weekly/project-progress-summary]]
 
@@ -63,7 +63,7 @@ Improve TennisLevel's core study-ready experience so users can finish a session,
   - summary copy budget with detail overflow
   - cross-effort consistency constraints
   - study flush failure reason buckets and export aggregation
-- See: [[roadmap/codex-7-point-execution-2026-03-31]]
+- See: [[roadmap/archive/codex-7-point-2026-03-31]]
 
 ## Priority 2 — next
 

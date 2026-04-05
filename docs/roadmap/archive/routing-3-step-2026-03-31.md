@@ -11,8 +11,8 @@ tags:
 
 ## Related docs
 - [[index]]
-- [[product-principles]]
-- [[boundaries]]
+- [[product/principles]]
+- [[product/boundaries]]
 - [[roadmap/current]]
 
 ## 目标

@@ -11,9 +11,9 @@ tags:
 
 ## Related docs
 - [[index]]
-- [[definition-of-done]]
+- [[product/definition-of-done]]
 - [[roadmap/current]]
-- [[roadmap/content-expansion-1000]]
+- [[roadmap/content-expansion]]
 - [[progress/2026-04-01]]
 
 ## Scope

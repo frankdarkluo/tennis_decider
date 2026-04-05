@@ -22,52 +22,53 @@ TennisLevel is currently focused on a study-ready workflow for SportsHCI-style r
 
 ## Graph Hubs
 - [[roadmap/current]]
-- [[roadmap/requirements]]
+- [[product/requirements]]
 - [[research/study-mode]]
 - [[weekly/project-progress-summary]]
 - [[progress/2026-04-01]]
-- [[roadmap/content-expansion-1000]]
+- [[roadmap/content-expansion]]
 
 ## Product identity
-- [[product-principles]]
-- [[boundaries]]
-- [[definition-of-done]]
+- [[product/principles]]
+- [[product/boundaries]]
+- [[product/definition-of-done]]
 
 ## Navigation
+- Product identity: `product/`
+- Roadmap and planning: `roadmap/`
+- Research and study: `research/`
+- Engineering and feature specs: `engineering/`
 - Progress logs: `progress/`
 - Weekly reviews: `weekly/`
-- Decisions: `decisions/`
-- Features: `features/`
-- Issues and risks: `issues/`
-- Roadmap: `roadmap/`
-- Research notes: `research/`
 - Prompt files: `prompts/`
 - Reusable templates: `templates/`
 - Workflow guides: `skills/`
+- AI planning artifacts: `superpowers/`
 
 ## Recent Progress Files
+- [[progress/2026-04-04]]
+- [[progress/2026-04-02]]
 - [[progress/2026-04-01]]
-- [[progress/2026-03-30]]
 - [[progress/2026-03-31]]
 - [[weekly/project-progress-summary]]
 - [[weekly/2026-W14]]
 
 ## Feature Entrypoints
 - [[research/study-mode]]
-- [[features/diagnosis-study-observability]]
-- [[features/youtube-platform-spec]]
+- [[engineering/diagnosis-observability]]
+- [[engineering/youtube-spec]]
 
 ## Research Entrypoints
-- [[research/study-remote-migration-checklist]]
-- [[research/study-snapshot-note]]
-- [[research/study-facilitator-checklist]]
+- [[research/study-setup]]
+- [[research/study-snapshot]]
+- [[research/study-facilitator]]
 
 ## Roadmap Entrypoints
 - [[roadmap/current]]
-- [[roadmap/requirements]]
-- [[roadmap/content-expansion-1000]]
-- [[roadmap/routing-first-3-step-execution-2026-03-31]]
-- [[roadmap/codex-7-point-execution-2026-03-31]]
+- [[product/requirements]]
+- [[roadmap/content-expansion]]
+- [[roadmap/archive/routing-3-step-2026-03-31]]
+- [[roadmap/archive/codex-7-point-2026-03-31]]
 
 ## Prompt Entrypoints
 - [[prompts/ORGANIZE]]

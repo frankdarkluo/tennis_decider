@@ -13,7 +13,7 @@ tags:
 - [[index]]
 - [[roadmap/current]]
 - [[research/study-mode]]
-- [[roadmap/codex-7-point-execution-2026-03-31]]
+- [[roadmap/archive/codex-7-point-2026-03-31]]
 - [[weekly/project-progress-summary]]
 - [[progress/2026-04-01]]
 

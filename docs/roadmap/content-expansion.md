@@ -12,17 +12,17 @@ tags:
 > **文档状态**：草稿 v2
 > **最后更新**：2026-04-01
 > **所属里程碑**：P2.3 研究执行闭环
-> **关联文档**：[[roadmap/current]] · [[roadmap/requirements]] · [[index]] · [[features/youtube-platform-spec]]
+> **关联文档**：[[roadmap/current]] · [[product/requirements]] · [[index]] · [[engineering/youtube-spec]]
 
 ---
 
 ## 关联文档
 - [[index]]
 - [[roadmap/current]]
-- [[roadmap/requirements]]
+- [[product/requirements]]
 - [[research/study-mode]]
-- [[features/youtube-platform-spec]]
-- [[definition-of-done]]
+- [[engineering/youtube-spec]]
+- [[product/definition-of-done]]
 
 ## 一、现状与目标
 
@@ -213,24 +213,24 @@ tags:
 **核心导航节点**
 
 - [[index]] <- 全库入口，所有文档应能从这里找到
-- [[product-principles]] <- 产品身份与反漂移约束
-- [[boundaries]] <- 明确 out-of-scope 边界
-- [[definition-of-done]] <- 验收标准定义
+- [[product/principles]] <- 产品身份与反漂移约束
+- [[product/boundaries]] <- 明确 out-of-scope 边界
+- [[product/definition-of-done]] <- 验收标准定义
 
 **路线图节点**
 
-- [[roadmap/requirements]] <- P1-P4 功能需求全集（最重要的单文件）
+- [[product/requirements]] <- P1-P4 功能需求全集（最重要的单文件）
 - [[roadmap/current]] <- 当前冲刺状态（应每日维护）
-- [[roadmap/content-expansion-1000]] <- 本文档
-- [[roadmap/codex-7-point-execution-2026-03-31]]
-- [[roadmap/routing-first-3-step-execution-2026-03-31]]
+- [[roadmap/content-expansion]] <- 本文档
+- [[roadmap/archive/codex-7-point-2026-03-31]]
+- [[roadmap/archive/routing-3-step-2026-03-31]]
 
 **研究节点**
 
 - [[research/study-mode]]
-- [[research/study-remote-migration-checklist]]
-- [[research/study-snapshot-note]]
-- [[research/study-facilitator-checklist]]
+- [[research/study-setup]]
+- [[research/study-snapshot]]
+- [[research/study-facilitator]]
 
 **进度节点**
 
@@ -241,8 +241,8 @@ tags:
 
 **功能节点**
 
-- [[features/diagnosis-study-observability]]
-- [[features/youtube-platform-spec]] <- 已建
+- [[engineering/diagnosis-observability]]
+- [[engineering/youtube-spec]] <- 已建
 
 **提示词节点**
 
@@ -276,20 +276,20 @@ index.md
 | 缺口描述 | 建议补充文档 | 优先级 |
 |---------|------------|--------|
 | 内容库扩充计划在 [[index]] 中无入口 | 在 [[index]] 的 `Roadmap Entrypoints` 下追加本文档链接（已完成） | 高 |
-| [[boundaries]] 未被 roadmap 文档引用 | 在 [[roadmap/requirements]] 顶部加引用（已完成） | 高 |
-| YouTube 平台处理规范无文档 | 新建 [[features/youtube-platform-spec]]（已完成） | 中 |
-| [[definition-of-done]] 验收标准与本方案未同步 | 将第六章三项验收标准同步写入 DoD（已完成） | 中 |
+| [[product/boundaries]] 未被 roadmap 文档引用 | 在 [[product/requirements]] 顶部加引用（已完成） | 高 |
+| YouTube 平台处理规范无文档 | 新建 [[engineering/youtube-spec]]（已完成） | 中 |
+| [[product/definition-of-done]] 验收标准与本方案未同步 | 将第六章三项验收标准同步写入 DoD（已完成） | 中 |
 | skills/ 和 templates/ 目录为空 | 待 P2.3 后补充 | 低 |
 
 ### 7.4 index.md 需要追加的引用（可直接提交）
 
 在 [[index]] 的 `## Roadmap Entrypoints` 章节追加：
 
-- [[roadmap/content-expansion-1000]] — 内容库扩充至1000条执行方案
+- [[roadmap/content-expansion]] — 内容库扩充至1000条执行方案
 
 在 `## Feature Entrypoints` 章节确保包含：
 
-- [[features/youtube-platform-spec]] — YouTube平台技术处理规范（已建）
+- [[engineering/youtube-spec]] — YouTube平台技术处理规范（已建）
 
 ---
 
@@ -311,5 +311,5 @@ index.md
 
 ---
 
-*本文档落地路径：[[roadmap/content-expansion-1000]]*
+*本文档落地路径：[[roadmap/content-expansion]]*
 *下一个关联里程碑：P2.3 研究执行闭环*

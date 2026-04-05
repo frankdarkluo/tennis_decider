@@ -10,7 +10,7 @@ tags:
 ## Related docs
 - [[index]]
 - [[roadmap/current]]
-- [[product-principles]]
+- [[product/principles]]
 - [[templates/daily-progress-template]]
 - [[templates/weekly-review-template]]
 - [[templates/decision-template]]

@@ -12,9 +12,9 @@ tags:
 
 ## Related docs
 - [[index]]
-- [[product-principles]]
-- [[definition-of-done]]
-- [[roadmap/requirements]]
+- [[product/principles]]
+- [[product/definition-of-done]]
+- [[product/requirements]]
 - [[roadmap/current]]
 
 ## Absolute no-go zones
