@@ -87,6 +87,8 @@ export type DimensionKey = AssessmentDimension;
 
 export type AssessmentAnswers = Record<string, number>;
 
+export type AssessmentDimensionStatus = "薄弱" | "待提升" | "正常" | "强项";
+
 export type DimensionSummary = {
   key: DimensionKey;
   label: string;
@@ -96,7 +98,7 @@ export type DimensionSummary = {
   levelHint: AssessmentLevel;
   answeredCount: number;
   uncertainCount: number;
-  status: "正常" | "待观察";
+  status: AssessmentDimensionStatus;
 };
 
 export type AssessmentResult = {

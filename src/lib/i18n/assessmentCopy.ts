@@ -27,6 +27,15 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
       4: "Attacking first serve, stable second serve"
     }
   },
+  coarse_movement: {
+    en: "What usually happens with your movement and recovery?",
+    labels: {
+      1: "I get stuck and watch balls go by",
+      2: "I chase balls, but I am often late",
+      3: "I reach most balls and recover reasonably well",
+      4: "My first step and recovery are natural, and I rarely get wrong-footed"
+    }
+  },
   coarse_awareness: {
     en: "What is usually in your head during rallies or matches?",
     labels: {
@@ -34,6 +43,15 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
       2: "I think about direction but cannot execute it",
       3: "I can move the opponent on purpose",
       4: "I can build tactics around opponent weaknesses"
+    }
+  },
+  coarse_pressure: {
+    en: "What usually happens when the score gets tight or practice gets pressured?",
+    labels: {
+      1: "I get tight and errors jump quickly",
+      2: "I become passive and my quality drops",
+      3: "I stay close to my normal level",
+      4: "I usually raise my level on important points"
     }
   },
   fine_a_grip: {
@@ -63,6 +81,15 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
       4: "I am stable and want more variety"
     }
   },
+  fine_a_movement: {
+    en: "How are your movement and recovery during points?",
+    labels: {
+      1: "I often stay in one spot after I hit",
+      2: "I move, but rarely recover in time",
+      3: "I usually get back to a ready position",
+      4: "Recovery after each shot feels natural"
+    }
+  },
   fine_b_both_sides: {
     en: "How big is the gap between your forehand and backhand?",
     labels: {
@@ -90,6 +117,15 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
       4: "It does not affect me much"
     }
   },
+  fine_b_serve_game: {
+    en: "How stable are your service games?",
+    labels: {
+      1: "I lose most of my service games",
+      2: "I hold sometimes, but not reliably",
+      3: "I usually steady the game with my serve",
+      4: "My serve games are a dependable weapon"
+    }
+  },
   fine_c_net: {
     en: "How would you describe your net play?",
     labels: {
@@ -115,6 +151,15 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
       2: "Sometimes I hit a pressuring ball",
       3: "I can force errors consistently through steady pressure",
       4: "I create scoring opportunities through point construction"
+    }
+  },
+  fine_c_adaptability: {
+    en: "Can you adjust your game plan for different opponents?",
+    labels: {
+      1: "I mostly play the same way regardless of the opponent",
+      2: "I notice what to change, but I cannot execute it in matches",
+      3: "I can make targeted adjustments during a match",
+      4: "I actively shape and switch tactics for different opponents"
     }
   },
   fine_c_tactical: {

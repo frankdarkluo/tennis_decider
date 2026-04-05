@@ -58,6 +58,19 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     dimension: "serve"
   },
   {
+    id: "coarse_movement",
+    phase: "coarse",
+    type: "choice",
+    question: "来回移动和还原时，你通常是什么状态？",
+    options: [
+      { label: "经常站住，看着球过去", value: 1 },
+      { label: "会去追球，但经常慢半拍", value: 2 },
+      { label: "大部分球都能赶到并回位", value: 3 },
+      { label: "启动和回位都比较自然，很少被打定住", value: 4 }
+    ],
+    dimension: "movement"
+  },
+  {
     id: "coarse_awareness",
     phase: "coarse",
     type: "choice",
@@ -69,6 +82,19 @@ export const assessmentQuestions: AssessmentQuestion[] = [
       { label: "能根据对手弱点组织战术", value: 4 }
     ],
     dimension: "awareness"
+  },
+  {
+    id: "coarse_pressure",
+    phase: "coarse",
+    type: "choice",
+    question: "比分紧张或练习加压时，你通常会怎样？",
+    options: [
+      { label: "明显发紧，失误一下变多", value: 1 },
+      { label: "会保守，质量掉得比较多", value: 2 },
+      { label: "大体还能保持平时水平", value: 3 },
+      { label: "越到关键分越能打出自己的球", value: 4 }
+    ],
+    dimension: "pressure_performance"
   },
   {
     id: "fine_a_grip",
@@ -113,6 +139,20 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     dimension: "consistency"
   },
   {
+    id: "fine_a_movement",
+    phase: "fine",
+    branch: "A",
+    type: "choice",
+    question: "打球时你的跑位和还原做得怎么样？",
+    options: [
+      { label: "打完常站在原地", value: 1 },
+      { label: "会动，但很少及时回位", value: 2 },
+      { label: "大多能回到准备位置", value: 3 },
+      { label: "每拍后回位已经比较自然", value: 4 }
+    ],
+    dimension: "movement"
+  },
+  {
     id: "fine_b_both_sides",
     phase: "fine",
     branch: "B",
@@ -155,6 +195,20 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     dimension: "rhythm"
   },
   {
+    id: "fine_b_serve_game",
+    phase: "fine",
+    branch: "B",
+    type: "choice",
+    question: "你的发球局稳定吗？",
+    options: [
+      { label: "经常保不住发球局", value: 1 },
+      { label: "偶尔能保发，但不太稳", value: 2 },
+      { label: "多数时候能靠发球局稳住局面", value: 3 },
+      { label: "发球局已经是我的可靠优势", value: 4 }
+    ],
+    dimension: "serve"
+  },
+  {
     id: "fine_c_net",
     phase: "fine",
     branch: "C",
@@ -195,6 +249,20 @@ export const assessmentQuestions: AssessmentQuestion[] = [
       { label: "能通过组合球主动创造得分机会", value: 4 }
     ],
     dimension: "forcing"
+  },
+  {
+    id: "fine_c_adaptability",
+    phase: "fine",
+    branch: "C",
+    type: "choice",
+    question: "你能根据对手调整打法吗？",
+    options: [
+      { label: "基本不管对手，自己怎么打都一样", value: 1 },
+      { label: "能看出来问题，但比赛里很难执行", value: 2 },
+      { label: "比赛中能做一些针对性调整", value: 3 },
+      { label: "会主动根据对手特点设计和切换打法", value: 4 }
+    ],
+    dimension: "tactical_adaptability"
   }
 ];
 

@@ -3,6 +3,7 @@ import {
   AssessmentAnswers,
   AssessmentBranch,
   AssessmentDimension,
+  AssessmentDimensionStatus,
   AssessmentLevel,
   AssessmentProfile,
   AssessmentQuestion,
@@ -92,12 +93,16 @@ const CONFIDENCE_LABELS = {
 
 const STATUS_LABELS = {
   zh: {
+    weak: "薄弱",
+    needsWork: "待提升",
     normal: "正常",
-    watch: "待观察"
+    strength: "强项"
   },
   en: {
-    normal: "solid",
-    watch: "watch next"
+    weak: "weak",
+    needsWork: "needs work",
+    normal: "normal",
+    strength: "strength"
   }
 } as const;
 
@@ -143,8 +148,16 @@ export function getAssessmentConfidenceLabel(
 }
 
 export function getAssessmentStatusLabel(status: DimensionSummary["status"], locale: AssessmentLocale = "zh") {
-  if (status === "待观察") {
-    return STATUS_LABELS[locale].watch;
+  if (status === "薄弱") {
+    return STATUS_LABELS[locale].weak;
+  }
+
+  if (status === "待提升") {
+    return STATUS_LABELS[locale].needsWork;
+  }
+
+  if (status === "强项") {
+    return STATUS_LABELS[locale].strength;
   }
 
   return STATUS_LABELS[locale].normal;
@@ -180,11 +193,11 @@ export function getFineQuestionsForBranch(
 }
 
 export function determineBranch(coarseScore: number): AssessmentBranch {
-  if (coarseScore <= 5) {
+  if (coarseScore <= 8) {
     return "A";
   }
 
-  if (coarseScore <= 8) {
+  if (coarseScore <= 14) {
     return "B";
   }
 
@@ -195,19 +208,18 @@ export function calculateLevel(coarseScore: number, fineScore: number): Assessme
   const branch = determineBranch(coarseScore);
 
   if (branch === "A") {
-    return fineScore <= 5 ? "2.5" : "3.0";
+    return fineScore <= 8 ? "2.5" : "3.0";
   }
 
   if (branch === "B") {
-    return fineScore <= 5 ? "3.0" : "3.5";
+    return fineScore <= 8 ? "3.0" : "3.5";
   }
 
-  // Branch C: 5 questions, max 20 points
-  if (fineScore <= 10) {
+  if (fineScore <= 6) {
     return "3.5";
   }
 
-  if (fineScore <= 15) {
+  if (fineScore <= 10) {
     return "4.0";
   }
 
@@ -226,50 +238,107 @@ function getConfidence(answeredCount: number, totalQuestions: number): Assessmen
   return "较高";
 }
 
+function getDimensionStatus(average: number): AssessmentDimensionStatus {
+  if (average < 1.5) {
+    return "薄弱";
+  }
+
+  if (average < 2.5) {
+    return "待提升";
+  }
+
+  if (average < 3.5) {
+    return "正常";
+  }
+
+  return "强项";
+}
+
 function buildDimensionSummaries(
   questions: AssessmentQuestion[],
   answers: AssessmentAnswers,
   level: AssessmentLevel,
   locale: AssessmentLocale = "zh"
 ): DimensionSummary[] {
-  return questions.reduce<DimensionSummary[]>((acc, question) => {
+  const groupedScores = questions.reduce<Map<AssessmentDimension, number[]>>((acc, question) => {
     if (!question.dimension) {
       return acc;
     }
 
     const score = Number(answers[question.id] ?? 0);
-    const status: DimensionSummary["status"] = score === 1 ? "待观察" : "正常";
 
     if (score <= 0) {
       return acc;
     }
 
-    acc.push({
-      key: question.dimension,
-      label: getDimensionLabel(question.dimension, locale),
-      score,
-      maxScore: 4,
-      average: score,
-      levelHint: level,
-      answeredCount: 1,
-      uncertainCount: 0,
-      status
-    });
+    const existing = acc.get(question.dimension) ?? [];
+    existing.push(score);
+    acc.set(question.dimension, existing);
 
     return acc;
-  }, []);
+  }, new Map<AssessmentDimension, number[]>());
+
+  return Array.from(groupedScores.entries())
+    .map(([dimension, scores]) => {
+      const total = scores.reduce((sum, score) => sum + score, 0);
+      const average = total / scores.length;
+
+      return {
+        key: dimension,
+        label: getDimensionLabel(dimension, locale),
+        score: Math.round(average * 10) / 10,
+        maxScore: 4,
+        average,
+        levelHint: level,
+        answeredCount: scores.length,
+        uncertainCount: 0,
+        status: getDimensionStatus(average)
+      };
+    })
+    .sort((left, right) => left.average - right.average || left.label.localeCompare(right.label, "zh-CN"));
 }
 
 function buildStrengths(dimensions: DimensionSummary[]) {
-  return dimensions.filter((dimension) => dimension.score >= 3).map((dimension) => dimension.label);
+  return dimensions
+    .filter((dimension) => dimension.status === "强项")
+    .map((dimension) => dimension.label);
 }
 
 function buildWeaknesses(dimensions: DimensionSummary[]) {
-  return dimensions.filter((dimension) => dimension.score === 1).map((dimension) => dimension.label);
+  return dimensions
+    .filter((dimension) => dimension.status === "薄弱")
+    .map((dimension) => dimension.label);
 }
 
-function buildSummary(level: AssessmentLevel, locale: AssessmentLocale = "zh"): string {
-  return (locale === "en" ? SUMMARY_TEMPLATES_EN : SUMMARY_TEMPLATES_ZH)[level];
+function buildObservationNeeded(dimensions: DimensionSummary[]) {
+  return dimensions
+    .filter((dimension) => dimension.status === "待提升")
+    .map((dimension) => dimension.label);
+}
+
+function buildSummary(level: AssessmentLevel, dimensions: DimensionSummary[], locale: AssessmentLocale = "zh"): string {
+  const weakest = [...dimensions]
+    .sort((left, right) => left.average - right.average || left.label.localeCompare(right.label, "zh-CN"))
+    .slice(0, 2)
+    .map((dimension) => dimension.label);
+
+  if (weakest.length === 0) {
+    return (locale === "en" ? SUMMARY_TEMPLATES_EN : SUMMARY_TEMPLATES_ZH)[level];
+  }
+
+  if (locale === "en") {
+    if (weakest.length === 1) {
+      return `Your current level looks around ${level}. ${weakest[0]} is the highest-priority area to keep improving next.`;
+    }
+
+    return `Your current level looks around ${level}. ${weakest[0]} and ${weakest[1]} are the highest-priority areas to improve next.`;
+  }
+
+  if (weakest.length === 1) {
+    return `你目前的能力区间接近 ${level}。${weakest[0]} 是现在最值得优先补强的方向。`;
+  }
+
+  return `你目前的能力区间接近 ${level}。${weakest[0]} 和 ${weakest[1]} 是现在最值得优先补强的方向。`;
 }
 
 export function calculateAssessmentResult(
@@ -288,6 +357,7 @@ export function calculateAssessmentResult(
   const dimensions = buildDimensionSummaries(scoredQuestions, answers, level, locale);
   const strengths = buildStrengths(dimensions);
   const weaknesses = buildWeaknesses(dimensions);
+  const observationNeeded = buildObservationNeeded(dimensions);
   const answeredCount = scoredQuestions.filter((question) => Number(answers[question.id] ?? 0) > 0).length;
   const totalQuestions = scoredQuestions.length;
   const totalScore = coarseScore + fineScore;
@@ -305,8 +375,8 @@ export function calculateAssessmentResult(
     dimensions,
     strengths,
     weaknesses,
-    observationNeeded: [],
-    summary: buildSummary(level, locale),
+    observationNeeded,
+    summary: buildSummary(level, dimensions, locale),
     profile,
     branch,
     coarseScore,
@@ -317,11 +387,11 @@ export function calculateAssessmentResult(
 export function getDefaultAssessmentResult(locale: AssessmentLocale = "zh"): AssessmentResult {
   return {
     totalScore: 0,
-    maxScore: 32,
+    maxScore: 36,
     normalizedScore: 0,
     answeredCount: 0,
     uncertainCount: 0,
-    totalQuestions: 8,
+    totalQuestions: 9,
     level: "2.5",
     confidence: "较低",
     dimensions: [],
