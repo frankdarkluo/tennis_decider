@@ -19,6 +19,8 @@ describe("plan few-shot fixtures", () => {
         deepContext: fixture.deepContext
       });
 
+      expect(plan.source).toBe("template");
+
       if (fixture.summaryIncludes) {
         expect(plan.summary ?? "").toContain(fixture.summaryIncludes);
       }
@@ -70,6 +72,8 @@ describe("plan few-shot fixtures", () => {
       primaryNextStep: serveFixture.primaryNextStep,
       deepContext: serveFixture.deepContext
     });
+
+    expect(plan.source).toBe("template");
 
     const day4Text = `${plan.days[3]?.goal} ${plan.days[3]?.mainBlock.items.join(" ")} ${plan.days[3]?.pressureBlock.items.join(" ")} ${plan.days[3]?.successCriteria.join(" ")}`;
     const day5Text = `${plan.days[4]?.goal} ${plan.days[4]?.mainBlock.items.join(" ")} ${plan.days[4]?.pressureBlock.items.join(" ")} ${plan.days[4]?.successCriteria.join(" ")}`;
