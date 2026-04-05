@@ -3,7 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { assessmentQuestions } from "@/data/assessmentQuestions";
 import { calculateAssessmentResult } from "@/lib/assessment";
+import { normalizeDraftStepIndex } from "@/lib/assessmentDraft";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
+import AssessmentPage from "@/app/assessment/page";
 
 const { mockPush, mockReplace, mockPrefetch } = vi.hoisted(() => ({
   mockPush: vi.fn(),
@@ -109,14 +111,40 @@ describe("assessment flow and result summary", () => {
   });
 
   it("starts the active assessment flow without the gender step", async () => {
-    const AssessmentPage = (await import("@/app/assessment/page")).default;
-
     render(React.createElement(AssessmentPage));
 
     expect(await screen.findByText("日常练习中，你通常能连续对打多少拍？")).toBeInTheDocument();
     expect(screen.queryByText("你的性别？")).not.toBeInTheDocument();
     expect(screen.queryByText("打了多久网球？")).not.toBeInTheDocument();
     expect(mockReplace).not.toHaveBeenCalledWith("/assessment/result");
+  });
+
+  it("keeps current-flow draft steps unchanged when only default years fields are present", () => {
+    const profileQuestions = assessmentQuestions.filter((question) => question.phase === "profile" && question.type !== "gender");
+
+    expect(normalizeDraftStepIndex(
+      4,
+      {
+        coarse_rally: 2,
+        coarse_serve: 2,
+        coarse_movement: 2,
+        coarse_awareness: 2
+      },
+      profileQuestions
+    )).toBe(4);
+  });
+
+  it("subtracts only the retired legacy profile steps from older drafts", () => {
+    const profileQuestions = assessmentQuestions.filter((question) => question.phase === "profile" && question.type !== "gender");
+
+    expect(normalizeDraftStepIndex(
+      4,
+      {
+        coarse_rally: 2,
+        coarse_serve: 2
+      },
+      profileQuestions
+    )).toBe(2);
   });
 
   it("renders summary, weak areas, and watch areas from the calculated result model", () => {

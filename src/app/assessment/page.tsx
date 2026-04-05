@@ -17,6 +17,7 @@ import {
   writeAssessmentDraftToStorage,
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
+import { normalizeDraftStepIndex } from "@/lib/assessmentDraft";
 import { getPostAssessmentHref, resolveAppEnvironment } from "@/lib/environment";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
@@ -48,28 +49,6 @@ function hasProfileProgress(profile: AssessmentProfile, profileQuestions: Assess
 
     return false;
   });
-}
-
-function normalizeDraftStepIndex(
-  rawStepIndex: number | undefined,
-  draftProfile: AssessmentProfile | undefined,
-  profileQuestions: AssessmentQuestion[]
-) {
-  const activeQuestionIds = new Set(profileQuestions.map((question) => question.id));
-  let retiredStepCount = 0;
-
-  if (draftProfile?.gender && !activeQuestionIds.has("gender")) {
-    retiredStepCount += 1;
-  }
-
-  if (
-    (draftProfile?.yearsLabel || typeof draftProfile?.yearsPlaying === "number")
-    && !activeQuestionIds.has("years")
-  ) {
-    retiredStepCount += 1;
-  }
-
-  return Math.max(0, (rawStepIndex ?? 0) - retiredStepCount);
 }
 
 function getSourceRoute() {
@@ -203,7 +182,7 @@ export default function AssessmentPage() {
         }));
         setStepIndex(Math.max(0, Math.min(
           totalSteps - 1,
-          normalizeDraftStepIndex(storedDraft.stepIndex, storedDraft.profile, profileQuestions)
+          normalizeDraftStepIndex(storedDraft.stepIndex, storedDraft.answers, profileQuestions)
         )));
         setDraftRestored(true);
       }
@@ -225,7 +204,7 @@ export default function AssessmentPage() {
       }));
       setStepIndex(Math.max(0, Math.min(
         totalSteps - 1,
-        normalizeDraftStepIndex(storedDraft.stepIndex, storedDraft.profile, profileQuestions)
+        normalizeDraftStepIndex(storedDraft.stepIndex, storedDraft.answers, profileQuestions)
       )));
       setDraftRestored(true);
       setEntryState("questionnaire");
