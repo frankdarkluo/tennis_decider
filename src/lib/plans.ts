@@ -1839,8 +1839,14 @@ export function normalizePlanContext(context: Partial<PlanContext> | null | unde
     return null;
   }
 
+  const normalizedWeakDimensions = uniqueAssessmentDimensions(context.weakDimensions ?? []);
+  const normalizedObservationDimensions = uniqueAssessmentDimensions(context.observationDimensions ?? []);
+  const isAssessmentContext = context.source === "assessment";
+  const hasExplicitWeakDimensions = Array.isArray(context.weakDimensions);
+  const hasExplicitObservationDimensions = Array.isArray(context.observationDimensions);
+
   return {
-    source: context.source === "assessment" ? "assessment" : "diagnosis",
+    source: isAssessmentContext ? "assessment" : "diagnosis",
     primaryProblemTag,
     sessionType: normalizePlanContextSessionType(context.sessionType),
     pressureContext: normalizePlanContextPressure(context.pressureContext),
@@ -1852,8 +1858,12 @@ export function normalizePlanContext(context: Partial<PlanContext> | null | unde
         .map((value) => normalizePlanContextFeeling(String(value)))
         .filter((value): value is PlanContextFeeling => Boolean(value))
     ),
-    weakDimensions: uniqueAssessmentDimensions(context.weakDimensions ?? []),
-    observationDimensions: uniqueAssessmentDimensions(context.observationDimensions ?? []),
+    ...((isAssessmentContext || hasExplicitWeakDimensions)
+      ? { weakDimensions: normalizedWeakDimensions }
+      : {}),
+    ...((isAssessmentContext || hasExplicitObservationDimensions)
+      ? { observationDimensions: normalizedObservationDimensions }
+      : {}),
     ...(typeof context.rationale === "string" && context.rationale.trim().length > 0
       ? { rationale: context.rationale.trim() }
       : {})
