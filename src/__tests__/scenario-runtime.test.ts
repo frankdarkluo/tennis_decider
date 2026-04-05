@@ -1,0 +1,212 @@
+import { describe, expect, it } from "vitest";
+import {
+  applyScenarioAnswer,
+  createEmptyScenario,
+  finalizeScenarioProgress,
+  getMissingSlots,
+  isScenarioMinimallyAnalyzable,
+  parseScenarioText,
+  parseScenarioTextDeterministically
+} from "@/lib/scenarioReconstruction/runtime";
+import { getQuestionBank } from "@/lib/scenarioReconstruction/questionBank";
+import {
+  createLocalQwenClient,
+  readLocalQwenConfig,
+  stripThinkingBlocks
+} from "@/lib/scenarioReconstruction/llm/client";
+
+describe("scenario reconstruction runtime", () => {
+  it("parses supported Chinese cues without hallucinating unknown fields", () => {
+    const scenario = parseScenarioTextDeterministically(
+      "比赛里我反手老下网，特别是对手压得比较深的时候"
+    );
+
+    expect(scenario.raw_user_input).toBe("比赛里我反手老下网，特别是对手压得比较深的时候");
+    expect(scenario.language).toBe("zh");
+    expect(scenario.stroke).toBe("backhand");
+    expect(scenario.context.session_type).toBe("match");
+    expect(scenario.incoming_ball.depth).toBe("deep");
+    expect(scenario.outcome.primary_error).toBe("net");
+    expect(scenario.context.movement).toBe("unknown");
+    expect(scenario.outcome.frequency).toBe("unknown");
+  });
+
+  it("parses supported English cues and subjective feeling flags", () => {
+    const scenario = parseScenarioTextDeterministically(
+      "My serve has no power in matches and I get tight on big points"
+    );
+
+    expect(scenario.language).toBe("en");
+    expect(scenario.stroke).toBe("serve");
+    expect(scenario.context.session_type).toBe("match");
+    expect(scenario.outcome.primary_error).toBe("no_power");
+    expect(scenario.subjective_feeling.tight).toBe(true);
+    expect(scenario.context.movement).toBe("stationary");
+  });
+
+  it("normalizes second-serve phrasing into a serve-family scenario", () => {
+    const scenario = parseScenarioTextDeterministically(
+      "关键分时我的二发容易下网"
+    );
+
+    expect(scenario.stroke).toBe("serve");
+    expect(scenario.context.session_type).toBe("match");
+    expect(scenario.context.pressure).toBe("high");
+    expect(scenario.context.movement).toBe("stationary");
+    expect(scenario.outcome.primary_error).toBe("net");
+  });
+
+  it("marks mixed-language input as mixed while still extracting supported slots", () => {
+    const scenario = parseScenarioTextDeterministically(
+      "比赛里 my backhand keeps going into the net"
+    );
+
+    expect(scenario.language).toBe("mixed");
+    expect(scenario.stroke).toBe("backhand");
+    expect(scenario.context.session_type).toBe("match");
+    expect(scenario.outcome.primary_error).toBe("net");
+  });
+
+  it("returns critical missing slots in priority order", () => {
+    const scenario = parseScenarioTextDeterministically("我反手不稳");
+
+    expect(getMissingSlots(scenario)).toEqual([
+      "context.session_type",
+      "context.movement",
+      "outcome.primary_error"
+    ]);
+  });
+
+  it("keeps the bilingual question bank aligned and editable outside UI code", () => {
+    const bank = getQuestionBank();
+    const ids = bank.map((question) => question.id);
+
+    expect(ids).toContain("q_match_or_practice");
+    expect(new Set(ids).size).toBe(bank.length);
+    expect(bank.every((question) => question.zh.trim().length > 0)).toBe(true);
+    expect(bank.every((question) => question.en.trim().length > 0)).toBe(true);
+    expect(bank.every((question) => question.options.length > 0)).toBe(true);
+  });
+
+  it("applies a follow-up answer by updating the targeted slot and preserving prior evidence", () => {
+    const scenario = parseScenarioTextDeterministically("比赛里我反手老下网");
+    const nextScenario = applyScenarioAnswer(scenario, "q_movement_state", "moving");
+
+    expect(nextScenario.stroke).toBe("backhand");
+    expect(nextScenario.context.session_type).toBe("match");
+    expect(nextScenario.context.movement).toBe("moving");
+    expect(nextScenario.outcome.primary_error).toBe("net");
+  });
+
+  it("starts from an empty scenario with all supported fields present", () => {
+    const scenario = createEmptyScenario("");
+
+    expect(scenario.stroke).toBe("unknown");
+    expect(scenario.context.session_type).toBe("unknown");
+    expect(scenario.incoming_ball.depth).toBe("unknown");
+    expect(scenario.outcome.primary_error).toBe("unknown");
+    expect(scenario.subjective_feeling.other).toEqual([]);
+    expect(scenario.selected_next_question_id).toBeNull();
+  });
+
+  it("uses localhost MLX defaults for the local Qwen client config", () => {
+    expect(readLocalQwenConfig({})).toEqual({
+      baseUrl: "http://127.0.0.1:8080/v1",
+      apiKey: "EMPTY",
+      modelName: "mlx-community/Qwen3-8B-4bit"
+    });
+  });
+
+  it("strips think blocks before parsing model JSON", () => {
+    expect(stripThinkingBlocks("<think>hidden</think>{\"ok\":true}")).toBe("{\"ok\":true}");
+  });
+
+  it("falls back to deterministic parsing when the model response is invalid", async () => {
+    const client = createLocalQwenClient({
+      fetch: async () =>
+        new Response(
+          JSON.stringify({
+            choices: [{ message: { content: "<think>draft</think>not-json" } }]
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          }
+        )
+    });
+
+    const scenario = await parseScenarioText("我反手不稳", { client });
+
+    expect(scenario.stroke).toBe("backhand");
+    expect(scenario.context.session_type).toBe("unknown");
+    expect(scenario.missing_slots).toEqual([
+      "context.session_type",
+      "context.movement",
+      "outcome.primary_error"
+    ]);
+  });
+
+  it("accepts a valid local model parse when it returns supported schema values", async () => {
+    const client = createLocalQwenClient({
+      fetch: async () =>
+        new Response(
+          JSON.stringify({
+            choices: [
+              {
+                message: {
+                  content: JSON.stringify({
+                    stroke: "backhand",
+                    context: { session_type: "match", movement: "moving" },
+                    outcome: { primary_error: "net" }
+                  })
+                }
+              }
+            ]
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          }
+        )
+    });
+
+    const scenario = await parseScenarioText("我反手不稳", { client });
+
+    expect(scenario.stroke).toBe("backhand");
+    expect(scenario.context.session_type).toBe("match");
+    expect(scenario.context.movement).toBe("moving");
+    expect(scenario.outcome.primary_error).toBe("net");
+  });
+
+  it("does not mark the scenario as done when blocking missing slots remain", () => {
+    const scenario = parseScenarioTextDeterministically("比赛里我反手老下网");
+
+    expect(scenario.missing_slots).toContain("context.movement");
+    expect(isScenarioMinimallyAnalyzable(scenario)).toBe(false);
+  });
+
+  it("clears active candidates when finalized progress is done", () => {
+    const scenario = parseScenarioTextDeterministically("比赛里我跑动中反手老下网，尤其对手球比较深的时候");
+    const question = getQuestionBank().find((item) => item.id === "q_feeling_rushed_or_tight");
+
+    expect(question).toBeDefined();
+
+    const progress = finalizeScenarioProgress(scenario, question ? [question] : [], question ?? null);
+
+    expect(progress.done).toBe(true);
+    expect(progress.eligibleQuestions).toEqual([]);
+    expect(progress.selectedQuestion).toBeNull();
+    expect(progress.scenario.next_question_candidates).toEqual([]);
+    expect(progress.scenario.selected_next_question_id).toBeNull();
+  });
+
+  it("treats a narrow second-serve complaint as ready for direct downstream handoff", () => {
+    const scenario = parseScenarioTextDeterministically("关键分时我的二发容易下网");
+    const progress = finalizeScenarioProgress(scenario, getQuestionBank(), getQuestionBank()[0] ?? null);
+
+    expect(progress.scenario.stroke).toBe("serve");
+    expect(progress.done).toBe(true);
+    expect(progress.eligibleQuestions).toEqual([]);
+    expect(progress.selectedQuestion).toBeNull();
+  });
+});

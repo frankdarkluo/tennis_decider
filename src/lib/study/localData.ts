@@ -11,13 +11,14 @@ import {
   STUDY_TASK_RATINGS_KEY
 } from "@/lib/study/config";
 import { DiagnosisSnapshot } from "@/types/diagnosis";
+import { EnrichedDiagnosisContext } from "@/types/enrichedDiagnosis";
 import {
   StudyArtifactRecord,
   StudyBookmarkState,
   StudyProgressState,
   StudyTaskRatingRecord
 } from "@/types/study";
-import { PlanLevel } from "@/types/plan";
+import { PlanContext, PlanLevel } from "@/types/plan";
 import { SavedPlanSource } from "@/types/userData";
 
 export type LocalStudyPlanDraft = {
@@ -26,6 +27,8 @@ export type LocalStudyPlanDraft = {
   preferredContentIds?: string[];
   sourceType?: SavedPlanSource;
   primaryNextStep?: string;
+  planContext?: PlanContext;
+  deepContext?: EnrichedDiagnosisContext;
   updatedAt?: string;
 };
 
@@ -131,6 +134,8 @@ export function writeLocalStudyPlanDraft(draft: LocalStudyPlanDraft) {
     preferredContentIds: Array.isArray(draft.preferredContentIds) ? draft.preferredContentIds : [],
     sourceType: draft.sourceType,
     primaryNextStep: draft.primaryNextStep,
+    planContext: draft.planContext,
+    deepContext: draft.deepContext,
     updatedAt: draft.updatedAt ?? new Date().toISOString()
   };
 
