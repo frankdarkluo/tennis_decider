@@ -221,9 +221,10 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
     diagnosisInput: result.input,
     recommendedContentIds: result.recommendedContents.map((item) => item.id)
   });
+  const planContextSourceInput = deepContext?.sourceInput ?? result.input;
   const planContext = buildDiagnosisPlanContext({
     problemTag: result.problemTag,
-    diagnosisInput: result.input,
+    diagnosisInput: planContextSourceInput,
     primaryNextStep
   });
   const planHref = buildPlanHref({

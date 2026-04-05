@@ -127,8 +127,8 @@ function PlanPageContent() {
     : params.get("problemTag") ?? params.get("level") ?? `${problemTag}:${level}`;
   const summaryHeadline = sourceType === "assessment"
     ? primaryNextStep || plan.target
-    : primaryNextStep || plan.summary || plan.target;
-  const summaryRationale = sourceType === "assessment" ? plan.summary : undefined;
+    : primaryNextStep || plan.target;
+  const summaryRationale = plan.summary && plan.summary !== summaryHeadline ? plan.summary : undefined;
   const sourceLabel = primaryNextStep ? `${sourceLabelBase}::${primaryNextStep}` : sourceLabelBase;
   const planHref = useMemo(
     () => buildPlanHref({
@@ -334,6 +334,7 @@ function PlanPageContent() {
           headline={summaryHeadline}
           focusLine={sourceType === "assessment" ? assessmentFocusLine ?? undefined : undefined}
           rationale={summaryRationale}
+          sourceType={sourceType}
           supportingText={t("plan.supporting", { value: language === "en" ? plan.level : toChineseLevel(plan.level) })}
         />
 

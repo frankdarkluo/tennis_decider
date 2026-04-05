@@ -129,6 +129,8 @@ describe("plan context handoff", () => {
     });
 
     expect(plan.summary).toContain("关键分场景");
+    expect(plan.summary).toContain("先建立安全二发节奏");
+    expect(plan.summary).toContain("发紧");
     expect(parsedFromHref).toMatchObject({
       pressureContext: "high",
       movementContext: "stationary",

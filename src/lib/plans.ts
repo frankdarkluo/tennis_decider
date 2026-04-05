@@ -1224,6 +1224,176 @@ export function getAssessmentPlanRationale(
   return planContext.rationale?.trim() || null;
 }
 
+function buildDiagnosisOutcomePhrase(
+  outcomePattern: PlanContextOutcome,
+  locale: PlanLocale
+): string | null {
+  if (locale === "en") {
+    if (outcomePattern === "net") return "the miss tends to go into the net";
+    if (outcomePattern === "long") return "the miss tends to fly long";
+    if (outcomePattern === "no_control") return "the ball tends to break down completely";
+    if (outcomePattern === "weak") return "the reply tends to sit up short and weak";
+    return null;
+  }
+
+  if (outcomePattern === "net") return "容易下网";
+  if (outcomePattern === "long") return "容易出界";
+  if (outcomePattern === "no_control") return "容易失控";
+  if (outcomePattern === "weak") return "回球容易偏软偏浅";
+  return null;
+}
+
+function buildDiagnosisFeelingPhrase(
+  feelingModifiers: PlanContextFeeling[],
+  locale: PlanLocale
+): string | null {
+  const primaryFeeling = feelingModifiers[0];
+
+  if (locale === "en") {
+    if (primaryFeeling === "tight") return "it feels tight";
+    if (primaryFeeling === "nervous") return "it feels nervous";
+    if (primaryFeeling === "rushed") return "it feels rushed";
+    return null;
+  }
+
+  if (primaryFeeling === "tight") return "会发紧";
+  if (primaryFeeling === "nervous") return "会紧张";
+  if (primaryFeeling === "rushed") return "会着急";
+  return null;
+}
+
+function buildDiagnosisScenePhrase(
+  planContext: PlanContext,
+  locale: PlanLocale
+): string | null {
+  if (locale === "en") {
+    const parts: string[] = [];
+
+    if (planContext.sessionType === "match" && planContext.pressureContext === "high") {
+      parts.push("on key points in matches");
+    } else if (planContext.sessionType === "match") {
+      parts.push("in matches");
+    } else if (planContext.sessionType === "practice") {
+      parts.push("in practice");
+    } else if (planContext.pressureContext === "high") {
+      parts.push("under pressure");
+    }
+
+    if (planContext.movementContext === "moving") {
+      parts.push("while moving");
+    } else if (planContext.movementContext === "stationary") {
+      parts.push("from a set position");
+    }
+
+    if (planContext.incomingBallDepth === "deep") {
+      parts.push("against deeper incoming balls");
+    }
+
+    return parts.length > 0 ? parts.join(" ") : null;
+  }
+
+  const parts: string[] = [];
+
+  if (planContext.sessionType === "match" && planContext.pressureContext === "high") {
+    parts.push("关键分比赛里");
+  } else if (planContext.sessionType === "match") {
+    parts.push("比赛里");
+  } else if (planContext.sessionType === "practice") {
+    parts.push("练习里");
+  } else if (planContext.pressureContext === "high") {
+    parts.push("压力下");
+  }
+
+  if (planContext.movementContext === "moving") {
+    parts.push("跑动中");
+  } else if (planContext.movementContext === "stationary") {
+    parts.push("原地执行时");
+  }
+
+  if (planContext.incomingBallDepth === "deep") {
+    parts.push("面对更深来球时");
+  }
+
+  return parts.length > 0 ? parts.join("") : null;
+}
+
+function buildDiagnosisContextSnippet(
+  planContext: PlanContext,
+  locale: PlanLocale
+): string | null {
+  const scene = buildDiagnosisScenePhrase(planContext, locale);
+  const outcome = buildDiagnosisOutcomePhrase(planContext.outcomePattern, locale);
+  const feeling = buildDiagnosisFeelingPhrase(planContext.feelingModifiers, locale);
+
+  if (locale === "en") {
+    const detail = [outcome, feeling].filter((value): value is string => Boolean(value)).join(" and ");
+    if (scene && detail) {
+      return `${scene}, ${detail}`;
+    }
+
+    return scene ?? detail ?? null;
+  }
+
+  const detail = [outcome, feeling].filter((value): value is string => Boolean(value)).join("，");
+  if (scene && detail) {
+    return `${scene}${detail}`;
+  }
+
+  return scene ?? detail ?? null;
+}
+
+function buildDiagnosisPlanRationale(
+  planContext: PlanContext | null | undefined,
+  locale: PlanLocale,
+  primaryNextStep?: string,
+  deepContext?: EnrichedDiagnosisContext | null
+): string | null {
+  if (!planContext || planContext.source !== "diagnosis") {
+    return null;
+  }
+
+  const normalizedPrimaryNextStep = normalizePrimaryNextStep(primaryNextStep);
+
+  if (deepContext?.isDeepModeReady) {
+    const sceneSummary = locale === "en" ? deepContext.sceneSummaryEn : deepContext.sceneSummaryZh;
+    const sceneLabel = locale === "en"
+      ? deepContext.pressureContext === "key_points" ? "Key-point scene" : "Deep diagnosis scene"
+      : deepContext.pressureContext === "key_points" ? "关键分场景" : "深入诊断场景";
+
+    if (normalizedPrimaryNextStep) {
+      return locale === "en"
+        ? `${sceneLabel}: ${sceneSummary} Start this week by stabilizing ${normalizedPrimaryNextStep}.`
+        : `${sceneLabel}：${sceneSummary} 这周先把${normalizedPrimaryNextStep}练稳。`;
+    }
+
+    return locale === "en"
+      ? `${sceneLabel}: ${sceneSummary}`
+      : `${sceneLabel}：${sceneSummary}`;
+  }
+
+  const contextSnippet = buildDiagnosisContextSnippet(planContext, locale);
+
+  if (contextSnippet && normalizedPrimaryNextStep) {
+    return locale === "en"
+      ? `Diagnosis points to the main leak ${contextSnippet}, so this week starts with ${normalizedPrimaryNextStep}.`
+      : `诊断显示主要漏点出在${contextSnippet}，所以这周先把${normalizedPrimaryNextStep}练稳。`;
+  }
+
+  if (contextSnippet) {
+    return locale === "en"
+      ? `Diagnosis points to the main leak ${contextSnippet}, so the plan stays anchored to that scene.`
+      : `诊断显示主要漏点出在${contextSnippet}，所以这周就按这个场景去练。`;
+  }
+
+  if (normalizedPrimaryNextStep) {
+    return locale === "en"
+      ? `Diagnosis has narrowed the week to one clear next step: ${normalizedPrimaryNextStep}.`
+      : `诊断已经把本周收敛到一个明确主动作：${normalizedPrimaryNextStep}。`;
+  }
+
+  return null;
+}
+
 export function buildDiagnosisPlanCandidateIds(input: {
   problemTag: string;
   level: PlanLevel;
@@ -1608,7 +1778,11 @@ function buildPlanContextPressureItem(planContext: PlanContext, locale: PlanLoca
 function applyPlanContext(
   plan: GeneratedPlan,
   locale: PlanLocale,
-  planContext?: PlanContext | null
+  planContext?: PlanContext | null,
+  options: {
+    primaryNextStep?: string;
+    deepContext?: EnrichedDiagnosisContext | null;
+  } = {}
 ): GeneratedPlan {
   const normalizedPlanContext = normalizePlanContext(planContext);
   if (!normalizedPlanContext || plan.days.length === 0) {
@@ -1617,6 +1791,12 @@ function applyPlanContext(
 
   const summaryContext = buildPlanContextSummary(normalizedPlanContext, locale);
   const assessmentRationale = getAssessmentPlanRationale(normalizedPlanContext, locale);
+  const diagnosisRationale = buildDiagnosisPlanRationale(
+    normalizedPlanContext,
+    locale,
+    options.primaryNextStep,
+    options.deepContext
+  );
   const pressureItem = buildPlanContextPressureItem(normalizedPlanContext, locale);
   const firstDay = plan.days[0];
   const summary = assessmentRationale
@@ -1625,6 +1805,8 @@ function applyPlanContext(
         ? `${assessmentRationale} Context: ${summaryContext}.`
         : `${assessmentRationale} 当前场景：${summaryContext}。`
       : assessmentRationale
+    : diagnosisRationale
+      ? diagnosisRationale
     : summaryContext
       ? locale === "en"
         ? `${plan.summary ?? "This week's plan follows one main focus."} Context: ${summaryContext}.`
@@ -2227,7 +2409,7 @@ function applyDeepModeOverlay(
 
   return {
     ...plan,
-    summary,
+    summary: plan.summary ?? summary,
     days: plan.days.map((day, index) => buildDeepServeDayOverlay(locale, day, deepContext, roles[index] ?? "consolidate"))
   };
 }
@@ -2271,7 +2453,8 @@ export function getPlanTemplate(
           options.primaryNextStep
         ),
         locale,
-        effectivePlanContext
+        effectivePlanContext,
+        { primaryNextStep: options.primaryNextStep, deepContext: options.deepContext }
       ),
       locale,
       effectivePlanContext
@@ -2304,7 +2487,8 @@ export function getPlanTemplate(
           options.primaryNextStep
         ),
         locale,
-        effectivePlanContext
+        effectivePlanContext,
+        { primaryNextStep: options.primaryNextStep, deepContext: options.deepContext }
       ),
       locale,
       effectivePlanContext
@@ -2342,7 +2526,8 @@ export function getPlanTemplate(
         options.primaryNextStep
       ),
       locale,
-      effectivePlanContext
+      effectivePlanContext,
+      { primaryNextStep: options.primaryNextStep, deepContext: options.deepContext }
     ),
     locale,
     effectivePlanContext

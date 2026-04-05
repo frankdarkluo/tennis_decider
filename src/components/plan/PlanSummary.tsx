@@ -5,14 +5,19 @@ export function PlanSummary({
   headline,
   supportingText,
   focusLine,
-  rationale
+  rationale,
+  sourceType
 }: {
   headline: string;
   supportingText?: string;
   focusLine?: string;
   rationale?: string;
+  sourceType?: "diagnosis" | "assessment" | "default";
 }) {
   const { t } = useI18n();
+  const rationaleClassName = sourceType === "diagnosis"
+    ? "text-sm leading-6 text-slate-700"
+    : "text-sm leading-6 text-slate-600";
 
   return (
     <Card className="space-y-2">
@@ -22,7 +27,7 @@ export function PlanSummary({
         <p className="text-sm font-medium leading-6 text-slate-700">{focusLine}</p>
       ) : null}
       {rationale ? (
-        <p className="text-sm leading-6 text-slate-700">{rationale}</p>
+        <p className={rationaleClassName}>{rationale}</p>
       ) : null}
       {supportingText ? (
         <p className="text-sm leading-6 text-slate-600">{supportingText}</p>

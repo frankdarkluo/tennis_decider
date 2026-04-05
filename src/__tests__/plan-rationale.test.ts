@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getPlanTemplate } from "@/lib/plans";
+import { buildDiagnosisPlanContext, getPlanTemplate } from "@/lib/plans";
 
 type TemplateCoverageCase = {
   problemTag: string;
@@ -78,5 +78,23 @@ describe("diagnosis plan template coverage", () => {
       expect(plan.days[0]?.focus).toContain(testCase.day1Focus);
       expect(plan.days[5]?.goal).toContain(testCase.day6Goal);
     }
+  });
+
+  it("writes diagnosis-driven rationale that keeps the primary next step tied to the return-pressure scene", () => {
+    const primaryNextStep = "先稳住分腿垫步，再把第一拍封挡回中路。";
+    const planContext = buildDiagnosisPlanContext({
+      problemTag: "return-under-pressure",
+      diagnosisInput: "比赛里关键分接发时我容易发紧，回球质量一下就掉下来。",
+      primaryNextStep
+    });
+
+    const plan = getPlanTemplate("return-under-pressure", "4.0", "zh", [], {
+      primaryNextStep,
+      planContext
+    });
+
+    expect(plan.summary).toContain(primaryNextStep);
+    expect(plan.summary).toContain("关键分");
+    expect(plan.summary).not.toBe(`本周先围绕这一个主动作推进：${primaryNextStep}`);
   });
 });
