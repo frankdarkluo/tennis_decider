@@ -1,42 +1,15 @@
 import { AssessmentResult } from "@/types/assessment";
 import { Card } from "@/components/ui/Card";
 import { useI18n } from "@/lib/i18n/config";
-import {
-  getAssessmentFallbackStrength,
-  getAssessmentFallbackWeakness,
-  translateAssessmentLabel
-} from "@/lib/assessment";
+import { translateAssessmentLabel } from "@/lib/assessment";
+import { SkillBreakdown } from "@/components/assessment/SkillBreakdown";
 
 function uniqLabels(labels: string[]) {
   return Array.from(new Set(labels));
 }
 
-function pickDisplayStrengths(result: AssessmentResult) {
-  const taggedStrengths = uniqLabels(result.strengths);
-
-  if (taggedStrengths.length > 0) {
-    return taggedStrengths.slice(0, 2);
-  }
-
-  return uniqLabels(
-    [...result.dimensions]
-      .sort((a, b) => b.score - a.score || a.label.localeCompare(b.label, "zh-CN"))
-      .map((dimension) => dimension.label)
-  ).slice(0, 2);
-}
-
-function pickDisplayWeaknesses(result: AssessmentResult) {
-  const taggedWeaknesses = uniqLabels(result.weaknesses);
-
-  if (taggedWeaknesses.length > 0) {
-    return taggedWeaknesses.slice(0, 2);
-  }
-
-  return uniqLabels(
-    [...result.dimensions]
-      .sort((a, b) => a.score - b.score || a.label.localeCompare(b.label, "zh-CN"))
-      .map((dimension) => dimension.label)
-  ).slice(0, 2);
+function formatLabels(labels: string[], language: "zh" | "en") {
+  return uniqLabels(labels).map((label) => translateAssessmentLabel(label, language));
 }
 
 export function ResultSummary({ result }: { result: AssessmentResult }) {
@@ -51,32 +24,58 @@ export function ResultSummary({ result }: { result: AssessmentResult }) {
     );
   }
 
-  const strengths = pickDisplayStrengths(result);
-  const weaknesses = pickDisplayWeaknesses(result);
-  const localizedStrengths = strengths.map((label) => translateAssessmentLabel(label, language));
-  const localizedWeaknesses = weaknesses.map((label) => translateAssessmentLabel(label, language));
-  const listFormatter = new Intl.ListFormat(language === "en" ? "en" : "zh-CN", {
-    style: "long",
-    type: "conjunction"
-  });
-  const strengthText = localizedStrengths.length > 0
-    ? listFormatter.format(localizedStrengths)
-    : getAssessmentFallbackStrength(language);
-  const weaknessText = localizedWeaknesses.length > 0
-    ? listFormatter.format(localizedWeaknesses)
-    : getAssessmentFallbackWeakness(language);
+  const weaknesses = formatLabels(result.weaknesses, language);
+  const observationNeeded = formatLabels(result.observationNeeded, language);
 
   return (
-    <Card className="space-y-4">
-      <h1 className="text-2xl font-black text-slate-900">{t("assessment.result.headline")} {result.level}</h1>
-      <div className="space-y-3 rounded-2xl bg-[var(--surface-soft)] p-4">
-        <p className="text-base font-semibold text-slate-900">
-          {t("assessment.result.strength", { value: strengthText })}
-        </p>
-        <p className="text-base text-slate-700">
-          {t("assessment.result.weakness", { value: weaknessText })}
-        </p>
+    <Card className="space-y-5">
+      <div className="space-y-3">
+        <h1 className="text-2xl font-black text-slate-900">{t("assessment.result.headline")} {result.level}</h1>
+        <div className="rounded-2xl bg-[var(--surface-soft)] p-4">
+          <p className="text-sm font-semibold text-brand-700">{t("assessment.result.summary")}</p>
+          <p className="mt-2 text-base leading-7 text-slate-800">{result.summary}</p>
+        </div>
       </div>
+
+      <div className="grid gap-3 md:grid-cols-2">
+        <div className="rounded-2xl border border-rose-100 bg-rose-50/70 p-4">
+          <p className="text-sm font-semibold text-rose-700">{t("assessment.result.weaknesses")}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {weaknesses.length > 0 ? (
+              weaknesses.map((label) => (
+                <span
+                  key={label}
+                  className="rounded-full border border-rose-200 bg-white px-3 py-1 text-sm font-medium text-rose-700"
+                >
+                  {label}
+                </span>
+              ))
+            ) : (
+              <p className="text-sm text-slate-600">{t("assessment.result.noWeaknesses")}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-amber-100 bg-amber-50/70 p-4">
+          <p className="text-sm font-semibold text-amber-700">{t("assessment.result.observationNeeded")}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {observationNeeded.length > 0 ? (
+              observationNeeded.map((label) => (
+                <span
+                  key={label}
+                  className="rounded-full border border-amber-200 bg-white px-3 py-1 text-sm font-medium text-amber-700"
+                >
+                  {label}
+                </span>
+              ))
+            ) : (
+              <p className="text-sm text-slate-600">{t("assessment.result.noObservationNeeded")}</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <SkillBreakdown result={result} />
     </Card>
   );
 }

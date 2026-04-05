@@ -36,6 +36,30 @@ import { useStudy } from "@/components/study/StudyProvider";
 const AUTO_ADVANCE_DELAY = 300;
 const SLIDER_ADVANCE_DELAY = 500;
 
+function hasProfileProgress(profile: AssessmentProfile, profileQuestions: AssessmentQuestion[]) {
+  return profileQuestions.some((question) => {
+    if (question.type === "slider") {
+      return (profile.yearsPlaying ?? question.sliderConfig.default) !== question.sliderConfig.default;
+    }
+
+    if (question.type === "gender") {
+      return Boolean(profile.gender);
+    }
+
+    return false;
+  });
+}
+
+function normalizeDraftStepIndex(
+  rawStepIndex: number | undefined,
+  draftProfile: AssessmentProfile | undefined,
+  profileQuestions: AssessmentQuestion[]
+) {
+  const activeQuestionIds = new Set(profileQuestions.map((question) => question.id));
+  const retiredStepCount = draftProfile?.gender && !activeQuestionIds.has("gender") ? 1 : 0;
+  return Math.max(0, (rawStepIndex ?? 0) - retiredStepCount);
+}
+
 function getSourceRoute() {
   if (typeof document === "undefined" || !document.referrer) {
     return null;
@@ -82,13 +106,14 @@ export default function AssessmentPage() {
   const blockedByPendingStudySetup = pendingStudySetup && !session;
 
   const profileQuestions = useMemo(
-    () => assessmentQuestions.filter((question) => question.phase === "profile"),
+    () => assessmentQuestions.filter((question) => question.phase === "profile" && question.type !== "gender"),
     []
   );
   const coarseQuestions = useMemo(() => getCoarseQuestions(assessmentQuestions), []);
   const coarseScore = coarseQuestions.reduce((sum, question) => sum + Number(answers[question.id] ?? 0), 0);
   const branch = determineBranch(coarseScore);
   const fineQuestions = useMemo(() => getFineQuestionsForBranch(branch, assessmentQuestions), [branch]);
+  const fineStartStep = profileQuestions.length + coarseQuestions.length;
   const totalSteps = profileQuestions.length + coarseQuestions.length + fineQuestions.length;
 
   const currentQuestion: AssessmentQuestion | null = useMemo(() => {
@@ -115,20 +140,8 @@ export default function AssessmentPage() {
       return profile.yearsPlaying ?? currentQuestion.sliderConfig.default;
     }
 
-    if (currentQuestion.type === "gender") {
-      if (profile.gender === "male") {
-        return 1;
-      }
-
-      if (profile.gender === "female") {
-        return 2;
-      }
-
-      return undefined;
-    }
-
     return answers[currentQuestion.id];
-  }, [answers, currentQuestion, profile.gender, profile.yearsPlaying]);
+  }, [answers, currentQuestion, profile.yearsPlaying]);
 
   useEffect(() => {
     answersRef.current = answers;
@@ -176,7 +189,10 @@ export default function AssessmentPage() {
           ...storedDraft.profile,
           yearsLabel: formatAssessmentYearsLabel(storedDraft.profile?.yearsPlaying ?? prev.yearsPlaying ?? 2, language)
         }));
-        setStepIndex(Math.max(0, Math.min(totalSteps - 1, storedDraft.stepIndex ?? 0)));
+        setStepIndex(Math.max(0, Math.min(
+          totalSteps - 1,
+          normalizeDraftStepIndex(storedDraft.stepIndex, storedDraft.profile, profileQuestions)
+        )));
         setDraftRestored(true);
       }
       setEntryState("questionnaire");
@@ -195,14 +211,17 @@ export default function AssessmentPage() {
         ...storedDraft.profile,
         yearsLabel: formatAssessmentYearsLabel(storedDraft.profile?.yearsPlaying ?? prev.yearsPlaying ?? 2, language)
       }));
-      setStepIndex(Math.max(0, Math.min(totalSteps - 1, storedDraft.stepIndex ?? 0)));
+      setStepIndex(Math.max(0, Math.min(
+        totalSteps - 1,
+        normalizeDraftStepIndex(storedDraft.stepIndex, storedDraft.profile, profileQuestions)
+      )));
       setDraftRestored(true);
       setEntryState("questionnaire");
       return;
     }
 
     setEntryState("questionnaire");
-  }, [blockedByPendingStudySetup, language, retakeRequested, router, searchReady, totalSteps]);
+  }, [blockedByPendingStudySetup, language, profileQuestions, retakeRequested, router, searchReady, totalSteps]);
 
   useEffect(() => {
     if (blockedByPendingStudySetup || entryState !== "questionnaire") {
@@ -212,8 +231,7 @@ export default function AssessmentPage() {
     const hasProgress =
       stepIndex > 0 ||
       Object.keys(answers).length > 0 ||
-      Boolean(profile.gender) ||
-      (profile.yearsPlaying ?? 2) !== 2;
+      hasProfileProgress(profile, profileQuestions);
 
     if (!hasProgress) {
       return;
@@ -235,7 +253,7 @@ export default function AssessmentPage() {
         assessmentDraftUpdatedAt: new Date().toISOString()
       });
     }
-  }, [answers, blockedByPendingStudySetup, entryState, profile, stepIndex]);
+  }, [answers, blockedByPendingStudySetup, entryState, profile, profileQuestions, stepIndex]);
 
   useEffect(() => {
     if (blockedByPendingStudySetup || !studyMode || !session || entryState !== "questionnaire") {
@@ -245,8 +263,7 @@ export default function AssessmentPage() {
     const hasProgress =
       stepIndex > 0 ||
       Object.keys(answers).length > 0 ||
-      Boolean(profile.gender) ||
-      (profile.yearsPlaying ?? 2) !== 2;
+      hasProfileProgress(profile, profileQuestions);
 
     if (!hasProgress || draftArtifactStepRef.current === stepIndex) {
       return;
@@ -259,7 +276,7 @@ export default function AssessmentPage() {
       answeredCount: Object.keys(answers).length,
       questionId: currentQuestion?.id ?? null
     });
-  }, [answers, blockedByPendingStudySetup, currentQuestion?.id, entryState, profile.gender, profile.yearsPlaying, session, stepIndex, studyMode]);
+  }, [answers, blockedByPendingStudySetup, currentQuestion?.id, entryState, profile, profileQuestions, session, stepIndex, studyMode]);
 
   useEffect(() => {
     if (blockedByPendingStudySetup || entryState !== "questionnaire") {
@@ -286,7 +303,7 @@ export default function AssessmentPage() {
   }, [blockedByPendingStudySetup, entryState]);
 
   useEffect(() => {
-    if (stepIndex < 5 || branchLoggedRef.current === branch) {
+    if (stepIndex < fineStartStep || branchLoggedRef.current === branch) {
       return;
     }
 
@@ -294,7 +311,7 @@ export default function AssessmentPage() {
     logEvent("assessment.branch_resolved", {
       branch: branch === "A" ? "beginner" : branch === "B" ? "intermediate" : "advanced"
     }, { page: "/assessment" });
-  }, [branch, stepIndex]);
+  }, [branch, fineStartStep, stepIndex]);
 
   const clearAdvanceTimer = () => {
     if (timerRef.current) {
@@ -326,7 +343,7 @@ export default function AssessmentPage() {
 
     clearAdvanceTimer();
     setSubmitting(true);
-    const result = calculateAssessmentResult(finalAnswers, assessmentQuestions, profileRef.current);
+    const result = calculateAssessmentResult(finalAnswers, assessmentQuestions, profileRef.current, language);
     completedRef.current = true;
     clearAssessmentDraftFromStorage();
     if (studyMode) {
@@ -365,20 +382,6 @@ export default function AssessmentPage() {
 
   const handleChoiceSelect = (value: number) => {
     if (!currentQuestion || submitting) {
-      return;
-    }
-
-    if (currentQuestion.type === "gender") {
-      const gender = value === 1 ? "male" : "female";
-      setProfile((prev) => ({ ...prev, gender }));
-      logEvent("assessment.step_answered", {
-        stepIndex,
-        stepType: "profile",
-        questionId: currentQuestion.id,
-        answerCode: gender,
-        autoAdvanced: true
-      }, { page: "/assessment" });
-      scheduleAdvance(() => moveToStep(stepIndex + 1), AUTO_ADVANCE_DELAY);
       return;
     }
 

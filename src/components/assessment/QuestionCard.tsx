@@ -89,7 +89,6 @@ export function QuestionCard({
     );
   }
 
-  const isGender = question.type === "gender";
   const titleTone = question.phase === "coarse"
     ? t("assessment.question.coarse")
     : question.phase === "fine"
@@ -97,12 +96,12 @@ export function QuestionCard({
       : t("assessment.question.profile");
 
   return (
-    <Card className="space-y-5">
+    <Card className="space-y-4">
       <div className="space-y-2">
-        <p className="text-sm font-semibold text-brand-700">{titleTone}</p>
+        {titleTone ? <p className="text-sm font-semibold text-brand-700">{titleTone}</p> : null}
         <h2 className="text-2xl font-black text-slate-900">{getAssessmentQuestionText(question, language)}</h2>
       </div>
-      <div className={isGender ? "grid gap-3 sm:grid-cols-2" : "space-y-3"}>
+      <div className="space-y-3">
         {question.options.map((option) => (
           <button
             key={option.label}
@@ -110,9 +109,7 @@ export function QuestionCard({
             disabled={disabled}
             onClick={() => onSelect?.(option.value)}
             className={[
-              isGender
-                ? "min-h-14 rounded-2xl border px-6 text-lg font-semibold"
-                : "min-h-14 w-full rounded-2xl border px-4 py-4 text-left text-base font-medium",
+              "min-h-14 w-full rounded-2xl border px-4 py-4 text-left text-base font-medium",
               "transition disabled:cursor-not-allowed disabled:opacity-60",
               selectedValue === option.value
                 ? "scale-[1.01] border-brand-500 bg-brand-50 text-brand-700"

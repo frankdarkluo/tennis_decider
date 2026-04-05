@@ -1,30 +1,82 @@
-import { AssessmentResult } from "@/types/assessment";
-import { Card } from "@/components/ui/Card";
-import { Progress } from "@/components/ui/Progress";
+import { AssessmentResult, DimensionSummary } from "@/types/assessment";
+import { getAssessmentStatusLabel } from "@/lib/assessment";
+import { useI18n } from "@/lib/i18n/config";
+import { cn } from "@/lib/utils";
+
+function getStatusClasses(status: DimensionSummary["status"]) {
+  switch (status) {
+    case "薄弱":
+      return "border-rose-200 bg-rose-50 text-rose-700";
+    case "待提升":
+      return "border-amber-200 bg-amber-50 text-amber-700";
+    case "强项":
+      return "border-emerald-200 bg-emerald-50 text-emerald-700";
+    default:
+      return "border-slate-200 bg-slate-50 text-slate-600";
+  }
+}
 
 export function SkillBreakdown({ result }: { result: AssessmentResult }) {
+  const { language, t } = useI18n();
+
   if (result.dimensions.length === 0) {
-    return (
-      <Card className="space-y-4">
-        <h2 className="text-xl font-bold text-slate-900">分项能力</h2>
-        <p className="text-sm text-slate-600">完成题目后可查看分项能力表现。</p>
-      </Card>
-    );
+    return null;
   }
 
   return (
-    <Card className="space-y-4">
-      <h2 className="text-xl font-bold text-slate-900">分项能力</h2>
-      {result.dimensions.map((dimension) => (
-        <div key={dimension.key} className="space-y-1">
-          <div className="flex items-center justify-between text-sm">
-            <span>{dimension.label}</span>
-            <span>{dimension.score} / {dimension.maxScore}</span>
-          </div>
-          <Progress value={(dimension.score / dimension.maxScore) * 100} />
-          <p className="text-xs text-slate-500">状态：{dimension.status}</p>
-        </div>
-      ))}
-    </Card>
+    <div className="space-y-3">
+      <div className="space-y-1">
+        <h2 className="text-lg font-bold text-slate-900">{t("assessment.result.skillBreakdown")}</h2>
+        <p className="text-sm text-slate-500">{t("assessment.result.skillBreakdownHint")}</p>
+      </div>
+
+      <div className="space-y-2">
+        {result.dimensions.map((dimension) => {
+          const percentage = Math.round((dimension.score / dimension.maxScore) * 100);
+
+          return (
+            <div
+              key={dimension.key}
+              className="rounded-2xl border border-[var(--line)] bg-white px-4 py-3"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-slate-900">{dimension.label}</p>
+                  <p className="text-xs text-slate-500">
+                    {language === "en"
+                      ? `${dimension.score.toFixed(1)} / ${dimension.maxScore}`
+                      : `${dimension.score.toFixed(1)} / ${dimension.maxScore}`}
+                  </p>
+                </div>
+                <span
+                  className={cn(
+                    "rounded-full border px-2.5 py-1 text-xs font-semibold",
+                    getStatusClasses(dimension.status)
+                  )}
+                >
+                  {getAssessmentStatusLabel(dimension.status, language)}
+                </span>
+              </div>
+
+              <div className="mt-3 h-2 rounded-full bg-slate-100">
+                <div
+                  className={cn(
+                    "h-2 rounded-full transition-all",
+                    dimension.status === "薄弱"
+                      ? "bg-rose-400"
+                      : dimension.status === "待提升"
+                        ? "bg-amber-400"
+                        : dimension.status === "强项"
+                          ? "bg-emerald-400"
+                          : "bg-slate-400"
+                  )}
+                  style={{ width: `${percentage}%` }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
