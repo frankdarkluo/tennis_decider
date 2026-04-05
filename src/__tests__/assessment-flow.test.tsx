@@ -1,16 +1,28 @@
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { assessmentQuestions } from "@/data/assessmentQuestions";
-import { calculateAssessmentResult, getCoarseQuestions, getFineQuestionsForBranch } from "@/lib/assessment";
+import { calculateAssessmentResult } from "@/lib/assessment";
 import { normalizeDraftStepIndex } from "@/lib/assessmentDraft";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
+import { ASSESSMENT_DRAFT_STORAGE_KEY } from "@/lib/utils";
 
-const { mockPush, mockReplace, mockPrefetch } = vi.hoisted(() => ({
-  mockPush: vi.fn(),
-  mockReplace: vi.fn(),
-  mockPrefetch: vi.fn()
-}));
+const { mockPush, mockReplace, mockPrefetch, mockRouter } = vi.hoisted(() => {
+  const mockPush = vi.fn();
+  const mockReplace = vi.fn();
+  const mockPrefetch = vi.fn();
+
+  return {
+    mockPush,
+    mockReplace,
+    mockPrefetch,
+    mockRouter: {
+      push: mockPush,
+      replace: mockReplace,
+      prefetch: mockPrefetch
+    }
+  };
+});
 
 let mockLanguage: "zh" | "en" = "zh";
 
@@ -62,11 +74,7 @@ const translationMapEn = {
 } satisfies Record<string, string>;
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: mockPush,
-    replace: mockReplace,
-    prefetch: mockPrefetch
-  })
+  useRouter: () => mockRouter
 }));
 
 vi.mock("@/components/auth/AuthProvider", () => ({
@@ -136,29 +144,38 @@ describe("assessment flow and result summary", () => {
     cleanup();
   });
 
-  it("maps the first post-coarse step to the first fine question with 6-of-9 progress after gender removal", () => {
-    const profileQuestions = assessmentQuestions.filter((question) => question.phase === "profile" && question.type !== "gender");
-    const coarseQuestions = getCoarseQuestions(assessmentQuestions);
-    const fineQuestions = getFineQuestionsForBranch("A", assessmentQuestions);
-    const draftAnswers = {
-      coarse_rally: 1,
-      coarse_serve: 1,
-      coarse_movement: 1,
-      coarse_awareness: 1,
-      coarse_pressure: 1
-    };
-    const normalizedStepIndex = normalizeDraftStepIndex(5, draftAnswers, profileQuestions);
-    const totalSteps = profileQuestions.length + coarseQuestions.length + fineQuestions.length;
-    const coarseEnd = profileQuestions.length + coarseQuestions.length;
-    const currentQuestion = normalizedStepIndex < coarseEnd
-      ? coarseQuestions[normalizedStepIndex - profileQuestions.length]
-      : fineQuestions[normalizedStepIndex - coarseEnd];
+  it("restores the last coarse step and advances into the first fine question with updated progress after gender removal", async () => {
+    const { default: AssessmentPage } = await import("@/app/assessment/page");
 
-    expect(profileQuestions).toHaveLength(0);
-    expect(normalizedStepIndex).toBe(5);
-    expect(totalSteps).toBe(9);
-    expect(currentQuestion?.id).toBe("fine_a_grip");
-    expect(Math.round(((normalizedStepIndex + 1) / totalSteps) * 100)).toBe(67);
+    window.localStorage.setItem(ASSESSMENT_DRAFT_STORAGE_KEY, JSON.stringify({
+      stepIndex: 4,
+      answers: {
+        coarse_rally: 1,
+        coarse_serve: 1,
+        coarse_movement: 1,
+        coarse_awareness: 1
+      },
+      profile: {
+        yearsPlaying: 2,
+        yearsLabel: "2年"
+      },
+      updatedAt: "2026-04-05T00:00:00.000Z"
+    }));
+
+    const { container } = render(<AssessmentPage />);
+
+    expect(await screen.findByText("比分紧张或练习加压时，你通常会怎样？")).toBeInTheDocument();
+    expect(screen.queryByText("你的性别？")).not.toBeInTheDocument();
+    expect(screen.queryByText("打了多久网球？")).not.toBeInTheDocument();
+    expect((container.querySelector(".h-2.rounded-full.bg-brand-500.transition-all") as HTMLElement | null)?.style.width).toBe("56%");
+
+    fireEvent.click(screen.getByRole("button", { name: "明显发紧，失误一下变多" }));
+
+    expect(await screen.findByText("打球时你的握拍和准备动作？")).toBeInTheDocument();
+    await waitFor(() => {
+      expect((container.querySelector(".h-2.rounded-full.bg-brand-500.transition-all") as HTMLElement | null)?.style.width).toBe("67%");
+    });
+    expect(mockPush).not.toHaveBeenCalled();
   });
 
   it("keeps current-flow draft steps unchanged when only default years fields are present", () => {
