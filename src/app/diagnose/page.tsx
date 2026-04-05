@@ -28,14 +28,17 @@ import {
 } from "@/lib/study/localData";
 import { AssessmentResult } from "@/types/assessment";
 import { DiagnosisEffortMode, DiagnosisResult, DiagnosisSnapshot } from "@/types/diagnosis";
+import { buildEnrichedDiagnosisContext } from "@/lib/diagnose/enrichedContext";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
+import { DeepScenarioModule } from "@/components/diagnose/DeepScenarioModule";
 import { DiagnoseInput } from "@/components/diagnose/DiagnoseInput";
 import { DiagnoseResult as DiagnoseResultPanel } from "@/components/diagnose/DiagnoseResult";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useStudy } from "@/components/study/StudyProvider";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import type { ScenarioState } from "@/types/scenario";
 
 function toConfidenceBucket(score: number) {
   if (score >= 6) return "high";
@@ -71,7 +74,8 @@ function createDiagnosisSnapshot(result: DiagnosisResult, locale: "zh" | "en"): 
     recommendedContentIds: result.recommendedContents.map((item) => item.id),
     fallbackUsed: result.fallbackUsed,
     fallbackMode: result.fallbackMode,
-    level: result.level
+    level: result.level,
+    enrichedContext: result.enrichedContext ?? null
   };
 }
 
@@ -107,7 +111,8 @@ function replayDiagnosisFromSnapshot(
     searchQueries: null,
     fallbackUsed: snapshot.fallbackUsed,
     fallbackMode: snapshot.fallbackMode,
-    level: snapshot.level ?? fallbackLevel
+    level: snapshot.level ?? fallbackLevel,
+    enrichedContext: snapshot.enrichedContext ?? null
   };
 }
 
@@ -118,24 +123,37 @@ function DiagnosePageContent() {
   const { environment, session, studyMode, language, loading: studyLoading, pendingStudySetup } = useStudy();
   const { t } = useI18n();
   const [text, setText] = useState("");
-  const [storedAssessmentExists, setStoredAssessmentExists] = useState(false);
+  const [storedAssessmentExists, setStoredAssessmentExists] = useState<boolean | null>(null);
   const [effortMode, setEffortMode] = useState<DiagnosisEffortMode>("standard");
   const [currentLevel, setCurrentLevel] = useState<string | undefined>(undefined);
   const [assessmentResult, setAssessmentResult] = useState<AssessmentResult | null>(null);
   const [result, setResult] = useState<DiagnosisResult>(getDefaultDiagnosisResult());
   const [latestSnapshot, setLatestSnapshot] = useState<DiagnosisSnapshot | null>(null);
   const [contextReady, setContextReady] = useState(false);
+  const [deepResetSignal, setDeepResetSignal] = useState(0);
   const handledQueryRef = useRef<string | null>(null);
+  const previousEffortModeRef = useRef<DiagnosisEffortMode>("standard");
   const blockedByPendingStudySetup = pendingStudySetup && !session;
+  const requestedMode = searchParams.get("mode");
   useEffect(() => {
     setStoredAssessmentExists(hasStoredCompletedAssessmentResult());
   }, []);
 
-  const blockedByAssessmentGate = !studyMode && !storedAssessmentExists;
+  const blockedByAssessmentGate = !studyMode && storedAssessmentExists === false;
 
   const previewOptions = getProblemPreviewOptions();
   const quickTags = previewOptions.map((item) => language === "en" ? item.label_en : item.label);
   const hasDiagnosed = Boolean(result.input.trim());
+
+  function resetDeepFlow(clearCurrentResult = false) {
+    setDeepResetSignal((value) => value + 1);
+
+    if (!clearCurrentResult) {
+      return;
+    }
+
+    setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
+  }
 
   useEffect(() => {
     if (!blockedByPendingStudySetup) {
@@ -153,7 +171,14 @@ function DiagnosePageContent() {
     router.replace("/assessment");
   }, [blockedByAssessmentGate, router]);
 
-  const runDiagnosis = async (nextText: string, inputSource: "typed" | "tag_click" = "typed") => {
+  const runDiagnosis = async (
+    nextText: string,
+    inputSource: "typed" | "tag_click" = "typed",
+    options?: {
+      scenario?: ScenarioState | null;
+      sourceInput?: string;
+    }
+  ) => {
     const trimmedText = nextText.trim();
 
     setText(nextText);
@@ -183,8 +208,22 @@ function DiagnosePageContent() {
       environment
     });
 
-    setResult(diagnosisResult);
-    const snapshot = createDiagnosisSnapshot(diagnosisResult, language);
+    const enrichedContext = options?.scenario
+      ? buildEnrichedDiagnosisContext({
+        mode: effortMode === "deep" ? "deep" : "standard",
+        sourceInput: options.sourceInput?.trim() || trimmedText,
+        scenario: options.scenario,
+        problemTag: diagnosisResult.problemTag,
+        level: diagnosisResult.level
+      })
+      : null;
+    const finalResult: DiagnosisResult = {
+      ...diagnosisResult,
+      enrichedContext
+    };
+
+    setResult(finalResult);
+    const snapshot = createDiagnosisSnapshot(finalResult, language);
     writeLocalDiagnosisSnapshot(snapshot);
     setLatestSnapshot(snapshot);
 
@@ -206,14 +245,14 @@ function DiagnosePageContent() {
     }, { page: "/diagnose" });
 
     if (studyMode && session) {
-      await persistStudyArtifact(session, "diagnosis", sanitizeDiagnosisArtifact(trimmedText, diagnosisResult));
+      await persistStudyArtifact(session, "diagnosis", sanitizeDiagnosisArtifact(trimmedText, finalResult));
       updateLocalStudyProgress({
         lastVisitedPath: `/diagnose?q=${encodeURIComponent(trimmedText)}`,
         lastDiagnosisPath: `/diagnose?q=${encodeURIComponent(trimmedText)}`,
-        lastDiagnosisTitle: diagnosisResult.title
+        lastDiagnosisTitle: finalResult.title
       });
     } else if (user?.id && configured) {
-      const saveResult = await saveDiagnosisHistory(user.id, trimmedText, diagnosisResult);
+      const saveResult = await saveDiagnosisHistory(user.id, trimmedText, finalResult);
       if (saveResult.error) {
         console.error("[diagnose] failed to save diagnosis history", saveResult.error);
       }
@@ -281,6 +320,12 @@ function DiagnosePageContent() {
   }, [contextReady, currentLevel]);
 
   useEffect(() => {
+    if (requestedMode === "deep" && effortMode !== "deep") {
+      setEffortMode("deep");
+    }
+  }, [effortMode, requestedMode]);
+
+  useEffect(() => {
     if (!contextReady) {
       return;
     }
@@ -301,9 +346,20 @@ function DiagnosePageContent() {
   const onClear = () => {
     setText("");
     setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
+    resetDeepFlow();
   };
 
-  if (blockedByPendingStudySetup || blockedByAssessmentGate || studyLoading || !contextReady) {
+  useEffect(() => {
+    const previousEffortMode = previousEffortModeRef.current;
+
+    if (previousEffortMode === "deep" && effortMode !== "deep") {
+      resetDeepFlow(Boolean(result.enrichedContext));
+    }
+
+    previousEffortModeRef.current = effortMode;
+  }, [currentLevel, effortMode, language, result.enrichedContext]);
+
+  if (blockedByPendingStudySetup || blockedByAssessmentGate || studyLoading || storedAssessmentExists === null || !contextReady) {
     return (
       <PageContainer>
         <Card className="text-sm text-slate-600">{t("assessment.loading")}</Card>
@@ -363,6 +419,20 @@ function DiagnosePageContent() {
           onDiagnose={onDiagnose}
           onClear={onClear}
           onQuickTagClick={(tag) => void runDiagnosis(tag, "tag_click")}
+        />
+
+        <DeepScenarioModule
+          sourceText={text}
+          language={language === "en" ? "en" : "zh"}
+          visible={effortMode === "deep"}
+          resetSignal={deepResetSignal}
+          onApplyScenario={({ scenario, diagnosisInput }) => {
+            setText(diagnosisInput);
+            void runDiagnosis(diagnosisInput, "typed", {
+              scenario,
+              sourceInput: text
+            });
+          }}
         />
 
         {!hasDiagnosed && latestSnapshot ? (

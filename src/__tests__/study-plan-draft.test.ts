@@ -18,7 +18,24 @@ describe("study plan draft local persistence", () => {
       level: "3.0",
       preferredContentIds: ["content_cn_a_01"],
       sourceType: "diagnosis",
-      primaryNextStep: "先把引拍提前半拍再出手"
+      primaryNextStep: "先把引拍提前半拍再出手",
+      deepContext: {
+        mode: "deep",
+        sourceInput: "关键分时我的二发容易下网，而且会发紧。",
+        sceneSummaryZh: "二发在关键分原地发球时容易下网，而且会发紧。",
+        sceneSummaryEn: "On key points my stationary second serve keeps going into the net and it feels tight.",
+        problemTag: "second-serve-reliability",
+        level: "3.5",
+        strokeFamily: "serve",
+        serveSubtype: "second_serve",
+        sessionType: "match",
+        pressureContext: "key_points",
+        movement: "stationary",
+        outcome: "net",
+        incomingBallDepth: "unknown",
+        subjectiveFeeling: "tight",
+        isDeepModeReady: true
+      }
     });
 
     expect(readLocalStudyPlanDraft()).toMatchObject({
@@ -26,7 +43,13 @@ describe("study plan draft local persistence", () => {
       level: "3.0",
       preferredContentIds: ["content_cn_a_01"],
       sourceType: "diagnosis",
-      primaryNextStep: "先把引拍提前半拍再出手"
+      primaryNextStep: "先把引拍提前半拍再出手",
+      deepContext: {
+        strokeFamily: "serve",
+        serveSubtype: "second_serve",
+        pressureContext: "key_points",
+        isDeepModeReady: true
+      }
     });
   });
 

@@ -1,6 +1,23 @@
 import { EnvironmentValue } from "@/types/environment";
 
 export type PlanLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.5";
+export type PlanContextSessionType = "match" | "practice" | "unknown";
+export type PlanContextPressure = "high" | "some" | "unknown";
+export type PlanContextMovement = "stationary" | "moving" | "unknown";
+export type PlanContextDepth = "deep" | "unknown";
+export type PlanContextOutcome = "net" | "long" | "no_control" | "weak" | "unknown";
+export type PlanContextFeeling = "tight" | "nervous" | "rushed";
+
+export type PlanContext = {
+  source: "diagnosis" | "assessment";
+  primaryProblemTag: string;
+  sessionType: PlanContextSessionType;
+  pressureContext: PlanContextPressure;
+  movementContext: PlanContextMovement;
+  incomingBallDepth: PlanContextDepth;
+  outcomePattern: PlanContextOutcome;
+  feelingModifiers: PlanContextFeeling[];
+};
 
 export type PlanIntensity = "low" | "medium" | "medium_high";
 

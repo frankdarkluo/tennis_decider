@@ -1,5 +1,6 @@
 import { ContentItem } from "@/types/content";
 import { EnvironmentValue } from "@/types/environment";
+import { EnrichedDiagnosisContext } from "@/types/enrichedDiagnosis";
 
 export type DiagnosisSearchQueries = {
   bilibili: string[];
@@ -132,6 +133,7 @@ export type DiagnosisResult = {
   fallbackUsed: boolean;
   fallbackMode: "assessment" | "no-assessment" | null;
   level?: string;
+  enrichedContext?: EnrichedDiagnosisContext | null;
 };
 
 export type DiagnosisSnapshot = {
@@ -160,4 +162,5 @@ export type DiagnosisSnapshot = {
   fallbackUsed: boolean;
   fallbackMode: "assessment" | "no-assessment" | null;
   level?: string;
+  enrichedContext?: EnrichedDiagnosisContext | null;
 };

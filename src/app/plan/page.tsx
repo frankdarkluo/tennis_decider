@@ -4,8 +4,9 @@ import Link from "next/link";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { hasStoredCompletedAssessmentResult } from "@/lib/assessmentStorage";
+import { parseEnrichedDiagnosisContext } from "@/lib/diagnose/enrichedContext";
 import { logEvent } from "@/lib/eventLogger";
-import { buildPlanHref, getPlanTemplate, normalizePlanDraftSnapshot, parsePlanContentIds } from "@/lib/plans";
+import { buildPlanHref, getPlanTemplate, normalizePlanDraftSnapshot, parsePlanContentIds, parsePlanContext } from "@/lib/plans";
 import { saveGeneratedPlan } from "@/lib/userData";
 import { useI18n } from "@/lib/i18n/config";
 import { persistStudyArtifact } from "@/lib/study/client";
@@ -69,6 +70,8 @@ function PlanPageContent() {
   const defaultLevel = normalizeLevelParam(params.get("level") ?? restoredDraft?.level ?? sessionReportedLevel ?? null);
   const preferredContentIdsParam = params.get("contentIds");
   const primaryNextStepParam = params.get("primaryNextStep");
+  const planContextParam = params.get("planContext");
+  const deepContextParam = params.get("deepContext");
 
   const [problemTag, setProblemTag] = useState(defaultProblemTag);
   const [level, setLevel] = useState<PlanLevel>(defaultLevel);
@@ -85,10 +88,18 @@ function PlanPageContent() {
     const normalized = primaryNextStepParam?.trim() ?? restoredDraft?.primaryNextStep?.trim() ?? "";
     return normalized.length > 0 ? normalized : undefined;
   }, [primaryNextStepParam, restoredDraft?.primaryNextStep]);
+  const planContext = useMemo(
+    () => parsePlanContext(planContextParam) ?? restoredDraft?.planContext ?? null,
+    [planContextParam, restoredDraft?.planContext]
+  );
+  const deepContext = useMemo(
+    () => parseEnrichedDiagnosisContext(deepContextParam) ?? restoredDraft?.deepContext ?? null,
+    [deepContextParam, restoredDraft?.deepContext]
+  );
 
   const plan = useMemo(
-    () => getPlanTemplate(problemTag, level, language, preferredContentIds, { primaryNextStep, environment }),
-    [environment, language, problemTag, level, preferredContentIds, primaryNextStep]
+    () => getPlanTemplate(problemTag, level, language, preferredContentIds, { primaryNextStep, planContext, deepContext, environment }),
+    [deepContext, environment, language, problemTag, level, preferredContentIds, primaryNextStep, planContext]
   );
   const todayPlan = plan.days[0];
   const laterPlans = plan.days.slice(1);
@@ -110,9 +121,11 @@ function PlanPageContent() {
       level: plan.level,
       preferredContentIds,
       sourceType,
-      primaryNextStep
+      primaryNextStep,
+      planContext: planContext ?? undefined,
+      deepContext: deepContext ?? undefined
     }),
-    [plan.level, plan.problemTag, preferredContentIds, primaryNextStep, sourceType]
+    [deepContext, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, planContext, sourceType]
   );
   const blockedByPendingStudySetup = pendingStudySetup && !session;
   useEffect(() => {
@@ -216,9 +229,11 @@ function PlanPageContent() {
       preferredContentIds,
       sourceType,
       primaryNextStep,
+      planContext: planContext ?? undefined,
+      deepContext: deepContext ?? undefined,
       updatedAt: new Date().toISOString()
     });
-  }, [blockedByAssessmentGate, blockedByPendingStudySetup, hasSource, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, sourceType]);
+  }, [blockedByAssessmentGate, blockedByPendingStudySetup, deepContext, hasSource, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, planContext, sourceType]);
 
   const handleSavePlan = async () => {
     if (studyMode && session) {

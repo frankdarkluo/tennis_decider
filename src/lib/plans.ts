@@ -3,15 +3,29 @@ import { contents } from "@/data/contents";
 import { diagnosisRules } from "@/data/diagnosisRules";
 import { expandedContents } from "@/data/expandedContents";
 import { planTemplates } from "@/data/planTemplates";
+import { PLAN_MICROCYCLE_ROLES, PlanMicrocycleRole } from "@/data/planBlueprints";
+import {
+  buildPlanContextFromEnrichedContext,
+  encodeEnrichedDiagnosisContext,
+  parseEnrichedDiagnosisContext
+} from "@/lib/diagnose/enrichedContext";
 import { filterByEnvironment } from "@/lib/environment";
 import { AssessmentDimension, AssessmentResult, DimensionSummary } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
 import { AppEnvironment } from "@/types/environment";
+import { EnrichedDiagnosisContext } from "@/types/enrichedDiagnosis";
 import {
   DayPlan,
   DayPlanBlock,
   GeneratedPlan,
   PlanLevel,
+  PlanContext,
+  PlanContextDepth,
+  PlanContextFeeling,
+  PlanContextMovement,
+  PlanContextOutcome,
+  PlanContextPressure,
+  PlanContextSessionType,
   PlanTemplate,
   PlanTemplateDay
 } from "@/types/plan";
@@ -1393,6 +1407,232 @@ function applyPrimaryNextStepContext(
   };
 }
 
+function buildPlanContextSummary(planContext: PlanContext, locale: PlanLocale): string | null {
+  const parts: string[] = [];
+
+  if (locale === "en") {
+    if (planContext.sessionType === "match" && planContext.pressureContext === "high") {
+      parts.push("match-pressure context");
+    } else if (planContext.sessionType === "match") {
+      parts.push("match context");
+    } else if (planContext.sessionType === "practice") {
+      parts.push("practice context");
+    }
+
+    if (planContext.movementContext === "moving") {
+      parts.push("while moving");
+    } else if (planContext.movementContext === "stationary") {
+      parts.push("from a set position");
+    }
+
+    if (planContext.incomingBallDepth === "deep") {
+      parts.push("against deeper incoming balls");
+    }
+  } else {
+    if (planContext.sessionType === "match" && planContext.pressureContext === "high") {
+      parts.push("关键分比赛场景");
+    } else if (planContext.sessionType === "match") {
+      parts.push("比赛场景");
+    } else if (planContext.sessionType === "practice") {
+      parts.push("练习场景");
+    }
+
+    if (planContext.movementContext === "moving") {
+      parts.push("跑动中");
+    } else if (planContext.movementContext === "stationary") {
+      parts.push("原地");
+    }
+
+    if (planContext.incomingBallDepth === "deep") {
+      parts.push("深球条件下");
+    }
+  }
+
+  return parts.length > 0 ? parts.join(locale === "en" ? ", " : "、") : null;
+}
+
+function buildPlanContextPressureItem(planContext: PlanContext, locale: PlanLocale): string | null {
+  if (planContext.pressureContext === "high") {
+    return locale === "en"
+      ? "Put the final reps into a key-point routine instead of a neutral repetition."
+      : "把最后一组放进关键分流程里做，不要只按中性重复来练。";
+  }
+
+  if (planContext.movementContext === "moving") {
+    return locale === "en"
+      ? "Start each rep from a moving base so the footwork demand stays real."
+      : "每组都从移动中启动，保留真实的脚步压力。";
+  }
+
+  if (planContext.incomingBallDepth === "deep") {
+    return locale === "en"
+      ? "Keep the feed deeper so the practice matches the original scene."
+      : "把喂球保持得更深，别把原来的场景条件练丢了。";
+  }
+
+  return null;
+}
+
+function applyPlanContext(
+  plan: GeneratedPlan,
+  locale: PlanLocale,
+  planContext?: PlanContext | null
+): GeneratedPlan {
+  const normalizedPlanContext = normalizePlanContext(planContext);
+  if (!normalizedPlanContext || plan.days.length === 0) {
+    return plan;
+  }
+
+  const summaryContext = buildPlanContextSummary(normalizedPlanContext, locale);
+  const pressureItem = buildPlanContextPressureItem(normalizedPlanContext, locale);
+  const firstDay = plan.days[0];
+
+  return {
+    ...plan,
+    summary: summaryContext
+      ? locale === "en"
+        ? `${plan.summary ?? "This week's plan follows one main focus."} Context: ${summaryContext}.`
+        : `${plan.summary ?? "本周计划围绕一个主动作推进。"} 当前场景：${summaryContext}。`
+      : plan.summary,
+    target: summaryContext
+      ? locale === "en"
+        ? `${plan.target} Keep the work anchored to ${summaryContext}.`
+        : `${plan.target} 训练时始终按${summaryContext}来执行。`
+      : plan.target,
+    days: firstDay ? [{
+      ...firstDay,
+      pressureBlock: pressureItem
+        ? {
+            ...firstDay.pressureBlock,
+            items: uniqueStrings([pressureItem, ...firstDay.pressureBlock.items])
+          }
+        : firstDay.pressureBlock
+    }, ...plan.days.slice(1)] : plan.days
+  };
+}
+
+function getPlanMicrocycleRole(day: number): PlanMicrocycleRole | null {
+  return PLAN_MICROCYCLE_ROLES.find((entry) => entry.day === day)?.role ?? null;
+}
+
+function buildRoleDrivenGoal(
+  role: PlanMicrocycleRole,
+  locale: PlanLocale,
+  dayGoal: string,
+  planContext: PlanContext | null
+): string {
+  if (locale === "en") {
+    if (role === "review_reset") return `Use today as a review and reset day: ${dayGoal}`;
+    if (role === "pressure_repetition") return `Put the motion under pressure repetition today: ${dayGoal}`;
+    if (role === "transfer") {
+      return planContext?.sessionType === "match"
+        ? `Transfer the motion into a match-like scene today: ${dayGoal}`
+        : `Transfer the motion into a more realistic scene today: ${dayGoal}`;
+    }
+    if (role === "consolidation") return `Use today to consolidate the week's main pattern: ${dayGoal}`;
+    return dayGoal;
+  }
+
+  if (role === "review_reset") return `今天做复盘重置：${dayGoal}`;
+  if (role === "pressure_repetition") return `今天把动作放进压力重复里：${dayGoal}`;
+  if (role === "transfer") {
+    return planContext?.sessionType === "match"
+      ? `今天把动作转移到更接近比赛的场景里：${dayGoal}`
+      : `今天把动作转移到更真实的场景里：${dayGoal}`;
+  }
+  if (role === "consolidation") return `今天做整周巩固收口：${dayGoal}`;
+  return dayGoal;
+}
+
+function buildRoleDrivenPressureItems(
+  role: PlanMicrocycleRole,
+  locale: PlanLocale,
+  planContext: PlanContext | null
+): string[] {
+  if (locale === "en") {
+    if (role === "pressure_repetition" && planContext?.pressureContext === "high") {
+      return ["Turn this block into a key-point routine instead of a neutral repetition."];
+    }
+    if (role === "transfer" && planContext?.incomingBallDepth === "deep") {
+      return ["Keep the feed deeper so the transfer block still matches the original scene."];
+    }
+    if (role === "consolidation" && planContext?.pressureContext === "high") {
+      return ["Finish with one match-like key-point sequence before ending the session."];
+    }
+    return [];
+  }
+
+  if (role === "pressure_repetition" && planContext?.pressureContext === "high") {
+    return ["把这一组改成关键分流程，不要只做中性重复。"];
+  }
+  if (role === "transfer" && planContext?.incomingBallDepth === "deep") {
+    return ["转移练习时把喂球保持得更深，不要把原场景练丢。"];
+  }
+  if (role === "consolidation" && planContext?.pressureContext === "high") {
+    return ["结束前做一组关键分式的比赛化收口。"];
+  }
+  return [];
+}
+
+function buildRoleDrivenSuccessCriteria(
+  role: PlanMicrocycleRole,
+  locale: PlanLocale,
+  planContext: PlanContext | null
+): string[] {
+  if (locale === "en") {
+    if (role === "consolidation" && planContext?.pressureContext === "high") {
+      return ["Keep the same routine even on key-point reps at the end of the week."];
+    }
+    if (role === "transfer" && planContext?.sessionType === "match") {
+      return ["The motion should still hold once the drill feels closer to match play."];
+    }
+    return [];
+  }
+
+  if (role === "consolidation" && planContext?.pressureContext === "high") {
+    return ["到本周最后，关键分里也要维持同一套动作流程。"];
+  }
+  if (role === "transfer" && planContext?.sessionType === "match") {
+    return ["转到更接近比赛的练习里，动作也不能散。"];
+  }
+  return [];
+}
+
+function applyPlanMicrocycle(
+  plan: GeneratedPlan,
+  locale: PlanLocale,
+  planContext?: PlanContext | null
+): GeneratedPlan {
+  const normalizedPlanContext = normalizePlanContext(planContext);
+
+  return {
+    ...plan,
+    days: plan.days.map((day) => {
+      const role = getPlanMicrocycleRole(day.day);
+      if (!role) {
+        return day;
+      }
+
+      const extraPressureItems = buildRoleDrivenPressureItems(role, locale, normalizedPlanContext);
+      const extraSuccessCriteria = buildRoleDrivenSuccessCriteria(role, locale, normalizedPlanContext);
+
+      return {
+        ...day,
+        goal: buildRoleDrivenGoal(role, locale, day.goal, normalizedPlanContext),
+        pressureBlock: extraPressureItems.length > 0
+          ? {
+              ...day.pressureBlock,
+              items: uniqueStrings([...extraPressureItems, ...day.pressureBlock.items])
+            }
+          : day.pressureBlock,
+        successCriteria: extraSuccessCriteria.length > 0
+          ? uniqueStrings([...extraSuccessCriteria, ...day.successCriteria])
+          : day.successCriteria
+      };
+    })
+  };
+}
+
 export function encodePlanContentIds(contentIds: string[]): string | null {
   const normalized = uniqueStrings(contentIds.map((value) => value.trim()));
   return normalized.length > 0 ? normalized.join(",") : null;
@@ -1412,8 +1652,109 @@ export type PlanDraftSnapshot = {
   preferredContentIds: string[];
   sourceType: SavedPlanSource;
   primaryNextStep?: string;
+  planContext?: PlanContext;
+  deepContext?: EnrichedDiagnosisContext;
   updatedAt: string;
 };
+
+function uniquePlanContextFeelings(values: PlanContextFeeling[]): PlanContextFeeling[] {
+  return Array.from(new Set(values));
+}
+
+function normalizePlanContextSessionType(value?: string | null): PlanContextSessionType {
+  return value === "match" || value === "practice" ? value : "unknown";
+}
+
+function normalizePlanContextPressure(value?: string | null): PlanContextPressure {
+  return value === "high" || value === "some" ? value : "unknown";
+}
+
+function normalizePlanContextMovement(value?: string | null): PlanContextMovement {
+  return value === "moving" || value === "stationary" ? value : "unknown";
+}
+
+function normalizePlanContextDepth(value?: string | null): PlanContextDepth {
+  return value === "deep" ? value : "unknown";
+}
+
+function normalizePlanContextOutcome(value?: string | null): PlanContextOutcome {
+  return value === "net" || value === "long" || value === "no_control" || value === "weak" ? value : "unknown";
+}
+
+function normalizePlanContextFeeling(value: string): PlanContextFeeling | null {
+  if (value === "tight" || value === "nervous" || value === "rushed") {
+    return value;
+  }
+
+  return null;
+}
+
+export function normalizePlanContext(context: Partial<PlanContext> | null | undefined): PlanContext | null {
+  if (!context) {
+    return null;
+  }
+
+  const primaryProblemTag = context.primaryProblemTag?.trim();
+  if (!primaryProblemTag) {
+    return null;
+  }
+
+  return {
+    source: context.source === "assessment" ? "assessment" : "diagnosis",
+    primaryProblemTag,
+    sessionType: normalizePlanContextSessionType(context.sessionType),
+    pressureContext: normalizePlanContextPressure(context.pressureContext),
+    movementContext: normalizePlanContextMovement(context.movementContext),
+    incomingBallDepth: normalizePlanContextDepth(context.incomingBallDepth),
+    outcomePattern: normalizePlanContextOutcome(context.outcomePattern),
+    feelingModifiers: uniquePlanContextFeelings(
+      (context.feelingModifiers ?? [])
+        .map((value) => normalizePlanContextFeeling(String(value)))
+        .filter((value): value is PlanContextFeeling => Boolean(value))
+    )
+  };
+}
+
+export function parsePlanContext(raw: string | null | undefined): PlanContext | null {
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    return normalizePlanContext(JSON.parse(raw) as Partial<PlanContext>);
+  } catch {
+    return null;
+  }
+}
+
+function encodePlanContext(planContext?: PlanContext | null): string | null {
+  const normalized = normalizePlanContext(planContext);
+  return normalized ? JSON.stringify(normalized) : null;
+}
+
+export function buildDiagnosisPlanContext(input: {
+  problemTag: string;
+  diagnosisInput?: string;
+  primaryNextStep?: string;
+}): PlanContext {
+  const normalized = `${input.diagnosisInput ?? ""} ${input.primaryNextStep ?? ""}`.toLowerCase();
+  const feelingModifiers = uniquePlanContextFeelings([
+    /(?:发紧|手紧|tight)/i.test(normalized) ? "tight" : null,
+    /(?:紧张|nervous)/i.test(normalized) ? "nervous" : null,
+    /(?:着急|rushed)/i.test(normalized) ? "rushed" : null
+  ].filter((value): value is PlanContextFeeling => Boolean(value)));
+
+  return {
+    source: "diagnosis",
+    primaryProblemTag: normalizePlanProblemTag(input.problemTag),
+    sessionType: /(?:比赛|关键分|match|matches|key point|key points|under pressure)/i.test(normalized) ? "match" : /(?:练习|practice)/i.test(normalized) ? "practice" : "unknown",
+    pressureContext: /(?:关键分|关键球|pressure|big point|key point|key points)/i.test(normalized) ? "high" : feelingModifiers.length > 0 ? "some" : "unknown",
+    movementContext: /(?:跑动中|移动中|running|on the run|while moving)/i.test(normalized) ? "moving" : /(?:原地|stationary|when set|set position)/i.test(normalized) ? "stationary" : "unknown",
+    incomingBallDepth: /(?:深球|球比较深|deeper balls|deep balls|incoming ball is deeper)/i.test(normalized) ? "deep" : "unknown",
+    outcomePattern: /(?:下网|into the net)/i.test(normalized) ? "net" : /(?:出界|flying long|goes long)/i.test(normalized) ? "long" : /(?:双误|double fault|double-fault)/i.test(normalized) ? "no_control" : /(?:冒高|float|偏软|weak)/i.test(normalized) ? "weak" : "unknown",
+    feelingModifiers
+  };
+}
 
 function normalizePlanDraftSourceType(sourceType?: string | null): SavedPlanSource {
   if (sourceType === "diagnosis" || sourceType === "assessment" || sourceType === "default") {
@@ -1445,6 +1786,12 @@ export function normalizePlanDraftSnapshot(
 
   const preferredContentIds = uniqueStrings((draft.preferredContentIds ?? []).map((value) => value.trim()));
   const primaryNextStep = normalizePrimaryNextStep(draft.primaryNextStep);
+  const normalizedDeepContext = draft.deepContext
+    ? parseEnrichedDiagnosisContext(encodeEnrichedDiagnosisContext(draft.deepContext)) ?? undefined
+    : undefined;
+  const normalizedPlanContext = normalizedDeepContext
+    ? buildPlanContextFromEnrichedContext(normalizedDeepContext) ?? normalizePlanContext(draft.planContext) ?? undefined
+    : normalizePlanContext(draft.planContext) ?? undefined;
 
   return {
     problemTag,
@@ -1452,6 +1799,8 @@ export function normalizePlanDraftSnapshot(
     preferredContentIds,
     sourceType: normalizePlanDraftSourceType(draft.sourceType),
     ...(primaryNextStep ? { primaryNextStep } : {}),
+    ...(normalizedPlanContext ? { planContext: normalizedPlanContext } : {}),
+    ...(normalizedDeepContext ? { deepContext: normalizedDeepContext } : {}),
     updatedAt: typeof draft.updatedAt === "string" && draft.updatedAt.trim().length > 0
       ? draft.updatedAt
       : new Date().toISOString()
@@ -1464,8 +1813,13 @@ export function buildPlanHref(input: {
   preferredContentIds?: string[];
   sourceType?: SavedPlanSource;
   primaryNextStep?: string;
+  planContext?: PlanContext;
+  deepContext?: EnrichedDiagnosisContext;
 }): string {
   const params = new URLSearchParams();
+  const resolvedPlanContext = input.deepContext
+    ? buildPlanContextFromEnrichedContext(input.deepContext) ?? input.planContext
+    : input.planContext;
 
   if (input.problemTag) {
     params.set("problemTag", input.problemTag);
@@ -1489,8 +1843,238 @@ export function buildPlanHref(input: {
     params.set("primaryNextStep", primaryNextStep);
   }
 
+  const planContext = encodePlanContext(resolvedPlanContext);
+  if (planContext) {
+    params.set("planContext", planContext);
+  }
+
+  const deepContext = encodeEnrichedDiagnosisContext(input.deepContext);
+  if (deepContext) {
+    params.set("deepContext", deepContext);
+  }
+
   const query = params.toString();
   return query ? `/plan?${query}` : "/plan";
+}
+
+function buildDeepServeDayOverlay(
+  locale: PlanLocale,
+  day: DayPlan,
+  context: EnrichedDiagnosisContext,
+  role: "baseline" | "stabilize" | "variable" | "timing" | "pressure" | "transfer" | "consolidate"
+): DayPlan {
+  const serveLabel = context.serveSubtype === "second_serve"
+    ? (locale === "en" ? "second serve" : "二发")
+    : (locale === "en" ? "serve" : "发球");
+  const pressureLead = context.pressureContext === "key_points"
+    ? (locale === "en" ? "under key-point pressure" : "关键分压力下")
+    : (locale === "en" ? "in match situations" : "比赛场景里");
+  const pressureCue = context.pressureContext === "key_points"
+    ? (locale === "en" ? "key-point scoreboard pressure" : "关键分比分压力")
+    : (locale === "en" ? "match pressure" : "比赛压力");
+  const outcomeLabel = context.outcome === "net"
+    ? (locale === "en" ? "into the net" : "下网")
+    : context.outcome === "long"
+      ? (locale === "en" ? "long" : "出界")
+      : context.outcome === "double_fault"
+        ? (locale === "en" ? "double fault" : "双误")
+        : (locale === "en" ? "break down" : "失误");
+  const outcomeRecovery = context.outcome === "net"
+    ? (locale === "en" ? "higher net-clearance margin" : "更高的过网裕度")
+    : context.outcome === "long"
+      ? (locale === "en" ? "safer length control" : "更稳的长度控制")
+      : context.outcome === "double_fault"
+        ? (locale === "en" ? "playable second-serve window" : "可用的二发安全窗口")
+        : (locale === "en" ? "safer contact window" : "更安全的击球窗口");
+  const feelingLabel = context.subjectiveFeeling === "tight"
+    ? (locale === "en" ? "tight" : "发紧")
+    : context.subjectiveFeeling === "rushed"
+      ? (locale === "en" ? "rushed" : "着急")
+      : context.subjectiveFeeling === "low_confidence"
+        ? (locale === "en" ? "low confidence" : "没把握")
+        : (locale === "en" ? "calm" : "稳定");
+  const transferLabel = locale === "en"
+    ? `${serveLabel} into the next ball`
+    : `${serveLabel}带到下一拍`;
+  const blueprints = locale === "en"
+    ? {
+      baseline: {
+        focus: `Baseline shape for the ${serveLabel}`,
+        goal: `Build the baseline ${serveLabel} pattern before adding pressure.`,
+        warmup: ["6 calm exhales before each shadow serve", "10 slow shadow serves with full finish"],
+        main: ["12 serves with visible net clearance", "Track toss height and finish on every rep"],
+        pressure: ["Restart the set if 2 balls miss the safe window", `Say "shape first" before each ${serveLabel}`],
+        success: ["8 of 10 reps clear the net safely", "Tempo stays calm from start to finish"],
+        intensity: "low" as const,
+        tempo: "slow" as const
+      },
+      stabilize: {
+        focus: `Stabilize the ${serveLabel} under clearer constraints`,
+        goal: `Stabilize the ${serveLabel} with one repeatable toss and tempo rule.`,
+        warmup: ["5 toss-and-freeze reps", "5 shadow serves matching the same rhythm"],
+        main: ["10 serve reps to one body target", "10 serve reps to one backhand target"],
+        pressure: ["Only count reps that keep the same rhythm", "Reset after any rushed toss"],
+        success: ["Two consecutive 5-ball sets stay on tempo", "Contact point stays consistent"],
+        intensity: "low" as const,
+        tempo: "controlled" as const
+      },
+      variable: {
+        focus: `Add the key scene variable back into the ${serveLabel}`,
+        goal: `Reintroduce the original scene variable without losing the safer ${serveLabel} pattern.`,
+        warmup: ["3 reset breaths", "6 shadow serves with the scene cue"],
+        main: [`8 reps with the original scene cue: ${pressureLead}`, "8 reps to the same safe target after the cue"],
+        pressure: ["Alternate calm rep / cue rep", "Stop if contact shape breaks twice in a row"],
+        success: ["Scene cue no longer changes the basic serve shape", "Safe window stays visible"],
+        intensity: "medium" as const,
+        tempo: "controlled" as const
+      },
+      timing: {
+        focus: `Add timing and variability to the ${serveLabel}`,
+        goal: `Keep the ${serveLabel} stable while timing changes slightly from rep to rep.`,
+        warmup: ["5 toss rhythm switches", "5 serve-prep pauses with the same finish"],
+        main: ["Short pause / normal pause alternating reps", "Serve after one bounce, then after two bounces"],
+        pressure: ["Call the timing pattern before each rep", "Repeat any rep that feels rushed"],
+        success: ["Timing changes do not push the ball into the net", "Serve finish still looks the same"],
+        intensity: "medium" as const,
+        tempo: "controlled" as const
+      },
+      pressure: {
+        focus: `Pressure-proof the ${serveLabel}`,
+        goal: `Hold the ${serveLabel} shape when score pressure is layered back in.`,
+        warmup: ["5 scoreboard breaths", "5 shadow serves starting from 30-40"],
+        main: ["Play 8 service points starting from 30-40", "Use only the safer serve target"],
+        pressure: ["Two-miss penalty restarts the score sequence", "Say the carry cue before each point"],
+        success: ["Score pressure does not speed up the motion", "At least 6 of 8 points start with a playable serve"],
+        intensity: "medium_high" as const,
+        tempo: "match_70" as const
+      },
+      transfer: {
+        focus: `Transfer the ${serveLabel} into a realistic point fragment`,
+        goal: `Use the rebuilt ${serveLabel} inside a short serve-plus-one sequence.`,
+        warmup: ["4 serve + first ball shadow patterns", "4 calm restarts after the first shot"],
+        main: ["Serve, recover, then play one controlled next ball", "Repeat from deuce and ad sides"],
+        pressure: ["Only count sequences that begin with the same safe serve window", "Reset if the first serve changes shape"],
+        success: ["Serve quality holds into the next-ball sequence", "Recovery does not break the serve cue"],
+        intensity: "medium_high" as const,
+        tempo: "match_70" as const
+      },
+      consolidate: {
+        focus: `Consolidate and evaluate the ${serveLabel}`,
+        goal: `Consolidate the rebuilt ${serveLabel}, evaluate it, and define one carry-forward rule for next week.`,
+        warmup: ["5 calm shadow serves", "5 serves with the carry-forward cue"],
+        main: ["10 scored serves to the safe target", "10 scored serves under the original pressure cue"],
+        pressure: ["Write one cue after every 5-ball block", "Finish with one best-of-3 pressure block"],
+        success: ["You can state one carry-forward rule clearly", "The final pressure block still keeps the safer serve shape"],
+        intensity: "medium" as const,
+        tempo: "match_70" as const
+      }
+    }
+    : {
+      baseline: {
+        focus: `${serveLabel}基线动作`,
+        goal: `基线日：先把${serveLabel}的基线动作做干净，再往后加压力。`,
+        warmup: ["每次影子发球前先做 6 次缓慢呼气", "10 次完整收拍的慢节奏影子发球"],
+        main: [`12 次带${outcomeRecovery}的${serveLabel}`, "每一拍都记录抛球高度和收拍是否完整"],
+        pressure: ["连续 2 球再出现同样失误就整组重来", `每次${serveLabel}前先说一遍“先形状，再别${outcomeLabel}”`],
+        success: [`10 球里至少 8 球不再直接${outcomeLabel}`, "整组节奏从头到尾保持平稳"],
+        intensity: "low" as const,
+        tempo: "slow" as const
+      },
+      stabilize: {
+        focus: `${serveLabel}稳定化`,
+        goal: `稳定日：用一个固定抛球和节奏规则把${serveLabel}稳定下来。`,
+        warmup: ["5 次抛球后停住观察", "5 次同节奏影子发球"],
+        main: [`10 次只发一个安全目标的${serveLabel}`, `10 次只看${serveLabel}节奏是否一致`],
+        pressure: ["只有连续节奏一致的球才算数", `任何一次明显${feelingLabel}都立刻重置`],
+        success: ["连续两组 5 球都保持同一节奏", "击球点位置保持稳定"],
+        intensity: "low" as const,
+        tempo: "controlled" as const
+      },
+      variable: {
+        focus: `${serveLabel}加入关键场景变量`,
+        goal: `关键场景变量日：把原始场景变量加回来，但不丢掉更安全的${serveLabel}形状。`,
+        warmup: ["3 次重置呼吸", "6 次带场景提示的影子发球"],
+        main: [`8 次带原始场景提示的发球：${pressureLead}`, `8 次把${pressureCue}重新叠回${serveLabel}`],
+        pressure: ["一球普通节奏、一球关键分节奏交替", "连续两次形状走掉就停下重来"],
+        success: ["关键场景变量不再破坏发球基本形状", "安全窗口仍然看得见"],
+        intensity: "medium" as const,
+        tempo: "controlled" as const
+      },
+      timing: {
+        focus: `${serveLabel}加入节奏与变化`,
+        goal: `节奏变化日：在轻微节奏变化下，仍然保持${serveLabel}的稳定。`,
+        warmup: ["5 次不同抛球节奏切换", "5 次不同停顿长度但同样收拍的准备动作"],
+        main: ["一拍短停顿、一拍正常停顿交替发球", `任何一次开始${feelingLabel}时都回到同一个发球节奏`],
+        pressure: ["每次发球前先报出本拍节奏", `任何一次明显${feelingLabel}都要重做`],
+        success: [`节奏变化不再直接把球打成${outcomeLabel}`, "收拍和身体平衡保持一致"],
+        intensity: "medium" as const,
+        tempo: "controlled" as const
+      },
+      pressure: {
+        focus: `${serveLabel}抗压`,
+        goal: `压力日：把比分压力重新叠回来后，仍然守住${serveLabel}形状。`,
+        warmup: ["5 次带比分提示的呼吸", "5 次从 30-40 开始的影子发球"],
+        main: [`从 30-40 开始打 8 个发球分，把${pressureCue}叠回${serveLabel}`, "只允许使用同一个安全目标"],
+        pressure: ["两次失去安全窗口就整组重来", `每一分前先说出带入提示，把${pressureCue}叫出来`],
+        success: ["比分压力不再明显加快动作", "8 分里至少 6 分能先用可打的发球开分"],
+        intensity: "medium_high" as const,
+        tempo: "match_70" as const
+      },
+      transfer: {
+        focus: `${serveLabel}带入真实片段`,
+        goal: `得分片段日：把重建后的${serveLabel}带进短的发球加一拍片段里。`,
+        warmup: ["4 次发球加一拍的影子流程", "4 次第一拍后的冷静重置"],
+        main: [`发球、回位，再打一拍可控的下一板，让${transferLabel}完整出现`, "平分区和占先区都各自重复"],
+        pressure: [`只有能把${serveLabel}稳稳带进下一拍的片段才计数`, "一旦第一拍动作走样就立刻重来"],
+        success: [`${serveLabel}质量能带进下一拍片段`, "回位不会破坏发球提示"],
+        intensity: "medium_high" as const,
+        tempo: "match_70" as const
+      },
+      consolidate: {
+        focus: `${serveLabel}巩固与评估`,
+        goal: `带入下一周：把重建后的${serveLabel}巩固下来，做一次评估，并写出下周继续沿用的一条规则。`,
+        warmup: ["5 次平静影子发球", "5 次带延续规则的影子发球"],
+        main: ["10 次对安全目标的计分发球", `10 次带原始压力提示的计分${serveLabel}`],
+        pressure: ["每 5 球写下一条观察", "最后做一组 best-of-3 压力块"],
+        success: ["你能明确说出一条下周延续规则", "最后一组压力发球仍然守住更安全的发球形状"],
+        intensity: "medium" as const,
+        tempo: "match_70" as const
+      }
+    };
+
+  const blueprint = blueprints[role];
+  return {
+    ...day,
+    focus: blueprint.focus,
+    goal: blueprint.goal,
+    warmupBlock: { ...day.warmupBlock, items: blueprint.warmup },
+    mainBlock: { ...day.mainBlock, items: blueprint.main },
+    pressureBlock: { ...day.pressureBlock, items: blueprint.pressure },
+    successCriteria: blueprint.success,
+    intensity: blueprint.intensity,
+    tempo: blueprint.tempo
+  };
+}
+
+function applyDeepModeOverlay(
+  plan: GeneratedPlan,
+  locale: PlanLocale,
+  deepContext?: EnrichedDiagnosisContext | null
+): GeneratedPlan {
+  if (!deepContext?.isDeepModeReady || deepContext.mode !== "deep" || deepContext.strokeFamily !== "serve") {
+    return plan;
+  }
+
+  const roles = ["baseline", "stabilize", "variable", "timing", "pressure", "transfer", "consolidate"] as const;
+  const summary = locale === "en"
+    ? `${deepContext.pressureContext === "key_points" ? "Key-point scene: " : "Deep mode scene: "}${deepContext.sceneSummaryEn}`
+    : `${deepContext.pressureContext === "key_points" ? "关键分场景：" : "深入版场景："}${deepContext.sceneSummaryZh}`;
+
+  return {
+    ...plan,
+    summary,
+    days: plan.days.map((day, index) => buildDeepServeDayOverlay(locale, day, deepContext, roles[index] ?? "consolidate"))
+  };
 }
 
 export function getPlanTemplate(
@@ -1500,9 +2084,14 @@ export function getPlanTemplate(
   preferredContentIds: string[] = [],
   options: {
     primaryNextStep?: string;
+    planContext?: PlanContext | null;
+    deepContext?: EnrichedDiagnosisContext | null;
     environment?: AppEnvironment;
   } = {}
 ): GeneratedPlan {
+  const effectivePlanContext = options.deepContext
+    ? buildPlanContextFromEnrichedContext(options.deepContext) ?? options.planContext
+    : options.planContext;
   const normalizedProblemTag = normalizePlanProblemTag(problemTag);
   const templateLevel = normalizePlanLevel(level);
   const activePlanTemplates = filterByEnvironment(planTemplates, options.environment ?? "production");
@@ -1510,20 +2099,28 @@ export function getPlanTemplate(
     .map((lookupProblemTag) => activePlanTemplates.find((item) => item.problemTag === lookupProblemTag && item.level === templateLevel))
     .find((item): item is PlanTemplate => Boolean(item));
   if (exact) {
-    const plan = applyPrimaryNextStepContext(
-      sanitizePlanDayContentIds(
-        applyPreferredContentIds(
-          {
-            ...toGenerated(exact, locale),
-            level
-          },
-          level,
-          preferredContentIds
-        )
+    const plan = applyDeepModeOverlay(applyPlanMicrocycle(
+      applyPlanContext(
+        applyPrimaryNextStepContext(
+          sanitizePlanDayContentIds(
+            applyPreferredContentIds(
+              {
+                ...toGenerated(exact, locale),
+                level
+              },
+              level,
+              preferredContentIds
+            )
+          ),
+          locale,
+          options.primaryNextStep
+        ),
+        locale,
+        effectivePlanContext
       ),
       locale,
-      options.primaryNextStep
-    );
+      effectivePlanContext
+    ), locale, options.deepContext);
 
     return {
       ...plan,
@@ -1535,20 +2132,28 @@ export function getPlanTemplate(
     .map((lookupProblemTag) => activePlanTemplates.find((item) => item.problemTag === lookupProblemTag))
     .find((item): item is PlanTemplate => Boolean(item));
   if (sameTag) {
-    const plan = applyPrimaryNextStepContext(
-      sanitizePlanDayContentIds(
-        applyPreferredContentIds(
-          {
-            ...toGenerated(sameTag, locale),
-            level
-          },
-          level,
-          preferredContentIds
-        )
+    const plan = applyDeepModeOverlay(applyPlanMicrocycle(
+      applyPlanContext(
+        applyPrimaryNextStepContext(
+          sanitizePlanDayContentIds(
+            applyPreferredContentIds(
+              {
+                ...toGenerated(sameTag, locale),
+                level
+              },
+              level,
+              preferredContentIds
+            )
+          ),
+          locale,
+          options.primaryNextStep
+        ),
+        locale,
+        effectivePlanContext
       ),
       locale,
-      options.primaryNextStep
-    );
+      effectivePlanContext
+    ), locale, options.deepContext);
 
     return {
       ...plan,
@@ -1556,29 +2161,37 @@ export function getPlanTemplate(
     };
   }
 
-  return applyPrimaryNextStepContext(
-    sanitizePlanDayContentIds(
-      applyPreferredContentIds(
-        {
-          source: "fallback",
-          level,
-          problemTag,
-          title: locale === "en" ? "7-day general improvement plan" : "通用 7 天基础提升计划",
-          target: locale === "en"
-            ? "Build a steady swing and a practical training rhythm within one week"
-            : "在一周内建立稳定击球与可执行训练节奏",
-          summary: locale === "en"
-            ? "Not enough context to customize yet. Starting with a general, actionable 7-day training rhythm."
-            : "当前上下文不足，先使用一份通用且可执行的 7 天训练节奏。",
-          days: createDefaultDays(locale)
-        },
-        level,
-        preferredContentIds
-      )
+  return applyDeepModeOverlay(applyPlanMicrocycle(
+    applyPlanContext(
+      applyPrimaryNextStepContext(
+        sanitizePlanDayContentIds(
+          applyPreferredContentIds(
+            {
+              source: "fallback",
+              level,
+              problemTag,
+              title: locale === "en" ? "7-day general improvement plan" : "通用 7 天基础提升计划",
+              target: locale === "en"
+                ? "Build a steady swing and a practical training rhythm within one week"
+                : "在一周内建立稳定击球与可执行训练节奏",
+              summary: locale === "en"
+                ? "Not enough context to customize yet. Starting with a general, actionable 7-day training rhythm."
+                : "当前上下文不足，先使用一份通用且可执行的 7 天训练节奏。",
+              days: createDefaultDays(locale)
+            },
+            level,
+            preferredContentIds
+          )
+        ),
+        locale,
+        options.primaryNextStep
+      ),
+      locale,
+      effectivePlanContext
     ),
     locale,
-    options.primaryNextStep
-  );
+    effectivePlanContext
+  ), locale, options.deepContext);
 }
 
 const DIMENSION_TO_PROBLEM_TAG: Record<string, string> = {
@@ -1603,13 +2216,15 @@ export function getPlanFromDiagnosis(input: {
   title?: string;
   fixes?: string[];
   locale?: PlanLocale;
+  planContext?: PlanContext | null;
 }): GeneratedPlan {
   const level = input.level ?? "3.5";
   const locale = input.locale ?? "zh";
   const problemTag = input.problemTag ?? "general-improvement";
   const primaryNextStep = input.fixes?.[0];
   const base = getPlanTemplate(problemTag, level, locale, [], {
-    primaryNextStep
+    primaryNextStep,
+    planContext: input.planContext
   });
 
   if (locale === "en") {
