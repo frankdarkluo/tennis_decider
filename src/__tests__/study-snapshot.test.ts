@@ -15,12 +15,15 @@ describe("study snapshot", () => {
     const snapshot = getStudySnapshot();
     const contents = getStudySnapshotContents();
     const creators = getStudySnapshotCreators();
+    const contentVersions = Object.keys(studySnapshotContentsByVersion).sort();
+    const creatorVersions = Object.keys(studySnapshotCreatorsByVersion).sort();
+    const metadataVersions = Object.keys(studySnapshotMetadataByVersion).sort();
 
     expect(snapshot.snapshotVersion).toBe("2026-03-31-v1");
     expect(snapshot.sortingMode).toBe("deterministic_study");
-    expect(studySnapshotContentsByVersion["2026-03-31-v1"]).toBeDefined();
-    expect(studySnapshotCreatorsByVersion["2026-03-31-v1"]).toBeDefined();
-    expect(studySnapshotMetadataByVersion["2026-03-31-v1"]).toBeDefined();
+    expect(contentVersions).toEqual(creatorVersions);
+    expect(contentVersions).toEqual(metadataVersions);
+    expect(contentVersions).toContain("2026-03-31-v1");
     expect(contents.length).toBeGreaterThan(0);
     expect(creators.length).toBeGreaterThan(0);
     expect(snapshot.contentSetVersion).toBe(`content-${snapshot.snapshotVersion}`);

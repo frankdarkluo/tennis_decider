@@ -6,7 +6,6 @@ import creators20260331v1 from "./creators.2026-03-31-v1.json";
 import metadata20260331v1 from "./metadata.2026-03-31-v1.json";
 
 export const studySnapshotContentsByVersion: Record<string, ContentItem[]> = {
-  "2026-03-29-v1": contents20260329v1 as ContentItem[],
   "2026-03-31-v1": contents20260329v1 as ContentItem[]
 };
 
