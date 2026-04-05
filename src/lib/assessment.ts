@@ -238,22 +238,6 @@ function getConfidence(answeredCount: number, totalQuestions: number): Assessmen
   return "较高";
 }
 
-function getDimensionStatus(average: number): AssessmentDimensionStatus {
-  if (average < 1.5) {
-    return "薄弱";
-  }
-
-  if (average < 2.5) {
-    return "待提升";
-  }
-
-  if (average < 3.5) {
-    return "正常";
-  }
-
-  return "强项";
-}
-
 function getDimensionStatusFromScores(scores: number[]): AssessmentDimensionStatus {
   if (scores.some((score) => score === 1)) {
     return "薄弱";
@@ -267,7 +251,7 @@ function getDimensionStatusFromScores(scores: number[]): AssessmentDimensionStat
     return "强项";
   }
 
-  return getDimensionStatus(scores.reduce((sum, score) => sum + score, 0) / scores.length);
+  return "正常";
 }
 
 function getDimensionSeverityRank(status: AssessmentDimensionStatus) {

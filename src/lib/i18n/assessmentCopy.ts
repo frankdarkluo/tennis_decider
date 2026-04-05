@@ -162,15 +162,6 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
       4: "I actively shape and switch tactics for different opponents"
     }
   },
-  fine_c_tactical: {
-    en: "Can you adjust your game plan for different opponents?",
-    labels: {
-      1: "I mostly play one style regardless",
-      2: "I know I should adapt but cannot execute in matches",
-      3: "I can make some adjustments targeting opponent weaknesses",
-      4: "I design and execute different tactics based on opponent style"
-    }
-  },
   fine_c_pressure: {
     en: "How do you perform on big points?",
     labels: {

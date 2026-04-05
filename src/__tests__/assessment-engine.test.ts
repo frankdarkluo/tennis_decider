@@ -79,4 +79,41 @@ describe("assessment engine", () => {
     expect(result.weaknesses).not.toContain("发球");
     expect(result.observationNeeded).toContain("发球");
   });
+
+  it("keeps mixed repeated 3 and 4 scores as normal instead of promoting them to strength", () => {
+    const result = calculateAssessmentResult({
+      coarse_rally: 3,
+      coarse_serve: 3,
+      coarse_awareness: 3,
+      coarse_movement: 3,
+      coarse_pressure: 2,
+      fine_b_both_sides: 4,
+      fine_b_direction: 4,
+      fine_b_rhythm: 4,
+      fine_b_serve_game: 4
+    });
+
+    const serveDimension = result.dimensions.find((dimension) => dimension.key === "serve");
+
+    expect(result.branch).toBe("B");
+    expect(serveDimension?.status).toBe("正常");
+    expect(result.strengths).not.toContain("发球");
+  });
+
+  it("builds the personalized summary from the weakest two dimensions", () => {
+    const result = calculateAssessmentResult({
+      coarse_rally: 1,
+      coarse_serve: 2,
+      coarse_awareness: 4,
+      coarse_movement: 4,
+      coarse_pressure: 4,
+      fine_a_grip: 4,
+      fine_a_fast: 4,
+      fine_a_issue: 4,
+      fine_a_movement: 4
+    });
+
+    expect(result.summary).toContain("对拉稳定性");
+    expect(result.summary).toContain("发球");
+  });
 });
