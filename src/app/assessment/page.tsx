@@ -56,7 +56,19 @@ function normalizeDraftStepIndex(
   profileQuestions: AssessmentQuestion[]
 ) {
   const activeQuestionIds = new Set(profileQuestions.map((question) => question.id));
-  const retiredStepCount = draftProfile?.gender && !activeQuestionIds.has("gender") ? 1 : 0;
+  let retiredStepCount = 0;
+
+  if (draftProfile?.gender && !activeQuestionIds.has("gender")) {
+    retiredStepCount += 1;
+  }
+
+  if (
+    (draftProfile?.yearsLabel || typeof draftProfile?.yearsPlaying === "number")
+    && !activeQuestionIds.has("years")
+  ) {
+    retiredStepCount += 1;
+  }
+
   return Math.max(0, (rawStepIndex ?? 0) - retiredStepCount);
 }
 
