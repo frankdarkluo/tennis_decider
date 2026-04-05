@@ -1247,6 +1247,53 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
       }
     }),
     environment: ["testing", "production"]
+  },
+  {
+    problemTag: "stamina-drop",
+    level: "4.0",
+    title: "体能掉线应对 7 天计划",
+    titleEn: "7-Day Stamina Drop Management Plan",
+    target: "把省力脚步、恢复站位和回合管理带进更高负荷的疲劳压力，后半段也守住动作质量。",
+    targetEn: "Carry efficient footwork, recovery positioning, and point management into higher-load fatigue so the mechanics still hold late.",
+    days: cloneTemplateDays(staminaDropDays3_0, {
+      1: {
+        drills: ["小步调整到位 24 组", "每次都用最少步数完成落点准备并立刻回到可再启动位置"],
+        drillsEn: ["24 small-adjustment step sets", "Use the fewest steps to arrive and recover to a re-startable position immediately"],
+        duration: "22 分钟",
+        durationEn: "22 min"
+      },
+      2: {
+        drills: ["移动后恢复步 22 组", "每球后都先回到能覆盖下一拍的站位"],
+        drillsEn: ["22 movement-plus-recovery-step sets", "Recover after every ball to a position that can cover the next shot"],
+        duration: "22 分钟",
+        durationEn: "22 min"
+      },
+      4: {
+        drills: ["前三拍深区或压脚下 16 组", "每分都先想如何在 4 拍内把回合打短"],
+        drillsEn: ["16 sets with the first three balls deep or at the opponent's feet", "Think first about shortening the point within 4 balls on every point"],
+        successCriteria: ["开始更主动地用前四拍管理体能消耗"],
+        successCriteriaEn: ["Use the first four balls more proactively to manage energy cost"]
+      },
+      5: {
+        drills: ["发球后第一拍深区 12 组", "发球后两拍内完成站位恢复、落点控制和下一拍准备"],
+        drillsEn: ["12 serve-plus-one deep-target sets", "Recover position, control the target, and prepare for the next shot within the first two balls after serve"],
+        duration: "28 分钟",
+        durationEn: "28 min"
+      },
+      6: {
+        drills: ["30 秒移动 + 30 秒恢复 8 组", "每组后打一分只看脚步、恢复和落点顺序是否还能守住"],
+        drillsEn: ["8 sets of 30 seconds on and 30 seconds recovery", "After each set play one point and judge only whether footwork, recovery, and target order still hold"],
+        goal: "把节奏管理带进高负荷疲劳回合，累的时候也先守住脚步、恢复和落点顺序。",
+        goalEn: "Bring rhythm management into higher-load fatigue points and protect footwork, recovery, and target order even when you are tired.",
+        successCriteria: ["高负荷疲劳里仍能先守住节奏而不是动作直接散掉"],
+        successCriteriaEn: ["Protect the rhythm first instead of letting the technique collapse under higher fatigue load"]
+      },
+      7: {
+        drills: ["回看本周最省力的 4 组回合", "写下下周继续用的 2 条高负荷体能管理规则"],
+        drillsEn: ["Review the 4 most efficient point sequences from the week", "Write down 2 higher-load energy-management rules to keep next week"]
+      }
+    }),
+    environment: ["testing", "production"]
   }
 ];
 

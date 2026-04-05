@@ -3,10 +3,11 @@ import { getPlanTemplate } from "@/lib/plans";
 
 type TemplateCoverageCase = {
   problemTag: string;
-  level: "3.0";
+  level: "3.0" | "4.0";
   expectedTitle: string;
   day1Focus: string;
   day6Goal: string;
+  targetIncludes?: string;
 };
 
 const templateCoverageCases: TemplateCoverageCase[] = [
@@ -51,6 +52,14 @@ const templateCoverageCases: TemplateCoverageCase[] = [
     expectedTitle: "体能掉线应对 7 天计划",
     day1Focus: "脚步省力",
     day6Goal: "把节奏管理带进疲劳回合"
+  },
+  {
+    problemTag: "stamina-drop",
+    level: "4.0",
+    expectedTitle: "体能掉线应对 7 天计划",
+    day1Focus: "脚步省力",
+    day6Goal: "把节奏管理带进高负荷疲劳回合",
+    targetIncludes: "更高负荷"
   }
 ];
 
@@ -63,6 +72,9 @@ describe("diagnosis plan template coverage", () => {
       expect(plan.title).toBe(testCase.expectedTitle);
       expect(plan.title).not.toBe("通用 7 天基础提升计划");
       expect(plan.days).toHaveLength(7);
+      if (testCase.targetIncludes) {
+        expect(plan.target).toContain(testCase.targetIncludes);
+      }
       expect(plan.days[0]?.focus).toContain(testCase.day1Focus);
       expect(plan.days[5]?.goal).toContain(testCase.day6Goal);
     }
