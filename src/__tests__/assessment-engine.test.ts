@@ -43,4 +43,40 @@ describe("assessment engine", () => {
     expect(result.observationNeeded).toContain("对拉稳定性");
     expect(result.weaknesses.length).toBe(0);
   });
+
+  it("keeps a duplicated dimension weak when any repeated question scores 1", () => {
+    const result = calculateAssessmentResult({
+      coarse_rally: 3,
+      coarse_serve: 1,
+      coarse_awareness: 3,
+      coarse_movement: 3,
+      coarse_pressure: 3,
+      fine_b_both_sides: 4,
+      fine_b_direction: 4,
+      fine_b_rhythm: 4,
+      fine_b_serve_game: 4
+    });
+
+    expect(result.branch).toBe("B");
+    expect(result.weaknesses).toContain("发球");
+    expect(result.observationNeeded).not.toContain("发球");
+  });
+
+  it("keeps a duplicated dimension in observation-needed when any repeated question scores 2 without a 1", () => {
+    const result = calculateAssessmentResult({
+      coarse_rally: 3,
+      coarse_serve: 2,
+      coarse_awareness: 3,
+      coarse_movement: 3,
+      coarse_pressure: 3,
+      fine_b_both_sides: 4,
+      fine_b_direction: 4,
+      fine_b_rhythm: 4,
+      fine_b_serve_game: 4
+    });
+
+    expect(result.branch).toBe("B");
+    expect(result.weaknesses).not.toContain("发球");
+    expect(result.observationNeeded).toContain("发球");
+  });
 });

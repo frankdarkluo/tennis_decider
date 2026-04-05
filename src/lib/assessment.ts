@@ -254,6 +254,43 @@ function getDimensionStatus(average: number): AssessmentDimensionStatus {
   return "强项";
 }
 
+function getDimensionStatusFromScores(scores: number[]): AssessmentDimensionStatus {
+  if (scores.some((score) => score === 1)) {
+    return "薄弱";
+  }
+
+  if (scores.some((score) => score === 2)) {
+    return "待提升";
+  }
+
+  if (scores.every((score) => score === 4)) {
+    return "强项";
+  }
+
+  return getDimensionStatus(scores.reduce((sum, score) => sum + score, 0) / scores.length);
+}
+
+function getDimensionSeverityRank(status: AssessmentDimensionStatus) {
+  switch (status) {
+    case "薄弱":
+      return 0;
+    case "待提升":
+      return 1;
+    case "正常":
+      return 2;
+    case "强项":
+      return 3;
+    default:
+      return 4;
+  }
+}
+
+function compareDimensionPriority(left: DimensionSummary, right: DimensionSummary) {
+  return getDimensionSeverityRank(left.status) - getDimensionSeverityRank(right.status)
+    || left.average - right.average
+    || left.label.localeCompare(right.label, "zh-CN");
+}
+
 function buildDimensionSummaries(
   questions: AssessmentQuestion[],
   answers: AssessmentAnswers,
@@ -292,10 +329,10 @@ function buildDimensionSummaries(
         levelHint: level,
         answeredCount: scores.length,
         uncertainCount: 0,
-        status: getDimensionStatus(average)
+        status: getDimensionStatusFromScores(scores)
       };
     })
-    .sort((left, right) => left.average - right.average || left.label.localeCompare(right.label, "zh-CN"));
+    .sort(compareDimensionPriority);
 }
 
 function buildStrengths(dimensions: DimensionSummary[]) {
@@ -318,7 +355,7 @@ function buildObservationNeeded(dimensions: DimensionSummary[]) {
 
 function buildSummary(level: AssessmentLevel, dimensions: DimensionSummary[], locale: AssessmentLocale = "zh"): string {
   const weakest = [...dimensions]
-    .sort((left, right) => left.average - right.average || left.label.localeCompare(right.label, "zh-CN"))
+    .sort(compareDimensionPriority)
     .slice(0, 2)
     .map((dimension) => dimension.label);
 
