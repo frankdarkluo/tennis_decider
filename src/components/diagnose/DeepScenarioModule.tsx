@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ScenarioQuestionCard } from "@/components/diagnose/scenario/ScenarioQuestionCard";
@@ -57,12 +57,13 @@ export function DeepScenarioModule({
   const [started, setStarted] = useState(false);
 
   const currentInput = sourceText.trim();
+  const previousInputRef = useRef(currentInput);
   const diagnosisInput = useMemo(
     () => toDiagnosisInput({ scenario, locale: language }),
     [language, scenario]
   );
 
-  useEffect(() => {
+  function resetScenarioState() {
     setScenario(createEmptyScenario(""));
     setMissingSlots([]);
     setSelectedQuestion(null);
@@ -70,7 +71,25 @@ export function DeepScenarioModule({
     setSubmitting(false);
     setError(null);
     setStarted(false);
+  }
+
+  useEffect(() => {
+    resetScenarioState();
   }, [resetSignal]);
+
+  useEffect(() => {
+    if (previousInputRef.current === currentInput) {
+      return;
+    }
+
+    previousInputRef.current = currentInput;
+
+    if (!started) {
+      return;
+    }
+
+    resetScenarioState();
+  }, [currentInput, started]);
 
   if (!visible) {
     return null;
@@ -157,14 +176,7 @@ export function DeepScenarioModule({
           <Button
             variant="secondary"
             disabled={submitting}
-            onClick={() => {
-              setScenario(createEmptyScenario(""));
-              setMissingSlots([]);
-              setSelectedQuestion(null);
-              setDone(false);
-              setError(null);
-              setStarted(false);
-            }}
+            onClick={resetScenarioState}
           >
             {language === "en" ? "Reset scene" : "重置场景"}
           </Button>

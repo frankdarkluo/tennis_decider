@@ -91,4 +91,122 @@ describe("DeepScenarioModule", () => {
       }));
     });
   });
+
+  it("resets the active reconstruction when the complaint text changes", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        scenario: {
+          raw_user_input: "比赛里我反手老下网",
+          language: "zh",
+          stroke: "backhand",
+          context: {
+            session_type: "match",
+            serve_variant: "unknown",
+            pressure: "unknown",
+            movement: "moving",
+            format: "unknown"
+          },
+          incoming_ball: {
+            depth: "unknown",
+            height: "unknown",
+            pace: "unknown",
+            spin: "unknown",
+            direction: "unknown"
+          },
+          outcome: {
+            primary_error: "net",
+            frequency: "often"
+          },
+          subjective_feeling: {
+            tight: false,
+            rushed: false,
+            awkward: false,
+            hesitant: false,
+            nervous: false,
+            late_contact: false,
+            no_timing: false,
+            other: []
+          },
+          user_confidence: "medium",
+          missing_slots: ["incoming_ball.depth"],
+          next_question_candidates: ["q_incoming_ball_depth"],
+          selected_next_question_id: "q_incoming_ball_depth",
+          asked_followup_ids: []
+        },
+        missing_slots: ["incoming_ball.depth"],
+        eligible_questions: [
+          {
+            id: "q_incoming_ball_depth",
+            family: "incoming_ball_depth",
+            category: "scenario_localization",
+            target_slots: ["incoming_ball.depth"],
+            fillsSlots: ["incoming_ball.depth"],
+            priority: 70,
+            zh: "这个问题更常出现在对手球比较深的时候吗？",
+            en: "Does this happen more when the incoming ball is deeper?",
+            ask_when: [],
+            do_not_ask_when: [],
+            information_gain_weight: 0.8,
+            presupposition_risk: 0.28,
+            easy_to_answer_score: 0.82,
+            options: [
+              { key: "deep", zh: "深球更明显", en: "More on deep balls" }
+            ]
+          }
+        ],
+        selected_question: {
+          id: "q_incoming_ball_depth",
+          family: "incoming_ball_depth",
+          category: "scenario_localization",
+          target_slots: ["incoming_ball.depth"],
+          fillsSlots: ["incoming_ball.depth"],
+          priority: 70,
+          zh: "这个问题更常出现在对手球比较深的时候吗？",
+          en: "Does this happen more when the incoming ball is deeper?",
+          ask_when: [],
+          do_not_ask_when: [],
+          information_gain_weight: 0.8,
+          presupposition_risk: 0.28,
+          easy_to_answer_score: 0.82,
+          options: [
+            { key: "deep", zh: "深球更明显", en: "More on deep balls" }
+          ]
+        },
+        done: false
+      })
+    } satisfies Partial<Response>);
+
+    const { DeepScenarioModule } = await import("@/components/diagnose/DeepScenarioModule");
+
+    const view = render(
+      <DeepScenarioModule
+        sourceText="比赛里我反手老下网"
+        language="zh"
+        visible
+        resetSignal={0}
+        onApplyScenario={handleApply}
+      />
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "开始场景还原" }));
+
+    expect(await screen.findByText("这个问题更常出现在对手球比较深的时候吗？")).toBeInTheDocument();
+
+    view.rerender(
+      <DeepScenarioModule
+        sourceText="一发总发不进"
+        language="zh"
+        visible
+        resetSignal={0}
+        onApplyScenario={handleApply}
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByText("这个问题更常出现在对手球比较深的时候吗？")).not.toBeInTheDocument();
+    });
+    expect(screen.getByText("一发总发不进")).toBeInTheDocument();
+    expect(screen.queryByText("下一步先问")).not.toBeInTheDocument();
+  });
 });
