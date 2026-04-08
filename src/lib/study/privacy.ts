@@ -1,7 +1,6 @@
 import { AssessmentResult } from "@/types/assessment";
 import { DiagnosisResult } from "@/types/diagnosis";
 import { GeneratedPlan } from "@/types/plan";
-import { SurveyResponses } from "@/types/research";
 import { VideoDiagnosisResult, VideoSceneType, VideoStrokeType } from "@/types/videoDiagnosis";
 
 function sanitizeFreeText(value?: string | null) {
@@ -107,17 +106,5 @@ export function sanitizePlanArtifact(plan: GeneratedPlan, extra?: Record<string,
     })),
     ...extra
   };
-}
-
-export function sanitizeSurveyArtifact(responses: SurveyResponses) {
-  return Object.fromEntries(
-    Object.entries(responses).map(([key, value]) => {
-      if (typeof value === "number") {
-        return [key, value];
-      }
-
-      return [key, sanitizeFreeText(value)];
-    })
-  );
 }
 

@@ -8,7 +8,6 @@ import enDictionary from "@/lib/i18n/dictionaries/en";
 import zhDictionary from "@/lib/i18n/dictionaries/zh";
 import { saveSurveyResponse } from "@/lib/researchData";
 import { clearPendingSurveyStudySession, readPendingSurveyStudySession } from "@/lib/study/localData";
-import { sanitizeSurveyArtifact } from "@/lib/study/privacy";
 import { calculateSUS } from "@/lib/survey";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { Card } from "@/components/ui/Card";
@@ -91,7 +90,7 @@ export default function SurveyPage() {
     const saveResult = await saveSurveyResponse({
       sessionId: effectiveStudySession?.sessionId ?? getEventSessionId(),
       userId: user?.id ?? null,
-      responses: effectiveStudySession ? sanitizeSurveyArtifact(responses) : responses,
+      responses,
       susScore,
       studyId: effectiveStudySession?.studyId,
       participantId: effectiveStudySession?.participantId,

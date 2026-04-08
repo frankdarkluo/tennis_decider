@@ -123,6 +123,13 @@ describe("survey localization", () => {
       snapshotSeed: "20260329",
       buildVersion: "2026-03-29-v1"
     });
+    expect(saveSurveyResponse.mock.calls[0]?.[0]).toMatchObject({
+      responses: expect.objectContaining({
+        q23: "诊断很清楚",
+        q24: "没有明显问题",
+        q25: "推荐理由"
+      })
+    });
     expect(persistStudyArtifact).not.toHaveBeenCalled();
   });
 });
