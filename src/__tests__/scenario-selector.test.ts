@@ -72,6 +72,16 @@ describe("scenario reconstruction selector", () => {
     expect(eligibleIds).not.toContain("q_incoming_ball_depth");
   });
 
+  it("treats '一发总发不进' as a serve-family case and never asks about incoming-ball depth", () => {
+    const scenario = parseScenarioTextDeterministically("一发总发不进");
+    const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
+
+    expect(scenario.stroke).toBe("serve");
+    expect(selectNextQuestion(scenario)?.id).toBe("q_match_or_practice");
+    expect(eligibleIds).toEqual(["q_match_or_practice", "q_outcome_pattern"]);
+    expect(eligibleIds).not.toContain("q_incoming_ball_depth");
+  });
+
   it("still allows movement follow-ups for groundstroke complaints when the category supports them", () => {
     const scenario = parseScenarioTextDeterministically("比赛里我反手老下网");
     const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);

@@ -137,6 +137,28 @@ describe("scenario reconstruction routes", () => {
     expect(body.selected_question?.id).not.toBe("q_movement_state");
   });
 
+  it("POST /api/scenario-reconstruction/parse keeps '一发总发不进' inside serve-safe follow-ups", async () => {
+    mockParseScenario.mockRejectedValueOnce(new Error("offline"));
+    mockRankQuestions.mockResolvedValueOnce(["q_incoming_ball_depth"]);
+
+    const { POST } = await import("../app/api/scenario-reconstruction/parse/route");
+    const response = await POST(
+      new Request("http://localhost/api/scenario-reconstruction/parse", {
+        method: "POST",
+        body: JSON.stringify({
+          text: "一发总发不进",
+          ui_language: "zh"
+        })
+      })
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.scenario.stroke).toBe("serve");
+    expect(body.eligible_questions.map((question: { id: string }) => question.id)).toEqual(["q_match_or_practice", "q_outcome_pattern"]);
+    expect(body.selected_question.id).toBe("q_match_or_practice");
+  });
+
   it("POST /api/scenario-reconstruction/parse keeps movement follow-ups available for groundstroke complaints", async () => {
     mockParseScenario.mockRejectedValueOnce(new Error("offline"));
     mockRankQuestions.mockResolvedValueOnce(["q_movement_state"]);
