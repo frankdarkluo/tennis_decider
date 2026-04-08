@@ -104,6 +104,10 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "creator.whyRecommended": "为什么推荐这位博主",
     "creator.whyPrefix": "推荐依据:",
     "plan.title": "你的 7 步提升计划",
+    "plan.loading": "加载中",
+    "plan.empty": "还没有训练计划",
+    "plan.assessment": "去做水平评估",
+    "plan.diagnose": "去问题诊断",
     "plan.supporting": "这 7 步先练这一件事",
     "plan.day.what": "What to practice",
     "plan.day.duration": "How long",
@@ -1020,6 +1024,21 @@ describe("app smoke tests", () => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("does not redirect diagnosis-origin plan links to assessment when no assessment result is stored", async () => {
+    const PlanPage = await loadPage(() => import("@/app/plan/page"));
+
+    mockSearchParams = new URLSearchParams(
+      "problemTag=serve-accuracy&level=3.0&source=diagnosis&primaryNextStep=%E5%85%88%E5%8F%AA%E7%9B%AF%E4%B8%80%E4%B8%AA%E5%8F%91%E7%90%83%E7%9B%AE%E6%A0%87%E5%8C%BA"
+    );
+    window.localStorage.removeItem(ASSESSMENT_STORAGE_KEY);
+    window.history.pushState({}, "", `/plan?${mockSearchParams.toString()}`);
+
+    render(React.createElement(PlanPage));
+
+    expect(await screen.findByText("你的 7 步提升计划")).toBeInTheDocument();
+    expect(mockReplace).not.toHaveBeenCalledWith("/assessment");
+  });
+
   it("renders a visible today card and watch block on the plan page for the upgraded diagnosis flow", async () => {
     const PlanPage = await loadPage(() => import("@/app/plan/page"));
 
@@ -1052,6 +1071,20 @@ describe("app smoke tests", () => {
 
     expect(await screen.findByText("你的 7 步提升计划")).toBeInTheDocument();
     expect(screen.getAllByText("先把引拍提前半拍再出手").length).toBeGreaterThan(0);
+  });
+
+  it("shows the safe empty state on direct /plan without assessment instead of redirecting", async () => {
+    const PlanPage = await loadPage(() => import("@/app/plan/page"));
+
+    mockSearchParams = new URLSearchParams("");
+    window.localStorage.removeItem(ASSESSMENT_STORAGE_KEY);
+    window.localStorage.removeItem(STUDY_PLAN_DRAFT_KEY);
+    window.history.pushState({}, "", "/plan");
+
+    render(React.createElement(PlanPage));
+
+    expect(await screen.findByText("还没有训练计划")).toBeInTheDocument();
+    expect(mockReplace).not.toHaveBeenCalledWith("/assessment");
   });
 
   it("shows the exact diagnosis primary next step as the plan summary headline", async () => {

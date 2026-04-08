@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { hasStoredCompletedAssessmentResult } from "@/lib/assessmentStorage";
 import { parseEnrichedDiagnosisContext } from "@/lib/diagnose/enrichedContext";
 import { logEvent } from "@/lib/eventLogger";
 import {
@@ -49,7 +48,6 @@ function PlanPageContent() {
   const { openLoginModal } = useAuthModal();
   const { environment, studyMode, session, language, pendingStudySetup } = useStudy();
   const { t } = useI18n();
-  const [storedAssessmentExists, setStoredAssessmentExists] = useState(false);
   const restoredDraft = useMemo(() => normalizePlanDraftSnapshot(readLocalStudyPlanDraft()), []);
   const defaultProblemTag = params.get("problemTag") ?? restoredDraft?.problemTag ?? "no-plan";
   function mapReportedLevelToPlan(levelStr: string | null | undefined): string | null {
@@ -141,11 +139,6 @@ function PlanPageContent() {
     [deepContext, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, planContext, sourceType]
   );
   const blockedByPendingStudySetup = pendingStudySetup && !session;
-  useEffect(() => {
-    setStoredAssessmentExists(hasStoredCompletedAssessmentResult());
-  }, []);
-
-  const blockedByAssessmentGate = !studyMode && !storedAssessmentExists;
 
   useEffect(() => {
     if (!blockedByPendingStudySetup) {
@@ -154,14 +147,6 @@ function PlanPageContent() {
 
     router.replace("/study/start");
   }, [blockedByPendingStudySetup, router]);
-
-  useEffect(() => {
-    if (!blockedByAssessmentGate) {
-      return;
-    }
-
-    router.replace("/assessment");
-  }, [blockedByAssessmentGate, router]);
 
   const regenerate = () => {
     setLevel((prev) => (prev === "2.5" ? "3.0" : prev === "3.0" ? "3.5" : prev === "3.5" ? "4.0" : prev === "4.0" ? "4.5" : "2.5"));
@@ -185,7 +170,7 @@ function PlanPageContent() {
   }, [plan.level, plan.problemTag, sourceType]);
 
   useEffect(() => {
-    if (blockedByPendingStudySetup || blockedByAssessmentGate || !hasSource) {
+    if (blockedByPendingStudySetup || !hasSource) {
       return;
     }
 
@@ -195,10 +180,10 @@ function PlanPageContent() {
       levelBand: plan.level,
       origin: sourceType === "default" ? "direct" : sourceType
     }, { page: "/plan" });
-  }, [blockedByAssessmentGate, blockedByPendingStudySetup, hasSource, plan.level, plan.problemTag, sourceLabel, sourceType]);
+  }, [blockedByPendingStudySetup, hasSource, plan.level, plan.problemTag, sourceLabel, sourceType]);
 
   useEffect(() => {
-    if (blockedByPendingStudySetup || blockedByAssessmentGate || !studyMode || !session || !hasSource) {
+    if (blockedByPendingStudySetup || !studyMode || !session || !hasSource) {
       return;
     }
 
@@ -229,10 +214,10 @@ function PlanPageContent() {
       setSaveStatus("saved");
       setSaveMessage(t("plan.saveRecorded"));
     });
-  }, [blockedByAssessmentGate, blockedByPendingStudySetup, hasSource, plan, planHref, session, sourceLabel, sourceType, studyMode, t]);
+  }, [blockedByPendingStudySetup, hasSource, plan, planHref, session, sourceLabel, sourceType, studyMode, t]);
 
   useEffect(() => {
-    if (blockedByPendingStudySetup || blockedByAssessmentGate || !hasSource) {
+    if (blockedByPendingStudySetup || !hasSource) {
       return;
     }
 
@@ -246,7 +231,7 @@ function PlanPageContent() {
       deepContext: deepContext ?? undefined,
       updatedAt: new Date().toISOString()
     });
-  }, [blockedByAssessmentGate, blockedByPendingStudySetup, deepContext, hasSource, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, planContext, sourceType]);
+  }, [blockedByPendingStudySetup, deepContext, hasSource, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, planContext, sourceType]);
 
   const handleSavePlan = async () => {
     if (studyMode && session) {
@@ -276,7 +261,7 @@ function PlanPageContent() {
     logEvent("plan.saved", { planId: `${plan.problemTag}:${plan.level}` }, { page: "/plan" });
   };
 
-  if (blockedByPendingStudySetup || blockedByAssessmentGate) {
+  if (blockedByPendingStudySetup) {
     return (
       <PageContainer>
         <p className="text-slate-600">{t("plan.loading")}</p>
