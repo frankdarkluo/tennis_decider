@@ -10,6 +10,7 @@ function buildScenario(overrides: Partial<ScenarioState> = {}): ScenarioState {
     stroke: "serve",
     context: {
       session_type: "match",
+      serve_variant: "unknown",
       pressure: "high",
       movement: "stationary",
       format: "unknown"
@@ -39,6 +40,7 @@ function buildScenario(overrides: Partial<ScenarioState> = {}): ScenarioState {
     missing_slots: [],
     next_question_candidates: [],
     selected_next_question_id: null,
+    asked_followup_ids: [],
     ...overrides
   };
 }
@@ -49,6 +51,7 @@ describe("scenario reconstruction handoff adapter", () => {
       stroke: "backhand",
       context: {
         session_type: "match",
+        serve_variant: "unknown",
         pressure: "unknown",
         movement: "moving",
         format: "unknown"
@@ -87,6 +90,7 @@ describe("scenario reconstruction handoff adapter", () => {
       stroke: "backhand",
       context: {
         session_type: "match",
+        serve_variant: "unknown",
         pressure: "unknown",
         movement: "moving",
         format: "unknown"

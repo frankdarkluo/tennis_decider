@@ -1,6 +1,7 @@
 import { applyScenarioAnswer as applyAnswer } from "@/lib/scenarioReconstruction/answer";
+import { inferSkillCategory } from "@/lib/scenarioReconstruction/inferSkillCategory";
 import { createLocalQwenClient, type LocalQwenClient } from "@/lib/scenarioReconstruction/llm/client";
-import { scenarioCriticalSlotOrder } from "@/lib/scenarioReconstruction/schema";
+import { getSkillCategoryPolicy } from "@/lib/scenarioReconstruction/skillPolicy";
 import type {
   MissingSlotPath,
   ScenarioQuestion,
@@ -30,6 +31,7 @@ export function createEmptyScenario(rawUserInput: string): ScenarioState {
     stroke: "unknown",
     context: {
       session_type: "unknown",
+      serve_variant: "unknown",
       pressure: "unknown",
       movement: "unknown",
       format: "unknown"
@@ -58,7 +60,8 @@ export function createEmptyScenario(rawUserInput: string): ScenarioState {
     user_confidence: "unknown",
     missing_slots: [],
     next_question_candidates: [],
-    selected_next_question_id: null
+    selected_next_question_id: null,
+    asked_followup_ids: []
   };
 }
 
@@ -83,40 +86,47 @@ function mentionsServeFamily(text: string) {
 }
 
 export function getMissingSlots(scenario: ScenarioState): MissingSlotPath[] {
-  const missing: MissingSlotPath[] = [];
-  const coreMissing: MissingSlotPath[] = [];
-
-  if (scenario.context.session_type === "unknown") {
-    coreMissing.push("context.session_type");
-  }
-
-  if (scenario.context.movement === "unknown") {
-    coreMissing.push("context.movement");
-  }
-
-  if (scenario.outcome.primary_error === "unknown") {
-    coreMissing.push("outcome.primary_error");
-  }
-
-  if (coreMissing.length > 0) {
-    return coreMissing;
-  }
-
-  for (const slot of scenarioCriticalSlotOrder) {
-    if (slot === "incoming_ball.depth" && scenario.incoming_ball.depth === "unknown") {
-      missing.push(slot);
+  const inferred = inferSkillCategory(scenario);
+  const policy = getSkillCategoryPolicy(inferred.category);
+  const isMissing = (slot: MissingSlotPath) => {
+    if (slot === "stroke") {
+      return scenario.stroke === "unknown";
     }
 
-    if (
-      slot === "subjective_feeling.rushed" &&
-      !scenario.subjective_feeling.rushed &&
-      !scenario.subjective_feeling.tight
-    ) {
-      missing.push(slot);
+    if (slot === "context.session_type") {
+      return scenario.context.session_type === "unknown";
     }
+
+    if (slot === "context.serve_variant") {
+      return scenario.context.serve_variant === "unknown";
+    }
+
+    if (slot === "context.movement") {
+      return scenario.context.movement === "unknown";
+    }
+
+    if (slot === "outcome.primary_error") {
+      return scenario.outcome.primary_error === "unknown";
+    }
+
+    if (slot === "incoming_ball.depth") {
+      return scenario.incoming_ball.depth === "unknown";
+    }
+
+    if (slot === "subjective_feeling.rushed") {
+      return !scenario.subjective_feeling.rushed && !scenario.subjective_feeling.tight;
+    }
+
+    return false;
+  };
+
+  const requiredMissing = policy.requiredSlots.filter(isMissing);
+
+  if (requiredMissing.length > 0) {
+    return requiredMissing;
   }
 
-  return missing;
+  return policy.optionalSlots.filter(isMissing);
 }
 
 export function parseScenarioTextDeterministically(rawUserInput: string): ScenarioState {
@@ -136,6 +146,12 @@ export function parseScenarioTextDeterministically(rawUserInput: string): Scenar
     scenario.stroke = "serve";
   } else if (includesAny(normalized, ["接发", "return"])) {
     scenario.stroke = "return";
+  } else if (includesAny(normalized, ["截击", "volley", "网前"])) {
+    scenario.stroke = "volley";
+  } else if (includesAny(normalized, ["高压", "smash", "overhead"])) {
+    scenario.stroke = "overhead";
+  } else if (includesAny(normalized, ["切削", "slice"])) {
+    scenario.stroke = "slice";
   }
 
   const mentionsPressureContext = includesAny(normalized, [
@@ -168,6 +184,12 @@ export function parseScenarioTextDeterministically(rawUserInput: string): Scenar
 
   if (scenario.stroke === "serve" && scenario.context.movement === "unknown") {
     scenario.context.movement = "stationary";
+  }
+
+  if (/(?:二发|第二发|second serve|second-serve|secondserve)/i.test(normalized)) {
+    scenario.context.serve_variant = "second_serve";
+  } else if (/(?:一发(?!力)|第一发|first serve|first-serve|firstserve)/i.test(normalized)) {
+    scenario.context.serve_variant = "first_serve";
   }
 
   if (includesAny(normalized, ["下网", "into the net", "net"])) {
@@ -234,7 +256,10 @@ function mergeScenarioState(baseScenario: ScenarioState, partialScenario: Partia
       other: Array.isArray(partialScenario.subjective_feeling?.other)
         ? partialScenario.subjective_feeling.other
         : baseScenario.subjective_feeling.other
-    }
+    },
+    asked_followup_ids: Array.isArray(partialScenario.asked_followup_ids)
+      ? partialScenario.asked_followup_ids
+      : baseScenario.asked_followup_ids
   };
 
   nextScenario.missing_slots = getMissingSlots(nextScenario);
@@ -257,19 +282,14 @@ export async function parseScenarioText(
 }
 
 export function isScenarioMinimallyAnalyzable(scenario: ScenarioState) {
-  const hasCoreScene =
-    scenario.stroke !== "unknown" &&
-    scenario.context.session_type !== "unknown" &&
-    scenario.context.movement !== "unknown" &&
-    scenario.outcome.primary_error !== "unknown";
-  const hasDisambiguator =
-    scenario.incoming_ball.depth !== "unknown" ||
-    scenario.context.pressure === "high" ||
-    scenario.subjective_feeling.rushed ||
-    scenario.subjective_feeling.tight ||
-    scenario.subjective_feeling.nervous;
+  const inferred = inferSkillCategory(scenario);
+  const policy = getSkillCategoryPolicy(inferred.category);
+  const missing = getMissingSlots(scenario);
 
-  return hasCoreScene && hasDisambiguator;
+  return policy.isDone({
+    scenario,
+    missingSlots: missing
+  });
 }
 
 export function applyScenarioAnswer(scenario: ScenarioState, questionId: string, answerKey: string) {

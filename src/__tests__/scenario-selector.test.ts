@@ -54,8 +54,52 @@ describe("scenario reconstruction selector", () => {
       "My serve has no power in matches"
     );
 
-    expect(selectNextQuestion(scenario)?.id).toBe("q_movement_state");
-    expect(selectNextQuestion(scenario)?.id).toBe("q_movement_state");
+    expect(selectNextQuestion(scenario)?.id).toBe("q_serve_variant");
+    expect(selectNextQuestion(scenario)?.id).toBe("q_serve_variant");
+  });
+
+  it("never offers movement follow-ups for serve-family complaints", () => {
+    const scenario = parseScenarioTextDeterministically("关键分时我的二发容易下网");
+    const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
+
+    expect(eligibleIds).not.toContain("q_movement_state");
+  });
+
+  it("never offers incoming-ball follow-ups for serve-family complaints", () => {
+    const scenario = parseScenarioTextDeterministically("My serve has no power in matches");
+    const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
+
+    expect(eligibleIds).not.toContain("q_incoming_ball_depth");
+  });
+
+  it("still allows movement follow-ups for groundstroke complaints when the category supports them", () => {
+    const scenario = parseScenarioTextDeterministically("比赛里我反手老下网");
+    const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
+
+    expect(eligibleIds).toContain("q_movement_state");
+  });
+
+  it("uses only the safe fallback subset when technique inference is weak", () => {
+    const scenario = parseScenarioTextDeterministically("就是打着不对劲");
+    const eligibleFamilies = getEligibleQuestions(scenario).map((question) => question.family);
+
+    expect(new Set(eligibleFamilies)).toEqual(
+      new Set(["session_context", "pressure_context", "outcome_pattern", "broad_shot_family_clarification"])
+    );
+  });
+
+  it("never offers serve-only follow-ups for overhead complaints", () => {
+    const scenario = parseScenarioTextDeterministically("My overhead keeps going into the net in matches");
+    const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
+
+    expect(eligibleIds).not.toContain("q_serve_variant");
+  });
+
+  it("never offers serve-only follow-ups for volley complaints", () => {
+    const scenario = parseScenarioTextDeterministically("比赛里我的截击总下网");
+    const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
+
+    expect(eligibleIds).not.toContain("q_serve_variant");
   });
 
   it("accepts ranked candidate ids from the local model when they stay within the eligible set", async () => {

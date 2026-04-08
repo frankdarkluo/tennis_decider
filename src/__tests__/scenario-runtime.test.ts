@@ -14,8 +14,37 @@ import {
   readLocalQwenConfig,
   stripThinkingBlocks
 } from "@/lib/scenarioReconstruction/llm/client";
+import { inferSkillCategory } from "@/lib/scenarioReconstruction/inferSkillCategory";
+import { getSkillCategoryPolicy } from "@/lib/scenarioReconstruction/skillPolicy";
 
 describe("scenario reconstruction runtime", () => {
+  it("infers serve with high confidence for explicit serve-family phrasing", () => {
+    const scenario = parseScenarioTextDeterministically("关键分时我的二发容易下网");
+    const inferred = inferSkillCategory(scenario);
+
+    expect(inferred.category).toBe("serve");
+    expect(inferred.confidence).toBe("high");
+  });
+
+  it("falls back conservatively when the complaint is too vague for a technique-specific category", () => {
+    const scenario = parseScenarioTextDeterministically("就是打着不对劲");
+    const inferred = inferSkillCategory(scenario);
+
+    expect(inferred.category).toBe("generic_safe_fallback");
+    expect(inferred.confidence).toBe("low");
+  });
+
+  it("keeps the safe fallback policy intentionally tiny", () => {
+    const policy = getSkillCategoryPolicy("generic_safe_fallback");
+
+    expect(policy.allowedQuestionFamilies).toEqual([
+      "session_context",
+      "pressure_context",
+      "outcome_pattern",
+      "broad_shot_family_clarification"
+    ]);
+  });
+
   it("parses supported Chinese cues without hallucinating unknown fields", () => {
     const scenario = parseScenarioTextDeterministically(
       "比赛里我反手老下网，特别是对手压得比较深的时候"
@@ -82,10 +111,24 @@ describe("scenario reconstruction runtime", () => {
     const ids = bank.map((question) => question.id);
 
     expect(ids).toContain("q_match_or_practice");
+    expect(ids).toContain("q_broad_shot_family");
     expect(new Set(ids).size).toBe(bank.length);
     expect(bank.every((question) => question.zh.trim().length > 0)).toBe(true);
     expect(bank.every((question) => question.en.trim().length > 0)).toBe(true);
     expect(bank.every((question) => question.options.length > 0)).toBe(true);
+  });
+
+  it("keeps every active scenario question tagged with a stable family and deterministic fillsSlots", () => {
+    const bank = getQuestionBank();
+
+    expect(bank.every((question) => question.family.trim().length > 0)).toBe(true);
+    expect(bank.every((question) => question.fillsSlots.length > 0)).toBe(true);
+  });
+
+  it("supports broad shot-family clarification as a safe fallback question", () => {
+    const question = getQuestionBank().find((item) => item.id === "q_broad_shot_family");
+
+    expect(question?.family).toBe("broad_shot_family_clarification");
   });
 
   it("applies a follow-up answer by updating the targeted slot and preserving prior evidence", () => {
@@ -96,6 +139,7 @@ describe("scenario reconstruction runtime", () => {
     expect(nextScenario.context.session_type).toBe("match");
     expect(nextScenario.context.movement).toBe("moving");
     expect(nextScenario.outcome.primary_error).toBe("net");
+    expect(nextScenario.asked_followup_ids).toEqual(["q_movement_state"]);
   });
 
   it("starts from an empty scenario with all supported fields present", () => {
@@ -107,6 +151,7 @@ describe("scenario reconstruction runtime", () => {
     expect(scenario.outcome.primary_error).toBe("unknown");
     expect(scenario.subjective_feeling.other).toEqual([]);
     expect(scenario.selected_next_question_id).toBeNull();
+    expect(scenario.asked_followup_ids).toEqual([]);
   });
 
   it("uses localhost MLX defaults for the local Qwen client config", () => {

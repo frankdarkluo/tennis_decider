@@ -9,6 +9,7 @@ function buildServeScenario(rawUserInput: string): ScenarioState {
     stroke: "serve",
     context: {
       session_type: "match",
+      serve_variant: "second_serve",
       pressure: "high",
       movement: "stationary",
       format: "unknown"
@@ -37,7 +38,8 @@ function buildServeScenario(rawUserInput: string): ScenarioState {
     user_confidence: "medium",
     missing_slots: ["incoming_ball.depth"],
     next_question_candidates: [],
-    selected_next_question_id: null
+    selected_next_question_id: null,
+    asked_followup_ids: []
   };
 }
 

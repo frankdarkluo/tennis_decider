@@ -116,6 +116,47 @@ describe("scenario reconstruction routes", () => {
     expect(body.selected_question).toBeNull();
   });
 
+  it("POST /api/scenario-reconstruction/parse never returns movement follow-ups for serve complaints", async () => {
+    mockParseScenario.mockRejectedValueOnce(new Error("offline"));
+    mockRankQuestions.mockResolvedValueOnce(["q_movement_state"]);
+
+    const { POST } = await import("../app/api/scenario-reconstruction/parse/route");
+    const response = await POST(
+      new Request("http://localhost/api/scenario-reconstruction/parse", {
+        method: "POST",
+        body: JSON.stringify({
+          text: "My serve has no power in matches",
+          ui_language: "en"
+        })
+      })
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.eligible_questions.map((question: { id: string }) => question.id)).not.toContain("q_movement_state");
+    expect(body.selected_question?.id).not.toBe("q_movement_state");
+  });
+
+  it("POST /api/scenario-reconstruction/parse keeps movement follow-ups available for groundstroke complaints", async () => {
+    mockParseScenario.mockRejectedValueOnce(new Error("offline"));
+    mockRankQuestions.mockResolvedValueOnce(["q_movement_state"]);
+
+    const { POST } = await import("../app/api/scenario-reconstruction/parse/route");
+    const response = await POST(
+      new Request("http://localhost/api/scenario-reconstruction/parse", {
+        method: "POST",
+        body: JSON.stringify({
+          text: "比赛里我反手老下网",
+          ui_language: "zh"
+        })
+      })
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.eligible_questions.map((question: { id: string }) => question.id)).toContain("q_movement_state");
+  });
+
   it("POST /api/scenario-reconstruction/answer-followup updates the scenario and selects the next question", async () => {
     mockRankQuestions.mockResolvedValueOnce(["q_outcome_pattern"]);
 
@@ -130,6 +171,7 @@ describe("scenario reconstruction routes", () => {
             stroke: "backhand",
             context: {
               session_type: "match",
+              serve_variant: "unknown",
               pressure: "unknown",
               movement: "unknown",
               format: "unknown"
@@ -158,7 +200,8 @@ describe("scenario reconstruction routes", () => {
             user_confidence: "unknown",
             missing_slots: ["context.movement", "outcome.primary_error"],
             next_question_candidates: ["q_movement_state"],
-            selected_next_question_id: "q_movement_state"
+            selected_next_question_id: "q_movement_state",
+            asked_followup_ids: []
           },
           question_id: "q_movement_state",
           answer: "moving",
@@ -187,6 +230,7 @@ describe("scenario reconstruction routes", () => {
             stroke: "backhand",
             context: {
               session_type: "match",
+              serve_variant: "unknown",
               pressure: "unknown",
               movement: "unknown",
               format: "unknown"
@@ -215,7 +259,8 @@ describe("scenario reconstruction routes", () => {
             user_confidence: "unknown",
             missing_slots: ["context.movement"],
             next_question_candidates: ["q_movement_state"],
-            selected_next_question_id: "q_movement_state"
+            selected_next_question_id: "q_movement_state",
+            asked_followup_ids: []
           },
           question_id: "q_movement_state",
           answer: "moving",

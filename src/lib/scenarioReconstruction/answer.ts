@@ -10,8 +10,23 @@ export function applyScenarioAnswer(
     context: { ...scenario.context },
     incoming_ball: { ...scenario.incoming_ball },
     outcome: { ...scenario.outcome },
-    subjective_feeling: { ...scenario.subjective_feeling, other: [...scenario.subjective_feeling.other] }
+    subjective_feeling: { ...scenario.subjective_feeling, other: [...scenario.subjective_feeling.other] },
+    asked_followup_ids: [...scenario.asked_followup_ids]
   };
+
+  if (questionId === "q_broad_shot_family") {
+    if (answerKey === "serve" || answerKey === "return" || answerKey === "volley") {
+      nextScenario.stroke = answerKey;
+    }
+
+    if (answerKey === "net_play") {
+      nextScenario.stroke = "volley";
+    }
+
+    if (answerKey === "groundstroke" && nextScenario.stroke === "unknown") {
+      nextScenario.stroke = "groundstroke";
+    }
+  }
 
   if (questionId === "q_match_or_practice") {
     if (answerKey === "practice" || answerKey === "match" || answerKey === "both") {
@@ -31,6 +46,12 @@ export function applyScenarioAnswer(
     }
   }
 
+  if (questionId === "q_serve_variant") {
+    if (answerKey === "first_serve" || answerKey === "second_serve" || answerKey === "both") {
+      nextScenario.context.serve_variant = answerKey;
+    }
+  }
+
   if (questionId === "q_incoming_ball_depth") {
     if (answerKey === "short" || answerKey === "mid" || answerKey === "deep") {
       nextScenario.incoming_ball.depth = answerKey;
@@ -43,5 +64,6 @@ export function applyScenarioAnswer(
   }
 
   nextScenario.selected_next_question_id = questionId;
+  nextScenario.asked_followup_ids.push(questionId);
   return nextScenario;
 }

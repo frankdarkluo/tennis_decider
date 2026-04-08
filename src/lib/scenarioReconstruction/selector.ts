@@ -1,5 +1,7 @@
+import { inferSkillCategory } from "@/lib/scenarioReconstruction/inferSkillCategory";
 import { getQuestionBank } from "@/lib/scenarioReconstruction/questionBank";
 import { createLocalQwenClient, type LocalQwenClient } from "@/lib/scenarioReconstruction/llm/client";
+import { getSkillCategoryPolicy } from "@/lib/scenarioReconstruction/skillPolicy";
 import { getMissingSlots } from "@/lib/scenarioReconstruction/runtime";
 import type { MissingSlotPath, ScenarioQuestion, ScenarioState } from "@/types/scenario";
 
@@ -9,11 +11,28 @@ function isSlotMissing(scenario: ScenarioState, slot: MissingSlotPath) {
 }
 
 function isQuestionEligible(scenario: ScenarioState, question: ScenarioQuestion) {
-  return question.target_slots.some((slot) => isSlotMissing(scenario, slot));
+  const inferred = inferSkillCategory(scenario);
+  const policy = getSkillCategoryPolicy(inferred.category);
+
+  if (!policy.allowedQuestionFamilies.includes(question.family)) {
+    return false;
+  }
+
+  if (scenario.asked_followup_ids.length >= policy.maxFollowups) {
+    return false;
+  }
+
+  if (question.family === "broad_shot_family_clarification") {
+    return inferred.category === "generic_safe_fallback" && scenario.stroke === "unknown";
+  }
+
+  return question.fillsSlots.some((slot) => isSlotMissing(scenario, slot));
 }
 
 function slotPriority(slot: MissingSlotPath): number {
+  if (slot === "stroke") return 95;
   if (slot === "context.session_type") return 100;
+  if (slot === "context.serve_variant") return 75;
   if (slot === "context.movement") return 90;
   if (slot === "outcome.primary_error") return 80;
   if (slot === "incoming_ball.depth") return 70;
