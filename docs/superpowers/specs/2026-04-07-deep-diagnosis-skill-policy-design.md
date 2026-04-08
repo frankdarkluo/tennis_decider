@@ -90,6 +90,7 @@ Initial family set for this refactor should cover current behavior and the near-
 
 - `session_context`
 - `pressure_context`
+- `broad_shot_family_clarification`
 - `movement_context`
 - `outcome_pattern`
 - `incoming_ball_depth`
@@ -108,7 +109,36 @@ Initial family set for this refactor should cover current behavior and the near-
 - `overhead_contact`
 - `slice_response_pattern`
 
-Not every family must be fully implemented in the first code pass, but the model must support them cleanly.
+### V1 implementation scope
+
+This implementation pass should only fully operationalize the families needed to fix the current class of errors and validate the new policy boundary:
+
+- `session_context`
+- `pressure_context`
+- `broad_shot_family_clarification`
+- `movement_context`
+- `outcome_pattern`
+- `incoming_ball_depth`
+- `serve_variant`
+
+V1 should also explicitly wire the corresponding categories needed for the current acceptance criteria:
+
+- `serve`
+- `return` only if already cleanly inferable from current parsing signals
+- `groundstroke_set`
+- `groundstroke_on_move`
+- `volley` only if already cleanly inferable from current parsing signals
+- `contextual_match_situation`
+- `generic_safe_fallback`
+
+The following families and categories are reserved in the model for future extension, but should not be overbuilt in this pass unless they are needed by an already-written regression test:
+
+- families:
+  `serve_toss`, `serve_contact`, `serve_side`, `serve_spin_control`, `return_positioning`, `return_first_ball_goal`, `groundstroke_side`, `groundstroke_contact_height`, `volley_side`, `volley_height`, `volley_racket_face`, `overhead_contact`, `slice_response_pattern`
+- categories:
+  `overhead`, `slice`, and any technique-specific subtype that current parsing cannot yet infer reliably
+
+The rule for implementation scope is: build the smallest complete policy system that prevents invalid follow-up families from surfacing in current deep-diagnosis flows, while keeping the data model extensible for those future families.
 
 ### 3. ScenarioQuestion shape
 
@@ -184,6 +214,28 @@ Inference should use evidence in this order:
 - `generic_safe_fallback`
   Use when technique-specific inference is too weak to safely constrain follow-ups.
 
+### Conflict resolution rules
+
+Inference must resolve conflicting signals conservatively.
+
+1. Explicit stroke-family evidence beats generic contextual evidence.
+   If raw text or grounded scenario state clearly indicates serve, return, forehand, or backhand, do not let generic match/pressure context override it into a non-technique category.
+
+2. Grounded scenario state beats weak free-text hints.
+   If `ScenarioState.stroke` is already confidently grounded, weak textual cues like "着急" or "关键分" should only affect pressure-related context, not replace the technique category.
+
+3. Movement only specializes a grounded groundstroke family.
+   Movement cues may split `groundstroke_set` vs `groundstroke_on_move` only when a groundstroke-family signal is already strong enough. Movement mentions alone must not create a technique-specific category.
+
+4. Pressure context can refine but not redefine technique.
+   If the complaint clearly says serve under pressure, keep `serve`; do not collapse it to `contextual_match_situation`.
+
+5. If technique evidence conflicts without a clear winner, fall back.
+   Example: raw text weakly implies serve, scenario fields remain generic, and diagnosis context mainly signals pressure. In this case the system should choose `generic_safe_fallback` or `contextual_match_situation` only if technique evidence remains below the threshold for a technique-specific category.
+
+6. Ambiguous broad-shot phrasing should prefer `generic_safe_fallback` plus clarification.
+   If the complaint is too vague to distinguish serve vs groundstroke vs volley safely, use the fallback policy and, if enabled in v1, allow only `broad_shot_family_clarification` before any technique-specific family becomes available.
+
 ## Confidence and Uncertainty Handling
 
 Confidence should be strict and simple:
@@ -214,7 +266,8 @@ Allowed families:
 
 Optional future candidate only if phrased safely and generically:
 
-- a broad stroke clarification family such as "which broad shot family is this closer to?"
+- `broad_shot_family_clarification`
+  phrased as a safe broad classification question such as "which broad shot family is this closer to?"
 
 Disallowed in fallback:
 
@@ -259,6 +312,62 @@ Examples:
   May stop earlier with lower evidence rather than force an invalid technique-specific follow-up.
 
 The system should prefer an early honest handoff over an invalid extra question.
+
+### V1 operational stop rules
+
+V1 should translate `doneWhen` into small, testable rules per active category:
+
+- `serve`
+  Done when:
+  - serve-family category is grounded
+  - `outcome_pattern` is grounded
+  - at least one valid serve/context disambiguator is grounded
+    (`session_context`, `pressure_context`, or `serve_variant`)
+  Not required:
+  - `movement_context`
+  - `incoming_ball_depth`
+
+- `groundstroke_set`
+  Done when:
+  - groundstroke-set category is grounded
+  - `outcome_pattern` is grounded
+  - `session_context` is grounded
+  Optional:
+  - `pressure_context`
+  - `incoming_ball_depth`
+  Not required:
+  - further technique-specific questions once the scene is already coherent
+
+- `groundstroke_on_move`
+  Done when:
+  - groundstroke-on-move category is grounded
+  - `movement_context` is grounded
+  - `outcome_pattern` is grounded
+  - `session_context` is grounded
+  Optional:
+  - `incoming_ball_depth`
+  - `pressure_context`
+
+- `contextual_match_situation`
+  Done when:
+  - match/pressure context is grounded enough to preserve the complaint faithfully
+  - `outcome_pattern` is grounded if safely knowable
+  The system should stop early rather than force a stroke-mechanics question.
+
+- `generic_safe_fallback`
+  Done when:
+  - one or two safe broad context questions have been asked and answered, or
+  - no further safe family is available
+  This category should explicitly prefer early honest handoff over additional questioning.
+
+### Follow-up expansion cap
+
+To keep information density controlled, v1 should cap active follow-up expansion conservatively:
+
+- no more than 2 follow-up questions after the initial parse in normal cases
+- if the current category is `generic_safe_fallback`, prefer 0-1 follow-up questions unless a safe clarification clearly improves category grounding
+
+This cap is not meant to be the only stopping rule, but it should guard against the system continuing to ask low-value questions once the complaint is already actionable enough for downstream diagnosis.
 
 ## File Boundary Plan
 
