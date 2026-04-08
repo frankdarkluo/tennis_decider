@@ -92,6 +92,8 @@ describe("plan context handoff", () => {
       sourceInput: "关键分时我的二发容易下网，而且会发紧。",
       sceneSummaryZh: "二发在关键分原地发球时容易下网，而且会发紧。",
       sceneSummaryEn: "On key points my stationary second serve keeps going into the net and it feels tight.",
+      skillCategory: "serve" as const,
+      skillCategoryConfidence: "high" as const,
       problemTag: "second-serve-reliability",
       level: "3.5",
       strokeFamily: "serve" as const,
@@ -102,6 +104,8 @@ describe("plan context handoff", () => {
       outcome: "net" as const,
       incomingBallDepth: "unknown" as const,
       subjectiveFeeling: "tight" as const,
+      unresolvedRequiredSlots: [],
+      stoppedByCap: false,
       isDeepModeReady: true
     };
     const href = buildPlanHref({

@@ -81,11 +81,15 @@ describe("deep diagnose result surface", () => {
       fallbackUsed: false,
       fallbackMode: null,
       level: "3.5",
+      categoryConsistency: "consistent",
+      categoryConflict: null,
       enrichedContext: {
         mode: "deep",
         sourceInput: "关键分时我的二发容易下网",
         sceneSummaryZh: "比赛里我的原地二发容易下网，而且会发紧。",
         sceneSummaryEn: "In matches my stationary second serve keeps going into the net and it feels tight.",
+        skillCategory: "serve",
+        skillCategoryConfidence: "high",
         problemTag: "second-serve-reliability",
         level: "3.5",
         strokeFamily: "serve",
@@ -96,6 +100,8 @@ describe("deep diagnose result surface", () => {
         outcome: "net",
         incomingBallDepth: "unknown",
         subjectiveFeeling: "tight",
+        unresolvedRequiredSlots: [],
+        stoppedByCap: false,
         isDeepModeReady: true
       }
     };
@@ -109,7 +115,58 @@ describe("deep diagnose result surface", () => {
     expect(screen.getByText("这是关键分下的原地二发问题。")).toBeInTheDocument();
     expect(screen.getByText("场景还原保留了明确失误结果：下网。")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText("展开看更多 ↓"));
     expect(screen.getByRole("link", { name: "生成更具体的 7 步训练计划" })).toBeInTheDocument();
+  });
+
+  it("surfaces category conflicts honestly instead of treating them like a normal diagnosis", async () => {
+    const { DiagnoseResult } = await import("@/components/diagnose/DiagnoseResult");
+
+    const result: DiagnosisResult = {
+      input: "比赛里我原地的发球容易出界，而且会发紧。",
+      normalizedInput: "比赛里我原地的发球容易出界，而且会发紧。",
+      matchedRuleId: null,
+      matchedKeywords: [],
+      matchedSynonyms: [],
+      matchScore: 0,
+      confidence: "较低",
+      effortMode: "deep",
+      evidenceLevel: "low",
+      needsNarrowing: true,
+      narrowingPrompts: ["先补一条更具体的发球线索。"],
+      narrowingSuggestions: [{
+        id: "category-conflict",
+        severity: "high",
+        reason: "serve scene drifted into a non-serve rule match",
+        nextAction: "下一条线索继续沿发球这条线补。"
+      }],
+      primaryNextStep: "继续收窄发球场景。",
+      problemTag: "general-improvement",
+      category: ["serve"],
+      title: "先沿发球这条线继续收窄，再锁定诊断",
+      summary: "场景还原已经把问题收在“发球”这一类，但下游规则匹配没有稳定留在这条线上。",
+      detailedSummary: null,
+      causes: ["Deep Mode 和下游诊断没有稳定落在同一技术类别。"],
+      fixes: ["再补一条更具体的发球线索后再继续诊断。"],
+      drills: [],
+      recommendedContents: [],
+      searchQueries: null,
+      fallbackUsed: true,
+      fallbackMode: null,
+      level: "3.5",
+      categoryConsistency: "conflict",
+      categoryConflict: {
+        expectedSkillCategory: "serve",
+        actualProblemTag: "forehand-out",
+        actualCategory: ["forehand", "control"],
+        reason: "serve scene drifted into a non-serve rule match"
+      },
+      enrichedContext: null
+    };
+
+    render(<DiagnoseResult result={result} />);
+
+    expect(screen.getByText("技术类别冲突")).toBeInTheDocument();
+    expect(screen.getByText(/下游诊断没有稳定留在同一类/)).toBeInTheDocument();
+    expect(screen.getAllByText(/serve scene drifted into a non-serve rule match/).length).toBeGreaterThan(0);
   });
 });

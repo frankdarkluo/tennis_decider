@@ -1,5 +1,7 @@
 import { toDiagnosisInput } from "@/lib/scenarioReconstruction/toDiagnosisInput";
+import { inferSkillCategory } from "@/lib/scenarioReconstruction/inferSkillCategory";
 import type {
+  DeepDiagnosisHandoff,
   EnrichedDiagnosisContext,
   EnrichedDiagnosisMode,
   EnrichedIncomingBallDepth,
@@ -17,7 +19,15 @@ function normalizeMode(value: string | null | undefined): EnrichedDiagnosisMode 
 }
 
 function normalizeStrokeFamily(value: string | null | undefined): EnrichedStrokeFamily | undefined {
-  if (value === "forehand" || value === "backhand" || value === "serve" || value === "volley" || value === "overhead") {
+  if (
+    value === "forehand" ||
+    value === "backhand" ||
+    value === "serve" ||
+    value === "return" ||
+    value === "volley" ||
+    value === "overhead" ||
+    value === "slice"
+  ) {
     return value;
   }
 
@@ -130,26 +140,13 @@ function inferIncomingBallDepth(scenario: ScenarioState): EnrichedIncomingBallDe
   return undefined;
 }
 
-function computeDeepModeReady(context: Omit<EnrichedDiagnosisContext, "isDeepModeReady">): boolean {
-  if (context.mode !== "deep") {
-    return false;
-  }
-
-  const hasCoreIssue = Boolean(context.problemTag && context.strokeFamily && context.outcome);
-  const hasSceneSpecificity = Boolean(
-    context.serveSubtype ||
-    context.sessionType ||
-    context.pressureContext === "key_points" ||
-    context.movement ||
-    context.subjectiveFeeling
-  );
-
-  return hasCoreIssue && hasSceneSpecificity;
+function computeDeepModeReady(context: Omit<DeepDiagnosisHandoff, "isDeepModeReady">): boolean {
+  return context.mode === "deep" && !context.stoppedByCap && context.unresolvedRequiredSlots.length === 0;
 }
 
-export function normalizeEnrichedDiagnosisContext(
-  context: Partial<EnrichedDiagnosisContext> | null | undefined
-): EnrichedDiagnosisContext | null {
+export function normalizeDeepDiagnosisHandoff(
+  context: Partial<DeepDiagnosisHandoff> | null | undefined
+): DeepDiagnosisHandoff | null {
   if (!context) {
     return null;
   }
@@ -157,19 +154,18 @@ export function normalizeEnrichedDiagnosisContext(
   const sourceInput = context.sourceInput?.trim();
   const sceneSummaryZh = context.sceneSummaryZh?.trim();
   const sceneSummaryEn = context.sceneSummaryEn?.trim();
-  const problemTag = context.problemTag?.trim();
-
-  if (!sourceInput || !sceneSummaryZh || !sceneSummaryEn || !problemTag) {
+  if (!sourceInput || !sceneSummaryZh || !sceneSummaryEn || !context.skillCategory) {
     return null;
   }
 
-  const normalized: Omit<EnrichedDiagnosisContext, "isDeepModeReady"> = {
+  const normalized: Omit<DeepDiagnosisHandoff, "isDeepModeReady"> = {
     mode: normalizeMode(context.mode),
     sourceInput,
     sceneSummaryZh,
     sceneSummaryEn,
-    problemTag,
     ...(context.level?.trim() ? { level: context.level.trim() } : {}),
+    skillCategory: context.skillCategory,
+    skillCategoryConfidence: context.skillCategoryConfidence ?? "low",
     ...(normalizeStrokeFamily(context.strokeFamily) ? { strokeFamily: normalizeStrokeFamily(context.strokeFamily) } : {}),
     ...(inferServeSubtype(sourceInput) ?? context.serveSubtype ? { serveSubtype: inferServeSubtype(sourceInput) ?? context.serveSubtype } : {}),
     ...(context.sessionType === "practice" || context.sessionType === "match" ? { sessionType: context.sessionType } : {}),
@@ -177,7 +173,9 @@ export function normalizeEnrichedDiagnosisContext(
     ...(normalizeMovement(context.movement) ? { movement: normalizeMovement(context.movement) } : {}),
     ...(normalizeOutcome(context.outcome) ? { outcome: normalizeOutcome(context.outcome) } : {}),
     ...(normalizeIncomingBallDepth(context.incomingBallDepth) ? { incomingBallDepth: normalizeIncomingBallDepth(context.incomingBallDepth) } : {}),
-    ...(normalizeSubjectiveFeeling(context.subjectiveFeeling) ? { subjectiveFeeling: normalizeSubjectiveFeeling(context.subjectiveFeeling) } : {})
+    ...(normalizeSubjectiveFeeling(context.subjectiveFeeling) ? { subjectiveFeeling: normalizeSubjectiveFeeling(context.subjectiveFeeling) } : {}),
+    unresolvedRequiredSlots: Array.isArray(context.unresolvedRequiredSlots) ? context.unresolvedRequiredSlots : [],
+    stoppedByCap: Boolean(context.stoppedByCap)
   };
 
   return {
@@ -185,6 +183,24 @@ export function normalizeEnrichedDiagnosisContext(
     isDeepModeReady: typeof context.isDeepModeReady === "boolean"
       ? context.isDeepModeReady && computeDeepModeReady(normalized)
       : computeDeepModeReady(normalized)
+  };
+}
+
+export function normalizeEnrichedDiagnosisContext(
+  context: Partial<EnrichedDiagnosisContext> | null | undefined
+): EnrichedDiagnosisContext | null {
+  if (!context?.problemTag?.trim()) {
+    return null;
+  }
+
+  const handoff = normalizeDeepDiagnosisHandoff(context);
+  if (!handoff) {
+    return null;
+  }
+
+  return {
+    ...handoff,
+    problemTag: context.problemTag.trim()
   };
 }
 
@@ -205,21 +221,22 @@ export function encodeEnrichedDiagnosisContext(context?: EnrichedDiagnosisContex
   return normalized ? JSON.stringify(normalized) : null;
 }
 
-export function buildEnrichedDiagnosisContext(input: {
+export function buildDeepDiagnosisHandoff(input: {
   mode: EnrichedDiagnosisMode;
   sourceInput: string;
   scenario: ScenarioState;
-  problemTag: string;
   level?: string;
-}): EnrichedDiagnosisContext {
+}): DeepDiagnosisHandoff {
+  const inferred = inferSkillCategory(input.scenario);
   const serveSubtype = inferServeSubtype(input.sourceInput);
-  const context = normalizeEnrichedDiagnosisContext({
+  const handoff = normalizeDeepDiagnosisHandoff({
     mode: input.mode,
     sourceInput: input.sourceInput,
     sceneSummaryZh: toDiagnosisInput({ scenario: input.scenario, locale: "zh" }),
     sceneSummaryEn: toDiagnosisInput({ scenario: input.scenario, locale: "en" }),
-    problemTag: input.problemTag,
     level: input.level,
+    skillCategory: inferred.category,
+    skillCategoryConfidence: inferred.confidence,
     strokeFamily: normalizeStrokeFamily(input.scenario.stroke),
     serveSubtype,
     sessionType: input.scenario.context.session_type === "match" || input.scenario.context.session_type === "practice"
@@ -229,7 +246,26 @@ export function buildEnrichedDiagnosisContext(input: {
     movement: normalizeMovement(input.scenario.context.movement),
     outcome: inferOutcome(input.scenario, serveSubtype),
     incomingBallDepth: inferIncomingBallDepth(input.scenario) ?? "unknown",
-    subjectiveFeeling: inferSubjectiveFeeling(input.scenario)
+    subjectiveFeeling: inferSubjectiveFeeling(input.scenario),
+    unresolvedRequiredSlots: [...input.scenario.deep_progress.requiredRemaining],
+    stoppedByCap: input.scenario.deep_progress.stoppedByCap,
+    isDeepModeReady: input.scenario.deep_progress.deepReady
+  });
+
+  if (!handoff) {
+    throw new Error("Failed to build deep diagnosis handoff");
+  }
+
+  return handoff;
+}
+
+export function buildEnrichedDiagnosisContext(input: {
+  handoff: DeepDiagnosisHandoff;
+  problemTag: string;
+}): EnrichedDiagnosisContext {
+  const context = normalizeEnrichedDiagnosisContext({
+    ...input.handoff,
+    problemTag: input.problemTag
   });
 
   if (!context) {

@@ -40,6 +40,8 @@ export const planFewShotFixtures: PlanFewShotFixture[] = [
       sourceInput: "关键分时我的二发容易下网",
       sceneSummaryZh: "比赛里我的原地二发容易下网，而且会发紧。",
       sceneSummaryEn: "In matches my stationary second serve keeps going into the net and it feels tight.",
+      skillCategory: "serve",
+      skillCategoryConfidence: "high",
       problemTag: "second-serve-reliability",
       level: "3.5",
       strokeFamily: "serve",
@@ -50,6 +52,8 @@ export const planFewShotFixtures: PlanFewShotFixture[] = [
       outcome: "net",
       incomingBallDepth: "unknown",
       subjectiveFeeling: "tight",
+      unresolvedRequiredSlots: [],
+      stoppedByCap: false,
       isDeepModeReady: true
     },
     dayExpectations: [

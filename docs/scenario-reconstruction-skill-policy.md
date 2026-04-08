@@ -59,6 +59,22 @@ Deep Mode now distinguishes:
 
 Downstream analysis should preserve that difference instead of flattening both into generic "unknown."
 
+## Deep Mode handoff is now a downstream contract
+
+Once Deep Mode has a reliable skill category, the handoff into diagnosis is no longer a soft hint.
+
+The handoff now carries:
+
+- `skillCategory`
+- category confidence
+- grounded scene summary
+- unresolved required-slot provenance
+- whether Deep Mode stopped because it was actually ready or because it hit the cap
+
+Downstream diagnosis must gate candidates through that same category before ranking. If Deep Mode grounded the scene as `serve`, the diagnosis layer cannot silently jump to `forehand` just because a global lexical rule scored well.
+
+If there is a real mismatch, the system should surface an honest category-conflict state instead of pretending the cross-category diagnosis is normal.
+
 ## Safe fallback behavior
 
 When technique inference is weak, the system does not guess. It switches to a deliberately small safe fallback policy and only allows broad context questions such as:

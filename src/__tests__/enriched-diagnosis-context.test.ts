@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import type { ScenarioState } from "@/types/scenario";
-import { buildEnrichedDiagnosisContext, normalizeEnrichedDiagnosisContext } from "@/lib/diagnose/enrichedContext";
+import {
+  buildDeepDiagnosisHandoff,
+  buildEnrichedDiagnosisContext,
+  normalizeEnrichedDiagnosisContext
+} from "@/lib/diagnose/enrichedContext";
 
 function buildServeScenario(rawUserInput: string): ScenarioState {
   return {
@@ -36,6 +40,23 @@ function buildServeScenario(rawUserInput: string): ScenarioState {
       other: []
     },
     user_confidence: "medium",
+    slot_resolution: {
+      stroke: "answered",
+      "context.session_type": "answered",
+      "context.serve_variant": "answered",
+      "context.movement": "answered",
+      "outcome.primary_error": "answered",
+      "incoming_ball.depth": "unasked",
+      "subjective_feeling.rushed": "answered"
+    },
+    deep_progress: {
+      deepReady: true,
+      stoppedByCap: false,
+      requiredRemaining: [],
+      optionalRemaining: ["incoming_ball.depth"],
+      unresolvedRequiredBecauseOfSkip: [],
+      unresolvedRequiredBecauseUnavailable: []
+    },
     missing_slots: ["incoming_ball.depth"],
     next_question_candidates: [],
     selected_next_question_id: null,
@@ -45,12 +66,15 @@ function buildServeScenario(rawUserInput: string): ScenarioState {
 
 describe("enriched diagnosis context", () => {
   it("builds a deterministic deep context from a serve-family scenario", () => {
-    const context = buildEnrichedDiagnosisContext({
+    const handoff = buildDeepDiagnosisHandoff({
       mode: "deep",
       sourceInput: "关键分时我的二发容易下网",
       scenario: buildServeScenario("关键分时我的二发容易下网"),
-      problemTag: "second-serve-reliability",
       level: "3.5"
+    });
+    const context = buildEnrichedDiagnosisContext({
+      handoff,
+      problemTag: "second-serve-reliability"
     });
 
     expect(context).toMatchObject({
@@ -78,8 +102,12 @@ describe("enriched diagnosis context", () => {
       sourceInput: "我的发球有问题",
       sceneSummaryZh: "我的发球有问题。",
       sceneSummaryEn: "My serve has a problem.",
+      skillCategory: "serve",
+      skillCategoryConfidence: "medium",
       problemTag: "first-serve-in",
-      strokeFamily: "serve"
+      strokeFamily: "serve",
+      unresolvedRequiredSlots: ["context.session_type"],
+      stoppedByCap: false
     });
 
     expect(context).toMatchObject({

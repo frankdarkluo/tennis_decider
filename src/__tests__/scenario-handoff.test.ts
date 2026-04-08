@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { buildDeepDiagnosisHandoff } from "@/lib/diagnose/enrichedContext";
 import { diagnoseProblem } from "@/lib/diagnosis";
 import { toDiagnosisInput } from "@/lib/scenarioReconstruction/toDiagnosisInput";
 import type { ScenarioState } from "@/types/scenario";
@@ -37,6 +38,23 @@ function buildScenario(overrides: Partial<ScenarioState> = {}): ScenarioState {
       other: []
     },
     user_confidence: "unknown",
+    slot_resolution: {
+      stroke: "answered",
+      "context.session_type": "answered",
+      "context.serve_variant": "unasked",
+      "context.movement": "answered",
+      "outcome.primary_error": "answered",
+      "incoming_ball.depth": "unasked",
+      "subjective_feeling.rushed": "unasked"
+    },
+    deep_progress: {
+      deepReady: false,
+      stoppedByCap: false,
+      requiredRemaining: ["context.serve_variant", "subjective_feeling.rushed"],
+      optionalRemaining: ["incoming_ball.depth"],
+      unresolvedRequiredBecauseOfSkip: [],
+      unresolvedRequiredBecauseUnavailable: []
+    },
     missing_slots: [],
     next_question_candidates: [],
     selected_next_question_id: null,
@@ -190,5 +208,69 @@ describe("scenario reconstruction handoff adapter", () => {
     expect(handoff).toContain("二发");
     expect(handoff).not.toContain("一发");
     expect(diagnosis.problemTag).toBe("second-serve-reliability");
+  });
+
+  it("keeps downstream diagnosis inside the serve family when Deep Mode handoff is reliable", () => {
+    const scenario = buildScenario({
+      raw_user_input: "我的原地的发球容易出界，而且会发紧。",
+      stroke: "serve",
+      context: {
+        session_type: "match",
+        serve_variant: "both",
+        pressure: "high",
+        movement: "stationary",
+        format: "unknown"
+      },
+      outcome: {
+        primary_error: "long",
+        frequency: "often"
+      },
+      subjective_feeling: {
+        tight: true,
+        rushed: false,
+        awkward: false,
+        hesitant: false,
+        nervous: false,
+        late_contact: false,
+        no_timing: false,
+        other: []
+      },
+      slot_resolution: {
+        stroke: "answered",
+        "context.session_type": "answered",
+        "context.serve_variant": "answered",
+        "context.movement": "answered",
+        "outcome.primary_error": "answered",
+        "incoming_ball.depth": "unasked",
+        "subjective_feeling.rushed": "answered"
+      },
+      deep_progress: {
+        deepReady: true,
+        stoppedByCap: false,
+        requiredRemaining: [],
+        optionalRemaining: ["incoming_ball.depth"],
+        unresolvedRequiredBecauseOfSkip: [],
+        unresolvedRequiredBecauseUnavailable: []
+      }
+    });
+
+    const handoff = buildDeepDiagnosisHandoff({
+      mode: "deep",
+      sourceInput: scenario.raw_user_input,
+      scenario,
+      level: "3.5"
+    });
+    const diagnosis = diagnoseProblem(toDiagnosisInput({ scenario, locale: "zh" }), {
+      locale: "zh",
+      environment: "production",
+      effortMode: "deep",
+      deepHandoff: handoff
+    });
+
+    expect(handoff.skillCategory).toBe("serve");
+    expect(diagnosis.categoryConsistency).toBe("consistent");
+    expect(diagnosis.problemTag).toMatch(/^serve-|^first-serve-in$|^second-serve-reliability$/);
+    expect(diagnosis.title).not.toBe("正手控制不足");
+    expect(diagnosis.category).toContain("serve");
   });
 });

@@ -244,10 +244,12 @@ describe("deep diagnose orchestrator", () => {
     await waitFor(() => {
       expect(screen.getAllByText("深入模式").length).toBeGreaterThan(0);
       expect(screen.getAllByText("场景还原").length).toBeGreaterThan(0);
-      expect(screen.getByText("为什么这次判断更具体")).toBeInTheDocument();
+      expect(screen.getByText("场景证据诊断")).toBeInTheDocument();
+      expect(screen.getByText("二发稳定性不足")).toBeInTheDocument();
     });
 
     expect(mockPush).not.toHaveBeenCalled();
+    expect(screen.queryByText("正手控制不足")).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "标准" }));
     fireEvent.click(screen.getByRole("button", { name: "深入" }));

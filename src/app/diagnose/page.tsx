@@ -28,7 +28,7 @@ import {
 } from "@/lib/study/localData";
 import { AssessmentResult } from "@/types/assessment";
 import { DiagnosisEffortMode, DiagnosisResult, DiagnosisSnapshot } from "@/types/diagnosis";
-import { buildEnrichedDiagnosisContext } from "@/lib/diagnose/enrichedContext";
+import { buildDeepDiagnosisHandoff, buildEnrichedDiagnosisContext } from "@/lib/diagnose/enrichedContext";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { DeepScenarioModule } from "@/components/diagnose/DeepScenarioModule";
@@ -75,7 +75,9 @@ function createDiagnosisSnapshot(result: DiagnosisResult, locale: "zh" | "en"): 
     fallbackUsed: result.fallbackUsed,
     fallbackMode: result.fallbackMode,
     level: result.level,
-    enrichedContext: result.enrichedContext ?? null
+    enrichedContext: result.enrichedContext ?? null,
+    categoryConsistency: result.categoryConsistency,
+    categoryConflict: result.categoryConflict ?? null
   };
 }
 
@@ -112,7 +114,9 @@ function replayDiagnosisFromSnapshot(
     fallbackUsed: snapshot.fallbackUsed,
     fallbackMode: snapshot.fallbackMode,
     level: snapshot.level ?? fallbackLevel,
-    enrichedContext: snapshot.enrichedContext ?? null
+    enrichedContext: snapshot.enrichedContext ?? null,
+    categoryConsistency: snapshot.categoryConsistency,
+    categoryConflict: snapshot.categoryConflict ?? null
   };
 }
 
@@ -199,22 +203,29 @@ function DiagnosePageContent() {
       effortMode
     }, { page: "/diagnose" });
 
+    const deepHandoff = options?.scenario
+      ? buildDeepDiagnosisHandoff({
+        mode: effortMode === "deep" ? "deep" : "standard",
+        sourceInput: options.sourceInput?.trim() || trimmedText,
+        scenario: options.scenario,
+        level: currentLevel
+      })
+      : null;
+
     const diagnosisResult = diagnoseProblem(trimmedText, {
       level: currentLevel,
       assessmentResult,
       maxRecommendations: 5,
       effortMode,
       locale: language,
-      environment
+      environment,
+      deepHandoff
     });
 
-    const enrichedContext = options?.scenario
+    const enrichedContext = deepHandoff
       ? buildEnrichedDiagnosisContext({
-        mode: effortMode === "deep" ? "deep" : "standard",
-        sourceInput: options.sourceInput?.trim() || trimmedText,
-        scenario: options.scenario,
-        problemTag: diagnosisResult.problemTag,
-        level: diagnosisResult.level
+        handoff: deepHandoff,
+        problemTag: diagnosisResult.problemTag
       })
       : null;
     const finalResult: DiagnosisResult = {

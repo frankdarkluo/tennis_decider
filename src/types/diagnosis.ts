@@ -1,10 +1,20 @@
+import { AssessmentResult } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
-import { EnvironmentValue } from "@/types/environment";
-import { EnrichedDiagnosisContext } from "@/types/enrichedDiagnosis";
+import { AppEnvironment, EnvironmentValue } from "@/types/environment";
+import { DeepDiagnosisHandoff, EnrichedDiagnosisContext } from "@/types/enrichedDiagnosis";
 
 export type DiagnosisSearchQueries = {
   bilibili: string[];
   youtube: string[];
+};
+
+export type DiagnosisCategoryConsistency = "ungated" | "consistent" | "conflict";
+
+export type DiagnosisCategoryConflict = {
+  expectedSkillCategory: string;
+  actualProblemTag: string | null;
+  actualCategory: string[];
+  reason: string;
 };
 
 export type DiagnosisAlias =
@@ -134,6 +144,8 @@ export type DiagnosisResult = {
   fallbackMode: "assessment" | "no-assessment" | null;
   level?: string;
   enrichedContext?: EnrichedDiagnosisContext | null;
+  categoryConsistency?: DiagnosisCategoryConsistency;
+  categoryConflict?: DiagnosisCategoryConflict | null;
 };
 
 export type DiagnosisSnapshot = {
@@ -163,4 +175,18 @@ export type DiagnosisSnapshot = {
   fallbackMode: "assessment" | "no-assessment" | null;
   level?: string;
   enrichedContext?: EnrichedDiagnosisContext | null;
+  categoryConsistency?: DiagnosisCategoryConsistency;
+  categoryConflict?: DiagnosisCategoryConflict | null;
+};
+
+export type DiagnoseOptions = {
+  level?: string;
+  assessmentResult?: AssessmentResult | null;
+  maxRecommendations?: number;
+  rules?: DiagnosisRule[];
+  contentPool?: ContentItem[];
+  effortMode?: DiagnosisEffortMode;
+  locale?: "zh" | "en";
+  environment?: AppEnvironment;
+  deepHandoff?: DeepDiagnosisHandoff | null;
 };

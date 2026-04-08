@@ -1,5 +1,7 @@
+import type { MissingSlotPath, SkillCategory, SkillCategoryInference } from "@/types/scenario";
+
 export type EnrichedDiagnosisMode = "standard" | "deep";
-export type EnrichedStrokeFamily = "forehand" | "backhand" | "serve" | "volley" | "overhead" | "general";
+export type EnrichedStrokeFamily = "forehand" | "backhand" | "serve" | "return" | "volley" | "overhead" | "slice" | "general";
 export type EnrichedServeSubtype = "first_serve" | "second_serve";
 export type EnrichedSessionType = "practice" | "match";
 export type EnrichedPressureContext = "none" | "general_match_pressure" | "key_points";
@@ -8,13 +10,14 @@ export type EnrichedOutcome = "net" | "long" | "short" | "float" | "miss_in" | "
 export type EnrichedIncomingBallDepth = "shallow" | "medium" | "deep" | "unknown";
 export type EnrichedSubjectiveFeeling = "tight" | "rushed" | "late" | "hesitant" | "low_confidence" | "awkward" | "unknown";
 
-export type EnrichedDiagnosisContext = {
+export type DeepDiagnosisHandoff = {
   mode: EnrichedDiagnosisMode;
   sourceInput: string;
   sceneSummaryZh: string;
   sceneSummaryEn: string;
-  problemTag: string;
   level?: string;
+  skillCategory: SkillCategory;
+  skillCategoryConfidence: SkillCategoryInference["confidence"];
   strokeFamily?: EnrichedStrokeFamily;
   serveSubtype?: EnrichedServeSubtype;
   sessionType?: EnrichedSessionType;
@@ -23,5 +26,11 @@ export type EnrichedDiagnosisContext = {
   outcome?: EnrichedOutcome;
   incomingBallDepth?: EnrichedIncomingBallDepth;
   subjectiveFeeling?: EnrichedSubjectiveFeeling;
+  unresolvedRequiredSlots: MissingSlotPath[];
+  stoppedByCap: boolean;
   isDeepModeReady: boolean;
+};
+
+export type EnrichedDiagnosisContext = DeepDiagnosisHandoff & {
+  problemTag: string;
 };

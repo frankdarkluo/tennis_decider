@@ -37,6 +37,8 @@ describe("study plan draft local persistence", () => {
         sourceInput: "关键分时我的二发容易下网，而且会发紧。",
         sceneSummaryZh: "二发在关键分原地发球时容易下网，而且会发紧。",
         sceneSummaryEn: "On key points my stationary second serve keeps going into the net and it feels tight.",
+        skillCategory: "serve",
+        skillCategoryConfidence: "high",
         problemTag: "second-serve-reliability",
         level: "3.5",
         strokeFamily: "serve",
@@ -47,6 +49,8 @@ describe("study plan draft local persistence", () => {
         outcome: "net",
         incomingBallDepth: "unknown",
         subjectiveFeeling: "tight",
+        unresolvedRequiredSlots: [],
+        stoppedByCap: false,
         isDeepModeReady: true
       }
     });

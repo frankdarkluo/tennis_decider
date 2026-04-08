@@ -1,6 +1,12 @@
 import { contents } from "@/data/contents";
 import { expandedContents } from "@/data/expandedContents";
 import { diagnosisRules } from "@/data/diagnosisRules";
+import {
+  buildDiagnosisCategoryConflict,
+  buildDiagnosisCategoryGate,
+  isDiagnosisResultConsistentWithHandoff,
+  ruleMatchesDiagnosisCategoryGate
+} from "@/lib/diagnose/categoryGate";
 import { filterByEnvironment } from "@/lib/environment";
 import { AssessmentResult } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
@@ -11,6 +17,7 @@ import {
   DiagnosisClause,
   DiagnosisEffortMode,
   DiagnosisEvidenceLevel,
+  DiagnoseOptions,
   DiagnosisInternalSignal,
   DiagnosisLayeredSignals,
   DiagnosisModifier,
@@ -24,17 +31,6 @@ import {
   DiagnosisSlotType,
   DiagnosisSupportSignal
 } from "@/types/diagnosis";
-
-export type DiagnoseOptions = {
-  level?: string;
-  assessmentResult?: AssessmentResult | null;
-  maxRecommendations?: number;
-  rules?: DiagnosisRule[];
-  contentPool?: ContentItem[];
-  effortMode?: DiagnosisEffortMode;
-  locale?: "zh" | "en";
-  environment?: AppEnvironment;
-};
 
 export type ProblemPreviewOption = {
   label: string;
@@ -2065,6 +2061,98 @@ function applyEvidenceCalibratedNarrative(options: {
   };
 }
 
+function getSkillCategoryLabel(skillCategory: string, locale: "zh" | "en") {
+  if (locale === "en") {
+    if (skillCategory === "serve") return "serve";
+    if (skillCategory === "return") return "return";
+    if (skillCategory === "groundstroke_set" || skillCategory === "groundstroke_on_move") return "groundstroke";
+    if (skillCategory === "volley") return "volley";
+    if (skillCategory === "overhead") return "overhead";
+    if (skillCategory === "slice") return "slice";
+    if (skillCategory === "contextual_match_situation") return "match-context";
+    return "current scene";
+  }
+
+  if (skillCategory === "serve") return "发球";
+  if (skillCategory === "return") return "接发";
+  if (skillCategory === "groundstroke_set" || skillCategory === "groundstroke_on_move") return "底线击球";
+  if (skillCategory === "volley") return "截击";
+  if (skillCategory === "overhead") return "高压";
+  if (skillCategory === "slice") return "切削";
+  if (skillCategory === "contextual_match_situation") return "比赛场景";
+  return "当前场景";
+}
+
+function buildCategoryConflictDiagnosisResult(input: {
+  rawInput: string;
+  normalizedInput: string;
+  locale: "zh" | "en";
+  effortMode: DiagnosisEffortMode;
+  level?: string;
+  handoff: NonNullable<DiagnoseOptions["deepHandoff"]>;
+  reason: string;
+}): DiagnosisResult {
+  const label = getSkillCategoryLabel(input.handoff.skillCategory, input.locale);
+  const title = input.locale === "en"
+    ? `Stay inside the ${label} lane before locking the diagnosis`
+    : `先沿${label}这条线继续收窄，再锁定诊断`;
+  const summary = input.locale === "en"
+    ? `Deep Mode grounded this as a ${label} scene, but the downstream rule match did not stay in that lane. Add one more ${label}-specific clue instead of jumping categories.`
+    : `场景还原已经把问题收在“${label}”这一类，但下游规则匹配没有稳定留在这条线上。先补一条更具体的${label}线索，不要跨类跳转。`;
+
+  return {
+    input: input.rawInput,
+    normalizedInput: input.normalizedInput,
+    matchedRuleId: null,
+    matchedKeywords: [],
+    matchedSynonyms: [],
+    matchScore: 0,
+    confidence: "较低",
+    effortMode: input.effortMode,
+    evidenceLevel: "low",
+    needsNarrowing: true,
+    narrowingPrompts: input.locale === "en"
+      ? [`Add one more ${label}-specific clue before continuing.`]
+      : [`先补一条更具体的${label}线索。`],
+    narrowingSuggestions: [{
+      id: "category-conflict",
+      severity: "high",
+      reason: input.reason,
+      nextAction: input.locale === "en"
+        ? `Keep the next clue inside the ${label} lane.`
+        : `下一条线索继续沿${label}这条线补。`
+    }],
+    refusalReasonCodes: [],
+    missingEvidenceSlots: [],
+    primaryNextStep: input.locale === "en"
+      ? `Continue narrowing the ${label} scene.`
+      : `继续收窄${label}场景。`,
+    problemTag: DEFAULT_PROBLEM_TAG,
+    category: [input.handoff.skillCategory],
+    title,
+    summary,
+    detailedSummary: null,
+    causes: input.locale === "en"
+      ? ["Deep Mode and downstream diagnosis did not agree on the same skill lane."]
+      : ["Deep Mode 和下游诊断没有稳定落在同一技术类别。"],
+    fixes: input.locale === "en"
+      ? [`Add one more ${label}-specific clue before diagnosing again.`]
+      : [`再补一条更具体的${label}线索后再继续诊断。`],
+    drills: [],
+    recommendedContents: [],
+    searchQueries: null,
+    fallbackUsed: true,
+    fallbackMode: null,
+    level: input.level,
+    categoryConsistency: "conflict",
+    categoryConflict: buildDiagnosisCategoryConflict({
+      handoff: input.handoff,
+      rule: null,
+      reason: input.reason
+    })
+  };
+}
+
 export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): DiagnosisResult {
   const {
     level,
@@ -2074,10 +2162,15 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     contentPool = ALL_DIAGNOSIS_CONTENTS,
     effortMode = "standard",
     locale = "zh",
-    environment = "production"
+    environment = "production",
+    deepHandoff = null
   } = options;
   const activeRules = filterByEnvironment(rules, environment);
   const eligibleContentPool = filterByEnvironment(contentPool, environment).filter(isDirectLibraryVideo);
+  const categoryGate = buildDiagnosisCategoryGate(deepHandoff);
+  const gatedRules = categoryGate
+    ? activeRules.filter((rule) => ruleMatchesDiagnosisCategoryGate(rule, categoryGate))
+    : activeRules;
 
   const signalBundle = extractDiagnosisSignalBundle(input);
   const normalizedInput = signalBundle.normalizedInput;
@@ -2086,7 +2179,21 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     return getDefaultDiagnosisResult(level, eligibleContentPool, maxRecommendations, locale);
   }
 
-  const { rule, matchedKeywords, matchedSynonyms, score } = findBestDiagnosisRule(input, activeRules);
+  if (categoryGate && gatedRules.length === 0 && deepHandoff) {
+    return buildCategoryConflictDiagnosisResult({
+      rawInput: input,
+      normalizedInput,
+      locale,
+      effortMode,
+      level,
+      handoff: deepHandoff,
+      reason: locale === "en"
+        ? "No diagnosis rules remained after applying the Deep Mode category gate."
+        : "应用 Deep Mode 类别约束后，没有留下可用的诊断规则。"
+    });
+  }
+
+  const { rule, matchedKeywords, matchedSynonyms, score } = findBestDiagnosisRule(input, gatedRules.length > 0 ? gatedRules : activeRules);
 
   if (!rule || score <= 0) {
     const supportAwareCopy = getSupportAwareFallbackCopy(signalBundle.supportSignals, locale);
@@ -2181,8 +2288,24 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
       searchQueries: null,
       fallbackUsed: true,
       fallbackMode,
-      level
+      level,
+      categoryConsistency: categoryGate ? "consistent" : "ungated",
+      categoryConflict: null
     };
+  }
+
+  if (categoryGate && deepHandoff && !ruleMatchesDiagnosisCategoryGate(rule, categoryGate)) {
+    return buildCategoryConflictDiagnosisResult({
+      rawInput: input,
+      normalizedInput,
+      locale,
+      effortMode,
+      level,
+      handoff: deepHandoff,
+      reason: locale === "en"
+        ? `Deep Mode expected ${deepHandoff.skillCategory}, but the selected diagnosis left that lane.`
+        : `Deep Mode 预期是${getSkillCategoryLabel(deepHandoff.skillCategory, locale)}这一类，但选中的诊断离开了这条线。`
+    });
   }
 
   const ruleContent = selectRuleContent(rule, locale);
@@ -2255,7 +2378,7 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     effortMode
   });
 
-  return {
+  const result: DiagnosisResult = {
     input,
     normalizedInput,
     matchedRuleId: rule.id,
@@ -2283,8 +2406,26 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     searchQueries: needsNarrowing ? null : rule.searchQueries,
     fallbackUsed: recommendedContents.length === 0,
     fallbackMode,
-    level
+    level,
+    categoryConsistency: categoryGate ? "consistent" : "ungated",
+    categoryConflict: null
   };
+
+  if (deepHandoff && !isDiagnosisResultConsistentWithHandoff(result, deepHandoff)) {
+    return buildCategoryConflictDiagnosisResult({
+      rawInput: input,
+      normalizedInput,
+      locale,
+      effortMode,
+      level,
+      handoff: deepHandoff,
+      reason: locale === "en"
+        ? "The final diagnosis result failed the post-selection category consistency guard."
+        : "最终诊断结果没有通过选后类别一致性校验。"
+    });
+  }
+
+  return result;
 }
 
 export function getDefaultDiagnosisResult(
@@ -2330,7 +2471,9 @@ export function getDefaultDiagnosisResult(
     searchQueries: null,
     fallbackUsed: true,
     fallbackMode: null,
-    level
+    level,
+    categoryConsistency: "ungated",
+    categoryConflict: null
   };
 }
 

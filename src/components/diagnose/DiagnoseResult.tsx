@@ -273,6 +273,12 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
   const evidenceTone = getEvidenceToneViewModel(result, locale);
   const featuredContent = result.recommendedContents[0];
   const moreContents = result.recommendedContents.slice(1);
+  const hasCategoryConflict = result.categoryConsistency === "conflict";
+  const categoryConflictMessage = hasCategoryConflict
+    ? (locale === "en"
+      ? "Deep Mode grounded one skill lane, but downstream diagnosis did not stay inside it. Add one more same-lane clue before trusting a technical diagnosis."
+      : "Deep Mode 已经把问题收在一个技术类别里，但下游诊断没有稳定留在同一类。先补一条同类线索，再继续相信技术结论。")
+    : null;
 
   useEffect(() => {
     const initialLayer = isDeepMode ? 2 : 1;
@@ -331,6 +337,20 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
               <div className="mt-3">
                 <Link href="/assessment"><Button variant="secondary">{t("video.assessment.cta")}</Button></Link>
               </div>
+            ) : null}
+          </div>
+        ) : null}
+        {hasCategoryConflict && categoryConflictMessage ? (
+          <div className="rounded-xl border border-rose-200 bg-rose-50/80 p-3 text-sm text-slate-700">
+            <p className="font-semibold text-rose-900">
+              {language === "en" ? "Category conflict" : "技术类别冲突"}
+            </p>
+            <p className="mt-2 leading-6">{categoryConflictMessage}</p>
+            {result.categoryConflict?.reason ? (
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {language === "en" ? "Why: " : "原因："}
+                {result.categoryConflict.reason}
+              </p>
             ) : null}
           </div>
         ) : null}
