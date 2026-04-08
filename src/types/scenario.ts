@@ -12,6 +12,8 @@ export type ScenarioStroke =
   | "unknown";
 
 export type ServeVariant = "first_serve" | "second_serve" | "both" | "unknown";
+export type ServeControlPattern = "net" | "long" | "wide" | "no_rhythm" | "unknown";
+export type ServeMechanismFamily = "toss" | "contact" | "rhythm" | "direction_control" | "unknown";
 export type ScenarioSessionType = "practice" | "match" | "both" | "unknown";
 export type ScenarioPressure = "none" | "some" | "high" | "unknown";
 export type ScenarioMovement = "stationary" | "moving" | "recovering" | "approaching_net" | "unknown";
@@ -41,6 +43,8 @@ export type MissingSlotPath =
   | "context.serve_variant"
   | "context.movement"
   | "outcome.primary_error"
+  | "serve.control_pattern"
+  | "serve.mechanism_family"
   | "incoming_ball.depth"
   | "subjective_feeling.rushed";
 
@@ -65,6 +69,8 @@ export type QuestionFamily =
   | "outcome_pattern"
   | "incoming_ball_depth"
   | "serve_variant"
+  | "serve_control_pattern"
+  | "serve_mechanism_family"
   | "serve_toss"
   | "serve_contact"
   | "serve_side"
@@ -132,6 +138,10 @@ export type ScenarioState = {
     pressure: ScenarioPressure;
     movement: ScenarioMovement;
     format: ScenarioFormat;
+  };
+  serve: {
+    control_pattern: ServeControlPattern;
+    mechanism_family: ServeMechanismFamily;
   };
   incoming_ball: {
     depth: IncomingBallDepth;

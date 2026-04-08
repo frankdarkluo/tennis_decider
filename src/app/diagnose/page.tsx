@@ -135,6 +135,7 @@ function DiagnosePageContent() {
   const [latestSnapshot, setLatestSnapshot] = useState<DiagnosisSnapshot | null>(null);
   const [contextReady, setContextReady] = useState(false);
   const [deepResetSignal, setDeepResetSignal] = useState(0);
+  const deepModuleRef = useRef<HTMLDivElement | null>(null);
   const handledQueryRef = useRef<string | null>(null);
   const previousEffortModeRef = useRef<DiagnosisEffortMode>("standard");
   const blockedByPendingStudySetup = pendingStudySetup && !session;
@@ -181,11 +182,12 @@ function DiagnosePageContent() {
     options?: {
       scenario?: ScenarioState | null;
       sourceInput?: string;
+      preserveEditorText?: string;
     }
   ) => {
     const trimmedText = nextText.trim();
 
-    setText(nextText);
+    setText(options?.preserveEditorText ?? nextText);
 
     if (!trimmedText) {
       setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
@@ -360,6 +362,13 @@ function DiagnosePageContent() {
     resetDeepFlow();
   };
 
+  function resumeDeepMode() {
+    setEffortMode("deep");
+    requestAnimationFrame(() => {
+      deepModuleRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
   useEffect(() => {
     const previousEffortMode = previousEffortModeRef.current;
 
@@ -432,19 +441,22 @@ function DiagnosePageContent() {
           onQuickTagClick={(tag) => void runDiagnosis(tag, "tag_click")}
         />
 
-        <DeepScenarioModule
-          sourceText={text}
-          language={language === "en" ? "en" : "zh"}
-          visible={effortMode === "deep"}
-          resetSignal={deepResetSignal}
-          onApplyScenario={({ scenario, diagnosisInput }) => {
-            setText(diagnosisInput);
-            void runDiagnosis(diagnosisInput, "typed", {
-              scenario,
-              sourceInput: text
-            });
-          }}
-        />
+        <div ref={deepModuleRef}>
+          <DeepScenarioModule
+            sourceText={text}
+            language={language === "en" ? "en" : "zh"}
+            visible={effortMode === "deep"}
+            resetSignal={deepResetSignal}
+            onApplyScenario={({ scenario, diagnosisInput }) => {
+              const sourceInput = scenario.raw_user_input.trim() || text.trim();
+              void runDiagnosis(diagnosisInput, "typed", {
+                scenario,
+                sourceInput,
+                preserveEditorText: sourceInput
+              });
+            }}
+          />
+        </div>
 
         {!hasDiagnosed && latestSnapshot ? (
           <Card className="space-y-3 border-slate-200 bg-slate-50/60">
@@ -467,7 +479,7 @@ function DiagnosePageContent() {
           </Card>
         ) : null}
 
-        {hasDiagnosed ? <DiagnoseResultPanel result={result} /> : null}
+        {hasDiagnosed ? <DiagnoseResultPanel result={result} onResumeDeepMode={resumeDeepMode} /> : null}
         {/* ActionabilityPrompt removed from diagnose page per product request */}
       </div>
     </PageContainer>

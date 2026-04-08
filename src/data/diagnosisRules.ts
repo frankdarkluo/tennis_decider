@@ -225,7 +225,18 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_serve_timing",
     keywords: ["发球", "节奏", "时机", "serve", "timing", "rhythm"],
-    synonyms: ["发球节奏总断", "发球时机不稳", "发球动作衔接不顺", "my serve timing is off", "my serve rhythm breaks down", "I mistime my serve"],
+    synonyms: [
+      "发球节奏总断",
+      "发球时机不稳",
+      "发球动作衔接不顺",
+      "发力节奏乱",
+      "发球节奏和时机乱",
+      "发球击球点和触球时机乱",
+      "my serve timing is off",
+      "my serve rhythm breaks down",
+      "I mistime my serve",
+      "my serve contact timing is messy"
+    ],
     category: ["serve", "timing"],
     problemTag: "serve-timing",
     causes: ["抛球、引拍和发力节奏脱节", "发力意图过强导致时机乱", "缺少可重复的发球节奏口令"],
@@ -494,7 +505,21 @@ export const diagnosisRules: DiagnosisRule[] = [
   {
     id: "rule_serve_accuracy",
     keywords: ["发球", "发不进", "落点", "serve", "placement"],
-    synonyms: ["发球老出界", "发球总进不了区", "发球落点不稳", "一发进区率太低", "发球想发哪发不到", "serve accuracy problem", "my serve will not go in", "my serve placement is inconsistent", "I cannot aim my serve"],
+    synonyms: [
+      "发球老出界",
+      "发球总进不了区",
+      "发球落点不稳",
+      "一发进区率太低",
+      "发球想发哪发不到",
+      "发球偏左偏右",
+      "发球落点和方向控制不住",
+      "方向控制不住",
+      "serve accuracy problem",
+      "my serve will not go in",
+      "my serve placement is inconsistent",
+      "I cannot aim my serve",
+      "serve placement keeps drifting"
+    ],
     category: ["serve", "control"],
     problemTag: "serve-accuracy",
     causes: ["抛球和挥拍节奏不一致", "目标区意识不清楚，发球只是大概往前打", "一上来就追求力量，控制先散掉了"],

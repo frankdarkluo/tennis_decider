@@ -116,8 +116,8 @@ describe("scenario reconstruction routes", () => {
     expect(body.scenario.context.movement).toBe("stationary");
     expect(body.scenario.outcome.primary_error).toBe("net");
     expect(body.done).toBe(false);
-    expect(body.scenario.deep_progress.requiredRemaining).toEqual(["subjective_feeling.rushed"]);
-    expect(body.selected_question.id).toBe("q_feeling_rushed_or_tight");
+    expect(body.scenario.deep_progress.requiredRemaining).toEqual(["serve.mechanism_family", "subjective_feeling.rushed"]);
+    expect(body.selected_question.id).toBe("q_serve_mechanism_family");
   });
 
   it("POST /api/scenario-reconstruction/parse never returns movement follow-ups for serve complaints", async () => {
@@ -159,7 +159,42 @@ describe("scenario reconstruction routes", () => {
 
     expect(response.status).toBe(200);
     expect(body.scenario.stroke).toBe("serve");
-    expect(body.eligible_questions.map((question: { id: string }) => question.id)).toEqual(["q_match_or_practice", "q_outcome_pattern", "q_feeling_rushed_or_tight"]);
+    expect(body.eligible_questions.map((question: { id: string }) => question.id)).toEqual([
+      "q_match_or_practice",
+      "q_outcome_pattern",
+      "q_serve_control_pattern",
+      "q_serve_mechanism_family",
+      "q_feeling_rushed_or_tight"
+    ]);
+    expect(body.selected_question.id).toBe("q_match_or_practice");
+  });
+
+  it("POST /api/scenario-reconstruction/parse keeps colloquial serve-control complaints inside serve-only follow-ups", async () => {
+    mockParseScenario.mockRejectedValueOnce(new Error("offline"));
+    mockRankQuestions.mockResolvedValueOnce(["q_incoming_ball_depth"]);
+
+    const { POST } = await import("../app/api/scenario-reconstruction/parse/route");
+    const response = await POST(
+      new Request("http://localhost/api/scenario-reconstruction/parse", {
+        method: "POST",
+        body: JSON.stringify({
+          text: "我的原地的发球发坏不太受控，而且会发紧",
+          ui_language: "zh"
+        })
+      })
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.scenario.stroke).toBe("serve");
+    expect(body.scenario.outcome.primary_error).toBe("no_control");
+    expect(body.done).toBe(false);
+    expect(body.eligible_questions.map((question: { id: string }) => question.id)).toEqual([
+      "q_match_or_practice",
+      "q_serve_variant",
+      "q_serve_control_pattern",
+      "q_serve_mechanism_family"
+    ]);
     expect(body.selected_question.id).toBe("q_match_or_practice");
   });
 

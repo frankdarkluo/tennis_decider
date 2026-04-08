@@ -42,6 +42,8 @@ function slotPriority(slot: MissingSlotPath): number {
   if (slot === "context.serve_variant") return 75;
   if (slot === "context.movement") return 90;
   if (slot === "outcome.primary_error") return 80;
+  if (slot === "serve.control_pattern") return 74;
+  if (slot === "serve.mechanism_family") return 68;
   if (slot === "incoming_ball.depth") return 70;
   return 60;
 }

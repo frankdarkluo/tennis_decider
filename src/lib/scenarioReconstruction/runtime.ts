@@ -38,6 +38,10 @@ export function createEmptyScenario(rawUserInput: string): ScenarioState {
       movement: "unknown",
       format: "unknown"
     },
+    serve: {
+      control_pattern: "unknown",
+      mechanism_family: "unknown"
+    },
     incoming_ball: {
       depth: "unknown",
       height: "unknown",
@@ -76,6 +80,8 @@ export function createInitialSlotResolution(): SlotResolutionMap {
     "context.serve_variant": "unasked",
     "context.movement": "unasked",
     "outcome.primary_error": "unasked",
+    "serve.control_pattern": "unasked",
+    "serve.mechanism_family": "unasked",
     "incoming_ball.depth": "unasked",
     "subjective_feeling.rushed": "unasked"
   };
@@ -135,6 +141,14 @@ function isSlotKnownFromScenario(scenario: ScenarioState, slot: MissingSlotPath)
 
   if (slot === "outcome.primary_error") {
     return scenario.outcome.primary_error !== "unknown";
+  }
+
+  if (slot === "serve.control_pattern") {
+    return scenario.serve.control_pattern !== "unknown";
+  }
+
+  if (slot === "serve.mechanism_family") {
+    return scenario.serve.mechanism_family !== "unknown";
   }
 
   if (slot === "incoming_ball.depth") {
@@ -230,10 +244,42 @@ export function recalculateScenarioState(scenario: ScenarioState) {
 }
 
 export function ensureScenarioInternals(scenario: ScenarioState): ScenarioState {
+  const baseScenario = createEmptyScenario(scenario.raw_user_input ?? "");
   const withInternals: ScenarioState = {
+    ...baseScenario,
     ...scenario,
-    slot_resolution: scenario.slot_resolution ?? createInitialSlotResolution(),
-    deep_progress: scenario.deep_progress ?? createInitialDeepProgress()
+    context: {
+      ...baseScenario.context,
+      ...(scenario.context ?? {})
+    },
+    serve: {
+      ...baseScenario.serve,
+      ...(scenario.serve ?? {})
+    },
+    incoming_ball: {
+      ...baseScenario.incoming_ball,
+      ...(scenario.incoming_ball ?? {})
+    },
+    outcome: {
+      ...baseScenario.outcome,
+      ...(scenario.outcome ?? {})
+    },
+    subjective_feeling: {
+      ...baseScenario.subjective_feeling,
+      ...(scenario.subjective_feeling ?? {}),
+      other: Array.isArray(scenario.subjective_feeling?.other)
+        ? scenario.subjective_feeling.other
+        : baseScenario.subjective_feeling.other
+    },
+    slot_resolution: {
+      ...baseScenario.slot_resolution,
+      ...(scenario.slot_resolution ?? {})
+    },
+    deep_progress: scenario.deep_progress ?? createInitialDeepProgress(),
+    missing_slots: Array.isArray(scenario.missing_slots) ? scenario.missing_slots : [],
+    next_question_candidates: Array.isArray(scenario.next_question_candidates) ? scenario.next_question_candidates : [],
+    selected_next_question_id: scenario.selected_next_question_id ?? null,
+    asked_followup_ids: Array.isArray(scenario.asked_followup_ids) ? scenario.asked_followup_ids : []
   };
 
   return recalculateScenarioState(withInternals);
@@ -305,10 +351,34 @@ export function parseScenarioTextDeterministically(rawUserInput: string): Scenar
     scenario.outcome.primary_error = "net";
   } else if (includesAny(normalized, ["出界", "long"])) {
     scenario.outcome.primary_error = "long";
+  } else if (includesAny(normalized, ["偏左", "偏右", "wide"])) {
+    scenario.outcome.primary_error = "wide";
   } else if (includesAny(normalized, ["没力量", "no power"])) {
     scenario.outcome.primary_error = "no_power";
-  } else if (includesAny(normalized, ["不受控", "out of control"])) {
+  } else if (includesAny(normalized, ["不受控", "不太受控", "控制不住", "out of control"])) {
     scenario.outcome.primary_error = "no_control";
+  }
+
+  if (scenario.stroke === "serve") {
+    if (scenario.outcome.primary_error === "net") {
+      scenario.serve.control_pattern = "net";
+    } else if (scenario.outcome.primary_error === "long") {
+      scenario.serve.control_pattern = "long";
+    } else if (scenario.outcome.primary_error === "wide") {
+      scenario.serve.control_pattern = "wide";
+    } else if (includesAny(normalized, ["没节奏", "节奏乱", "时机乱", "timing breaks down", "no rhythm"])) {
+      scenario.serve.control_pattern = "no_rhythm";
+    }
+
+    if (includesAny(normalized, ["抛球", "toss"])) {
+      scenario.serve.mechanism_family = "toss";
+    } else if (includesAny(normalized, ["击球点", "触球", "contact"])) {
+      scenario.serve.mechanism_family = "contact";
+    } else if (includesAny(normalized, ["节奏", "时机", "timing", "rhythm"])) {
+      scenario.serve.mechanism_family = "rhythm";
+    } else if (includesAny(normalized, ["偏左", "偏右", "落点", "placement", "direction"])) {
+      scenario.serve.mechanism_family = "direction_control";
+    }
   }
 
   if (includesAny(normalized, ["深", "deep"])) {
@@ -349,6 +419,10 @@ function mergeScenarioState(baseScenario: ScenarioState, partialScenario: Partia
     context: {
       ...baseScenario.context,
       ...(partialScenario.context ?? {})
+    },
+    serve: {
+      ...baseScenario.serve,
+      ...(partialScenario.serve ?? {})
     },
     incoming_ball: {
       ...baseScenario.incoming_ball,

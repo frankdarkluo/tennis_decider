@@ -8,6 +8,7 @@ export function applyScenarioAnswer(
   const nextScenario: ScenarioState = {
     ...scenario,
     context: { ...scenario.context },
+    serve: { ...scenario.serve },
     incoming_ball: { ...scenario.incoming_ball },
     outcome: { ...scenario.outcome },
     subjective_feeling: { ...scenario.subjective_feeling, other: [...scenario.subjective_feeling.other] },
@@ -110,6 +111,34 @@ export function applyScenarioAnswer(
     }
 
     mark("context.serve_variant", "answered");
+  }
+
+  if (questionId === "q_serve_control_pattern") {
+    if (applyNonAnswer("serve.control_pattern")) {
+      nextScenario.selected_next_question_id = questionId;
+      nextScenario.asked_followup_ids.push(questionId);
+      return nextScenario;
+    }
+
+    if (answerKey === "net" || answerKey === "long" || answerKey === "wide" || answerKey === "no_rhythm") {
+      nextScenario.serve.control_pattern = answerKey;
+    }
+
+    mark("serve.control_pattern", "answered");
+  }
+
+  if (questionId === "q_serve_mechanism_family") {
+    if (applyNonAnswer("serve.mechanism_family")) {
+      nextScenario.selected_next_question_id = questionId;
+      nextScenario.asked_followup_ids.push(questionId);
+      return nextScenario;
+    }
+
+    if (answerKey === "toss" || answerKey === "contact" || answerKey === "rhythm" || answerKey === "direction_control") {
+      nextScenario.serve.mechanism_family = answerKey;
+    }
+
+    mark("serve.mechanism_family", "answered");
   }
 
   if (questionId === "q_incoming_ball_depth") {

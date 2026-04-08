@@ -74,6 +74,23 @@ describe("scenario reconstruction runtime", () => {
     expect(scenario.context.movement).toBe("stationary");
   });
 
+  it("parses colloquial serve control complaints into a serve-family deep reconstruction state", () => {
+    const scenario = parseScenarioTextDeterministically(
+      "我的原地的发球发坏不太受控，而且会发紧"
+    );
+
+    expect(scenario.stroke).toBe("serve");
+    expect(scenario.context.movement).toBe("stationary");
+    expect(scenario.outcome.primary_error).toBe("no_control");
+    expect(scenario.subjective_feeling.tight).toBe(true);
+    expect(scenario.deep_progress.requiredRemaining).toEqual([
+      "context.session_type",
+      "context.serve_variant",
+      "serve.control_pattern",
+      "serve.mechanism_family"
+    ]);
+  });
+
   it("normalizes second-serve phrasing into a serve-family scenario", () => {
     const scenario = parseScenarioTextDeterministically(
       "关键分时我的二发容易下网"
@@ -275,7 +292,10 @@ describe("scenario reconstruction runtime", () => {
 
     expect(progress.scenario.stroke).toBe("serve");
     expect(progress.done).toBe(false);
-    expect(progress.scenario.deep_progress.requiredRemaining).toEqual(["subjective_feeling.rushed"]);
+    expect(progress.scenario.deep_progress.requiredRemaining).toEqual([
+      "serve.mechanism_family",
+      "subjective_feeling.rushed"
+    ]);
   });
 
   it("marks capped scenarios as honest stops instead of fake completion", () => {

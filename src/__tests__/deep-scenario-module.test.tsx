@@ -30,6 +30,10 @@ describe("DeepScenarioModule", () => {
             movement: "stationary",
             format: "unknown"
           },
+          serve: {
+            control_pattern: "net",
+            mechanism_family: "rhythm"
+          },
           incoming_ball: {
             depth: "unknown",
             height: "unknown",
@@ -58,6 +62,8 @@ describe("DeepScenarioModule", () => {
             "context.serve_variant": "answered",
             "context.movement": "answered",
             "outcome.primary_error": "answered",
+            "serve.control_pattern": "answered",
+            "serve.mechanism_family": "answered",
             "incoming_ball.depth": "unasked",
             "subjective_feeling.rushed": "answered"
           },

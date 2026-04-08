@@ -9,6 +9,8 @@ export type EnrichedMovement = "stationary" | "moving";
 export type EnrichedOutcome = "net" | "long" | "short" | "float" | "miss_in" | "double_fault";
 export type EnrichedIncomingBallDepth = "shallow" | "medium" | "deep" | "unknown";
 export type EnrichedSubjectiveFeeling = "tight" | "rushed" | "late" | "hesitant" | "low_confidence" | "awkward" | "unknown";
+export type EnrichedServeControlPattern = "net" | "long" | "wide" | "no_rhythm" | "unknown";
+export type EnrichedServeMechanismFamily = "toss" | "contact" | "rhythm" | "direction_control" | "unknown";
 
 export type DeepDiagnosisHandoff = {
   mode: EnrichedDiagnosisMode;
@@ -20,6 +22,8 @@ export type DeepDiagnosisHandoff = {
   skillCategoryConfidence: SkillCategoryInference["confidence"];
   strokeFamily?: EnrichedStrokeFamily;
   serveSubtype?: EnrichedServeSubtype;
+  serveControlPattern?: EnrichedServeControlPattern;
+  serveMechanismFamily?: EnrichedServeMechanismFamily;
   sessionType?: EnrichedSessionType;
   pressureContext?: EnrichedPressureContext;
   movement?: EnrichedMovement;

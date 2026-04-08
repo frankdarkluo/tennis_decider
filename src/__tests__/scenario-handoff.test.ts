@@ -16,6 +16,10 @@ function buildScenario(overrides: Partial<ScenarioState> = {}): ScenarioState {
       movement: "stationary",
       format: "unknown"
     },
+    serve: {
+      control_pattern: "unknown",
+      mechanism_family: "unknown"
+    },
     incoming_ball: {
       depth: "unknown",
       height: "unknown",
@@ -44,13 +48,15 @@ function buildScenario(overrides: Partial<ScenarioState> = {}): ScenarioState {
       "context.serve_variant": "unasked",
       "context.movement": "answered",
       "outcome.primary_error": "answered",
+      "serve.control_pattern": "unasked",
+      "serve.mechanism_family": "unasked",
       "incoming_ball.depth": "unasked",
       "subjective_feeling.rushed": "unasked"
     },
     deep_progress: {
       deepReady: false,
       stoppedByCap: false,
-      requiredRemaining: ["context.serve_variant", "subjective_feeling.rushed"],
+      requiredRemaining: ["context.serve_variant", "serve.mechanism_family", "subjective_feeling.rushed"],
       optionalRemaining: ["incoming_ball.depth"],
       unresolvedRequiredBecauseOfSkip: [],
       unresolvedRequiredBecauseUnavailable: []
@@ -221,6 +227,10 @@ describe("scenario reconstruction handoff adapter", () => {
         movement: "stationary",
         format: "unknown"
       },
+      serve: {
+        control_pattern: "long",
+        mechanism_family: "direction_control"
+      },
       outcome: {
         primary_error: "long",
         frequency: "often"
@@ -241,6 +251,8 @@ describe("scenario reconstruction handoff adapter", () => {
         "context.serve_variant": "answered",
         "context.movement": "answered",
         "outcome.primary_error": "answered",
+        "serve.control_pattern": "answered",
+        "serve.mechanism_family": "answered",
         "incoming_ball.depth": "unasked",
         "subjective_feeling.rushed": "answered"
       },

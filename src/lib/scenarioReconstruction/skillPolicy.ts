@@ -15,15 +15,31 @@ export type SkillCategoryPolicy = {
 
 const policies: Record<SkillCategory, SkillCategoryPolicy> = {
   serve: {
-    allowedQuestionFamilies: ["session_context", "pressure_context", "outcome_pattern", "serve_variant"],
+    allowedQuestionFamilies: [
+      "session_context",
+      "pressure_context",
+      "outcome_pattern",
+      "serve_variant",
+      "serve_control_pattern",
+      "serve_mechanism_family"
+    ],
     deepRequiredSlots: [
       "context.session_type",
       "outcome.primary_error",
       "context.serve_variant",
+      "serve.control_pattern",
+      "serve.mechanism_family",
       "subjective_feeling.rushed"
     ],
     deepOptionalSlots: [],
-    maxDeepFollowups: 4
+    maxDeepFollowups: 5,
+    includeSlotAsRequired: ({ scenario, slot }) => {
+      if (slot === "serve.control_pattern") {
+        return scenario.outcome.primary_error === "no_control" || scenario.outcome.primary_error === "unknown";
+      }
+
+      return true;
+    }
   },
   return: {
     allowedQuestionFamilies: ["session_context", "pressure_context", "outcome_pattern"],

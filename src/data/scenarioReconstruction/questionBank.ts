@@ -115,6 +115,52 @@ export const scenarioQuestionBank: ScenarioQuestion[] = [
     ]
   },
   {
+    id: "q_serve_control_pattern",
+    family: "serve_control_pattern",
+    category: "outcome_clarification",
+    target_slots: ["serve.control_pattern"],
+    fillsSlots: ["serve.control_pattern"],
+    priority: 72,
+    zh: "如果说“不太受控”，那更常见的是哪种：下网、偏长、偏左偏右，还是完全没节奏？",
+    en: "If it feels out of control, what is more typical: into the net, long, drifting left-right, or no rhythm at all?",
+    ask_when: ["serve family is already grounded", "serve.control_pattern is missing"],
+    do_not_ask_when: ["serve.control_pattern is already known"],
+    information_gain_weight: 0.84,
+    presupposition_risk: 0.16,
+    easy_to_answer_score: 0.87,
+    options: [
+      { key: "net", zh: "更像下网", en: "Mostly into the net" },
+      { key: "long", zh: "更像偏长", en: "Mostly long" },
+      { key: "wide", zh: "更像偏左偏右", en: "Mostly drifting left-right" },
+      { key: "no_rhythm", zh: "更像完全没节奏", en: "Mostly no rhythm" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
+    ]
+  },
+  {
+    id: "q_serve_mechanism_family",
+    family: "serve_mechanism_family",
+    category: "scenario_localization",
+    target_slots: ["serve.mechanism_family"],
+    fillsSlots: ["serve.mechanism_family"],
+    priority: 68,
+    zh: "你更怀疑是哪一类：抛球不稳、击球点乱、发力节奏乱，还是方向控制不住？",
+    en: "Which one feels closer: unstable toss, messy contact point, broken rhythm, or direction control drifting?",
+    ask_when: ["serve family is already grounded", "serve.mechanism_family is missing"],
+    do_not_ask_when: ["serve.mechanism_family is already known"],
+    information_gain_weight: 0.82,
+    presupposition_risk: 0.18,
+    easy_to_answer_score: 0.83,
+    options: [
+      { key: "toss", zh: "更像抛球不稳", en: "More like the toss" },
+      { key: "contact", zh: "更像击球点乱", en: "More like the contact point" },
+      { key: "rhythm", zh: "更像发力节奏乱", en: "More like broken rhythm" },
+      { key: "direction_control", zh: "更像方向控制不住", en: "More like direction control drifting" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
+    ]
+  },
+  {
     id: "q_incoming_ball_depth",
     family: "incoming_ball_depth",
     category: "scenario_localization",

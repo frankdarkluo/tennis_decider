@@ -18,6 +18,8 @@ const scenarioUiCopy = {
     summarySession: "场景",
     summaryMovement: "移动",
     summaryOutcome: "结果",
+    summaryServeControl: "发球失控方式",
+    summaryServeMechanism: "更像哪类发球问题",
     summaryDepth: "来球深度",
     summaryFeeling: "主观感觉",
     summaryMissing: "还缺这些信息",
@@ -60,6 +62,8 @@ const scenarioUiCopy = {
     summarySession: "Context",
     summaryMovement: "Movement",
     summaryOutcome: "Outcome",
+    summaryServeControl: "Serve miss pattern",
+    summaryServeMechanism: "Likely serve bottleneck",
     summaryDepth: "Incoming depth",
     summaryFeeling: "Feeling",
     summaryMissing: "Still missing",
@@ -112,12 +116,17 @@ const scenarioValueLabels: Record<string, { zh: string; en: string }> = {
   framed: { zh: "打框", en: "Framed" },
   no_power: { zh: "没力量", en: "No power" },
   no_control: { zh: "不受控", en: "No control" },
+  no_rhythm: { zh: "没节奏", en: "No rhythm" },
   short: { zh: "短球", en: "Short" },
   mid: { zh: "中等", en: "Medium" },
   deep: { zh: "深球", en: "Deep" },
   tight: { zh: "发紧", en: "Tight" },
   rushed: { zh: "来不及", en: "Rushed" },
-  nervous: { zh: "紧张", en: "Nervous" }
+  nervous: { zh: "紧张", en: "Nervous" },
+  toss: { zh: "抛球不稳", en: "Toss instability" },
+  contact: { zh: "击球点乱", en: "Messy contact point" },
+  rhythm: { zh: "发力节奏乱", en: "Broken rhythm" },
+  direction_control: { zh: "方向控制不住", en: "Direction control drifting" }
 };
 
 const getCopy = (language: ScenarioUiLanguage) => scenarioUiCopy[language];
@@ -131,6 +140,22 @@ export function getScenarioUiText(
 
 export function getScenarioValueLabel(value: string, language: ScenarioUiLanguage) {
   return (scenarioValueLabels[value] ?? scenarioValueLabels.unknown)[language];
+}
+
+const scenarioMissingSlotLabels: Record<string, { zh: string; en: string }> = {
+  stroke: { zh: "技术类别", en: "Shot family" },
+  "context.session_type": { zh: "练习 / 比赛场景", en: "Practice vs match context" },
+  "context.serve_variant": { zh: "一发 / 二发区分", en: "First vs second serve" },
+  "context.movement": { zh: "原地 / 跑动状态", en: "Set vs moving state" },
+  "outcome.primary_error": { zh: "更常见的结果", en: "Typical miss outcome" },
+  "serve.control_pattern": { zh: "发球失控方式", en: "Serve miss pattern" },
+  "serve.mechanism_family": { zh: "更像哪类发球问题", en: "Likely serve bottleneck" },
+  "incoming_ball.depth": { zh: "来球深度", en: "Incoming ball depth" },
+  "subjective_feeling.rushed": { zh: "发紧 / 着急感觉", en: "Tight vs rushed feel" }
+};
+
+export function getScenarioMissingSlotLabel(slot: string, language: ScenarioUiLanguage) {
+  return (scenarioMissingSlotLabels[slot] ?? { zh: slot, en: slot })[language];
 }
 
 export function getScenarioQuestionText(question: ScenarioQuestion, language: ScenarioUiLanguage) {

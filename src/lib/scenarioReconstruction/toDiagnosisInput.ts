@@ -80,6 +80,54 @@ function buildZhFeeling(scenario: ScenarioState) {
   return "";
 }
 
+function buildZhServeControlDetail(scenario: ScenarioState) {
+  if (scenario.stroke !== "serve") {
+    return "";
+  }
+
+  if (scenario.serve.control_pattern === "net") return "更像发球总下网";
+  if (scenario.serve.control_pattern === "long") return "更像发球总偏长";
+  if (scenario.serve.control_pattern === "wide") return "更像发球偏左偏右";
+  if (scenario.serve.control_pattern === "no_rhythm") return "更像发球完全没节奏";
+  return "";
+}
+
+function buildEnServeControlDetail(scenario: ScenarioState) {
+  if (scenario.stroke !== "serve") {
+    return "";
+  }
+
+  if (scenario.serve.control_pattern === "net") return "more like the serve keeps going into the net";
+  if (scenario.serve.control_pattern === "long") return "more like the serve keeps flying long";
+  if (scenario.serve.control_pattern === "wide") return "more like serve placement keeps drifting left-right";
+  if (scenario.serve.control_pattern === "no_rhythm") return "more like the serve has no rhythm at all";
+  return "";
+}
+
+function buildZhServeMechanismDetail(scenario: ScenarioState) {
+  if (scenario.stroke !== "serve") {
+    return "";
+  }
+
+  if (scenario.serve.mechanism_family === "toss") return "更像发球抛球不稳";
+  if (scenario.serve.mechanism_family === "contact") return "更像发球击球点和触球时机乱";
+  if (scenario.serve.mechanism_family === "rhythm") return "更像发球节奏和时机乱";
+  if (scenario.serve.mechanism_family === "direction_control") return "更像发球落点和方向控制不住";
+  return "";
+}
+
+function buildEnServeMechanismDetail(scenario: ScenarioState) {
+  if (scenario.stroke !== "serve") {
+    return "";
+  }
+
+  if (scenario.serve.mechanism_family === "toss") return "it feels more like the serve toss is unstable";
+  if (scenario.serve.mechanism_family === "contact") return "it feels more like the serve contact point and timing are messy";
+  if (scenario.serve.mechanism_family === "rhythm") return "it feels more like the serve rhythm and timing break down";
+  if (scenario.serve.mechanism_family === "direction_control") return "it feels more like serve placement and direction control keep drifting";
+  return "";
+}
+
 function buildEnFeeling(scenario: ScenarioState) {
   if (scenario.subjective_feeling.tight) return "and it feels tight";
   if (scenario.subjective_feeling.nervous) return "and I get nervous";
@@ -122,9 +170,19 @@ function buildZhSummary(scenario: ScenarioState) {
     detailParts.push("尤其对手球比较深的时候更明显");
   }
 
+  const serveControlDetail = buildZhServeControlDetail(scenario);
+  if (serveControlDetail) {
+    detailParts.push(serveControlDetail);
+  }
+
   const feeling = buildZhFeeling(scenario);
   if (feeling && !suppressPressureContext) {
     detailParts.push(feeling);
+  }
+
+  const serveMechanismDetail = buildZhServeMechanismDetail(scenario);
+  if (serveMechanismDetail) {
+    detailParts.push(serveMechanismDetail);
   }
 
   const summary = [leadParts.join(""), ...detailParts].filter(Boolean).join("，");
@@ -174,9 +232,19 @@ function buildEnSummary(scenario: ScenarioState) {
     detailParts.push("especially on deeper balls");
   }
 
+  const serveControlDetail = buildEnServeControlDetail(scenario);
+  if (serveControlDetail) {
+    detailParts.push(serveControlDetail);
+  }
+
   const feeling = buildEnFeeling(scenario);
   if (feeling && !suppressPressureContext) {
     detailParts.push(feeling);
+  }
+
+  const serveMechanismDetail = buildEnServeMechanismDetail(scenario);
+  if (serveMechanismDetail) {
+    detailParts.push(serveMechanismDetail);
   }
 
   const summary = [leadParts.join(" "), ...detailParts].filter(Boolean).join(", ");

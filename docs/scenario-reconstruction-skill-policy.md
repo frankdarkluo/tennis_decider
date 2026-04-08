@@ -43,6 +43,14 @@ Required slots are what block Deep Mode handoff while they are still askable. Op
 
 This keeps completeness category-specific. A serve complaint and a moving-groundstroke complaint should not require the same dimensions.
 
+For serve in particular, Deep Mode should not stop at "serve + session + rough outcome + pressure." V1 now keeps serve open until it also resolves the serve-internal grounding that downstream diagnosis actually needs:
+
+- serve variant
+- serve control pattern when the miss is still broad (`no_control` / not yet pinned down)
+- likely serve mechanism family such as toss, contact/timing, rhythm, or direction-control drift
+
+That is the difference between "we know this is serve" and "we know enough about this serve problem to hand off."
+
 ## Skip and cannot-answer provenance
 
 Deep Mode now distinguishes:
@@ -74,6 +82,8 @@ The handoff now carries:
 Downstream diagnosis must gate candidates through that same category before ranking. If Deep Mode grounded the scene as `serve`, the diagnosis layer cannot silently jump to `forehand` just because a global lexical rule scored well.
 
 If there is a real mismatch, the system should surface an honest category-conflict state instead of pretending the cross-category diagnosis is normal.
+
+If downstream diagnosis still says the evidence is too thin, that should be treated as a loopback signal rather than a normal finish. The user should be routed back to Deep Mode to continue scene reconstruction instead of being stranded on a static "add one more clue" result.
 
 ## Safe fallback behavior
 

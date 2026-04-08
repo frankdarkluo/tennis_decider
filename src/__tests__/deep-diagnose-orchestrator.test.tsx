@@ -176,6 +176,10 @@ describe("deep diagnose orchestrator", () => {
             movement: "stationary",
             format: "unknown"
           },
+          serve: {
+            control_pattern: "net",
+            mechanism_family: "rhythm"
+          },
           incoming_ball: {
             depth: "unknown",
             height: "unknown",
@@ -204,6 +208,8 @@ describe("deep diagnose orchestrator", () => {
             "context.serve_variant": "answered",
             "context.movement": "answered",
             "outcome.primary_error": "answered",
+            "serve.control_pattern": "answered",
+            "serve.mechanism_family": "answered",
             "incoming_ball.depth": "unasked",
             "subjective_feeling.rushed": "answered"
           },
@@ -244,12 +250,14 @@ describe("deep diagnose orchestrator", () => {
     await waitFor(() => {
       expect(screen.getAllByText("深入模式").length).toBeGreaterThan(0);
       expect(screen.getAllByText("场景还原").length).toBeGreaterThan(0);
+      expect(screen.getByText("当前场景已经补全到可进入深入分析。")).toBeInTheDocument();
       expect(screen.getByText("场景证据诊断")).toBeInTheDocument();
-      expect(screen.getByText("二发稳定性不足")).toBeInTheDocument();
+      expect(screen.getByText("为什么这次判断更具体")).toBeInTheDocument();
     });
 
     expect(mockPush).not.toHaveBeenCalled();
     expect(screen.queryByText("正手控制不足")).not.toBeInTheDocument();
+    expect(screen.getByDisplayValue("关键分时我的二发容易下网")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "标准" }));
     fireEvent.click(screen.getByRole("button", { name: "深入" }));

@@ -169,4 +169,71 @@ describe("deep diagnose result surface", () => {
     expect(screen.getByText(/下游诊断没有稳定留在同一类/)).toBeInTheDocument();
     expect(screen.getAllByText(/serve scene drifted into a non-serve rule match/).length).toBeGreaterThan(0);
   });
+
+  it("turns deep-mode narrowing into a real scene-reconstruction CTA instead of a static hint", async () => {
+    const { DiagnoseResult } = await import("@/components/diagnose/DiagnoseResult");
+    const handleResume = vi.fn();
+
+    const result: DiagnosisResult = {
+      input: "我的原地的发球发坏不太受控，而且会发紧。",
+      normalizedInput: "我的原地的发球发坏不太受控，而且会发紧。",
+      matchedRuleId: "rule_serve_accuracy",
+      matchedKeywords: ["发球"],
+      matchedSynonyms: [],
+      matchScore: 2,
+      confidence: "较低",
+      effortMode: "deep",
+      evidenceLevel: "low",
+      needsNarrowing: true,
+      narrowingPrompts: ["先补一条更具体的发球线索。"],
+      narrowingSuggestions: [{
+        id: "serve-followup",
+        severity: "high",
+        reason: "需要继续补发球线索",
+        nextAction: "继续在场景还原里补发球专属线索。"
+      }],
+      primaryNextStep: "继续补发球线索。",
+      problemTag: "serve-accuracy",
+      category: ["serve", "control"],
+      title: "先补一条关键线索，再锁定诊断",
+      summary: "当前更接近发球控制方向，但证据还不够。",
+      detailedSummary: null,
+      causes: ["发球场景还不够完整。"],
+      fixes: ["先补更具体的发球线索。"],
+      drills: [],
+      recommendedContents: [],
+      searchQueries: null,
+      fallbackUsed: false,
+      fallbackMode: null,
+      level: "3.5",
+      categoryConsistency: "consistent",
+      categoryConflict: null,
+      enrichedContext: {
+        mode: "deep",
+        sourceInput: "我的原地的发球发坏不太受控，而且会发紧。",
+        sceneSummaryZh: "比赛里我的原地发球不太受控，而且会发紧。",
+        sceneSummaryEn: "In matches my stationary serve feels out of control and tight.",
+        skillCategory: "serve",
+        skillCategoryConfidence: "high",
+        problemTag: "serve-accuracy",
+        level: "3.5",
+        strokeFamily: "serve",
+        sessionType: "match",
+        pressureContext: "key_points",
+        movement: "stationary",
+        outcome: "long",
+        serveControlPattern: "long",
+        serveMechanismFamily: "direction_control",
+        unresolvedRequiredSlots: [],
+        stoppedByCap: false,
+        isDeepModeReady: true
+      }
+    };
+
+    render(<DiagnoseResult result={result} onResumeDeepMode={handleResume} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "继续补场景线索" }));
+
+    expect(handleResume).toHaveBeenCalledTimes(1);
+  });
 });

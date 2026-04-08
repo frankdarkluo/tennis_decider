@@ -58,6 +58,21 @@ describe("scenario reconstruction selector", () => {
     expect(selectNextQuestion(scenario)?.id).toBe("q_serve_variant");
   });
 
+  it("keeps colloquial serve-control complaints inside serve-specific Deep Mode follow-ups", () => {
+    const scenario = parseScenarioTextDeterministically("我的原地的发球发坏不太受控，而且会发紧");
+    const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
+
+    expect(selectNextQuestion(scenario)?.id).toBe("q_match_or_practice");
+    expect(eligibleIds).toEqual([
+      "q_match_or_practice",
+      "q_serve_variant",
+      "q_serve_control_pattern",
+      "q_serve_mechanism_family"
+    ]);
+    expect(eligibleIds).not.toContain("q_incoming_ball_depth");
+    expect(eligibleIds).not.toContain("q_movement_state");
+  });
+
   it("never offers movement follow-ups for serve-family complaints", () => {
     const scenario = parseScenarioTextDeterministically("关键分时我的二发容易下网");
     const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
@@ -78,7 +93,13 @@ describe("scenario reconstruction selector", () => {
 
     expect(scenario.stroke).toBe("serve");
     expect(selectNextQuestion(scenario)?.id).toBe("q_match_or_practice");
-    expect(eligibleIds).toEqual(["q_match_or_practice", "q_outcome_pattern", "q_feeling_rushed_or_tight"]);
+    expect(eligibleIds).toEqual([
+      "q_match_or_practice",
+      "q_outcome_pattern",
+      "q_serve_control_pattern",
+      "q_serve_mechanism_family",
+      "q_feeling_rushed_or_tight"
+    ]);
     expect(eligibleIds).not.toContain("q_incoming_ball_depth");
   });
 

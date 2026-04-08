@@ -2,6 +2,8 @@ import { toDiagnosisInput } from "@/lib/scenarioReconstruction/toDiagnosisInput"
 import { inferSkillCategory } from "@/lib/scenarioReconstruction/inferSkillCategory";
 import type {
   DeepDiagnosisHandoff,
+  EnrichedServeControlPattern,
+  EnrichedServeMechanismFamily,
   EnrichedDiagnosisContext,
   EnrichedDiagnosisMode,
   EnrichedIncomingBallDepth,
@@ -82,6 +84,22 @@ function normalizeIncomingBallDepth(value: string | null | undefined): EnrichedI
   return undefined;
 }
 
+function normalizeServeControlPattern(value: string | null | undefined): EnrichedServeControlPattern | undefined {
+  if (value === "net" || value === "long" || value === "wide" || value === "no_rhythm" || value === "unknown") {
+    return value;
+  }
+
+  return undefined;
+}
+
+function normalizeServeMechanismFamily(value: string | null | undefined): EnrichedServeMechanismFamily | undefined {
+  if (value === "toss" || value === "contact" || value === "rhythm" || value === "direction_control" || value === "unknown") {
+    return value;
+  }
+
+  return undefined;
+}
+
 function normalizeSubjectiveFeeling(value: string | null | undefined): EnrichedSubjectiveFeeling | undefined {
   if (value === "tight" || value === "rushed" || value === "late" || value === "hesitant" || value === "low_confidence" || value === "awkward" || value === "unknown") {
     return value;
@@ -140,6 +158,30 @@ function inferIncomingBallDepth(scenario: ScenarioState): EnrichedIncomingBallDe
   return undefined;
 }
 
+function inferServeControlPattern(scenario: ScenarioState): EnrichedServeControlPattern | undefined {
+  if (scenario.serve.control_pattern === "net" || scenario.serve.control_pattern === "long" || scenario.serve.control_pattern === "wide" || scenario.serve.control_pattern === "no_rhythm") {
+    return scenario.serve.control_pattern;
+  }
+
+  if (scenario.stroke === "serve" && scenario.outcome.primary_error === "net") return "net";
+  if (scenario.stroke === "serve" && scenario.outcome.primary_error === "long") return "long";
+  if (scenario.stroke === "serve" && scenario.outcome.primary_error === "wide") return "wide";
+  return undefined;
+}
+
+function inferServeMechanismFamily(scenario: ScenarioState): EnrichedServeMechanismFamily | undefined {
+  if (
+    scenario.serve.mechanism_family === "toss" ||
+    scenario.serve.mechanism_family === "contact" ||
+    scenario.serve.mechanism_family === "rhythm" ||
+    scenario.serve.mechanism_family === "direction_control"
+  ) {
+    return scenario.serve.mechanism_family;
+  }
+
+  return undefined;
+}
+
 function computeDeepModeReady(context: Omit<DeepDiagnosisHandoff, "isDeepModeReady">): boolean {
   return context.mode === "deep" && !context.stoppedByCap && context.unresolvedRequiredSlots.length === 0;
 }
@@ -168,6 +210,8 @@ export function normalizeDeepDiagnosisHandoff(
     skillCategoryConfidence: context.skillCategoryConfidence ?? "low",
     ...(normalizeStrokeFamily(context.strokeFamily) ? { strokeFamily: normalizeStrokeFamily(context.strokeFamily) } : {}),
     ...(inferServeSubtype(sourceInput) ?? context.serveSubtype ? { serveSubtype: inferServeSubtype(sourceInput) ?? context.serveSubtype } : {}),
+    ...(normalizeServeControlPattern(context.serveControlPattern) ? { serveControlPattern: normalizeServeControlPattern(context.serveControlPattern) } : {}),
+    ...(normalizeServeMechanismFamily(context.serveMechanismFamily) ? { serveMechanismFamily: normalizeServeMechanismFamily(context.serveMechanismFamily) } : {}),
     ...(context.sessionType === "practice" || context.sessionType === "match" ? { sessionType: context.sessionType } : {}),
     ...(normalizePressureContext(context.pressureContext) ? { pressureContext: normalizePressureContext(context.pressureContext) } : {}),
     ...(normalizeMovement(context.movement) ? { movement: normalizeMovement(context.movement) } : {}),
@@ -239,6 +283,8 @@ export function buildDeepDiagnosisHandoff(input: {
     skillCategoryConfidence: inferred.confidence,
     strokeFamily: normalizeStrokeFamily(input.scenario.stroke),
     serveSubtype,
+    serveControlPattern: inferServeControlPattern(input.scenario),
+    serveMechanismFamily: inferServeMechanismFamily(input.scenario),
     sessionType: input.scenario.context.session_type === "match" || input.scenario.context.session_type === "practice"
       ? input.scenario.context.session_type
       : undefined,
@@ -307,6 +353,12 @@ export function buildEnrichedSpecificityReasons(
       : `场景还原保留了明确失误结果：${context.outcome === "net" ? "下网" : context.outcome === "long" ? "出界" : "双误"}。`);
   }
 
+  if (context.serveMechanismFamily) {
+    reasons.push(locale === "en"
+      ? `Scene reconstruction also grounds the likely serve bottleneck: ${context.serveMechanismFamily === "toss" ? "toss" : context.serveMechanismFamily === "contact" ? "contact point" : context.serveMechanismFamily === "rhythm" ? "rhythm" : "direction control"}.`
+      : `场景还原还补到了更像哪类发球瓶颈：${context.serveMechanismFamily === "toss" ? "抛球" : context.serveMechanismFamily === "contact" ? "击球点" : context.serveMechanismFamily === "rhythm" ? "发力节奏" : "方向控制"}。`);
+  }
+
   if (context.subjectiveFeeling && context.subjectiveFeeling !== "unknown") {
     reasons.push(locale === "en" ? "Scene reconstruction keeps the player's subjective feel instead of dropping it." : "场景还原保留了你的主观感觉，而不是把它丢掉。");
   }
@@ -356,12 +408,21 @@ export function buildEnrichedSceneRecap(
       : context.subjectiveFeeling === "rushed"
         ? "，而且会着急。"
         : "。";
+    const serveMechanism = context.serveMechanismFamily === "toss"
+      ? "更像抛球不稳"
+      : context.serveMechanismFamily === "contact"
+        ? "更像击球点乱"
+        : context.serveMechanismFamily === "rhythm"
+          ? "更像发力节奏乱"
+          : context.serveMechanismFamily === "direction_control"
+            ? "更像方向控制不住"
+            : "";
 
     if (context.serveSubtype === "second_serve" && context.pressureContext === "key_points" && context.movement === "stationary") {
-      return `二发在关键分原地发球时${outcome}${feeling}`;
+      return `二发在关键分原地发球时${outcome}${serveMechanism ? `，${serveMechanism}` : ""}${feeling}`;
     }
 
-    return [scene, target, movement, outcome].filter(Boolean).join("") + feeling;
+    return [scene, target, movement, outcome].filter(Boolean).join("") + (serveMechanism ? `，${serveMechanism}` : "") + feeling;
   }
 
   const target = context.serveSubtype === "second_serve"
@@ -399,8 +460,17 @@ export function buildEnrichedSceneRecap(
     : context.subjectiveFeeling === "rushed"
       ? " and it feels rushed."
       : ".";
+  const serveMechanism = context.serveMechanismFamily === "toss"
+    ? "more like the toss is unstable"
+    : context.serveMechanismFamily === "contact"
+      ? "more like the contact point is messy"
+      : context.serveMechanismFamily === "rhythm"
+        ? "more like the rhythm breaks down"
+        : context.serveMechanismFamily === "direction_control"
+          ? "more like direction control drifts"
+          : "";
 
-  return [scene, "my", target, movement, outcome].filter(Boolean).join(" ") + feeling;
+  return [scene, "my", target, movement, outcome, serveMechanism].filter(Boolean).join(" ") + feeling;
 }
 
 export function buildDeepDiagnosisEvidenceSummary(

@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/Card";
 import {
   getScenarioFeelingSummary,
+  getScenarioMissingSlotLabel,
   getScenarioUiText,
   getScenarioValueLabel,
   type ScenarioUiLanguage
@@ -45,7 +46,7 @@ export function ScenarioSummaryCard({
         <div className="flex flex-wrap gap-2">
           {slots.map((slot) => (
             <span key={`${label}-${slot}`} className={`rounded-full border px-3 py-1 text-xs font-medium ${styles}`}>
-              {slot}
+              {getScenarioMissingSlotLabel(slot, language)}
             </span>
           ))}
         </div>
@@ -61,6 +62,18 @@ export function ScenarioSummaryCard({
         <SummaryRow label={getScenarioUiText("summarySession", language)} value={getScenarioValueLabel(scenario.context.session_type, language)} />
         <SummaryRow label={getScenarioUiText("summaryMovement", language)} value={getScenarioValueLabel(scenario.context.movement, language)} />
         <SummaryRow label={getScenarioUiText("summaryOutcome", language)} value={getScenarioValueLabel(scenario.outcome.primary_error, language)} />
+        {scenario.stroke === "serve" ? (
+          <SummaryRow
+            label={getScenarioUiText("summaryServeControl", language)}
+            value={getScenarioValueLabel(scenario.serve.control_pattern, language)}
+          />
+        ) : null}
+        {scenario.stroke === "serve" ? (
+          <SummaryRow
+            label={getScenarioUiText("summaryServeMechanism", language)}
+            value={getScenarioValueLabel(scenario.serve.mechanism_family, language)}
+          />
+        ) : null}
         <SummaryRow label={getScenarioUiText("summaryDepth", language)} value={getScenarioValueLabel(scenario.incoming_ball.depth, language)} />
         <SummaryRow label={getScenarioUiText("summaryFeeling", language)} value={getScenarioFeelingSummary(scenario, language)} />
       </div>

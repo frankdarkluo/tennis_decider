@@ -206,7 +206,13 @@ function RecommendationCard({
   );
 }
 
-export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
+export function DiagnoseResult({
+  result,
+  onResumeDeepMode
+}: {
+  result: DiagnosisResultType;
+  onResumeDeepMode?: () => void;
+}) {
   const { language, t } = useI18n();
   const locale: "zh" | "en" = language === "en" ? "en" : "zh";
   const { studyMode } = useStudy();
@@ -393,17 +399,29 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
                 ))}
               </ul>
             ) : null}
-            <div className="mt-3">
-              <button
-                type="button"
-                className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
-                onClick={() => {
-                  logEvent("diagnose.why_this_viewed", { targetType: "narrowing" }, { page: "/diagnose" });
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-              >
-                {language === "en" ? "I will refine my description" : "我来补充更具体的描述"}
-              </button>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {isDeepMode && onResumeDeepMode ? (
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    logEvent("diagnose.why_this_viewed", { targetType: "narrowing" }, { page: "/diagnose" });
+                    onResumeDeepMode();
+                  }}
+                >
+                  {language === "en" ? "Continue scene reconstruction" : "继续补场景线索"}
+                </Button>
+              ) : (
+                <button
+                  type="button"
+                  className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
+                  onClick={() => {
+                    logEvent("diagnose.why_this_viewed", { targetType: "narrowing" }, { page: "/diagnose" });
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                >
+                  {language === "en" ? "I will refine my description" : "我来补充更具体的描述"}
+                </button>
+              )}
             </div>
           </div>
         ) : null}
