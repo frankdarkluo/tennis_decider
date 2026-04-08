@@ -198,6 +198,23 @@ describe("deep diagnose orchestrator", () => {
             other: []
           },
           user_confidence: "medium",
+          slot_resolution: {
+            stroke: "answered",
+            "context.session_type": "answered",
+            "context.serve_variant": "answered",
+            "context.movement": "answered",
+            "outcome.primary_error": "answered",
+            "incoming_ball.depth": "unasked",
+            "subjective_feeling.rushed": "answered"
+          },
+          deep_progress: {
+            deepReady: true,
+            stoppedByCap: false,
+            requiredRemaining: [],
+            optionalRemaining: ["incoming_ball.depth"],
+            unresolvedRequiredBecauseOfSkip: [],
+            unresolvedRequiredBecauseUnavailable: []
+          },
           missing_slots: ["incoming_ball.depth"],
           next_question_candidates: [],
           selected_next_question_id: null,
@@ -220,7 +237,7 @@ describe("deep diagnose orchestrator", () => {
     fireEvent.click(screen.getByRole("button", { name: "深入" }));
     fireEvent.click(screen.getByRole("button", { name: "开始场景还原" }));
 
-    expect(await screen.findByText("当前场景已经足够进入后续分析。")).toBeInTheDocument();
+    expect(await screen.findByText("当前场景已经补全到可进入深入分析。")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "进入后续分析" }));
 
@@ -235,7 +252,7 @@ describe("deep diagnose orchestrator", () => {
     fireEvent.click(screen.getByRole("button", { name: "标准" }));
     fireEvent.click(screen.getByRole("button", { name: "深入" }));
 
-    expect(screen.queryByText("当前场景已经足够进入后续分析。")).not.toBeInTheDocument();
+    expect(screen.queryByText("当前场景已经补全到可进入深入分析。")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "开始场景还原" })).toBeInTheDocument();
   });
 });

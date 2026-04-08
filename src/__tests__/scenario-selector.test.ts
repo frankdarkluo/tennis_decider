@@ -78,7 +78,7 @@ describe("scenario reconstruction selector", () => {
 
     expect(scenario.stroke).toBe("serve");
     expect(selectNextQuestion(scenario)?.id).toBe("q_match_or_practice");
-    expect(eligibleIds).toEqual(["q_match_or_practice", "q_outcome_pattern"]);
+    expect(eligibleIds).toEqual(["q_match_or_practice", "q_outcome_pattern", "q_feeling_rushed_or_tight"]);
     expect(eligibleIds).not.toContain("q_incoming_ball_depth");
   });
 
@@ -94,7 +94,7 @@ describe("scenario reconstruction selector", () => {
     const eligibleFamilies = getEligibleQuestions(scenario).map((question) => question.family);
 
     expect(new Set(eligibleFamilies)).toEqual(
-      new Set(["session_context", "pressure_context", "outcome_pattern", "broad_shot_family_clarification"])
+      new Set(["session_context", "pressure_context", "broad_shot_family_clarification"])
     );
   });
 
@@ -192,5 +192,14 @@ describe("scenario reconstruction selector", () => {
     const selected = await selectNextQuestionWithLlm(scenario, client);
 
     expect(selected?.id).toBe("q_incoming_ball_depth");
+  });
+
+  it("adds skip and cannot-answer options to active Deep Mode questions", () => {
+    const scenario = parseScenarioTextDeterministically("比赛里我反手老下网");
+    const selected = selectNextQuestion(scenario);
+    const keys = selected?.options.map((option) => option.key) ?? [];
+
+    expect(keys).toContain("skip");
+    expect(keys).toContain("cannot_answer");
   });
 });

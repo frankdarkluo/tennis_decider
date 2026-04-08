@@ -1,115 +1,103 @@
-import type { MissingSlotPath, QuestionFamily, SkillCategory, ScenarioState } from "@/types/scenario";
+import type {
+  MissingSlotPath,
+  QuestionFamily,
+  ScenarioState,
+  SkillCategory
+} from "@/types/scenario";
 
 export type SkillCategoryPolicy = {
   allowedQuestionFamilies: QuestionFamily[];
-  requiredSlots: MissingSlotPath[];
-  optionalSlots: MissingSlotPath[];
-  fallbackPriority: number;
-  maxFollowups: number;
-  isDone(input: {
-    scenario: ScenarioState;
-    missingSlots: MissingSlotPath[];
-  }): boolean;
+  deepRequiredSlots: MissingSlotPath[];
+  deepOptionalSlots: MissingSlotPath[];
+  maxDeepFollowups: number;
+  includeSlotAsRequired?: (input: { scenario: ScenarioState; slot: MissingSlotPath }) => boolean;
 };
 
 const policies: Record<SkillCategory, SkillCategoryPolicy> = {
   serve: {
     allowedQuestionFamilies: ["session_context", "pressure_context", "outcome_pattern", "serve_variant"],
-    requiredSlots: ["context.session_type", "outcome.primary_error"],
-    optionalSlots: ["context.serve_variant", "subjective_feeling.rushed"],
-    fallbackPriority: 100,
-    maxFollowups: 2,
-    isDone: ({ scenario, missingSlots }) => {
-      const hasRequiredSlots = ["context.session_type", "outcome.primary_error"].every((slot) => !missingSlots.includes(slot as MissingSlotPath));
-      const hasServeSignal =
-        scenario.context.serve_variant !== "unknown" ||
-        scenario.context.pressure === "high" ||
-        scenario.subjective_feeling.tight ||
-        scenario.subjective_feeling.rushed;
-
-      return hasRequiredSlots && (hasServeSignal || scenario.asked_followup_ids.length >= 1);
-    }
+    deepRequiredSlots: [
+      "context.session_type",
+      "outcome.primary_error",
+      "context.serve_variant",
+      "subjective_feeling.rushed"
+    ],
+    deepOptionalSlots: [],
+    maxDeepFollowups: 4
   },
   return: {
     allowedQuestionFamilies: ["session_context", "pressure_context", "outcome_pattern"],
-    requiredSlots: ["context.session_type", "outcome.primary_error"],
-    optionalSlots: ["subjective_feeling.rushed"],
-    fallbackPriority: 70,
-    maxFollowups: 2,
-    isDone: ({ missingSlots }) => ["context.session_type", "outcome.primary_error"].every((slot) => !missingSlots.includes(slot as MissingSlotPath))
+    deepRequiredSlots: ["context.session_type", "outcome.primary_error", "subjective_feeling.rushed"],
+    deepOptionalSlots: [],
+    maxDeepFollowups: 4
   },
   groundstroke_set: {
     allowedQuestionFamilies: ["session_context", "pressure_context", "movement_context", "outcome_pattern", "incoming_ball_depth"],
-    requiredSlots: ["context.session_type", "context.movement", "outcome.primary_error"],
-    optionalSlots: ["incoming_ball.depth", "subjective_feeling.rushed"],
-    fallbackPriority: 90,
-    maxFollowups: 2,
-    isDone: ({ missingSlots }) =>
-      ["context.session_type", "context.movement", "outcome.primary_error"].every((slot) => !missingSlots.includes(slot as MissingSlotPath))
+    deepRequiredSlots: [
+      "context.session_type",
+      "context.movement",
+      "outcome.primary_error",
+      "subjective_feeling.rushed",
+      "incoming_ball.depth"
+    ],
+    deepOptionalSlots: [],
+    maxDeepFollowups: 5,
+    includeSlotAsRequired: ({ scenario, slot }) => {
+      if (slot !== "incoming_ball.depth") {
+        return true;
+      }
+
+      return scenario.context.session_type === "match" || scenario.context.movement === "moving";
+    }
   },
   groundstroke_on_move: {
     allowedQuestionFamilies: ["session_context", "pressure_context", "movement_context", "outcome_pattern", "incoming_ball_depth"],
-    requiredSlots: ["context.session_type", "context.movement", "outcome.primary_error"],
-    optionalSlots: ["incoming_ball.depth", "subjective_feeling.rushed"],
-    fallbackPriority: 90,
-    maxFollowups: 2,
-    isDone: ({ missingSlots }) =>
-      ["context.session_type", "context.movement", "outcome.primary_error"].every((slot) => !missingSlots.includes(slot as MissingSlotPath))
+    deepRequiredSlots: [
+      "context.session_type",
+      "context.movement",
+      "outcome.primary_error",
+      "subjective_feeling.rushed",
+      "incoming_ball.depth"
+    ],
+    deepOptionalSlots: [],
+    maxDeepFollowups: 5,
+    includeSlotAsRequired: ({ scenario, slot }) => {
+      if (slot !== "incoming_ball.depth") {
+        return true;
+      }
+
+      return scenario.context.movement === "moving" || scenario.context.session_type === "match";
+    }
   },
   volley: {
     allowedQuestionFamilies: ["session_context", "pressure_context", "outcome_pattern"],
-    requiredSlots: ["context.session_type", "outcome.primary_error"],
-    optionalSlots: ["subjective_feeling.rushed"],
-    fallbackPriority: 70,
-    maxFollowups: 2,
-    isDone: ({ missingSlots }) => ["context.session_type", "outcome.primary_error"].every((slot) => !missingSlots.includes(slot as MissingSlotPath))
+    deepRequiredSlots: ["context.session_type", "outcome.primary_error", "subjective_feeling.rushed"],
+    deepOptionalSlots: [],
+    maxDeepFollowups: 4
   },
   overhead: {
     allowedQuestionFamilies: ["session_context", "pressure_context", "outcome_pattern"],
-    requiredSlots: ["context.session_type", "outcome.primary_error"],
-    optionalSlots: ["subjective_feeling.rushed"],
-    fallbackPriority: 60,
-    maxFollowups: 2,
-    isDone: ({ missingSlots }) => ["context.session_type", "outcome.primary_error"].every((slot) => !missingSlots.includes(slot as MissingSlotPath))
+    deepRequiredSlots: ["context.session_type", "outcome.primary_error", "subjective_feeling.rushed"],
+    deepOptionalSlots: [],
+    maxDeepFollowups: 4
   },
   slice: {
     allowedQuestionFamilies: ["session_context", "pressure_context", "outcome_pattern"],
-    requiredSlots: ["context.session_type", "outcome.primary_error"],
-    optionalSlots: ["subjective_feeling.rushed"],
-    fallbackPriority: 60,
-    maxFollowups: 2,
-    isDone: ({ missingSlots }) => ["context.session_type", "outcome.primary_error"].every((slot) => !missingSlots.includes(slot as MissingSlotPath))
+    deepRequiredSlots: ["context.session_type", "outcome.primary_error", "subjective_feeling.rushed"],
+    deepOptionalSlots: [],
+    maxDeepFollowups: 4
   },
   contextual_match_situation: {
     allowedQuestionFamilies: ["session_context", "pressure_context", "outcome_pattern", "broad_shot_family_clarification"],
-    requiredSlots: ["context.session_type"],
-    optionalSlots: ["outcome.primary_error", "stroke", "subjective_feeling.rushed"],
-    fallbackPriority: 80,
-    maxFollowups: 2,
-    isDone: ({ scenario, missingSlots }) => {
-      const hasRequiredSlots = !missingSlots.includes("context.session_type");
-      const hasEnoughContext =
-        scenario.context.pressure === "high" ||
-        !missingSlots.includes("outcome.primary_error") ||
-        !missingSlots.includes("stroke");
-
-      return hasRequiredSlots && (hasEnoughContext || scenario.asked_followup_ids.length >= 1);
-    }
+    deepRequiredSlots: ["context.session_type", "stroke", "subjective_feeling.rushed"],
+    deepOptionalSlots: ["outcome.primary_error"],
+    maxDeepFollowups: 4
   },
   generic_safe_fallback: {
     allowedQuestionFamilies: ["session_context", "pressure_context", "outcome_pattern", "broad_shot_family_clarification"],
-    requiredSlots: [],
-    optionalSlots: ["context.session_type", "outcome.primary_error", "stroke", "subjective_feeling.rushed"],
-    fallbackPriority: 10,
-    maxFollowups: 1,
-    isDone: ({ scenario, missingSlots }) => {
-      const hasAnyOptionalSignal =
-        !missingSlots.includes("context.session_type") ||
-        !missingSlots.includes("outcome.primary_error") ||
-        !missingSlots.includes("stroke");
-
-      return scenario.asked_followup_ids.length >= 1 || hasAnyOptionalSignal;
-    }
+    deepRequiredSlots: ["context.session_type", "stroke", "subjective_feeling.rushed"],
+    deepOptionalSlots: ["outcome.primary_error"],
+    maxDeepFollowups: 3
   }
 };
 

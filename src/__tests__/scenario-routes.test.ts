@@ -48,8 +48,12 @@ describe("scenario reconstruction routes", () => {
 
     expect(response.status).toBe(200);
     expect(body.scenario.stroke).toBe("backhand");
-    expect(body.missing_slots).toEqual(["context.movement"]);
-    expect(body.eligible_questions.map((question: { id: string }) => question.id)).toEqual(["q_movement_state"]);
+    expect(body.missing_slots).toEqual(["context.movement", "subjective_feeling.rushed", "incoming_ball.depth"]);
+    expect(body.eligible_questions.map((question: { id: string }) => question.id)).toEqual([
+      "q_movement_state",
+      "q_incoming_ball_depth",
+      "q_feeling_rushed_or_tight"
+    ]);
     expect(body.selected_question.id).toBe("q_movement_state");
     expect(body.done).toBe(false);
     expect(getScenarioDecisionLogs()).toHaveLength(1);
@@ -91,7 +95,7 @@ describe("scenario reconstruction routes", () => {
     expect(body.selected_question.id).toBe("q_movement_state");
   });
 
-  it("POST /api/scenario-reconstruction/parse produces a direct handoff-ready serve case for second-serve net misses", async () => {
+  it("POST /api/scenario-reconstruction/parse keeps serve Deep Mode open until the remaining required feeling signal is resolved", async () => {
     mockParseScenario.mockRejectedValueOnce(new Error("offline"));
     mockRankQuestions.mockRejectedValueOnce(new Error("offline"));
 
@@ -111,9 +115,9 @@ describe("scenario reconstruction routes", () => {
     expect(body.scenario.stroke).toBe("serve");
     expect(body.scenario.context.movement).toBe("stationary");
     expect(body.scenario.outcome.primary_error).toBe("net");
-    expect(body.done).toBe(true);
-    expect(body.eligible_questions).toEqual([]);
-    expect(body.selected_question).toBeNull();
+    expect(body.done).toBe(false);
+    expect(body.scenario.deep_progress.requiredRemaining).toEqual(["subjective_feeling.rushed"]);
+    expect(body.selected_question.id).toBe("q_feeling_rushed_or_tight");
   });
 
   it("POST /api/scenario-reconstruction/parse never returns movement follow-ups for serve complaints", async () => {
@@ -155,7 +159,7 @@ describe("scenario reconstruction routes", () => {
 
     expect(response.status).toBe(200);
     expect(body.scenario.stroke).toBe("serve");
-    expect(body.eligible_questions.map((question: { id: string }) => question.id)).toEqual(["q_match_or_practice", "q_outcome_pattern"]);
+    expect(body.eligible_questions.map((question: { id: string }) => question.id)).toEqual(["q_match_or_practice", "q_outcome_pattern", "q_feeling_rushed_or_tight"]);
     expect(body.selected_question.id).toBe("q_match_or_practice");
   });
 
@@ -235,12 +239,12 @@ describe("scenario reconstruction routes", () => {
 
     expect(response.status).toBe(200);
     expect(body.scenario.context.movement).toBe("moving");
-    expect(body.missing_slots).toEqual(["outcome.primary_error"]);
+    expect(body.missing_slots).toEqual(["outcome.primary_error", "subjective_feeling.rushed", "incoming_ball.depth"]);
     expect(body.selected_question.id).toBe("q_outcome_pattern");
     expect(body.done).toBe(false);
   });
 
-  it("POST /api/scenario-reconstruction/answer-followup clears active candidates once done is true", async () => {
+  it("POST /api/scenario-reconstruction/answer-followup keeps Deep Mode open while a required feeling signal is still unresolved", async () => {
     const { POST } = await import("../app/api/scenario-reconstruction/answer-followup/route");
     const response = await POST(
       new Request("http://localhost/api/scenario-reconstruction/answer-followup", {
@@ -293,11 +297,9 @@ describe("scenario reconstruction routes", () => {
     const body = await response.json();
 
     expect(response.status).toBe(200);
-    expect(body.done).toBe(true);
-    expect(body.eligible_questions).toEqual([]);
-    expect(body.selected_question).toBeNull();
-    expect(body.scenario.next_question_candidates).toEqual([]);
-    expect(body.scenario.selected_next_question_id).toBeNull();
+    expect(body.done).toBe(false);
+    expect(body.selected_question.id).toBe("q_feeling_rushed_or_tight");
+    expect(body.scenario.deep_progress.requiredRemaining).toEqual(["subjective_feeling.rushed"]);
   });
 
   it("POST /api/scenario-reconstruction/answer-followup rejects malformed payloads", async () => {

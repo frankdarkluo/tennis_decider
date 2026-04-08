@@ -33,6 +33,7 @@ export type ScenarioPrimaryError =
   | "unknown";
 export type ScenarioFrequency = "rare" | "sometimes" | "often" | "always" | "unknown";
 export type ScenarioUserConfidence = "low" | "medium" | "high" | "unknown";
+export type SlotResolutionState = "unasked" | "answered" | "skipped" | "cannot_answer";
 
 export type MissingSlotPath =
   | "stroke"
@@ -42,6 +43,8 @@ export type MissingSlotPath =
   | "outcome.primary_error"
   | "incoming_ball.depth"
   | "subjective_feeling.rushed";
+
+export type SlotResolutionMap = Record<MissingSlotPath, SlotResolutionState>;
 
 export type SkillCategory =
   | "serve"
@@ -80,6 +83,15 @@ export type SkillCategoryInference = {
   category: SkillCategory;
   confidence: "high" | "medium" | "low";
   reasons: string[];
+};
+
+export type DeepModeProgress = {
+  deepReady: boolean;
+  stoppedByCap: boolean;
+  requiredRemaining: MissingSlotPath[];
+  optionalRemaining: MissingSlotPath[];
+  unresolvedRequiredBecauseOfSkip: MissingSlotPath[];
+  unresolvedRequiredBecauseUnavailable: MissingSlotPath[];
 };
 
 export type ScenarioQuestionCategory =
@@ -143,6 +155,8 @@ export type ScenarioState = {
     other: string[];
   };
   user_confidence: ScenarioUserConfidence;
+  slot_resolution: SlotResolutionMap;
+  deep_progress: DeepModeProgress;
   missing_slots: MissingSlotPath[];
   next_question_candidates: string[];
   selected_next_question_id: string | null;

@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { createLocalQwenClient } from "@/lib/scenarioReconstruction/llm/client";
 import {
   applyScenarioAnswer,
+  ensureScenarioInternals,
   finalizeScenarioProgress,
-  getMissingSlots,
   isScenarioMinimallyAnalyzable
 } from "@/lib/scenarioReconstruction/runtime";
 import { getEligibleQuestions, selectNextQuestionWithLlm } from "@/lib/scenarioReconstruction/selector";
@@ -29,8 +29,7 @@ export async function POST(request: Request) {
 
   const uiLanguage = ui_language === "en" ? "en" : "zh";
   const client = createLocalQwenClient();
-  const nextScenario = applyScenarioAnswer(scenario, question_id, answer);
-  nextScenario.missing_slots = getMissingSlots(nextScenario);
+  const nextScenario = applyScenarioAnswer(ensureScenarioInternals(scenario), question_id, answer);
   const eligibleQuestions = getEligibleQuestions(nextScenario);
   const selectedQuestion = isScenarioMinimallyAnalyzable(nextScenario)
     ? null

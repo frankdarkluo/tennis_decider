@@ -19,7 +19,9 @@ export const scenarioQuestionBank: ScenarioQuestion[] = [
       { key: "practice", zh: "练习", en: "Practice" },
       { key: "match", zh: "比赛", en: "Matches" },
       { key: "both", zh: "都有", en: "Both" },
-      { key: "unknown", zh: "不确定", en: "Not sure" }
+      { key: "unknown", zh: "不确定", en: "Not sure" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
     ]
   },
   {
@@ -40,7 +42,9 @@ export const scenarioQuestionBank: ScenarioQuestion[] = [
       { key: "serve", zh: "发球", en: "Serve" },
       { key: "groundstroke", zh: "底线击球", en: "Baseline stroke" },
       { key: "return", zh: "接发", en: "Return" },
-      { key: "net_play", zh: "网前球", en: "Net play" }
+      { key: "net_play", zh: "网前球", en: "Net play" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
     ]
   },
   {
@@ -60,7 +64,9 @@ export const scenarioQuestionBank: ScenarioQuestion[] = [
     options: [
       { key: "stationary", zh: "原地更明显", en: "Mostly when set" },
       { key: "moving", zh: "跑动中更明显", en: "Mostly when moving" },
-      { key: "both", zh: "都差不多", en: "About the same" }
+      { key: "both", zh: "都差不多", en: "About the same" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
     ]
   },
   {
@@ -81,7 +87,9 @@ export const scenarioQuestionBank: ScenarioQuestion[] = [
       { key: "net", zh: "下网", en: "Into the net" },
       { key: "long", zh: "出界偏长", en: "Long" },
       { key: "weak", zh: "没力量", en: "Weak" },
-      { key: "no_control", zh: "不太受控", en: "Out of control" }
+      { key: "no_control", zh: "不太受控", en: "Out of control" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
     ]
   },
   {
@@ -101,7 +109,9 @@ export const scenarioQuestionBank: ScenarioQuestion[] = [
     options: [
       { key: "first_serve", zh: "更像一发", en: "Mostly first serve" },
       { key: "second_serve", zh: "更像二发", en: "Mostly second serve" },
-      { key: "both", zh: "两种都明显", en: "Both" }
+      { key: "both", zh: "两种都明显", en: "Both" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
     ]
   },
   {
@@ -122,7 +132,9 @@ export const scenarioQuestionBank: ScenarioQuestion[] = [
       { key: "deep", zh: "深球更明显", en: "More on deep balls" },
       { key: "mid", zh: "中等来球也会", en: "Also on medium balls" },
       { key: "short", zh: "短球时也会", en: "Also on short balls" },
-      { key: "unknown", zh: "说不准", en: "Hard to tell" }
+      { key: "unknown", zh: "说不准", en: "Hard to tell" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
     ]
   },
   {
@@ -142,7 +154,9 @@ export const scenarioQuestionBank: ScenarioQuestion[] = [
     options: [
       { key: "rushed", zh: "更像来不及", en: "More rushed" },
       { key: "tight", zh: "更像发紧", en: "More tight" },
-      { key: "neither", zh: "都不太像", en: "Neither" }
+      { key: "neither", zh: "都不太像", en: "Neither" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
     ]
   }
 ];

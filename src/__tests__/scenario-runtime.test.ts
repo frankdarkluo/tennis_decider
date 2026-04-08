@@ -3,6 +3,7 @@ import {
   applyScenarioAnswer,
   createEmptyScenario,
   finalizeScenarioProgress,
+  getDeepModeProgress,
   getMissingSlots,
   isScenarioMinimallyAnalyzable,
   parseScenarioText,
@@ -102,7 +103,8 @@ describe("scenario reconstruction runtime", () => {
     expect(getMissingSlots(scenario)).toEqual([
       "context.session_type",
       "context.movement",
-      "outcome.primary_error"
+      "outcome.primary_error",
+      "subjective_feeling.rushed"
     ]);
   });
 
@@ -139,7 +141,17 @@ describe("scenario reconstruction runtime", () => {
     expect(nextScenario.context.session_type).toBe("match");
     expect(nextScenario.context.movement).toBe("moving");
     expect(nextScenario.outcome.primary_error).toBe("net");
+    expect(nextScenario.slot_resolution["context.movement"]).toBe("answered");
     expect(nextScenario.asked_followup_ids).toEqual(["q_movement_state"]);
+  });
+
+  it("tracks skipped and cannot-answer follow-ups separately in slot resolution", () => {
+    const base = createEmptyScenario("一发总发不进");
+
+    expect(base.slot_resolution["context.session_type"]).toBe("unasked");
+    expect(applyScenarioAnswer(base, "q_match_or_practice", "match").slot_resolution["context.session_type"]).toBe("answered");
+    expect(applyScenarioAnswer(base, "q_match_or_practice", "skip").slot_resolution["context.session_type"]).toBe("skipped");
+    expect(applyScenarioAnswer(base, "q_match_or_practice", "cannot_answer").slot_resolution["context.session_type"]).toBe("cannot_answer");
   });
 
   it("starts from an empty scenario with all supported fields present", () => {
@@ -150,6 +162,8 @@ describe("scenario reconstruction runtime", () => {
     expect(scenario.incoming_ball.depth).toBe("unknown");
     expect(scenario.outcome.primary_error).toBe("unknown");
     expect(scenario.subjective_feeling.other).toEqual([]);
+    expect(scenario.slot_resolution.stroke).toBe("unasked");
+    expect(scenario.deep_progress.deepReady).toBe(false);
     expect(scenario.selected_next_question_id).toBeNull();
     expect(scenario.asked_followup_ids).toEqual([]);
   });
@@ -187,7 +201,8 @@ describe("scenario reconstruction runtime", () => {
     expect(scenario.missing_slots).toEqual([
       "context.session_type",
       "context.movement",
-      "outcome.primary_error"
+      "outcome.primary_error",
+      "subjective_feeling.rushed"
     ]);
   });
 
@@ -230,8 +245,17 @@ describe("scenario reconstruction runtime", () => {
     expect(isScenarioMinimallyAnalyzable(scenario)).toBe(false);
   });
 
-  it("clears active candidates when finalized progress is done", () => {
+  it("keeps Deep Mode open while required grounding fields are still unresolved", () => {
     const scenario = parseScenarioTextDeterministically("比赛里我跑动中反手老下网，尤其对手球比较深的时候");
+    const progress = getDeepModeProgress(scenario);
+
+    expect(progress.deepReady).toBe(false);
+    expect(progress.requiredRemaining).toEqual(["subjective_feeling.rushed"]);
+  });
+
+  it("clears active candidates when finalized progress is deep-ready", () => {
+    let scenario = parseScenarioTextDeterministically("比赛里我跑动中反手老下网，尤其对手球比较深的时候");
+    scenario = applyScenarioAnswer(scenario, "q_feeling_rushed_or_tight", "rushed");
     const question = getQuestionBank().find((item) => item.id === "q_feeling_rushed_or_tight");
 
     expect(question).toBeDefined();
@@ -245,13 +269,22 @@ describe("scenario reconstruction runtime", () => {
     expect(progress.scenario.selected_next_question_id).toBeNull();
   });
 
-  it("treats a narrow second-serve complaint as ready for direct downstream handoff", () => {
+  it("does not treat a narrow second-serve complaint as deep-ready before the remaining required feeling signal is resolved", () => {
     const scenario = parseScenarioTextDeterministically("关键分时我的二发容易下网");
     const progress = finalizeScenarioProgress(scenario, getQuestionBank(), getQuestionBank()[0] ?? null);
 
     expect(progress.scenario.stroke).toBe("serve");
-    expect(progress.done).toBe(true);
-    expect(progress.eligibleQuestions).toEqual([]);
-    expect(progress.selectedQuestion).toBeNull();
+    expect(progress.done).toBe(false);
+    expect(progress.scenario.deep_progress.requiredRemaining).toEqual(["subjective_feeling.rushed"]);
+  });
+
+  it("marks capped scenarios as honest stops instead of fake completion", () => {
+    const scenario = parseScenarioTextDeterministically("我反手不稳");
+    scenario.asked_followup_ids = ["q_match_or_practice", "q_movement_state", "q_outcome_pattern", "q_feeling_rushed_or_tight", "q_incoming_ball_depth"];
+    scenario.missing_slots = getMissingSlots(scenario);
+    scenario.deep_progress = getDeepModeProgress(scenario);
+
+    expect(scenario.deep_progress.stoppedByCap).toBe(true);
+    expect(scenario.deep_progress.deepReady).toBe(false);
   });
 });

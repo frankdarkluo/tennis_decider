@@ -2,23 +2,26 @@ import { inferSkillCategory } from "@/lib/scenarioReconstruction/inferSkillCateg
 import { getQuestionBank } from "@/lib/scenarioReconstruction/questionBank";
 import { createLocalQwenClient, type LocalQwenClient } from "@/lib/scenarioReconstruction/llm/client";
 import { getSkillCategoryPolicy } from "@/lib/scenarioReconstruction/skillPolicy";
-import { getMissingSlots } from "@/lib/scenarioReconstruction/runtime";
+import { getDeepOptionalSlots, getDeepRequiredSlots } from "@/lib/scenarioReconstruction/runtime";
 import type { MissingSlotPath, ScenarioQuestion, ScenarioState } from "@/types/scenario";
 
-function isSlotMissing(scenario: ScenarioState, slot: MissingSlotPath) {
-  const missingSlots = getMissingSlots(scenario);
-  return missingSlots.includes(slot);
+function slotRank(requiredRemaining: MissingSlotPath[], optionalRemaining: MissingSlotPath[], slot: MissingSlotPath) {
+  if (requiredRemaining.includes(slot)) return 2;
+  if (optionalRemaining.includes(slot)) return 1;
+  return 0;
 }
 
 function isQuestionEligible(scenario: ScenarioState, question: ScenarioQuestion) {
   const inferred = inferSkillCategory(scenario);
   const policy = getSkillCategoryPolicy(inferred.category);
+  const requiredRemaining = getDeepRequiredSlots(scenario);
+  const optionalRemaining = getDeepOptionalSlots(scenario);
 
   if (!policy.allowedQuestionFamilies.includes(question.family)) {
     return false;
   }
 
-  if (scenario.asked_followup_ids.length >= policy.maxFollowups) {
+  if (scenario.asked_followup_ids.length >= policy.maxDeepFollowups) {
     return false;
   }
 
@@ -26,7 +29,11 @@ function isQuestionEligible(scenario: ScenarioState, question: ScenarioQuestion)
     return inferred.category === "generic_safe_fallback" && scenario.stroke === "unknown";
   }
 
-  return question.fillsSlots.some((slot) => isSlotMissing(scenario, slot));
+  if (requiredRemaining.length > 0) {
+    return question.fillsSlots.some((slot) => requiredRemaining.includes(slot));
+  }
+
+  return question.fillsSlots.some((slot) => optionalRemaining.includes(slot));
 }
 
 function slotPriority(slot: MissingSlotPath): number {
@@ -40,9 +47,19 @@ function slotPriority(slot: MissingSlotPath): number {
 }
 
 export function getEligibleQuestions(scenario: ScenarioState): ScenarioQuestion[] {
+  const requiredRemaining = getDeepRequiredSlots(scenario);
+  const optionalRemaining = getDeepOptionalSlots(scenario);
+
   return getQuestionBank()
     .filter((question) => isQuestionEligible(scenario, question))
     .sort((left, right) => {
+      const leftRequiredRank = Math.max(...left.target_slots.map((slot) => slotRank(requiredRemaining, optionalRemaining, slot)));
+      const rightRequiredRank = Math.max(...right.target_slots.map((slot) => slotRank(requiredRemaining, optionalRemaining, slot)));
+
+      if (rightRequiredRank !== leftRequiredRank) {
+        return rightRequiredRank - leftRequiredRank;
+      }
+
       const leftPriority = Math.max(...left.target_slots.map(slotPriority));
       const rightPriority = Math.max(...right.target_slots.map(slotPriority));
 

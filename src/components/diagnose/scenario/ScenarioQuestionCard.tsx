@@ -9,11 +9,11 @@ import {
   getScenarioUiText,
   type ScenarioUiLanguage
 } from "@/lib/scenarioReconstruction/bilingual";
-import type { ScenarioQuestion } from "@/types/scenario";
+import type { DeepModeProgress, ScenarioQuestion } from "@/types/scenario";
 
 export function ScenarioQuestionCard({
   question,
-  done,
+  progress,
   language,
   submitting,
   onAnswer,
@@ -21,19 +21,23 @@ export function ScenarioQuestionCard({
   backToDiagnoseHref
 }: {
   question: ScenarioQuestion | null;
-  done: boolean;
+  progress: DeepModeProgress;
   language: ScenarioUiLanguage;
   submitting: boolean;
   onAnswer: (answerKey: string) => void;
   onContinueToAnalysis?: () => void;
   backToDiagnoseHref?: string;
 }) {
+  const isCapped = progress.stoppedByCap;
+  const isDeepReady = progress.deepReady;
+  const isGathering = !isCapped && !isDeepReady;
+
   return (
     <Card className="space-y-4">
       <p className="text-sm font-semibold text-slate-900">{getScenarioUiText("question", language)}</p>
-      {done || !question ? (
+      {isDeepReady || isCapped || !question ? (
         <div className="space-y-4">
-          {done && onContinueToAnalysis ? (
+          {isDeepReady && onContinueToAnalysis ? (
             <div className="space-y-3 rounded-2xl border border-brand-200 bg-brand-50/80 p-4">
               <p className="text-sm font-semibold text-brand-800">{getScenarioUiText("questionDone", language)}</p>
               <div className="flex flex-wrap gap-2">
@@ -48,15 +52,26 @@ export function ScenarioQuestionCard({
               </div>
               <p className="text-sm leading-6 text-slate-600">{getScenarioUiText("questionDoneDetail", language)}</p>
             </div>
+          ) : isCapped ? (
+            <div className="space-y-3 rounded-2xl border border-amber-200 bg-amber-50/80 p-4">
+              <p className="text-sm font-semibold text-amber-800">{getScenarioUiText("questionCapped", language)}</p>
+              <p className="text-sm leading-6 text-slate-600">{getScenarioUiText("questionCappedDetail", language)}</p>
+            </div>
           ) : (
             <div className="space-y-2">
-              <p className="text-sm leading-6 text-slate-600">{getScenarioUiText("questionDone", language)}</p>
-              <p className="text-sm leading-6 text-slate-500">{getScenarioUiText("questionDoneDetail", language)}</p>
+              <p className="text-sm leading-6 text-slate-600">{getScenarioUiText("questionGathering", language)}</p>
+              <p className="text-sm leading-6 text-slate-500">{getScenarioUiText("questionGatheringDetail", language)}</p>
             </div>
           )}
         </div>
       ) : (
         <>
+          {isGathering ? (
+            <div className="rounded-2xl border border-brand-200 bg-brand-50/60 px-4 py-3">
+              <p className="text-sm font-semibold text-brand-800">{getScenarioUiText("questionGathering", language)}</p>
+              <p className="mt-1 text-sm leading-6 text-slate-600">{getScenarioUiText("questionGatheringDetail", language)}</p>
+            </div>
+          ) : null}
           <div className="space-y-2">
             <p className="text-lg font-semibold text-slate-900">{getScenarioQuestionText(question, language)}</p>
             <p className="text-sm text-slate-500">{getScenarioQuestionSecondaryText(question, language)}</p>

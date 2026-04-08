@@ -51,7 +51,6 @@ export function DeepScenarioModule({
   const [scenario, setScenario] = useState<ScenarioState>(() => createEmptyScenario(""));
   const [missingSlots, setMissingSlots] = useState<MissingSlotPath[]>([]);
   const [selectedQuestion, setSelectedQuestion] = useState<ScenarioQuestion | null>(null);
-  const [done, setDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [started, setStarted] = useState(false);
@@ -67,7 +66,6 @@ export function DeepScenarioModule({
     setScenario(createEmptyScenario(""));
     setMissingSlots([]);
     setSelectedQuestion(null);
-    setDone(false);
     setSubmitting(false);
     setError(null);
     setStarted(false);
@@ -111,7 +109,6 @@ export function DeepScenarioModule({
       setScenario(payload.scenario);
       setMissingSlots(payload.missing_slots);
       setSelectedQuestion(payload.selected_question);
-      setDone(payload.done);
       setStarted(true);
     } catch {
       setError(language === "en" ? "Scenario reconstruction failed. Please try again." : "场景还原失败，请稍后再试。");
@@ -138,7 +135,6 @@ export function DeepScenarioModule({
       setScenario(payload.scenario);
       setMissingSlots(payload.missing_slots);
       setSelectedQuestion(payload.selected_question);
-      setDone(payload.done);
     } catch {
       setError(language === "en" ? "Scenario reconstruction failed. Please try again." : "场景还原失败，请稍后再试。");
     } finally {
@@ -191,13 +187,17 @@ export function DeepScenarioModule({
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
           <ScenarioQuestionCard
             question={selectedQuestion}
-            done={done}
+            progress={scenario.deep_progress}
             language={language}
             submitting={submitting}
             onAnswer={handleAnswer}
-            onContinueToAnalysis={() => onApplyScenario({ scenario, diagnosisInput })}
+            onContinueToAnalysis={
+              scenario.deep_progress.deepReady
+                ? () => onApplyScenario({ scenario, diagnosisInput })
+                : undefined
+            }
           />
-          <ScenarioSummaryCard scenario={scenario} missingSlots={missingSlots} language={language} />
+          <ScenarioSummaryCard scenario={scenario} language={language} />
         </div>
       ) : null}
     </Card>

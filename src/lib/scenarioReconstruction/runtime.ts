@@ -3,10 +3,12 @@ import { inferSkillCategory } from "@/lib/scenarioReconstruction/inferSkillCateg
 import { createLocalQwenClient, type LocalQwenClient } from "@/lib/scenarioReconstruction/llm/client";
 import { getSkillCategoryPolicy } from "@/lib/scenarioReconstruction/skillPolicy";
 import type {
+  DeepModeProgress,
   MissingSlotPath,
   ScenarioQuestion,
   ScenarioLanguage,
-  ScenarioState
+  ScenarioState,
+  SlotResolutionMap
 } from "@/types/scenario";
 
 function detectLanguage(text: string): ScenarioLanguage {
@@ -58,10 +60,35 @@ export function createEmptyScenario(rawUserInput: string): ScenarioState {
       other: []
     },
     user_confidence: "unknown",
+    slot_resolution: createInitialSlotResolution(),
+    deep_progress: createInitialDeepProgress(),
     missing_slots: [],
     next_question_candidates: [],
     selected_next_question_id: null,
     asked_followup_ids: []
+  };
+}
+
+export function createInitialSlotResolution(): SlotResolutionMap {
+  return {
+    stroke: "unasked",
+    "context.session_type": "unasked",
+    "context.serve_variant": "unasked",
+    "context.movement": "unasked",
+    "outcome.primary_error": "unasked",
+    "incoming_ball.depth": "unasked",
+    "subjective_feeling.rushed": "unasked"
+  };
+}
+
+export function createInitialDeepProgress(): DeepModeProgress {
+  return {
+    deepReady: false,
+    stoppedByCap: false,
+    requiredRemaining: [],
+    optionalRemaining: [],
+    unresolvedRequiredBecauseOfSkip: [],
+    unresolvedRequiredBecauseUnavailable: []
   };
 }
 
@@ -86,47 +113,130 @@ function mentionsServeFamily(text: string) {
 }
 
 export function getMissingSlots(scenario: ScenarioState): MissingSlotPath[] {
-  const inferred = inferSkillCategory(scenario);
-  const policy = getSkillCategoryPolicy(inferred.category);
-  const isMissing = (slot: MissingSlotPath) => {
-    if (slot === "stroke") {
-      return scenario.stroke === "unknown";
-    }
+  return [...getDeepRequiredSlots(scenario), ...getDeepOptionalSlots(scenario)];
+}
 
-    if (slot === "context.session_type") {
-      return scenario.context.session_type === "unknown";
-    }
-
-    if (slot === "context.serve_variant") {
-      return scenario.context.serve_variant === "unknown";
-    }
-
-    if (slot === "context.movement") {
-      return scenario.context.movement === "unknown";
-    }
-
-    if (slot === "outcome.primary_error") {
-      return scenario.outcome.primary_error === "unknown";
-    }
-
-    if (slot === "incoming_ball.depth") {
-      return scenario.incoming_ball.depth === "unknown";
-    }
-
-    if (slot === "subjective_feeling.rushed") {
-      return !scenario.subjective_feeling.rushed && !scenario.subjective_feeling.tight;
-    }
-
-    return false;
-  };
-
-  const requiredMissing = policy.requiredSlots.filter(isMissing);
-
-  if (requiredMissing.length > 0) {
-    return requiredMissing;
+function isSlotKnownFromScenario(scenario: ScenarioState, slot: MissingSlotPath) {
+  if (slot === "stroke") {
+    return scenario.stroke !== "unknown";
   }
 
-  return policy.optionalSlots.filter(isMissing);
+  if (slot === "context.session_type") {
+    return scenario.context.session_type !== "unknown";
+  }
+
+  if (slot === "context.serve_variant") {
+    return scenario.context.serve_variant !== "unknown";
+  }
+
+  if (slot === "context.movement") {
+    return scenario.context.movement !== "unknown";
+  }
+
+  if (slot === "outcome.primary_error") {
+    return scenario.outcome.primary_error !== "unknown";
+  }
+
+  if (slot === "incoming_ball.depth") {
+    return scenario.incoming_ball.depth !== "unknown";
+  }
+
+  if (slot === "subjective_feeling.rushed") {
+    return (
+      scenario.subjective_feeling.rushed ||
+      scenario.subjective_feeling.tight ||
+      scenario.subjective_feeling.nervous
+    );
+  }
+
+  return false;
+}
+
+function isSlotResolvedForDeepMode(scenario: ScenarioState, slot: MissingSlotPath) {
+  if (isSlotKnownFromScenario(scenario, slot)) {
+    return true;
+  }
+
+  const state = scenario.slot_resolution[slot];
+  return state === "skipped" || state === "cannot_answer";
+}
+
+function shouldTreatSlotAsRequired(scenario: ScenarioState, slot: MissingSlotPath) {
+  const inferred = inferSkillCategory(scenario);
+  const policy = getSkillCategoryPolicy(inferred.category);
+  return policy.includeSlotAsRequired?.({ scenario, slot }) ?? true;
+}
+
+export function getDeepRequiredSlots(scenario: ScenarioState): MissingSlotPath[] {
+  const inferred = inferSkillCategory(scenario);
+  const policy = getSkillCategoryPolicy(inferred.category);
+
+  return policy.deepRequiredSlots.filter((slot) => {
+    if (!shouldTreatSlotAsRequired(scenario, slot)) {
+      return false;
+    }
+
+    return !isSlotResolvedForDeepMode(scenario, slot);
+  });
+}
+
+export function getDeepOptionalSlots(scenario: ScenarioState): MissingSlotPath[] {
+  const inferred = inferSkillCategory(scenario);
+  const policy = getSkillCategoryPolicy(inferred.category);
+
+  return policy.deepOptionalSlots.filter((slot) => !isSlotResolvedForDeepMode(scenario, slot));
+}
+
+function syncSlotResolutionFromScenario(scenario: ScenarioState) {
+  const next = { ...scenario.slot_resolution };
+
+  (Object.keys(next) as MissingSlotPath[]).forEach((slot) => {
+    if (isSlotKnownFromScenario(scenario, slot)) {
+      next[slot] = "answered";
+    }
+  });
+
+  scenario.slot_resolution = next;
+}
+
+export function getDeepModeProgress(scenario: ScenarioState): DeepModeProgress {
+  const inferred = inferSkillCategory(scenario);
+  const policy = getSkillCategoryPolicy(inferred.category);
+  const requiredRemaining = getDeepRequiredSlots(scenario);
+  const optionalRemaining = getDeepOptionalSlots(scenario);
+  const unresolvedRequiredBecauseOfSkip = policy.deepRequiredSlots.filter(
+    (slot) => shouldTreatSlotAsRequired(scenario, slot) && scenario.slot_resolution[slot] === "skipped"
+  );
+  const unresolvedRequiredBecauseUnavailable = policy.deepRequiredSlots.filter(
+    (slot) => shouldTreatSlotAsRequired(scenario, slot) && scenario.slot_resolution[slot] === "cannot_answer"
+  );
+  const stoppedByCap = scenario.asked_followup_ids.length >= policy.maxDeepFollowups && requiredRemaining.length > 0;
+
+  return {
+    deepReady: requiredRemaining.length === 0 && !stoppedByCap,
+    stoppedByCap,
+    requiredRemaining,
+    optionalRemaining,
+    unresolvedRequiredBecauseOfSkip,
+    unresolvedRequiredBecauseUnavailable
+  };
+}
+
+export function recalculateScenarioState(scenario: ScenarioState) {
+  syncSlotResolutionFromScenario(scenario);
+  scenario.missing_slots = getMissingSlots(scenario);
+  scenario.deep_progress = getDeepModeProgress(scenario);
+  return scenario;
+}
+
+export function ensureScenarioInternals(scenario: ScenarioState): ScenarioState {
+  const withInternals: ScenarioState = {
+    ...scenario,
+    slot_resolution: scenario.slot_resolution ?? createInitialSlotResolution(),
+    deep_progress: scenario.deep_progress ?? createInitialDeepProgress()
+  };
+
+  return recalculateScenarioState(withInternals);
 }
 
 export function parseScenarioTextDeterministically(rawUserInput: string): ScenarioState {
@@ -134,8 +244,7 @@ export function parseScenarioTextDeterministically(rawUserInput: string): Scenar
   const scenario = createEmptyScenario(rawUserInput.trim());
 
   if (!normalized) {
-    scenario.missing_slots = getMissingSlots(scenario);
-    return scenario;
+    return recalculateScenarioState(scenario);
   }
 
   if (includesAny(normalized, ["反手", "backhand"])) {
@@ -225,8 +334,7 @@ export function parseScenarioTextDeterministically(rawUserInput: string): Scenar
     scenario.context.pressure = "high";
   }
 
-  scenario.missing_slots = getMissingSlots(scenario);
-  return scenario;
+  return recalculateScenarioState(scenario);
 }
 
 function mergeScenarioState(baseScenario: ScenarioState, partialScenario: Partial<ScenarioState> | null) {
@@ -257,13 +365,17 @@ function mergeScenarioState(baseScenario: ScenarioState, partialScenario: Partia
         ? partialScenario.subjective_feeling.other
         : baseScenario.subjective_feeling.other
     },
+    slot_resolution: {
+      ...baseScenario.slot_resolution,
+      ...(partialScenario.slot_resolution ?? {})
+    },
+    deep_progress: partialScenario.deep_progress ?? baseScenario.deep_progress,
     asked_followup_ids: Array.isArray(partialScenario.asked_followup_ids)
       ? partialScenario.asked_followup_ids
       : baseScenario.asked_followup_ids
   };
 
-  nextScenario.missing_slots = getMissingSlots(nextScenario);
-  return nextScenario;
+  return recalculateScenarioState(nextScenario);
 }
 
 export async function parseScenarioText(
@@ -282,20 +394,12 @@ export async function parseScenarioText(
 }
 
 export function isScenarioMinimallyAnalyzable(scenario: ScenarioState) {
-  const inferred = inferSkillCategory(scenario);
-  const policy = getSkillCategoryPolicy(inferred.category);
-  const missing = getMissingSlots(scenario);
-
-  return policy.isDone({
-    scenario,
-    missingSlots: missing
-  });
+  return getDeepModeProgress(scenario).deepReady;
 }
 
 export function applyScenarioAnswer(scenario: ScenarioState, questionId: string, answerKey: string) {
-  const nextScenario = applyAnswer(scenario, questionId, answerKey);
-  nextScenario.missing_slots = getMissingSlots(nextScenario);
-  return nextScenario;
+  const nextScenario = applyAnswer(ensureScenarioInternals(scenario), questionId, answerKey);
+  return recalculateScenarioState(nextScenario);
 }
 
 export function finalizeScenarioProgress(
@@ -303,20 +407,19 @@ export function finalizeScenarioProgress(
   eligibleQuestions: ScenarioQuestion[],
   selectedQuestion: ScenarioQuestion | null
 ) {
-  // done=true means the current follow-up interaction is complete under the
-  // active policy. Optional or non-blocking missing slots may still remain,
-  // but they should no longer be exposed as active follow-up candidates.
-  const done = isScenarioMinimallyAnalyzable(scenario);
-  const activeEligibleQuestions = done ? [] : eligibleQuestions;
-  const activeSelectedQuestion = done ? null : selectedQuestion;
+  const normalizedScenario = recalculateScenarioState(scenario);
+  const done = normalizedScenario.deep_progress.deepReady;
+  const terminalStop = normalizedScenario.deep_progress.stoppedByCap;
+  const activeEligibleQuestions = done || terminalStop ? [] : eligibleQuestions;
+  const activeSelectedQuestion = done || terminalStop ? null : selectedQuestion;
 
   return {
     scenario: {
-      ...scenario,
+      ...normalizedScenario,
       next_question_candidates: activeEligibleQuestions.map((question) => question.id),
       selected_next_question_id: activeSelectedQuestion?.id ?? null
     },
-    missingSlots: scenario.missing_slots,
+    missingSlots: normalizedScenario.missing_slots,
     eligibleQuestions: activeEligibleQuestions,
     selectedQuestion: activeSelectedQuestion,
     done
