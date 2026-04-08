@@ -85,15 +85,16 @@ export default function AdminExportPage() {
     setPendingKey("study_bundle");
     setStatusMessage("");
 
-    const [participants, sessions, artifacts, taskRatings, events] = await Promise.all([
+    const [participants, sessions, artifacts, surveyResponses, taskRatings, events] = await Promise.all([
       fetchAllExportRows("study_participants"),
       fetchAllExportRows("study_sessions"),
       fetchAllExportRows("study_artifacts"),
+      fetchAllExportRows("survey_responses"),
       fetchAllExportRows("study_task_ratings"),
       fetchAllExportRows("event_logs")
     ]);
 
-    const failed = [participants, sessions, artifacts, taskRatings, events].find((result) => result.error);
+    const failed = [participants, sessions, artifacts, surveyResponses, taskRatings, events].find((result) => result.error);
     if (failed?.error) {
       setPendingKey(null);
       setStatusMessage(failed.error);
@@ -105,6 +106,7 @@ export default function AdminExportPage() {
       participants: participants.data,
       sessions: sessions.data,
       artifacts: artifacts.data,
+      surveyResponses: surveyResponses.data,
       taskRatings: taskRatings.data,
       events: events.data,
       participantId,

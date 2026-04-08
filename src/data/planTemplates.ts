@@ -978,8 +978,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "rally-consistency",
     level: "3.0",
-    title: "多拍稳定性 7 天计划",
-    titleEn: "7-Day Rally Consistency Plan",
+    title: "多拍稳定性 7 步计划",
+    titleEn: "7-Step Rally Consistency Plan",
     target: "先把对拉节奏稳定下来，再把落点、移动和计分压力接进去。",
     targetEn: "Stabilize rally rhythm first, then layer in placement, movement, and score pressure.",
     days: rallyConsistencyDays3_0,
@@ -988,8 +988,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "rally-consistency",
     level: "3.5",
-    title: "多拍稳定性 7 天计划",
-    titleEn: "7-Day Rally Consistency Plan",
+    title: "多拍稳定性 7 步计划",
+    titleEn: "7-Step Rally Consistency Plan",
     target: "把多拍稳定性升级到更长回合、更清楚落点和更真实的分数压力里。",
     targetEn: "Upgrade rally consistency into longer exchanges, clearer placement, and more realistic score pressure.",
     days: cloneTemplateDays(rallyConsistencyDays3_0, {
@@ -1021,8 +1021,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "forehand-no-power",
     level: "3.0",
-    title: "正手发力重建 7 天计划",
-    titleEn: "7-Day Forehand Power Rebuild Plan",
+    title: "正手发力重建 7 步计划",
+    titleEn: "7-Step Forehand Power Rebuild Plan",
     target: "先重建身体发力顺序和触球时机，再把球打得更深更扎实。",
     targetEn: "Rebuild the body-driven power sequence and contact timing before making the forehand heavier and deeper.",
     days: forehandNoPowerDays3_0,
@@ -1031,8 +1031,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "forehand-no-power",
     level: "3.5",
-    title: "正手发力重建 7 天计划",
-    titleEn: "7-Day Forehand Power Rebuild Plan",
+    title: "正手发力重建 7 步计划",
+    titleEn: "7-Step Forehand Power Rebuild Plan",
     target: "把更完整的发力链条带进目标区、跑动和更高节奏的正手回合。",
     targetEn: "Carry a cleaner power chain into target hitting, movement, and higher-tempo forehand exchanges.",
     days: cloneTemplateDays(forehandNoPowerDays3_0, {
@@ -1060,8 +1060,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "balls-too-short",
     level: "3.0",
-    title: "击球深度提升 7 天计划",
-    titleEn: "7-Day Depth Building Plan",
+    title: "击球深度提升 7 步计划",
+    titleEn: "7-Step Depth Building Plan",
     target: "先建立深度感，再用过网高度、方向和压力把深球稳定下来。",
     targetEn: "Build depth awareness first, then stabilize it with net clearance, direction changes, and pressure.",
     days: ballsTooShortDays3_0,
@@ -1070,8 +1070,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "balls-too-short",
     level: "3.5",
-    title: "击球深度提升 7 天计划",
-    titleEn: "7-Day Depth Building Plan",
+    title: "击球深度提升 7 步计划",
+    titleEn: "7-Step Depth Building Plan",
     target: "把深度从练习球升级到更高节奏、变线和计分场景里。",
     targetEn: "Upgrade depth from simple reps into faster tempo, direction changes, and scored situations.",
     days: cloneTemplateDays(ballsTooShortDays3_0, {
@@ -1095,8 +1095,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "return-under-pressure",
     level: "3.0",
-    title: "接发抗压 7 天计划",
-    titleEn: "7-Day Return Under Pressure Plan",
+    title: "接发抗压 7 步计划",
+    titleEn: "7-Step Return Under Pressure Plan",
     target: "先稳定接发前准备和目标，再把它带进更快球速和计分场景。",
     targetEn: "Stabilize the return setup and target first, then bring them into faster serves and scored points.",
     days: returnUnderPressureDays3_0,
@@ -1105,8 +1105,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "return-under-pressure",
     level: "3.5",
-    title: "接发抗压 7 天计划",
-    titleEn: "7-Day Return Under Pressure Plan",
+    title: "接发抗压 7 步计划",
+    titleEn: "7-Step Return Under Pressure Plan",
     target: "把接发流程升级到更快球速、更明确落点和更真实的关键分场景。",
     targetEn: "Upgrade the return routine into faster serves, clearer targets, and more realistic pressure points.",
     days: cloneTemplateDays(returnUnderPressureDays3_0, {
@@ -1134,8 +1134,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "return-under-pressure",
     level: "4.0",
-    title: "接发抗压 7 天计划",
-    titleEn: "7-Day Return Under Pressure Plan",
+    title: "接发抗压 7 步计划",
+    titleEn: "7-Step Return Under Pressure Plan",
     target: "在更快发球和关键分里，用更精简的接发流程建立先手和下一拍优势。",
     targetEn: "Use an even cleaner return routine against faster serves and pressure points to win the first neutral ball and the next shot.",
     days: cloneTemplateDays(returnUnderPressureDays3_0, {
@@ -1181,8 +1181,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "cant-hit-lob",
     level: "3.0",
-    title: "高吊球选择 7 天计划",
-    titleEn: "7-Day Lob Selection Plan",
+    title: "高吊球选择 7 步计划",
+    titleEn: "7-Step Lob Selection Plan",
     target: "先学会高吊球的触球和弧线，再把它放进防守和受压场景里。",
     targetEn: "Learn the lob contact and shape first, then bring it into defensive and pressure situations.",
     days: cantHitLobDays3_0,
@@ -1191,8 +1191,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "cant-hit-lob",
     level: "3.5",
-    title: "高吊球选择 7 天计划",
-    titleEn: "7-Day Lob Selection Plan",
+    title: "高吊球选择 7 步计划",
+    titleEn: "7-Step Lob Selection Plan",
     target: "把高吊球从会打，升级到会选、会打深、会在真实压力里用出来。",
     targetEn: "Upgrade the lob from something you can hit into something you can choose, drive deep, and use under real pressure.",
     days: cloneTemplateDays(cantHitLobDays3_0, {
@@ -1216,8 +1216,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "stamina-drop",
     level: "3.0",
-    title: "体能掉线应对 7 天计划",
-    titleEn: "7-Day Stamina Drop Management Plan",
+    title: "体能掉线应对 7 步计划",
+    titleEn: "7-Step Stamina Drop Management Plan",
     target: "先减少无效跑动和站位损耗，再学会在疲劳里管理回合节奏。",
     targetEn: "Cut wasted movement and positional loss first, then manage point rhythm when fatigue arrives.",
     days: staminaDropDays3_0,
@@ -1226,8 +1226,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "stamina-drop",
     level: "3.5",
-    title: "体能掉线应对 7 天计划",
-    titleEn: "7-Day Stamina Drop Management Plan",
+    title: "体能掉线应对 7 步计划",
+    titleEn: "7-Step Stamina Drop Management Plan",
     target: "把省力脚步、恢复站位和回合管理带进更长时段和更真实的疲劳压力。",
     targetEn: "Carry efficient footwork, recovery positioning, and point management into longer sessions and more realistic fatigue pressure.",
     days: cloneTemplateDays(staminaDropDays3_0, {
@@ -1251,8 +1251,8 @@ const missingDiagnosisPlanTemplates: PlanTemplate[] = [
   {
     problemTag: "stamina-drop",
     level: "4.0",
-    title: "体能掉线应对 7 天计划",
-    titleEn: "7-Day Stamina Drop Management Plan",
+    title: "体能掉线应对 7 步计划",
+    titleEn: "7-Step Stamina Drop Management Plan",
     target: "把省力脚步、恢复站位和回合管理带进更高负荷的疲劳压力，后半段也守住动作质量。",
     targetEn: "Carry efficient footwork, recovery positioning, and point management into higher-load fatigue so the mechanics still hold late.",
     days: cloneTemplateDays(staminaDropDays3_0, {
@@ -1302,8 +1302,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "serve-timing",
     level: "3.0",
-    title: "发球时机 7 天计划",
-    titleEn: "7-Day Serve Timing Plan",
+    title: "发球时机 7 步计划",
+    titleEn: "7-Step Serve Timing Plan",
     target: "先把发球节奏和触球时机稳定下来，再逐步加力量。",
     targetEn: "Stabilize serve rhythm and contact timing before adding pace.",
     environment: ["testing", "production"],
@@ -1320,8 +1320,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "first-serve-in",
     level: "3.0",
-    title: "一发进区率 7 天计划",
-    titleEn: "7-Day First-Serve Make-Rate Plan",
+    title: "一发进区率 7 步计划",
+    titleEn: "7-Step First-Serve Make-Rate Plan",
     target: "先把一发发力欲望降下来，建立可重复进区率。",
     targetEn: "Reduce all-out force and build a repeatable first-serve make rate first.",
     days: [
@@ -1485,8 +1485,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "second-serve-reliability",
     level: "3.5",
-    title: "二发稳定性 7 天重建计划",
-    titleEn: "7-Day Second-Serve Confidence Reset",
+    title: "二发稳定性 7 步重建计划",
+    titleEn: "7-Step Second-Serve Confidence Reset",
     target: "先建立安全二发的节奏、抛球和信心",
     targetEn: "Build a safe second-serve rhythm, toss, and confidence first.",
     days: [
@@ -1650,8 +1650,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "serve-toss-consistency",
     level: "3.0",
-    title: "发球抛球稳定性 7 天计划",
-    titleEn: "7-Day Serve Toss Consistency Plan",
+    title: "发球抛球稳定性 7 步计划",
+    titleEn: "7-Step Serve Toss Consistency Plan",
     target: "先把抛球路线和出手点固定下来，再接回完整发球节奏。",
     targetEn: "Fix the toss path and release point first, then reconnect it to the full serve rhythm.",
     days: [
@@ -1668,8 +1668,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "backhand-into-net",
     level: "3.0",
-    title: "反手过网稳定性 7 天计划",
-    titleEn: "7-Day Backhand Net-Clearance Plan",
+    title: "反手过网稳定性 7 步计划",
+    titleEn: "7-Step Backhand Net-Clearance Plan",
     target: "先解决反手总下网的问题，建立稳定前点击球",
     targetEn: "Fix the backhand net error first by building earlier, more forward contact.",
     days: [
@@ -1833,8 +1833,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "movement-slow",
     level: "3.0",
-    title: "脚步启动与到位 7 天计划",
-    titleEn: "7-Day Footwork Timing Plan",
+    title: "脚步启动与到位 7 步计划",
+    titleEn: "7-Step Footwork Timing Plan",
     target: "先把分腿垫步、第一步启动和到位节奏理顺",
     targetEn: "Fix split-step timing, first-step initiation, and court arrival rhythm first.",
     days: [
@@ -1998,8 +1998,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "mobility-limit",
     level: "3.0",
-    title: "移动范围与到位 7 天计划",
-    titleEn: "7-Day Mobility And Court-Coverage Plan",
+    title: "移动范围与到位 7 步计划",
+    titleEn: "7-Step Mobility And Court-Coverage Plan",
     target: "把移动半径缩到可持续范围内，先把第一步和恢复步做扎实。",
     targetEn: "Shrink the movement radius to something sustainable and build the first step plus recovery step first.",
     days: [
@@ -2163,8 +2163,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "incoming-slice-trouble",
     level: "3.0",
-    title: "处理削球来球 7 天计划",
-    titleEn: "7-Day Incoming Slice Handling Plan",
+    title: "处理削球来球 7 步计划",
+    titleEn: "7-Step Incoming Slice Handling Plan",
     target: "先读懂削球的弹跳和节奏，再把低球处理得更稳。",
     targetEn: "Read the slice bounce earlier and handle the low ball with more stability first.",
     days: [
@@ -2181,8 +2181,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "late-contact",
     level: "3.0",
-    title: "提前准备与击球点 7 天计划",
-    titleEn: "7-Day Early Preparation Plan",
+    title: "提前准备与击球点 7 步计划",
+    titleEn: "7-Step Early Preparation Plan",
     target: "先把提前准备和前点击球建立起来",
     targetEn: "Build earlier preparation and more forward contact first.",
     days: [
@@ -2199,8 +2199,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "net-confidence",
     level: "3.0",
-    title: "网前截击稳定性 7 天计划",
-    titleEn: "7-Day Net-Play Confidence Plan",
+    title: "网前截击稳定性 7 步计划",
+    titleEn: "7-Step Net-Play Confidence Plan",
     target: "先把网前站位、拍头稳定和小动作截击理顺",
     targetEn: "Stabilize net positioning, racquet-head control, and compact volleys first.",
     days: [
@@ -2364,8 +2364,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "forehand-out",
     level: "3.5",
-    title: "正手控制与上旋 7 天计划",
-    titleEn: "7-Day Forehand Control and Topspin Plan",
+    title: "正手控制与上旋 7 步计划",
+    titleEn: "7-Step Forehand Control and Topspin Plan",
     target: "减少正手出界，先拉起弧线和控制",
     targetEn: "Reduce forehand misses long by rebuilding shape, arc, and control first.",
     days: [
@@ -2529,8 +2529,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "match-anxiety",
     level: "3.5",
-    title: "比赛紧张应对 7 天计划",
-    titleEn: "7-Day Match-Nerves Reset Plan",
+    title: "比赛紧张应对 7 步计划",
+    titleEn: "7-Step Match-Nerves Reset Plan",
     target: "建立固定流程，把注意力从结果拉回执行",
     targetEn: "Build repeatable routines so your attention returns to execution instead of the score.",
     days: [
@@ -2547,8 +2547,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "cant-self-practice",
     level: "3.0",
-    title: "不会自己练 7 天入门计划",
-    titleEn: "7-Day Self-Practice Starter Plan",
+    title: "不会自己练 7 步入门计划",
+    titleEn: "7-Step Self-Practice Starter Plan",
     target: "建立最简单可执行的自练结构",
     targetEn: "Build the simplest self-practice structure you can actually follow alone.",
     days: [
@@ -2565,8 +2565,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "topspin-low",
     level: "3.0",
-    title: "正手稳定性 7 天计划",
-    titleEn: "7-Day Forehand Stability Plan",
+    title: "正手稳定性 7 步计划",
+    titleEn: "7-Step Forehand Stability Plan",
     target: "先把正手弧线、深度和稳定性建立起来",
     targetEn: "Build forehand arc, depth, and consistency before chasing pace.",
     days: [
@@ -2583,8 +2583,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "serve-accuracy",
     level: "3.0",
-    title: "发球建立信心 7 天计划",
-    titleEn: "7-Day Serve Confidence Plan",
+    title: "发球建立信心 7 步计划",
+    titleEn: "7-Step Serve Confidence Plan",
     target: "先建立稳定抛球和可重复的发球节奏",
     targetEn: "Build a steady toss and a repeatable serve rhythm before adding pressure.",
     days: [
@@ -2601,8 +2601,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "doubles-positioning",
     level: "3.0",
-    title: "双打基础配合 7 天计划",
-    titleEn: "7-Day Doubles Positioning Basics Plan",
+    title: "双打基础配合 7 步计划",
+    titleEn: "7-Step Doubles Positioning Basics Plan",
     target: "先把双打站位、轮转和网前基础处理理顺",
     targetEn: "Sort out doubles positioning, rotations, and basic net play before adding complexity.",
     days: [
@@ -2766,8 +2766,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "match-anxiety",
     level: "4.0",
-    title: "比赛心态与执行 7 天计划",
-    titleEn: "7-Day Match Execution Under Pressure Plan",
+    title: "比赛心态与执行 7 步计划",
+    titleEn: "7-Step Match Execution Under Pressure Plan",
     target: "在比赛压力下仍然保持清楚的执行和复盘节奏",
     targetEn: "Stay clear on execution and review even when match pressure rises.",
     days: [
@@ -2784,8 +2784,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "overhead-timing",
     level: "3.0",
-    title: "高压时机 7 天计划",
-    titleEn: "7-Day Overhead Timing Plan",
+    title: "高压时机 7 步计划",
+    titleEn: "7-Step Overhead Timing Plan",
     target: "先把高压球的到位、转身和出手时机理顺，再谈压迫性。",
     targetEn: "Fix the footwork, turn, and strike timing on overheads before chasing aggression.",
     environment: ["testing", "production"],
@@ -2802,8 +2802,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "volley-floating",
     level: "3.0",
-    title: "截击冒高 7 天计划",
-    titleEn: "7-Day Floating Volley Plan",
+    title: "截击冒高 7 步计划",
+    titleEn: "7-Step Floating Volley Plan",
     target: "先缩小截击动作、稳住拍面，再把冒高球压回到可控高度。",
     targetEn: "Shrink the volley motion and steady the racket face before trying to drive the ball down.",
     days: [
@@ -2820,8 +2820,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "volley-into-net",
     level: "3.0",
-    title: "截击下网 7 天计划",
-    titleEn: "7-Day Volley Into Net Plan",
+    title: "截击下网 7 步计划",
+    titleEn: "7-Step Volley Into Net Plan",
     target: "先把截击触球点放到身体前面，再稳住拍面和出球线路。",
     targetEn: "Move volley contact farther in front first, then steady the racket face and outgoing path.",
     days: [
@@ -2838,8 +2838,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "running-forehand",
     level: "3.0",
-    title: "跑动正手 7 天计划",
-    titleEn: "7-Day Running Forehand Plan",
+    title: "跑动正手 7 步计划",
+    titleEn: "7-Step Running Forehand Plan",
     target: "先把跑动中的到位、减速和前点击球做好，再谈发力。",
     targetEn: "Fix arrival, deceleration, and contact out front on the run before chasing pace.",
     days: [
@@ -2856,8 +2856,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "running-backhand",
     level: "3.0",
-    title: "跑动反手 7 天计划",
-    titleEn: "7-Day Running Backhand Plan",
+    title: "跑动反手 7 步计划",
+    titleEn: "7-Step Running Backhand Plan",
     target: "先把跑动反手的转肩、到位和前点击球理顺，再提高稳定性。",
     targetEn: "Fix the shoulder turn, arrival, and contact point on the running backhand before adding pressure.",
     days: [
@@ -2874,8 +2874,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "pressure-tightness",
     level: "3.0",
-    title: "关键分手紧 7 天计划",
-    titleEn: "7-Day Tightness Under Pressure Plan",
+    title: "关键分手紧 7 步计划",
+    titleEn: "7-Step Tightness Under Pressure Plan",
     target: "先把关键分时的呼吸、流程和执行提醒词固定下来，不让手紧抢走动作。",
     targetEn: "Lock in breathing, routines, and one execution cue on pressure points so tension stops stealing the motion.",
     days: [
@@ -2892,8 +2892,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "moonball-trouble",
     level: "3.0",
-    title: "月亮球处理 7 天计划",
-    titleEn: "7-Day Moonball Handling Plan",
+    title: "月亮球处理 7 步计划",
+    titleEn: "7-Step Moonball Handling Plan",
     target: "先学会判断落点、保持耐心和把高球处理回安全深度。",
     targetEn: "Learn to read the bounce, stay patient, and send high balls back with safe depth first.",
     days: [
@@ -2910,8 +2910,8 @@ export const planTemplates: PlanTemplate[] = [
   {
     problemTag: "general-improvement",
     level: "3.0",
-    title: "通用基础提升 7 天计划",
-    titleEn: "7-Day General Improvement Plan",
+    title: "通用基础提升 7 步计划",
+    titleEn: "7-Step General Improvement Plan",
     target: "用一周先把训练节奏、稳定性、移动和发球基础串起来。",
     targetEn: "Use one week to connect training rhythm, consistency, movement, and serve basics into a usable base.",
     days: [

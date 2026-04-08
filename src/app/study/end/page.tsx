@@ -1,36 +1,64 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { Input } from "@/components/ui/Input";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { useStudy } from "@/components/study/StudyProvider";
 import { useI18n } from "@/lib/i18n/config";
-import { flushEventQueue, logEvent, markEventLoggerSessionCompleted } from "@/lib/eventLogger";
+import {
+  clearPendingSurveyStudySession,
+  readPendingSurveyStudySession,
+  writePendingSurveyStudySession
+} from "@/lib/study/localData";
+import { createStudySession } from "@/lib/study/session";
+import { StudySession } from "@/types/study";
 
 export default function StudyEndPage() {
-  const { session, endStudySession, clearStudyData } = useStudy();
-  const { t } = useI18n();
-  const [ended, setEnded] = useState(false);
+  const { session, language } = useStudy();
+  const { t, language: siteLanguage } = useI18n();
+  const [participantId, setParticipantId] = useState(session?.participantId ?? "");
+  const [confirmedSession, setConfirmedSession] = useState<StudySession | null>(null);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    if (!session || ended) {
+    const pendingSession = readPendingSurveyStudySession();
+    if (!pendingSession) {
       return;
     }
 
-    void (async () => {
-      const totalDurationMs = Math.max(0, Date.now() - new Date(session.startedAt).getTime());
-      logEvent("session.completed", {
-        completed: true,
-        totalDurationMs
-      }, { page: "/study/end" });
-      markEventLoggerSessionCompleted();
-      await flushEventQueue(true);
-      await endStudySession();
-      setEnded(true);
-    })();
-  }, [endStudySession, ended, session]);
+    setParticipantId(pendingSession.participantId);
+    setConfirmedSession(pendingSession);
+  }, []);
+
+  useEffect(() => {
+    if (session?.participantId && !participantId) {
+      setParticipantId(session.participantId);
+    }
+  }, [participantId, session]);
+
+  const handleConfirmParticipant = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const normalizedParticipantId = participantId.trim();
+    if (!normalizedParticipantId) {
+      setMessage(t("study.end.participantRequired"));
+      return;
+    }
+
+    const surveySession = session && session.participantId === normalizedParticipantId
+      ? session
+      : createStudySession({
+        participantId: normalizedParticipantId,
+        language: session?.language ?? language ?? siteLanguage
+      });
+
+    writePendingSurveyStudySession(surveySession);
+    setConfirmedSession(surveySession);
+    setMessage(t("study.end.participantConfirmed", { participantId: surveySession.participantId }));
+  };
 
   return (
     <PageContainer>
@@ -43,19 +71,36 @@ export default function StudyEndPage() {
 
         <Card className="space-y-4">
           <p className="text-sm leading-6 text-slate-700">{t("study.end.summary")}</p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/survey">
-              <Button>{t("study.end.survey")}</Button>
-            </Link>
-            <Button
-              variant="secondary"
-              onClick={() => {
-                clearStudyData();
-                logEvent("profile.local_data_cleared", { sourceContext: "study_end" }, { page: "/study/end" });
-              }}
-            >
-              {t("study.end.clear")}
+          <form className="space-y-3" onSubmit={handleConfirmParticipant}>
+            <label className="space-y-2">
+              <span className="text-sm font-semibold text-slate-900">{t("study.end.participantLabel")}</span>
+              <Input
+                value={participantId}
+                onChange={(event) => {
+                  setParticipantId(event.target.value);
+                  if (confirmedSession && event.target.value.trim() !== confirmedSession.participantId) {
+                    setConfirmedSession(null);
+                    clearPendingSurveyStudySession();
+                  }
+                }}
+                placeholder={t("study.end.participantPlaceholder")}
+              />
+            </label>
+            <Button type="submit" disabled={!participantId.trim()}>
+              {t("study.end.confirmParticipant")}
             </Button>
+          </form>
+          {message ? (
+            <div className="rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-700">
+              {message}
+            </div>
+          ) : null}
+          <div className="flex flex-wrap gap-3">
+            {confirmedSession ? (
+              <Link href="/survey">
+                <Button>{t("study.end.survey")}</Button>
+              </Link>
+            ) : null}
             <Link href="/">
               <Button>{t("study.end.home")}</Button>
             </Link>

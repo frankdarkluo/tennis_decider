@@ -163,7 +163,7 @@ describe("content display helpers", () => {
     const fallbackEn = getPlanTemplate("unknown-problem", "3.0", "en");
 
     expect(exactEn.source).toBe("template");
-    expect(exactEn.title).toBe("7-Day Backhand Net-Clearance Plan");
+    expect(exactEn.title).toBe("7-Step Backhand Net-Clearance Plan");
     expect(exactEn.target).toBe("Fix the backhand net error first by building earlier, more forward contact.");
     expect(exactEn.days[0]).toMatchObject({
       focus: "Prepare earlier",
@@ -171,7 +171,7 @@ describe("content display helpers", () => {
       duration: "20 min"
     });
 
-    expect(exactZh.title).toBe("反手过网稳定性 7 天计划");
+    expect(exactZh.title).toBe("反手过网稳定性 7 步计划");
     expect(exactZh.days[0]).toMatchObject({
       focus: "更早准备",
       drills: ["转肩准备 20 次", "不击球准备动作 15 次"],

@@ -29,6 +29,16 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "study.start.title": "开始研究会话",
     "study.start.subtitle": "确认参与者编号和语言后，开始一轮可导出的研究会话。",
     "study.start.button": "开始研究",
+    "study.end.badge": "研究模式",
+    "study.end.title": "本轮研究已结束",
+    "study.end.subtitle": "提交最终问卷前，请确认参与者编号。",
+    "study.end.summary": "问卷提交后会记录到当前参与者编号。",
+    "study.end.participantLabel": "参与者编号",
+    "study.end.participantPlaceholder": "例如：P001",
+    "study.end.confirmParticipant": "确认参与者编号",
+    "study.end.survey": "去填写问卷",
+    "study.end.clear": "清除本机研究数据",
+    "study.end.home": "回到首页",
     "assessment.title": "1 分钟测一下你的水平",
     "assessment.empty.title": "先完成一次水平评估",
     "assessment.empty.subtitle": "做完后，我们会直接告诉你大概处在哪个能力区间，以及接下来更值得优先补哪一块。",
@@ -47,7 +57,7 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "diagnose.examples": "示例",
     "content.whyRecommended": "为什么推荐这个",
     "content.whyPrefix": "推荐依据:",
-    "diagnose.result.plan": "根据这个问题生成 7 天训练计划",
+    "diagnose.result.plan": "根据这个问题生成 7 步训练计划",
     "diagnose.result.library": "去内容库找更多练习",
     "diagnose.result.rankings": "去博主榜找适合的人",
     "diagnose.result.moreOptions": "查看更多选项 ↓",
@@ -93,8 +103,8 @@ const { mockPush, mockRedirect, mockReplace, mockPrefetch, translationMap } = vi
     "rankings.detail": "查看详情",
     "creator.whyRecommended": "为什么推荐这位博主",
     "creator.whyPrefix": "推荐依据:",
-    "plan.title": "你的 7 天提升计划",
-    "plan.supporting": "这 7 天先练这一件事",
+    "plan.title": "你的 7 步提升计划",
+    "plan.supporting": "这 7 步先练这一件事",
     "plan.day.what": "What to practice",
     "plan.day.duration": "How long",
     "plan.day.watch": "Watch this",
@@ -868,7 +878,7 @@ describe("app smoke tests", () => {
 
     fireEvent.click(await screen.findByRole("button", { name: "diagnose.result.expand1" }));
 
-    expect(await screen.findByRole("link", { name: "根据这个问题生成 7 天训练计划" })).toBeInTheDocument();
+    expect(await screen.findByRole("link", { name: "根据这个问题生成 7 步训练计划" })).toBeInTheDocument();
     expect(await screen.findByRole("link", { name: "去内容库找更多练习" })).toHaveAttribute("href", "/library");
     expect(screen.getByRole("link", { name: "去博主榜找适合的人" })).toHaveAttribute("href", "/rankings");
   });
@@ -1000,8 +1010,8 @@ describe("app smoke tests", () => {
 
     render(React.createElement(PlanPage));
 
-    expect(await screen.findByText("你的 7 天提升计划")).toBeInTheDocument();
-    expect(screen.getByText("这 7 天先练这一件事")).toBeInTheDocument();
+    expect(await screen.findByText("你的 7 步提升计划")).toBeInTheDocument();
+    expect(screen.getByText("这 7 步先练这一件事")).toBeInTheDocument();
     expect(screen.getByText("Day 1 · 今天")).toBeInTheDocument();
     expect(screen.getByText("反手总下网：先别急着加力")).toBeInTheDocument();
 
@@ -1040,7 +1050,7 @@ describe("app smoke tests", () => {
 
     render(React.createElement(PlanPage));
 
-    expect(await screen.findByText("你的 7 天提升计划")).toBeInTheDocument();
+    expect(await screen.findByText("你的 7 步提升计划")).toBeInTheDocument();
     expect(screen.getAllByText("先把引拍提前半拍再出手").length).toBeGreaterThan(0);
   });
 
@@ -1055,7 +1065,7 @@ describe("app smoke tests", () => {
 
     render(React.createElement(PlanPage));
 
-    expect(await screen.findByText("你的 7 天提升计划")).toBeInTheDocument();
+    expect(await screen.findByText("你的 7 步提升计划")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: primaryNextStep })).toBeInTheDocument();
   });
 
@@ -1088,7 +1098,7 @@ describe("app smoke tests", () => {
 
     render(React.createElement(PlanPage));
 
-    expect(await screen.findByText("你的 7 天提升计划")).toBeInTheDocument();
+    expect(await screen.findByText("你的 7 步提升计划")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "继续诊断一个具体问题" }).getAttribute("href")).toBe("/diagnose");
     expect(screen.getByRole("link", { name: "去 study hub 继续" }).getAttribute("href")).toBe("/profile");
   });
@@ -1117,7 +1127,7 @@ describe("app smoke tests", () => {
 
     render(React.createElement(PlanPage));
 
-    await screen.findByText("你的 7 天提升计划");
+    await screen.findByText("你的 7 步提升计划");
     expect(screen.queryByText("完成这一步后，我比之前更清楚下一步该练什么了。")).not.toBeInTheDocument();
   });
 
@@ -1281,6 +1291,21 @@ describe("app smoke tests", () => {
     expect(screen.getByText("TennisLevel 使用体验问卷")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /SUS/ })).toBeInTheDocument();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("keeps the study end survey link gated until participant ID is confirmed", async () => {
+    const StudyEndPage = await loadPage(() => import("@/app/study/end/page"));
+
+    render(React.createElement(StudyEndPage));
+
+    expect(screen.getByLabelText("参与者编号")).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "去填写问卷" })).not.toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("参与者编号"), { target: { value: "P042" } });
+    fireEvent.click(screen.getByRole("button", { name: "确认参与者编号" }));
+
+    expect(screen.getByRole("link", { name: "去填写问卷" })).toHaveAttribute("href", "/survey");
+    expect(mockStudyContext.startStudySession).not.toHaveBeenCalled();
   });
 
   it("renders study start with the coach-history and preferred-learning-style background questions", async () => {

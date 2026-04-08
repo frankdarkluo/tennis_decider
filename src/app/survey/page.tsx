@@ -1,13 +1,13 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { surveyQuestions, susLikertLabels } from "@/data/surveyQuestions";
 import { getEventSessionId, logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import enDictionary from "@/lib/i18n/dictionaries/en";
 import zhDictionary from "@/lib/i18n/dictionaries/zh";
 import { saveSurveyResponse } from "@/lib/researchData";
-import { persistStudyArtifact } from "@/lib/study/client";
+import { clearPendingSurveyStudySession, readPendingSurveyStudySession } from "@/lib/study/localData";
 import { sanitizeSurveyArtifact } from "@/lib/study/privacy";
 import { calculateSUS } from "@/lib/survey";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Textarea";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useStudy } from "@/components/study/StudyProvider";
+import { StudySession } from "@/types/study";
 
 type DictionaryKey = keyof typeof zhDictionary;
 
@@ -37,12 +38,19 @@ function applyReplacements(value: string, replacements?: Record<string, string |
 
 export default function SurveyPage() {
   const { user } = useAuth();
-  const { studyMode, session } = useStudy();
+  const { session } = useStudy();
   const { language } = useI18n();
+  const [pendingSurveySession, setPendingSurveySession] = useState<StudySession | null>(null);
   const [responses, setResponses] = useState<Record<string, string | number>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "submitted" | "error">("idle");
   const [message, setMessage] = useState("");
-  const effectiveLanguage = studyMode && session ? session.language : language;
+  const effectiveStudySession = session ?? pendingSurveySession;
+  const effectiveLanguage = effectiveStudySession ? effectiveStudySession.language : language;
+
+  useEffect(() => {
+    setPendingSurveySession(readPendingSurveyStudySession());
+  }, []);
+
   const surveyT = (key: DictionaryKey, replacements?: Record<string, string | number>) => {
     const dictionary = effectiveLanguage === "en" ? enDictionary : zhDictionary;
     const translated = dictionary[key] ?? zhDictionary[key] ?? key;
@@ -80,22 +88,29 @@ export default function SurveyPage() {
     setStatus("submitting");
     setMessage("");
 
-    const saveResult = studyMode && session
-      ? await persistStudyArtifact(session, "survey", {
-        responses: sanitizeSurveyArtifact(responses),
-        susScore
-      })
-      : await saveSurveyResponse({
-        sessionId: getEventSessionId(),
-        userId: user?.id ?? null,
-        responses,
-        susScore
-      });
+    const saveResult = await saveSurveyResponse({
+      sessionId: effectiveStudySession?.sessionId ?? getEventSessionId(),
+      userId: user?.id ?? null,
+      responses: effectiveStudySession ? sanitizeSurveyArtifact(responses) : responses,
+      susScore,
+      studyId: effectiveStudySession?.studyId,
+      participantId: effectiveStudySession?.participantId,
+      studyMode: Boolean(effectiveStudySession),
+      language: effectiveStudySession?.language,
+      condition: effectiveStudySession?.condition,
+      snapshotId: effectiveStudySession?.snapshotId,
+      snapshotSeed: effectiveStudySession?.snapshotSeed,
+      buildVersion: effectiveStudySession?.buildVersion
+    });
 
     if (saveResult.error) {
       setStatus("error");
       setMessage(saveResult.error);
       return;
+    }
+
+    if (effectiveStudySession === pendingSurveySession) {
+      clearPendingSurveyStudySession();
     }
 
     logEvent("sus.completed", {
@@ -206,7 +221,6 @@ export default function SurveyPage() {
       <PageContainer>
         <Card className="mx-auto max-w-3xl space-y-4 text-center">
           <p className="text-sm font-semibold text-brand-700">{surveyT("survey.completedBadge")}</p>
-          <p className="text-sm font-semibold text-brand-700">{surveyT("survey.thanks.badge")}</p>
           <h1 className="text-3xl font-black text-slate-900">{surveyT("survey.thanks.title")}</h1>
           <p className="text-sm leading-6 text-slate-600">{message}</p>
         </Card>

@@ -43,7 +43,7 @@ const translationMap: Record<string, string> = {
   "diagnose.result.expand1": "展开看更多 ↓",
   "diagnose.result.why": "为什么会这样",
   "diagnose.result.featured": "先看这个",
-  "diagnose.result.plan": "根据这个问题生成 7 天训练计划",
+  "diagnose.result.plan": "根据这个问题生成 7 步训练计划",
   "diagnose.result.library": "去内容库找更多练习",
   "diagnose.result.rankings": "去博主榜找适合的人"
 };

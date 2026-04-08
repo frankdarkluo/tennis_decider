@@ -114,6 +114,7 @@ export type StudyExportBundle = {
   participants?: StudyParticipantRecord[];
   sessions: StudySession[];
   artifacts: StudyArtifactRecord[];
+  surveyResponses?: Record<string, unknown>[];
   events: EventLog[];
   taskRatings?: StudyTaskRatingRecord[];
   openFeedbackRows?: StudyOpenFeedbackRow[];

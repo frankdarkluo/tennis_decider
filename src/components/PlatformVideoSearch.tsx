@@ -206,7 +206,7 @@ export function PlatformVideoSearch({
               >
                 {item.thumbnail ? (
                   <div className="aspect-video overflow-hidden bg-slate-100">
-                    <img src={item.thumbnail} alt={item.title} className="h-full w-full object-cover" />
+                    <img src={item.thumbnail} alt={item.title} className="h-full w-full object-cover" referrerPolicy="no-referrer" />
                   </div>
                 ) : (
                   <div className="flex aspect-video items-center justify-center bg-slate-100 text-sm text-slate-400">

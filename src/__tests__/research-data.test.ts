@@ -158,19 +158,19 @@ describe("research export helpers", () => {
         viewCountBoostDisabled: true
       },
       sessions: [{ participant_id: "P001", session_id: "session_1", snapshot_id: "snapshot_1" }],
-      artifacts: [
+      artifacts: [],
+      surveyResponses: [
         {
+          study_id: "sportshci_2026_no_video_v1",
           participant_id: "P001",
           session_id: "session_1",
           snapshot_id: "snapshot_1",
-          artifact_type: "survey",
-          payload: {
-            susScore: 72.5,
-            responses: {
-              q23: "The assessment result was clear.",
-              q24: "",
-              q25: "I would use the plan again."
-            }
+          language: "zh",
+          sus_score: 72.5,
+          responses: {
+            q23: "The assessment result was clear.",
+            q24: "",
+            q25: "I would use the plan again."
           }
         }
       ],

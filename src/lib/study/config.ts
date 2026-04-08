@@ -8,6 +8,7 @@ export const STUDY_DIAGNOSIS_SNAPSHOT_KEY = "tennislevel_study_diagnosis_snapsho
 export const STUDY_LAST_PATH_KEY = "tennislevel_study_last_path";
 export const STUDY_TASK_RATINGS_KEY = "tennislevel_study_task_ratings";
 export const PENDING_STUDY_SETUP_KEY = "tennislevel_pending_study_setup";
+export const PENDING_SURVEY_SESSION_KEY = "tennislevel_pending_survey_session";
 export const CURRENT_STUDY_ID = "sportshci_2026_no_video_v1";
 
 function readPublicEnv(name: string, fallback: string) {

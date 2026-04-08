@@ -102,6 +102,14 @@ export async function saveSurveyResponse(input: {
   userId: string | null;
   responses: SurveyResponses;
   susScore: number;
+  studyId?: string;
+  participantId?: string;
+  studyMode?: boolean;
+  language?: string;
+  condition?: string | null;
+  snapshotId?: string;
+  snapshotSeed?: string;
+  buildVersion?: string;
 }) {
   const supabase = getClient();
 
@@ -113,7 +121,15 @@ export async function saveSurveyResponse(input: {
     session_id: input.sessionId,
     user_id: input.userId,
     responses: input.responses,
-    sus_score: input.susScore
+    sus_score: input.susScore,
+    study_id: input.studyId ?? null,
+    participant_id: input.participantId ?? null,
+    study_mode: input.studyMode ?? false,
+    language: input.language ?? null,
+    condition: input.condition ?? null,
+    snapshot_id: input.snapshotId ?? null,
+    snapshot_seed: input.snapshotSeed ?? null,
+    build_version: input.buildVersion ?? null
   });
 
   if (error) {
@@ -276,7 +292,7 @@ export function summarizeStudyFlushFallbackBuckets(
 
 export function deriveStudyMetrics(
   events: Record<string, unknown>[],
-  artifacts: Record<string, unknown>[] = []
+  surveyRows: Record<string, unknown>[] = []
 ): StudyDerivedMetric[] {
   const grouped = new Map<string, NormalizedEventRow[]>();
 
@@ -291,9 +307,9 @@ export function deriveStudyMetrics(
     grouped.set(normalized.sessionId, bucket);
   });
 
-  const surveyMetricsBySession = artifacts.reduce<Map<string, { susScore: number | null; openFeedbackCount: number }>>((acc, row) => {
+  const surveyMetricsBySession = surveyRows.reduce<Map<string, { susScore: number | null; openFeedbackCount: number }>>((acc, row) => {
     const artifactType = String(row.artifact_type ?? row.artifactType ?? "");
-    if (artifactType !== "survey") {
+    if (artifactType && artifactType !== "survey") {
       return acc;
     }
 
@@ -302,9 +318,9 @@ export function deriveStudyMetrics(
       return acc;
     }
 
-    const payload = (row.payload ?? {}) as Record<string, unknown>;
-    const susScoreRaw = toNumber(payload.susScore);
-    const responses = (payload.responses ?? {}) as Record<string, unknown>;
+    const payload = (row.payload ?? row) as Record<string, unknown>;
+    const susScoreRaw = toNumber(payload.susScore ?? row.sus_score ?? row.susScore);
+    const responses = (payload.responses ?? row.responses ?? {}) as Record<string, unknown>;
     const openFeedbackCount = ["q23", "q24", "q25"].filter((questionId) => {
       const value = responses[questionId];
       return typeof value === "string" && value.trim().length > 0;
@@ -446,6 +462,7 @@ export function buildStudyExportBundle(input: {
   participants?: Record<string, unknown>[];
   sessions: Record<string, unknown>[];
   artifacts: Record<string, unknown>[];
+  surveyResponses?: Record<string, unknown>[];
   taskRatings?: Record<string, unknown>[];
   events: Record<string, unknown>[];
   participantId?: string;
@@ -479,21 +496,25 @@ export function buildStudyExportBundle(input: {
     .map(normalizeTaskRatingRow)
     .filter((rating): rating is StudyTaskRatingRecord => Boolean(rating));
   const filteredArtifacts = input.artifacts.filter(matches);
+  const filteredSurveyResponses = (input.surveyResponses ?? []).filter(matches);
   const filteredParticipants = (input.participants ?? [])
     .filter(matches)
     .map(normalizeStudyParticipantRow)
     .filter((participant): participant is StudyParticipantRecord => Boolean(participant));
   const filteredEvents = input.events.filter(matches);
 
+  const surveyRows = [...filteredArtifacts, ...filteredSurveyResponses];
+
   return {
     snapshot: input.snapshot,
     participants: filteredParticipants,
     sessions: input.sessions.filter(matches) as StudyExportBundle["sessions"],
     artifacts: filteredArtifacts as StudyExportBundle["artifacts"],
+    surveyResponses: filteredSurveyResponses,
     events: filteredEvents as StudyExportBundle["events"],
     taskRatings: filteredTaskRatings,
-    openFeedbackRows: deriveOpenFeedbackRows(filteredArtifacts, filteredEvents),
-    derivedMetrics: deriveStudyMetrics(filteredEvents, filteredArtifacts),
+    openFeedbackRows: deriveOpenFeedbackRows(surveyRows, filteredEvents),
+    derivedMetrics: deriveStudyMetrics(filteredEvents, surveyRows),
     actionabilitySummary: summarizeActionabilityRatings(filteredTaskRatings)
   };
 }
@@ -520,12 +541,12 @@ function deriveTaskContextForSession(events: Record<string, unknown>[], sessionI
 }
 
 function deriveOpenFeedbackRows(
-  artifacts: Record<string, unknown>[],
+  surveyRows: Record<string, unknown>[],
   events: Record<string, unknown>[]
 ): StudyOpenFeedbackRow[] {
-  return artifacts.flatMap((row) => {
+  return surveyRows.flatMap((row) => {
     const artifactType = String(row.artifact_type ?? row.artifactType ?? "");
-    if (artifactType !== "survey") {
+    if (artifactType && artifactType !== "survey") {
       return [];
     }
 
@@ -537,8 +558,8 @@ function deriveOpenFeedbackRows(
       return [];
     }
 
-    const payload = (row.payload ?? {}) as Record<string, unknown>;
-    const responses = (payload.responses ?? {}) as Record<string, unknown>;
+    const payload = (row.payload ?? row) as Record<string, unknown>;
+    const responses = (payload.responses ?? row.responses ?? {}) as Record<string, unknown>;
     const submittedAt = String(row.created_at ?? row.createdAt ?? "1970-01-01T00:00:00.000Z");
     const taskContext = deriveTaskContextForSession(events, sessionId);
 

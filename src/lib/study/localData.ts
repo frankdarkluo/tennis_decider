@@ -6,6 +6,7 @@ import {
   STUDY_DIAGNOSIS_SNAPSHOT_KEY,
   STUDY_LAST_PATH_KEY,
   PENDING_STUDY_SETUP_KEY,
+  PENDING_SURVEY_SESSION_KEY,
   STUDY_PLAN_DRAFT_KEY,
   STUDY_PROGRESS_KEY,
   STUDY_TASK_RATINGS_KEY
@@ -16,6 +17,7 @@ import {
   StudyArtifactRecord,
   StudyBookmarkState,
   StudyProgressState,
+  StudySession,
   StudyTaskRatingRecord
 } from "@/types/study";
 import { PlanContext, PlanLevel } from "@/types/plan";
@@ -79,6 +81,22 @@ export function appendLocalStudyTaskRating(rating: StudyTaskRatingRecord) {
   const items = readLocalStudyTaskRatings();
   items.push(rating);
   writeJson(STUDY_TASK_RATINGS_KEY, items);
+}
+
+export function readPendingSurveyStudySession() {
+  return readJson<StudySession | null>(PENDING_SURVEY_SESSION_KEY, null);
+}
+
+export function writePendingSurveyStudySession(session: StudySession) {
+  writeJson(PENDING_SURVEY_SESSION_KEY, session);
+}
+
+export function clearPendingSurveyStudySession() {
+  if (!isBrowser()) {
+    return;
+  }
+
+  window.localStorage.removeItem(PENDING_SURVEY_SESSION_KEY);
 }
 
 export function readLocalStudyBookmarks() {
@@ -217,6 +235,7 @@ export function clearLocalStudyData() {
     STUDY_PLAN_DRAFT_KEY,
     STUDY_LAST_PATH_KEY,
     STUDY_TASK_RATINGS_KEY,
+    PENDING_SURVEY_SESSION_KEY,
     PENDING_STUDY_SETUP_KEY
   ].forEach((key) => {
     window.localStorage.removeItem(key);

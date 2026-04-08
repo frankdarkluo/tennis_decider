@@ -65,6 +65,7 @@ TennisLevel is currently focused on a study-ready workflow for SportsHCI-style r
 
 ## Roadmap Entrypoints
 - [[roadmap/current]]
+- [[roadmap/ux-simplification-plan]]
 - [[product/requirements]]
 - [[roadmap/content-expansion]]
 - [[roadmap/archive/routing-3-step-2026-03-31]]

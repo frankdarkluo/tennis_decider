@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { DiagnosisResult as DiagnosisResultType } from "@/types/diagnosis";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { PlatformVideoSearch } from "@/components/PlatformVideoSearch";
 import {
   getContentCoachNote,
   getContentFocusLine,
@@ -276,9 +275,10 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
   const moreContents = result.recommendedContents.slice(1);
 
   useEffect(() => {
-    setLayer(1);
+    const initialLayer = isDeepMode ? 2 : 1;
+    setLayer(initialLayer);
     setEvidenceExpanded(false);
-  }, [result.input, result.problemTag]);
+  }, [result.input, result.problemTag, isDeepMode]);
 
   if (!canGeneratePlan) {
     return null;
@@ -290,37 +290,6 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
         <p className="text-sm font-semibold text-brand-700">{t("diagnose.result.badge")}</p>
         <h2 className="text-2xl font-black text-slate-900">{result.title}</h2>
         <p className="text-sm leading-6 text-slate-600">{result.summary}</p>
-        {deepContext?.isDeepModeReady ? (
-          <div className="space-y-3 rounded-2xl border border-brand-200 bg-brand-50/70 p-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge className="bg-brand-500 px-3 py-1 text-xs font-semibold text-white">深入模式</Badge>
-              <p className="text-sm font-semibold text-slate-900">
-                {locale === "en" ? "Scene-backed diagnosis" : "场景证据诊断"}
-              </p>
-            </div>
-            {deepEvidenceSummary ? <p className="text-sm leading-6 text-slate-700">{deepEvidenceSummary}</p> : null}
-            {deepSceneRecap ? (
-              <div className="rounded-xl bg-white/80 p-3">
-                <p className="text-sm font-semibold text-slate-900">
-                  {locale === "en" ? "Scene recap" : "一句话场景回顾"}
-                </p>
-                <p className="mt-2 text-sm leading-6 text-slate-700">{deepSceneRecap}</p>
-              </div>
-            ) : null}
-            {specificityReasons.length > 0 ? (
-              <div className="rounded-xl bg-white/80 p-3">
-                <p className="text-sm font-semibold text-slate-900">
-                  {locale === "en" ? "Why this diagnosis is more specific" : "为什么这次判断更具体"}
-                </p>
-                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
-                  {specificityReasons.map((reason) => (
-                    <li key={reason}>{reason}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-          </div>
-        ) : null}
         <div className="rounded-2xl bg-[var(--surface-soft)] p-4">
           <p className="text-sm font-semibold text-slate-700">{t("diagnose.result.today")}</p>
           <p className="mt-2 text-base font-medium text-slate-900">{primaryNextStep}</p>
@@ -473,6 +442,38 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
             </div>
           ) : null}
 
+          {deepContext?.isDeepModeReady ? (
+            <div className="space-y-3 rounded-2xl border border-brand-200 bg-brand-50/70 p-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge className="bg-brand-500 px-3 py-1 text-xs font-semibold text-white">深入模式</Badge>
+                <p className="text-sm font-semibold text-slate-900">
+                  {locale === "en" ? "Scene-backed diagnosis" : "场景证据诊断"}
+                </p>
+              </div>
+              {deepEvidenceSummary ? <p className="text-sm leading-6 text-slate-700">{deepEvidenceSummary}</p> : null}
+              {deepSceneRecap ? (
+                <div className="rounded-xl bg-white/80 p-3">
+                  <p className="text-sm font-semibold text-slate-900">
+                    {locale === "en" ? "Scene recap" : "一句话场景回顾"}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-700">{deepSceneRecap}</p>
+                </div>
+              ) : null}
+              {specificityReasons.length > 0 ? (
+                <div className="rounded-xl bg-white/80 p-3">
+                  <p className="text-sm font-semibold text-slate-900">
+                    {locale === "en" ? "Why this diagnosis is more specific" : "为什么这次判断更具体"}
+                  </p>
+                  <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                    {specificityReasons.map((reason) => (
+                      <li key={reason}>{reason}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
               href={planHref}
@@ -483,7 +484,7 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
             >
               <Button>
                 {deepContext?.isDeepModeReady
-                  ? (locale === "en" ? "Generate a more specific 7-day plan" : "生成更具体的 7 天训练计划")
+                  ? (locale === "en" ? "Generate a more specific 7-step plan" : "生成更具体的 7 步训练计划")
                   : t("diagnose.result.plan")}
               </Button>
             </Link>
@@ -533,14 +534,6 @@ export function DiagnoseResult({ result }: { result: DiagnosisResultType }) {
                 <RecommendationCard key={item.id} item={item} source="diagnosis_more" layer={3} problemTag={result.problemTag} />
               ))}
             </div>
-          ) : null}
-
-          {result.searchQueries ? (
-            <PlatformVideoSearch
-              queries={result.searchQueries}
-              title={t("diagnose.result.search")}
-              sourceContext="diagnose"
-            />
           ) : null}
 
           <div className="flex flex-wrap gap-2">

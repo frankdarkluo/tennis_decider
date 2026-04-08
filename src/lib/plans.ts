@@ -2509,13 +2509,13 @@ export function getPlanTemplate(
               source: "fallback",
               level,
               problemTag,
-              title: locale === "en" ? "7-day general improvement plan" : "通用 7 天基础提升计划",
+              title: locale === "en" ? "7-step general improvement plan" : "通用 7 步基础提升计划",
               target: locale === "en"
                 ? "Build a steady swing and a practical training rhythm within one week"
                 : "在一周内建立稳定击球与可执行训练节奏",
               summary: locale === "en"
-                ? "Not enough context to customize yet. Starting with a general, actionable 7-day training rhythm."
-                : "当前上下文不足，先使用一份通用且可执行的 7 天训练节奏。",
+                ? "Not enough context to customize yet. Starting with a general, actionable 7-step training rhythm."
+                : "当前上下文不足，先使用一份通用且可执行的 7 步训练节奏。",
               days: createDefaultDays(locale)
             },
             level,
@@ -2570,8 +2570,8 @@ export function getPlanFromDiagnosis(input: {
   if (locale === "en") {
     return {
       ...base,
-      title: input.title ? `${input.title}: 7-day improvement plan` : base.title,
-      target: primaryNextStep ? `Focus on "${primaryNextStep}" and build a consistent 7-day training rhythm.` : base.target,
+      title: input.title ? `${input.title}: 7-step improvement plan` : base.title,
+      target: primaryNextStep ? `Focus on "${primaryNextStep}" and build a consistent 7-step training rhythm.` : base.target,
       summary: primaryNextStep
         ? `Primary focus this week: ${primaryNextStep}`
         : "This plan is built around your primary issue. Focus on execution over the week — do not try to fix everything at once."
@@ -2580,8 +2580,8 @@ export function getPlanFromDiagnosis(input: {
 
   return {
     ...base,
-    title: input.title ? `${input.title}：7 天提升计划` : base.title,
-    target: primaryNextStep ? `先围绕"${primaryNextStep}"建立连续 7 天的小步训练。` : base.target,
+    title: input.title ? `${input.title}：7 步提升计划` : base.title,
+    target: primaryNextStep ? `先围绕"${primaryNextStep}"建立连续 7 步训练。` : base.target,
     summary: primaryNextStep
       ? `本周先围绕这一个主动作推进：${primaryNextStep}`
       : "这份计划围绕你当前最主要的问题设计，先追求连续执行，不求一次改完。"
