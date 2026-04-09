@@ -8,6 +8,8 @@ type PlanFixtureDayExpectation = {
   mainIncludes?: string;
   pressureIncludes?: string;
   successIncludes?: string;
+  failureCueIncludes?: string;
+  transferCueIncludes?: string;
   goalExcludes?: string;
   mainExcludes?: string;
   pressureExcludes?: string;
@@ -85,7 +87,7 @@ export const planFewShotFixtures: PlanFewShotFixture[] = [
       },
       {
         day: 7,
-        goalIncludes: "带入下一周",
+        goalIncludes: "带入下一轮训练",
         mainIncludes: "计分二发",
         successIncludes: "规则",
         pressureExcludes: "关键分式的比赛化收口",
@@ -100,12 +102,11 @@ export const planFewShotFixtures: PlanFewShotFixture[] = [
     level: "3.5",
     diagnosisInput: "比赛里我跑动中的反手老下网，尤其对手球比较深的时候更明显。",
     primaryNextStep: "先把跑动中的击球点放到身体前面",
-    summaryIncludes: "跑动中、深球条件下",
+    summaryIncludes: "跑动中面对更深来球",
     dayExpectations: [
-      { day: 4, goalIncludes: "复盘" },
-      { day: 5, goalIncludes: "压力" },
-      { day: 6, goalIncludes: "转移", pressureIncludes: "更深", successIncludes: "比赛" },
-      { day: 7, goalIncludes: "巩固" }
+      { day: 3, goalIncludes: "跑动" },
+      { day: 5, goalIncludes: "压力", pressureIncludes: "深" },
+      { day: 7, goalIncludes: "巩固", transferCueIncludes: "反手" }
     ]
   },
   {
@@ -115,7 +116,7 @@ export const planFewShotFixtures: PlanFewShotFixture[] = [
     level: "4.0",
     diagnosisInput: "比赛里一到关键分我就手紧，动作会变形。",
     primaryNextStep: "关键分先把注意力放回一个最稳的动作",
-    summaryIncludes: "关键分比赛场景",
+    summaryIncludes: "关键分压力",
     dayExpectations: [
       { day: 4, goalIncludes: "复盘" },
       { day: 5, goalIncludes: "压力", pressureIncludes: "关键分" },
@@ -131,10 +132,9 @@ export const planFewShotFixtures: PlanFewShotFixture[] = [
     diagnosisInput: "双打里我网前截击老冒高。",
     primaryNextStep: "先缩小截击动作并稳住拍面",
     dayExpectations: [
-      { day: 4, goalIncludes: "复盘" },
-      { day: 5, goalIncludes: "压力" },
-      { day: 6, goalIncludes: "转移" },
-      { day: 7, goalIncludes: "巩固" }
+      { day: 5, goalIncludes: "网前" },
+      { day: 6, goalIncludes: "转移", mainIncludes: "截击" },
+      { day: 7, goalIncludes: "巩固", failureCueIncludes: "漂" }
     ]
   }
 ];

@@ -4,12 +4,15 @@ import { diagnosisRules } from "@/data/diagnosisRules";
 import { expandedContents } from "@/data/expandedContents";
 import { planTemplates } from "@/data/planTemplates";
 import { PLAN_MICROCYCLE_ROLES, PlanMicrocycleRole } from "@/data/planBlueprints";
+import { retrieveCatalogRecommendations } from "@/lib/content-catalog/retrieve";
 import {
   buildPlanContextFromEnrichedContext,
   encodeEnrichedDiagnosisContext,
   parseEnrichedDiagnosisContext
 } from "@/lib/diagnose/enrichedContext";
 import { filterByEnvironment } from "@/lib/environment";
+import { withDeterministicDayContract } from "@/lib/plan-core/baseSkeleton";
+import { applySceneOverlay } from "@/lib/plan-core/sceneOverlay";
 import { AssessmentDimension, AssessmentResult, DimensionSummary } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
 import { AppEnvironment } from "@/types/environment";
@@ -141,6 +144,12 @@ type PlanDayInput = Pick<DayPlan, "day" | "focus" | "contentIds" | "drills" | "d
     | "pressureBlockEn"
     | "successCriteria"
     | "successCriteriaEn"
+    | "failureCue"
+    | "failureCueEn"
+    | "progressionNote"
+    | "progressionNoteEn"
+    | "transferCue"
+    | "transferCueEn"
     | "intensity"
     | "tempo"
   >>;
@@ -158,6 +167,81 @@ function cloneBlock(block: DayPlanBlock | undefined, fallbackTitle: string, fall
   };
 }
 
+function normalizeStepText(value: string, locale: PlanLocale): string {
+  const normalized = value.trim();
+
+  if (!normalized) {
+    return normalized;
+  }
+
+  if (locale === "en") {
+    return [
+      [/\b7-day\b/gi, "7-step"],
+      [/\bseven days\b/gi, "7 steps"],
+      [/\bDay (\d+)\b/g, "Step $1"],
+      [/\btoday['’]s\b/gi, "this step's"],
+      [/\btomorrow['’]s\b/gi, "next step's"],
+      [/\bnext week['’]s\b/gi, "the next training block's"],
+      [/\bthis week['’]s\b/gi, "this plan's"],
+      [/\btoday\b/gi, "this step"],
+      [/\btomorrow\b/gi, "the next step"],
+      [/\bthis week\b/gi, "this plan"],
+      [/\bnext week\b/gi, "the next training block"],
+      [/\bover the week\b/gi, "across the full sequence"],
+      [/\bfor the week\b/gi, "for the full sequence"],
+      [/\bwithin one week\b/gi, "across the 7-step sequence"]
+    ].reduce((current, [pattern, replacement]) => current.replace(pattern as RegExp, replacement as string), normalized);
+  }
+
+  return [
+    [/7天/g, "7 步"],
+    [/第\s*(\d+)\s*天/g, "第 $1 步"],
+    [/今天的/g, "这一步的"],
+    [/明天的/g, "下一步的"],
+    [/今天/g, "这一步"],
+    [/明天/g, "下一步"],
+    [/本周计划/g, "这套 7 步计划"],
+    [/本周的/g, "这套计划的"],
+    [/本周/g, "这套计划"],
+    [/下一周/g, "下一轮训练"],
+    [/下周/g, "下一轮训练"],
+    [/一周内/g, "按这 7 步"]
+  ].reduce((current, [pattern, replacement]) => current.replace(pattern as RegExp, replacement as string), normalized);
+}
+
+function normalizeStepBlock(block: DayPlanBlock, locale: PlanLocale): DayPlanBlock {
+  return {
+    title: normalizeStepText(block.title, locale),
+    items: block.items.map((item) => normalizeStepText(item, locale))
+  };
+}
+
+function normalizeStepDay(day: DayPlan, locale: PlanLocale): DayPlan {
+  return {
+    ...day,
+    focus: normalizeStepText(day.focus, locale),
+    drills: day.drills.map((drill) => normalizeStepText(drill, locale)),
+    goal: normalizeStepText(day.goal, locale),
+    warmupBlock: normalizeStepBlock(day.warmupBlock, locale),
+    mainBlock: normalizeStepBlock(day.mainBlock, locale),
+    pressureBlock: normalizeStepBlock(day.pressureBlock, locale),
+    successCriteria: day.successCriteria.map((criteria) => normalizeStepText(criteria, locale)),
+    failureCue: normalizeStepText(day.failureCue, locale),
+    progressionNote: normalizeStepText(day.progressionNote, locale),
+    transferCue: normalizeStepText(day.transferCue, locale)
+  };
+}
+
+function normalizeGeneratedPlanStepSemantics(plan: GeneratedPlan, locale: PlanLocale): GeneratedPlan {
+  return {
+    ...plan,
+    title: normalizeStepText(plan.title, locale),
+    target: normalizeStepText(plan.target, locale),
+    summary: plan.summary ? normalizeStepText(plan.summary, locale) : plan.summary,
+    days: plan.days.map((day) => normalizeStepDay(day, locale))
+  };
+}
+
 function buildDayPlan(day: PlanDayInput, locale: PlanLocale): DayPlan {
   const isEn = locale === "en";
   const focus = isEn ? day.focusEn ?? day.focus : day.focus;
@@ -168,7 +252,7 @@ function buildDayPlan(day: PlanDayInput, locale: PlanLocale): DayPlan {
     ? [`Add one pressure rule to ${focus}`]
     : [`给${focus}增加一个压力条件`];
 
-  return {
+  return withDeterministicDayContract({
     day: day.day,
     focus,
     contentIds: [...day.contentIds],
@@ -189,9 +273,18 @@ function buildDayPlan(day: PlanDayInput, locale: PlanLocale): DayPlan {
         ? day.successCriteriaEn ?? ["Complete the session with steady mechanics"]
         : day.successCriteria ?? ["完成当天训练并保持动作稳定"])
     ],
+    failureCue: isEn
+      ? day.failureCueEn ?? `If ${focus.toLowerCase()} starts to rush or lose shape, slow down and reset the rep.`
+      : day.failureCue ?? `一旦${focus}开始着急或走样，就先降速重置。`,
+    progressionNote: isEn
+      ? day.progressionNoteEn ?? `If today's shape holds, carry ${focus.toLowerCase()} into the next day.`
+      : day.progressionNote ?? `如果今天能稳住，就把${focus}带进下一天。`,
+    transferCue: isEn
+      ? day.transferCueEn ?? `Carry ${focus.toLowerCase()} into the first playable point pattern.`
+      : day.transferCue ?? `把${focus}带进第一组可打的得分片段里。`,
     intensity: day.intensity ?? (day.day <= 2 ? "low" : day.day <= 5 ? "medium" : "medium_high"),
     tempo: day.tempo ?? (day.day <= 2 ? "slow" : day.day <= 5 ? "controlled" : "match_70")
-  };
+  }, locale);
 }
 
 const FALLBACK_DAY_PRESCRIPTIONS_ZH: PlanDayInput[] = [
@@ -1101,8 +1194,40 @@ function fillCandidatePoolIfNeeded(
     .sort(compareContentPriority);
 
   const diversifiedBackfill = selectPlanCandidatesWithDiversity(backfill, MAX_PLAN_CANDIDATES);
+  const combined = uniqueStrings([...candidateIds, ...diversifiedBackfill]);
 
-  return uniqueStrings([...candidateIds, ...diversifiedBackfill]).slice(0, MAX_PLAN_CANDIDATES);
+  if (combined.length >= MIN_PLAN_CANDIDATES) {
+    return combined.slice(0, MAX_PLAN_CANDIDATES);
+  }
+
+  const isGenericTrainingCase = seedProblemTags.some((tag) =>
+    ["plateau-no-progress", "cant-self-practice", "general-improvement"].includes(tag)
+  );
+
+  if (!isGenericTrainingCase) {
+    return combined.slice(0, MAX_PLAN_CANDIDATES);
+  }
+
+  const genericSkillBackfill = directPlanContents
+    .map((item, index): RankedPlanContentCandidate & { genericSkillOverlap: number } => {
+      const genericSkillOverlap = overlapCount(item.skills, ["training", "basics", "consistency", "matchplay"]);
+      const score =
+        genericSkillOverlap * 6 +
+        overlapCount(getNormalizedContentProblemTags(item), ["cant-self-practice", "general-improvement", "plateau-no-progress"]) * 5 +
+        getLevelPreferenceScore(item, level);
+
+      return { item, index, score, genericSkillOverlap };
+    })
+    .filter(({ item, score, genericSkillOverlap }) =>
+      !combined.includes(item.id) &&
+      genericSkillOverlap > 0 &&
+      score > 0
+    )
+    .sort(compareContentPriority);
+
+  const diversifiedGenericBackfill = selectPlanCandidatesWithDiversity(genericSkillBackfill, MAX_PLAN_CANDIDATES);
+
+  return uniqueStrings([...combined, ...diversifiedGenericBackfill]).slice(0, MAX_PLAN_CANDIDATES);
 }
 
 function getAssessmentDimensionKeySet(result: AssessmentResult): AssessmentDimension[] {
@@ -1428,34 +1553,21 @@ export function buildDiagnosisPlanCandidateIds(input: {
     ...templateSeedItems.flatMap((item) => item.skills),
     ...contextHint.skills
   ]);
-  const explicitContentIdSet = new Set(explicitContentIds);
-  const templateSeedContentIdSet = new Set(templateSeedContentIds);
-
-  const rankedCandidateIds = directPlanContents
-    .map((item, index): RankedPlanContentCandidate =>
-      scoreContentForCandidatePool({
-        item,
-        index,
-        problemTag: normalizedProblemTag,
-        level: input.level,
-        explicitContentIdSet,
-        seedProblemTags,
-        seedSkills,
-        secondaryProblemTags: [],
-        secondarySkills: [],
-        contextProblemTags: contextHint.problemTags,
-        contextSkills: contextHint.skills,
-        contextTerms: contextHint.terms,
-        templateSeedContentIdSet
-      })
-    )
-    .filter(({ item, score }) => score > 0 || explicitContentIdSet.has(item.id))
-    .sort(compareContentPriority);
-
-  const diversifiedRankedCandidateIds = selectPlanCandidatesWithDiversity(
-    rankedCandidateIds,
-    input.maxCandidates ?? MAX_PLAN_CANDIDATES
-  );
+  const diversifiedRankedCandidateIds = retrieveCatalogRecommendations({
+    source: "plan",
+    contentPool: contents,
+    expandedContentPool: expandedContents,
+    problemTags: uniqueStrings([
+      normalizedProblemTag,
+      ...seedProblemTags,
+      ...contextHint.problemTags
+    ]),
+    skillCategories: uniqueStrings([...seedSkills, ...contextHint.skills]),
+    lexicalTerms: contextHint.terms,
+    level: input.level,
+    preferredIds: uniqueStrings([...explicitContentIds, ...templateSeedContentIds]),
+    maxResults: input.maxCandidates ?? MAX_PLAN_CANDIDATES
+  }).map((item) => item.id);
 
   const orderedIds = uniqueStrings([
     ...explicitContentIds.filter((id) => isDirectPlanContentId(id)),
@@ -1509,34 +1621,20 @@ export function buildAssessmentPlanContext(result: AssessmentResult): {
     ...templateSeedItems.flatMap((item) => item.skills),
     ...secondarySkills
   ]);
-  const explicitContentIdSet = new Set(directExplicitContentIds);
-  const templateSeedContentIdSet = new Set(directTemplateSeedContentIds);
-
-  const rankedCandidateIds = directPlanContents
-    .map((item, index): RankedPlanContentCandidate =>
-      scoreContentForCandidatePool({
-        item,
-        index,
-        problemTag: primaryHint.primaryProblemTag,
-        level: result.level,
-        explicitContentIdSet,
-        seedProblemTags,
-        seedSkills,
-        secondaryProblemTags,
-        secondarySkills,
-        contextProblemTags: [],
-        contextSkills: [],
-        contextTerms: [],
-        templateSeedContentIdSet
-      })
-    )
-    .filter(({ item, score }) => score > 0 || explicitContentIdSet.has(item.id))
-    .sort(compareContentPriority);
-
-  const diversifiedRankedCandidateIds = selectPlanCandidatesWithDiversity(
-    rankedCandidateIds,
-    MAX_PLAN_CANDIDATES
-  );
+  const diversifiedRankedCandidateIds = retrieveCatalogRecommendations({
+    source: "plan",
+    contentPool: contents,
+    expandedContentPool: expandedContents,
+    problemTags: uniqueStrings([
+      primaryHint.primaryProblemTag,
+      ...seedProblemTags,
+      ...secondaryProblemTags
+    ]),
+    skillCategories: uniqueStrings([...seedSkills, ...secondarySkills]),
+    level: result.level,
+    preferredIds: uniqueStrings([...directExplicitContentIds, ...directTemplateSeedContentIds]),
+    maxResults: MAX_PLAN_CANDIDATES
+  }).map((item) => item.id);
 
   const orderedIds = uniqueStrings([
     ...directExplicitContentIds,
@@ -2436,7 +2534,7 @@ export function getPlanTemplate(
     .map((lookupProblemTag) => activePlanTemplates.find((item) => item.problemTag === lookupProblemTag && item.level === templateLevel))
     .find((item): item is PlanTemplate => Boolean(item));
   if (exact) {
-    const plan = applyDeepModeOverlay(applyPlanMicrocycle(
+    const plan = applySceneOverlay(applyDeepModeOverlay(applyPlanMicrocycle(
       applyPlanContext(
         applyPrimaryNextStepContext(
           sanitizePlanDayContentIds(
@@ -2458,10 +2556,15 @@ export function getPlanTemplate(
       ),
       locale,
       effectivePlanContext
-    ), locale, options.deepContext);
+    ), locale, options.deepContext), locale, {
+      problemTag,
+      planContext: effectivePlanContext ?? null,
+      deepContext: options.deepContext,
+      primaryNextStep: options.primaryNextStep
+    });
 
     return {
-      ...plan,
+      ...normalizeGeneratedPlanStepSemantics(plan, locale),
       problemTag
     };
   }
@@ -2470,7 +2573,7 @@ export function getPlanTemplate(
     .map((lookupProblemTag) => activePlanTemplates.find((item) => item.problemTag === lookupProblemTag))
     .find((item): item is PlanTemplate => Boolean(item));
   if (sameTag) {
-    const plan = applyDeepModeOverlay(applyPlanMicrocycle(
+    const plan = applySceneOverlay(applyDeepModeOverlay(applyPlanMicrocycle(
       applyPlanContext(
         applyPrimaryNextStepContext(
           sanitizePlanDayContentIds(
@@ -2492,15 +2595,20 @@ export function getPlanTemplate(
       ),
       locale,
       effectivePlanContext
-    ), locale, options.deepContext);
+    ), locale, options.deepContext), locale, {
+      problemTag,
+      planContext: effectivePlanContext ?? null,
+      deepContext: options.deepContext,
+      primaryNextStep: options.primaryNextStep
+    });
 
     return {
-      ...plan,
+      ...normalizeGeneratedPlanStepSemantics(plan, locale),
       problemTag
     };
   }
 
-  return applyDeepModeOverlay(applyPlanMicrocycle(
+  return normalizeGeneratedPlanStepSemantics(applySceneOverlay(applyDeepModeOverlay(applyPlanMicrocycle(
     applyPlanContext(
       applyPrimaryNextStepContext(
         sanitizePlanDayContentIds(
@@ -2531,7 +2639,12 @@ export function getPlanTemplate(
     ),
     locale,
     effectivePlanContext
-  ), locale, options.deepContext);
+  ), locale, options.deepContext), locale, {
+    problemTag,
+    planContext: effectivePlanContext ?? null,
+    deepContext: options.deepContext,
+    primaryNextStep: options.primaryNextStep
+  }), locale);
 }
 
 const DIMENSION_TO_PROBLEM_TAG: Record<string, string> = {
@@ -2571,10 +2684,10 @@ export function getPlanFromDiagnosis(input: {
     return {
       ...base,
       title: input.title ? `${input.title}: 7-step improvement plan` : base.title,
-      target: primaryNextStep ? `Focus on "${primaryNextStep}" and build a consistent 7-step training rhythm.` : base.target,
+      target: primaryNextStep ? `Focus on "${primaryNextStep}" and build a consistent 7-step training sequence.` : base.target,
       summary: primaryNextStep
-        ? `Primary focus this week: ${primaryNextStep}`
-        : "This plan is built around your primary issue. Focus on execution over the week — do not try to fix everything at once."
+        ? `Primary focus for this sequence: ${primaryNextStep}`
+        : "This plan is built around your primary issue. Focus on execution across the full sequence instead of trying to fix everything at once."
     };
   }
 
@@ -2583,7 +2696,7 @@ export function getPlanFromDiagnosis(input: {
     title: input.title ? `${input.title}：7 步提升计划` : base.title,
     target: primaryNextStep ? `先围绕"${primaryNextStep}"建立连续 7 步训练。` : base.target,
     summary: primaryNextStep
-      ? `本周先围绕这一个主动作推进：${primaryNextStep}`
+      ? `这 7 步先围绕这一个主动作推进：${primaryNextStep}`
       : "这份计划围绕你当前最主要的问题设计，先追求连续执行，不求一次改完。"
   };
 }
@@ -2607,16 +2720,16 @@ export function getPlanFromAssessment(input: {
     return {
       ...base,
       summary: input.observationNeeded?.length
-        ? `The plan will shore up weak spots first, with ${input.observationNeeded.join(" and ")} as watch areas.`
-        : "The plan focuses on the weakest areas from the assessment to build training rhythm."
+        ? `The plan starts by shoring up ${input.weaknesses?.join(" and ") ?? "the weakest area"}, while keeping ${input.observationNeeded.join(" and ")} on the watch list.`
+        : "The plan starts from the weakest area surfaced by the assessment and builds a practical 7-step rhythm."
     };
   }
 
   return {
     ...base,
     summary: input.observationNeeded?.length
-      ? `计划会先补强短板，同时把 ${input.observationNeeded.join("、")} 作为待观察维度。`
-      : "计划会优先围绕评估中的相对短板建立训练节奏。"
+      ? `计划会先补强${input.weaknesses?.join("、") ?? "最弱短板"}，同时把 ${input.observationNeeded.join("、")} 作为待观察维度。`
+      : "计划会优先围绕评估中的相对短板，建立一套可执行的 7 步训练节奏。"
   };
 }
 

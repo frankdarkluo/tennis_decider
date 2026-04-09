@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { parseEnrichedDiagnosisContext } from "@/lib/diagnose/enrichedContext";
+import { readLocalPlanDraft, writeLocalPlanDraft } from "@/lib/appShell/localRouteState";
 import { logEvent } from "@/lib/eventLogger";
 import {
   buildPlanHref,
@@ -15,17 +16,13 @@ import {
 } from "@/lib/plans";
 import { saveGeneratedPlan } from "@/lib/userData";
 import { useI18n } from "@/lib/i18n/config";
-import { persistStudyArtifact } from "@/lib/study/client";
-import { readLocalStudyPlanDraft, updateLocalStudyProgress, writeLocalStudyPlanDraft } from "@/lib/study/localData";
-import { sanitizePlanArtifact } from "@/lib/study/privacy";
-import { getStudySnapshot } from "@/lib/study/snapshot";
 // hasStudyTaskRating removed: actionability prompt not shown on plan page
 import { toChineseLevel } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
+import { useAppShell } from "@/components/app/AppShellProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
-import { useStudy } from "@/components/study/StudyProvider";
 import { PlanSummary } from "@/components/plan/PlanSummary";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
 import { Button } from "@/components/ui/Button";
@@ -42,13 +39,12 @@ function normalizeLevelParam(level: string | null): PlanLevel {
 }
 
 function PlanPageContent() {
-  const router = useRouter();
   const params = useSearchParams();
   const { user, configured } = useAuth();
   const { openLoginModal } = useAuthModal();
-  const { environment, studyMode, session, language, pendingStudySetup } = useStudy();
+  const { environment, activeSession, language } = useAppShell();
   const { t } = useI18n();
-  const restoredDraft = useMemo(() => normalizePlanDraftSnapshot(readLocalStudyPlanDraft()), []);
+  const restoredDraft = useMemo(() => normalizePlanDraftSnapshot(readLocalPlanDraft()), []);
   const defaultProblemTag = params.get("problemTag") ?? restoredDraft?.problemTag ?? "no-plan";
   function mapReportedLevelToPlan(levelStr: string | null | undefined): string | null {
     if (!levelStr) return null;
@@ -68,8 +64,8 @@ function PlanPageContent() {
     }
   }
 
-  const sessionReportedLevel = studyMode && session?.background?.selfReportedLevel
-    ? mapReportedLevelToPlan(session.background.selfReportedLevel)
+  const sessionReportedLevel = activeSession?.background?.selfReportedLevel
+    ? mapReportedLevelToPlan(activeSession.background.selfReportedLevel)
     : null;
 
   const defaultLevel = normalizeLevelParam(params.get("level") ?? restoredDraft?.level ?? sessionReportedLevel ?? null);
@@ -82,7 +78,6 @@ function PlanPageContent() {
   const [level, setLevel] = useState<PlanLevel>(defaultLevel);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [saveMessage, setSaveMessage] = useState("");
-  const studyPersistedKeyRef = useRef<string | null>(null);
   const preferredContentIds = useMemo(
     () => preferredContentIdsParam
       ? parsePlanContentIds(preferredContentIdsParam)
@@ -138,16 +133,6 @@ function PlanPageContent() {
     }),
     [deepContext, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, planContext, sourceType]
   );
-  const blockedByPendingStudySetup = pendingStudySetup && !session;
-
-  useEffect(() => {
-    if (!blockedByPendingStudySetup) {
-      return;
-    }
-
-    router.replace("/study/start");
-  }, [blockedByPendingStudySetup, router]);
-
   const regenerate = () => {
     setLevel((prev) => (prev === "2.5" ? "3.0" : prev === "3.0" ? "3.5" : prev === "3.5" ? "4.0" : prev === "4.0" ? "4.5" : "2.5"));
   };
@@ -170,7 +155,7 @@ function PlanPageContent() {
   }, [plan.level, plan.problemTag, sourceType]);
 
   useEffect(() => {
-    if (blockedByPendingStudySetup || !hasSource) {
+    if (!hasSource) {
       return;
     }
 
@@ -180,48 +165,14 @@ function PlanPageContent() {
       levelBand: plan.level,
       origin: sourceType === "default" ? "direct" : sourceType
     }, { page: "/plan" });
-  }, [blockedByPendingStudySetup, hasSource, plan.level, plan.problemTag, sourceLabel, sourceType]);
+  }, [hasSource, plan.level, plan.problemTag, sourceLabel, sourceType]);
 
   useEffect(() => {
-    if (blockedByPendingStudySetup || !studyMode || !session || !hasSource) {
+    if (!hasSource) {
       return;
     }
 
-    const persistKey = `${session.sessionId}:${plan.problemTag}:${plan.level}:${sourceType}:${sourceLabel}`;
-    if (studyPersistedKeyRef.current === persistKey) {
-      return;
-    }
-
-    studyPersistedKeyRef.current = persistKey;
-    updateLocalStudyProgress({
-      lastVisitedPath: planHref,
-      lastPlanHref: planHref,
-      lastPlanTitle: plan.title,
-      lastPlanProblemTag: plan.problemTag,
-      lastPlanLevel: plan.level
-    });
-
-    void persistStudyArtifact(
-      session,
-      "plan",
-      sanitizePlanArtifact(plan, {
-        sourceType,
-        sourceLabel,
-        snapshotId: session.snapshotId,
-        planTemplateVersion: getStudySnapshot().planTemplateVersion
-      })
-    ).then(() => {
-      setSaveStatus("saved");
-      setSaveMessage(t("plan.saveRecorded"));
-    });
-  }, [blockedByPendingStudySetup, hasSource, plan, planHref, session, sourceLabel, sourceType, studyMode, t]);
-
-  useEffect(() => {
-    if (blockedByPendingStudySetup || !hasSource) {
-      return;
-    }
-
-    writeLocalStudyPlanDraft({
+    writeLocalPlanDraft({
       problemTag: plan.problemTag,
       level: plan.level,
       preferredContentIds,
@@ -231,15 +182,9 @@ function PlanPageContent() {
       deepContext: deepContext ?? undefined,
       updatedAt: new Date().toISOString()
     });
-  }, [blockedByPendingStudySetup, deepContext, hasSource, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, planContext, sourceType]);
+  }, [deepContext, hasSource, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, planContext, sourceType]);
 
   const handleSavePlan = async () => {
-    if (studyMode && session) {
-      setSaveStatus("saved");
-      setSaveMessage(t("plan.saveAlreadyRecorded"));
-      return;
-    }
-
     if (!user?.id || !configured) {
       openLoginModal(t("plan.saveLogin"), "save_plan");
       return;
@@ -260,14 +205,6 @@ function PlanPageContent() {
     setSaveMessage(t("plan.saveAccount"));
     logEvent("plan.saved", { planId: `${plan.problemTag}:${plan.level}` }, { page: "/plan" });
   };
-
-  if (blockedByPendingStudySetup) {
-    return (
-      <PageContainer>
-        <p className="text-slate-600">{t("plan.loading")}</p>
-      </PageContainer>
-    );
-  }
 
   if (!hasSource && problemTag === "no-plan") {
     return (
@@ -361,7 +298,7 @@ function PlanPageContent() {
             {t("plan.regenerate")}
           </Button>
         </div>
-        {(sourceType === "assessment" || (studyMode && session)) ? (
+        {sourceType === "assessment" ? (
           <div className="flex flex-wrap gap-2">
             {sourceType === "assessment" ? (
               <Link
@@ -373,18 +310,6 @@ function PlanPageContent() {
                 }, { page: "/plan" })}
               >
                 <Button variant="secondary">{t("plan.nextDiagnose")}</Button>
-              </Link>
-            ) : null}
-            {studyMode && session ? (
-              <Link
-                href="/profile"
-                onClick={() => logEvent("cta_click", {
-                  ctaLabel: t("plan.openProfile"),
-                  ctaLocation: "plan_follow_up",
-                  targetPage: "/profile"
-                }, { page: "/plan" })}
-              >
-                <Button variant="ghost">{t("plan.openProfile")}</Button>
               </Link>
             ) : null}
           </div>

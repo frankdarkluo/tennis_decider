@@ -1,6 +1,7 @@
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { AppShellProvider } from "@/components/app/AppShellProvider";
 import { StudyProvider } from "@/components/study/StudyProvider";
 import { Header } from "@/components/layout/Header";
 import { I18nProvider, useI18n } from "@/lib/i18n/config";
@@ -87,11 +88,11 @@ describe("language switcher", () => {
 
   it("switches the site language through the shared providers and persists it", () => {
     render(
-      <StudyProvider>
+      <AppShellProvider>
         <I18nProvider>
           <LanguageProbe />
         </I18nProvider>
-      </StudyProvider>
+      </AppShellProvider>
     );
 
     expect(screen.getByTestId("language-value").textContent).toBe("zh");
@@ -107,30 +108,32 @@ describe("language switcher", () => {
 
   it("renders zh | en buttons in the header and switches to English", () => {
     render(
-      <StudyProvider>
+      <AppShellProvider>
         <I18nProvider>
           <Header />
         </I18nProvider>
-      </StudyProvider>
+      </AppShellProvider>
     );
 
     const englishButtons = screen.getAllByRole("button", { name: "切换网站语言为英文" });
     fireEvent.click(englishButtons[0]!);
 
-    const homeLinks = screen.getAllByRole("link", { name: "Home" });
-    expect(homeLinks.length).toBeGreaterThan(0);
+    expect(screen.getByRole("link", { name: "Diagnosis" })).toHaveAttribute("href", "/diagnose");
+    expect(screen.getByRole("link", { name: "Plan" })).toHaveAttribute("href", "/plan");
+    expect(screen.getByRole("link", { name: "Library" })).toHaveAttribute("href", "/library");
+    expect(screen.getByRole("link", { name: "My Records" })).toHaveAttribute("href", "/profile");
     expect(screen.getAllByRole("button", { name: "Switch site language to Chinese" }).length).toBeGreaterThan(0);
   });
 
-  it("hides main task navigation on study start before a session exists", () => {
-    mockUsePathname.mockReturnValue("/study/start");
+  it("hides main task navigation on the remaining admin export route", () => {
+    mockUsePathname.mockReturnValue("/admin/export");
 
     render(
-      <StudyProvider>
+      <AppShellProvider>
         <I18nProvider>
           <Header />
         </I18nProvider>
-      </StudyProvider>
+      </AppShellProvider>
     );
 
     expect(screen.queryByRole("link", { name: "首页" })).not.toBeInTheDocument();
@@ -142,7 +145,7 @@ describe("language switcher", () => {
     expect(screen.queryByRole("link", { name: "去做免费评估" })).not.toBeInTheDocument();
   });
 
-  it("keeps main task navigation hidden during study mode until assessment is completed", () => {
+  it("keeps the consumer shell route-based even when a study session is active", () => {
     mockUsePathname.mockReturnValue("/assessment");
     writeActiveStudySession(createStudySession({
       participantId: "P003",
@@ -150,20 +153,18 @@ describe("language switcher", () => {
     }));
 
     render(
-      <StudyProvider>
-        <I18nProvider>
-          <Header />
-        </I18nProvider>
-      </StudyProvider>
+      <AppShellProvider>
+        <StudyProvider>
+          <I18nProvider>
+            <Header />
+          </I18nProvider>
+        </StudyProvider>
+      </AppShellProvider>
     );
 
-    expect(screen.queryByRole("link", { name: "首页" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "水平评估" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "问题诊断" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "内容库" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "博主榜" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "训练计划" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "去做免费评估" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "问题诊断" })).toHaveAttribute("href", "/diagnose");
+    expect(screen.getByRole("link", { name: "训练计划" })).toHaveAttribute("href", "/plan");
+    expect(screen.getByRole("link", { name: "内容库" })).toHaveAttribute("href", "/library");
   });
 
   it("keeps the study language locked when an active study session already exists", () => {
@@ -173,11 +174,13 @@ describe("language switcher", () => {
     }));
 
     render(
-      <StudyProvider>
-        <I18nProvider>
-          <LanguageProbe />
-        </I18nProvider>
-      </StudyProvider>
+      <AppShellProvider>
+        <StudyProvider>
+          <I18nProvider>
+            <LanguageProbe />
+          </I18nProvider>
+        </StudyProvider>
+      </AppShellProvider>
     );
 
     expect(screen.getByTestId("language-value").textContent).toBe("zh");
@@ -196,11 +199,13 @@ describe("language switcher", () => {
     }));
 
     render(
-      <StudyProvider>
-        <I18nProvider>
-          <LanguageProbe />
-        </I18nProvider>
-      </StudyProvider>
+      <AppShellProvider>
+        <StudyProvider>
+          <I18nProvider>
+            <LanguageProbe />
+          </I18nProvider>
+        </StudyProvider>
+      </AppShellProvider>
     );
 
     expect(screen.getByTestId("language-value").textContent).toBe("en");

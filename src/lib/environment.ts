@@ -31,5 +31,5 @@ export function filterByEnvironment<T extends EnvironmentScoped>(
 }
 
 export function getPostAssessmentHref(_environment: AppEnvironment): string {
-  return "/assessment/result";
+  return "/";
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, ReactNode, useContext, useMemo } from "react";
-import { useStudy } from "@/components/study/StudyProvider";
+import { useAppShell } from "@/components/app/AppShellProvider";
 import en from "@/lib/i18n/dictionaries/en";
 import zh from "@/lib/i18n/dictionaries/zh";
 import { StudyLanguage } from "@/types/study";
@@ -29,7 +29,7 @@ function applyReplacements(value: string, replacements?: Record<string, string |
 }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const { language, studyMode, canChangeLanguage, setLanguage } = useStudy();
+  const { language, studyMode, canChangeLanguage, setLanguage } = useAppShell();
 
   const value = useMemo<I18nContextValue>(() => ({
     language,

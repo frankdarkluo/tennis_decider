@@ -1,10 +1,11 @@
 import "@/app/globals.css";
+import { AppShellProvider } from "@/components/app/AppShellProvider";
+import { BottomNav } from "@/components/layout/BottomNav";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { AuthModalProvider } from "@/components/auth/AuthModalProvider";
 import { EventLoggerProvider } from "@/components/research/EventLoggerProvider";
-import { ResearcherOverlay } from "@/components/study/ResearcherOverlay";
 import { StudyProvider } from "@/components/study/StudyProvider";
 import { I18nProvider } from "@/lib/i18n/config";
 
@@ -13,18 +14,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="zh-CN">
       <body>
         <AuthProvider>
-          <StudyProvider>
+          <AppShellProvider>
             <I18nProvider>
-              <EventLoggerProvider>
-                <AuthModalProvider>
-                  <Header />
-                  <main>{children}</main>
-                  <ResearcherOverlay />
-                  <Footer />
-                </AuthModalProvider>
-              </EventLoggerProvider>
+              <AuthModalProvider>
+                <Header />
+                <StudyProvider>
+                  <EventLoggerProvider>
+                    <main className="pb-24 md:pb-0">{children}</main>
+                  </EventLoggerProvider>
+                </StudyProvider>
+                <BottomNav />
+                <Footer />
+              </AuthModalProvider>
             </I18nProvider>
-          </StudyProvider>
+          </AppShellProvider>
         </AuthProvider>
       </body>
     </html>

@@ -40,8 +40,8 @@ const translationMap = {
   "creator.platformAria": "Visit {name} on {platform}",
   "creator.targetPrefix": "Focus:",
   "modal.close": "Close",
-  "plan.day.today": "Today",
-  "plan.day.label": "Day {day}",
+  "plan.day.today": "Start here",
+  "plan.day.label": "Step {day}",
   "plan.day.what": "What to practice",
   "plan.day.duration": "How long",
   "plan.day.watch": "Watch this",
@@ -59,7 +59,7 @@ const translationMap = {
   "plan.day.tempo.slow": "Slow",
   "plan.day.tempo.controlled": "Controlled",
   "plan.day.tempo.match_70": "Match pace 70%",
-  "plan.day.fallback": "Start with today's drills first, then use the library as needed.",
+  "plan.day.fallback": "Start with this step first, then use the library only as needed.",
   "plan.day.expand": "Expand",
   "plan.day.collapse": "Collapse",
   "plan.day.drills": "Drills",
@@ -110,16 +110,42 @@ vi.mock("@/lib/i18n/config", () => ({
   })
 }));
 
-vi.mock("@/components/study/StudyProvider", () => ({
-  useStudy: () => ({
-    session: null,
-    studyMode: true,
-    language: "en",
+vi.mock("@/components/app/AppShellProvider", () => ({
+  useAppShell: () => ({
+    environment: "production",
+    activeSession: null,
+    studyMode: false,
     loading: false,
-    startStudySession: vi.fn(),
-    endStudySession: vi.fn(),
-    clearStudyData: vi.fn()
+    language: "en",
+    canChangeLanguage: true,
+    setLanguage: vi.fn(),
+    syncStudySession: vi.fn()
   })
+}));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    prefetch: vi.fn()
+  }),
+  useSearchParams: () => ({
+    get: vi.fn(() => null)
+  }),
+  usePathname: () => "/library"
+}));
+
+vi.mock("@/components/study/StudyProvider", () => ({
+  useStudy: () => {
+    throw new Error("bilingual rendering should not depend on useStudy");
+  }
+}));
+
+vi.mock("@/lib/assessmentStorage", () => ({
+  readAssessmentResultFromStorage: () => ({ answeredCount: 1, level: "3.0" }),
+  hasCompletedAssessmentResult: () => true,
+  hasStoredCompletedAssessmentResult: () => true,
+  writeAssessmentResultToStorage: vi.fn()
 }));
 
 vi.mock("@/components/auth/AuthProvider", () => ({
@@ -246,6 +272,9 @@ describe("bilingual rendering", () => {
           mainBlock: { title: "Serve reps", items: ["20 first serves"] },
           pressureBlock: { title: "Pressure rule", items: ["Land 6 in a row before moving on"] },
           successCriteria: ["Finish with stable mechanics"],
+          failureCue: "If the toss drifts, reset before adding pace",
+          progressionNote: "Carry the same toss shape into tomorrow's live serves",
+          transferCue: "Use the same toss cue on the first serve of each point",
           intensity: "medium",
           tempo: "controlled"
         }}
@@ -289,6 +318,9 @@ describe("bilingual rendering", () => {
           mainBlock: { title: "高压主练", items: ["高压落点控制 12 球"] },
           pressureBlock: { title: "高压压力", items: ["连续 5 球都要主动上步"] },
           successCriteria: ["动作不慌，击球点稳定"],
+          failureCue: "一旦脚下停住，高压又会重新只剩手打",
+          progressionNote: "明天继续带着同一准备点去处理更高的来球",
+          transferCue: "把同一准备点带进下一次真实高压球",
           intensity: "low",
           tempo: "slow"
         }}

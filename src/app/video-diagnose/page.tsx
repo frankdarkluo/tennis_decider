@@ -5,9 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import { getLatestAssessmentResult, getVideoDiagnosisHistory, getVideoUsage, incrementVideoUsage, saveVideoDiagnosisHistory } from "@/lib/userData";
 import { readAssessmentResultFromStorage, writeAssessmentResultToStorage } from "@/lib/assessmentStorage";
 import { useI18n } from "@/lib/i18n/config";
-import { persistStudyArtifact } from "@/lib/study/client";
-import { updateLocalStudyProgress } from "@/lib/study/localData";
-import { sanitizeVideoDiagnosisArtifact } from "@/lib/study/privacy";
 import { formatLocalizedDateTime } from "@/lib/i18n/format";
 import { extractFramesInBrowser, getVideoLimits, validateVideoFile } from "@/lib/videoFrames";
 import { getFreeVideoLimit, getRemainingVideoTrials, incrementLocalVideoUsage, readLocalVideoUsage } from "@/lib/videoUsage";
@@ -45,7 +42,7 @@ function initialUsageState(): UsageState {
 export default function VideoDiagnosePage() {
   const { user, configured, loading } = useAuth();
   const { openLoginModal } = useAuthModal();
-  const { studyMode, session } = useStudy();
+  const { studyMode } = useStudy();
   const { t, language } = useI18n();
   const [file, setFile] = useState<File | null>(null);
   const [description, setDescription] = useState("");
@@ -255,16 +252,7 @@ export default function VideoDiagnosePage() {
         logEvent("video_retry_recommended", { confidence: nextResult.confidence, reason: nextResult.fallbackReason ?? null });
       }
 
-      if (studyMode && session) {
-        await persistStudyArtifact(session, "video_diagnosis", sanitizeVideoDiagnosisArtifact({
-          description,
-          selectedStroke,
-          selectedScene,
-          result: nextResult
-        }));
-        logEvent("study_artifact_save", { artifactType: "video_diagnosis" });
-        updateLocalStudyProgress({ lastVisitedPath: "/video-diagnose" });
-      } else if (user?.id && configured) {
+      if (user?.id && configured) {
         const saveResult = await saveVideoDiagnosisHistory(user.id, {
           userDescription: description.trim(),
           selectedStroke,

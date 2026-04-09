@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Suspense, useEffect, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   diagnoseProblem,
   getContentsByIds,
@@ -10,35 +10,31 @@ import {
   getProblemPreviewOptions
 } from "@/lib/diagnosis";
 import {
-  hasCompletedAssessmentResult,
-  hasStoredCompletedAssessmentResult,
+  readLocalDiagnosisSnapshot,
+  writeLocalDiagnosisSnapshot
+} from "@/lib/appShell/localRouteState";
+import {
   readAssessmentResultFromStorage,
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
+import { CONSUMER_VISIBLE_FOLLOWUP_CAP, decideDiagnoseFlow } from "@/lib/intake/decideDiagnoseFlow";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
-import { persistStudyArtifact } from "@/lib/study/client";
-import { sanitizeDiagnosisArtifact } from "@/lib/study/privacy";
+import { prepareDiagnoseSubmission } from "@/lib/intake/prepareDiagnoseSubmission";
 // hasStudyTaskRating removed: actionability prompt not shown on diagnose page
 import { getLatestAssessmentResult, saveDiagnosisHistory } from "@/lib/userData";
-import {
-  readLocalDiagnosisSnapshot,
-  updateLocalStudyProgress,
-  writeLocalDiagnosisSnapshot
-} from "@/lib/study/localData";
 import { AssessmentResult } from "@/types/assessment";
-import { DiagnosisEffortMode, DiagnosisResult, DiagnosisSnapshot } from "@/types/diagnosis";
-import { buildDeepDiagnosisHandoff, buildEnrichedDiagnosisContext } from "@/lib/diagnose/enrichedContext";
+import { DiagnosisResult, DiagnosisSnapshot } from "@/types/diagnosis";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
-import { DeepScenarioModule } from "@/components/diagnose/DeepScenarioModule";
 import { DiagnoseInput } from "@/components/diagnose/DiagnoseInput";
+import { InlineFollowupFlow } from "@/components/diagnose/InlineFollowupFlow";
 import { DiagnoseResult as DiagnoseResultPanel } from "@/components/diagnose/DiagnoseResult";
+import { useAppShell } from "@/components/app/AppShellProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { useStudy } from "@/components/study/StudyProvider";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import type { ScenarioState } from "@/types/scenario";
+import type { ScenarioQuestion, ScenarioState } from "@/types/scenario";
 
 function toConfidenceBucket(score: number) {
   if (score >= 6) return "high";
@@ -120,119 +116,69 @@ function replayDiagnosisFromSnapshot(
   };
 }
 
+type ConsumerFollowupState = {
+  scenario: ScenarioState;
+  selectedQuestion: ScenarioQuestion;
+  followupCount: number;
+  sourceInput: string;
+};
+
 function DiagnosePageContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const { user, configured, loading } = useAuth();
-  const { environment, session, studyMode, language, loading: studyLoading, pendingStudySetup } = useStudy();
+  const { environment, language, loading: appShellLoading } = useAppShell();
   const { t } = useI18n();
   const [text, setText] = useState("");
-  const [storedAssessmentExists, setStoredAssessmentExists] = useState<boolean | null>(null);
-  const [effortMode, setEffortMode] = useState<DiagnosisEffortMode>("standard");
   const [currentLevel, setCurrentLevel] = useState<string | undefined>(undefined);
   const [assessmentResult, setAssessmentResult] = useState<AssessmentResult | null>(null);
   const [result, setResult] = useState<DiagnosisResult>(getDefaultDiagnosisResult());
   const [latestSnapshot, setLatestSnapshot] = useState<DiagnosisSnapshot | null>(null);
   const [contextReady, setContextReady] = useState(false);
-  const [deepResetSignal, setDeepResetSignal] = useState(0);
-  const deepModuleRef = useRef<HTMLDivElement | null>(null);
+  const [followupState, setFollowupState] = useState<ConsumerFollowupState | null>(null);
+  const [followupSubmitting, setFollowupSubmitting] = useState(false);
+  const [followupError, setFollowupError] = useState<string | null>(null);
   const handledQueryRef = useRef<string | null>(null);
-  const previousEffortModeRef = useRef<DiagnosisEffortMode>("standard");
-  const blockedByPendingStudySetup = pendingStudySetup && !session;
-  const requestedMode = searchParams.get("mode");
-  useEffect(() => {
-    setStoredAssessmentExists(hasStoredCompletedAssessmentResult());
-  }, []);
-
-  const blockedByAssessmentGate = !studyMode && storedAssessmentExists === false;
 
   const previewOptions = getProblemPreviewOptions();
   const quickTags = previewOptions.map((item) => language === "en" ? item.label_en : item.label);
   const hasDiagnosed = Boolean(result.input.trim());
 
-  function resetDeepFlow(clearCurrentResult = false) {
-    setDeepResetSignal((value) => value + 1);
+  function resetFollowupState(clearCurrentResult = false) {
+    setFollowupState(null);
+    setFollowupSubmitting(false);
+    setFollowupError(null);
 
-    if (!clearCurrentResult) {
-      return;
+    if (clearCurrentResult) {
+      setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
     }
-
-    setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
   }
 
-  useEffect(() => {
-    if (!blockedByPendingStudySetup) {
-      return;
-    }
+  const applyDiagnosisResult = async ({
+    diagnosisInput,
+    queryText,
+    scenario
+  }: {
+    diagnosisInput: string;
+    queryText: string;
+    scenario: ScenarioState | null;
+  }) => {
+    const trimmedDiagnosisInput = diagnosisInput.trim();
+    const trimmedQueryText = queryText.trim();
 
-    router.replace("/study/start");
-  }, [blockedByPendingStudySetup, router]);
+    resetFollowupState();
+    setText(trimmedQueryText);
 
-  useEffect(() => {
-    if (!blockedByAssessmentGate) {
-      return;
-    }
-
-    router.replace("/assessment");
-  }, [blockedByAssessmentGate, router]);
-
-  const runDiagnosis = async (
-    nextText: string,
-    inputSource: "typed" | "tag_click" = "typed",
-    options?: {
-      scenario?: ScenarioState | null;
-      sourceInput?: string;
-      preserveEditorText?: string;
-    }
-  ) => {
-    const trimmedText = nextText.trim();
-
-    setText(options?.preserveEditorText ?? nextText);
-
-    if (!trimmedText) {
-      setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
-      return;
-    }
-
-    logEvent("diagnose.input_method_selected", {
-      inputMethod: inputSource === "tag_click" ? "quick_tag" : "typing"
-    }, { page: "/diagnose" });
-    logEvent("diagnose.submitted", {
-      inputMethod: inputSource === "tag_click" ? "quick_tag" : "typing",
-      queryLength: trimmedText.length,
-      inheritedLevelBand: currentLevel ?? null,
-      usedAssessmentContext: Boolean(assessmentResult),
-      effortMode
-    }, { page: "/diagnose" });
-
-    const deepHandoff = options?.scenario
-      ? buildDeepDiagnosisHandoff({
-        mode: effortMode === "deep" ? "deep" : "standard",
-        sourceInput: options.sourceInput?.trim() || trimmedText,
-        scenario: options.scenario,
-        level: currentLevel
-      })
-      : null;
-
-    const diagnosisResult = diagnoseProblem(trimmedText, {
+    const diagnosisResult = diagnoseProblem(trimmedDiagnosisInput, {
       level: currentLevel,
       assessmentResult,
       maxRecommendations: 5,
-      effortMode,
+      effortMode: "standard",
       locale: language,
-      environment,
-      deepHandoff
+      environment
     });
-
-    const enrichedContext = deepHandoff
-      ? buildEnrichedDiagnosisContext({
-        handoff: deepHandoff,
-        problemTag: diagnosisResult.problemTag
-      })
-      : null;
     const finalResult: DiagnosisResult = {
       ...diagnosisResult,
-      enrichedContext
+      enrichedContext: null
     };
 
     setResult(finalResult);
@@ -254,22 +200,65 @@ function DiagnosePageContent() {
 
     logEvent("diagnose.result_viewed", {
       problemTag: diagnosisResult.problemTag,
-      immediateFixCode: diagnosisResult.fixes[0] ?? null
+      immediateFixCode: diagnosisResult.fixes[0] ?? null,
+      structuredPath: Boolean(scenario)
     }, { page: "/diagnose" });
 
-    if (studyMode && session) {
-      await persistStudyArtifact(session, "diagnosis", sanitizeDiagnosisArtifact(trimmedText, finalResult));
-      updateLocalStudyProgress({
-        lastVisitedPath: `/diagnose?q=${encodeURIComponent(trimmedText)}`,
-        lastDiagnosisPath: `/diagnose?q=${encodeURIComponent(trimmedText)}`,
-        lastDiagnosisTitle: finalResult.title
-      });
-    } else if (user?.id && configured) {
-      const saveResult = await saveDiagnosisHistory(user.id, trimmedText, finalResult);
+    if (user?.id && configured) {
+      const saveResult = await saveDiagnosisHistory(user.id, trimmedQueryText, finalResult);
       if (saveResult.error) {
         console.error("[diagnose] failed to save diagnosis history", saveResult.error);
       }
     }
+  };
+
+  const runDiagnosis = async (
+    nextQueryText: string,
+    inputSource: "typed" | "tag_click" = "typed",
+  ) => {
+    const trimmedQueryText = nextQueryText.trim();
+
+    if (!trimmedQueryText) {
+      resetFollowupState(true);
+      setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
+      return;
+    }
+
+    setText(nextQueryText);
+    setFollowupError(null);
+
+    logEvent("diagnose.input_method_selected", {
+      inputMethod: inputSource === "tag_click" ? "quick_tag" : "typing"
+    }, { page: "/diagnose" });
+    logEvent("diagnose.submitted", {
+      inputMethod: inputSource === "tag_click" ? "quick_tag" : "typing",
+      queryLength: trimmedQueryText.length,
+      inheritedLevelBand: currentLevel ?? null,
+      usedAssessmentContext: Boolean(assessmentResult),
+      intakeSource: "auto"
+    }, { page: "/diagnose" });
+
+    const preparedSubmission = await prepareDiagnoseSubmission({
+      text: trimmedQueryText,
+      locale: language
+    });
+
+    if (preparedSubmission.decision === "needs_followup" && preparedSubmission.scenario && preparedSubmission.selectedQuestion) {
+      setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
+      setFollowupState({
+        scenario: preparedSubmission.scenario,
+        selectedQuestion: preparedSubmission.selectedQuestion,
+        followupCount: 0,
+        sourceInput: trimmedQueryText
+      });
+      return;
+    }
+
+    await applyDiagnosisResult({
+      diagnosisInput: preparedSubmission.diagnosisInput,
+      queryText: trimmedQueryText,
+      scenario: preparedSubmission.decision === "raw_text_fallback" ? null : preparedSubmission.scenario
+    });
   };
 
   useEffect(() => {
@@ -278,7 +267,7 @@ function DiagnosePageContent() {
       setText(q);
     }
 
-    if (blockedByPendingStudySetup || blockedByAssessmentGate || loading) {
+    if (loading) {
       return;
     }
 
@@ -289,7 +278,7 @@ function DiagnosePageContent() {
       let nextLevel = localResult?.level;
       let nextAssessmentResult = localResult ?? null;
 
-      if (!studyMode && user?.id && configured) {
+      if (user?.id && configured) {
         const remoteResult = await getLatestAssessmentResult(user.id);
 
         if (!active) {
@@ -319,7 +308,7 @@ function DiagnosePageContent() {
     return () => {
       active = false;
     };
-  }, [blockedByAssessmentGate, blockedByPendingStudySetup, configured, language, loading, searchParams, studyMode, user?.id]);
+  }, [configured, language, loading, searchParams, user?.id]);
 
   useEffect(() => {
     if (!contextReady) {
@@ -331,12 +320,6 @@ function DiagnosePageContent() {
       inheritedLevelBand: currentLevel ?? null
     }, { page: "/diagnose" });
   }, [contextReady, currentLevel]);
-
-  useEffect(() => {
-    if (requestedMode === "deep" && effortMode !== "deep") {
-      setEffortMode("deep");
-    }
-  }, [effortMode, requestedMode]);
 
   useEffect(() => {
     if (!contextReady) {
@@ -359,58 +342,75 @@ function DiagnosePageContent() {
   const onClear = () => {
     setText("");
     setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
-    resetDeepFlow();
+    resetFollowupState();
   };
 
-  function resumeDeepMode() {
-    setEffortMode("deep");
-    requestAnimationFrame(() => {
-      deepModuleRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  }
-
-  useEffect(() => {
-    const previousEffortMode = previousEffortModeRef.current;
-
-    if (previousEffortMode === "deep" && effortMode !== "deep") {
-      resetDeepFlow(Boolean(result.enrichedContext));
+  async function handleFollowupAnswer(answerKey: string) {
+    if (!followupState) {
+      return;
     }
 
-    previousEffortModeRef.current = effortMode;
-  }, [currentLevel, effortMode, language, result.enrichedContext]);
+    setFollowupSubmitting(true);
+    setFollowupError(null);
 
-  if (blockedByPendingStudySetup || blockedByAssessmentGate || studyLoading || storedAssessmentExists === null || !contextReady) {
+    try {
+      const response = await fetch("/api/scenario-reconstruction/answer-followup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          scenario: followupState.scenario,
+          question_id: followupState.selectedQuestion.id,
+          answer: answerKey,
+          ui_language: language
+        })
+      });
+      const payload = await response.json() as {
+        scenario?: ScenarioState;
+        selected_question?: ScenarioQuestion | null;
+      };
+
+      if (!response.ok || !payload.scenario) {
+        throw new Error("followup_failed");
+      }
+
+      const nextCount = followupState.followupCount + 1;
+      const decision = decideDiagnoseFlow({
+        scenario: payload.scenario,
+        locale: language,
+        followupCount: nextCount,
+        selectedQuestion: payload.selected_question ?? null
+      });
+
+      if (decision.type === "needs_followup" && decision.selectedQuestion) {
+        setFollowupState({
+          scenario: payload.scenario,
+          selectedQuestion: decision.selectedQuestion,
+          followupCount: nextCount,
+          sourceInput: followupState.sourceInput
+        });
+        return;
+      }
+
+      await applyDiagnosisResult({
+        diagnosisInput: decision.type === "raw_text_fallback"
+          ? followupState.sourceInput
+          : decision.diagnosisInput,
+        queryText: followupState.sourceInput,
+        scenario: decision.type === "raw_text_fallback" ? null : payload.scenario
+      });
+    } catch {
+      setFollowupError(language === "en" ? "Follow-up failed. Please try again." : "补充追问失败，请稍后再试。");
+    } finally {
+      setFollowupSubmitting(false);
+    }
+  }
+
+  if (appShellLoading || !contextReady) {
     return (
       <PageContainer>
         <Card className="text-sm text-slate-600">{t("assessment.loading")}</Card>
-      </PageContainer>
-    );
-  }
-
-  if (studyMode && !session) {
-    return (
-      <PageContainer>
-        <Card className="mx-auto max-w-2xl space-y-4">
-          <h1 className="text-2xl font-black text-slate-900">{t("study.start.title")}</h1>
-          <p className="text-sm leading-6 text-slate-600">{t("study.start.subtitle")}</p>
-          <Link href="/study/start">
-            <Button>{t("study.start.button")}</Button>
-          </Link>
-        </Card>
-      </PageContainer>
-    );
-  }
-
-  if (!hasCompletedAssessmentResult(assessmentResult)) {
-    return (
-      <PageContainer>
-        <Card className="mx-auto max-w-2xl space-y-4">
-          <h1 className="text-2xl font-black text-slate-900">{t("assessment.empty.title")}</h1>
-          <p className="text-sm leading-6 text-slate-600">{t("assessment.empty.subtitle")}</p>
-          <Link href="/assessment">
-            <Button>{t("assessment.result.ctaStart")}</Button>
-          </Link>
-        </Card>
       </PageContainer>
     );
   }
@@ -433,32 +433,33 @@ function DiagnosePageContent() {
           value={text}
           quickTags={quickTags}
           quickTagsLabel={t("diagnose.quickTags")}
-          effortMode={effortMode}
-          onChange={setText}
-          onEffortModeChange={setEffortMode}
+          onChange={(value) => {
+            setText(value);
+            if (followupState && value.trim() !== followupState.sourceInput.trim()) {
+              resetFollowupState(true);
+            }
+          }}
           onDiagnose={onDiagnose}
           onClear={onClear}
           onQuickTagClick={(tag) => void runDiagnosis(tag, "tag_click")}
         />
 
-        <div ref={deepModuleRef}>
-          <DeepScenarioModule
-            sourceText={text}
+        {followupState ? (
+          <InlineFollowupFlow
+            scenario={followupState.scenario}
+            question={followupState.selectedQuestion}
             language={language === "en" ? "en" : "zh"}
-            visible={effortMode === "deep"}
-            resetSignal={deepResetSignal}
-            onApplyScenario={({ scenario, diagnosisInput }) => {
-              const sourceInput = scenario.raw_user_input.trim() || text.trim();
-              void runDiagnosis(diagnosisInput, "typed", {
-                scenario,
-                sourceInput,
-                preserveEditorText: sourceInput
-              });
+            followupCount={followupState.followupCount}
+            followupCap={CONSUMER_VISIBLE_FOLLOWUP_CAP}
+            submitting={followupSubmitting}
+            error={followupError}
+            onAnswer={(answerKey) => {
+              void handleFollowupAnswer(answerKey);
             }}
           />
-        </div>
+        ) : null}
 
-        {!hasDiagnosed && latestSnapshot ? (
+        {!hasDiagnosed && !followupState && latestSnapshot ? (
           <Card className="space-y-3 border-slate-200 bg-slate-50/60">
             <p className="text-sm font-semibold text-slate-900">
               {language === "en" ? "Latest diagnosis snapshot" : "最近一次诊断快照"}
@@ -469,7 +470,6 @@ function DiagnosePageContent() {
               <Button
                 variant="secondary"
                 onClick={() => {
-                  setEffortMode(latestSnapshot.effortMode);
                   setResult(replayDiagnosisFromSnapshot(latestSnapshot, currentLevel));
                 }}
               >
@@ -479,7 +479,7 @@ function DiagnosePageContent() {
           </Card>
         ) : null}
 
-        {hasDiagnosed ? <DiagnoseResultPanel result={result} onResumeDeepMode={resumeDeepMode} /> : null}
+        {hasDiagnosed ? <DiagnoseResultPanel result={result} /> : null}
         {/* ActionabilityPrompt removed from diagnose page per product request */}
       </div>
     </PageContainer>

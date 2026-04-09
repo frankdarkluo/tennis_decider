@@ -45,6 +45,12 @@ describe("plan few-shot fixtures", () => {
         if (expectation.successIncludes) {
           expect(day.successCriteria.join(" ")).toContain(expectation.successIncludes);
         }
+        if (expectation.failureCueIncludes) {
+          expect(String((day as unknown as Record<string, string>).failureCue)).toContain(expectation.failureCueIncludes);
+        }
+        if (expectation.transferCueIncludes) {
+          expect(String((day as unknown as Record<string, string>).transferCue)).toContain(expectation.transferCueIncludes);
+        }
         if (expectation.goalExcludes) {
           expect(day.goal).not.toContain(expectation.goalExcludes);
         }

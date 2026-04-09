@@ -18,21 +18,18 @@ import {
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
 import { normalizeDraftStepIndex } from "@/lib/assessmentDraft";
-import { getPostAssessmentHref, resolveAppEnvironment } from "@/lib/environment";
+import { getPostAssessmentHref } from "@/lib/environment";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { formatAssessmentYearsLabel, getAssessmentOptionLabel } from "@/lib/i18n/assessmentCopy";
-import { sanitizeAssessmentArtifact } from "@/lib/study/privacy";
-import { persistStudyArtifact } from "@/lib/study/client";
-import { updateLocalStudyProgress } from "@/lib/study/localData";
 import { saveAssessmentResult } from "@/lib/userData";
 import { AssessmentProfile, AssessmentQuestion } from "@/types/assessment";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { AssessmentProgress } from "@/components/assessment/AssessmentProgress";
 import { QuestionCard } from "@/components/assessment/QuestionCard";
 import { Button } from "@/components/ui/Button";
+import { useAppShell } from "@/components/app/AppShellProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { useStudy } from "@/components/study/StudyProvider";
 
 const AUTO_ADVANCE_DELAY = 300;
 const SLIDER_ADVANCE_DELAY = 500;
@@ -60,13 +57,9 @@ function getSourceRoute() {
 export default function AssessmentPage() {
   const router = useRouter();
   const { user, configured } = useAuth();
-  const { environment, session, studyMode, pendingStudySetup } = useStudy();
+  const { environment } = useAppShell();
   const { language, t } = useI18n();
-  const appEnvironment = environment ?? resolveAppEnvironment({
-    studyMode,
-    hasSession: Boolean(session)
-  });
-  const postAssessmentHref = getPostAssessmentHref(appEnvironment);
+  const postAssessmentHref = getPostAssessmentHref(environment);
   const [entryState, setEntryState] = useState<"checking" | "questionnaire">("checking");
   const [searchReady, setSearchReady] = useState(false);
   const [retakeRequested, setRetakeRequested] = useState(false);
@@ -87,9 +80,6 @@ export default function AssessmentPage() {
   const stepRef = useRef(0);
   const profileRef = useRef<AssessmentProfile>(profile);
   const sliderTouchedRef = useRef(false);
-  const draftArtifactStepRef = useRef<number | null>(null);
-  const blockedByPendingStudySetup = pendingStudySetup && !session;
-
   const profileQuestions = useMemo(
     () => assessmentQuestions.filter((question) => question.phase === "profile" && question.type !== "gender"),
     []
@@ -151,15 +141,7 @@ export default function AssessmentPage() {
   }, []);
 
   useEffect(() => {
-    if (!blockedByPendingStudySetup) {
-      return;
-    }
-
-    router.replace("/study/start");
-  }, [blockedByPendingStudySetup, router]);
-
-  useEffect(() => {
-    if (blockedByPendingStudySetup || !searchReady) {
+    if (!searchReady) {
       return;
     }
 
@@ -206,10 +188,10 @@ export default function AssessmentPage() {
     }
 
     setEntryState("questionnaire");
-  }, [blockedByPendingStudySetup, language, profileQuestions, retakeRequested, router, searchReady, totalSteps]);
+  }, [language, profileQuestions, retakeRequested, router, searchReady, totalSteps]);
 
   useEffect(() => {
-    if (blockedByPendingStudySetup || entryState !== "questionnaire") {
+    if (entryState !== "questionnaire") {
       return;
     }
 
@@ -229,42 +211,10 @@ export default function AssessmentPage() {
       updatedAt: new Date().toISOString()
     });
 
-    if (studyMode) {
-      updateLocalStudyProgress({
-        lastVisitedPath: "/assessment",
-        lastAssessmentPath: "/assessment",
-        assessmentDraftInProgress: true,
-        assessmentDraftStepIndex: stepIndex,
-        assessmentDraftUpdatedAt: new Date().toISOString()
-      });
-    }
-  }, [answers, blockedByPendingStudySetup, entryState, profile, profileQuestions, stepIndex]);
+  }, [answers, entryState, profile, profileQuestions, stepIndex]);
 
   useEffect(() => {
-    if (blockedByPendingStudySetup || !studyMode || !session || entryState !== "questionnaire") {
-      return;
-    }
-
-    const hasProgress =
-      stepIndex > 0 ||
-      Object.keys(answers).length > 0 ||
-      hasProfileProgress(profile, profileQuestions);
-
-    if (!hasProgress || draftArtifactStepRef.current === stepIndex) {
-      return;
-    }
-
-    draftArtifactStepRef.current = stepIndex;
-    void persistStudyArtifact(session, "study_resume", {
-      resumeType: "assessment_draft",
-      stepIndex,
-      answeredCount: Object.keys(answers).length,
-      questionId: currentQuestion?.id ?? null
-    });
-  }, [answers, blockedByPendingStudySetup, currentQuestion?.id, entryState, profile, profileQuestions, session, stepIndex, studyMode]);
-
-  useEffect(() => {
-    if (blockedByPendingStudySetup || entryState !== "questionnaire") {
+    if (entryState !== "questionnaire") {
       return;
     }
 
@@ -285,7 +235,7 @@ export default function AssessmentPage() {
         }, { page: "/assessment" });
       }
     };
-  }, [blockedByPendingStudySetup, entryState]);
+  }, [entryState]);
 
   useEffect(() => {
     if (stepIndex < fineStartStep || branchLoggedRef.current === branch) {
@@ -331,22 +281,9 @@ export default function AssessmentPage() {
     const result = calculateAssessmentResult(finalAnswers, assessmentQuestions, profileRef.current, language);
     completedRef.current = true;
     clearAssessmentDraftFromStorage();
-    if (studyMode) {
-      updateLocalStudyProgress({
-        lastVisitedPath: postAssessmentHref,
-        lastAssessmentPath: postAssessmentHref,
-        lastAssessmentLevel: result.level,
-        lastAssessmentCompletedAt: new Date().toISOString(),
-        assessmentDraftInProgress: false,
-        assessmentDraftStepIndex: undefined,
-        assessmentDraftUpdatedAt: undefined
-      });
-    }
     writeAssessmentResultToStorage(result);
 
-    if (studyMode && session) {
-      await persistStudyArtifact(session, "assessment", sanitizeAssessmentArtifact(result));
-    } else if (user?.id && configured) {
+    if (user?.id && configured) {
       const saveResult = await saveAssessmentResult(user.id, result);
       if (saveResult.error) {
         console.error("[assessment] failed to save result", saveResult.error);

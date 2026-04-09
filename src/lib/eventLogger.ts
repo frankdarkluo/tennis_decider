@@ -9,16 +9,12 @@ import {
   markFocusedDwellInteraction,
   updateFocusedDwellState
 } from "@/lib/study/focusedDwell";
-import { postStudyEventsWithRetry } from "@/lib/study/events";
 import { EventLog, EventType, LegacyEventType, StudyFlushFailureReason } from "@/types/research";
-import { StudySession } from "@/types/study";
 
 const LOCAL_EVENT_LOGS_KEY = "tennislevel_events";
 const STUDY_FLUSH_FALLBACK_LOGS_KEY = "tennislevel_study_flush_fallback_logs";
 const SESSION_ID_KEY = "tennislevel_session_id";
 const MAX_LOCAL_EVENTS = 1000;
-const STUDY_FLUSH_DELAY_MS = 1200;
-const MAX_FLUSH_FALLBACK_LOGS = 50;
 
 const PRIVACY_SENSITIVE_KEYS = new Set([
   "inputText",
@@ -62,13 +58,8 @@ const LEGACY_EVENT_NAME_MAP: Partial<Record<LegacyEventType, EventType>> = {
 
 let currentUserId: string | null = null;
 let currentPage = "/";
-let currentStudySession: StudySession | null = null;
 let lastMeaningfulRoute = "/";
 let lastMeaningfulAt = Date.now();
-let sessionCompleted = false;
-let flushTimer: number | null = null;
-let flushing = false;
-const queuedStudyEvents: EventLog[] = [];
 const pageDwellStates = new Map<string, FocusedDwellState>();
 
 function createId() {
@@ -127,37 +118,6 @@ function appendLocalLog(event: EventLog) {
   writeLocalLogs(logs);
 }
 
-function appendFlushFallbackLog(input: {
-  reason: StudyFlushFailureReason;
-  attempts: number;
-  eventCount: number;
-  mode: "sync" | "async";
-  httpStatus?: number | null;
-}) {
-  if (!isBrowser()) {
-    return;
-  }
-
-  let current: Array<Record<string, unknown>> = [];
-  try {
-    const raw = window.localStorage.getItem(STUDY_FLUSH_FALLBACK_LOGS_KEY);
-    current = raw ? JSON.parse(raw) as Array<Record<string, unknown>> : [];
-  } catch {
-    current = [];
-  }
-
-  current.push({
-    timestamp: new Date().toISOString(),
-    ...input
-  });
-
-  if (current.length > MAX_FLUSH_FALLBACK_LOGS) {
-    current.splice(0, current.length - MAX_FLUSH_FALLBACK_LOGS);
-  }
-
-  window.localStorage.setItem(STUDY_FLUSH_FALLBACK_LOGS_KEY, JSON.stringify(current));
-}
-
 function getCurrentPath() {
   if (!isBrowser()) {
     return currentPage;
@@ -176,17 +136,7 @@ export type StudyFlushFallbackLogRecord = {
 };
 
 export function getStudyFlushFallbackLogs(): StudyFlushFallbackLogRecord[] {
-  if (!isBrowser()) {
-    return [];
-  }
-
-  try {
-    const raw = window.localStorage.getItem(STUDY_FLUSH_FALLBACK_LOGS_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? (parsed as StudyFlushFallbackLogRecord[]) : [];
-  } catch {
-    return [];
-  }
+  return [];
 }
 
 export function exportStudyFlushFallbackLogs(): string {
@@ -206,21 +156,6 @@ function getVisibilitySnapshot() {
 
 function normalizeEventName(eventName: EventType): EventType {
   return LEGACY_EVENT_NAME_MAP[eventName as LegacyEventType] ?? eventName;
-}
-
-function getStudyId() {
-  return currentStudySession?.studyId ?? CURRENT_STUDY_ID;
-}
-
-function sanitizePayloadForStudy(payload: Record<string, unknown>) {
-  return Object.entries(payload).reduce<Record<string, unknown>>((acc, [key, value]) => {
-    if (value === undefined || PRIVACY_SENSITIVE_KEYS.has(key)) {
-      return acc;
-    }
-
-    acc[key] = value;
-    return acc;
-  }, {});
 }
 
 function getBrowserLabel() {
@@ -286,60 +221,6 @@ function persistRemoteLog(event: EventLog) {
   })();
 }
 
-function scheduleStudyFlush() {
-  if (!isBrowser() || flushTimer || flushing || queuedStudyEvents.length === 0) {
-    return;
-  }
-
-  flushTimer = window.setTimeout(() => {
-    flushTimer = null;
-    void flushStudyEvents();
-  }, STUDY_FLUSH_DELAY_MS);
-}
-
-async function flushStudyEvents(options: { sync?: boolean } = {}) {
-  if (!isBrowser() || flushing || queuedStudyEvents.length === 0) {
-    return;
-  }
-
-  const events = queuedStudyEvents.splice(0, queuedStudyEvents.length);
-
-  flushing = true;
-
-  try {
-    const result = await postStudyEventsWithRetry(events, {
-      sync: options.sync,
-      retryCount: options.sync ? 1 : 2,
-      retryDelayMs: 200
-    });
-
-    if (!result.ok) {
-      queuedStudyEvents.unshift(...events);
-      appendFlushFallbackLog({
-        reason: result.failureReason,
-        attempts: result.attempts,
-        eventCount: events.length,
-        mode: options.sync ? "sync" : "async",
-        httpStatus: result.httpStatus
-      });
-    }
-  } catch {
-    queuedStudyEvents.unshift(...events);
-    appendFlushFallbackLog({
-      reason: "network_error",
-      attempts: 1,
-      eventCount: events.length,
-      mode: options.sync ? "sync" : "async",
-      httpStatus: null
-    });
-  } finally {
-    flushing = false;
-    if (queuedStudyEvents.length > 0) {
-      scheduleStudyFlush();
-    }
-  }
-}
-
 function createEvent(
   eventType: EventType,
   eventData: Record<string, unknown>,
@@ -348,24 +229,30 @@ function createEvent(
   const route = sanitizeRoute(options.page ?? currentPage ?? getCurrentPath());
   const tsClient = Date.now();
   const normalizedEventName = normalizeEventName(eventType);
-  const payload = currentStudySession ? sanitizePayloadForStudy(eventData) : eventData;
-  const sessionId = currentStudySession?.sessionId ?? getEventSessionId();
+  const payload = Object.entries(eventData).reduce<Record<string, unknown>>((acc, [key, value]) => {
+    if (value === undefined || PRIVACY_SENSITIVE_KEYS.has(key)) {
+      return acc;
+    }
+
+    acc[key] = value;
+    return acc;
+  }, {});
 
   return {
     eventId: createId(),
-    studyId: getStudyId(),
-    sessionId,
+    studyId: CURRENT_STUDY_ID,
+    sessionId: getEventSessionId(),
     userId: currentUserId,
-    participantId: currentStudySession?.participantId ?? null,
-    appMode: currentStudySession ? "study" : "product",
-    studyMode: Boolean(currentStudySession),
-    language: currentStudySession?.language ?? null,
-    condition: currentStudySession?.condition ?? null,
-    snapshotVersion: currentStudySession?.snapshotId ?? null,
-    buildSha: currentStudySession?.buildVersion ?? null,
-    snapshotId: currentStudySession?.snapshotId ?? null,
-    snapshotSeed: currentStudySession?.snapshotSeed ?? null,
-    buildVersion: currentStudySession?.buildVersion ?? null,
+    participantId: null,
+    appMode: "product",
+    studyMode: false,
+    language: null,
+    condition: null,
+    snapshotVersion: null,
+    buildSha: null,
+    snapshotId: null,
+    snapshotSeed: null,
+    buildVersion: null,
     timestamp: new Date(tsClient).toISOString(),
     tsClient,
     route,
@@ -379,11 +266,6 @@ function createEvent(
 }
 
 function updateMeaningfulState(event: EventLog) {
-  if (event.eventName === "session.completed") {
-    sessionCompleted = true;
-    return;
-  }
-
   if (
     event.eventName === "page.view"
     || event.eventName === "page.leave"
@@ -407,10 +289,6 @@ export function initEventLogger() {
 }
 
 export function getEventSessionId() {
-  if (currentStudySession?.sessionId) {
-    return currentStudySession.sessionId;
-  }
-
   if (!isBrowser()) {
     return "server-session";
   }
@@ -432,21 +310,13 @@ export function setEventLoggerUser(userId: string | null) {
   currentUserId = userId;
 }
 
-export function setEventLoggerStudySession(session: StudySession | null) {
-  currentStudySession = session;
-  sessionCompleted = Boolean(session?.endedAt);
-}
-
 export function setEventLoggerPage(page: string) {
   currentPage = sanitizeRoute(page);
 }
 
-export function markEventLoggerSessionCompleted() {
-  sessionCompleted = true;
-}
-
 export function flushEventQueue(sync = false) {
-  return flushStudyEvents(sync ? { sync: true } : {});
+  void sync;
+  return Promise.resolve();
 }
 
 export function logEvent(
@@ -464,16 +334,8 @@ export function logEvent(
   appendLocalLog(event);
   updateMeaningfulState(event);
 
-  if (event.studyMode) {
-    queuedStudyEvents.push(event);
-  }
-
   queueMicrotask(() => {
     persistRemoteLog(event);
-
-    if (event.studyMode) {
-      scheduleStudyFlush();
-    }
   });
 }
 
@@ -549,18 +411,6 @@ export function logPageVisibilityChange(page: string) {
     visibilityState: document.visibilityState,
     isWindowFocused: typeof document.hasFocus === "function" ? document.hasFocus() : true
   }, { page });
-}
-
-export function logSessionAbandoned(route: string) {
-  if (!currentStudySession || sessionCompleted) {
-    return;
-  }
-
-  logEvent("session.abandoned", {
-    lastMeaningfulRoute,
-    inactiveMs: Math.max(0, Date.now() - lastMeaningfulAt)
-  }, { page: sanitizeRoute(route) });
-  flushEventQueue(true);
 }
 
 export function exportLocalLogs(): string {

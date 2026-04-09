@@ -28,8 +28,7 @@ import {
   buildRankingsCreatorsForMode,
   sortRankingsCreatorsForMode
 } from "@/lib/rankings/studyOrder";
-import { getStudySnapshot } from "@/lib/study/snapshot";
-import { useStudy } from "@/components/study/StudyProvider";
+ 
 
 const INITIAL_VISIBLE_CREATORS = 20;
 
@@ -57,7 +56,6 @@ function matchesSearch(creator: Creator, query: string, locale: "zh" | "en") {
 export default function RankingsPage() {
   const router = useRouter();
   const { user, configured, loading } = useAuth();
-  const { session, studyMode, pendingStudySetup } = useStudy();
   const { language, t } = useI18n();
   const [storedAssessmentExists, setStoredAssessmentExists] = useState(false);
   const [region, setRegion] = useState<"domestic" | "overseas">("domestic");
@@ -65,26 +63,15 @@ export default function RankingsPage() {
   const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
   const [viewerLevel, setViewerLevel] = useState<string | undefined>(undefined);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_CREATORS);
-  const loggedSnapshotRef = useRef<string | null>(null);
-  const previousSortContextRef = useRef<string | null>(null);
   const creatorPool = useMemo(
-    () => buildRankingsCreatorsForMode({ studyMode }),
-    [studyMode]
+    () => buildRankingsCreatorsForMode({ studyMode: false }),
+    []
   );
-  const blockedByPendingStudySetup = pendingStudySetup && !session;
   useEffect(() => {
     setStoredAssessmentExists(hasStoredCompletedAssessmentResult());
   }, []);
 
-  const blockedByAssessmentGate = !studyMode && !storedAssessmentExists;
-
-  useEffect(() => {
-    if (!blockedByPendingStudySetup) {
-      return;
-    }
-
-    router.replace("/study/start");
-  }, [blockedByPendingStudySetup, router]);
+  const blockedByAssessmentGate = !storedAssessmentExists;
 
   useEffect(() => {
     if (!blockedByAssessmentGate) {
@@ -100,46 +87,23 @@ export default function RankingsPage() {
         return creator.region === region && creator.rankingEligible !== false && matchesSearch(creator, query, language);
       })
     return sortRankingsCreatorsForMode(matched, {
-      studyMode: studyMode && Boolean(session),
-      seed: studyMode && session ? session.snapshotSeed : `${region}:${language}`,
+      studyMode: false,
+      seed: `${region}:${language}`,
       targetLevel: viewerLevel
     });
-  }, [creatorPool, language, query, region, session, studyMode, viewerLevel]);
+  }, [creatorPool, language, query, region, viewerLevel]);
 
   const visibleList = useMemo(() => list.slice(0, visibleCount), [list, visibleCount]);
 
   useEffect(() => {
-    if (blockedByPendingStudySetup || blockedByAssessmentGate) {
+    if (blockedByAssessmentGate) {
       return;
     }
 
     logEvent("rankings.viewed", {
       sourceRoute: null
     }, { page: "/rankings" });
-  }, [blockedByAssessmentGate, blockedByPendingStudySetup]);
-
-  useEffect(() => {
-    if (blockedByPendingStudySetup || blockedByAssessmentGate || !studyMode || !session) {
-      loggedSnapshotRef.current = null;
-      return;
-    }
-
-    if (loggedSnapshotRef.current === session.snapshotId) {
-      return;
-    }
-
-    const snapshot = getStudySnapshot();
-    logEvent("rankings.snapshot_loaded", {
-      snapshotVersion: session.snapshotId,
-      snapshotSeed: session.snapshotSeed,
-      buildVersion: session.buildVersion,
-      sortingMode: snapshot.sortingMode,
-      fixedSeed: snapshot.fixedSeed,
-      randomSurfacingDisabled: snapshot.randomSurfacingDisabled,
-      viewCountBoostDisabled: snapshot.viewCountBoostDisabled
-    }, { page: "/rankings" });
-    loggedSnapshotRef.current = session.snapshotId;
-  }, [blockedByAssessmentGate, blockedByPendingStudySetup, session, studyMode]);
+  }, [blockedByAssessmentGate]);
 
   useEffect(() => {
     setVisibleCount(INITIAL_VISIBLE_CREATORS);
@@ -157,36 +121,6 @@ export default function RankingsPage() {
   }, [query]);
 
   useEffect(() => {
-    if (blockedByPendingStudySetup || blockedByAssessmentGate || !studyMode || !session) {
-      previousSortContextRef.current = null;
-      return;
-    }
-
-    const sortContext = JSON.stringify({
-      snapshotVersion: session.snapshotId,
-      snapshotSeed: session.snapshotSeed,
-      region,
-      query: query.trim().toLowerCase(),
-      viewerLevel: viewerLevel ?? null,
-      totalMatched: list.length
-    });
-
-    if (previousSortContextRef.current === sortContext) {
-      return;
-    }
-
-    logEvent("rankings.sort_context_logged", {
-      snapshotVersion: session.snapshotId,
-      snapshotSeed: session.snapshotSeed,
-      region,
-      queryLength: query.trim().length,
-      viewerLevel: viewerLevel ?? null,
-      totalMatched: list.length
-    }, { page: "/rankings" });
-    previousSortContextRef.current = sortContext;
-  }, [blockedByAssessmentGate, blockedByPendingStudySetup, list.length, query, region, session, studyMode, viewerLevel]);
-
-  useEffect(() => {
     if (!selectedCreator) {
       return;
     }
@@ -197,7 +131,7 @@ export default function RankingsPage() {
   }, [selectedCreator]);
 
   useEffect(() => {
-    if (blockedByPendingStudySetup || blockedByAssessmentGate || loading) {
+    if (blockedByAssessmentGate || loading) {
       return;
     }
 
@@ -232,11 +166,11 @@ export default function RankingsPage() {
     return () => {
       active = false;
     };
-  }, [blockedByAssessmentGate, blockedByPendingStudySetup, configured, loading, user?.id]);
+  }, [blockedByAssessmentGate, configured, loading, user?.id]);
 
   const pageTitle = t("rankings.title");
 
-  if (blockedByPendingStudySetup || blockedByAssessmentGate) {
+  if (blockedByAssessmentGate) {
     return (
       <PageContainer>
         <div className="text-sm text-slate-600">{t("assessment.loading")}</div>

@@ -3,7 +3,6 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { useStudy } from "@/components/study/StudyProvider";
 import {
   flushEventQueue,
   initEventLogger,
@@ -12,17 +11,14 @@ import {
   logPageLeave,
   logPageVisibilityChange,
   markPageInteraction,
-  logSessionAbandoned,
   setEventLoggerPage,
   setEventLoggerUser,
   syncPageFocusState
 } from "@/lib/eventLogger";
-import { writeLastStudyPath } from "@/lib/study/localData";
 
 export function EventLoggerProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { user } = useAuth();
-  const { studyMode } = useStudy();
   const previousPathRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -45,15 +41,12 @@ export function EventLoggerProvider({ children }: { children: ReactNode }) {
     }
 
     setEventLoggerPage(pathname);
-    if (studyMode && pathname !== "/study/end") {
-      writeLastStudyPath(pathname);
-    }
     logPageEnter(pathname, {
       referrerRoute: previousPath ?? null,
-      sourceContext: studyMode ? "study_flow" : "product_flow"
+      sourceContext: "product_flow"
     });
     previousPathRef.current = pathname;
-  }, [pathname, studyMode]);
+  }, [pathname]);
 
   useEffect(() => {
     if (!pathname) {
@@ -116,18 +109,14 @@ export function EventLoggerProvider({ children }: { children: ReactNode }) {
 
     const handleBeforeUnload = () => {
       logPageLeave(pathname, { nextRoute: "unload" });
-      if (studyMode && pathname !== "/study/end") {
-        logSessionAbandoned(pathname);
-      } else {
-        flushEventQueue(true);
-      }
+      flushEventQueue(true);
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [pathname, studyMode]);
+  }, [pathname]);
 
   useEffect(() => {
     const handleError = () => {

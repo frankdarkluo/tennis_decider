@@ -1,4 +1,8 @@
-import { buildQuestionRankerPrompt, buildScenarioParserPrompt } from "@/lib/scenarioReconstruction/llm/prompts";
+import {
+  buildQuestionRankerPrompt,
+  buildScenarioParserPrompt,
+  buildTennisSceneExtractionPrompt
+} from "@/lib/scenarioReconstruction/llm/prompts";
 import type { ScenarioQuestion, ScenarioState } from "@/types/scenario";
 
 type FetchLike = typeof fetch;
@@ -18,6 +22,7 @@ export type LocalQwenConfig = {
 };
 
 export type LocalQwenClient = {
+  extractTennisScene(text: string): Promise<unknown>;
   parseScenario(text: string): Promise<Partial<ScenarioState> | null>;
   rankQuestions(scenario: ScenarioState, eligibleQuestions: ScenarioQuestion[]): Promise<string[] | null>;
 };
@@ -118,6 +123,10 @@ export function createLocalQwenClient(options: CreateLocalQwenClientOptions = {}
   const fetchImpl = options.fetch ?? fetch;
 
   return {
+    async extractTennisScene(text: string) {
+      const content = await postChatCompletion(fetchImpl, config, buildTennisSceneExtractionPrompt(text), 350);
+      return safeParseJson<unknown>(content);
+    },
     async parseScenario(text: string) {
       const content = await postChatCompletion(fetchImpl, config, buildScenarioParserPrompt(text), 400);
       return safeParseJson<Partial<ScenarioState>>(content);

@@ -12,20 +12,17 @@ import { logEvent } from "@/lib/eventLogger";
 import { getLatestAssessmentResult, saveAssessmentResult } from "@/lib/userData";
 import { useI18n } from "@/lib/i18n/config";
 import { buildAssessmentPlanContext, buildPlanHref } from "@/lib/plans";
-import { updateLocalStudyProgress } from "@/lib/study/localData";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { useStudy } from "@/components/study/StudyProvider";
 
 type AssessmentResultSource = "loading" | "remote" | "synced" | "local";
 
 export default function AssessmentResultPage() {
   const { user, configured, loading } = useAuth();
-  const { studyMode } = useStudy();
   const { language, t } = useI18n();
   const [result, setResult] = useState<AssessmentResult>(getDefaultAssessmentResult(language));
   const [source, setSource] = useState<AssessmentResultSource>("loading");
@@ -51,7 +48,7 @@ export default function AssessmentResultPage() {
       const localResult = readAssessmentResultFromStorage();
       const fallbackResult = localResult ?? getDefaultAssessmentResult(language);
 
-      if (!studyMode && user?.id && configured) {
+      if (user?.id && configured) {
         const remoteResult = await getLatestAssessmentResult(user.id);
 
         if (!active) {
@@ -99,19 +96,6 @@ export default function AssessmentResultPage() {
       hasResult: result.answeredCount > 0
     }, { page: "/assessment/result" });
   }, [result, source]);
-
-  useEffect(() => {
-    if (!studyMode || result.answeredCount === 0) {
-      return;
-    }
-
-    updateLocalStudyProgress({
-      lastVisitedPath: "/assessment/result",
-      lastAssessmentPath: "/assessment/result",
-      lastAssessmentLevel: result.level,
-      lastAssessmentCompletedAt: new Date().toISOString()
-    });
-  }, [result, studyMode]);
 
   return (
     <PageContainer>

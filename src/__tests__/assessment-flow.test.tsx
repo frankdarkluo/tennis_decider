@@ -85,13 +85,23 @@ vi.mock("@/components/auth/AuthProvider", () => ({
   })
 }));
 
-vi.mock("@/components/study/StudyProvider", () => ({
-  useStudy: () => ({
-    environment: null,
-    session: null,
+vi.mock("@/components/app/AppShellProvider", () => ({
+  useAppShell: () => ({
+    environment: "production",
+    activeSession: null,
     studyMode: false,
-    pendingStudySetup: false
+    loading: false,
+    language: mockLanguage,
+    canChangeLanguage: true,
+    setLanguage: vi.fn(),
+    syncStudySession: vi.fn()
   })
+}));
+
+vi.mock("@/components/study/StudyProvider", () => ({
+  useStudy: () => {
+    throw new Error("assessment flow should not depend on useStudy");
+  }
 }));
 
 vi.mock("@/lib/i18n/config", () => ({

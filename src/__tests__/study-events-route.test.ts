@@ -59,4 +59,10 @@ describe("GET /api/study/events", () => {
     expect(body.page.nextCursor).toBeNull();
     expect(body.page.hasMore).toBe(false);
   });
+
+  it("does not expose the old study event POST transport anymore", async () => {
+    const routeModule = await import("../app/api/study/events/route");
+
+    expect("POST" in routeModule).toBe(false);
+  });
 });

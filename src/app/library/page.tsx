@@ -19,9 +19,6 @@ import {
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { buildLibraryItemsForMode, sortLibraryItemsForMode } from "@/lib/library/studyOrder";
-import { persistStudyArtifact } from "@/lib/study/client";
-import { getStudySnapshot } from "@/lib/study/snapshot";
-import { readLocalStudyBookmarks, toggleLocalStudyBookmark } from "@/lib/study/localData";
 import { addBookmark, getBookmarkedContentIds, getLatestAssessmentResult, removeBookmark } from "@/lib/userData";
 import { getThumbnail } from "@/lib/thumbnail";
 import { toChineseSkill } from "@/lib/utils";
@@ -37,10 +34,9 @@ import {
 import { ContentCard } from "@/components/library/ContentCard";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { useStudy } from "@/components/study/StudyProvider";
 
 const PAGE_SIZE = 20;
-type LibraryGateState = "checking" | "study_session_required" | "assessment_required" | "ready";
+type LibraryGateState = "checking" | "assessment_required" | "ready";
 
 function inferQueryLanguage(query: string) {
   const hasChinese = /[\u3400-\u9fff]/.test(query);
@@ -56,7 +52,6 @@ function LibraryPageContent() {
   const router = useRouter();
   const { user, configured, loading } = useAuth();
   const { openLoginModal } = useAuthModal();
-  const { session, studyMode, pendingStudySetup } = useStudy();
   const { t } = useI18n();
   const [gateState, setGateState] = useState<LibraryGateState>("checking");
   const [keyword, setKeyword] = useState("");
@@ -69,9 +64,6 @@ function LibraryPageContent() {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const previousFiltersRef = useRef<Record<string, string | boolean> | null>(null);
   const previousKeywordRef = useRef("");
-  const loggedSnapshotRef = useRef<string | null>(null);
-  const previousSortContextRef = useRef<string | null>(null);
-  const blockedByPendingStudySetup = pendingStudySetup && !session;
   // Use a deterministic product seed to avoid server/client ordering differences
   // (date-based seeds can differ between server and client timezones and cause
   // hydration mismatches). If needed, this can be changed to a server-provided
@@ -82,28 +74,11 @@ function LibraryPageContent() {
     []
   );
   const libraryItems = useMemo(
-    () => buildLibraryItemsForMode({ studyMode }),
-    [studyMode]
+    () => buildLibraryItemsForMode({ studyMode: false }),
+    []
   );
 
   useEffect(() => {
-    if (blockedByPendingStudySetup) {
-      router.replace("/study/start");
-      setGateState("study_session_required");
-      return;
-    }
-
-    // In study mode, allow direct access without forcing the assessment gate.
-    if (studyMode && session) {
-      setGateState("ready");
-      return;
-    }
-
-    if (studyMode && !session) {
-      setGateState("study_session_required");
-      return;
-    }
-
     if (loading) {
       return;
     }
@@ -114,7 +89,7 @@ function LibraryPageContent() {
       const localResult = readAssessmentResultFromStorage();
       let hasCompletedAssessment = hasCompletedAssessmentResult(localResult);
 
-      if (!hasCompletedAssessment && !studyMode && user?.id && configured) {
+      if (!hasCompletedAssessment && user?.id && configured) {
         const remoteResult = await getLatestAssessmentResult(user.id);
 
         if (!active) {
@@ -140,7 +115,7 @@ function LibraryPageContent() {
     return () => {
       active = false;
     };
-  }, [blockedByPendingStudySetup, configured, loading, router, session, studyMode, user?.id]);
+  }, [configured, loading, router, user?.id]);
 
   useEffect(() => {
     if (gateState !== "ready") {
@@ -154,11 +129,6 @@ function LibraryPageContent() {
     let active = true;
 
     async function loadBookmarks() {
-      if (studyMode) {
-        setBookmarkedIds(readLocalStudyBookmarks().contentIds);
-        return;
-      }
-
       if (!user?.id || !configured) {
         setBookmarkedIds([]);
         return;
@@ -183,7 +153,7 @@ function LibraryPageContent() {
     return () => {
       active = false;
     };
-  }, [configured, gateState, loading, studyMode, user?.id]);
+  }, [configured, gateState, loading, user?.id]);
 
   useEffect(() => {
     if (gateState !== "ready") {
@@ -196,33 +166,6 @@ function LibraryPageContent() {
       prefilledLevelBand: null
     }, { page: "/library" });
   }, [gateState]);
-
-  useEffect(() => {
-    if (gateState !== "ready") {
-      return;
-    }
-
-    if (!studyMode || !session) {
-      loggedSnapshotRef.current = null;
-      return;
-    }
-
-    if (loggedSnapshotRef.current === session.snapshotId) {
-      return;
-    }
-
-    const snapshot = getStudySnapshot();
-    logEvent("library.snapshot_loaded", {
-      snapshotVersion: session.snapshotId,
-      snapshotSeed: session.snapshotSeed,
-      buildVersion: session.buildVersion,
-      sortingMode: snapshot.sortingMode,
-      fixedSeed: snapshot.fixedSeed,
-      randomSurfacingDisabled: snapshot.randomSurfacingDisabled,
-      viewCountBoostDisabled: snapshot.viewCountBoostDisabled
-    }, { page: "/library" });
-    loggedSnapshotRef.current = session.snapshotId;
-  }, [gateState, session, studyMode]);
 
   useEffect(() => {
     if (gateState !== "ready") {
@@ -312,70 +255,21 @@ function LibraryPageContent() {
       return hitKeyword && hitPlatform && hitContentLanguage && hitSubtitle && hitBookmark;
     });
 
-    const activeSeed = studyMode && session ? session.snapshotSeed : productSeed;
     const withThumbnail = sortLibraryItemsForMode(matchedItems.filter((item) => Boolean(getThumbnail(item))), {
-      studyMode: studyMode && Boolean(session),
-      seed: `${activeSeed}:with-thumb`
+      studyMode: false,
+      seed: `${productSeed}:with-thumb`
     });
     const withoutThumbnail = sortLibraryItemsForMode(matchedItems.filter((item) => !getThumbnail(item)), {
-      studyMode: studyMode && Boolean(session),
-      seed: `${activeSeed}:no-thumb`
+      studyMode: false,
+      seed: `${productSeed}:no-thumb`
     });
     return [...withThumbnail, ...withoutThumbnail];
-  }, [bookmarkedIds, creatorNameById, keyword, productSeed, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, session, showBookmarkedOnly, studyMode]);
+  }, [bookmarkedIds, creatorNameById, keyword, productSeed, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, showBookmarkedOnly]);
   const visibleItems = useMemo(
     () => filtered.slice(0, visibleCount),
     [filtered, visibleCount]
   );
   const hasMore = visibleItems.length < filtered.length;
-
-  useEffect(() => {
-    if (gateState !== "ready") {
-      return;
-    }
-
-    if (!studyMode || !session) {
-      previousSortContextRef.current = null;
-      return;
-    }
-
-    const sortContext = JSON.stringify({
-      snapshotVersion: session.snapshotId,
-      snapshotSeed: session.snapshotSeed,
-      keyword: keyword.trim().toLowerCase(),
-      platform: selectedPlatform,
-      contentLanguage: selectedContentLanguage,
-      subtitleAvailability: selectedSubtitleAvailability,
-      bookmarkedOnly: showBookmarkedOnly,
-      totalMatched: filtered.length
-    });
-
-    if (previousSortContextRef.current === sortContext) {
-      return;
-    }
-
-    logEvent("library.sort_context_logged", {
-      snapshotVersion: session.snapshotId,
-      snapshotSeed: session.snapshotSeed,
-      keywordLength: keyword.trim().length,
-      platform: selectedPlatform,
-      contentLanguage: selectedContentLanguage,
-      subtitleAvailability: selectedSubtitleAvailability,
-      bookmarkedOnly: showBookmarkedOnly,
-      totalMatched: filtered.length
-    }, { page: "/library" });
-    previousSortContextRef.current = sortContext;
-  }, [
-    filtered.length,
-    keyword,
-    selectedContentLanguage,
-    selectedPlatform,
-    selectedSubtitleAvailability,
-    session,
-    showBookmarkedOnly,
-    studyMode,
-    gateState
-  ]);
 
   useEffect(() => {
     if (gateState !== "ready") {
@@ -401,16 +295,6 @@ function LibraryPageContent() {
   };
 
   const handleToggleBookmark = async (contentId: string) => {
-    if (studyMode && session) {
-      const nextIds = toggleLocalStudyBookmark(contentId);
-      setBookmarkedIds(nextIds);
-      const bookmarked = nextIds.includes(contentId);
-      const action = bookmarked ? "add" : "remove";
-      logEvent("content.bookmark_toggled", { contentId, bookmarked }, { page: "/library" });
-      await persistStudyArtifact(session, "bookmark", { contentId, action, contentIds: nextIds });
-      return;
-    }
-
     if (!user?.id || !configured) {
       openLoginModal(t("library.bookmarkLogin"), "bookmark");
       return;
@@ -443,20 +327,6 @@ function LibraryPageContent() {
     return (
       <PageContainer>
         <Card className="text-sm text-slate-600">{t("assessment.loading")}</Card>
-      </PageContainer>
-    );
-  }
-
-  if (gateState === "study_session_required") {
-    return (
-      <PageContainer>
-        <Card className="mx-auto max-w-2xl space-y-4">
-          <h1 className="text-2xl font-black text-slate-900">{t("study.start.title")}</h1>
-          <p className="text-sm leading-6 text-slate-600">{t("study.start.subtitle")}</p>
-          <Link href="/study/start">
-            <Button>{t("study.start.button")}</Button>
-          </Link>
-        </Card>
       </PageContainer>
     );
   }
@@ -494,7 +364,7 @@ function LibraryPageContent() {
           setSelectedSubtitleAvailability={setSelectedSubtitleAvailability}
           showBookmarkedOnly={showBookmarkedOnly}
           setShowBookmarkedOnly={setShowBookmarkedOnly}
-          bookmarkFilterEnabled={studyMode || Boolean(user?.id && configured)}
+          bookmarkFilterEnabled={Boolean(user?.id && configured)}
         />
 
         {filtered.length > 0 ? (

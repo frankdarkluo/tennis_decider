@@ -32,6 +32,8 @@ export type DayPlanBlock = {
   items: string[];
 };
 
+// Legacy internal naming is retained for compatibility with existing storage,
+// tests, and handoff contracts. User-facing semantics are step-based.
 export type DayPlan = {
   day: number;
   focus: string;
@@ -43,6 +45,9 @@ export type DayPlan = {
   mainBlock: DayPlanBlock;
   pressureBlock: DayPlanBlock;
   successCriteria: string[];
+  failureCue: string;
+  progressionNote: string;
+  transferCue: string;
   intensity: PlanIntensity;
   tempo: PlanTempo;
 };
@@ -66,6 +71,12 @@ export type PlanTemplateDay = {
   pressureBlockEn?: DayPlanBlock;
   successCriteria?: string[];
   successCriteriaEn?: string[];
+  failureCue?: string;
+  failureCueEn?: string;
+  progressionNote?: string;
+  progressionNoteEn?: string;
+  transferCue?: string;
+  transferCueEn?: string;
   intensity?: PlanIntensity;
   tempo?: PlanTempo;
 };

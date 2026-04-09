@@ -7,6 +7,7 @@ import {
   isDiagnosisResultConsistentWithHandoff,
   ruleMatchesDiagnosisCategoryGate
 } from "@/lib/diagnose/categoryGate";
+import { retrieveCatalogContentsByIds, retrieveCatalogRecommendations } from "@/lib/content-catalog/retrieve";
 import { filterByEnvironment } from "@/lib/environment";
 import { AssessmentResult } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
@@ -1049,23 +1050,6 @@ function getDiagnosisContentSearchText(item: ContentItem): string {
     .toLowerCase();
 }
 
-const NON_DIRECT_VIDEO_URL_PATTERNS = [
-  /search\.bilibili\.com\/all\?keyword=/i,
-  /youtube\.com\/results\?search_query=/i
-];
-
-function isDirectLibraryVideo(item: ContentItem): boolean {
-  if (item.type !== "video") {
-    return false;
-  }
-
-  return !NON_DIRECT_VIDEO_URL_PATTERNS.some((pattern) => pattern.test(item.url));
-}
-
-function filterDirectLibraryVideos(items: ContentItem[]): ContentItem[] {
-  return items.filter(isDirectLibraryVideo);
-}
-
 type RankedDiagnosisContentCandidate = {
   item: ContentItem;
   index: number;
@@ -1173,76 +1157,17 @@ function getDiagnosisRecommendedContents(input: {
   ])
     .map((term) => normalizeDiagnosisInput(term))
     .filter((term) => term.length >= 3);
-  const seedIndexMap = new Map(seedIds.map((id, index) => [id, index]));
-  const preferredLevels = level ? (LEVEL_PREFERENCE_MAP[level] ?? [level]) : [];
-
-  const rankedCandidates = filterDirectLibraryVideos(contentPool)
-    .map((item, index) => {
-      const seedIndex = seedIndexMap.get(item.id);
-      const searchText = getDiagnosisContentSearchText(item);
-      const contentProblemTags = getNormalizedContentProblemTags(item);
-      let score = 0;
-
-      if (seedIndex !== undefined) {
-        score += 140 - seedIndex * 8;
-        if (seedIndex === 0) {
-          score += 120;
-        } else if (seedIndex === 1) {
-          score += 36;
-        }
-      }
-
-      if (contentProblemTags.includes(rule.problemTag)) {
-        score += 32;
-      }
-
-      score += overlapCount(contentProblemTags, seedProblemTags) * 10;
-      score += overlapCount(item.skills, seedSkills) * 8;
-      score += overlapCount(contentProblemTags, boost.problemTags) * 8;
-      score += overlapCount(item.skills, boost.skills) * 6;
-
-      if (lexicalTerms.length > 0) {
-        score += lexicalTerms.reduce((sum, term) => sum + (searchText.includes(term) ? 2 : 0), 0);
-      }
-
-      if (level) {
-        score += scoreContentAgainstLevel(item, preferredLevels, level);
-      }
-
-      return { item, index, score, seedIndex };
-    })
-    .filter(({ item, score, seedIndex }) => {
-      if (seedIndex !== undefined) {
-        return true;
-      }
-
-      return score > 0 && (
-        getNormalizedContentProblemTags(item).includes(rule.problemTag) ||
-        overlapCount(item.skills, seedSkills) > 0 ||
-        overlapCount(getNormalizedContentProblemTags(item), seedProblemTags) > 0
-      );
-    })
-    .sort((left, right) => {
-      if (right.score !== left.score) {
-        return right.score - left.score;
-      }
-
-      if (left.seedIndex !== undefined || right.seedIndex !== undefined) {
-        if (left.seedIndex === undefined) return 1;
-        if (right.seedIndex === undefined) return -1;
-        if (left.seedIndex !== right.seedIndex) {
-          return left.seedIndex - right.seedIndex;
-        }
-      }
-
-      return left.index - right.index;
-    });
-
-  const dedupedRankedCandidates = buildUniqueSignalList(rankedCandidates.map((entry) => entry.item.id))
-    .map((id) => rankedCandidates.find((entry) => entry.item.id === id))
-    .filter((entry): entry is RankedDiagnosisContentCandidate => Boolean(entry));
-
-  return selectDiagnosisRecommendationsWithDiversity(dedupedRankedCandidates, maxRecommendations);
+  return retrieveCatalogRecommendations({
+    source: "diagnosis",
+    contentPool,
+    problemTags: seedProblemTags,
+    skillCategories: buildUniqueSignalList([...seedSkills, ...boost.skills]),
+    lexicalTerms,
+    level,
+    requiredIds: seedIds,
+    preferredIds: seedIds,
+    maxResults: maxRecommendations
+  });
 }
 
 function prioritizeContentsByLevel(
@@ -1274,16 +1199,16 @@ function prioritizeContentsByLevel(
 }
 
 function getGenericFallbackContents(
-  contentPool: ContentItem[] = contents,
+  contentPool: ContentItem[] = ALL_DIAGNOSIS_CONTENTS,
   maxRecommendations = 3,
   level?: string
 ): ContentItem[] {
-  const directPool = filterDirectLibraryVideos(contentPool);
-  const genericContents = DEFAULT_CONTENT_IDS
-    .map((id) => directPool.find((item) => item.id === id))
-    .filter((item): item is ContentItem => Boolean(item));
-
-  return prioritizeContentsByLevel(genericContents, maxRecommendations, level);
+  return retrieveCatalogContentsByIds({
+    ids: DEFAULT_CONTENT_IDS,
+    contentPool,
+    maxResults: maxRecommendations,
+    level
+  });
 }
 
 function getWeakestAssessmentDimension(assessmentResult?: AssessmentResult | null) {
@@ -1302,44 +1227,44 @@ function getWeakestAssessmentDimension(assessmentResult?: AssessmentResult | nul
 
 export function getContentsByIds(
   ids: string[],
-  contentPool: ContentItem[] = contents,
+  contentPool: ContentItem[] = ALL_DIAGNOSIS_CONTENTS,
   maxRecommendations = 3,
   level?: string
 ): ContentItem[] {
-  const directPool = filterDirectLibraryVideos(contentPool);
-  const mapped = ids
-    .map((id) => directPool.find((item) => item.id === id))
-    .filter((item): item is ContentItem => Boolean(item));
-
-  return prioritizeContentsByLevel(mapped, maxRecommendations, level);
+  return retrieveCatalogContentsByIds({
+    ids,
+    contentPool,
+    maxResults: maxRecommendations,
+    level
+  });
 }
 
 export function getFallbackContents(
   _input: string,
-  contentPool: ContentItem[] = contents,
+  contentPool: ContentItem[] = ALL_DIAGNOSIS_CONTENTS,
   maxRecommendations = 3,
   level?: string,
   assessmentResult?: AssessmentResult | null
 ): ContentItem[] {
-  const directPool = filterDirectLibraryVideos(contentPool);
   const weakestDimension = getWeakestAssessmentDimension(assessmentResult);
 
   if (weakestDimension) {
     const hints = ASSESSMENT_DIMENSION_HINTS[weakestDimension.key];
-    const candidates = directPool.filter((item) => {
-      const matchesProblemTag = getNormalizedContentProblemTags(item)
-        .some((problemTag) => hints.problemTags.includes(problemTag));
-      const matchesSkill = item.skills.some((skill) => hints.skills.includes(skill));
-
-      return matchesProblemTag || matchesSkill;
+    const candidates = retrieveCatalogRecommendations({
+      source: "diagnosis",
+      contentPool,
+      problemTags: hints.problemTags,
+      skillCategories: hints.skills,
+      level,
+      maxResults: maxRecommendations
     });
 
     if (candidates.length > 0) {
-      return prioritizeContentsByLevel(candidates, maxRecommendations, level);
+      return candidates;
     }
   }
 
-  return getGenericFallbackContents(directPool, maxRecommendations, level);
+  return getGenericFallbackContents(contentPool, maxRecommendations, level);
 }
 
 export function getDiagnosisTitle(problemTag: string, locale: "zh" | "en" = "zh"): string {
@@ -2166,7 +2091,7 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     deepHandoff = null
   } = options;
   const activeRules = filterByEnvironment(rules, environment);
-  const eligibleContentPool = filterByEnvironment(contentPool, environment).filter(isDirectLibraryVideo);
+  const eligibleContentPool = filterByEnvironment(contentPool, environment);
   const categoryGate = buildDiagnosisCategoryGate(deepHandoff);
   const gatedRules = categoryGate
     ? activeRules.filter((rule) => ruleMatchesDiagnosisCategoryGate(rule, categoryGate))
@@ -2434,13 +2359,7 @@ export function getDefaultDiagnosisResult(
   maxRecommendations = 3,
   locale: "zh" | "en" = "zh"
 ): DiagnosisResult {
-  const directPool = filterDirectLibraryVideos(contentPool);
-  const recommendedContents = getContentsByIds(
-    DEFAULT_CONTENT_IDS,
-    directPool,
-    maxRecommendations,
-    level
-  );
+  const recommendedContents = getContentsByIds(DEFAULT_CONTENT_IDS, contentPool, maxRecommendations, level);
 
   return {
     input: "",

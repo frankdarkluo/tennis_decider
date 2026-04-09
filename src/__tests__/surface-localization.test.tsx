@@ -1,6 +1,7 @@
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { AppShellProvider } from "@/components/app/AppShellProvider";
 import { I18nProvider } from "@/lib/i18n/config";
 import { LoginModal } from "@/components/auth/LoginModal";
 import { AuthCallbackCard } from "@/components/auth/AuthCallbackCard";
@@ -10,14 +11,11 @@ import ProfilePage from "@/app/profile/page";
 import { VideoUploader } from "@/components/video/VideoUploader";
 import { UsageMeter } from "@/components/video/UsageMeter";
 import { PlatformVideoSearch } from "@/components/PlatformVideoSearch";
-import { StudyBanner } from "@/components/study/StudyBanner";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
 import { Header } from "@/components/layout/Header";
 import { getPlanTemplate } from "@/lib/plans";
 import { contents } from "@/data/contents";
 import { creators } from "@/data/creators";
-import StudyEndPage from "@/app/study/end/page";
-import StudyActionabilityPreviewPage from "@/app/study/actionability-preview/page";
 
 const {
   mockPush,
@@ -97,7 +95,7 @@ vi.mock("next/navigation", () => ({
     prefetch: vi.fn()
   }),
   useSearchParams: () => mockSearchParamsAdapter,
-  usePathname: () => "/study/actionability-preview"
+  usePathname: () => "/profile"
 }));
 
 vi.mock("@/components/study/StudyProvider", () => ({
@@ -131,11 +129,17 @@ vi.mock("@/lib/eventLogger", () => ({
 }));
 
 function renderWithI18n(ui: React.ReactElement) {
-  return render(<I18nProvider>{ui}</I18nProvider>);
+  window.localStorage.setItem("tennislevel.app_language", mockStudyState.language);
+  return render(
+    <AppShellProvider>
+      <I18nProvider>{ui}</I18nProvider>
+    </AppShellProvider>
+  );
 }
 
 describe("surface localization", () => {
   beforeEach(() => {
+    window.localStorage.clear();
     mockPush.mockReset();
     mockSearchParamsAdapter.get.mockReset();
     mockSearchParamsAdapter.get.mockImplementation(() => null);
@@ -163,17 +167,14 @@ describe("surface localization", () => {
   });
 
   it("renders LoginModal in English and Chinese", () => {
-    const { rerender } = renderWithI18n(<LoginModal open onClose={() => {}} />);
+    renderWithI18n(<LoginModal open onClose={() => {}} />);
 
     expect(screen.getByText("Email sign-in")).toBeInTheDocument();
     expect(screen.getByText("Enter your email and we will send you a sign-in link.")).toBeInTheDocument();
 
     mockStudyState.language = "zh";
-    rerender(
-      <I18nProvider>
-        <LoginModal open onClose={() => {}} />
-      </I18nProvider>
-    );
+    cleanup();
+    renderWithI18n(<LoginModal open onClose={() => {}} />);
 
     expect(screen.getByText("邮箱登录")).toBeInTheDocument();
     expect(screen.getByText("输入邮箱后，我们会给你发登录链接。")).toBeInTheDocument();
@@ -262,47 +263,14 @@ describe("surface localization", () => {
     expect(await screen.findByText("Open on Bilibili")).toBeInTheDocument();
   });
 
-  it("renders StudyBanner in both locales", () => {
-    mockStudyState.studyMode = true;
-    mockStudyState.session = {
-      participantId: "P001",
-      sessionId: "session-12345678",
-      snapshotId: "snapshot-a",
-      buildVersion: "build-1",
-      language: "en"
-    };
-
-    const { rerender } = renderWithI18n(<StudyBanner />);
-
-    expect(screen.getByText("Study mode")).toBeInTheDocument();
-    expect(screen.getByText(/Participant: P001/)).toBeInTheDocument();
-    expect(screen.getByText("End session")).toBeInTheDocument();
-
-    mockStudyState.language = "zh";
-    mockStudyState.session = {
-      ...mockStudyState.session,
-      language: "zh"
-    };
-
-    rerender(
-      <I18nProvider>
-        <StudyBanner />
-      </I18nProvider>
-    );
-
-    expect(screen.getByText("研究模式")).toBeInTheDocument();
-    expect(screen.getByText(/参与者: P001/)).toBeInTheDocument();
-    expect(screen.getByText("结束会话")).toBeInTheDocument();
-  });
-
   it("renders localized plan prescription blocks in both locales", () => {
     const zhPlan = getPlanTemplate("backhand-into-net", "3.0", "zh");
     const enPlan = getPlanTemplate("backhand-into-net", "3.0", "en");
 
     mockStudyState.language = "zh";
     renderWithI18n(<DayPlanCard day={zhPlan.days[0]} isToday />);
-    expect(screen.getByText("第 1 天 · 今天")).toBeInTheDocument();
-    expect(screen.getByText("今日目标")).toBeInTheDocument();
+    expect(screen.getByText("第 1 步 · 从这一步开始")).toBeInTheDocument();
+    expect(screen.getByText("这一步目标")).toBeInTheDocument();
     expect(screen.queryByText("热身")).not.toBeInTheDocument();
     expect(screen.getAllByText("练习").length).toBeGreaterThan(0);
     expect(screen.queryByText("带压力重复")).not.toBeInTheDocument();
@@ -316,7 +284,7 @@ describe("surface localization", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Expand" }));
 
-    expect(screen.getByText("Day 2")).toBeInTheDocument();
+    expect(screen.getByText("Step 2")).toBeInTheDocument();
     expect(screen.getByText("Goal")).toBeInTheDocument();
     expect(screen.queryByText("Warm-up")).not.toBeInTheDocument();
     expect(screen.getAllByText("Practice").length).toBeGreaterThan(0);
@@ -357,43 +325,7 @@ describe("surface localization", () => {
     expect(screen.getByText("跟维纳斯·威廉姆斯学网球基础发球")).toBeInTheDocument();
   });
 
-  it("renders study end in zh without leftover English study labels", () => {
-    mockStudyState.language = "zh";
-    mockStudyState.studyMode = true;
-    mockStudyState.session = {
-      participantId: "P001",
-      sessionId: "session-12345678",
-      snapshotId: "snapshot-a",
-      buildVersion: "build-1",
-      language: "zh"
-    };
-
-    renderWithI18n(<StudyEndPage />);
-
-    expect(screen.getAllByText("研究模式").length).toBeGreaterThan(0);
-    expect(screen.getByText("本轮研究已结束")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "去填写问卷" })).toBeInTheDocument();
-    expect(screen.queryByText("Study mode")).not.toBeInTheDocument();
-  });
-
-  it("renders the actionability preview badge in zh without English leftovers", () => {
-    mockStudyState.language = "zh";
-    mockStudyState.studyMode = true;
-    mockStudyState.session = {
-      participantId: "P001",
-      sessionId: "session-12345678",
-      snapshotId: "snapshot-a",
-      buildVersion: "build-1",
-      language: "zh"
-    };
-
-    renderWithI18n(<StudyActionabilityPreviewPage />);
-
-    expect(screen.getByText("研究预览")).toBeInTheDocument();
-    expect(screen.queryByText("Study preview")).not.toBeInTheDocument();
-  });
-
-  it("renders the study nav label in zh without beta wording", () => {
+  it("renders the current consumer header in zh without legacy beta or study-only labels", () => {
     mockStudyState.language = "zh";
     mockStudyState.studyMode = true;
     mockStudyState.session = {
@@ -406,12 +338,15 @@ describe("surface localization", () => {
 
     renderWithI18n(<Header />);
 
-    expect(screen.getAllByText("研究模式").length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("group", { name: "语言切换" }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("button", { name: "切换网站语言为中文" }).length).toBeGreaterThan(0);
+    expect(screen.getByRole("button", { name: "登录" })).toBeInTheDocument();
+    expect(screen.queryByText("研究模式")).not.toBeInTheDocument();
     expect(screen.queryByText("视频诊断")).not.toBeInTheDocument();
     expect(screen.queryByText("测试 (Beta)")).not.toBeInTheDocument();
   });
 
-  it("renders the profile study panel in zh without English field labels", async () => {
+  it("keeps the profile route on the current consumer records surface in zh even when legacy study state exists", async () => {
     mockStudyState.language = "zh";
     mockStudyState.studyMode = true;
     mockStudyState.session = {
@@ -421,16 +356,17 @@ describe("surface localization", () => {
       buildVersion: "build-1",
       language: "zh"
     };
+    mockAuthState.user = { id: "user_1", email: "player@example.com" };
+    mockAuthState.configured = true;
 
     renderWithI18n(<ProfilePage />);
 
     await waitFor(() => {
-      expect(screen.getByText("当前研究会话")).toBeInTheDocument();
+      expect(screen.getByText("最近评估结果")).toBeInTheDocument();
     });
 
-    expect(screen.getByText("会话编号")).toBeInTheDocument();
-    expect(screen.getByText("快照")).toBeInTheDocument();
-    expect(screen.getByText("构建版本")).toBeInTheDocument();
+    expect(screen.getByText("继续上次练习")).toBeInTheDocument();
+    expect(screen.queryByText("当前研究会话")).not.toBeInTheDocument();
     expect(screen.queryByText("Snapshot")).not.toBeInTheDocument();
     expect(screen.queryByText("Build")).not.toBeInTheDocument();
     expect(screen.queryByText("Session ID")).not.toBeInTheDocument();
