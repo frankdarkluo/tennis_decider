@@ -9,6 +9,7 @@ export type LibrarySubtitleFilter = "all" | Extract<ContentSubtitleAvailability,
 type LibraryFiltersProps = {
   keyword: string;
   setKeyword: (value: string) => void;
+  onSearch: () => void;
   selectedPlatform: LibraryPlatformFilter;
   setSelectedPlatform: (value: LibraryPlatformFilter) => void;
   selectedContentLanguage: LibraryContentLanguageFilter;
@@ -33,11 +34,25 @@ export function LibraryFilters(props: LibraryFiltersProps) {
   return (
     <div className="space-y-3 rounded-2xl border border-[var(--line)] bg-white p-4 shadow-soft">
       <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_180px_180px_180px]">
-        <Input
-          placeholder={t("library.searchPlaceholder")}
-          value={props.keyword}
-          onChange={(e) => props.setKeyword(e.target.value)}
-        />
+        <div className="flex gap-2">
+          <Input
+            placeholder={t("library.searchPlaceholder")}
+            value={props.keyword}
+            onChange={(e) => props.setKeyword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                props.onSearch();
+              }
+            }}
+          />
+          <button
+            type="button"
+            onClick={props.onSearch}
+            className="flex-none rounded-xl bg-brand-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-600"
+          >
+            {t("library.searchButton")}
+          </button>
+        </div>
         <select
           className="min-h-11 w-full rounded-xl border border-[var(--line)] bg-white px-4 py-2 text-sm text-slate-700"
           value={props.selectedPlatform}

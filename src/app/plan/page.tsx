@@ -11,7 +11,8 @@ import {
   getPlanTemplate,
   normalizePlanDraftSnapshot,
   parsePlanContentIds,
-  parsePlanContext
+  parsePlanContext,
+  readLocalPlanDraft
 } from "@/lib/plans";
 import { saveGeneratedPlan } from "@/lib/userData";
 import { useI18n } from "@/lib/i18n/config";
@@ -19,8 +20,6 @@ import { persistStudyArtifact } from "@/lib/study/client";
 import { readLocalStudyPlanDraft, updateLocalStudyProgress, writeLocalStudyPlanDraft } from "@/lib/study/localData";
 import { sanitizePlanArtifact } from "@/lib/study/privacy";
 import { getStudySnapshot } from "@/lib/study/snapshot";
-// hasStudyTaskRating removed: actionability prompt not shown on plan page
-import { toChineseLevel } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { useAuth } from "@/components/auth/AuthProvider";
@@ -30,15 +29,17 @@ import { PlanSummary } from "@/components/plan/PlanSummary";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
 import { Button } from "@/components/ui/Button";
 import { SavedPlanSource } from "@/types/userData";
-import { PlanLevel } from "@/types/plan";
-// ActionabilityPrompt intentionally not rendered on the plan page per product request.
+import { parsePlanLevel, PlanLevel } from "@/types/plan";
 
-function normalizeLevelParam(level: string | null): PlanLevel {
-  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.5") {
-    return level;
+function mapReportedLevelToPlan(levelStr: string | null | undefined): string | null {
+  switch (levelStr) {
+    case "below_3.0": return "2.5";
+    case "3.0": return "3.0";
+    case "3.5": return "3.5";
+    case "4.0": return "4.0";
+    case "above_4.0": return "4.5";
+    default: return null;
   }
-
-  return "3.0";
 }
 
 function PlanPageContent() {
@@ -48,31 +49,14 @@ function PlanPageContent() {
   const { openLoginModal } = useAuthModal();
   const { environment, studyMode, session, language, pendingStudySetup } = useStudy();
   const { t } = useI18n();
+  const localDraft = useMemo(() => readLocalPlanDraft(), []);
   const restoredDraft = useMemo(() => normalizePlanDraftSnapshot(readLocalStudyPlanDraft()), []);
-  const defaultProblemTag = params.get("problemTag") ?? restoredDraft?.problemTag ?? "no-plan";
-  function mapReportedLevelToPlan(levelStr: string | null | undefined): string | null {
-    if (!levelStr) return null;
-    switch (levelStr) {
-      case "below_3.0":
-        return "2.5";
-      case "3.0":
-        return "3.0";
-      case "3.5":
-        return "3.5";
-      case "4.0":
-        return "4.0";
-      case "above_4.0":
-        return "4.5";
-      default:
-        return null;
-    }
-  }
-
+  const defaultProblemTag = params.get("problemTag") ?? restoredDraft?.problemTag ?? localDraft?.problemTag ?? "no-plan";
   const sessionReportedLevel = studyMode && session?.background?.selfReportedLevel
     ? mapReportedLevelToPlan(session.background.selfReportedLevel)
     : null;
 
-  const defaultLevel = normalizeLevelParam(params.get("level") ?? restoredDraft?.level ?? sessionReportedLevel ?? null);
+  const defaultLevel = parsePlanLevel(params.get("level") ?? restoredDraft?.level ?? sessionReportedLevel ?? null);
   const preferredContentIdsParam = params.get("contentIds");
   const primaryNextStepParam = params.get("primaryNextStep");
   const planContextParam = params.get("planContext");
@@ -86,20 +70,20 @@ function PlanPageContent() {
   const preferredContentIds = useMemo(
     () => preferredContentIdsParam
       ? parsePlanContentIds(preferredContentIdsParam)
-      : restoredDraft?.preferredContentIds ?? [],
-    [preferredContentIdsParam, restoredDraft?.preferredContentIds]
+      : restoredDraft?.preferredContentIds ?? localDraft?.preferredContentIds ?? [],
+    [preferredContentIdsParam, restoredDraft?.preferredContentIds, localDraft?.preferredContentIds]
   );
   const primaryNextStep = useMemo(() => {
-    const normalized = primaryNextStepParam?.trim() ?? restoredDraft?.primaryNextStep?.trim() ?? "";
+    const normalized = primaryNextStepParam?.trim() ?? restoredDraft?.primaryNextStep?.trim() ?? localDraft?.primaryNextStep?.trim() ?? "";
     return normalized.length > 0 ? normalized : undefined;
-  }, [primaryNextStepParam, restoredDraft?.primaryNextStep]);
+  }, [primaryNextStepParam, restoredDraft?.primaryNextStep, localDraft?.primaryNextStep]);
   const planContext = useMemo(
-    () => parsePlanContext(planContextParam) ?? restoredDraft?.planContext ?? null,
-    [planContextParam, restoredDraft?.planContext]
+    () => parsePlanContext(planContextParam) ?? restoredDraft?.planContext ?? localDraft?.planContext ?? null,
+    [planContextParam, restoredDraft?.planContext, localDraft?.planContext]
   );
   const deepContext = useMemo(
-    () => parseEnrichedDiagnosisContext(deepContextParam) ?? restoredDraft?.deepContext ?? null,
-    [deepContextParam, restoredDraft?.deepContext]
+    () => parseEnrichedDiagnosisContext(deepContextParam) ?? restoredDraft?.deepContext ?? localDraft?.deepContext ?? null,
+    [deepContextParam, restoredDraft?.deepContext, localDraft?.deepContext]
   );
 
   const plan = useMemo(
@@ -318,7 +302,7 @@ function PlanPageContent() {
           focusLine={sourceType === "assessment" ? assessmentFocusLine ?? undefined : undefined}
           rationale={summaryRationale}
           sourceType={sourceType}
-          supportingText={t("plan.supporting", { value: language === "en" ? plan.level : toChineseLevel(plan.level) })}
+          supportingText={t("plan.supporting", { value: language === "en" ? plan.level : parsePlanLevel(plan.level) })}
         />
 
         {todayPlan ? (
@@ -397,7 +381,6 @@ function PlanPageContent() {
             {saveMessage}
           </div>
         ) : null}
-        {/* ActionabilityPrompt removed from plan page per product request */}
       </div>
     </PageContainer>
   );

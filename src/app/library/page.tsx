@@ -60,6 +60,7 @@ function LibraryPageContent() {
   const { t } = useI18n();
   const [gateState, setGateState] = useState<LibraryGateState>("checking");
   const [keyword, setKeyword] = useState("");
+  const [committedKeyword, setCommittedKeyword] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState<LibraryPlatformFilter>("all");
   const [selectedContentLanguage, setSelectedContentLanguage] = useState<LibraryContentLanguageFilter>("all");
   const [selectedSubtitleAvailability, setSelectedSubtitleAvailability] = useState<LibrarySubtitleFilter>("all");
@@ -263,7 +264,7 @@ function LibraryPageContent() {
       return;
     }
 
-    const trimmed = keyword.trim();
+    const trimmed = committedKeyword.trim();
     if (!trimmed || previousKeywordRef.current === trimmed) {
       previousKeywordRef.current = trimmed;
       return;
@@ -274,14 +275,14 @@ function LibraryPageContent() {
       queryLength: trimmed.length,
       queryLanguage: inferQueryLanguage(trimmed)
     }, { page: "/library" });
-  }, [gateState, keyword]);
+  }, [gateState, committedKeyword]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [keyword, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, showBookmarkedOnly]);
+  }, [committedKeyword, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, showBookmarkedOnly]);
 
   const filtered = useMemo(() => {
-    const query = keyword.trim().toLowerCase();
+    const query = committedKeyword.trim().toLowerCase();
 
     const matchedItems = libraryItems.filter((item) => {
       const searchableFields = [
@@ -322,7 +323,7 @@ function LibraryPageContent() {
       seed: `${activeSeed}:no-thumb`
     });
     return [...withThumbnail, ...withoutThumbnail];
-  }, [bookmarkedIds, creatorNameById, keyword, productSeed, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, session, showBookmarkedOnly, studyMode]);
+  }, [bookmarkedIds, creatorNameById, committedKeyword, productSeed, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, session, showBookmarkedOnly, studyMode]);
   const visibleItems = useMemo(
     () => filtered.slice(0, visibleCount),
     [filtered, visibleCount]
@@ -342,7 +343,7 @@ function LibraryPageContent() {
     const sortContext = JSON.stringify({
       snapshotVersion: session.snapshotId,
       snapshotSeed: session.snapshotSeed,
-      keyword: keyword.trim().toLowerCase(),
+      keyword: committedKeyword.trim().toLowerCase(),
       platform: selectedPlatform,
       contentLanguage: selectedContentLanguage,
       subtitleAvailability: selectedSubtitleAvailability,
@@ -357,7 +358,7 @@ function LibraryPageContent() {
     logEvent("library.sort_context_logged", {
       snapshotVersion: session.snapshotId,
       snapshotSeed: session.snapshotSeed,
-      keywordLength: keyword.trim().length,
+      keywordLength: committedKeyword.trim().length,
       platform: selectedPlatform,
       contentLanguage: selectedContentLanguage,
       subtitleAvailability: selectedSubtitleAvailability,
@@ -367,7 +368,7 @@ function LibraryPageContent() {
     previousSortContextRef.current = sortContext;
   }, [
     filtered.length,
-    keyword,
+    committedKeyword,
     selectedContentLanguage,
     selectedPlatform,
     selectedSubtitleAvailability,
@@ -394,6 +395,7 @@ function LibraryPageContent() {
 
   const clearAll = () => {
     setKeyword("");
+    setCommittedKeyword("");
     setSelectedPlatform("all");
     setSelectedContentLanguage("all");
     setSelectedSubtitleAvailability("all");
@@ -486,6 +488,7 @@ function LibraryPageContent() {
         <LibraryFilters
           keyword={keyword}
           setKeyword={setKeyword}
+          onSearch={() => setCommittedKeyword(keyword)}
           selectedPlatform={selectedPlatform}
           setSelectedPlatform={setSelectedPlatform}
           selectedContentLanguage={selectedContentLanguage}

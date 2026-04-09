@@ -2,6 +2,13 @@ import { AssessmentDimension } from "@/types/assessment";
 import { EnvironmentValue } from "@/types/environment";
 
 export type PlanLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.5";
+
+export function parsePlanLevel(level?: string | null): PlanLevel {
+  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.5") {
+    return level;
+  }
+  return "3.0";
+}
 export type PlanContextSessionType = "match" | "practice" | "unknown";
 export type PlanContextPressure = "high" | "some" | "unknown";
 export type PlanContextMovement = "stationary" | "moving" | "unknown";
@@ -32,6 +39,8 @@ export type DayPlanBlock = {
   items: string[];
 };
 
+// Legacy internal naming is retained for compatibility with existing storage,
+// tests, and handoff contracts. User-facing semantics are step-based.
 export type DayPlan = {
   day: number;
   focus: string;

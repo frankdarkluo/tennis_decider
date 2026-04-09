@@ -885,7 +885,8 @@ export function getDiagnosisConfidenceLabel(confidence: DiagnosisConfidence, loc
 
 export function findBestDiagnosisRule(
   input: string,
-  rules: DiagnosisRule[] = diagnosisRules
+  rules: DiagnosisRule[] = diagnosisRules,
+  assessmentResult?: AssessmentResult | null
 ): {
   rule: DiagnosisRule | null;
   matchedKeywords: string[];
@@ -900,6 +901,19 @@ export function findBestDiagnosisRule(
 
     if (!candidate) {
       continue;
+    }
+
+    if (assessmentResult && candidate.rule) {
+      const weakDimensions = assessmentResult.dimensions.filter(d => d.status === "薄弱" || d.status === "待提升");
+      const matchedAssessment = weakDimensions.some(dim => {
+        const hints = ASSESSMENT_DIMENSION_HINTS[dim.key];
+        return hints && hints.problemTags.includes(candidate.rule!.problemTag);
+      });
+
+      if (matchedAssessment) {
+        candidate.score += 8;
+        candidate.priorityWeight += 0.5;
+      }
     }
 
     if (
@@ -1307,8 +1321,9 @@ export function getContentsByIds(
   level?: string
 ): ContentItem[] {
   const directPool = filterDirectLibraryVideos(contentPool);
+  const byId = new Map(directPool.map((item) => [item.id, item]));
   const mapped = ids
-    .map((id) => directPool.find((item) => item.id === id))
+    .map((id) => byId.get(id))
     .filter((item): item is ContentItem => Boolean(item));
 
   return prioritizeContentsByLevel(mapped, maxRecommendations, level);
@@ -2193,7 +2208,11 @@ export function diagnoseProblem(input: string, options: DiagnoseOptions = {}): D
     });
   }
 
-  const { rule, matchedKeywords, matchedSynonyms, score } = findBestDiagnosisRule(input, gatedRules.length > 0 ? gatedRules : activeRules);
+  const { rule, matchedKeywords, matchedSynonyms, score } = findBestDiagnosisRule(
+    input, 
+    gatedRules.length > 0 ? gatedRules : activeRules,
+    assessmentResult
+  );
 
   if (!rule || score <= 0) {
     const supportAwareCopy = getSupportAwareFallbackCopy(signalBundle.supportSignals, locale);

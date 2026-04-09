@@ -200,6 +200,16 @@ export function normalizeDeepDiagnosisHandoff(
     return null;
   }
 
+  const strokeFamily = normalizeStrokeFamily(context.strokeFamily);
+  const serveSubtype = inferServeSubtype(sourceInput) ?? context.serveSubtype;
+  const serveControlPattern = normalizeServeControlPattern(context.serveControlPattern);
+  const serveMechanismFamily = normalizeServeMechanismFamily(context.serveMechanismFamily);
+  const pressureContext = normalizePressureContext(context.pressureContext);
+  const movement = normalizeMovement(context.movement);
+  const outcome = normalizeOutcome(context.outcome);
+  const incomingBallDepth = normalizeIncomingBallDepth(context.incomingBallDepth);
+  const subjectiveFeeling = normalizeSubjectiveFeeling(context.subjectiveFeeling);
+
   const normalized: Omit<DeepDiagnosisHandoff, "isDeepModeReady"> = {
     mode: normalizeMode(context.mode),
     sourceInput,
@@ -208,16 +218,16 @@ export function normalizeDeepDiagnosisHandoff(
     ...(context.level?.trim() ? { level: context.level.trim() } : {}),
     skillCategory: context.skillCategory,
     skillCategoryConfidence: context.skillCategoryConfidence ?? "low",
-    ...(normalizeStrokeFamily(context.strokeFamily) ? { strokeFamily: normalizeStrokeFamily(context.strokeFamily) } : {}),
-    ...(inferServeSubtype(sourceInput) ?? context.serveSubtype ? { serveSubtype: inferServeSubtype(sourceInput) ?? context.serveSubtype } : {}),
-    ...(normalizeServeControlPattern(context.serveControlPattern) ? { serveControlPattern: normalizeServeControlPattern(context.serveControlPattern) } : {}),
-    ...(normalizeServeMechanismFamily(context.serveMechanismFamily) ? { serveMechanismFamily: normalizeServeMechanismFamily(context.serveMechanismFamily) } : {}),
+    ...(strokeFamily ? { strokeFamily } : {}),
+    ...(serveSubtype ? { serveSubtype } : {}),
+    ...(serveControlPattern ? { serveControlPattern } : {}),
+    ...(serveMechanismFamily ? { serveMechanismFamily } : {}),
     ...(context.sessionType === "practice" || context.sessionType === "match" ? { sessionType: context.sessionType } : {}),
-    ...(normalizePressureContext(context.pressureContext) ? { pressureContext: normalizePressureContext(context.pressureContext) } : {}),
-    ...(normalizeMovement(context.movement) ? { movement: normalizeMovement(context.movement) } : {}),
-    ...(normalizeOutcome(context.outcome) ? { outcome: normalizeOutcome(context.outcome) } : {}),
-    ...(normalizeIncomingBallDepth(context.incomingBallDepth) ? { incomingBallDepth: normalizeIncomingBallDepth(context.incomingBallDepth) } : {}),
-    ...(normalizeSubjectiveFeeling(context.subjectiveFeeling) ? { subjectiveFeeling: normalizeSubjectiveFeeling(context.subjectiveFeeling) } : {}),
+    ...(pressureContext ? { pressureContext } : {}),
+    ...(movement ? { movement } : {}),
+    ...(outcome ? { outcome } : {}),
+    ...(incomingBallDepth ? { incomingBallDepth } : {}),
+    ...(subjectiveFeeling ? { subjectiveFeeling } : {}),
     unresolvedRequiredSlots: Array.isArray(context.unresolvedRequiredSlots) ? context.unresolvedRequiredSlots : [],
     stoppedByCap: Boolean(context.stoppedByCap)
   };

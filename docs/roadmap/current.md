@@ -29,11 +29,11 @@ Improve TennisLevel's core study-ready experience so users can finish a session,
 ### P1.1 Training plan quality
 - Make plans feel more like coach prescriptions, not generic content suggestions
 - Emphasize:
-  - clear daily goal
+  - clear step goal
   - intensity
   - tempo
   - success criteria
-- Keep the 7-day plan structure simple and executable
+- Keep the 7-step plan structure simple and executable
 
 ### P1.2 Diagnosis quality
 - Improve text diagnosis parsing and ranking

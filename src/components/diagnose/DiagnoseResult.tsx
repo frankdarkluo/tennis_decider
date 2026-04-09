@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DiagnosisResult as DiagnosisResultType } from "@/types/diagnosis";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -21,10 +21,11 @@ import {
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { getDiagnosisConfidenceLabel } from "@/lib/diagnosis";
-import { buildDiagnosisPlanCandidateIds, buildDiagnosisPlanContext, buildPlanHref } from "@/lib/plans";
+import { buildDiagnosisPlanCandidateIds, buildDiagnosisPlanContext, buildPlanHref, writeLocalPlanDraft } from "@/lib/plans";
+import { readAssessmentResultFromStorage } from "@/lib/assessmentStorage";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
 import { VIDEO_DIAGNOSE_VISIBLE } from "@/lib/videoDiagnose";
-import { PlanLevel } from "@/types/plan";
+import { parsePlanLevel } from "@/types/plan";
 import { useStudy } from "@/components/study/StudyProvider";
 import { Badge } from "@/components/ui/Badge";
 
@@ -97,14 +98,6 @@ function getEvidenceToneViewModel(
   };
 }
 
-function normalizePlanLevel(level?: string): PlanLevel {
-  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.5") {
-    return level;
-  }
-
-  return "3.0";
-}
-
 function RecommendationCard({
   item,
   source,
@@ -113,7 +106,7 @@ function RecommendationCard({
 }: {
   item: DiagnosisResultType["recommendedContents"][number];
   source: "diagnosis_featured" | "diagnosis_more";
-  layer: 2 | 3;
+  layer: 1 | 2 | 3;
   problemTag: string;
 }) {
   const { language, t } = useI18n();
@@ -218,40 +211,37 @@ export function DiagnoseResult({
   const { studyMode } = useStudy();
   const primaryFix = result.fixes[0] ?? result.summary;
   const primaryNextStep = result.primaryNextStep ?? primaryFix;
-  const normalizedPlanLevel = normalizePlanLevel(result.level);
+  const normalizedPlanLevel = parsePlanLevel(result.level);
   const deepContext = result.enrichedContext ?? null;
-  const candidateIds = buildDiagnosisPlanCandidateIds({
+  const assessmentResult = useMemo(() => readAssessmentResultFromStorage(), []);
+  const candidateIds = useMemo(() => buildDiagnosisPlanCandidateIds({
     problemTag: result.problemTag,
     level: normalizedPlanLevel,
     diagnosisInput: result.input,
     recommendedContentIds: result.recommendedContents.map((item) => item.id)
-  });
+  }), [result.problemTag, normalizedPlanLevel, result.input, result.recommendedContents]);
   const planContextSourceInput = deepContext?.sourceInput ?? result.input;
-  const planContext = buildDiagnosisPlanContext({
+  const planContext = useMemo(() => buildDiagnosisPlanContext({
     problemTag: result.problemTag,
     diagnosisInput: planContextSourceInput,
-    primaryNextStep
-  });
-  const planHref = buildPlanHref({
+    primaryNextStep,
+    assessmentResult
+  }), [result.problemTag, planContextSourceInput, primaryNextStep, assessmentResult]);
+  const planHref = useMemo(() => buildPlanHref({
     problemTag: result.problemTag,
     level: normalizedPlanLevel,
     preferredContentIds: candidateIds,
     sourceType: "diagnosis",
-    primaryNextStep,
-    planContext,
-    deepContext: deepContext ?? undefined
-  });
+    primaryNextStep
+  }), [result.problemTag, normalizedPlanLevel, candidateIds, primaryNextStep]);
   const canGeneratePlan = Boolean(result.input.trim());
-  const [layer, setLayer] = useState<1 | 2 | 3>(1);
-  const [evidenceExpanded, setEvidenceExpanded] = useState(false);
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
   const isNarrowingMode = result.needsNarrowing ?? false;
-  const isQuickMode = result.effortMode === "quick";
   const isDeepMode = result.effortMode === "deep" || deepContext?.mode === "deep";
   const detailedSummary = result.detailedSummary?.trim() || null;
   const specificityReasons = deepContext ? buildEnrichedSpecificityReasons(deepContext, locale) : [];
   const deepSceneRecap = deepContext?.isDeepModeReady ? buildEnrichedSceneRecap(deepContext, locale) : null;
   const deepEvidenceSummary = deepContext?.isDeepModeReady ? buildDeepDiagnosisEvidenceSummary(deepContext, locale) : null;
-  const canExpandLayerTwo = !isNarrowingMode && (!isQuickMode || Boolean(detailedSummary));
   const narrowingPrompts = (result.narrowingPrompts ?? []).slice(0, 2);
   const narrowingSuggestions = (result.narrowingSuggestions ?? [])
     .slice()
@@ -287,9 +277,7 @@ export function DiagnoseResult({
     : null;
 
   useEffect(() => {
-    const initialLayer = isDeepMode ? 2 : 1;
-    setLayer(initialLayer);
-    setEvidenceExpanded(false);
+    setDetailsExpanded(isDeepMode);
   }, [result.input, result.problemTag, isDeepMode]);
 
   if (!canGeneratePlan) {
@@ -306,28 +294,62 @@ export function DiagnoseResult({
           <p className="text-sm font-semibold text-slate-700">{t("diagnose.result.today")}</p>
           <p className="mt-2 text-base font-medium text-slate-900">{primaryNextStep}</p>
         </div>
-        <div className={evidenceTone.wrapperClassName}>
-          <div className="flex items-center justify-between gap-3">
-            <p className={evidenceTone.titleClassName}>{evidenceTone.title}</p>
-            <button
-              type="button"
-              className="text-xs font-semibold text-slate-600 transition hover:text-slate-900"
+        {!isNarrowingMode && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Link
+              href={planHref}
+              className="inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 bg-brand-500 text-white hover:bg-brand-600"
               onClick={() => {
-                if (!evidenceExpanded) {
-                  logEvent("diagnose.why_this_viewed", { targetType: "evidence" }, { page: "/diagnose" });
-                }
-                setEvidenceExpanded((prev) => !prev);
+                logEvent("cta_click", {
+                  ctaLabel: t("diagnose.result.plan"),
+                  ctaLocation: "diagnosis_result_follow_up",
+                  targetPage: "/plan"
+                }, { page: "/diagnose" });
+                writeLocalPlanDraft({
+                  problemTag: result.problemTag,
+                  level: normalizedPlanLevel,
+                  preferredContentIds: candidateIds,
+                  sourceType: "diagnosis",
+                  primaryNextStep,
+                  planContext,
+                  deepContext: deepContext ?? undefined
+                });
+                logEvent("plan_generate", {
+                  source: "diagnosis",
+                  problemTag: result.problemTag,
+                  levelBand: normalizedPlanLevel
+                }, { page: "/diagnose" });
               }}
             >
-              {evidenceExpanded
-                ? (language === "en" ? "Hide" : "收起")
-                : (language === "en" ? "View" : "展开")}
-            </button>
+                {deepContext?.isDeepModeReady
+                  ? (locale === "en" ? "Generate a more specific 7-step plan" : "生成更具体的 7 步训练计划")
+                  : t("diagnose.result.plan")}
+            </Link>
+            <Link
+              href="/library"
+              className="inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 bg-white text-slate-800 border border-[var(--line)] hover:bg-slate-50"
+              onClick={() => logEvent("cta_click", {
+                ctaLabel: t("diagnose.result.library"),
+                ctaLocation: "diagnosis_result_follow_up",
+                targetPage: "/library"
+              }, { page: "/diagnose" })}
+            >
+              {t("diagnose.result.library")}
+            </Link>
+            <Link
+              href="/rankings"
+              className="inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 text-slate-700 hover:bg-slate-100"
+              onClick={() => logEvent("cta_click", {
+                ctaLabel: t("diagnose.result.rankings"),
+                ctaLocation: "diagnosis_result_follow_up",
+                targetPage: "/rankings"
+              }, { page: "/diagnose" })}
+            >
+              {t("diagnose.result.rankings")}
+            </Link>
           </div>
-          {evidenceExpanded ? (
-            <p className="mt-2">{evidenceTone.description}</p>
-          ) : null}
-        </div>
+        )}
+
         {result.fallbackUsed && result.fallbackMode ? (
           <div className="rounded-xl border border-brand-100 bg-brand-50/70 p-3 text-sm text-slate-700">
             <p>
@@ -346,6 +368,7 @@ export function DiagnoseResult({
             ) : null}
           </div>
         ) : null}
+
         {hasCategoryConflict && categoryConflictMessage ? (
           <div className="rounded-xl border border-rose-200 bg-rose-50/80 p-3 text-sm text-slate-700">
             <p className="font-semibold text-rose-900">
@@ -360,6 +383,7 @@ export function DiagnoseResult({
             ) : null}
           </div>
         ) : null}
+
         {isNarrowingMode ? (
           <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-3 text-sm text-slate-700">
             <p className="font-semibold text-slate-900">
@@ -425,156 +449,115 @@ export function DiagnoseResult({
             </div>
           </div>
         ) : null}
-        {layer === 1 && canExpandLayerTwo ? (
-          <button
-            type="button"
-            className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
-            onClick={() => {
-              logEvent("diagnose.layer_opened", { layer: 2 }, { page: "/diagnose" });
-              logEvent("diagnose.why_this_viewed", { targetType: "fix" }, { page: "/diagnose" });
-              setLayer(2);
-            }}
-          >
-            {t("diagnose.result.expand1")}
-          </button>
-        ) : null}
       </div>
 
-      {layer >= 2 && !isNarrowingMode ? (
+      {!isNarrowingMode ? (
         <div className="space-y-4 border-t border-[var(--line)] pt-4">
-          {detailedSummary ? (
-            <div>
-              <p className="mb-2 text-sm font-semibold text-slate-900">
-                {language === "en" ? "Expanded reasoning" : "展开说明"}
-              </p>
-              <p className="text-sm leading-6 text-slate-700">{detailedSummary}</p>
-            </div>
-          ) : null}
-
-          <div>
-            <p className="mb-2 text-sm font-semibold text-slate-900">{t("diagnose.result.why")}</p>
-            <ul className="list-disc space-y-1 pl-5 text-sm text-slate-700">
-              {result.causes.map((cause) => (
-                <li key={cause}>{cause}</li>
-              ))}
-            </ul>
-          </div>
-
-          {isDeepMode && result.drills.length > 0 ? (
-            <div>
-              <p className="mb-2 text-sm font-semibold text-slate-900">
-                {language === "en" ? "Training cues" : "训练提示"}
-              </p>
-              <ul className="list-disc space-y-1 pl-5 text-sm text-slate-700">
-                {result.drills.map((drill) => (
-                  <li key={drill}>{drill}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
           {featuredContent ? (
             <div>
               <p className="mb-2 text-sm font-semibold text-slate-900">{t("diagnose.result.featured")}</p>
-              <RecommendationCard item={featuredContent} source="diagnosis_featured" layer={2} problemTag={result.problemTag} />
+              <RecommendationCard item={featuredContent} source="diagnosis_featured" layer={1} problemTag={result.problemTag} />
             </div>
           ) : null}
 
-          {deepContext?.isDeepModeReady ? (
-            <div className="space-y-3 rounded-2xl border border-brand-200 bg-brand-50/70 p-4">
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge className="bg-brand-500 px-3 py-1 text-xs font-semibold text-white">深入模式</Badge>
-                <p className="text-sm font-semibold text-slate-900">
-                  {locale === "en" ? "Scene-backed diagnosis" : "场景证据诊断"}
-                </p>
-              </div>
-              {deepEvidenceSummary ? <p className="text-sm leading-6 text-slate-700">{deepEvidenceSummary}</p> : null}
-              {deepSceneRecap ? (
-                <div className="rounded-xl bg-white/80 p-3">
-                  <p className="text-sm font-semibold text-slate-900">
-                    {locale === "en" ? "Scene recap" : "一句话场景回顾"}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-700">{deepSceneRecap}</p>
+          <div className="rounded-2xl border border-[var(--line)] p-4 shadow-sm bg-white">
+            <button
+              type="button"
+              className="flex w-full items-center justify-between text-sm font-semibold text-slate-900 transition hover:text-slate-700"
+              onClick={() => {
+                if (!detailsExpanded) {
+                  logEvent("diagnose.why_this_viewed", { targetType: "evidence" }, { page: "/diagnose" });
+                }
+                setDetailsExpanded((prev) => !prev);
+              }}
+            >
+              <span>{t("diagnose.result.whyDetailsLabel") || (language === "en" ? "Reasoning and deeper context" : "包含原因与深层信息")}</span>
+              <span className="text-slate-400">{detailsExpanded ? "▾" : "▸"}</span>
+            </button>
+            
+            {detailsExpanded ? (
+              <div className="mt-4 space-y-4 border-t border-[var(--line)] pt-4">
+                <div className={evidenceTone.wrapperClassName}>
+                  <p className={evidenceTone.titleClassName}>{evidenceTone.title}</p>
+                  <p className="mt-2">{evidenceTone.description}</p>
                 </div>
-              ) : null}
-              {specificityReasons.length > 0 ? (
-                <div className="rounded-xl bg-white/80 p-3">
-                  <p className="text-sm font-semibold text-slate-900">
-                    {locale === "en" ? "Why this diagnosis is more specific" : "为什么这次判断更具体"}
-                  </p>
-                  <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
-                    {specificityReasons.map((reason) => (
-                      <li key={reason}>{reason}</li>
+
+                {detailedSummary ? (
+                  <div>
+                    <p className="mb-2 text-sm font-semibold text-slate-900">
+                      {language === "en" ? "Expanded reasoning" : "展开说明"}
+                    </p>
+                    <p className="text-sm leading-6 text-slate-700">{detailedSummary}</p>
+                  </div>
+                ) : null}
+
+                <div>
+                  <p className="mb-2 text-sm font-semibold text-slate-900">{t("diagnose.result.why")}</p>
+                  <ul className="list-disc space-y-1 pl-5 text-sm text-slate-700">
+                    {result.causes.map((cause) => (
+                      <li key={cause}>{cause}</li>
                     ))}
                   </ul>
                 </div>
-              ) : null}
-            </div>
-          ) : null}
 
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Link
-              href={planHref}
-              onClick={() => logEvent("diagnose.plan_cta_clicked", {
-                problemTag: result.problemTag,
-                levelBand: normalizedPlanLevel
-              }, { page: "/diagnose" })}
-            >
-              <Button>
-                {deepContext?.isDeepModeReady
-                  ? (locale === "en" ? "Generate a more specific 7-step plan" : "生成更具体的 7 步训练计划")
-                  : t("diagnose.result.plan")}
-              </Button>
-            </Link>
-            <Link
-              href="/library"
-              onClick={() => logEvent("cta_click", {
-                ctaLabel: t("diagnose.result.library"),
-                ctaLocation: "diagnosis_result_follow_up",
-                targetPage: "/library"
-              }, { page: "/diagnose" })}
-            >
-              <Button variant="secondary">{t("diagnose.result.library")}</Button>
-            </Link>
-            <Link
-              href="/rankings"
-              onClick={() => logEvent("cta_click", {
-                ctaLabel: t("diagnose.result.rankings"),
-                ctaLocation: "diagnosis_result_follow_up",
-                targetPage: "/rankings"
-              }, { page: "/diagnose" })}
-            >
-              <Button variant="ghost">{t("diagnose.result.rankings")}</Button>
-            </Link>
+                {isDeepMode && result.drills.length > 0 ? (
+                  <div>
+                    <p className="mb-2 text-sm font-semibold text-slate-900">
+                      {language === "en" ? "Training cues" : "训练提示"}
+                    </p>
+                    <ul className="list-disc space-y-1 pl-5 text-sm text-slate-700">
+                      {result.drills.map((drill) => (
+                        <li key={drill}>{drill}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+
+                {deepContext?.isDeepModeReady ? (
+                  <div className="space-y-3 rounded-2xl border border-brand-200 bg-brand-50/70 p-4">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge className="bg-brand-500 px-3 py-1 text-xs font-semibold text-white">深入模式</Badge>
+                      <p className="text-sm font-semibold text-slate-900">
+                        {locale === "en" ? "Scene-backed diagnosis" : "场景证据诊断"}
+                      </p>
+                    </div>
+                    {deepEvidenceSummary ? <p className="text-sm leading-6 text-slate-700">{deepEvidenceSummary}</p> : null}
+                    {deepSceneRecap ? (
+                      <div className="rounded-xl bg-white/80 p-3">
+                        <p className="text-sm font-semibold text-slate-900">
+                          {locale === "en" ? "Scene recap" : "一句话场景回顾"}
+                        </p>
+                        <p className="mt-2 text-sm leading-6 text-slate-700">{deepSceneRecap}</p>
+                      </div>
+                    ) : null}
+                    {specificityReasons.length > 0 ? (
+                      <div className="rounded-xl bg-white/80 p-3">
+                        <p className="text-sm font-semibold text-slate-900">
+                          {locale === "en" ? "Why this diagnosis is more specific" : "为什么这次判断更具体"}
+                        </p>
+                        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                          {specificityReasons.map((reason) => (
+                            <li key={reason}>{reason}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
           </div>
 
-          {layer === 2 ? (
-            <button
-              type="button"
-              className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
-              onClick={() => {
-                logEvent("diagnose.layer_opened", { layer: 3 }, { page: "/diagnose" });
-                setLayer(3);
-              }}
-            >
-              {t("diagnose.result.expand2")}
-            </button>
-          ) : null}
-        </div>
-      ) : null}
-
-      {layer >= 3 && !isNarrowingMode ? (
-        <div className="space-y-4 border-t border-[var(--line)] pt-4">
           {moreContents.length > 0 ? (
-            <div className="space-y-2">
+            <div className="space-y-2 border-t border-[var(--line)] pt-4">
               <p className="text-sm font-semibold text-slate-900">{t("diagnose.result.more")}</p>
               {moreContents.map((item) => (
-                <RecommendationCard key={item.id} item={item} source="diagnosis_more" layer={3} problemTag={result.problemTag} />
+                <RecommendationCard key={item.id} item={item} source="diagnosis_more" layer={2} problemTag={result.problemTag} />
               ))}
             </div>
           ) : null}
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 border-t border-[var(--line)] pt-4">
             <button
               type="button"
               className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
@@ -596,5 +579,6 @@ export function DiagnoseResult({
         </div>
       ) : null}
     </Card>
+
   );
 }

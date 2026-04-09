@@ -40,8 +40,8 @@ const translationMap = {
   "creator.platformAria": "Visit {name} on {platform}",
   "creator.targetPrefix": "Focus:",
   "modal.close": "Close",
-  "plan.day.today": "Today",
-  "plan.day.label": "Day {day}",
+  "plan.day.today": "Start here",
+  "plan.day.label": "Step {day}",
   "plan.day.what": "What to practice",
   "plan.day.duration": "How long",
   "plan.day.watch": "Watch this",
@@ -59,7 +59,7 @@ const translationMap = {
   "plan.day.tempo.slow": "Slow",
   "plan.day.tempo.controlled": "Controlled",
   "plan.day.tempo.match_70": "Match pace 70%",
-  "plan.day.fallback": "Start with today's drills first, then use the library as needed.",
+  "plan.day.fallback": "Start with this step first, then use the library only as needed.",
   "plan.day.expand": "Expand",
   "plan.day.collapse": "Collapse",
   "plan.day.drills": "Drills",
@@ -110,16 +110,35 @@ vi.mock("@/lib/i18n/config", () => ({
   })
 }));
 
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    prefetch: vi.fn()
+  }),
+  useSearchParams: () => ({
+    get: vi.fn(() => null)
+  }),
+  usePathname: () => "/library"
+}));
+
 vi.mock("@/components/study/StudyProvider", () => ({
   useStudy: () => ({
     session: null,
-    studyMode: true,
+    studyMode: false,
     language: "en",
     loading: false,
     startStudySession: vi.fn(),
     endStudySession: vi.fn(),
     clearStudyData: vi.fn()
   })
+}));
+
+vi.mock("@/lib/assessmentStorage", () => ({
+  readAssessmentResultFromStorage: () => ({ answeredCount: 1, level: "3.0" }),
+  hasCompletedAssessmentResult: () => true,
+  hasStoredCompletedAssessmentResult: () => true,
+  writeAssessmentResultToStorage: vi.fn()
 }));
 
 vi.mock("@/components/auth/AuthProvider", () => ({

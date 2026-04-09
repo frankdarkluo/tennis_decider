@@ -135,16 +135,12 @@ function PrescriptionMetadata({
   );
 }
 
-function PrescriptionPlan({
+function PrescriptionDetails({
   day,
-  language,
-  t,
-  showFull = false
+  t
 }: {
   day: DayPlan;
-  language: "zh" | "en";
   t: ReturnType<typeof useI18n>["t"];
-  showFull?: boolean;
 }) {
   const practiceItems = [...day.mainBlock.items, ...day.pressureBlock.items]
     .map((item) => item.trim())
@@ -152,10 +148,10 @@ function PrescriptionPlan({
   const practiceLabel = t("plan.day.main");
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 border-t border-[var(--line)] pt-4">
       <div className="space-y-2">
         <p className="text-sm font-semibold text-slate-900">{t("plan.day.goal")}</p>
-        <p className="text-sm leading-6 text-slate-700">{showFull ? day.goal.trim() : compactPrompt(day.goal, language)}</p>
+        <p className="text-sm leading-6 text-slate-700">{day.goal.trim()}</p>
       </div>
 
       <PrescriptionMetadata
@@ -165,22 +161,13 @@ function PrescriptionPlan({
       />
 
       <div className="space-y-3">
-            <PrescriptionBlock
+        <PrescriptionBlock
           label={practiceLabel}
           block={{
             title: practiceLabel,
-            items: practiceItems.map((item) => (showFull ? item : compactPrompt(item, language)))
+            items: practiceItems
           }}
         />
-      </div>
-
-      <div className="space-y-2 rounded-2xl border border-[var(--line)] bg-white/70 p-4">
-        <p className="text-sm font-semibold text-slate-900">{t("plan.day.success")}</p>
-          <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
-          {day.successCriteria.map((criteria, index) => (
-            <li key={`success-${day.day}-${index}`}>{showFull ? criteria.trim() : compactPrompt(criteria, language)}</li>
-          ))}
-        </ul>
       </div>
     </div>
   );
@@ -200,6 +187,7 @@ export function DayPlanCard({
     .map((id) => contentById.get(id))
     .filter((content) => Boolean(content));
   const [expanded, setExpanded] = useState(isToday);
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
   const displayExpanded = isToday || expanded;
   const detailsId = `plan-day-${day.day}-details`;
   const featuredContent = relatedContents[0] ?? null;
@@ -292,6 +280,41 @@ export function DayPlanCard({
     setExpanded((prev) => !prev);
   };
 
+  const InnerDayContent = (
+    <div className="space-y-4">
+      {/* Success Criteria */}
+      <div className="space-y-2 rounded-2xl border border-[var(--line)] bg-white/70 p-4">
+        <p className="text-sm font-semibold text-slate-900">{t("plan.day.success")}</p>
+        <ul className="list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700">
+          {day.successCriteria.map((criteria, index) => (
+            <li key={`success-${day.day}-${index}`}>{criteria.trim()}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Video */}
+      <div className="space-y-2">
+        <p className="text-sm font-semibold text-slate-900">{t("plan.day.watch")}</p>
+        {featuredContentCard ?? (
+          <p className="text-sm text-slate-600">{t("plan.day.fallback")}</p>
+        )}
+      </div>
+
+      {/* Toggle Details */}
+      <div>
+        <Button
+          variant="ghost"
+          className="px-0 text-sm font-semibold text-brand-600 hover:bg-transparent hover:text-brand-700"
+          onClick={() => setDetailsExpanded(!detailsExpanded)}
+        >
+          {detailsExpanded ? t("plan.day.detailsCollapse") : t("plan.day.detailsExpand")}
+        </Button>
+      </div>
+
+      {detailsExpanded && <PrescriptionDetails day={day} t={t} />}
+    </div>
+  );
+
   if (isToday) {
     return (
       <Card className="space-y-4 border-brand-200 bg-brand-50/40">
@@ -300,14 +323,7 @@ export function DayPlanCard({
           <h3 className="mt-1 text-xl font-bold text-slate-900">{day.focus}</h3>
         </div>
 
-        <PrescriptionPlan day={day} language={language} t={t} showFull={true} />
-
-        <div>
-          <p className="mb-2 text-sm font-semibold text-slate-900">{t("plan.day.watch")}</p>
-          {featuredContentCard ?? (
-            <p className="text-sm text-slate-600">{t("plan.day.fallback")}</p>
-          )}
-        </div>
+        {InnerDayContent}
       </Card>
     );
   }
@@ -315,13 +331,13 @@ export function DayPlanCard({
   return (
     <Card className="space-y-0">
       <div className="flex items-center justify-between gap-3">
-        <div>
+        <div className="flex flex-col">
           <p className="text-sm font-semibold text-slate-900">{t("plan.day.label", { day: day.day })}</p>
           <p className="mt-1 text-sm font-medium text-slate-700">{compactFocus(day.focus)}</p>
         </div>
         <Button
           variant="ghost"
-          className="px-3 text-sm"
+          className="px-3 text-sm shrink-0"
           onClick={toggleExpanded}
           aria-expanded={displayExpanded}
           aria-controls={detailsId}
@@ -331,14 +347,8 @@ export function DayPlanCard({
       </div>
 
       {displayExpanded ? (
-        <div id={detailsId} className="mt-4 space-y-3 border-t border-[var(--line)] pt-4">
-          <PrescriptionPlan day={day} language={language} t={t} showFull={displayExpanded} />
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-slate-700">{t("plan.day.watch")}</p>
-            {featuredContentCard ?? (
-              <p className="text-sm text-slate-600">{t("plan.day.fallback")}</p>
-            )}
-          </div>
+        <div id={detailsId} className="mt-4 border-t border-[var(--line)] pt-4">
+          {InnerDayContent}
         </div>
       ) : null}
     </Card>

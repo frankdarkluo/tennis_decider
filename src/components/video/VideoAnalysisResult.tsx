@@ -17,7 +17,7 @@ import {
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
-import { buildDiagnosisPlanCandidateIds, buildPlanHref } from "@/lib/plans";
+import { buildDiagnosisPlanCandidateIds, buildPlanHref, writeLocalPlanDraft } from "@/lib/plans";
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
 import { VideoDiagnosisResult } from "@/types/videoDiagnosis";
 
@@ -199,7 +199,15 @@ export function VideoAnalysisResult({ result }: { result: VideoDiagnosisResult }
           <div className="flex flex-wrap gap-2">
             <Link
               href={planHref}
-              onClick={() => logEvent("video_plan_generate", { problemTag: result.trainingPlan.problemTag, level: result.trainingPlan.level })}
+              onClick={() => {
+                writeLocalPlanDraft({
+                  problemTag: result.trainingPlan.problemTag,
+                  level: result.trainingPlan.level,
+                  preferredContentIds: candidateIds,
+                  sourceType: "diagnosis"
+                });
+                logEvent("video_plan_generate", { problemTag: result.trainingPlan.problemTag, level: result.trainingPlan.level });
+              }}
             >
               <Button>{result.chargeable ? t("video.result.plan") : t("video.result.planFallback")}</Button>
             </Link>

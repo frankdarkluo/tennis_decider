@@ -301,8 +301,8 @@ describe("surface localization", () => {
 
     mockStudyState.language = "zh";
     renderWithI18n(<DayPlanCard day={zhPlan.days[0]} isToday />);
-    expect(screen.getByText("第 1 天 · 今天")).toBeInTheDocument();
-    expect(screen.getByText("今日目标")).toBeInTheDocument();
+    expect(screen.getByText("第 1 步 · 从这一步开始")).toBeInTheDocument();
+    expect(screen.getByText("这一步目标")).toBeInTheDocument();
     expect(screen.queryByText("热身")).not.toBeInTheDocument();
     expect(screen.getAllByText("练习").length).toBeGreaterThan(0);
     expect(screen.queryByText("带压力重复")).not.toBeInTheDocument();
@@ -316,7 +316,7 @@ describe("surface localization", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Expand" }));
 
-    expect(screen.getByText("Day 2")).toBeInTheDocument();
+    expect(screen.getByText("Step 2")).toBeInTheDocument();
     expect(screen.getByText("Goal")).toBeInTheDocument();
     expect(screen.queryByText("Warm-up")).not.toBeInTheDocument();
     expect(screen.getAllByText("Practice").length).toBeGreaterThan(0);
@@ -357,7 +357,7 @@ describe("surface localization", () => {
     expect(screen.getByText("跟维纳斯·威廉姆斯学网球基础发球")).toBeInTheDocument();
   });
 
-  it("renders study end in zh without leftover English study labels", () => {
+  it("renders the current study-end confirmation flow in zh without leftover English labels", () => {
     mockStudyState.language = "zh";
     mockStudyState.studyMode = true;
     mockStudyState.session = {
@@ -372,7 +372,10 @@ describe("surface localization", () => {
 
     expect(screen.getAllByText("研究模式").length).toBeGreaterThan(0);
     expect(screen.getByText("本轮研究已结束")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "去填写问卷" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "参与者编号" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "确认参与者编号" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "回到首页" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "去填写问卷" })).not.toBeInTheDocument();
     expect(screen.queryByText("Study mode")).not.toBeInTheDocument();
   });
 

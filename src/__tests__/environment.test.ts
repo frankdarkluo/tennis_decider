@@ -22,8 +22,8 @@ describe("environment helpers", () => {
     expect(resolveAppEnvironment({ studyMode: false, hasSession: false })).toBe("production");
   });
 
-  it("routes post-assessment flow back to home in both environments", () => {
-    expect(getPostAssessmentHref("testing")).toBe("/");
-    expect(getPostAssessmentHref("production")).toBe("/");
+  it("routes post-assessment flow to the assessment result screen in both environments", () => {
+    expect(getPostAssessmentHref("testing")).toBe("/assessment/result");
+    expect(getPostAssessmentHref("production")).toBe("/assessment/result");
   });
 });

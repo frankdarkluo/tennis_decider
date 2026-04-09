@@ -21,7 +21,7 @@ import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { getLatestAssessmentResult } from "@/lib/userData";
 
-type HomeGateState = "checking" | "study_session_required" | "assessment_required" | "ready";
+type HomeGateState = "checking" | "study_session_required" | "ready";
 
 export default function HomePage() {
   const router = useRouter();
@@ -76,7 +76,7 @@ export default function HomePage() {
         return;
       }
 
-      setGateState(hasCompletedAssessment ? "ready" : "assessment_required");
+      setGateState("ready");
     }
 
     void resolveGate();
@@ -102,26 +102,6 @@ export default function HomePage() {
           <p className="text-sm leading-6 text-slate-600">{t("study.start.subtitle")}</p>
           <Link href="/study/start">
             <Button>{t("study.start.button")}</Button>
-          </Link>
-        </Card>
-      </PageContainer>
-    );
-  }
-
-  if (gateState === "assessment_required") {
-    return (
-      <PageContainer>
-        <Card className="mx-auto max-w-2xl space-y-4">
-          <h1 className="text-2xl font-black text-slate-900">{t("assessment.empty.title")}</h1>
-          <p className="text-sm leading-6 text-slate-600">{t("assessment.empty.subtitle")}</p>
-          <Link
-            href="/assessment"
-            onClick={() => {
-              logEvent("home.entry_selected", { entryMode: "assessment" }, { page: "/" });
-              logEvent("home.assessment_cta_clicked", { ctaPosition: "required_gate" }, { page: "/" });
-            }}
-          >
-            <Button>{t("assessment.result.ctaStart")}</Button>
           </Link>
         </Card>
       </PageContainer>

@@ -117,9 +117,10 @@ describe("language switcher", () => {
     const englishButtons = screen.getAllByRole("button", { name: "切换网站语言为英文" });
     fireEvent.click(englishButtons[0]!);
 
-    const homeLinks = screen.getAllByRole("link", { name: "Home" });
-    expect(homeLinks.length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("group", { name: "Language switcher" }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole("button", { name: "Switch site language to Chinese" }).length).toBeGreaterThan(0);
+    expect(screen.getByRole("link", { name: "Back to TennisLevel home" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sign in" })).toBeInTheDocument();
   });
 
   it("hides main task navigation on study start before a session exists", () => {
@@ -142,7 +143,7 @@ describe("language switcher", () => {
     expect(screen.queryByRole("link", { name: "去做免费评估" })).not.toBeInTheDocument();
   });
 
-  it("keeps main task navigation hidden during study mode until assessment is completed", () => {
+  it("shows the main task navigation once a study session is active", () => {
     mockUsePathname.mockReturnValue("/assessment");
     writeActiveStudySession(createStudySession({
       participantId: "P003",
@@ -157,13 +158,13 @@ describe("language switcher", () => {
       </StudyProvider>
     );
 
-    expect(screen.queryByRole("link", { name: "首页" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "水平评估" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "问题诊断" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "内容库" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "博主榜" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "训练计划" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "去做免费评估" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "首页" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "水平评估" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "问题诊断" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "内容库" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "博主榜" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "训练计划" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "研究模式" })).toBeInTheDocument();
   });
 
   it("keeps the study language locked when an active study session already exists", () => {

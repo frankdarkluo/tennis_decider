@@ -85,7 +85,7 @@ export const planFewShotFixtures: PlanFewShotFixture[] = [
       },
       {
         day: 7,
-        goalIncludes: "带入下一周",
+        goalIncludes: "带入下一轮训练",
         mainIncludes: "计分二发",
         successIncludes: "规则",
         pressureExcludes: "关键分式的比赛化收口",
@@ -100,7 +100,7 @@ export const planFewShotFixtures: PlanFewShotFixture[] = [
     level: "3.5",
     diagnosisInput: "比赛里我跑动中的反手老下网，尤其对手球比较深的时候更明显。",
     primaryNextStep: "先把跑动中的击球点放到身体前面",
-    summaryIncludes: "跑动中、深球条件下",
+    summaryIncludes: "跑动中面对更深来球",
     dayExpectations: [
       { day: 4, goalIncludes: "复盘" },
       { day: 5, goalIncludes: "压力" },
@@ -115,7 +115,7 @@ export const planFewShotFixtures: PlanFewShotFixture[] = [
     level: "4.0",
     diagnosisInput: "比赛里一到关键分我就手紧，动作会变形。",
     primaryNextStep: "关键分先把注意力放回一个最稳的动作",
-    summaryIncludes: "关键分比赛场景",
+    summaryIncludes: "关键分比赛里",
     dayExpectations: [
       { day: 4, goalIncludes: "复盘" },
       { day: 5, goalIncludes: "压力", pressureIncludes: "关键分" },

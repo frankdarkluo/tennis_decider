@@ -18,6 +18,7 @@ import {
   DayPlan,
   DayPlanBlock,
   GeneratedPlan,
+  parsePlanLevel,
   PlanLevel,
   PlanContext,
   PlanContextDepth,
@@ -155,6 +156,78 @@ function cloneBlock(block: DayPlanBlock | undefined, fallbackTitle: string, fall
   return {
     title: source.title,
     items: [...source.items]
+  };
+}
+
+function normalizeStepText(value: string, locale: PlanLocale): string {
+  const normalized = value.trim();
+
+  if (!normalized) {
+    return normalized;
+  }
+
+  if (locale === "en") {
+    return [
+      [/\b7-day\b/gi, "7-step"],
+      [/\bseven days\b/gi, "7 steps"],
+      [/\bDay (\d+)\b/g, "Step $1"],
+      [/\btoday['’]s\b/gi, "this step's"],
+      [/\btomorrow['’]s\b/gi, "next step's"],
+      [/\bnext week['’]s\b/gi, "the next training block's"],
+      [/\bthis week['’]s\b/gi, "this plan's"],
+      [/\btoday\b/gi, "this step"],
+      [/\btomorrow\b/gi, "the next step"],
+      [/\bthis week\b/gi, "this plan"],
+      [/\bnext week\b/gi, "the next training block"],
+      [/\bover the week\b/gi, "across the full sequence"],
+      [/\bfor the week\b/gi, "for the full sequence"],
+      [/\bwithin one week\b/gi, "across the 7-step sequence"]
+    ].reduce((current, [pattern, replacement]) => current.replace(pattern as RegExp, replacement as string), normalized);
+  }
+
+  return [
+    [/7天/g, "7 步"],
+    [/第\s*(\d+)\s*天/g, "第 $1 步"],
+    [/今天的/g, "这一步的"],
+    [/明天的/g, "下一步的"],
+    [/今天/g, "这一步"],
+    [/明天/g, "下一步"],
+    [/本周计划/g, "这套 7 步计划"],
+    [/本周的/g, "这套计划的"],
+    [/本周/g, "这套计划"],
+    [/下一周/g, "下一轮训练"],
+    [/下周/g, "下一轮训练"],
+    [/一周内/g, "按这 7 步"]
+  ].reduce((current, [pattern, replacement]) => current.replace(pattern as RegExp, replacement as string), normalized);
+}
+
+function normalizeStepBlock(block: DayPlanBlock, locale: PlanLocale): DayPlanBlock {
+  return {
+    title: normalizeStepText(block.title, locale),
+    items: block.items.map((item) => normalizeStepText(item, locale))
+  };
+}
+
+function normalizeStepDay(day: DayPlan, locale: PlanLocale): DayPlan {
+  return {
+    ...day,
+    focus: normalizeStepText(day.focus, locale),
+    drills: day.drills.map((drill) => normalizeStepText(drill, locale)),
+    goal: normalizeStepText(day.goal, locale),
+    warmupBlock: normalizeStepBlock(day.warmupBlock, locale),
+    mainBlock: normalizeStepBlock(day.mainBlock, locale),
+    pressureBlock: normalizeStepBlock(day.pressureBlock, locale),
+    successCriteria: day.successCriteria.map((criteria) => normalizeStepText(criteria, locale))
+  };
+}
+
+function normalizeGeneratedPlanStepSemantics(plan: GeneratedPlan, locale: PlanLocale): GeneratedPlan {
+  return {
+    ...plan,
+    title: normalizeStepText(plan.title, locale),
+    target: normalizeStepText(plan.target, locale),
+    summary: plan.summary ? normalizeStepText(plan.summary, locale) : plan.summary,
+    days: plan.days.map((day) => normalizeStepDay(day, locale))
   };
 }
 
@@ -303,15 +376,10 @@ const FALLBACK_DAY_PRESCRIPTIONS_EN: PlanDayInput[] = [
     drills: ["10 shadow swings", "10 split-step reps"],
     duration: "20 minutes",
     goal: "Settle your rhythm and contact before adding pace",
-    goalEn: "Settle your rhythm and contact before adding pace",
     warmupBlock: createBlock("Warm-up", ["10 shadow swings", "10 split-step reps"]),
-    warmupBlockEn: createBlock("Warm-up", ["10 shadow swings", "10 split-step reps"]),
     mainBlock: createBlock("Main work", ["12 medium-tempo rally feeds", "Pause after each ball to reset your stance"]),
-    mainBlockEn: createBlock("Main work", ["12 medium-tempo rally feeds", "Pause after each ball to reset your stance"]),
     pressureBlock: createBlock("Pressure reps", ["Only speed up after 3 clean balls in a row"]),
-    pressureBlockEn: createBlock("Pressure reps", ["Only speed up after 3 clean balls in a row"]),
     successCriteria: ["Complete 3 rounds without losing rhythm"],
-    successCriteriaEn: ["Complete 3 rounds without losing rhythm"],
     intensity: "low",
     tempo: "slow"
   },
@@ -322,15 +390,10 @@ const FALLBACK_DAY_PRESCRIPTIONS_EN: PlanDayInput[] = [
     drills: ["8 ready-position checks", "12 prep motions"],
     duration: "20 minutes",
     goal: "Make the pre-shot routine automatic",
-    goalEn: "Make the pre-shot routine automatic",
     warmupBlock: createBlock("Warm-up", ["8 stance checks", "12 prep motions"]),
-    warmupBlockEn: createBlock("Warm-up", ["8 stance checks", "12 prep motions"]),
     mainBlock: createBlock("Main work", ["10 slow-feeding rally balls", "Say the cue before every ball"]),
-    mainBlockEn: createBlock("Main work", ["10 slow-feeding rally balls", "Say the cue before every ball"]),
     pressureBlock: createBlock("Pressure reps", ["Keep the same routine for 5 straight balls"]),
-    pressureBlockEn: createBlock("Pressure reps", ["Keep the same routine for 5 straight balls"]),
     successCriteria: ["Finish 2 rounds without rushing"],
-    successCriteriaEn: ["Finish 2 rounds without rushing"],
     intensity: "low",
     tempo: "slow"
   },
@@ -341,15 +404,10 @@ const FALLBACK_DAY_PRESCRIPTIONS_EN: PlanDayInput[] = [
     drills: ["10 deep-target hits", "10 reset-and-recover reps"],
     duration: "20 minutes",
     goal: "Get depth first, then build consistency",
-    goalEn: "Get depth first, then build consistency",
     warmupBlock: createBlock("Warm-up", ["10 wall swings", "10 reset steps"]),
-    warmupBlockEn: createBlock("Warm-up", ["10 wall swings", "10 reset steps"]),
     mainBlock: createBlock("Main work", ["12 balls to the deep middle", "Focus on depth, not pace"]),
-    mainBlockEn: createBlock("Main work", ["12 balls to the deep middle", "Focus on depth, not pace"]),
     pressureBlock: createBlock("Pressure reps", ["Only switch sides after 4 deep balls"]),
-    pressureBlockEn: createBlock("Pressure reps", ["Only switch sides after 4 deep balls"]),
     successCriteria: ["Land at least 8 balls in the target depth zone"],
-    successCriteriaEn: ["Land at least 8 balls in the target depth zone"],
     intensity: "medium",
     tempo: "controlled"
   },
@@ -360,15 +418,10 @@ const FALLBACK_DAY_PRESCRIPTIONS_EN: PlanDayInput[] = [
     drills: ["5 minutes of video review", "Write 2 cues"],
     duration: "15 minutes",
     goal: "Turn one useful feel into a clear sentence",
-    goalEn: "Turn one useful feel into a clear sentence",
     warmupBlock: createBlock("Warm-up", ["5 reset walks", "5 deep breaths"]),
-    warmupBlockEn: createBlock("Warm-up", ["5 reset walks", "5 deep breaths"]),
     mainBlock: createBlock("Main work", ["Review 8 rally balls", "Write down the 2 most useful cues"]),
-    mainBlockEn: createBlock("Main work", ["Review 8 rally balls", "Write down the 2 most useful cues"]),
     pressureBlock: createBlock("Pressure reps", ["Keep only 1 cue for tomorrow"]),
-    pressureBlockEn: createBlock("Pressure reps", ["Keep only 1 cue for tomorrow"]),
     successCriteria: ["State the one cue that helped most today"],
-    successCriteriaEn: ["State the one cue that helped most today"],
     intensity: "low",
     tempo: "slow"
   },
@@ -379,15 +432,10 @@ const FALLBACK_DAY_PRESCRIPTIONS_EN: PlanDayInput[] = [
     drills: ["8 counted balls", "3 restart rounds"],
     duration: "20 minutes",
     goal: "Keep the motion unchanged when a score is attached",
-    goalEn: "Keep the motion unchanged when a score is attached",
     warmupBlock: createBlock("Warm-up", ["8 shadow swings", "8 rhythm cue reps"]),
-    warmupBlockEn: createBlock("Warm-up", ["8 shadow swings", "8 rhythm cue reps"]),
     mainBlock: createBlock("Main work", ["12 counted rally balls", "Check the breath before each ball"]),
-    mainBlockEn: createBlock("Main work", ["12 counted rally balls", "Check the breath before each ball"]),
     pressureBlock: createBlock("Pressure reps", ["Complete 5 clean balls in 3 straight rounds"]),
-    pressureBlockEn: createBlock("Pressure reps", ["Complete 5 clean balls in 3 straight rounds"]),
     successCriteria: ["Keep the same rhythm even with a rule attached"],
-    successCriteriaEn: ["Keep the same rhythm even with a rule attached"],
     intensity: "medium",
     tempo: "controlled"
   },
@@ -398,15 +446,10 @@ const FALLBACK_DAY_PRESCRIPTIONS_EN: PlanDayInput[] = [
     drills: ["5-minute warm-up", "10-minute main block", "5-minute wrap-up"],
     duration: "20 minutes",
     goal: "Know how to build a complete practice session",
-    goalEn: "Know how to build a complete practice session",
     warmupBlock: createBlock("Warm-up", ["3 minutes of easy movement", "5 dynamic stretches"]),
-    warmupBlockEn: createBlock("Warm-up", ["3 minutes of easy movement", "5 dynamic stretches"]),
     mainBlock: createBlock("Main work", ["First 5 balls to the deep zone", "Last 5 balls for steady contact"]),
-    mainBlockEn: createBlock("Main work", ["First 5 balls to the deep zone", "Last 5 balls for steady contact"]),
     pressureBlock: createBlock("Pressure reps", ["Repeat the same order for 2 rounds"]),
-    pressureBlockEn: createBlock("Pressure reps", ["Repeat the same order for 2 rounds"]),
     successCriteria: ["Can build a full practice on your own"],
-    successCriteriaEn: ["Can build a full practice on your own"],
     intensity: "medium",
     tempo: "controlled"
   },
@@ -417,15 +460,10 @@ const FALLBACK_DAY_PRESCRIPTIONS_EN: PlanDayInput[] = [
     drills: ["Review this week", "Pick 1 priority for next week"],
     duration: "20 minutes",
     goal: "Leave behind one repeatable training template",
-    goalEn: "Leave behind one repeatable training template",
     warmupBlock: createBlock("Warm-up", ["Review notes for 5 minutes", "Organize your training notes"]),
-    warmupBlockEn: createBlock("Warm-up", ["Review notes for 5 minutes", "Organize your training notes"]),
     mainBlock: createBlock("Main work", ["Review the 3 steadiest rallies", "Write the next week's priority"]),
-    mainBlockEn: createBlock("Main work", ["Review the 3 steadiest rallies", "Write the next week's priority"]),
     pressureBlock: createBlock("Pressure reps", ["Keep only 1 rule to carry forward"]),
-    pressureBlockEn: createBlock("Pressure reps", ["Keep only 1 rule to carry forward"]),
     successCriteria: ["Can explain the first session for next week"],
-    successCriteriaEn: ["Can explain the first session for next week"],
     intensity: "low",
     tempo: "slow"
   }
@@ -2073,6 +2111,7 @@ export function buildDiagnosisPlanContext(input: {
   problemTag: string;
   diagnosisInput?: string;
   primaryNextStep?: string;
+  assessmentResult?: AssessmentResult | null;
 }): PlanContext {
   const normalized = `${input.diagnosisInput ?? ""} ${input.primaryNextStep ?? ""}`.toLowerCase();
   const feelingModifiers = uniquePlanContextFeelings([
@@ -2089,7 +2128,8 @@ export function buildDiagnosisPlanContext(input: {
     movementContext: /(?:跑动中|移动中|running|on the run|while moving)/i.test(normalized) ? "moving" : /(?:原地|stationary|when set|set position)/i.test(normalized) ? "stationary" : "unknown",
     incomingBallDepth: /(?:深球|球比较深|deeper balls|deep balls|incoming ball is deeper)/i.test(normalized) ? "deep" : "unknown",
     outcomePattern: /(?:下网|into the net)/i.test(normalized) ? "net" : /(?:出界|flying long|goes long)/i.test(normalized) ? "long" : /(?:双误|double fault|double-fault)/i.test(normalized) ? "no_control" : /(?:冒高|float|偏软|weak)/i.test(normalized) ? "weak" : "unknown",
-    feelingModifiers
+    feelingModifiers,
+    weakDimensions: input.assessmentResult ? getAssessmentDimensionsFromLabels(input.assessmentResult.weaknesses ?? []) : undefined
   };
 }
 
@@ -2099,14 +2139,6 @@ function normalizePlanDraftSourceType(sourceType?: string | null): SavedPlanSour
   }
 
   return "default";
-}
-
-function normalizePlanDraftLevel(level?: string | null): PlanLevel {
-  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.5") {
-    return level;
-  }
-
-  return "3.0";
 }
 
 export function normalizePlanDraftSnapshot(
@@ -2132,7 +2164,7 @@ export function normalizePlanDraftSnapshot(
 
   return {
     problemTag,
-    level: normalizePlanDraftLevel(draft.level),
+    level: parsePlanLevel(draft.level),
     preferredContentIds,
     sourceType: normalizePlanDraftSourceType(draft.sourceType),
     ...(primaryNextStep ? { primaryNextStep } : {}),
@@ -2180,18 +2212,42 @@ export function buildPlanHref(input: {
     params.set("primaryNextStep", primaryNextStep);
   }
 
-  const planContext = encodePlanContext(resolvedPlanContext);
-  if (planContext) {
-    params.set("planContext", planContext);
-  }
-
-  const deepContext = encodeEnrichedDiagnosisContext(input.deepContext);
-  if (deepContext) {
-    params.set("deepContext", deepContext);
-  }
-
   const query = params.toString();
   return query ? `/plan?${query}` : "/plan";
+}
+
+export const PLAN_DRAFT_KEY = "tennislevel:plan-draft";
+
+export type LocalPlanDraft = {
+  problemTag?: string;
+  level?: PlanLevel;
+  preferredContentIds?: string[];
+  sourceType?: SavedPlanSource;
+  primaryNextStep?: string;
+  planContext?: PlanContext;
+  deepContext?: EnrichedDiagnosisContext;
+  updatedAt?: string;
+};
+
+export function writeLocalPlanDraft(draft: LocalPlanDraft) {
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(PLAN_DRAFT_KEY, JSON.stringify({
+      ...draft,
+      updatedAt: new Date().toISOString()
+    }));
+  }
+}
+
+export function readLocalPlanDraft(): LocalPlanDraft | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+  try {
+    const raw = window.localStorage.getItem(PLAN_DRAFT_KEY);
+    return raw ? (JSON.parse(raw) as LocalPlanDraft) : null;
+  } catch {
+    return null;
+  }
 }
 
 function buildDeepServeDayOverlay(
@@ -2414,6 +2470,39 @@ function applyDeepModeOverlay(
   };
 }
 
+function applyAssessmentWeights(
+  plan: GeneratedPlan,
+  locale: PlanLocale,
+  planContext?: PlanContext | null
+): GeneratedPlan {
+  if (!planContext?.weakDimensions?.includes("movement")) {
+    return plan;
+  }
+
+  const warmupItemEn = "Footwork activation: 30 seconds of split steps and side-shuffles";
+  const warmupItemZh = "快速脚步激活：30秒碎步与分腿垫步";
+  const label = locale === "en" ? warmupItemEn : warmupItemZh;
+
+  return {
+    ...plan,
+    days: plan.days.map((day, index) => {
+      if (index === 0) {
+        const existingItems = day.warmupBlock?.items ?? [];
+        if (!existingItems.includes(label)) {
+          return {
+            ...day,
+            warmupBlock: {
+              title: day.warmupBlock?.title ?? (locale === "en" ? "Warmup" : "热身"),
+              items: [label, ...existingItems]
+            }
+          };
+        }
+      }
+      return day;
+    })
+  };
+}
+
 export function getPlanTemplate(
   problemTag: string,
   level: PlanLevel,
@@ -2436,7 +2525,7 @@ export function getPlanTemplate(
     .map((lookupProblemTag) => activePlanTemplates.find((item) => item.problemTag === lookupProblemTag && item.level === templateLevel))
     .find((item): item is PlanTemplate => Boolean(item));
   if (exact) {
-    const plan = applyDeepModeOverlay(applyPlanMicrocycle(
+    const plan = applyAssessmentWeights(applyDeepModeOverlay(applyPlanMicrocycle(
       applyPlanContext(
         applyPrimaryNextStepContext(
           sanitizePlanDayContentIds(
@@ -2458,10 +2547,10 @@ export function getPlanTemplate(
       ),
       locale,
       effectivePlanContext
-    ), locale, options.deepContext);
+    ), locale, options.deepContext), locale, effectivePlanContext);
 
     return {
-      ...plan,
+      ...normalizeGeneratedPlanStepSemantics(plan, locale),
       problemTag
     };
   }
@@ -2470,7 +2559,7 @@ export function getPlanTemplate(
     .map((lookupProblemTag) => activePlanTemplates.find((item) => item.problemTag === lookupProblemTag))
     .find((item): item is PlanTemplate => Boolean(item));
   if (sameTag) {
-    const plan = applyDeepModeOverlay(applyPlanMicrocycle(
+    const plan = applyAssessmentWeights(applyDeepModeOverlay(applyPlanMicrocycle(
       applyPlanContext(
         applyPrimaryNextStepContext(
           sanitizePlanDayContentIds(
@@ -2492,15 +2581,15 @@ export function getPlanTemplate(
       ),
       locale,
       effectivePlanContext
-    ), locale, options.deepContext);
+    ), locale, options.deepContext), locale, effectivePlanContext);
 
     return {
-      ...plan,
+      ...normalizeGeneratedPlanStepSemantics(plan, locale),
       problemTag
     };
   }
 
-  return applyDeepModeOverlay(applyPlanMicrocycle(
+  return normalizeGeneratedPlanStepSemantics(applyAssessmentWeights(applyDeepModeOverlay(applyPlanMicrocycle(
     applyPlanContext(
       applyPrimaryNextStepContext(
         sanitizePlanDayContentIds(
@@ -2531,7 +2620,7 @@ export function getPlanTemplate(
     ),
     locale,
     effectivePlanContext
-  ), locale, options.deepContext);
+  ), locale, options.deepContext), locale, effectivePlanContext), locale);
 }
 
 const DIMENSION_TO_PROBLEM_TAG: Record<string, string> = {
@@ -2571,10 +2660,10 @@ export function getPlanFromDiagnosis(input: {
     return {
       ...base,
       title: input.title ? `${input.title}: 7-step improvement plan` : base.title,
-      target: primaryNextStep ? `Focus on "${primaryNextStep}" and build a consistent 7-step training rhythm.` : base.target,
+      target: primaryNextStep ? `Focus on "${primaryNextStep}" and build a consistent 7-step training sequence.` : base.target,
       summary: primaryNextStep
-        ? `Primary focus this week: ${primaryNextStep}`
-        : "This plan is built around your primary issue. Focus on execution over the week — do not try to fix everything at once."
+        ? `Primary focus for this sequence: ${primaryNextStep}`
+        : "This plan is built around your primary issue. Focus on execution across the full sequence instead of trying to fix everything at once."
     };
   }
 
@@ -2583,7 +2672,7 @@ export function getPlanFromDiagnosis(input: {
     title: input.title ? `${input.title}：7 步提升计划` : base.title,
     target: primaryNextStep ? `先围绕"${primaryNextStep}"建立连续 7 步训练。` : base.target,
     summary: primaryNextStep
-      ? `本周先围绕这一个主动作推进：${primaryNextStep}`
+      ? `这 7 步先围绕这一个主动作推进：${primaryNextStep}`
       : "这份计划围绕你当前最主要的问题设计，先追求连续执行，不求一次改完。"
   };
 }
@@ -2607,16 +2696,16 @@ export function getPlanFromAssessment(input: {
     return {
       ...base,
       summary: input.observationNeeded?.length
-        ? `The plan will shore up weak spots first, with ${input.observationNeeded.join(" and ")} as watch areas.`
-        : "The plan focuses on the weakest areas from the assessment to build training rhythm."
+        ? `The plan starts by shoring up ${input.weaknesses?.join(" and ") ?? "the weakest area"}, while keeping ${input.observationNeeded.join(" and ")} on the watch list.`
+        : "The plan starts from the weakest area surfaced by the assessment and builds a practical 7-step rhythm."
     };
   }
 
   return {
     ...base,
     summary: input.observationNeeded?.length
-      ? `计划会先补强短板，同时把 ${input.observationNeeded.join("、")} 作为待观察维度。`
-      : "计划会优先围绕评估中的相对短板建立训练节奏。"
+      ? `计划会先补强${input.weaknesses?.join("、") ?? "最弱短板"}，同时把 ${input.observationNeeded.join("、")} 作为待观察维度。`
+      : "计划会优先围绕评估中的相对短板，建立一套可执行的 7 步训练节奏。"
   };
 }
 

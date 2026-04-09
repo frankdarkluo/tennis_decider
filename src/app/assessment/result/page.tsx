@@ -11,7 +11,7 @@ import {
 import { logEvent } from "@/lib/eventLogger";
 import { getLatestAssessmentResult, saveAssessmentResult } from "@/lib/userData";
 import { useI18n } from "@/lib/i18n/config";
-import { buildAssessmentPlanContext, buildPlanHref } from "@/lib/plans";
+import { buildAssessmentPlanContext, buildPlanHref, writeLocalPlanDraft } from "@/lib/plans";
 import { updateLocalStudyProgress } from "@/lib/study/localData";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
@@ -35,8 +35,7 @@ export default function AssessmentResultPage() {
       problemTag: assessmentPlan.problemTag,
       level: result.level,
       preferredContentIds: assessmentPlan.candidateIds,
-      sourceType: "assessment",
-      planContext: assessmentPlan.planContext
+      sourceType: "assessment"
     })
     : null;
 
@@ -128,20 +127,29 @@ export default function AssessmentResultPage() {
           result.answeredCount > 0 ? (
             <>
               <div className="flex flex-wrap gap-3">
-                {planHref ? (
-                  <Link
-                    href={planHref}
-                    onClick={() => logEvent("assessment_result.next_action_clicked", { action: "generate_training_plan" }, { page: "/assessment/result" })}
-                  >
-                    <Button>{t("assessment.result.ctaPlan")}</Button>
-                  </Link>
-                ) : null}
                 <Link
                   href="/diagnose"
                   onClick={() => logEvent("assessment_result.next_action_clicked", { action: "diagnose_specific_problem" }, { page: "/assessment/result" })}
                 >
                   <Button>{t("assessment.result.ctaDiagnose")}</Button>
                 </Link>
+                {planHref && assessmentPlan ? (
+                  <Link
+                    href={planHref}
+                    onClick={() => {
+                      writeLocalPlanDraft({
+                        problemTag: assessmentPlan.problemTag,
+                        level: result.level,
+                        preferredContentIds: assessmentPlan.candidateIds,
+                        sourceType: "assessment",
+                        planContext: assessmentPlan.planContext
+                      });
+                      logEvent("assessment_result.next_action_clicked", { action: "generate_training_plan" }, { page: "/assessment/result" });
+                    }}
+                  >
+                    <Button variant="secondary">{t("assessment.result.ctaPlan")}</Button>
+                  </Link>
+                ) : null}
                 <Link
                   href={`/library?level=${result.level}`}
                   onClick={() => logEvent("assessment_result.next_action_clicked", { action: "browse_content" }, { page: "/assessment/result" })}

@@ -25,7 +25,7 @@ const deepServeContext: EnrichedDiagnosisContext = {
 };
 
 describe("deep plan overlay", () => {
-  it("rewrites all 7 days for a deep serve case instead of only summary or day 1", () => {
+  it("rewrites all 7 steps for a deep serve case instead of only summary or step 1", () => {
     const plan = getPlanTemplate("second-serve-reliability", "3.5", "zh", [], {
       primaryNextStep: "先建立安全二发节奏",
       deepContext: deepServeContext
@@ -38,14 +38,14 @@ describe("deep plan overlay", () => {
     expect(plan.days[3]?.goal).toContain("节奏");
     expect(plan.days[4]?.goal).toContain("压力");
     expect(plan.days[5]?.goal).toContain("得分片段");
-    expect(plan.days[6]?.goal).toContain("带入下一周");
+    expect(plan.days[6]?.goal).toContain("带入下一轮训练");
     expect(plan.days.every((day) => day.warmupBlock.items.length > 0)).toBe(true);
     expect(plan.days.every((day) => day.mainBlock.items.length > 0)).toBe(true);
     expect(plan.days.every((day) => day.pressureBlock.items.length > 0)).toBe(true);
     expect(plan.days.every((day) => day.successCriteria.length > 0)).toBe(true);
   });
 
-  it("uses serve deepContext to keep the whole week scene-specific instead of decaying after day 3", () => {
+  it("uses serve deepContext to keep the whole sequence scene-specific instead of decaying after step 3", () => {
     const plan = getPlanTemplate("second-serve-reliability", "3.5", "zh", [], {
       primaryNextStep: "先建立安全二发节奏",
       deepContext: deepServeContext
@@ -72,7 +72,7 @@ describe("deep plan overlay", () => {
     expect(plan.days[5]?.mainBlock.items.join(" ")).toContain("发球");
     expect(plan.days[5]?.pressureBlock.items.join(" ")).toContain("下一拍");
 
-    expect(plan.days[6]?.goal).toContain("带入下一周");
+    expect(plan.days[6]?.goal).toContain("带入下一轮训练");
     expect(plan.days[6]?.successCriteria.join(" ")).toContain("规则");
   });
 });

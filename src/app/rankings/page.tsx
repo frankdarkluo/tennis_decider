@@ -59,7 +59,7 @@ export default function RankingsPage() {
   const { user, configured, loading } = useAuth();
   const { session, studyMode, pendingStudySetup } = useStudy();
   const { language, t } = useI18n();
-  const [storedAssessmentExists, setStoredAssessmentExists] = useState(false);
+  const [storedAssessmentExists, setStoredAssessmentExists] = useState<boolean | null>(null);
   const [region, setRegion] = useState<"domestic" | "overseas">("domestic");
   const [query, setQuery] = useState("");
   const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
@@ -76,7 +76,7 @@ export default function RankingsPage() {
     setStoredAssessmentExists(hasStoredCompletedAssessmentResult());
   }, []);
 
-  const blockedByAssessmentGate = !studyMode && !storedAssessmentExists;
+  const blockedByAssessmentGate = !studyMode && storedAssessmentExists === false;
 
   useEffect(() => {
     if (!blockedByPendingStudySetup) {
@@ -236,7 +236,7 @@ export default function RankingsPage() {
 
   const pageTitle = t("rankings.title");
 
-  if (blockedByPendingStudySetup || blockedByAssessmentGate) {
+  if (blockedByPendingStudySetup || blockedByAssessmentGate || storedAssessmentExists === null) {
     return (
       <PageContainer>
         <div className="text-sm text-slate-600">{t("assessment.loading")}</div>

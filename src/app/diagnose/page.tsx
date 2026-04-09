@@ -19,7 +19,6 @@ import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { persistStudyArtifact } from "@/lib/study/client";
 import { sanitizeDiagnosisArtifact } from "@/lib/study/privacy";
-// hasStudyTaskRating removed: actionability prompt not shown on diagnose page
 import { getLatestAssessmentResult, saveDiagnosisHistory } from "@/lib/userData";
 import {
   readLocalDiagnosisSnapshot,
@@ -132,12 +131,15 @@ function DiagnosePageContent() {
   const [currentLevel, setCurrentLevel] = useState<string | undefined>(undefined);
   const [assessmentResult, setAssessmentResult] = useState<AssessmentResult | null>(null);
   const [result, setResult] = useState<DiagnosisResult>(getDefaultDiagnosisResult());
+  const [hasCommitted, setHasCommitted] = useState(false);
   const [latestSnapshot, setLatestSnapshot] = useState<DiagnosisSnapshot | null>(null);
   const [contextReady, setContextReady] = useState(false);
   const [deepResetSignal, setDeepResetSignal] = useState(0);
   const deepModuleRef = useRef<HTMLDivElement | null>(null);
   const handledQueryRef = useRef<string | null>(null);
   const previousEffortModeRef = useRef<DiagnosisEffortMode>("standard");
+  const languageRef = useRef(language);
+  languageRef.current = language;
   const blockedByPendingStudySetup = pendingStudySetup && !session;
   const requestedMode = searchParams.get("mode");
   useEffect(() => {
@@ -148,7 +150,6 @@ function DiagnosePageContent() {
 
   const previewOptions = getProblemPreviewOptions();
   const quickTags = previewOptions.map((item) => language === "en" ? item.label_en : item.label);
-  const hasDiagnosed = Boolean(result.input.trim());
 
   function resetDeepFlow(clearCurrentResult = false) {
     setDeepResetSignal((value) => value + 1);
@@ -236,6 +237,7 @@ function DiagnosePageContent() {
     };
 
     setResult(finalResult);
+    setHasCommitted(true);
     const snapshot = createDiagnosisSnapshot(finalResult, language);
     writeLocalDiagnosisSnapshot(snapshot);
     setLatestSnapshot(snapshot);
@@ -309,7 +311,7 @@ function DiagnosePageContent() {
 
       setCurrentLevel(nextLevel);
       setAssessmentResult(nextAssessmentResult);
-      setResult(getDefaultDiagnosisResult(nextLevel, undefined, undefined, language));
+      setResult(getDefaultDiagnosisResult(nextLevel, undefined, undefined, languageRef.current));
       setLatestSnapshot(readLocalDiagnosisSnapshot());
       setContextReady(true);
     }
@@ -319,7 +321,7 @@ function DiagnosePageContent() {
     return () => {
       active = false;
     };
-  }, [blockedByAssessmentGate, blockedByPendingStudySetup, configured, language, loading, searchParams, studyMode, user?.id]);
+  }, [blockedByAssessmentGate, blockedByPendingStudySetup, configured, loading, searchParams, studyMode, user?.id]);
 
   useEffect(() => {
     if (!contextReady) {
@@ -358,8 +360,9 @@ function DiagnosePageContent() {
 
   const onClear = () => {
     setText("");
+    setHasCommitted(false);
     setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
-    resetDeepFlow();
+    resetDeepFlow(true);
   };
 
   function resumeDeepMode() {
@@ -418,7 +421,7 @@ function DiagnosePageContent() {
   return (
     <PageContainer>
       <div className="space-y-5">
-        {hasDiagnosed ? (
+        {hasCommitted ? (
           <PageBreadcrumbs items={[
             { href: "/diagnose", label: language === "en" ? "← Diagnose again" : "← 重新诊断" },
             { href: "/", label: language === "en" ? "Back home" : "回到首页" }
@@ -434,11 +437,20 @@ function DiagnosePageContent() {
           quickTags={quickTags}
           quickTagsLabel={t("diagnose.quickTags")}
           effortMode={effortMode}
-          onChange={setText}
-          onEffortModeChange={setEffortMode}
+          onChange={(val) => {
+            setText(val);
+            setHasCommitted(false);
+          }}
+          onEffortModeChange={(mode) => {
+            setEffortMode(mode);
+            setHasCommitted(false);
+          }}
           onDiagnose={onDiagnose}
           onClear={onClear}
-          onQuickTagClick={(tag) => void runDiagnosis(tag, "tag_click")}
+          onQuickTagClick={(tag) => {
+            setText(tag);
+            setHasCommitted(false);
+          }}
         />
 
         <div ref={deepModuleRef}>
@@ -458,7 +470,7 @@ function DiagnosePageContent() {
           />
         </div>
 
-        {!hasDiagnosed && latestSnapshot ? (
+        {!hasCommitted && latestSnapshot ? (
           <Card className="space-y-3 border-slate-200 bg-slate-50/60">
             <p className="text-sm font-semibold text-slate-900">
               {language === "en" ? "Latest diagnosis snapshot" : "最近一次诊断快照"}
@@ -470,7 +482,9 @@ function DiagnosePageContent() {
                 variant="secondary"
                 onClick={() => {
                   setEffortMode(latestSnapshot.effortMode);
+                  setText(latestSnapshot.inputSummary);
                   setResult(replayDiagnosisFromSnapshot(latestSnapshot, currentLevel));
+                  setHasCommitted(true);
                 }}
               >
                 {language === "en" ? "Replay this diagnosis" : "重演本次判断"}
@@ -479,8 +493,7 @@ function DiagnosePageContent() {
           </Card>
         ) : null}
 
-        {hasDiagnosed ? <DiagnoseResultPanel result={result} onResumeDeepMode={resumeDeepMode} /> : null}
-        {/* ActionabilityPrompt removed from diagnose page per product request */}
+        {hasCommitted ? <DiagnoseResultPanel result={result} onResumeDeepMode={resumeDeepMode} /> : null}
       </div>
     </PageContainer>
   );

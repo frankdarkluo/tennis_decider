@@ -41,14 +41,14 @@ Overall: the codebase is **well-organized**. Clutter is cosmetic, not structural
 
 **What works well:**
 - 24 of ~30 problemTags have matching plan templates — the happy path is solid
-- `primaryNextStep` from diagnosis overrides Day 1 focus — good personalization
+- `primaryNextStep` from diagnosis overrides Step 1 focus — good personalization
 - Content seeding propagates diagnosis video recommendations into plan days
 - Context overlays (feeling, outcome, pressure) meaningfully customize drill blocks
 - Deep mode (serve gold slice) demonstrates the target quality bar
 
 **What breaks:**
 
-1. **6 diagnosis rules have NO plan template.** These fall back to a generic 7-day plan, losing all specificity:
+1. **6 diagnosis rules have NO plan template.** These fall back to a generic 7-step plan, losing all specificity:
    - `rally-consistency`, `forehand-no-power`, `balls-too-short`
    - `return-under-pressure`, `cant-hit-lob`, `stamina-drop`
    
@@ -58,7 +58,7 @@ Overall: the codebase is **well-organized**. Clutter is cosmetic, not structural
 
 3. **Assessment → Plan link is indirect.** Assessment weaknesses map to `ASSESSMENT_DIMENSION_HINTS` → possible problemTags → plan templates. But this mapping is coarse: the `forehand` dimension hints at 4 different problem tags. The system guesses which one without further input.
 
-4. **Content diversity is uncontrolled per-day.** The scoring and de-duplication logic is sophisticated, but the keyword-to-content matching for later days (Day 4–7) becomes increasingly generic as preferred seeds are exhausted.
+4. **Content diversity is uncontrolled per-step.** The scoring and de-duplication logic is sophisticated, but the keyword-to-content matching for later steps (Step 4–7) becomes increasingly generic as preferred seeds are exhausted.
 
 ---
 
@@ -104,7 +104,7 @@ Overall: the codebase is **well-organized**. Clutter is cosmetic, not structural
 |----------|----------|
 | Expanding to 8–10 questions | More reliable evaluation, but higher abandonment risk. Mitigate: keep auto-advance, show progress clearly, aim for under 3 minutes total |
 | Bridge questions at branch boundaries | Better accuracy for borderline players, but adds complexity to scoring logic and tests. Mitigate: keep bridge to 1–2 questions max |
-| Writing 6 new plan templates | Each template is ~80 lines of bilingual content across 7 days. Total effort: ~500 lines. Risk: quality control on drill/content alignment |
+| Writing 6 new plan templates | Each template is ~80 lines of bilingual content across 7 steps. Total effort: ~500 lines. Risk: quality control on drill/content alignment |
 | Passing full signal context to plans | More personalization, but URL param size increases. Mitigate: use localStorage for context transfer instead of URL encoding |
 | Assessment → plan weighting | Tighter coupling between modules. Risk: changes to assessment scoring ripple into plan quality. Mitigate: keep the connection through a stable interface (`weakDimensions[]`) |
 
@@ -219,28 +219,28 @@ Task 2.6: Verify assessment changes
 ```
 Task 3.1: Create plan template for rally-consistency
 - Add to src/data/planTemplates.ts
-- 7-day structure: Day 1–2 rally rhythm drills, Day 3–4 target placement, Day 5 rally under movement, Day 6 rally under pressure, Day 7 consolidation
+- 7-step structure: Step 1–2 rally rhythm drills, Step 3–4 target placement, Step 5 rally under movement, Step 6 rally under pressure, Step 7 consolidation
 - Include levels 3.0 and 3.5
 - Bilingual (zh/en focus, drills, goals, success criteria)
 
 Task 3.2: Create plan template for forehand-no-power
-- 7-day structure: Day 1–2 kinetic chain and rotation isolation, Day 3–4 contact point and timing, Day 5 power with targets, Day 6 power under movement, Day 7 consolidation
+- 7-step structure: Step 1–2 kinetic chain and rotation isolation, Step 3–4 contact point and timing, Step 5 power with targets, Step 6 power under movement, Step 7 consolidation
 - Include levels 3.0 and 3.5
 
 Task 3.3: Create plan template for balls-too-short
-- 7-day structure: Day 1–2 depth awareness and follow-through, Day 3–4 topspin clearance over net, Day 5 depth under pressure, Day 6 depth with direction, Day 7 consolidation
+- 7-step structure: Step 1–2 depth awareness and follow-through, Step 3–4 topspin clearance over net, Step 5 depth under pressure, Step 6 depth with direction, Step 7 consolidation
 - Include levels 3.0 and 3.5
 
 Task 3.4: Create plan template for return-under-pressure
-- 7-day structure: Day 1–2 split step and ready position, Day 3–4 return placement targets, Day 5 return against fast serves, Day 6 return under scoreboard pressure, Day 7 consolidation
+- 7-step structure: Step 1–2 split step and ready position, Step 3–4 return placement targets, Step 5 return against fast serves, Step 6 return under scoreboard pressure, Step 7 consolidation
 - Include levels 3.0, 3.5, and 4.0
 
 Task 3.5: Create plan template for cant-hit-lob
-- 7-day structure: Day 1–2 contact point and swing path, Day 3–4 defensive lob depth, Day 5 offensive lob timing, Day 6 lob under pressure, Day 7 consolidation
+- 7-step structure: Step 1–2 contact point and swing path, Step 3–4 defensive lob depth, Step 5 offensive lob timing, Step 6 lob under pressure, Step 7 consolidation
 - Include levels 3.0 and 3.5
 
 Task 3.6: Create plan template for stamina-drop
-- 7-day structure: Day 1–2 footwork efficiency, Day 3–4 recovery positioning, Day 5 point construction to shorten rallies, Day 6 match simulation with fatigue, Day 7 consolidation
+- 7-step structure: Step 1–2 footwork efficiency, Step 3–4 recovery positioning, Step 5 point construction to shorten rallies, Step 6 match simulation with fatigue, Step 7 consolidation
 - Include levels 3.0, 3.5, and 4.0
 - Note: PLAN_COMPATIBILITY_FALLBACKS maps stamina-drop → movement-slow; keep fallback but prefer dedicated template
 
@@ -267,7 +267,7 @@ Task 4.2: Wire assessment weak dimensions into plan customization
   - Read assessment result from storage
   - If weakest dimension is "movement" → boost movement drills in warmup blocks
   - If weakest dimension is "serve" → add serve warm-up routine on non-serve focus days
-  - If weakest dimension is "consistency" → add rally stability drill to Day 1 warmup
+  - If weakest dimension is "consistency" → add rally stability drill to Step 1 warmup
 - Call after applyPlanContext() in plan generation chain
 
 Task 4.3: Add plan rationale section
