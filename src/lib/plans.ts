@@ -716,6 +716,21 @@ const ASSESSMENT_DIMENSION_PLAN_HINTS: Record<
     relatedProblemTags: ["doubles-positioning"],
     skills: ["net", "doubles"]
   },
+  volley: {
+    primaryProblemTag: "volley-into-net",
+    relatedProblemTags: ["volley-floating", "net-confidence"],
+    skills: ["net", "volley", "doubles"]
+  },
+  overhead: {
+    primaryProblemTag: "overhead-timing",
+    relatedProblemTags: ["late-contact", "no-clear-technique"],
+    skills: ["overhead", "footwork", "serve"]
+  },
+  slice: {
+    primaryProblemTag: "backhand-slice-floating",
+    relatedProblemTags: ["incoming-slice-trouble", "backhand-into-net"],
+    skills: ["backhand", "slice"]
+  },
   depth_variety: {
     primaryProblemTag: "balls-too-short",
     relatedProblemTags: ["topspin-low", "forehand-no-power"],
@@ -2652,12 +2667,18 @@ const DIMENSION_TO_PROBLEM_TAG: Record<string, string> = {
   "反手": "backhand-into-net",
   "发球": "second-serve-reliability",
   "网前": "net-confidence",
+  "截击": "volley-into-net",
+  "高压球": "overhead-timing",
+  "切削": "backhand-slice-floating",
   "移动": "late-contact",
   "比赛意识": "match-anxiety",
   "forehand": "forehand-out",
   "backhand": "backhand-into-net",
   "serve": "second-serve-reliability",
   "net play": "net-confidence",
+  "volley": "volley-into-net",
+  "overhead": "overhead-timing",
+  "slice": "backhand-slice-floating",
   "movement": "late-contact",
   "match play": "match-anxiety",
   "match awareness": "match-anxiety"

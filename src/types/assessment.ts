@@ -1,5 +1,14 @@
 export type AssessmentLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.5";
 
+export type AssessmentCoverageArea =
+  | "rally"
+  | "serve"
+  | "movement"
+  | "matchplay"
+  | "volley"
+  | "overhead"
+  | "slice";
+
 export type AssessmentBranch = "A" | "B" | "C";
 
 export type AssessmentGender = "male" | "female";
@@ -23,6 +32,9 @@ export type AssessmentDimension =
   | "direction"
   | "rhythm"
   | "net_play"
+  | "volley"
+  | "overhead"
+  | "slice"
   | "depth_variety"
   | "forcing"
   | "tactics"
@@ -109,8 +121,11 @@ export type AssessmentResult = {
   uncertainCount: number;
   totalQuestions: number;
   level: AssessmentLevel;
+  ceilingLevel?: AssessmentLevel;
   confidence: "较低" | "中等" | "较高";
   dimensions: DimensionSummary[];
+  observedAreas?: AssessmentCoverageArea[];
+  unobservedAreas?: AssessmentCoverageArea[];
   strengths: string[];
   weaknesses: string[];
   observationNeeded: string[];

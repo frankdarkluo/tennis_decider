@@ -181,18 +181,18 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     dimension: "direction"
   },
   {
-    id: "fine_b_rhythm",
+    id: "fine_b_slice",
     phase: "fine",
     branch: "B",
     type: "choice",
-    question: "对方突然变节奏或加旋转时？",
+    question: "你的切削现在更接近哪种状态？",
     options: [
-      { label: "很容易被打崩", value: 1 },
-      { label: "能撑住但回球质量明显下降", value: 2 },
-      { label: "能适应，回球质量还行", value: 3 },
-      { label: "基本不受影响", value: 4 }
+      { label: "基本不敢用，或者一切就飘", value: 1 },
+      { label: "能打出来，但高度和落点不太稳", value: 2 },
+      { label: "能把切削当过渡球或变化球用", value: 3 },
+      { label: "能稳定压低，也能主动用它改变节奏", value: 4 }
     ],
-    dimension: "rhythm"
+    dimension: "slice"
   },
   {
     id: "fine_b_serve_game",
@@ -209,18 +209,18 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     dimension: "serve"
   },
   {
-    id: "fine_c_net",
+    id: "fine_c_volley",
     phase: "fine",
     branch: "C",
     type: "choice",
-    question: "你上网时的状态？",
+    question: "你在网前处理截击时更接近哪种状态？",
     options: [
-      { label: "基本不上网", value: 1 },
-      { label: "偶尔上网，简单球能处理", value: 2 },
-      { label: "会主动上网，截击比较有信心", value: 3 },
-      { label: "网前是我的得分手段之一", value: 4 }
+      { label: "基本不上网，或者截击一碰就乱", value: 1 },
+      { label: "简单球能处理，但受压就容易失误", value: 2 },
+      { label: "会主动上网，截击大多能处理干净", value: 3 },
+      { label: "截击已经是我稳定的得分或压迫手段", value: 4 }
     ],
-    dimension: "net_play"
+    dimension: "volley"
   },
   {
     id: "fine_c_depth",
@@ -237,18 +237,18 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     dimension: "depth_variety"
   },
   {
-    id: "fine_c_forcing",
+    id: "fine_c_overhead",
     phase: "fine",
     branch: "C",
     type: "choice",
-    question: "你能主动让对手失误吗？",
+    question: "遇到高压球时，你现在更接近哪种状态？",
     options: [
-      { label: "主要靠对手自己失误", value: 1 },
-      { label: "偶尔能打出压迫性的球", value: 2 },
-      { label: "能比较稳定地逼迫对手失误", value: 3 },
-      { label: "能通过组合球主动创造得分机会", value: 4 }
+      { label: "经常找不准点，或者干脆不敢压", value: 1 },
+      { label: "能打到，但脚步和落点还不太稳", value: 2 },
+      { label: "大部分高压都能处理干净并回到位", value: 3 },
+      { label: "高压球已经是我可靠的终结手段", value: 4 }
     ],
-    dimension: "forcing"
+    dimension: "overhead"
   },
   {
     id: "fine_c_adaptability",

@@ -2,6 +2,7 @@ import { assessmentQuestions } from "@/data/assessmentQuestions";
 import {
   AssessmentAnswers,
   AssessmentBranch,
+  AssessmentCoverageArea,
   AssessmentDimension,
   AssessmentDimensionStatus,
   AssessmentLevel,
@@ -31,6 +32,9 @@ const DIMENSION_LABELS_ZH: Record<AssessmentDimension, string> = {
   direction: "方向控制",
   rhythm: "节奏适应",
   net_play: "网前",
+  volley: "截击",
+  overhead: "高压球",
+  slice: "切削",
   depth_variety: "深度和变化",
   forcing: "施压能力",
   tactics: "策略执行",
@@ -55,6 +59,9 @@ const DIMENSION_LABELS_EN: Record<AssessmentDimension, string> = {
   direction: "direction control",
   rhythm: "timing",
   net_play: "net play",
+  volley: "volley",
+  overhead: "overhead",
+  slice: "slice",
   depth_variety: "depth and variation",
   forcing: "pressure skills",
   tactics: "tactical execution",
@@ -106,6 +113,63 @@ const STATUS_LABELS = {
   }
 } as const;
 
+const COVERAGE_LABELS_ZH: Record<AssessmentCoverageArea, string> = {
+  rally: "对拉",
+  serve: "发球",
+  movement: "移动",
+  matchplay: "比赛意识",
+  volley: "截击",
+  overhead: "高压球",
+  slice: "切削"
+};
+
+const COVERAGE_LABELS_EN: Record<AssessmentCoverageArea, string> = {
+  rally: "rally",
+  serve: "serve",
+  movement: "movement",
+  matchplay: "match play",
+  volley: "volley",
+  overhead: "overhead",
+  slice: "slice"
+};
+
+const COVERAGE_AREA_ORDER: AssessmentCoverageArea[] = [
+  "rally",
+  "serve",
+  "movement",
+  "matchplay",
+  "volley",
+  "overhead",
+  "slice"
+];
+
+const DIMENSION_COVERAGE_AREAS: Record<AssessmentDimension, AssessmentCoverageArea[]> = {
+  basics: ["rally"],
+  forehand: ["rally"],
+  backhand: ["rally"],
+  serve: ["serve"],
+  net: ["volley"],
+  movement: ["movement"],
+  matchplay: ["matchplay"],
+  rally: ["rally"],
+  awareness: ["matchplay"],
+  fundamentals: ["rally"],
+  receiving: ["rally"],
+  consistency: ["rally"],
+  both_sides: ["rally"],
+  direction: ["rally"],
+  rhythm: ["rally"],
+  net_play: ["volley"],
+  volley: ["volley"],
+  overhead: ["overhead"],
+  slice: ["slice"],
+  depth_variety: ["rally"],
+  forcing: ["rally"],
+  tactics: ["matchplay"],
+  tactical_adaptability: ["matchplay"],
+  pressure_performance: ["matchplay"]
+};
+
 function resolveDimensionKey(label: string): AssessmentDimension | null {
   const foundZh = (Object.entries(DIMENSION_LABELS_ZH) as Array<[AssessmentDimension, string]>)
     .find(([, value]) => value === label)?.[0];
@@ -121,6 +185,15 @@ function resolveDimensionKey(label: string): AssessmentDimension | null {
 export function getDimensionLabel(key: DimensionKey, locale: AssessmentLocale = "zh"): string {
   const dictionary = locale === "en" ? DIMENSION_LABELS_EN : DIMENSION_LABELS_ZH;
   return dictionary[key] ?? key;
+}
+
+export function getCoverageAreaLabel(key: AssessmentCoverageArea, locale: AssessmentLocale = "zh"): string {
+  const dictionary = locale === "en" ? COVERAGE_LABELS_EN : COVERAGE_LABELS_ZH;
+  return dictionary[key] ?? key;
+}
+
+export function formatAssessmentLevelRange(level: AssessmentLevel, ceilingLevel?: AssessmentLevel) {
+  return ceilingLevel && ceilingLevel !== level ? `${level}-${ceilingLevel}` : level;
 }
 
 export function translateAssessmentLabel(label: string, locale: AssessmentLocale = "zh"): string {
@@ -196,7 +269,7 @@ export function getLocalizedAssessmentResult(
     strengths: result.strengths.map((label) => translateAssessmentLabel(label, locale)),
     weaknesses: result.weaknesses.map((label) => translateAssessmentLabel(label, locale)),
     observationNeeded: result.observationNeeded.map((label) => translateAssessmentLabel(label, locale)),
-    summary: buildSummary(result.level, localizedDimensions, locale)
+    summary: buildSummary(result.level, localizedDimensions, locale, result.ceilingLevel)
   };
 }
 
@@ -223,38 +296,57 @@ export function determineBranch(coarseScore: number): AssessmentBranch {
   return "C";
 }
 
-export function calculateLevel(coarseScore: number, fineScore: number): AssessmentLevel {
+export function calculateLevelBand(
+  coarseScore: number,
+  fineScore: number
+): { level: AssessmentLevel; ceilingLevel?: AssessmentLevel } {
   const branch = determineBranch(coarseScore);
 
   if (branch === "A") {
-    return fineScore <= 8 ? "2.5" : "3.0";
+    if (fineScore <= 8) {
+      return { level: "2.5" };
+    }
+
+    return { level: "2.5", ceilingLevel: "3.0" };
   }
 
   if (branch === "B") {
-    return fineScore <= 8 ? "3.0" : "3.5";
+    if (fineScore <= 7) {
+      return { level: "3.0" };
+    }
+
+    return { level: "3.0", ceilingLevel: "3.5" };
   }
 
   if (fineScore <= 6) {
-    return "3.5";
+    return { level: "3.5", ceilingLevel: "4.0" };
   }
 
   if (fineScore <= 10) {
-    return "4.0";
+    return { level: "4.0" };
   }
 
-  return "4.5";
+  return { level: "4.0", ceilingLevel: "4.5" };
 }
 
-function getConfidence(answeredCount: number, totalQuestions: number): AssessmentResult["confidence"] {
+export function calculateLevel(coarseScore: number, fineScore: number): AssessmentLevel {
+  return calculateLevelBand(coarseScore, fineScore).level;
+}
+
+function getConfidence(
+  answeredCount: number,
+  totalQuestions: number,
+  ceilingLevel?: AssessmentLevel
+): AssessmentResult["confidence"] {
   if (answeredCount <= 2) {
     return "较低";
   }
 
   if (answeredCount < totalQuestions) {
-    return "中等";
+    return "较低";
   }
 
-  return "较高";
+  return ceilingLevel ? "中等" : "较高";
 }
 
 function getDimensionStatusFromScores(scores: number[]): AssessmentDimensionStatus {
@@ -356,29 +448,51 @@ function buildObservationNeeded(dimensions: DimensionSummary[]) {
     .map((dimension) => dimension.label);
 }
 
-function buildSummary(level: AssessmentLevel, dimensions: DimensionSummary[], locale: AssessmentLocale = "zh"): string {
+function buildObservedAreas(dimensions: DimensionSummary[]): AssessmentCoverageArea[] {
+  return Array.from(new Set(
+    dimensions.flatMap((dimension) => DIMENSION_COVERAGE_AREAS[dimension.key] ?? [])
+  )).sort((left, right) => COVERAGE_AREA_ORDER.indexOf(left) - COVERAGE_AREA_ORDER.indexOf(right));
+}
+
+function buildUnobservedAreas(observedAreas: AssessmentCoverageArea[]): AssessmentCoverageArea[] {
+  const observedSet = new Set(observedAreas);
+
+  return COVERAGE_AREA_ORDER.filter((area) => !observedSet.has(area));
+}
+
+function buildSummary(
+  level: AssessmentLevel,
+  dimensions: DimensionSummary[],
+  locale: AssessmentLocale = "zh",
+  ceilingLevel?: AssessmentLevel
+): string {
   const weakest = [...dimensions]
     .sort(compareDimensionPriority)
     .slice(0, 2)
     .map((dimension) => dimension.label);
+  const levelRange = formatAssessmentLevelRange(level, ceilingLevel);
 
   if (weakest.length === 0) {
-    return (locale === "en" ? SUMMARY_TEMPLATES_EN : SUMMARY_TEMPLATES_ZH)[level];
+    if (locale === "en") {
+      return `Your current self-reported range looks around ${levelRange}.`;
+    }
+
+    return `你这次自评的参考区间更接近 ${levelRange}。`;
   }
 
   if (locale === "en") {
     if (weakest.length === 1) {
-      return `Your current level looks around ${level}. ${weakest[0]} is the highest-priority area to keep improving next.`;
+      return `Your current self-reported range looks around ${levelRange}. ${weakest[0]} is the highest-priority area to keep improving next.`;
     }
 
-    return `Your current level looks around ${level}. ${weakest[0]} and ${weakest[1]} are the highest-priority areas to improve next.`;
+    return `Your current self-reported range looks around ${levelRange}. ${weakest[0]} and ${weakest[1]} are the highest-priority areas to improve next.`;
   }
 
   if (weakest.length === 1) {
-    return `你目前的能力区间接近 ${level}。${weakest[0]} 是现在最值得优先补强的方向。`;
+    return `你这次自评的参考区间更接近 ${levelRange}。${weakest[0]} 是现在最值得优先补强的方向。`;
   }
 
-  return `你目前的能力区间接近 ${level}。${weakest[0]} 和 ${weakest[1]} 是现在最值得优先补强的方向。`;
+  return `你这次自评的参考区间更接近 ${levelRange}。${weakest[0]} 和 ${weakest[1]} 是现在最值得优先补强的方向。`;
 }
 
 export function calculateAssessmentResult(
@@ -392,9 +506,11 @@ export function calculateAssessmentResult(
   const branch = determineBranch(coarseScore);
   const fineQuestions = getFineQuestionsForBranch(branch, questions);
   const fineScore = fineQuestions.reduce((sum, question) => sum + Number(answers[question.id] ?? 0), 0);
-  const level = calculateLevel(coarseScore, fineScore);
+  const { level, ceilingLevel } = calculateLevelBand(coarseScore, fineScore);
   const scoredQuestions = [...coarseQuestions, ...fineQuestions];
   const dimensions = buildDimensionSummaries(scoredQuestions, answers, level, locale);
+  const observedAreas = buildObservedAreas(dimensions);
+  const unobservedAreas = buildUnobservedAreas(observedAreas);
   const strengths = buildStrengths(dimensions);
   const weaknesses = buildWeaknesses(dimensions);
   const observationNeeded = buildObservationNeeded(dimensions);
@@ -411,12 +527,15 @@ export function calculateAssessmentResult(
     uncertainCount: 0,
     totalQuestions,
     level,
-    confidence: getConfidence(answeredCount, totalQuestions),
+    ceilingLevel,
+    confidence: getConfidence(answeredCount, totalQuestions, ceilingLevel),
     dimensions,
+    observedAreas,
+    unobservedAreas,
     strengths,
     weaknesses,
     observationNeeded,
-    summary: buildSummary(level, dimensions, locale),
+    summary: buildSummary(level, dimensions, locale, ceilingLevel),
     profile,
     branch,
     coarseScore,
@@ -433,8 +552,11 @@ export function getDefaultAssessmentResult(locale: AssessmentLocale = "zh"): Ass
     uncertainCount: 0,
     totalQuestions: 9,
     level: "2.5",
+    ceilingLevel: undefined,
     confidence: "较低",
     dimensions: [],
+    observedAreas: [],
+    unobservedAreas: [...COVERAGE_AREA_ORDER],
     strengths: [],
     weaknesses: [],
     observationNeeded: [],

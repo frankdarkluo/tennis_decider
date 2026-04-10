@@ -9,8 +9,11 @@ export type PersistedAssessmentScores = {
   answeredCount: number;
   uncertainCount: number;
   totalQuestions: number;
+  ceilingLevel?: AssessmentResult["ceilingLevel"];
   confidence: AssessmentResult["confidence"];
   dimensions: AssessmentResult["dimensions"];
+  observedAreas?: AssessmentResult["observedAreas"];
+  unobservedAreas?: AssessmentResult["unobservedAreas"];
   profile?: AssessmentResult["profile"];
   branch?: AssessmentResult["branch"];
   coarseScore?: AssessmentResult["coarseScore"];

@@ -108,13 +108,13 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
       4: "I can hit crosscourt and down the line on purpose"
     }
   },
-  fine_b_rhythm: {
-    en: "What happens when the opponent changes pace or spin?",
+  fine_b_slice: {
+    en: "Which one sounds closest to your slice right now?",
     labels: {
-      1: "I break down easily",
-      2: "I hang on, but quality drops a lot",
-      3: "I adapt and keep decent quality",
-      4: "It does not affect me much"
+      1: "I rarely trust it, or it floats right away",
+      2: "I can hit it, but the height and landing spot are not steady",
+      3: "I can use it as a neutral or change-up ball",
+      4: "I can keep it low and use it to change rhythm on purpose"
     }
   },
   fine_b_serve_game: {
@@ -126,13 +126,13 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
       4: "My serve games are a dependable weapon"
     }
   },
-  fine_c_net: {
-    en: "How would you describe your net play?",
+  fine_c_volley: {
+    en: "Which one sounds closest to your volleying at the net?",
     labels: {
-      1: "I almost never come to the net",
-      2: "I come to the net sometimes and can handle simple volleys",
-      3: "I come to the net on purpose and feel fairly confident with my volleys",
-      4: "Net play is one of my regular ways to win points"
+      1: "I rarely come forward, or the volley gets messy right away",
+      2: "I can handle simple volleys, but pressure exposes it quickly",
+      3: "I come forward on purpose and handle most volleys cleanly",
+      4: "My volley is a dependable scoring or pressure tool"
     }
   },
   fine_c_depth: {
@@ -144,13 +144,13 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
       4: "I combine depth, angles, and spin"
     }
   },
-  fine_c_forcing: {
-    en: "Can you force errors from your opponent?",
+  fine_c_overhead: {
+    en: "Which one sounds closest to your overhead right now?",
     labels: {
-      1: "Mostly waiting for their errors",
-      2: "Sometimes I hit a pressuring ball",
-      3: "I can force errors consistently through steady pressure",
-      4: "I create scoring opportunities through point construction"
+      1: "I often mis-time it, or I do not trust it enough to finish",
+      2: "I can hit it, but the footwork and placement are still shaky",
+      3: "I handle most overheads cleanly and recover well after them",
+      4: "My overhead is a reliable finishing shot"
     }
   },
   fine_c_adaptability: {

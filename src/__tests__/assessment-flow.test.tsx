@@ -41,10 +41,17 @@ const translationMap = {
   "assessment.empty.title": "先完成一次水平评估",
   "assessment.empty.subtitle": "做完后，我们会直接告诉你大概处在哪个能力区间，以及接下来更值得优先补哪一块。",
   "assessment.result.headline": "你的能力区间接近",
+  "assessment.result.range": "参考区间",
+  "assessment.result.confidence": "可信度",
+  "assessment.result.observed": "这次直接覆盖",
   "assessment.result.summary": "这次结果怎么读",
   "assessment.result.weaknesses": "优先补强",
+  "assessment.result.noWeaknesses": "这次没有明显落到薄弱档的维度，先把待观察项作为下一步检查点。",
   "assessment.result.observationNeeded": "继续观察",
+  "assessment.result.unobserved": "这次未直接覆盖",
+  "assessment.result.selfReportNote": "这次结果来自短问卷自评，不等于视频观察。",
   "assessment.result.noObservationNeeded": "目前没有额外待观察项。",
+  "assessment.result.noUnobserved": "这次没有额外未覆盖项。",
   "assessment.result.skillBreakdown": "分项能力",
   "assessment.result.skillBreakdownHint": "每个维度会落在薄弱、待提升、正常或强项四档。"
 } satisfies Record<string, string>;
@@ -64,11 +71,17 @@ const translationMapEn = {
   "assessment.empty.title": "Complete one level assessment first",
   "assessment.empty.subtitle": "After that, we will tell you roughly where you are and what is worth improving first.",
   "assessment.result.headline": "Your current range is close to",
+  "assessment.result.range": "Estimated range",
+  "assessment.result.confidence": "Confidence",
+  "assessment.result.observed": "Directly covered",
   "assessment.result.summary": "How to read this result",
   "assessment.result.weaknesses": "Priority gaps",
   "assessment.result.noWeaknesses": "No clear weak tier surfaced in this pass. Use the watch list as your next checkpoint.",
   "assessment.result.observationNeeded": "Watch next",
+  "assessment.result.unobserved": "Not directly covered yet",
+  "assessment.result.selfReportNote": "This pass is based on a short self-report, not direct stroke observation.",
   "assessment.result.noObservationNeeded": "No extra watch areas surfaced right now.",
+  "assessment.result.noUnobserved": "No extra uncovered areas surfaced right now.",
   "assessment.result.skillBreakdown": "Skill breakdown",
   "assessment.result.skillBreakdownHint": "Each area is tagged as weak, needs work, normal, or strength."
 } satisfies Record<string, string>;
@@ -241,10 +254,34 @@ describe("assessment flow and result summary", () => {
     render(<ResultSummary result={result} />);
 
     expect(screen.getByText("How to read this result")).toBeInTheDocument();
-    expect(screen.getByText(/Your current level looks around 3\.5\./)).toBeInTheDocument();
+    expect(screen.getByText("Estimated range")).toBeInTheDocument();
+    expect(screen.getByText(/Your current self-reported range looks around 3\.5-4\.0\./)).toBeInTheDocument();
     expect(screen.getAllByText("rally stability").length).toBeGreaterThan(0);
     expect(screen.getAllByText("serve").length).toBeGreaterThan(0);
     expect(screen.queryByText(result.summary)).not.toBeInTheDocument();
     expect(screen.queryByText("对拉稳定性")).not.toBeInTheDocument();
+  });
+
+  it("renders a conservative range plus uncovered technique areas", () => {
+    const result = calculateAssessmentResult({
+      coarse_rally: 3,
+      coarse_serve: 3,
+      coarse_awareness: 3,
+      coarse_movement: 3,
+      coarse_pressure: 2,
+      fine_b_both_sides: 3,
+      fine_b_direction: 3,
+      fine_b_slice: 1,
+      fine_b_serve_game: 3
+    }, assessmentQuestions);
+
+    render(<ResultSummary result={result} />);
+
+    expect(screen.getByText("参考区间")).toBeInTheDocument();
+    expect(screen.getByText("3.0-3.5")).toBeInTheDocument();
+    expect(screen.getByText("这次未直接覆盖")).toBeInTheDocument();
+    expect(screen.getByText("高压球")).toBeInTheDocument();
+    expect(screen.getByText("截击")).toBeInTheDocument();
+    expect(screen.getByText("这次结果来自短问卷自评，不等于视频观察。")).toBeInTheDocument();
   });
 });

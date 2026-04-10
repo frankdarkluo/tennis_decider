@@ -16,14 +16,15 @@ describe("assessment engine", () => {
       coarse_awareness: 4,
       coarse_movement: 4,
       coarse_pressure: 3,
-      fine_c_net: 3,
+      fine_c_volley: 3,
       fine_c_depth: 4,
-      fine_c_forcing: 4,
+      fine_c_overhead: 4,
       fine_c_adaptability: 4
     });
 
     expect(result.branch).toBe("C");
-    expect(result.level).toBe("4.5");
+    expect(result.level).toBe("4.0");
+    expect(result.ceilingLevel).toBe("4.5");
   });
 
   it("surfaces score-2 dimensions as observation-needed output", () => {
@@ -53,7 +54,7 @@ describe("assessment engine", () => {
       coarse_pressure: 3,
       fine_b_both_sides: 4,
       fine_b_direction: 4,
-      fine_b_rhythm: 4,
+      fine_b_slice: 4,
       fine_b_serve_game: 4
     });
 
@@ -71,7 +72,7 @@ describe("assessment engine", () => {
       coarse_pressure: 3,
       fine_b_both_sides: 4,
       fine_b_direction: 4,
-      fine_b_rhythm: 4,
+      fine_b_slice: 4,
       fine_b_serve_game: 4
     });
 
@@ -89,7 +90,7 @@ describe("assessment engine", () => {
       coarse_pressure: 2,
       fine_b_both_sides: 4,
       fine_b_direction: 4,
-      fine_b_rhythm: 4,
+      fine_b_slice: 4,
       fine_b_serve_game: 4
     });
 
@@ -115,5 +116,47 @@ describe("assessment engine", () => {
 
     expect(result.summary).toContain("对拉稳定性");
     expect(result.summary).toContain("发球");
+  });
+
+  it("adds slice to branch B coverage and keeps unobserved techniques separate", () => {
+    const result = calculateAssessmentResult({
+      coarse_rally: 3,
+      coarse_serve: 3,
+      coarse_awareness: 3,
+      coarse_movement: 3,
+      coarse_pressure: 2,
+      fine_b_both_sides: 3,
+      fine_b_direction: 3,
+      fine_b_slice: 1,
+      fine_b_serve_game: 3
+    });
+
+    const sliceDimension = result.dimensions.find((dimension) => dimension.key === "slice");
+
+    expect(result.branch).toBe("B");
+    expect(sliceDimension?.status).toBe("薄弱");
+    expect(result.weaknesses).toContain("切削");
+    expect(result.observedAreas).toContain("slice");
+    expect(result.unobservedAreas).toContain("volley");
+    expect(result.unobservedAreas).toContain("overhead");
+  });
+
+  it("tracks volley and overhead as directly assessed advanced techniques", () => {
+    const result = calculateAssessmentResult({
+      coarse_rally: 4,
+      coarse_serve: 4,
+      coarse_awareness: 4,
+      coarse_movement: 4,
+      coarse_pressure: 3,
+      fine_c_volley: 2,
+      fine_c_depth: 4,
+      fine_c_overhead: 1,
+      fine_c_adaptability: 4
+    });
+
+    expect(result.dimensions.map((dimension) => dimension.key)).toContain("volley");
+    expect(result.dimensions.map((dimension) => dimension.key)).toContain("overhead");
+    expect(result.observedAreas).toContain("volley");
+    expect(result.observedAreas).toContain("overhead");
   });
 });
