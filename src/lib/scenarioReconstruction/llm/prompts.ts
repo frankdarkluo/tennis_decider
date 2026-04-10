@@ -1,4 +1,4 @@
-import type { ScenarioQuestion, ScenarioState } from "@/types/scenario";
+import type { ScenarioQuestion, ScenarioState, SkillCategory } from "@/types/scenario";
 
 export function buildScenarioParserPrompt(text: string) {
   return [
@@ -44,5 +44,33 @@ export function buildQuestionRankerPrompt(
     "Return JSON only.",
     `Scenario: ${JSON.stringify(scenario)}`,
     `Eligible question ids: ${eligibleQuestions.map((question) => question.id).join(", ")}`
+  ].join("\n");
+}
+
+export function buildDiagnoseMediationPrompt(input: {
+  complaint: string;
+  locale: "zh" | "en";
+  lockedCategory: SkillCategory | null;
+}) {
+  return [
+    "You normalize weak tennis complaints into one tiny mediation contract.",
+    "Return JSON only.",
+    "Do not explain.",
+    "Do not diagnose.",
+    "Do not give drills, plans, or training advice.",
+    "Keep the user's language mix.",
+    "Use at most one short question.",
+    "No markdown, bullets, or multiple paragraphs.",
+    'Allowed mode: "paraphrase" | "clarify" | "fallback".',
+    'Allowed reason: "ambiguous" | "too_vague" | "transcript_noise" | "low_confidence".',
+    "If the complaint is noisy but recoverable, use paraphrase.",
+    "If the complaint is too vague to route safely, use clarify.",
+    "If you cannot help safely, use fallback.",
+    input.lockedCategory
+      ? `Stay inside this skill category if you mention stroke family cues: ${input.lockedCategory}.`
+      : "No category lock is provided.",
+    'Return an object with exactly these keys: mode, reason, displayText, normalizedComplaint, clarificationQuestion.',
+    `Locale hint: ${input.locale}`,
+    `Input: ${input.complaint}`
   ].join("\n");
 }

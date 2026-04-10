@@ -1,6 +1,14 @@
 import { sanitizeTennisSceneExtraction, type StructuredTennisSceneExtraction } from "@/lib/intake/schema";
 import { ensureScenarioInternals } from "@/lib/scenarioReconstruction/runtime";
 import type { ScenarioQuestion, ScenarioState } from "@/types/scenario";
+import { shouldMediateDiagnoseComplaint } from "@/lib/intake/diagnoseMediation/gate";
+import { mediateDiagnoseComplaint } from "@/lib/intake/diagnoseMediation/mediate";
+import type {
+  DiagnoseGateDecision,
+  DiagnoseMediationMode,
+  DiagnoseMediationResult,
+  ObserveDiagnoseMediation
+} from "@/lib/intake/diagnoseMediation/types";
 
 type FetchLike = typeof fetch;
 
@@ -14,6 +22,10 @@ export type PreparedDiagnoseSubmission = {
   eligibleQuestions: ScenarioQuestion[];
   missingSlots: ScenarioState["missing_slots"];
   done: boolean;
+  mediationMode: DiagnoseMediationMode;
+  mediationDisplayText: string | null;
+  mediationQuestion: string | null;
+  clarificationUsed: boolean;
 };
 
 type IntakeRouteResponse = {
@@ -28,6 +40,13 @@ type IntakeRouteResponse = {
   done?: unknown;
 };
 
+type MediationRunner = (input: {
+  complaint: string;
+  locale: "zh" | "en";
+  gateDecision: DiagnoseGateDecision;
+  observe?: ObserveDiagnoseMediation;
+}) => Promise<DiagnoseMediationResult>;
+
 function isScenarioPayload(value: unknown): value is Partial<ScenarioState> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -39,14 +58,119 @@ function isScenarioQuestionPayload(value: unknown): value is ScenarioQuestion {
 export async function prepareDiagnoseSubmission({
   text,
   locale,
-  fetchImpl = fetch
+  clarificationUsed = false,
+  fetchImpl = fetch,
+  mediateImpl = mediateDiagnoseComplaint,
+  gateImpl = shouldMediateDiagnoseComplaint,
+  observeMediation
 }: {
   text: string;
   locale: "zh" | "en";
+  clarificationUsed?: boolean;
   fetchImpl?: FetchLike;
+  mediateImpl?: MediationRunner;
+  gateImpl?: typeof shouldMediateDiagnoseComplaint;
+  observeMediation?: ObserveDiagnoseMediation;
 }): Promise<PreparedDiagnoseSubmission> {
   const trimmedText = text.trim();
+  const gateDecision = clarificationUsed
+    ? {
+      shouldMediate: false,
+      reason: "clear_enough" as const,
+      lockedCategory: null
+    }
+    : gateImpl(trimmedText, locale);
+  observeMediation?.({
+    type: "gate",
+    shouldMediate: gateDecision.shouldMediate,
+    reason: gateDecision.reason,
+    lockedCategory: gateDecision.lockedCategory,
+    clarificationUsed
+  });
 
+  if (!gateDecision.shouldMediate) {
+    const prepared = await fetchIntakeSubmission({
+      trimmedText,
+      text: trimmedText,
+      locale,
+      fetchImpl
+    });
+    observeMediation?.({
+      type: "mode",
+      mode: "skip",
+      reason: gateDecision.reason,
+      clarificationUsed
+    });
+
+    return {
+      ...prepared,
+      mediationMode: "skip",
+      mediationDisplayText: null,
+      mediationQuestion: null,
+      clarificationUsed
+    };
+  }
+
+  const mediation = await mediateImpl({
+    complaint: trimmedText,
+    locale,
+    gateDecision,
+    observe: observeMediation
+  });
+  observeMediation?.({
+    type: "mode",
+    mode: mediation.mode,
+    reason: mediation.reason,
+    clarificationUsed
+  });
+
+  if (mediation.mode === "clarify") {
+    return {
+      source: "deterministic_fallback",
+      decision: "raw_text_fallback",
+      diagnosisInput: trimmedText,
+      extraction: null,
+      scenario: null,
+      selectedQuestion: null,
+      eligibleQuestions: [],
+      missingSlots: [],
+      done: false,
+      mediationMode: "clarify",
+      mediationDisplayText: null,
+      mediationQuestion: mediation.clarificationQuestion,
+      clarificationUsed: false
+    };
+  }
+
+  const prepared = await fetchIntakeSubmission({
+    trimmedText,
+    text: mediation.mode === "paraphrase" && mediation.normalizedComplaint
+      ? mediation.normalizedComplaint
+      : trimmedText,
+    locale,
+    fetchImpl
+  });
+
+  return {
+    ...prepared,
+    mediationMode: mediation.mode,
+    mediationDisplayText: mediation.displayText,
+    mediationQuestion: mediation.clarificationQuestion,
+    clarificationUsed
+  };
+}
+
+async function fetchIntakeSubmission({
+  trimmedText,
+  text,
+  locale,
+  fetchImpl
+}: {
+  trimmedText: string;
+  text: string;
+  locale: "zh" | "en";
+  fetchImpl: FetchLike;
+}): Promise<Omit<PreparedDiagnoseSubmission, "mediationMode" | "mediationDisplayText" | "mediationQuestion" | "clarificationUsed">> {
   try {
     const response = await fetchImpl("/api/intake/extract", {
       method: "POST",
@@ -54,7 +178,7 @@ export async function prepareDiagnoseSubmission({
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        text: trimmedText,
+        text,
         ui_language: locale
       })
     });

@@ -1,9 +1,10 @@
 import {
+  buildDiagnoseMediationPrompt,
   buildQuestionRankerPrompt,
   buildScenarioParserPrompt,
   buildTennisSceneExtractionPrompt
 } from "@/lib/scenarioReconstruction/llm/prompts";
-import type { ScenarioQuestion, ScenarioState } from "@/types/scenario";
+import type { ScenarioQuestion, ScenarioState, SkillCategory } from "@/types/scenario";
 
 type FetchLike = typeof fetch;
 
@@ -23,6 +24,11 @@ export type LocalQwenConfig = {
 
 export type LocalQwenClient = {
   extractTennisScene(text: string): Promise<unknown>;
+  mediateDiagnoseComplaint(
+    complaint: string,
+    locale: "zh" | "en",
+    lockedCategory: SkillCategory | null
+  ): Promise<unknown>;
   parseScenario(text: string): Promise<Partial<ScenarioState> | null>;
   rankQuestions(scenario: ScenarioState, eligibleQuestions: ScenarioQuestion[]): Promise<string[] | null>;
 };
@@ -125,6 +131,19 @@ export function createLocalQwenClient(options: CreateLocalQwenClientOptions = {}
   return {
     async extractTennisScene(text: string) {
       const content = await postChatCompletion(fetchImpl, config, buildTennisSceneExtractionPrompt(text), 350);
+      return safeParseJson<unknown>(content);
+    },
+    async mediateDiagnoseComplaint(
+      complaint: string,
+      locale: "zh" | "en",
+      lockedCategory: SkillCategory | null
+    ) {
+      const content = await postChatCompletion(
+        fetchImpl,
+        config,
+        buildDiagnoseMediationPrompt({ complaint, locale, lockedCategory }),
+        220
+      );
       return safeParseJson<unknown>(content);
     },
     async parseScenario(text: string) {

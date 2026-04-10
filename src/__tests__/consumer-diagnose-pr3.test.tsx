@@ -17,6 +17,18 @@ const mockSearchParams = new URLSearchParams();
 const mockFetch = vi.fn();
 const diagnoseProblemMock = vi.hoisted(() => vi.fn());
 const prepareDiagnoseSubmissionMock = vi.hoisted(() => vi.fn());
+const logEventMock = vi.hoisted(() => vi.fn());
+
+function createDeferred<T>() {
+  let resolve!: (value: T) => void;
+  let reject!: (reason?: unknown) => void;
+  const promise = new Promise<T>((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+
+  return { promise, resolve, reject };
+}
 
 const mockAppShellContext = {
   environment: "testing" as "testing" | "production",
@@ -227,7 +239,7 @@ vi.mock("@/lib/userData", () => ({
 }));
 
 vi.mock("@/lib/eventLogger", () => ({
-  logEvent: vi.fn()
+  logEvent: logEventMock
 }));
 
 vi.mock("@/lib/appShell/localRouteState", () => ({
@@ -380,8 +392,216 @@ describe("consumer diagnose PR3", () => {
     await waitFor(() => {
       expect(diagnoseProblemMock).toHaveBeenCalledWith("比赛里我反手老下网。", expect.any(Object));
     });
+    expect(screen.queryByText("先按这个理解")).not.toBeInTheDocument();
+    expect(screen.queryByText("先确认一句")).not.toBeInTheDocument();
     expect(screen.queryByText("这个问题更常出现在对手球比较深的时候吗？")).not.toBeInTheDocument();
     expect(await screen.findByText("先修正反手稳定性")).toBeInTheDocument();
+  });
+
+  it("shows one inline paraphrase rewrite and still renders the diagnosis result", async () => {
+    prepareDiagnoseSubmissionMock.mockResolvedValueOnce({
+      source: "structured_intake",
+      decision: "direct_result",
+      diagnosisInput: "比赛里我反手老下网。",
+      extraction: null,
+      scenario: createScenario(),
+      selectedQuestion: null,
+      eligibleQuestions: [],
+      missingSlots: [],
+      done: true,
+      mediationMode: "paraphrase",
+      mediationDisplayText: "比赛里我反手老下网。",
+      mediationQuestion: null,
+      clarificationUsed: false
+    });
+
+    const DiagnosePage = await loadDiagnosePage();
+
+    render(React.createElement(DiagnosePage));
+
+    fireEvent.change(await screen.findByPlaceholderText(/我反手总下网/), {
+      target: { value: "比赛里我反手老下网" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "开始诊断" }));
+
+    expect(await screen.findByText("先按这个理解")).toBeInTheDocument();
+    expect(screen.getByText(/我先按这个理解：/)).toBeInTheDocument();
+    expect(screen.queryByText("先确认一句")).not.toBeInTheDocument();
+    expect(await screen.findByText("先修正反手稳定性")).toBeInTheDocument();
+  });
+
+  it("shows one inline clarification question, accepts one answer, and reruns once", async () => {
+    prepareDiagnoseSubmissionMock.mockResolvedValueOnce({
+      source: "deterministic_fallback",
+      decision: "raw_text_fallback",
+      diagnosisInput: "比赛里我反手老下网",
+      extraction: null,
+      scenario: null,
+      selectedQuestion: null,
+      eligibleQuestions: [],
+      missingSlots: [],
+      done: false,
+      mediationMode: "clarify",
+      mediationDisplayText: null,
+      mediationQuestion: "更像是哪一拍出了问题？",
+      clarificationUsed: false
+    });
+    prepareDiagnoseSubmissionMock.mockResolvedValueOnce({
+      source: "structured_intake",
+      decision: "direct_result",
+      diagnosisInput: "比赛里我反手老下网 手腕有点紧",
+      extraction: null,
+      scenario: createScenario(),
+      selectedQuestion: null,
+      eligibleQuestions: [],
+      missingSlots: [],
+      done: true,
+      mediationMode: "skip",
+      mediationDisplayText: null,
+      mediationQuestion: null,
+      clarificationUsed: true
+    });
+
+    const DiagnosePage = await loadDiagnosePage();
+
+    render(React.createElement(DiagnosePage));
+
+    fireEvent.change(await screen.findByPlaceholderText(/我反手总下网/), {
+      target: { value: "比赛里我反手老下网" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "开始诊断" }));
+
+    expect(await screen.findByText("先确认一句")).toBeInTheDocument();
+    expect(screen.getByText(/我先确认一下：/)).toBeInTheDocument();
+    expect(screen.queryByText("先按这个理解")).not.toBeInTheDocument();
+
+    fireEvent.change(screen.getByPlaceholderText("补充一句即可"), {
+      target: { value: "手腕有点紧" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "继续" }));
+
+    await waitFor(() => {
+      expect(prepareDiagnoseSubmissionMock).toHaveBeenCalledTimes(2);
+    });
+    expect(prepareDiagnoseSubmissionMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
+      text: "比赛里我反手老下网 手腕有点紧",
+      locale: "zh",
+      clarificationUsed: true
+    }));
+    expect(screen.queryByText("先确认一句")).not.toBeInTheDocument();
+    expect(screen.queryByText(/我先确认一下：/)).not.toBeInTheDocument();
+    expect(await screen.findByText("先修正反手稳定性")).toBeInTheDocument();
+    expect(logEventMock.mock.calls.filter(([eventName]) => eventName === "diagnose.submitted")).toHaveLength(1);
+    expect(logEventMock).toHaveBeenCalledWith(
+      "diagnose.mediation_clarification_completed",
+      expect.objectContaining({
+        outcome: "direct_result",
+        source: "structured_intake",
+        mediationMode: "skip"
+      }),
+      expect.any(Object)
+    );
+  });
+
+  it("removes the clarification prompt when the draft changes", async () => {
+    prepareDiagnoseSubmissionMock.mockResolvedValueOnce({
+      source: "deterministic_fallback",
+      decision: "raw_text_fallback",
+      diagnosisInput: "比赛里我反手老下网",
+      extraction: null,
+      scenario: null,
+      selectedQuestion: null,
+      eligibleQuestions: [],
+      missingSlots: [],
+      done: false,
+      mediationMode: "clarify",
+      mediationDisplayText: null,
+      mediationQuestion: "更像是哪一拍出了问题？",
+      clarificationUsed: false
+    });
+
+    const DiagnosePage = await loadDiagnosePage();
+
+    render(React.createElement(DiagnosePage));
+
+    fireEvent.change(await screen.findByPlaceholderText(/我反手总下网/), {
+      target: { value: "比赛里我反手老下网" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "开始诊断" }));
+
+    expect(await screen.findByText("先确认一句")).toBeInTheDocument();
+
+    fireEvent.change(screen.getByPlaceholderText(/我反手总下网/), {
+      target: { value: "比赛里我反手老下网 但其实是手腕也紧" }
+    });
+
+    expect(screen.queryByText("先确认一句")).not.toBeInTheDocument();
+    expect(screen.queryByText(/我先确认一下：/)).not.toBeInTheDocument();
+  });
+
+  it("clearing after a clarification prompt prevents a stale rerun from overwriting the cleared state", async () => {
+    const deferredSecondRun = createDeferred<any>();
+    prepareDiagnoseSubmissionMock.mockResolvedValueOnce({
+      source: "deterministic_fallback",
+      decision: "raw_text_fallback",
+      diagnosisInput: "比赛里我反手老下网",
+      extraction: null,
+      scenario: null,
+      selectedQuestion: null,
+      eligibleQuestions: [],
+      missingSlots: [],
+      done: false,
+      mediationMode: "clarify",
+      mediationDisplayText: null,
+      mediationQuestion: "更像是哪一拍出了问题？",
+      clarificationUsed: false
+    });
+    prepareDiagnoseSubmissionMock.mockImplementationOnce(() => deferredSecondRun.promise as never);
+
+    const DiagnosePage = await loadDiagnosePage();
+
+    render(React.createElement(DiagnosePage));
+
+    fireEvent.change(await screen.findByPlaceholderText(/我反手总下网/), {
+      target: { value: "比赛里我反手老下网" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "开始诊断" }));
+
+    expect(await screen.findByText("先确认一句")).toBeInTheDocument();
+
+    fireEvent.change(screen.getByPlaceholderText("补充一句即可"), {
+      target: { value: "手腕有点紧" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "继续" }));
+
+    await waitFor(() => {
+      expect(prepareDiagnoseSubmissionMock).toHaveBeenCalledTimes(2);
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "清空" }));
+
+    deferredSecondRun.resolve({
+      source: "structured_intake",
+      decision: "direct_result",
+      diagnosisInput: "比赛里我反手老下网 手腕有点紧",
+      extraction: null,
+      scenario: createScenario(),
+      selectedQuestion: null,
+      eligibleQuestions: [],
+      missingSlots: [],
+      done: true,
+      mediationMode: "skip",
+      mediationDisplayText: null,
+      mediationQuestion: null,
+      clarificationUsed: true
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText("先确认一句")).not.toBeInTheDocument();
+      expect(screen.queryByText("先修正反手稳定性")).not.toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/我反手总下网/)).toHaveValue("");
+    });
+    expect(diagnoseProblemMock).not.toHaveBeenCalled();
   });
 
   it("takes the inline follow-up path when intake output is incomplete", async () => {

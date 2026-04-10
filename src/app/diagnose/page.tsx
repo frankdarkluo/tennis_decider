@@ -23,11 +23,13 @@ import { useI18n } from "@/lib/i18n/config";
 import { prepareDiagnoseSubmission } from "@/lib/intake/prepareDiagnoseSubmission";
 // hasStudyTaskRating removed: actionability prompt not shown on diagnose page
 import { getLatestAssessmentResult, saveDiagnosisHistory } from "@/lib/userData";
+import type { ObserveDiagnoseMediation } from "@/lib/intake/diagnoseMediation/types";
 import { AssessmentResult } from "@/types/assessment";
 import { DiagnosisResult, DiagnosisSnapshot } from "@/types/diagnosis";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { DiagnoseInput } from "@/components/diagnose/DiagnoseInput";
+import { DiagnoseMediationInline } from "@/components/diagnose/DiagnoseMediationInline";
 import { InlineFollowupFlow } from "@/components/diagnose/InlineFollowupFlow";
 import { DiagnoseResult as DiagnoseResultPanel } from "@/components/diagnose/DiagnoseResult";
 import { useAppShell } from "@/components/app/AppShellProvider";
@@ -123,6 +125,13 @@ type ConsumerFollowupState = {
   sourceInput: string;
 };
 
+type ConsumerMediationState = {
+  mode: "paraphrase" | "clarify";
+  displayText: string | null;
+  question: string | null;
+  sourceInput: string;
+};
+
 function DiagnosePageContent() {
   const searchParams = useSearchParams();
   const { user, configured, loading } = useAuth();
@@ -137,6 +146,10 @@ function DiagnosePageContent() {
   const [followupState, setFollowupState] = useState<ConsumerFollowupState | null>(null);
   const [followupSubmitting, setFollowupSubmitting] = useState(false);
   const [followupError, setFollowupError] = useState<string | null>(null);
+  const [mediationState, setMediationState] = useState<ConsumerMediationState | null>(null);
+  const [mediationSubmitting, setMediationSubmitting] = useState(false);
+  const [mediationError, setMediationError] = useState<string | null>(null);
+  const diagnosisRunTokenRef = useRef(0);
   const handledQueryRef = useRef<string | null>(null);
 
   const previewOptions = getProblemPreviewOptions();
@@ -153,17 +166,43 @@ function DiagnosePageContent() {
     }
   }
 
+  function resetMediationState() {
+    setMediationState(null);
+    setMediationSubmitting(false);
+    setMediationError(null);
+  }
+
+  function invalidatePendingDiagnosisRuns() {
+    diagnosisRunTokenRef.current += 1;
+    return diagnosisRunTokenRef.current;
+  }
+
+  function startDiagnosisRun() {
+    diagnosisRunTokenRef.current += 1;
+    return diagnosisRunTokenRef.current;
+  }
+
+  function isCurrentDiagnosisRun(runToken: number) {
+    return diagnosisRunTokenRef.current === runToken;
+  }
+
   const applyDiagnosisResult = async ({
     diagnosisInput,
     queryText,
-    scenario
+    scenario,
+    runToken
   }: {
     diagnosisInput: string;
     queryText: string;
     scenario: ScenarioState | null;
+    runToken: number;
   }) => {
     const trimmedDiagnosisInput = diagnosisInput.trim();
     const trimmedQueryText = queryText.trim();
+
+    if (!isCurrentDiagnosisRun(runToken)) {
+      return;
+    }
 
     resetFollowupState();
     setText(trimmedQueryText);
@@ -180,6 +219,10 @@ function DiagnosePageContent() {
       ...diagnosisResult,
       enrichedContext: null
     };
+
+    if (!isCurrentDiagnosisRun(runToken)) {
+      return;
+    }
 
     setResult(finalResult);
     const snapshot = createDiagnosisSnapshot(finalResult, language);
@@ -215,11 +258,16 @@ function DiagnosePageContent() {
   const runDiagnosis = async (
     nextQueryText: string,
     inputSource: "typed" | "tag_click" = "typed",
+    options?: {
+      clarificationRerun?: boolean;
+    }
   ) => {
     const trimmedQueryText = nextQueryText.trim();
+    const runToken = startDiagnosisRun();
 
     if (!trimmedQueryText) {
       resetFollowupState(true);
+      resetMediationState();
       setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
       return;
     }
@@ -227,24 +275,96 @@ function DiagnosePageContent() {
     setText(nextQueryText);
     setFollowupError(null);
 
-    logEvent("diagnose.input_method_selected", {
-      inputMethod: inputSource === "tag_click" ? "quick_tag" : "typing"
-    }, { page: "/diagnose" });
-    logEvent("diagnose.submitted", {
-      inputMethod: inputSource === "tag_click" ? "quick_tag" : "typing",
-      queryLength: trimmedQueryText.length,
-      inheritedLevelBand: currentLevel ?? null,
-      usedAssessmentContext: Boolean(assessmentResult),
-      intakeSource: "auto"
-    }, { page: "/diagnose" });
+    if (!options?.clarificationRerun) {
+      logEvent("diagnose.input_method_selected", {
+        inputMethod: inputSource === "tag_click" ? "quick_tag" : "typing"
+      }, { page: "/diagnose" });
+      logEvent("diagnose.submitted", {
+        inputMethod: inputSource === "tag_click" ? "quick_tag" : "typing",
+        queryLength: trimmedQueryText.length,
+        inheritedLevelBand: currentLevel ?? null,
+        usedAssessmentContext: Boolean(assessmentResult),
+        intakeSource: "auto"
+      }, { page: "/diagnose" });
+    }
+
+    const observeMediation: ObserveDiagnoseMediation = (event) => {
+      if (event.type === "gate") {
+        logEvent("diagnose.mediation_gate_decided", {
+          shouldMediate: event.shouldMediate,
+          reason: event.reason,
+          lockedCategory: event.lockedCategory,
+          clarificationUsed: event.clarificationUsed
+        }, { page: "/diagnose" });
+        return;
+      }
+
+      if (event.type === "mode") {
+        logEvent("diagnose.mediation_mode_selected", {
+          mode: event.mode,
+          reason: event.reason,
+          clarificationUsed: event.clarificationUsed
+        }, { page: "/diagnose" });
+        return;
+      }
+
+      if (event.type === "validator_rejected") {
+        logEvent("diagnose.mediation_validator_rejected", {
+          rejectionReason: event.rejectionReason
+        }, { page: "/diagnose" });
+        return;
+      }
+
+      logEvent("diagnose.mediation_fallback", {
+        reason: event.reason
+      }, { page: "/diagnose" });
+    };
 
     const preparedSubmission = await prepareDiagnoseSubmission({
       text: trimmedQueryText,
-      locale: language
+      locale: language,
+      clarificationUsed: options?.clarificationRerun === true,
+      observeMediation
     });
 
-    if (preparedSubmission.decision === "needs_followup" && preparedSubmission.scenario && preparedSubmission.selectedQuestion) {
+    if (!isCurrentDiagnosisRun(runToken)) {
+      return;
+    }
+
+    if (options?.clarificationRerun) {
+      logEvent("diagnose.mediation_clarification_completed", {
+        outcome: preparedSubmission.decision,
+        source: preparedSubmission.source,
+        mediationMode: preparedSubmission.mediationMode
+      }, { page: "/diagnose" });
+    }
+
+    if (!options?.clarificationRerun && preparedSubmission.mediationMode === "clarify") {
+      resetFollowupState();
       setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
+      setMediationState({
+        mode: "clarify",
+        displayText: null,
+        question: preparedSubmission.mediationQuestion,
+        sourceInput: trimmedQueryText
+      });
+      setMediationError(null);
+      return;
+    }
+
+    if (!options?.clarificationRerun && preparedSubmission.mediationMode === "paraphrase") {
+      setMediationState({
+        mode: "paraphrase",
+        displayText: preparedSubmission.mediationDisplayText,
+        question: null,
+        sourceInput: trimmedQueryText
+      });
+      setMediationError(null);
+    } else {
+      resetMediationState();
+    }
+
+    if (preparedSubmission.decision === "needs_followup" && preparedSubmission.scenario && preparedSubmission.selectedQuestion) {
       setFollowupState({
         scenario: preparedSubmission.scenario,
         selectedQuestion: preparedSubmission.selectedQuestion,
@@ -257,7 +377,8 @@ function DiagnosePageContent() {
     await applyDiagnosisResult({
       diagnosisInput: preparedSubmission.diagnosisInput,
       queryText: trimmedQueryText,
-      scenario: preparedSubmission.decision === "raw_text_fallback" ? null : preparedSubmission.scenario
+      scenario: preparedSubmission.decision === "raw_text_fallback" ? null : preparedSubmission.scenario,
+      runToken
     });
   };
 
@@ -340,9 +461,11 @@ function DiagnosePageContent() {
   };
 
   const onClear = () => {
+    invalidatePendingDiagnosisRuns();
     setText("");
     setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
     resetFollowupState();
+    resetMediationState();
   };
 
   async function handleFollowupAnswer(answerKey: string) {
@@ -350,6 +473,7 @@ function DiagnosePageContent() {
       return;
     }
 
+    const runToken = startDiagnosisRun();
     setFollowupSubmitting(true);
     setFollowupError(null);
 
@@ -375,6 +499,10 @@ function DiagnosePageContent() {
         throw new Error("followup_failed");
       }
 
+      if (!isCurrentDiagnosisRun(runToken)) {
+        return;
+      }
+
       const nextCount = followupState.followupCount + 1;
       const decision = decideDiagnoseFlow({
         scenario: payload.scenario,
@@ -398,12 +526,42 @@ function DiagnosePageContent() {
           ? followupState.sourceInput
           : decision.diagnosisInput,
         queryText: followupState.sourceInput,
-        scenario: decision.type === "raw_text_fallback" ? null : payload.scenario
+        scenario: decision.type === "raw_text_fallback" ? null : payload.scenario,
+        runToken
       });
     } catch {
-      setFollowupError(language === "en" ? "Follow-up failed. Please try again." : "补充追问失败，请稍后再试。");
+      if (isCurrentDiagnosisRun(runToken)) {
+        setFollowupError(language === "en" ? "Follow-up failed. Please try again." : "补充追问失败，请稍后再试。");
+      }
     } finally {
-      setFollowupSubmitting(false);
+      if (isCurrentDiagnosisRun(runToken)) {
+        setFollowupSubmitting(false);
+      }
+    }
+  }
+
+  async function handleMediationAnswer(answer: string) {
+    if (!mediationState || mediationState.mode !== "clarify") {
+      return;
+    }
+
+    const trimmedAnswer = answer.trim();
+    if (!trimmedAnswer) {
+      return;
+    }
+
+    setMediationSubmitting(true);
+    setMediationError(null);
+
+    try {
+      const clarifiedComplaint = `${mediationState.sourceInput.trim()} ${trimmedAnswer}`.trim();
+      await runDiagnosis(clarifiedComplaint, "typed", {
+        clarificationRerun: true
+      });
+    } catch {
+      setMediationError(language === "en" ? "Clarification failed. Please try again." : "补充说明失败，请重试。");
+    } finally {
+      setMediationSubmitting(false);
     }
   }
 
@@ -434,15 +592,33 @@ function DiagnosePageContent() {
           quickTags={quickTags}
           quickTagsLabel={t("diagnose.quickTags")}
           onChange={(value) => {
+            invalidatePendingDiagnosisRuns();
             setText(value);
             if (followupState && value.trim() !== followupState.sourceInput.trim()) {
               resetFollowupState(true);
+            }
+            if (mediationState && value.trim() !== mediationState.sourceInput.trim()) {
+              resetMediationState();
             }
           }}
           onDiagnose={onDiagnose}
           onClear={onClear}
           onQuickTagClick={(tag) => void runDiagnosis(tag, "tag_click")}
         />
+
+        {mediationState ? (
+          <DiagnoseMediationInline
+            language={language === "en" ? "en" : "zh"}
+            mode={mediationState.mode}
+            displayText={mediationState.displayText}
+            question={mediationState.question}
+            submitting={mediationSubmitting}
+            error={mediationError}
+            onSubmit={(answer) => {
+              void handleMediationAnswer(answer);
+            }}
+          />
+        ) : null}
 
         {followupState ? (
           <InlineFollowupFlow
@@ -459,7 +635,7 @@ function DiagnosePageContent() {
           />
         ) : null}
 
-        {!hasDiagnosed && !followupState && latestSnapshot ? (
+        {!hasDiagnosed && !followupState && !mediationState && latestSnapshot ? (
           <Card className="space-y-3 border-slate-200 bg-slate-50/60">
             <p className="text-sm font-semibold text-slate-900">
               {language === "en" ? "Latest diagnosis snapshot" : "最近一次诊断快照"}
