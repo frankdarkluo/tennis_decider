@@ -94,6 +94,7 @@ The new change is a mediation boundary inserted above the current intake orchest
   - remains the orchestration boundary for `/diagnose`
   - becomes responsible for deciding whether the complaint is clear enough to skip mediation
   - decides whether to call the mediation module
+  - owns the one-time clarification rerun and the fallback back into the raw deterministic path
 
 - new mediation module
   - receives the raw complaint and locale
@@ -122,6 +123,32 @@ PR6 should replace the earlier `assistant always runs first` idea with a determi
 ### Gate Outcome
 
 This keeps most users unaware that mediation exists. Only weak-input cases should pay the extra interaction cost.
+
+### Gate Contract
+
+The deterministic-first gate should be explicit and typed:
+
+```ts
+type DiagnoseGateReason =
+  | "clear_enough"
+  | "ambiguous"
+  | "too_vague"
+  | "transcript_noise";
+
+type DiagnoseGateDecision = {
+  shouldMediate: boolean;
+  reason: DiagnoseGateReason;
+  lockedCategory?: SkillCategory | null;
+};
+```
+
+The intended behavior is:
+
+- strong deterministic input -> `shouldMediate: false`
+- weak or noisy input -> `shouldMediate: true`
+- if deterministic intake already has a stable skill category, the gate should preserve it as `lockedCategory`
+
+This gate must live above the current `prepareDiagnoseSubmission` flow, not inside diagnosis ownership.
 
 ## Mediation Contract
 
@@ -162,11 +189,43 @@ type DiagnoseMediationResult = {
 - `clarify`
   - show one best clarification question
   - wait for one answer
-  - rerun intake using the clarified complaint
+  - rerun intake exactly once using `clarifiedComplaint = rawComplaint + answer`
 
 - `fallback`
   - mediation is unavailable, invalid, or not trustworthy
   - use raw complaint and current conservative path
+
+## Mediation Validation
+
+PR6 needs a local validator between the model-facing mediation module and the rest of the app.
+
+### Hard Invariants
+
+- `skip`
+  - `displayText`, `normalizedComplaint`, and `clarificationQuestion` must all be `null`
+
+- `paraphrase`
+  - `displayText` and `normalizedComplaint` are required
+  - `clarificationQuestion` must be `null`
+
+- `clarify`
+  - `clarificationQuestion` is required
+  - `normalizedComplaint` must be `null`
+
+- `fallback`
+  - `displayText`, `normalizedComplaint`, and `clarificationQuestion` must all be `null`
+
+### Reject Conditions
+
+The validator must reject any mediation output that:
+
+- contains diagnosis conclusions
+- contains training advice or plan text
+- contains more than one question
+- contains markdown, bullets, or multi-paragraph chatty text
+- is empty, malformed, or overlong
+
+Invalid output must not leak into the rest of the intake path. It should be converted into a conservative fallback with a logged rejection reason.
 
 ## Confidence And Routing Policy
 
@@ -185,6 +244,22 @@ The exact threshold can be tuned in implementation, but the policy should be sta
   - return `fallback`
 
 The system must never allow repeated assistant clarification loops. One clarification is the upper bound for PR6.
+
+## Category Constraints
+
+Mediation is allowed to compress transcript noise, colloquial filler, and weak phrasing, but it is not allowed to change stable deterministic category ownership.
+
+### Category Lock Rule
+
+- if the deterministic quick-read already produces a stable skill category, mediation must not drift into another category
+- the locked category should be carried through the mediation call and enforced during validation or post-processing
+- if mediation attempts to rewrite a serve complaint into a forehand complaint, or otherwise crosses categories against the deterministic lock, the result must be rejected and the app must fall back to raw deterministic behavior
+
+### Examples
+
+- stable serve complaint -> mediation may rewrite within serve, but not drift into forehand/backhand
+- stable volley complaint -> mediation may compress filler, but not drift into groundstroke
+- unknown category complaint -> mediation may help compress or clarify, but still cannot produce diagnosis text
 
 ## UI Behavior
 
@@ -207,7 +282,9 @@ PR6 should keep the current diagnose page structure and add only small bounded a
 
 - show one short clarification question
 - keep the interaction inline
-- after one answer, route back into the current deterministic intake/diagnosis path
+- collect one answer
+- rerun deterministic intake exactly once using the combined clarified complaint
+- never allow a second clarification loop
 
 ### Internal Fallback To Original Words
 
@@ -248,12 +325,37 @@ PR6 must support:
 
 The typed mediation contract should be locale-aware, but the downstream deterministic path must remain stable regardless of whether the complaint came in raw or normalized.
 
+User-visible mediation text should stay in the user’s language mix. PR6 should not normalize mixed-language complaints into awkward fully-translated assistant copy just because the locale is `zh` or `en`.
+
+## Observability
+
+PR6 should log the mediation layer as a bounded intake aid, not as a separate conversation system.
+
+Required events or event fields:
+
+- gate decision
+- mediation mode
+- validator rejection reason
+- fallback reason
+- post-clarification outcome
+
+At minimum the logs should let us answer:
+
+- how often mediation was skipped
+- how often it paraphrased vs clarified
+- how often validation rejected model output
+- how often the app fell back to raw deterministic behavior
+- whether one-time clarification improved routing or still ended in fallback
+
 ## Expected Code Areas
 
 - diagnose entry orchestration around `prepareDiagnoseSubmission`
 - new mediation boundary module under the intake/diagnose area
+- new deterministic-first gate helper above mediation
+- local mediation validator helper
 - intake route or shared intake boundary code where the deterministic-first gate is applied
 - small diagnose-page UI surface for paraphrase and one clarification
+- intake/event logging wiring for mediation observability
 - zh/en regression tests for weak-input mediation behavior
 
 ## Testing Strategy
@@ -268,12 +370,17 @@ PR6 tests should prove that mediation helps weak inputs without slowing clear in
 - no second clarification loop is possible
 - mediation never outputs final diagnosis or plan
 - invalid/low-confidence mediation output falls back cleanly
+- category lock prevents serve -> forehand drift
 - zh, en, and mixed-language weak-input cases behave consistently
+- existing deep-mode behavior does not regress
+- diagnosis -> plan navigation does not regress
 
 ### Important Negative Tests
 
 - `反手总下网` should not show assistant UI
 - `发球没信心` should not show assistant UI
+- `比赛里截击老下网` should not show assistant UI
+- `My overhead keeps going long` should not show assistant UI
 - `总赢不了` may trigger clarification
 - transcript-like noisy input may trigger paraphrase or clarification, but never a chat sequence
 
@@ -284,6 +391,8 @@ PR6 tests should prove that mediation helps weak inputs without slowing clear in
 - no chatbot drift
 - deterministic diagnosis ownership remains intact
 - mediation stays bounded, typed, and quiet
+- existing deep-mode and category-aware scenario behavior remain intact
+- diagnosis -> plan handoff remains intact
 
 ## Non-Goals For Implementation
 
