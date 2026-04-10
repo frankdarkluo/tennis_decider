@@ -305,6 +305,8 @@ const zh = {
   "platform.search.cache": "24h 缓存命中",
   "platform.search.subtitle": "以下视频来自平台实时搜索，未经人工筛选，仅供参考。",
   "platform.search.failed": "平台搜索失败，请稍后重试。",
+  "platform.search.unavailable": "这个平台连接器已规划，但当前还没有开放实时搜索。",
+  "platform.search.notConfigured": "当前还没有配置 {platform} 搜索。",
   "platform.search.empty": "暂未搜索到相关视频，可以换一个搜索词再试。",
   "platform.search.noThumbnail": "无缩略图",
   "platform.search.unknownAuthor": "作者未知",

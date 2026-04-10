@@ -1,7 +1,10 @@
-export type SearchPlatform = "bilibili" | "youtube";
+export type SupportedSearchPlatform = "bilibili" | "youtube";
+export type PlannedSearchPlatform = "instagram" | "tiktok" | "douyin" | "xiaohongshu";
+export type SearchPlatform = SupportedSearchPlatform | PlannedSearchPlatform;
+export type SearchAvailability = "supported" | "unsupported" | "not_configured";
 
 export type SearchVideoResult = {
-  platform: SearchPlatform;
+  platform: SupportedSearchPlatform;
   videoId: string;
   title: string;
   author: string;
@@ -23,4 +26,5 @@ export type SearchVideosResponse = {
   query: string;
   results: SearchVideoResult[];
   cached: boolean;
+  availability: SearchAvailability;
 };

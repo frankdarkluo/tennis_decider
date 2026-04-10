@@ -11,17 +11,19 @@ import { I18nProvider } from "@/lib/i18n/config";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-CN">
-      <body>
+      <body className="min-h-screen">
         <AuthProvider>
           <AppShellProvider>
             <I18nProvider>
               <AuthModalProvider>
-                <Header />
-                <EventLoggerProvider>
-                  <main className="pb-24 md:pb-0">{children}</main>
-                </EventLoggerProvider>
-                <BottomNav />
-                <Footer />
+                <div className="flex min-h-screen flex-col">
+                  <Header />
+                  <EventLoggerProvider>
+                    <main className="flex-1 pb-24 md:pb-0">{children}</main>
+                  </EventLoggerProvider>
+                  <BottomNav />
+                  <Footer />
+                </div>
               </AuthModalProvider>
             </I18nProvider>
           </AppShellProvider>

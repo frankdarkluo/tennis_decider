@@ -231,6 +231,7 @@ describe("surface localization", () => {
     vi.stubGlobal("fetch", vi.fn(async () => ({
       ok: true,
       json: async () => ({
+        availability: "supported",
         cached: true,
         results: [
           {
@@ -262,6 +263,45 @@ describe("surface localization", () => {
     expect(await screen.findByText("Unknown creator")).toBeInTheDocument();
     expect(await screen.findByText(/151K views/i)).toBeInTheDocument();
     expect(await screen.findByText("Open on Bilibili")).toBeInTheDocument();
+  });
+
+  it("renders an honest not-configured state for YouTube search instead of a fake empty result", async () => {
+    vi.stubGlobal("fetch", vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+      const body = init?.body ? JSON.parse(String(init.body)) : {};
+
+      if (body.platform === "youtube") {
+        return {
+          ok: true,
+          json: async () => ({
+            availability: "not_configured",
+            cached: false,
+            results: []
+          })
+        };
+      }
+
+      return {
+        ok: true,
+        json: async () => ({
+          availability: "supported",
+          cached: false,
+          results: []
+        })
+      };
+    }) as unknown as typeof fetch);
+
+    renderWithI18n(
+      <PlatformVideoSearch
+        queries={{
+          bilibili: [],
+          youtube: ["serve rhythm drill"]
+        }}
+      />
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "YouTube" }));
+
+    expect(await screen.findByText("YouTube search is not configured right now.")).toBeInTheDocument();
   });
 
   it("renders localized plan prescription blocks in both locales", () => {

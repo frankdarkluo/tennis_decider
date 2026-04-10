@@ -6,7 +6,7 @@ export function Footer() {
   const { t } = useI18n();
 
   return (
-    <footer className="border-t border-[var(--line)] bg-white/70">
+    <footer className="mt-auto border-t border-[var(--line)] bg-[rgba(243,249,248,0.86)]">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-8 text-sm text-slate-600 md:px-6 md:flex-row md:items-center md:justify-between">
         <div>{t("footer.brand")}</div>
         <div className="flex flex-wrap items-center gap-4">

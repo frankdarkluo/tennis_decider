@@ -5,7 +5,7 @@ import { formatCompactViewCount } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { formatLocalizedDate } from "@/lib/i18n/format";
-import { SearchPlatform, SearchVideoResult, SearchVideosResponse } from "@/types/platformSearch";
+import { SearchVideoResult, SearchVideosResponse, SupportedSearchPlatform } from "@/types/platformSearch";
 import { DiagnosisSearchQueries } from "@/types/diagnosis";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import { TabButton } from "@/components/ui/Tabs";
@@ -16,7 +16,7 @@ type PlatformVideoSearchProps = {
   sourceContext?: "diagnose" | "generic";
 };
 
-const platformLabels: Record<SearchPlatform, "Bilibili" | "YouTube"> = {
+const platformLabels: Record<SupportedSearchPlatform, "Bilibili" | "YouTube"> = {
   bilibili: "Bilibili",
   youtube: "YouTube"
 };
@@ -40,8 +40,8 @@ export function PlatformVideoSearch({
   sourceContext = "generic"
 }: PlatformVideoSearchProps) {
   const { language, t } = useI18n();
-  const [activePlatform, setActivePlatform] = useState<SearchPlatform>("bilibili");
-  const [queryIndexes, setQueryIndexes] = useState<Record<SearchPlatform, number>>({
+  const [activePlatform, setActivePlatform] = useState<SupportedSearchPlatform>("bilibili");
+  const [queryIndexes, setQueryIndexes] = useState<Record<SupportedSearchPlatform, number>>({
     bilibili: 0,
     youtube: 0
   });
@@ -93,6 +93,20 @@ export function PlatformVideoSearch({
           return;
         }
 
+        if (data.availability === "not_configured") {
+          setResults([]);
+          setCached(false);
+          setError(t("platform.search.notConfigured", { platform: platformLabels[activePlatform] }));
+          return;
+        }
+
+        if (data.availability === "unsupported") {
+          setResults([]);
+          setCached(false);
+          setError(t("platform.search.unavailable"));
+          return;
+        }
+
         setResults(Array.isArray(data.results) ? data.results : []);
         setCached(Boolean(data.cached));
       } catch (searchError) {
@@ -117,7 +131,7 @@ export function PlatformVideoSearch({
     };
   }, [activePlatform, activeQuery, t]);
 
-  const handleSwitchPlatform = (nextPlatform: SearchPlatform) => {
+  const handleSwitchPlatform = (nextPlatform: SupportedSearchPlatform) => {
     setActivePlatform(nextPlatform);
     setQueryIndexes((prev) => ({
       ...prev,

@@ -66,12 +66,12 @@ export function Header() {
   );
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-white/80 shadow-sm backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[rgba(243,249,248,0.88)] shadow-sm backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-[1480px] items-center justify-between gap-2 px-4 py-2.5 md:px-6 lg:gap-3">
         <Link
           href="/"
           aria-label={t("nav.logoAria")}
-          className="inline-flex min-h-14 shrink-0 items-center justify-start px-2 py-1.5 transition hover:opacity-80"
+          className="inline-flex min-h-14 shrink-0 items-center justify-start px-2 py-1.5"
         >
           <Image
             src="/brand/tennislevel-logo-header.png"

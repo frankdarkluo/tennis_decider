@@ -305,6 +305,8 @@ const en = {
   "platform.search.cache": "Cached within 24h",
   "platform.search.subtitle": "These videos come from live platform search and are not curator-approved.",
   "platform.search.failed": "Platform search failed. Please try again later.",
+  "platform.search.unavailable": "This connector is planned, but live search is not available yet.",
+  "platform.search.notConfigured": "{platform} search is not configured right now.",
   "platform.search.empty": "No matching video came back yet. Try another query.",
   "platform.search.noThumbnail": "No thumbnail",
   "platform.search.unknownAuthor": "Unknown creator",
