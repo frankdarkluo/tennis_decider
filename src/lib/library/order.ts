@@ -2,9 +2,6 @@ import { contents } from "@/data/contents";
 import { expandedContents } from "@/data/expandedContents";
 import { creators } from "@/data/creators";
 import { getFeaturedVideoPrimaryTitle } from "@/lib/content/display";
-import { getStudySnapshotContents } from "@/lib/study/snapshot";
-import { seededSort } from "@/lib/study/seededSort";
-import { getThumbnail } from "@/lib/thumbnail";
 import type { ContentItem } from "@/types/content";
 
 function normalizeUrl(url: string) {
@@ -17,6 +14,7 @@ function hashString(value: string) {
     hash ^= value.charCodeAt(index);
     hash = Math.imul(hash, 16777619);
   }
+
   return (hash >>> 0) / 4294967295;
 }
 
@@ -70,7 +68,7 @@ function getFeaturedLibraryItems(): ContentItem[] {
   });
 }
 
-function buildLiveLibraryItems() {
+export function buildLibraryItems() {
   const itemsByUrl = new Map<string, ContentItem>();
 
   const upsert = (item: ContentItem) => {
@@ -86,7 +84,7 @@ function buildLiveLibraryItems() {
   return Array.from(itemsByUrl.values());
 }
 
-function sortByMixedPriority(items: ContentItem[], seed: string) {
+export function sortLibraryItems(items: ContentItem[], seed: string) {
   if (items.length <= 1) {
     return items;
   }
@@ -110,31 +108,4 @@ function sortByMixedPriority(items: ContentItem[], seed: string) {
 
     return left.title.localeCompare(right.title, "zh-Hans-CN");
   });
-}
-
-function sortByStudyPriority(items: ContentItem[], seed: string) {
-  if (items.length <= 1) {
-    return items;
-  }
-
-  return seededSort(
-    items,
-    seed,
-    (item) => item.id,
-    (item) => (getThumbnail(item) ? 0.15 : 0),
-    (left, right) => left.title.localeCompare(right.title, "zh-Hans-CN")
-  );
-}
-
-export function buildLibraryItemsForMode(options: { studyMode: boolean }) {
-  return options.studyMode ? getStudySnapshotContents() : buildLiveLibraryItems();
-}
-
-export function sortLibraryItemsForMode(
-  items: ContentItem[],
-  options: { studyMode: boolean; seed: string }
-) {
-  return options.studyMode
-    ? sortByStudyPriority(items, options.seed)
-    : sortByMixedPriority(items, options.seed);
 }

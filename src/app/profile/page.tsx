@@ -62,26 +62,6 @@ function EmptyState({
   );
 }
 
-function QuickContinueCard({
-  title,
-  description,
-  children
-}: {
-  title: string;
-  description: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Card className="space-y-3 border-slate-200 bg-slate-50/60 shadow-none">
-      <div>
-        <h2 className="text-base font-bold text-slate-900">{title}</h2>
-        <p className="mt-1 text-sm text-slate-600">{description}</p>
-      </div>
-      {children}
-    </Card>
-  );
-}
-
 export default function ProfilePage() {
   const { user, loading, configured } = useAuth();
   const { openLoginModal } = useAuthModal();
@@ -230,9 +210,6 @@ export default function ProfilePage() {
       .slice(0, 3);
   }, [assessmentResult]);
 
-  const latestSavedPlan = savedPlans[0] ?? null;
-  const latestDiagnosis = diagnosisHistory[0] ?? null;
-
   const formatDateTime = (value: string) => formatLocalizedDateTime(value, language);
 
   const toPlanSourceLabel = (sourceType: SavedPlanRow["source_type"]) => {
@@ -312,59 +289,6 @@ export default function ProfilePage() {
           </div>
           <p className="mt-3 text-sm text-slate-600">{t("profile.headerSubtitle")}</p>
         </div>
-
-        <div className="grid gap-3 md:grid-cols-3">
-          <QuickContinueCard
-            title={t("profile.studyQuickContinue")}
-            description={t("profile.studyQuickContinueHint")}
-          >
-            {assessmentResult?.level ? (
-              <Link href={`/library?level=${assessmentResult.level}`}>
-                <Button>{t("profile.assessment.openLibrary")}</Button>
-              </Link>
-            ) : (
-              <p className="text-sm text-slate-500">{t("profile.studyQuickEmpty")}</p>
-            )}
-          </QuickContinueCard>
-
-          <QuickContinueCard
-            title={t("profile.studyQuickPlan")}
-            description={t("profile.studyQuickPlanHint")}
-          >
-            {latestSavedPlan ? (
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => {
-                  logEvent("profile.section_opened", { section: "saved_plans" }, { page: "/profile" });
-                  logEvent("profile.history_item_opened", { itemType: "plan", itemId: latestSavedPlan.id }, { page: "/profile" });
-                  setExpandedPlanId((current) => current === latestSavedPlan.id ? null : latestSavedPlan.id);
-                }}
-              >
-                {t("profile.plans.toggleExpand")}
-              </Button>
-            ) : (
-              <p className="text-sm text-slate-500">{t("profile.studyQuickEmpty")}</p>
-            )}
-          </QuickContinueCard>
-
-          <QuickContinueCard
-            title={t("profile.studyQuickDiagnosis")}
-            description={t("profile.studyQuickDiagnosisHint")}
-          >
-            {latestDiagnosis ? (
-              <Link
-                href={`/diagnose?q=${encodeURIComponent(latestDiagnosis.input_text)}`}
-                onClick={() => logEvent("profile.history_item_opened", { itemType: "diagnosis", itemId: latestDiagnosis.id }, { page: "/profile" })}
-              >
-                <Button variant="secondary">{latestDiagnosis.input_text}</Button>
-              </Link>
-            ) : (
-              <p className="text-sm text-slate-500">{t("profile.studyQuickEmpty")}</p>
-            )}
-          </QuickContinueCard>
-        </div>
-
         <div className="grid gap-5 xl:grid-cols-2">
           {assessmentLoading ? (
             <SectionSkeleton lines={4} />

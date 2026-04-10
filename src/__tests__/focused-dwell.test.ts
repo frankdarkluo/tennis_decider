@@ -4,7 +4,7 @@ import {
   finishFocusedDwell,
   markFocusedDwellInteraction,
   updateFocusedDwellState
-} from "@/lib/study/focusedDwell";
+} from "@/lib/telemetry/focusedDwell";
 
 describe("focused dwell helpers", () => {
   it("counts only the intervals when the page is visible and focused", () => {

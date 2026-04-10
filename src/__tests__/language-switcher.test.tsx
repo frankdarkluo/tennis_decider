@@ -2,10 +2,8 @@ import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { AppShellProvider } from "@/components/app/AppShellProvider";
-import { StudyProvider } from "@/components/study/StudyProvider";
 import { Header } from "@/components/layout/Header";
 import { I18nProvider, useI18n } from "@/lib/i18n/config";
-import { createStudySession, writeActiveStudySession } from "@/lib/study/session";
 
 const mockUsePathname = vi.fn(() => "/");
 const mockSignOut = vi.fn();
@@ -125,7 +123,7 @@ describe("language switcher", () => {
     expect(screen.getAllByRole("button", { name: "Switch site language to Chinese" }).length).toBeGreaterThan(0);
   });
 
-  it("hides main task navigation on the remaining admin export route", () => {
+  it("keeps main task navigation route-based even on a removed legacy admin path", () => {
     mockUsePathname.mockReturnValue("/admin/export");
 
     render(
@@ -136,29 +134,24 @@ describe("language switcher", () => {
       </AppShellProvider>
     );
 
-    expect(screen.queryByRole("link", { name: "首页" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "水平评估" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "问题诊断" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "内容库" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "博主榜" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "训练计划" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "去做免费评估" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "问题诊断" })).toHaveAttribute("href", "/diagnose");
+    expect(screen.getByRole("link", { name: "训练计划" })).toHaveAttribute("href", "/plan");
+    expect(screen.getByRole("link", { name: "内容库" })).toHaveAttribute("href", "/library");
   });
 
-  it("keeps the consumer shell route-based even when a study session is active", () => {
+  it("keeps the consumer shell route-based even when leftover study-session storage exists", () => {
     mockUsePathname.mockReturnValue("/assessment");
-    writeActiveStudySession(createStudySession({
-      participantId: "P003",
-      language: "zh"
+    window.localStorage.setItem("tennislevel_study_session", JSON.stringify({
+      sessionId: "study_1",
+      language: "zh",
+      studyMode: true
     }));
 
     render(
       <AppShellProvider>
-        <StudyProvider>
-          <I18nProvider>
-            <Header />
-          </I18nProvider>
-        </StudyProvider>
+        <I18nProvider>
+          <Header />
+        </I18nProvider>
       </AppShellProvider>
     );
 
@@ -167,19 +160,18 @@ describe("language switcher", () => {
     expect(screen.getByRole("link", { name: "内容库" })).toHaveAttribute("href", "/library");
   });
 
-  it("keeps the study language locked when an active study session already exists", () => {
-    writeActiveStudySession(createStudySession({
-      participantId: "P001",
-      language: "zh"
+  it("does not lock language switching just because leftover study-session storage exists", () => {
+    window.localStorage.setItem("tennislevel_study_session", JSON.stringify({
+      sessionId: "study_1",
+      language: "zh",
+      studyMode: true
     }));
 
     render(
       <AppShellProvider>
-        <StudyProvider>
-          <I18nProvider>
-            <LanguageProbe />
-          </I18nProvider>
-        </StudyProvider>
+        <I18nProvider>
+          <LanguageProbe />
+        </I18nProvider>
       </AppShellProvider>
     );
 
@@ -187,28 +179,27 @@ describe("language switcher", () => {
 
     fireEvent.click(screen.getByText("switch-to-en"));
 
-    expect(screen.getByTestId("language-value").textContent).toBe("zh");
-    expect(window.localStorage.getItem("tennislevel.app_language")).toBe("zh");
+    expect(screen.getByTestId("language-value").textContent).toBe("en");
+    expect(window.localStorage.getItem("tennislevel.app_language")).toBe("en");
   });
 
-  it("prefers the active study session language over stale app-language storage", () => {
+  it("prefers the stored app language over leftover study-session storage", () => {
     window.localStorage.setItem("tennislevel.app_language", "zh");
-    writeActiveStudySession(createStudySession({
-      participantId: "P002",
-      language: "en"
+    window.localStorage.setItem("tennislevel_study_session", JSON.stringify({
+      sessionId: "study_2",
+      language: "en",
+      studyMode: true
     }));
 
     render(
       <AppShellProvider>
-        <StudyProvider>
-          <I18nProvider>
-            <LanguageProbe />
-          </I18nProvider>
-        </StudyProvider>
+        <I18nProvider>
+          <LanguageProbe />
+        </I18nProvider>
       </AppShellProvider>
     );
 
-    expect(screen.getByTestId("language-value").textContent).toBe("en");
-    expect(screen.getByTestId("translated-home").textContent).toBe("Home");
+    expect(screen.getByTestId("language-value").textContent).toBe("zh");
+    expect(screen.getByTestId("translated-home").textContent).toBe("首页");
   });
 });

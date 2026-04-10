@@ -1,5 +1,5 @@
 import { AssessmentQuestion } from "@/types/assessment";
-import { StudyLanguage } from "@/types/study";
+import { LocaleValue } from "@/lib/i18n/config";
 
 const questionCopy: Record<string, { en: string; labels?: Record<number, string> }> = {
   gender: {
@@ -173,7 +173,7 @@ const questionCopy: Record<string, { en: string; labels?: Record<number, string>
   }
 };
 
-export function formatAssessmentYearsLabel(value: number, language: StudyLanguage) {
+export function formatAssessmentYearsLabel(value: number, language: LocaleValue) {
   if (language === "en") {
     if (value === 0.5) {
       return "6 months";
@@ -195,7 +195,7 @@ export function formatAssessmentYearsLabel(value: number, language: StudyLanguag
   return `${value}年`;
 }
 
-export function getAssessmentQuestionText(question: AssessmentQuestion, language: StudyLanguage) {
+export function getAssessmentQuestionText(question: AssessmentQuestion, language: LocaleValue) {
   if (language === "zh") {
     return question.question;
   }
@@ -203,7 +203,7 @@ export function getAssessmentQuestionText(question: AssessmentQuestion, language
   return questionCopy[question.id]?.en ?? question.question;
 }
 
-export function getAssessmentOptionLabel(questionId: string, value: number, fallback: string, language: StudyLanguage) {
+export function getAssessmentOptionLabel(questionId: string, value: number, fallback: string, language: LocaleValue) {
   if (language === "zh") {
     return fallback;
   }

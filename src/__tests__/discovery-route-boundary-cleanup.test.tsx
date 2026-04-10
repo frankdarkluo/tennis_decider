@@ -14,10 +14,8 @@ const {
   mockOpenLoginModal: vi.fn()
 }));
 
-const mockStudyContext = {
-  session: null as null | { sessionId: string; snapshotId: string; snapshotSeed?: string; buildVersion?: string },
-  studyMode: false,
-  pendingStudySetup: false
+const mockAppShellContext = {
+  loading: false
 };
 
 const mockAuthState = {
@@ -40,12 +38,9 @@ const translations: Record<string, string> = {
   "library.title": "找内容",
   "library.subtitle": "按动作、博主或场景筛选。",
   "library.bookmarkLogin": "登录后可收藏内容",
-  "rankings.title": "博主榜",
-  "rankings.searchPlaceholder": "搜索博主",
-  "rankings.searchAria": "搜索博主",
-  "rankings.domestic": "国内",
-  "rankings.overseas": "海外",
-  "rankings.empty": "还没有匹配的博主。"
+  "rankings.deprecated.title": "博主榜已下线",
+  "rankings.deprecated.body": "当前版本不再维护这个入口；需要找训练内容时请直接使用内容库。",
+  "rankings.deprecated.cta": "去内容库"
 };
 
 vi.mock("next/link", () => ({
@@ -78,8 +73,14 @@ vi.mock("@/components/auth/AuthModalProvider", () => ({
   })
 }));
 
-vi.mock("@/components/study/StudyProvider", () => ({
-  useStudy: () => mockStudyContext
+vi.mock("@/components/app/AppShellProvider", () => ({
+  useAppShell: () => ({
+    environment: "production" as const,
+    loading: mockAppShellContext.loading,
+    language: "zh" as const,
+    canChangeLanguage: true,
+    setLanguage: vi.fn()
+  })
 }));
 
 vi.mock("@/lib/i18n/config", () => ({
@@ -107,8 +108,8 @@ vi.mock("@/lib/eventLogger", () => ({
   logEvent: vi.fn()
 }));
 
-vi.mock("@/lib/library/studyOrder", () => ({
-  buildLibraryItemsForMode: vi.fn(() => [
+vi.mock("@/lib/library/order", () => ({
+  buildLibraryItems: vi.fn(() => [
     {
       id: "content_1",
       title: "反手稳定练习",
@@ -125,27 +126,7 @@ vi.mock("@/lib/library/studyOrder", () => ({
       url: "https://example.com/content_1"
     }
   ]),
-  sortLibraryItemsForMode: vi.fn((items: unknown[]) => items)
-}));
-
-vi.mock("@/lib/rankings/studyOrder", () => ({
-  buildRankingsCreatorsForMode: vi.fn(() => [
-    {
-      id: "creator_1",
-      name: "Coach One",
-      shortDescription: "desc",
-      tags: ["consistency"],
-      region: "domestic",
-      platforms: ["Bilibili"],
-      levels: ["3.0"],
-      specialties: ["backhand"],
-      styleTags: ["clear"],
-      bio: "bio",
-      suitableFor: ["beginner"],
-      featuredContentIds: ["content_1"]
-    }
-  ]),
-  sortRankingsCreatorsForMode: vi.fn((items: unknown[]) => items)
+  sortLibraryItems: vi.fn((items: unknown[]) => items)
 }));
 
 vi.mock("@/components/library/ContentCard", () => ({
@@ -154,14 +135,6 @@ vi.mock("@/components/library/ContentCard", () => ({
 
 vi.mock("@/components/library/LibraryFilters", () => ({
   LibraryFilters: () => React.createElement("div", null, "library-filters")
-}));
-
-vi.mock("@/components/rankings/CreatorCard", () => ({
-  CreatorCard: ({ creator }: { creator: { name: string } }) => React.createElement("div", null, creator.name)
-}));
-
-vi.mock("@/components/rankings/CreatorDetailModal", () => ({
-  CreatorDetailModal: () => null
 }));
 
 async function loadLibraryPage() {
@@ -178,9 +151,7 @@ describe("discovery route boundary cleanup", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     cleanup();
-    mockStudyContext.session = null;
-    mockStudyContext.studyMode = false;
-    mockStudyContext.pendingStudySetup = false;
+    mockAppShellContext.loading = false;
     mockAuthState.user = null;
     mockAuthState.configured = false;
     mockAuthState.loading = false;
@@ -193,7 +164,6 @@ describe("discovery route boundary cleanup", () => {
   });
 
   it("keeps library on the consumer assessment gate instead of redirecting to study start", async () => {
-    mockStudyContext.pendingStudySetup = true;
     const LibraryPage = await loadLibraryPage();
 
     render(React.createElement(LibraryPage));
@@ -202,39 +172,14 @@ describe("discovery route boundary cleanup", () => {
     expect(mockReplace).not.toHaveBeenCalledWith("/study/start");
   });
 
-  it("does not let an active study session bypass the consumer library assessment gate", async () => {
-    mockStudyContext.studyMode = true;
-    mockStudyContext.session = { sessionId: "study_1", snapshotId: "snapshot_1" };
-    const LibraryPage = await loadLibraryPage();
-
-    render(React.createElement(LibraryPage));
-
-    expect(await screen.findByText("先完成一次水平评估")).toBeInTheDocument();
-    expect(screen.queryByText("反手稳定练习")).not.toBeInTheDocument();
-  });
-
-  it("keeps rankings on the consumer assessment gate instead of redirecting to study start", async () => {
-    mockStudyContext.pendingStudySetup = true;
+  it("keeps rankings as a deprecated hidden route instead of redirecting into old study flow", async () => {
     const RankingsPage = await loadRankingsPage();
 
     render(React.createElement(RankingsPage));
 
-    await waitFor(() => {
-      expect(mockReplace).toHaveBeenCalledWith("/assessment");
-    });
+    expect(await screen.findByText("博主榜已下线")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "去内容库" })).toHaveAttribute("href", "/library");
+    expect(mockReplace).not.toHaveBeenCalledWith("/assessment");
     expect(mockReplace).not.toHaveBeenCalledWith("/study/start");
-  });
-
-  it("does not let an active study session bypass the consumer rankings assessment gate", async () => {
-    mockStudyContext.studyMode = true;
-    mockStudyContext.session = { sessionId: "study_1", snapshotId: "snapshot_1" };
-    const RankingsPage = await loadRankingsPage();
-
-    render(React.createElement(RankingsPage));
-
-    await waitFor(() => {
-      expect(mockReplace).toHaveBeenCalledWith("/assessment");
-    });
-    expect(screen.queryByText("Coach One")).not.toBeInTheDocument();
   });
 });

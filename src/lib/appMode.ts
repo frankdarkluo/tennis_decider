@@ -11,16 +11,7 @@ export const consumerNavItems: ReadonlyArray<{ href: string; labelKey: ConsumerN
   { href: "/profile", labelKey: "nav.profile" }
 ];
 
-const researchPathPrefixes = ["/admin/export"];
-
-export function isResearchPath(pathname: string | null | undefined) {
-  return Boolean(pathname && researchPathPrefixes.some((prefix) => pathname.startsWith(prefix)));
-}
-
 export function shouldShowConsumerShell(pathname: string | null | undefined) {
-  if (!pathname) {
-    return true;
-  }
-
-  return !isResearchPath(pathname);
+  void pathname;
+  return true;
 }

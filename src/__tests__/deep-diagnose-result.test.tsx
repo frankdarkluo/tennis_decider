@@ -40,20 +40,11 @@ vi.mock("@/lib/i18n/config", () => ({
 vi.mock("@/components/app/AppShellProvider", () => ({
   useAppShell: () => ({
     environment: "testing",
-    activeSession: { sessionId: "study_1", participantId: "P001", language: "zh" },
-    studyMode: true,
     loading: false,
     language: "zh",
     canChangeLanguage: false,
-    setLanguage: vi.fn(),
-    syncStudySession: vi.fn()
+    setLanguage: vi.fn()
   })
-}));
-
-vi.mock("@/components/study/StudyProvider", () => ({
-  useStudy: () => {
-    throw new Error("deep diagnose result should not depend on useStudy");
-  }
 }));
 
 vi.mock("@/lib/eventLogger", () => ({

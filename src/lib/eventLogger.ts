@@ -1,18 +1,16 @@
 "use client";
 
 import { getSupabaseBrowserClient } from "@/lib/supabase";
-import { CURRENT_STUDY_ID } from "@/lib/study/config";
 import {
   createFocusedDwellState,
   finishFocusedDwell,
   FocusedDwellState,
   markFocusedDwellInteraction,
   updateFocusedDwellState
-} from "@/lib/study/focusedDwell";
-import { EventLog, EventType, LegacyEventType, StudyFlushFailureReason } from "@/types/research";
+} from "@/lib/telemetry/focusedDwell";
+import { EventLog, EventType, LegacyEventType } from "@/types/telemetry";
 
 const LOCAL_EVENT_LOGS_KEY = "tennislevel_events";
-const STUDY_FLUSH_FALLBACK_LOGS_KEY = "tennislevel_study_flush_fallback_logs";
 const SESSION_ID_KEY = "tennislevel_session_id";
 const MAX_LOCAL_EVENTS = 1000;
 
@@ -34,9 +32,6 @@ const PRIVACY_SENSITIVE_KEYS = new Set([
 ]);
 
 const LEGACY_EVENT_NAME_MAP: Partial<Record<LegacyEventType, EventType>> = {
-  study_session_start: "session.started",
-  study_session_end: "session.completed",
-  study_data_clear: "profile.local_data_cleared",
   page_enter: "page.view",
   page_leave: "page.leave",
   assessment_start: "assessment.started",
@@ -126,23 +121,6 @@ function getCurrentPath() {
   return sanitizeRoute(window.location.pathname || currentPage);
 }
 
-export type StudyFlushFallbackLogRecord = {
-  timestamp: string;
-  reason: StudyFlushFailureReason;
-  attempts: number;
-  eventCount: number;
-  mode: "sync" | "async";
-  httpStatus?: number | null;
-};
-
-export function getStudyFlushFallbackLogs(): StudyFlushFallbackLogRecord[] {
-  return [];
-}
-
-export function exportStudyFlushFallbackLogs(): string {
-  return JSON.stringify(getStudyFlushFallbackLogs(), null, 2);
-}
-
 function getVisibilitySnapshot() {
   if (!isBrowser()) {
     return { isVisible: true, isWindowFocused: true };
@@ -185,7 +163,7 @@ function getDeviceType() {
 function persistRemoteLog(event: EventLog) {
   const supabase = getSupabaseBrowserClient();
 
-  if (!supabase || !event.userId || event.studyMode) {
+  if (!supabase || !event.userId) {
     return;
   }
 
@@ -194,25 +172,10 @@ function persistRemoteLog(event: EventLog) {
       await supabase.from("event_logs").insert({
         session_id: event.sessionId,
         user_id: event.userId,
-        participant_id: event.participantId,
-        study_mode: event.studyMode,
-        language: event.language,
-        condition: event.condition,
-        snapshot_id: event.snapshotId,
-        snapshot_seed: event.snapshotSeed,
-        build_version: event.buildVersion,
         timestamp: event.timestamp,
         page: event.route,
         event_type: event.eventName,
-        event_data: {
-          studyId: event.studyId,
-          appMode: event.appMode,
-          tsClient: event.tsClient,
-          tsServer: event.tsServer ?? null,
-          snapshotVersion: event.snapshotVersion ?? null,
-          buildSha: event.buildSha ?? null,
-          ...event.payload
-        },
+        event_data: { tsClient: event.tsClient, ...event.payload },
         duration_ms: event.durationMs
       });
     } catch {
@@ -240,19 +203,8 @@ function createEvent(
 
   return {
     eventId: createId(),
-    studyId: CURRENT_STUDY_ID,
     sessionId: getEventSessionId(),
     userId: currentUserId,
-    participantId: null,
-    appMode: "product",
-    studyMode: false,
-    language: null,
-    condition: null,
-    snapshotVersion: null,
-    buildSha: null,
-    snapshotId: null,
-    snapshotSeed: null,
-    buildVersion: null,
     timestamp: new Date(tsClient).toISOString(),
     tsClient,
     route,

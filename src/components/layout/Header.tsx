@@ -10,7 +10,7 @@ import { consumerNavItems, shouldShowConsumerShell } from "@/lib/appMode";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
-import { StudyLanguage } from "@/types/study";
+import { LocaleValue } from "@/lib/i18n/config";
 
 export function Header() {
   const pathname = usePathname();
@@ -28,7 +28,7 @@ export function Header() {
     setIsSigningOut(false);
   }
 
-  function handleLanguageChange(nextLanguage: StudyLanguage) {
+  function handleLanguageChange(nextLanguage: LocaleValue) {
     if (language === nextLanguage || !canChangeLanguage) {
       return;
     }
@@ -42,7 +42,6 @@ export function Header() {
       className="inline-flex items-center gap-0.5"
       role="group"
       aria-label={t("nav.languageLabel")}
-      title={canChangeLanguage ? undefined : t("nav.languageLocked")}
     >
       {(["zh", "en"] as const).map((option, index) => (
         <div key={option} className="flex items-center">

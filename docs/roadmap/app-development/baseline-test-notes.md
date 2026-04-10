@@ -258,6 +258,55 @@ Current status:
 - Fresh post-Slice D1 full-suite inventory:
   - `26` failed tests
   - `4` failed files
+
+## Study-mode cleanup Slice D9 checkpoint
+
+- Slice D9 trims the remaining dead helper surface under `src/lib/study/` without touching accepted consumer routes, the kept legacy `\/video-diagnose` route, or the research/export stack.
+- Removed dead study-only helpers that no longer back runtime app state, frozen ordering, hidden legacy routes, or admin export:
+  - `src/lib/study/eventPersistence.ts`
+  - `src/lib/study/docConsistency.ts`
+  - `src/lib/study/remoteValidation.ts`
+- Removed their dedicated tests:
+  - `src/__tests__/study-doc-consistency.test.ts`
+  - `src/__tests__/study-remote-diagnosis.test.ts`
+  - `src/__tests__/study-remote-validation.test.ts`
+- The remaining `src/lib/study/` surface is intentionally narrower and still limited to:
+  - session/app-shell compatibility
+  - frozen study snapshot and seeded ordering helpers
+  - focused dwell metrics used by product-first event logging
+  - legacy local storage keys still referenced by deferred tests
+- Passing targeted Slice D9 verification:
+  - `src/__tests__/study-provider-cleanup.test.tsx`
+  - `src/__tests__/language-switcher.test.tsx`
+  - `src/__tests__/study-library-order.test.ts`
+  - `src/__tests__/study-rankings-order.test.ts`
+  - `src/__tests__/focused-dwell.test.ts`
+  - `src/__tests__/study-snapshot.test.ts`
+- `npm run build` passes after Slice D9.
+- `npm run lint` remains non-blocking because `next lint` still enters the first-time ESLint setup prompt instead of running non-interactively in this repo.
+
+## Study-mode cleanup Slice D10 checkpoint
+
+- Slice D10 trims the last broad legacy storage surface in `src/lib/study/localData.ts` down to the only persisted artifacts still intentionally kept:
+  - diagnosis snapshots
+  - plan drafts
+- Removed dead local-study helpers for:
+  - artifacts
+  - task ratings
+  - survey-session staging
+  - bookmarks
+  - study progress
+  - last-path tracking
+  - pending setup flags
+  - bulk local-data clearing
+- Trimmed `src/lib/study/config.ts` to the keys and study-freeze flags that still have real callers in runtime code or deferred legacy tests.
+- Passing targeted Slice D10 verification:
+  - `src/__tests__/study-plan-draft.test.ts`
+  - `src/__tests__/app-shell-route-state.test.ts`
+  - `src/__tests__/study-provider-cleanup.test.tsx`
+  - `src/__tests__/language-switcher.test.tsx`
+- `npm run build` passes after Slice D10.
+- `npm run lint` remains non-blocking because `next lint` still enters the first-time ESLint setup prompt instead of running non-interactively in this repo.
 - Slice D1 does not introduce a new accepted-consumer-surface blocker or a new remaining red file.
 
 ## Study-mode cleanup Slice D2 checkpoint
@@ -560,6 +609,15 @@ Reason:
 - The app-shell boundary-isolation slice moved accepted consumer routes and the shared diagnosis result surface off `useStudy()` and onto `useAppShell()`, while leaving `StudyProvider` as a compatibility bridge for legacy paths.
 - No new accepted-surface red file remains after the slice.
 - The currently remaining `cleanup-touched` red file is `src/__tests__/app-smoke.test.tsx`, now deferred because it still contains legacy smoke coverage that renders migrated consumer pages without the new app-shell test boundary and still mixes stale non-consumer expectations.
+- The accepted study-provider isolation follow-up slice verification surface is:
+  - `src/__tests__/language-switcher.test.tsx`
+  - `src/__tests__/study-provider-cleanup.test.tsx`
+  - `src/__tests__/video-diagnose-boundary-cleanup.test.ts`
+  - plus the accepted PR1-PR6 checkpoint bundle and build
+- The study-provider isolation follow-up slice removed `StudyProvider` from `src/app/layout.tsx` and moved the hidden `/video-diagnose` route onto `useAppShell()`.
+- After this slice, no runtime app route imports `useStudy()` or `StudyProvider`.
+- The follow-up deletion slice then removed `src/components/study/StudyProvider.tsx` entirely.
+- After the deletion slice, the accepted consumer/runtime app no longer carries any mounted or isolated study-provider boundary; only app-shell state remains.
 
 ### Resolved during the 7-step cleanup slice
 

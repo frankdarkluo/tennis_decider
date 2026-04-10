@@ -54,7 +54,7 @@ describe("app shell route state", () => {
     writeLocalDiagnosisSnapshot(diagnosisSnapshot);
 
     expect(readLocalDiagnosisSnapshot()).toEqual(diagnosisSnapshot);
-    expect(window.localStorage.getItem("tennislevel_study_diagnosis_snapshot")).not.toBeNull();
+    expect(window.localStorage.getItem("tennislevel_diagnosis_snapshot")).not.toBeNull();
   });
 
   it("stores and clears consumer plan drafts through the app-shell boundary", () => {
@@ -83,6 +83,6 @@ describe("app shell route state", () => {
 
     clearLocalPlanDraft();
     expect(readLocalPlanDraft()).toBeNull();
-    expect(window.localStorage.getItem("tennislevel_study_plan_draft")).toBeNull();
+    expect(window.localStorage.getItem("tennislevel_plan_draft")).toBeNull();
   });
 });

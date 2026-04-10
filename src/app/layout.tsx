@@ -6,7 +6,6 @@ import { Header } from "@/components/layout/Header";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { AuthModalProvider } from "@/components/auth/AuthModalProvider";
 import { EventLoggerProvider } from "@/components/research/EventLoggerProvider";
-import { StudyProvider } from "@/components/study/StudyProvider";
 import { I18nProvider } from "@/lib/i18n/config";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -18,11 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <I18nProvider>
               <AuthModalProvider>
                 <Header />
-                <StudyProvider>
-                  <EventLoggerProvider>
-                    <main className="pb-24 md:pb-0">{children}</main>
-                  </EventLoggerProvider>
-                </StudyProvider>
+                <EventLoggerProvider>
+                  <main className="pb-24 md:pb-0">{children}</main>
+                </EventLoggerProvider>
                 <BottomNav />
                 <Footer />
               </AuthModalProvider>

@@ -5,9 +5,8 @@ import { EnrichedDiagnosisContext } from "@/types/enrichedDiagnosis";
 import { PlanContext, PlanLevel } from "@/types/plan";
 import { SavedPlanSource } from "@/types/userData";
 
-// Retain legacy keys so accepted consumer routes keep the same local restore behavior.
-const DIAGNOSIS_SNAPSHOT_KEY = "tennislevel_study_diagnosis_snapshot";
-const PLAN_DRAFT_KEY = "tennislevel_study_plan_draft";
+const DIAGNOSIS_SNAPSHOT_KEY = "tennislevel_diagnosis_snapshot";
+const PLAN_DRAFT_KEY = "tennislevel_plan_draft";
 
 export type LocalPlanDraft = {
   problemTag: string;

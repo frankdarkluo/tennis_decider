@@ -21,7 +21,6 @@ import { VideoProcessingStatus } from "@/components/video/VideoProcessingStatus"
 import { VideoAnalysisResult } from "@/components/video/VideoAnalysisResult";
 import { UsageMeter } from "@/components/video/UsageMeter";
 import { VideoDiagnosisResult, VideoSceneType, VideoStrokeType } from "@/types/videoDiagnosis";
-import { useStudy } from "@/components/study/StudyProvider";
 
 type UsageState = {
   successCount: number;
@@ -42,7 +41,6 @@ function initialUsageState(): UsageState {
 export default function VideoDiagnosePage() {
   const { user, configured, loading } = useAuth();
   const { openLoginModal } = useAuthModal();
-  const { studyMode } = useStudy();
   const { t, language } = useI18n();
   const [file, setFile] = useState<File | null>(null);
   const [description, setDescription] = useState("");
@@ -89,7 +87,7 @@ export default function VideoDiagnosePage() {
         setCurrentLevel(localResult.level);
       }
 
-      if (!studyMode && user?.id && configured) {
+      if (user?.id && configured) {
         const [remoteAssessment, remoteUsage, remoteHistory] = await Promise.all([
           getLatestAssessmentResult(user.id),
           getVideoUsage(user.id),
@@ -128,7 +126,7 @@ export default function VideoDiagnosePage() {
     return () => {
       active = false;
     };
-  }, [configured, language, loading, studyMode, t, user?.id]);
+  }, [configured, language, loading, t, user?.id]);
 
   const handleFileChange = async (nextFile: File | null) => {
     setFile(nextFile);
@@ -171,7 +169,7 @@ export default function VideoDiagnosePage() {
   };
 
   const refreshUsage = async (type: "success" | "fail") => {
-    if (!studyMode && user?.id && configured) {
+    if (user?.id && configured) {
       const updateResult = await incrementVideoUsage(user.id, type);
       if (updateResult.error) {
         console.error("[video-diagnose] failed to update usage", updateResult.error);
@@ -284,26 +282,6 @@ export default function VideoDiagnosePage() {
     }
   };
 
-  if (studyMode) {
-    return (
-      <PageContainer>
-        <Card className="mx-auto max-w-3xl space-y-4 text-center">
-          <p className="text-sm font-semibold text-brand-700">{t("study.start.badge")}</p>
-          <h1 className="text-3xl font-black text-slate-900">{t("video.title")}</h1>
-          <p className="text-sm leading-6 text-slate-600">
-            {language === "en"
-              ? "Video diagnose is hidden in this study phase. Please continue with text diagnosis, content browsing, or the training plan flow."
-              : "本轮研究暂时不开放视频诊断。请继续使用问题诊断、内容库或训练计划流程。"}
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Link href="/diagnose"><Button>{language === "en" ? "Go to diagnose" : "去问题诊断"}</Button></Link>
-            <Link href="/library"><Button variant="secondary">{language === "en" ? "Browse library" : "去内容库"}</Button></Link>
-          </div>
-        </Card>
-      </PageContainer>
-    );
-  }
-
   return (
     <PageContainer>
       <div className="space-y-5">
@@ -400,7 +378,7 @@ export default function VideoDiagnosePage() {
               <Button type="button" onClick={() => void handleAnalyze()} disabled={!file || Boolean(processingStep)}>
                 {processingStep ? t("video.button.running") : t("video.button.start")}
               </Button>
-              {!studyMode && !user ? (
+              {!user ? (
                 <button
                   type="button"
                   className="text-sm font-medium text-slate-500 transition hover:text-brand-700"

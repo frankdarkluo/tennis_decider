@@ -5,15 +5,14 @@ import { useAppShell } from "@/components/app/AppShellProvider";
 import en from "@/lib/i18n/dictionaries/en";
 import zh from "@/lib/i18n/dictionaries/zh";
 import { I18nKey } from "@/lib/i18n/config";
-import { StudyLanguage } from "@/types/study";
+import { LocaleValue } from "@/lib/i18n/config";
 
 const dictionaries = { zh, en } as const;
 
 type I18nContextValue = {
-  language: StudyLanguage;
-  studyMode: boolean;
+  language: LocaleValue;
   canChangeLanguage: boolean;
-  setLanguage: (language: StudyLanguage) => void;
+  setLanguage: (language: LocaleValue) => void;
   t: (key: I18nKey, replacements?: Record<string, string | number>) => string;
 };
 
@@ -30,11 +29,10 @@ function applyReplacements(value: string, replacements?: Record<string, string |
 }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const { language, studyMode, canChangeLanguage, setLanguage } = useAppShell();
+  const { language, canChangeLanguage, setLanguage } = useAppShell();
 
   const value = useMemo<I18nContextValue>(() => ({
     language,
-    studyMode,
     canChangeLanguage,
     setLanguage,
     t: (key, replacements) => {
@@ -43,7 +41,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       const translated = dictionary[key as keyof typeof dictionary] ?? fallback;
       return applyReplacements(String(translated), replacements);
     }
-  }), [canChangeLanguage, language, setLanguage, studyMode]);
+  }), [canChangeLanguage, language, setLanguage]);
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }

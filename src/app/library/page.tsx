@@ -18,7 +18,7 @@ import {
 } from "@/lib/assessmentStorage";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
-import { buildLibraryItemsForMode, sortLibraryItemsForMode } from "@/lib/library/studyOrder";
+import { buildLibraryItems, sortLibraryItems } from "@/lib/library/order";
 import { addBookmark, getBookmarkedContentIds, getLatestAssessmentResult, removeBookmark } from "@/lib/userData";
 import { getThumbnail } from "@/lib/thumbnail";
 import { toChineseSkill } from "@/lib/utils";
@@ -74,7 +74,7 @@ function LibraryPageContent() {
     []
   );
   const libraryItems = useMemo(
-    () => buildLibraryItemsForMode({ studyMode: false }),
+    () => buildLibraryItems(),
     []
   );
 
@@ -255,14 +255,14 @@ function LibraryPageContent() {
       return hitKeyword && hitPlatform && hitContentLanguage && hitSubtitle && hitBookmark;
     });
 
-    const withThumbnail = sortLibraryItemsForMode(matchedItems.filter((item) => Boolean(getThumbnail(item))), {
-      studyMode: false,
-      seed: `${productSeed}:with-thumb`
-    });
-    const withoutThumbnail = sortLibraryItemsForMode(matchedItems.filter((item) => !getThumbnail(item)), {
-      studyMode: false,
-      seed: `${productSeed}:no-thumb`
-    });
+    const withThumbnail = sortLibraryItems(
+      matchedItems.filter((item) => Boolean(getThumbnail(item))),
+      `${productSeed}:with-thumb`
+    );
+    const withoutThumbnail = sortLibraryItems(
+      matchedItems.filter((item) => !getThumbnail(item)),
+      `${productSeed}:no-thumb`
+    );
     return [...withThumbnail, ...withoutThumbnail];
   }, [bookmarkedIds, creatorNameById, keyword, productSeed, selectedContentLanguage, selectedPlatform, selectedSubtitleAvailability, showBookmarkedOnly]);
   const visibleItems = useMemo(

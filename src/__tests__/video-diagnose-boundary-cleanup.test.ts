@@ -8,6 +8,8 @@ describe("video diagnose boundary cleanup", () => {
   it("keeps the hidden video diagnose route free of study artifact transport", () => {
     const source = fs.readFileSync(videoDiagnosePagePath, "utf8");
 
+    expect(source).not.toContain('from "@/components/app/AppShellProvider"');
+    expect(source).not.toContain('from "@/components/study/StudyProvider"');
     expect(source).not.toContain('from "@/lib/study/client"');
     expect(source).not.toContain('from "@/lib/study/localData"');
     expect(source).not.toContain("sanitizeVideoDiagnosisArtifact");

@@ -17,9 +17,8 @@ describe("environment helpers", () => {
     ]);
   });
 
-  it("resolves testing when a study session is active", () => {
-    expect(resolveAppEnvironment({ studyMode: true, hasSession: true })).toBe("testing");
-    expect(resolveAppEnvironment({ studyMode: false, hasSession: false })).toBe("production");
+  it("stays production for the consumer app shell", () => {
+    expect(resolveAppEnvironment()).toBe("production");
   });
 
   it("routes post-assessment flow back to home in both environments", () => {

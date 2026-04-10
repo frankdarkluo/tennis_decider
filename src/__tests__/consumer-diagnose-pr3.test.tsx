@@ -17,18 +17,13 @@ const mockSearchParams = new URLSearchParams();
 const mockFetch = vi.fn();
 const diagnoseProblemMock = vi.hoisted(() => vi.fn());
 const prepareDiagnoseSubmissionMock = vi.hoisted(() => vi.fn());
-const persistStudyArtifactMock = vi.hoisted(() => vi.fn(async () => undefined));
-const updateLocalStudyProgressMock = vi.hoisted(() => vi.fn());
 
 const mockAppShellContext = {
-  activeSession: null,
-  studyMode: false,
   environment: "testing" as "testing" | "production",
   language: "zh" as "zh" | "en",
   loading: false,
   canChangeLanguage: true,
-  setLanguage: vi.fn(),
-  syncStudySession: vi.fn()
+  setLanguage: vi.fn()
 };
 
 const translationMap: Record<string, string> = {
@@ -49,8 +44,7 @@ const translationMap: Record<string, string> = {
   "diagnose.result.why": "为什么会这样",
   "diagnose.result.featured": "先看这个",
   "diagnose.result.plan": "根据这个问题生成 7 步训练计划",
-  "diagnose.result.library": "去内容库找更多练习",
-  "diagnose.result.rankings": "去博主榜找适合的人"
+  "diagnose.result.library": "去内容库找更多练习"
 };
 
 function t(key: string, replacements?: Record<string, string | number>) {
@@ -220,12 +214,6 @@ vi.mock("@/components/app/AppShellProvider", () => ({
   useAppShell: () => mockAppShellContext
 }));
 
-vi.mock("@/components/study/StudyProvider", () => ({
-  useStudy: () => {
-    throw new Error("consumer diagnose route should not depend on useStudy");
-  }
-}));
-
 vi.mock("@/lib/i18n/config", () => ({
   useI18n: () => ({
     language: mockAppShellContext.language,
@@ -242,20 +230,10 @@ vi.mock("@/lib/eventLogger", () => ({
   logEvent: vi.fn()
 }));
 
-vi.mock("@/lib/study/client", () => ({
-  persistStudyArtifact: persistStudyArtifactMock
+vi.mock("@/lib/appShell/localRouteState", () => ({
+  readLocalDiagnosisSnapshot: vi.fn(() => null),
+  writeLocalDiagnosisSnapshot: vi.fn()
 }));
-
-vi.mock("@/lib/study/localData", async () => {
-  const actual = await vi.importActual<typeof import("@/lib/study/localData")>("@/lib/study/localData");
-
-  return {
-    ...actual,
-    readLocalDiagnosisSnapshot: vi.fn(() => null),
-    writeLocalDiagnosisSnapshot: vi.fn(),
-    updateLocalStudyProgress: updateLocalStudyProgressMock
-  };
-});
 
 vi.mock("@/lib/intake/prepareDiagnoseSubmission", () => ({
   prepareDiagnoseSubmission: prepareDiagnoseSubmissionMock
@@ -312,8 +290,6 @@ describe("consumer diagnose PR3", () => {
     cleanup();
     window.localStorage.clear();
     window.sessionStorage.clear();
-    mockAppShellContext.activeSession = null;
-    mockAppShellContext.studyMode = false;
     mockAppShellContext.loading = false;
     mockAppShellContext.environment = "testing";
     mockAppShellContext.language = "zh";
@@ -336,7 +312,7 @@ describe("consumer diagnose PR3", () => {
     expect(screen.queryByRole("button", { name: "深入" })).not.toBeInTheDocument();
   });
 
-  it("keeps the consumer diagnose route available even when study setup is pending", async () => {
+  it("keeps the consumer diagnose route available without legacy redirects", async () => {
     const DiagnosePage = await loadDiagnosePage();
 
     render(React.createElement(DiagnosePage));
@@ -516,7 +492,7 @@ describe("consumer diagnose PR3", () => {
     expect(planLink?.getAttribute("href")).toContain("problemTag=backhand-stability");
   });
 
-  it("does not run study-only persistence on the consumer diagnose path by accident", async () => {
+  it("does not run legacy persistence on the consumer diagnose path", async () => {
     prepareDiagnoseSubmissionMock.mockResolvedValueOnce({
       source: "structured_intake",
       decision: "direct_result",
@@ -539,47 +515,6 @@ describe("consumer diagnose PR3", () => {
     fireEvent.click(screen.getByRole("button", { name: "开始诊断" }));
 
     await screen.findByText("先修正反手稳定性");
-
-    await waitFor(() => {
-      expect(persistStudyArtifactMock).not.toHaveBeenCalled();
-      expect(updateLocalStudyProgressMock).not.toHaveBeenCalled();
-    });
-  });
-
-  it("does not run study persistence even when a legacy study session still exists", async () => {
-    mockAppShellContext.studyMode = true;
-    mockAppShellContext.activeSession = {
-      sessionId: "study_1",
-      snapshotId: "snapshot_1",
-      participantId: "P001",
-      language: "zh"
-    };
-    prepareDiagnoseSubmissionMock.mockResolvedValueOnce({
-      source: "structured_intake",
-      decision: "direct_result",
-      diagnosisInput: "比赛里我反手老下网。",
-      extraction: null,
-      scenario: createScenario(),
-      selectedQuestion: null,
-      eligibleQuestions: [],
-      missingSlots: [],
-      done: true
-    });
-
-    const DiagnosePage = await loadDiagnosePage();
-
-    render(React.createElement(DiagnosePage));
-
-    fireEvent.change(await screen.findByPlaceholderText(/我反手总下网/), {
-      target: { value: "比赛里我反手老下网" }
-    });
-    fireEvent.click(screen.getByRole("button", { name: "开始诊断" }));
-
-    await screen.findByText("先修正反手稳定性");
-
-    await waitFor(() => {
-      expect(updateLocalStudyProgressMock).not.toHaveBeenCalled();
-      expect(persistStudyArtifactMock).not.toHaveBeenCalled();
-    });
+    expect(mockReplace).not.toHaveBeenCalledWith("/study/start");
   });
 });

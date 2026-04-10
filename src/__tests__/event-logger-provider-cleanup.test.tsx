@@ -13,8 +13,7 @@ const {
   syncPageFocusStateMock,
   markPageInteractionMock,
   flushEventQueueMock,
-  logSessionAbandonedMock,
-  writeLastStudyPathMock
+  logSessionAbandonedMock
 } = vi.hoisted(() => ({
   mockUsePathname: vi.fn(),
   initEventLoggerMock: vi.fn(),
@@ -26,8 +25,7 @@ const {
   syncPageFocusStateMock: vi.fn(),
   markPageInteractionMock: vi.fn(),
   flushEventQueueMock: vi.fn(),
-  logSessionAbandonedMock: vi.fn(),
-  writeLastStudyPathMock: vi.fn()
+  logSessionAbandonedMock: vi.fn()
 }));
 
 vi.mock("next/navigation", () => ({
@@ -38,12 +36,6 @@ vi.mock("@/components/auth/AuthProvider", () => ({
   useAuth: () => ({
     user: { id: "user_1" }
   })
-}));
-
-vi.mock("@/components/study/StudyProvider", () => ({
-  useStudy: () => {
-    throw new Error("EventLoggerProvider should not depend on study context");
-  }
 }));
 
 vi.mock("@/lib/eventLogger", () => ({
@@ -58,10 +50,6 @@ vi.mock("@/lib/eventLogger", () => ({
   flushEventQueue: flushEventQueueMock,
   logSessionAbandoned: logSessionAbandonedMock,
   logEvent: vi.fn()
-}));
-
-vi.mock("@/lib/study/localData", () => ({
-  writeLastStudyPath: writeLastStudyPathMock
 }));
 
 async function loadEventLoggerProvider() {
@@ -101,7 +89,6 @@ describe("event logger provider cleanup", () => {
     window.dispatchEvent(new Event("beforeunload"));
 
     expect(flushEventQueueMock).toHaveBeenCalledWith(true);
-    expect(writeLastStudyPathMock).not.toHaveBeenCalled();
     expect(logSessionAbandonedMock).not.toHaveBeenCalled();
   });
 });

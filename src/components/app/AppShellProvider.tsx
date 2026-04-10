@@ -2,21 +2,17 @@
 
 import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { resolveAppEnvironment } from "@/lib/environment";
-import { readActiveStudySession } from "@/lib/study/session";
-import { StudyLanguage, StudySession } from "@/types/study";
 import { AppEnvironment } from "@/types/environment";
+import { LocaleValue } from "@/lib/i18n/config";
 
 const APP_LANGUAGE_KEY = "tennislevel.app_language";
 
 type AppShellContextValue = {
-  language: StudyLanguage;
-  studyMode: boolean;
+  language: LocaleValue;
   environment: AppEnvironment;
-  activeSession: StudySession | null;
   loading: boolean;
   canChangeLanguage: boolean;
-  setLanguage: (language: StudyLanguage) => void;
-  syncStudySession: (session: StudySession | null) => void;
+  setLanguage: (language: LocaleValue) => void;
 };
 
 const AppShellContext = createContext<AppShellContextValue | null>(null);
@@ -25,7 +21,7 @@ function isBrowser() {
   return typeof window !== "undefined";
 }
 
-function readStoredLanguage(): StudyLanguage {
+function readStoredLanguage(): LocaleValue {
   if (!isBrowser()) {
     return "zh";
   }
@@ -34,7 +30,7 @@ function readStoredLanguage(): StudyLanguage {
   return stored === "en" ? "en" : "zh";
 }
 
-function writeStoredLanguage(language: StudyLanguage) {
+function writeStoredLanguage(language: LocaleValue) {
   if (!isBrowser()) {
     return;
   }
@@ -42,36 +38,18 @@ function writeStoredLanguage(language: StudyLanguage) {
   window.localStorage.setItem(APP_LANGUAGE_KEY, language);
 }
 
-function normalizeStudySession(session: StudySession | null): StudySession | null {
-  if (!session || session.endedAt) {
-    return null;
-  }
-
-  return session;
-}
-
 export function AppShellProvider({ children }: { children: ReactNode }) {
-  const [appLanguage, setAppLanguage] = useState<StudyLanguage>("zh");
-  const [activeStudySession, setActiveStudySession] = useState<StudySession | null>(null);
+  const [appLanguage, setAppLanguage] = useState<LocaleValue>("zh");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setAppLanguage(readStoredLanguage());
-    const nextSession = normalizeStudySession(readActiveStudySession());
-    setActiveStudySession(nextSession);
-    if (nextSession) {
-      writeStoredLanguage(nextSession.language);
-    }
     setLoading(false);
   }, []);
 
-  const language = activeStudySession?.language ?? appLanguage;
-  const studyMode = Boolean(activeStudySession);
-  const canChangeLanguage = !activeStudySession;
-  const environment = resolveAppEnvironment({
-    studyMode,
-    hasSession: studyMode
-  });
+  const language = appLanguage;
+  const canChangeLanguage = true;
+  const environment = resolveAppEnvironment();
 
   useEffect(() => {
     document.documentElement.lang = language === "en" ? "en" : "zh-CN";
@@ -79,28 +57,14 @@ export function AppShellProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<AppShellContextValue>(() => ({
     language,
-    studyMode,
     environment,
-    activeSession: activeStudySession,
     loading,
     canChangeLanguage,
     setLanguage: (nextLanguage) => {
-      if (activeStudySession) {
-        return;
-      }
-
       setAppLanguage(nextLanguage);
       writeStoredLanguage(nextLanguage);
-    },
-    syncStudySession: (session) => {
-      const normalizedSession = session && !session.endedAt ? session : null;
-      setActiveStudySession(normalizedSession);
-
-      if (normalizedSession) {
-        writeStoredLanguage(normalizedSession.language);
-      }
     }
-  }), [activeStudySession, canChangeLanguage, environment, language, loading, studyMode]);
+  }), [canChangeLanguage, environment, language, loading]);
 
   return <AppShellContext.Provider value={value}>{children}</AppShellContext.Provider>;
 }

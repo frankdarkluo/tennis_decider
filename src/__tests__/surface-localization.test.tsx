@@ -20,7 +20,7 @@ import { creators } from "@/data/creators";
 const {
   mockPush,
   mockSearchParamsAdapter,
-  mockStudyState,
+  mockShellState,
   mockAuthState,
   mockAuthModalState,
   mockUserData,
@@ -30,22 +30,11 @@ const {
   mockSearchParamsAdapter: {
     get: vi.fn(() => null)
   },
-  mockStudyState: {
+  mockShellState: {
     language: "en" as "zh" | "en",
-    studyMode: false,
-    session: null as null | {
-      participantId: string;
-      sessionId: string;
-      snapshotId: string;
-      buildVersion: string;
-      language: "zh" | "en";
-    },
     loading: false,
     canChangeLanguage: true,
-    setLanguage: vi.fn(),
-    startStudySession: vi.fn(),
-    endStudySession: vi.fn(),
-    clearStudyData: vi.fn()
+    setLanguage: vi.fn()
   },
   mockAuthState: {
     user: null as null | { id: string; email?: string | null },
@@ -98,9 +87,20 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/profile"
 }));
 
-vi.mock("@/components/study/StudyProvider", () => ({
-  useStudy: () => mockStudyState
-}));
+vi.mock("@/components/app/AppShellProvider", async () => {
+  const actual = await vi.importActual<typeof import("@/components/app/AppShellProvider")>("@/components/app/AppShellProvider");
+
+  return {
+    ...actual,
+    useAppShell: () => ({
+      environment: "production" as const,
+      loading: mockShellState.loading,
+      language: mockShellState.language,
+      canChangeLanguage: mockShellState.canChangeLanguage,
+      setLanguage: mockShellState.setLanguage
+    })
+  };
+});
 
 vi.mock("@/components/auth/AuthProvider", () => ({
   useAuth: () => mockAuthState
@@ -129,7 +129,7 @@ vi.mock("@/lib/eventLogger", () => ({
 }));
 
 function renderWithI18n(ui: React.ReactElement) {
-  window.localStorage.setItem("tennislevel.app_language", mockStudyState.language);
+  window.localStorage.setItem("tennislevel.app_language", mockShellState.language);
   return render(
     <AppShellProvider>
       <I18nProvider>{ui}</I18nProvider>
@@ -143,9 +143,10 @@ describe("surface localization", () => {
     mockPush.mockReset();
     mockSearchParamsAdapter.get.mockReset();
     mockSearchParamsAdapter.get.mockImplementation(() => null);
-    mockStudyState.language = "en";
-    mockStudyState.studyMode = false;
-    mockStudyState.session = null;
+    mockShellState.language = "en";
+    mockShellState.loading = false;
+    mockShellState.canChangeLanguage = true;
+    mockShellState.setLanguage.mockClear();
     mockAuthState.user = null;
     mockAuthState.configured = false;
     mockAuthState.sendMagicLink.mockClear();
@@ -172,7 +173,7 @@ describe("surface localization", () => {
     expect(screen.getByText("Email sign-in")).toBeInTheDocument();
     expect(screen.getByText("Enter your email and we will send you a sign-in link.")).toBeInTheDocument();
 
-    mockStudyState.language = "zh";
+    mockShellState.language = "zh";
     cleanup();
     renderWithI18n(<LoginModal open onClose={() => {}} />);
 
@@ -267,7 +268,7 @@ describe("surface localization", () => {
     const zhPlan = getPlanTemplate("backhand-into-net", "3.0", "zh");
     const enPlan = getPlanTemplate("backhand-into-net", "3.0", "en");
 
-    mockStudyState.language = "zh";
+    mockShellState.language = "zh";
     renderWithI18n(<DayPlanCard day={zhPlan.days[0]} isToday />);
     expect(screen.getByText("第 1 步 · 从这一步开始")).toBeInTheDocument();
     expect(screen.getByText("这一步目标")).toBeInTheDocument();
@@ -279,7 +280,7 @@ describe("surface localization", () => {
     expect(screen.getByText("节奏 · 慢节奏")).toBeInTheDocument();
 
     cleanup();
-    mockStudyState.language = "en";
+    mockShellState.language = "en";
     renderWithI18n(<DayPlanCard day={enPlan.days[1]} />);
 
     fireEvent.click(screen.getByRole("button", { name: "Expand" }));
@@ -302,7 +303,7 @@ describe("surface localization", () => {
       throw new Error("Missing content_ttt_01");
     }
 
-    mockStudyState.language = "zh";
+    mockShellState.language = "zh";
     renderWithI18n(<ContentCard item={item} />);
 
     expect(screen.getByText("Simple Tennis Serve Technique Masterclass for Beginners")).toBeInTheDocument();
@@ -318,7 +319,7 @@ describe("surface localization", () => {
       throw new Error("Missing creator_venus_williams");
     }
 
-    mockStudyState.language = "zh";
+    mockShellState.language = "zh";
     renderWithI18n(<CreatorDetailModal creator={creator} open onClose={() => {}} />);
 
     expect(screen.getByText("How To Hit A Basic Tennis Serve with Venus Williams")).toBeInTheDocument();
@@ -326,15 +327,7 @@ describe("surface localization", () => {
   });
 
   it("renders the current consumer header in zh without legacy beta or study-only labels", () => {
-    mockStudyState.language = "zh";
-    mockStudyState.studyMode = true;
-    mockStudyState.session = {
-      participantId: "P001",
-      sessionId: "session-12345678",
-      snapshotId: "snapshot-a",
-      buildVersion: "build-1",
-      language: "zh"
-    };
+    mockShellState.language = "zh";
 
     renderWithI18n(<Header />);
 
@@ -346,16 +339,8 @@ describe("surface localization", () => {
     expect(screen.queryByText("测试 (Beta)")).not.toBeInTheDocument();
   });
 
-  it("keeps the profile route on the current consumer records surface in zh even when legacy study state exists", async () => {
-    mockStudyState.language = "zh";
-    mockStudyState.studyMode = true;
-    mockStudyState.session = {
-      participantId: "P001",
-      sessionId: "session-12345678",
-      snapshotId: "snapshot-a",
-      buildVersion: "build-1",
-      language: "zh"
-    };
+  it("keeps the profile route on the current consumer records surface in zh", async () => {
+    mockShellState.language = "zh";
     mockAuthState.user = { id: "user_1", email: "player@example.com" };
     mockAuthState.configured = true;
 
@@ -365,7 +350,9 @@ describe("surface localization", () => {
       expect(screen.getByText("最近评估结果")).toBeInTheDocument();
     });
 
-    expect(screen.getByText("继续上次练习")).toBeInTheDocument();
+    expect(screen.getByText("诊断历史")).toBeInTheDocument();
+    expect(screen.getByText("收藏")).toBeInTheDocument();
+    expect(screen.getByText("已保存的训练计划")).toBeInTheDocument();
     expect(screen.queryByText("当前研究会话")).not.toBeInTheDocument();
     expect(screen.queryByText("Snapshot")).not.toBeInTheDocument();
     expect(screen.queryByText("Build")).not.toBeInTheDocument();

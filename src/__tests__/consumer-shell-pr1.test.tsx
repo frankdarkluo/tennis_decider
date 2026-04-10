@@ -16,14 +16,11 @@ let mockPathname = "/";
 let mockSearchParams = new URLSearchParams();
 
 const mockAppShellContext = {
-  activeSession: null as null | { participantId: string },
-  studyMode: false,
   environment: "production" as const,
   language: "zh" as const,
   canChangeLanguage: true,
   loading: false,
-  setLanguage: vi.fn(),
-  syncStudySession: vi.fn()
+  setLanguage: vi.fn()
 };
 
 const translations = {
@@ -102,17 +99,9 @@ vi.mock("@/components/app/AppShellProvider", () => ({
   AppShellProvider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children)
 }));
 
-vi.mock("@/components/study/StudyProvider", () => ({
-  useStudy: () => {
-    throw new Error("consumer shell routes should not depend on useStudy");
-  },
-  StudyProvider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children)
-}));
-
 vi.mock("@/lib/i18n/config", () => ({
   useI18n: () => ({
     language: mockAppShellContext.language,
-    studyMode: mockAppShellContext.studyMode,
     canChangeLanguage: mockAppShellContext.canChangeLanguage,
     setLanguage: mockAppShellContext.setLanguage,
     t: (key: string) => translations[key] ?? key
@@ -137,16 +126,13 @@ vi.mock("@/lib/study/client", () => ({
   persistStudyArtifact: vi.fn(async () => undefined)
 }));
 
-vi.mock("@/lib/study/localData", async () => {
-  const actual = await vi.importActual<typeof import("@/lib/study/localData")>("@/lib/study/localData");
+vi.mock("@/lib/appShell/localRouteState", async () => {
+  const actual = await vi.importActual<typeof import("@/lib/appShell/localRouteState")>("@/lib/appShell/localRouteState");
 
   return {
     ...actual,
     readLocalDiagnosisSnapshot: vi.fn(() => null),
-    writeLocalDiagnosisSnapshot: vi.fn(),
-    updateLocalStudyProgress: vi.fn(),
-    readLocalStudyBookmarks: vi.fn(() => ({ contentIds: [], creatorIds: [] })),
-    toggleLocalStudyBookmark: vi.fn(() => ({ contentIds: [], creatorIds: [] }))
+    writeLocalDiagnosisSnapshot: vi.fn()
   };
 });
 
@@ -158,8 +144,6 @@ describe("consumer shell PR1", () => {
     mockPush.mockReset();
     mockReplace.mockReset();
     mockPrefetch.mockReset();
-    mockAppShellContext.activeSession = null;
-    mockAppShellContext.studyMode = false;
     mockAppShellContext.environment = "production";
     mockAppShellContext.language = "zh";
     mockAppShellContext.loading = false;
@@ -180,7 +164,7 @@ describe("consumer shell PR1", () => {
     expect(screen.queryByText("先完成一次水平评估")).not.toBeInTheDocument();
   });
 
-  it("keeps the consumer home route available even when study setup is pending", async () => {
+  it("keeps the consumer home route available without any legacy gate redirects", async () => {
     const { default: HomePage } = await import("@/app/page");
 
     render(React.createElement(HomePage));
@@ -223,7 +207,7 @@ describe("consumer shell PR1", () => {
     expect(container.querySelector('a[href="/admin/export"]')).toBeNull();
   });
 
-  it("keeps consumer shell navigation visible on consumer routes even when study setup is pending", async () => {
+  it("keeps consumer shell navigation visible on consumer routes", async () => {
     const { Header } = await import("@/components/layout/Header");
     const { BottomNav } = await import("@/components/layout/BottomNav");
 

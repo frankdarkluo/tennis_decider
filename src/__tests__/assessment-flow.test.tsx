@@ -88,26 +88,16 @@ vi.mock("@/components/auth/AuthProvider", () => ({
 vi.mock("@/components/app/AppShellProvider", () => ({
   useAppShell: () => ({
     environment: "production",
-    activeSession: null,
-    studyMode: false,
     loading: false,
     language: mockLanguage,
     canChangeLanguage: true,
-    setLanguage: vi.fn(),
-    syncStudySession: vi.fn()
+    setLanguage: vi.fn()
   })
-}));
-
-vi.mock("@/components/study/StudyProvider", () => ({
-  useStudy: () => {
-    throw new Error("assessment flow should not depend on useStudy");
-  }
 }));
 
 vi.mock("@/lib/i18n/config", () => ({
   useI18n: () => ({
     language: mockLanguage,
-    studyMode: false,
     canChangeLanguage: true,
     setLanguage: vi.fn(),
     t: (key: string, replacements?: Record<string, string | number>) => {
@@ -135,7 +125,7 @@ vi.mock("@/lib/study/client", () => ({
   persistStudyArtifact: vi.fn(async () => undefined)
 }));
 
-vi.mock("@/lib/study/localData", () => ({
+vi.mock("@/lib/appShell/localRouteState", () => ({
   updateLocalStudyProgress: vi.fn()
 }));
 

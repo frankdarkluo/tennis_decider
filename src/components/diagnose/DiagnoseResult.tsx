@@ -25,7 +25,6 @@ import { buildDiagnosisPlanCandidateIds, buildDiagnosisPlanContext, buildPlanHre
 import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
 import { VIDEO_DIAGNOSE_VISIBLE } from "@/lib/videoDiagnose";
 import { PlanLevel } from "@/types/plan";
-import { useAppShell } from "@/components/app/AppShellProvider";
 import { Badge } from "@/components/ui/Badge";
 
 function getNarrowingSeverityRank(severity: "high" | "medium" | "low"): number {
@@ -215,7 +214,6 @@ export function DiagnoseResult({
 }) {
   const { language, t } = useI18n();
   const locale: "zh" | "en" = language === "en" ? "en" : "zh";
-  const { studyMode } = useAppShell();
   const primaryFix = result.fixes[0] ?? result.summary;
   const primaryNextStep = result.primaryNextStep ?? primaryFix;
   const normalizedPlanLevel = normalizePlanLevel(result.level);
@@ -536,16 +534,6 @@ export function DiagnoseResult({
             >
               <Button variant="secondary">{t("diagnose.result.library")}</Button>
             </Link>
-            <Link
-              href="/rankings"
-              onClick={() => logEvent("cta_click", {
-                ctaLabel: t("diagnose.result.rankings"),
-                ctaLocation: "diagnosis_result_follow_up",
-                targetPage: "/rankings"
-              }, { page: "/diagnose" })}
-            >
-              <Button variant="ghost">{t("diagnose.result.rankings")}</Button>
-            </Link>
           </div>
 
           {layer === 2 ? (
@@ -584,7 +572,7 @@ export function DiagnoseResult({
             >
               {t("diagnose.result.continue")}
             </button>
-            {!studyMode && VIDEO_DIAGNOSE_VISIBLE ? (
+            {VIDEO_DIAGNOSE_VISIBLE ? (
               <Link
                 href="/video-diagnose"
                 onClick={() => logEvent("cta_click", { ctaLabel: t("cta.videoUpgrade"), ctaLocation: "diagnosis_result", targetPage: "/video-diagnose" })}

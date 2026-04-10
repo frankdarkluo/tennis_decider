@@ -7,29 +7,22 @@ const {
   mockPush,
   mockReplace,
   mockPrefetch,
-  persistStudyArtifactMock,
-  updateLocalStudyProgressMock,
   getLatestAssessmentResultMock,
   saveAssessmentResultMock
 } = vi.hoisted(() => ({
   mockPush: vi.fn(),
   mockReplace: vi.fn(),
   mockPrefetch: vi.fn(),
-  persistStudyArtifactMock: vi.fn(async () => undefined),
-  updateLocalStudyProgressMock: vi.fn(),
   getLatestAssessmentResultMock: vi.fn(async () => ({ data: null, error: null })),
   saveAssessmentResultMock: vi.fn(async () => ({ error: null }))
 }));
 
 const mockAppShellContext = {
   environment: "production" as const,
-  activeSession: null as null | { sessionId: string; snapshotId: string; participantId: string; language: "zh" | "en" },
-  studyMode: false,
   loading: false,
   language: "zh" as const,
   canChangeLanguage: true,
-  setLanguage: vi.fn(),
-  syncStudySession: vi.fn()
+  setLanguage: vi.fn()
 };
 
 const mockAuthState = {
@@ -78,12 +71,6 @@ vi.mock("@/components/app/AppShellProvider", () => ({
   useAppShell: () => mockAppShellContext
 }));
 
-vi.mock("@/components/study/StudyProvider", () => ({
-  useStudy: () => {
-    throw new Error("consumer assessment route should not depend on useStudy");
-  }
-}));
-
 vi.mock("@/lib/i18n/config", () => ({
   useI18n: () => ({
     language: "zh",
@@ -98,14 +85,6 @@ vi.mock("@/lib/eventLogger", () => ({
 vi.mock("@/lib/userData", () => ({
   getLatestAssessmentResult: getLatestAssessmentResultMock,
   saveAssessmentResult: saveAssessmentResultMock
-}));
-
-vi.mock("@/lib/study/client", () => ({
-  persistStudyArtifact: persistStudyArtifactMock
-}));
-
-vi.mock("@/lib/study/localData", () => ({
-  updateLocalStudyProgress: updateLocalStudyProgressMock
 }));
 
 vi.mock("@/components/assessment/ResultSummary", () => ({
@@ -130,8 +109,6 @@ describe("assessment boundary cleanup", () => {
     window.localStorage.clear();
     window.history.pushState({}, "", "/assessment");
     mockAppShellContext.environment = "production";
-    mockAppShellContext.activeSession = null;
-    mockAppShellContext.studyMode = false;
     mockAppShellContext.loading = false;
     mockAuthState.user = null;
     mockAuthState.configured = false;
@@ -144,7 +121,7 @@ describe("assessment boundary cleanup", () => {
     cleanup();
   });
 
-  it("keeps /assessment accessible even when pending study setup still exists", async () => {
+  it("keeps /assessment accessible without legacy redirects", async () => {
     const AssessmentPage = await loadAssessmentPage();
 
     render(React.createElement(AssessmentPage));
@@ -155,27 +132,7 @@ describe("assessment boundary cleanup", () => {
     expect(mockReplace).not.toHaveBeenCalledWith("/study/start");
   });
 
-  it("does not run study-only draft persistence on the consumer assessment path by accident", async () => {
-    const AssessmentPage = await loadAssessmentPage();
-
-    render(React.createElement(AssessmentPage));
-
-    await waitFor(() => {
-      expect(screen.queryByText("正在同步你的评估记录...")).not.toBeInTheDocument();
-    });
-
-    expect(updateLocalStudyProgressMock).not.toHaveBeenCalled();
-    expect(persistStudyArtifactMock).not.toHaveBeenCalled();
-  });
-
-  it("does not run study-owned assessment persistence even when a legacy study session still exists", async () => {
-    mockAppShellContext.studyMode = true;
-    mockAppShellContext.activeSession = {
-      sessionId: "study_1",
-      snapshotId: "snapshot_1",
-      participantId: "P001",
-      language: "zh"
-    };
+  it("renders a locally saved assessment result on the consumer result page", async () => {
     window.history.pushState({}, "", "/assessment/result");
     window.localStorage.setItem("tennislevel-assessment-result", JSON.stringify({
       totalScore: 30,
@@ -197,14 +154,9 @@ describe("assessment boundary cleanup", () => {
     render(React.createElement(AssessmentResultPage));
 
     expect(await screen.findByTestId("assessment-result-summary")).toHaveTextContent("3.5:6");
-    await waitFor(() => {
-      expect(updateLocalStudyProgressMock).not.toHaveBeenCalled();
-      expect(persistStudyArtifactMock).not.toHaveBeenCalled();
-    });
   });
 
-  it("syncs assessment result through the consumer path even if stale study mode is still set without a session", async () => {
-    mockAppShellContext.studyMode = true;
+  it("syncs assessment result through the consumer account path", async () => {
     mockAuthState.user = { id: "user_1" };
     mockAuthState.configured = true;
     getLatestAssessmentResultMock.mockResolvedValue({
@@ -232,42 +184,5 @@ describe("assessment boundary cleanup", () => {
 
     expect(await screen.findByTestId("assessment-result-summary")).toHaveTextContent("3.5:6");
     expect(getLatestAssessmentResultMock).toHaveBeenCalledWith("user_1");
-    expect(updateLocalStudyProgressMock).not.toHaveBeenCalled();
-  });
-
-  it("does not record study progress on assessment result when a legacy study session still exists", async () => {
-    mockAppShellContext.studyMode = true;
-    mockAppShellContext.activeSession = {
-      sessionId: "study_1",
-      snapshotId: "snapshot_1",
-      participantId: "P001",
-      language: "zh"
-    };
-    window.localStorage.setItem("tennislevel-assessment-result", JSON.stringify({
-      totalScore: 30,
-      maxScore: 40,
-      normalizedScore: 75,
-      answeredCount: 6,
-      uncertainCount: 0,
-      totalQuestions: 6,
-      level: "3.5",
-      confidence: "中等",
-      dimensions: [],
-      strengths: [],
-      weaknesses: [],
-      observationNeeded: [],
-      summary: "local result"
-    }));
-    window.history.pushState({}, "", "/assessment/result");
-    const AssessmentResultPage = await loadAssessmentResultPage();
-
-    render(React.createElement(AssessmentResultPage));
-
-    expect(await screen.findByTestId("assessment-result-summary")).toHaveTextContent("3.5:6");
-
-    await waitFor(() => {
-      expect(updateLocalStudyProgressMock).not.toHaveBeenCalled();
-      expect(persistStudyArtifactMock).not.toHaveBeenCalled();
-    });
   });
 });

@@ -105,7 +105,6 @@ function translate(key: string, replacements?: Record<string, string | number>) 
 vi.mock("@/lib/i18n/config", () => ({
   useI18n: () => ({
     language: "en",
-    studyMode: true,
     t: translate
   })
 }));
@@ -113,13 +112,10 @@ vi.mock("@/lib/i18n/config", () => ({
 vi.mock("@/components/app/AppShellProvider", () => ({
   useAppShell: () => ({
     environment: "production",
-    activeSession: null,
-    studyMode: false,
     loading: false,
     language: "en",
     canChangeLanguage: true,
-    setLanguage: vi.fn(),
-    syncStudySession: vi.fn()
+    setLanguage: vi.fn()
   })
 }));
 
@@ -133,12 +129,6 @@ vi.mock("next/navigation", () => ({
     get: vi.fn(() => null)
   }),
   usePathname: () => "/library"
-}));
-
-vi.mock("@/components/study/StudyProvider", () => ({
-  useStudy: () => {
-    throw new Error("bilingual rendering should not depend on useStudy");
-  }
 }));
 
 vi.mock("@/lib/assessmentStorage", () => ({

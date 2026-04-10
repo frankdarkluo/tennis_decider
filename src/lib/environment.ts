@@ -4,11 +4,8 @@ type EnvironmentScoped = {
   environment?: EnvironmentValue;
 };
 
-export function resolveAppEnvironment(input: {
-  studyMode: boolean;
-  hasSession: boolean;
-}): AppEnvironment {
-  return input.studyMode && input.hasSession ? "testing" : "production";
+export function resolveAppEnvironment(): AppEnvironment {
+  return "production";
 }
 
 export function matchesEnvironment(
