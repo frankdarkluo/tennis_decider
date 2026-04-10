@@ -63,7 +63,13 @@ const missingSlotPaths = [
   "serve.control_pattern",
   "serve.mechanism_family",
   "incoming_ball.depth",
-  "subjective_feeling.rushed"
+  "subjective_feeling.rushed",
+  "skill_detail.return_positioning",
+  "skill_detail.return_first_ball_goal",
+  "skill_detail.volley_height",
+  "skill_detail.volley_racket_face",
+  "skill_detail.overhead_contact",
+  "skill_detail.slice_response_pattern"
 ] as const;
 const sourceLanguages = ["zh", "en", "mixed"] as const;
 const confidenceLevels = ["low", "medium", "high"] as const;

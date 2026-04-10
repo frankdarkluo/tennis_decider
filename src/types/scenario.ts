@@ -14,6 +14,12 @@ export type ScenarioStroke =
 export type ServeVariant = "first_serve" | "second_serve" | "both" | "unknown";
 export type ServeControlPattern = "net" | "long" | "wide" | "no_rhythm" | "unknown";
 export type ServeMechanismFamily = "toss" | "contact" | "rhythm" | "direction_control" | "unknown";
+export type ReturnPositioning = "jammed" | "too_far_back" | "stepping_in" | "unknown";
+export type ReturnFirstBallGoal = "block" | "neutralize" | "attack" | "unknown";
+export type VolleyHeight = "low" | "waist" | "high" | "unknown";
+export type VolleyRacketFace = "open" | "closed" | "unstable" | "unknown";
+export type OverheadContact = "late" | "behind" | "too_low" | "unknown";
+export type SliceResponsePattern = "net" | "float" | "sits_up" | "long" | "unknown";
 export type ScenarioSessionType = "practice" | "match" | "both" | "unknown";
 export type ScenarioPressure = "none" | "some" | "high" | "unknown";
 export type ScenarioMovement = "stationary" | "moving" | "recovering" | "approaching_net" | "unknown";
@@ -46,7 +52,13 @@ export type MissingSlotPath =
   | "serve.control_pattern"
   | "serve.mechanism_family"
   | "incoming_ball.depth"
-  | "subjective_feeling.rushed";
+  | "subjective_feeling.rushed"
+  | "skill_detail.return_positioning"
+  | "skill_detail.return_first_ball_goal"
+  | "skill_detail.volley_height"
+  | "skill_detail.volley_racket_face"
+  | "skill_detail.overhead_contact"
+  | "skill_detail.slice_response_pattern";
 
 export type SlotResolutionMap = Record<MissingSlotPath, SlotResolutionState>;
 
@@ -142,6 +154,14 @@ export type ScenarioState = {
   serve: {
     control_pattern: ServeControlPattern;
     mechanism_family: ServeMechanismFamily;
+  };
+  skill_detail: {
+    return_positioning: ReturnPositioning;
+    return_first_ball_goal: ReturnFirstBallGoal;
+    volley_height: VolleyHeight;
+    volley_racket_face: VolleyRacketFace;
+    overhead_contact: OverheadContact;
+    slice_response_pattern: SliceResponsePattern;
   };
   incoming_ball: {
     depth: IncomingBallDepth;

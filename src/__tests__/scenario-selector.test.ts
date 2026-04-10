@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { parseScenarioTextDeterministically } from "@/lib/scenarioReconstruction/runtime";
+import { applyScenarioAnswer, parseScenarioTextDeterministically } from "@/lib/scenarioReconstruction/runtime";
 import { getEligibleQuestions, selectNextQuestion, selectNextQuestionWithLlm } from "@/lib/scenarioReconstruction/selector";
 import { createLocalQwenClient } from "@/lib/scenarioReconstruction/llm/client";
+import { getSkillCategoryPolicy } from "@/lib/scenarioReconstruction/skillPolicy";
 
 describe("scenario reconstruction selector", () => {
   it("asks for practice vs match first when session type is still unknown", () => {
@@ -131,6 +132,91 @@ describe("scenario reconstruction selector", () => {
     const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
 
     expect(eligibleIds).not.toContain("q_serve_variant");
+  });
+
+  it("exposes category-specific policy metadata instead of only broad slot gates", () => {
+    expect(getSkillCategoryPolicy("return")).toMatchObject({
+      allowedQuestionFamilies: expect.arrayContaining(["return_positioning", "return_first_ball_goal"]),
+      forbiddenQuestionFamilies: expect.arrayContaining(["serve_variant", "serve_mechanism_family", "incoming_ball_depth"]),
+      mechanismFamilies: expect.arrayContaining(["positioning", "first_ball_goal"])
+    });
+    expect(getSkillCategoryPolicy("volley")).toMatchObject({
+      allowedQuestionFamilies: expect.arrayContaining(["volley_height", "volley_racket_face"]),
+      forbiddenQuestionFamilies: expect.arrayContaining(["serve_variant", "incoming_ball_depth"]),
+      mechanismFamilies: expect.arrayContaining(["contact_height", "racket_face"])
+    });
+    expect(getSkillCategoryPolicy("overhead")).toMatchObject({
+      allowedQuestionFamilies: expect.arrayContaining(["overhead_contact"]),
+      forbiddenQuestionFamilies: expect.arrayContaining(["serve_variant", "incoming_ball_depth"]),
+      mechanismFamilies: expect.arrayContaining(["contact_timing"])
+    });
+    expect(getSkillCategoryPolicy("slice")).toMatchObject({
+      allowedQuestionFamilies: expect.arrayContaining(["slice_response_pattern"]),
+      forbiddenQuestionFamilies: expect.arrayContaining(["serve_variant", "incoming_ball_depth"]),
+      mechanismFamilies: expect.arrayContaining(["response_pattern"])
+    });
+  });
+
+  it("uses return-specific detail follow-ups once the core return scene is grounded", () => {
+    const scenario = parseScenarioTextDeterministically("比赛里我的接发总是没力量，而且来不及");
+    const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
+
+    expect(scenario.stroke).toBe("return");
+    expect(selectNextQuestion(scenario)?.id).toBe("q_return_positioning");
+    expect(eligibleIds).toContain("q_return_positioning");
+    expect(eligibleIds).toContain("q_return_first_ball_goal");
+    expect(eligibleIds).not.toContain("q_serve_mechanism_family");
+    expect(eligibleIds).not.toContain("q_incoming_ball_depth");
+  });
+
+  it("continues the exact missing return detail slot instead of bouncing to generic fallback", () => {
+    let scenario = parseScenarioTextDeterministically("比赛里我的接发总是没力量，而且来不及");
+
+    expect(selectNextQuestion(scenario)?.id).toBe("q_return_positioning");
+
+    scenario = applyScenarioAnswer(scenario, "q_return_positioning", "jammed");
+
+    expect(selectNextQuestion(scenario)?.id).toBe("q_return_first_ball_goal");
+    expect(getEligibleQuestions(scenario).map((question) => question.id)).toEqual(["q_return_first_ball_goal"]);
+
+    scenario = applyScenarioAnswer(scenario, "q_return_first_ball_goal", "neutralize");
+
+    expect(selectNextQuestion(scenario)).toBeNull();
+    expect(scenario.deep_progress.deepReady).toBe(true);
+  });
+
+  it("uses volley-specific detail follow-ups instead of serve or groundstroke questions", () => {
+    const scenario = parseScenarioTextDeterministically("比赛里我的截击总下网，而且来不及");
+    const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
+
+    expect(scenario.stroke).toBe("volley");
+    expect(selectNextQuestion(scenario)?.id).toBe("q_volley_height");
+    expect(eligibleIds).toContain("q_volley_height");
+    expect(eligibleIds).toContain("q_volley_racket_face");
+    expect(eligibleIds).not.toContain("q_serve_variant");
+    expect(eligibleIds).not.toContain("q_incoming_ball_depth");
+  });
+
+  it("uses overhead-specific contact follow-ups for grounded overhead complaints", () => {
+    const scenario = parseScenarioTextDeterministically("My overhead keeps going long in matches and I feel rushed");
+    const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
+
+    expect(scenario.stroke).toBe("overhead");
+    expect(selectNextQuestion(scenario)?.id).toBe("q_overhead_contact");
+    expect(eligibleIds).toEqual(["q_overhead_contact"]);
+    expect(eligibleIds).not.toContain("q_serve_mechanism_family");
+    expect(eligibleIds).not.toContain("q_incoming_ball_depth");
+  });
+
+  it("uses slice-specific response follow-ups for grounded slice complaints", () => {
+    const scenario = parseScenarioTextDeterministically("比赛里我的切削总是没力量，而且来不及");
+    const eligibleIds = getEligibleQuestions(scenario).map((question) => question.id);
+
+    expect(scenario.stroke).toBe("slice");
+    expect(selectNextQuestion(scenario)?.id).toBe("q_slice_response_pattern");
+    expect(eligibleIds).toEqual(["q_slice_response_pattern"]);
+    expect(eligibleIds).not.toContain("q_serve_variant");
+    expect(eligibleIds).not.toContain("q_incoming_ball_depth");
   });
 
   it("accepts ranked candidate ids from the local model when they stay within the eligible set", async () => {

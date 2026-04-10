@@ -35,8 +35,11 @@ The hard cap is an honest stop, not fake completion. If the system stops because
 Each skill category now defines:
 
 - allowed question families
+- forbidden question families
 - Deep Mode required slots
 - Deep Mode optional slots
+- forbidden slots
+- mechanism-family labels for the category
 - a hard follow-up cap
 
 Required slots are what block Deep Mode handoff while they are still askable. Optional slots can still improve context, but they should not be treated as hidden blockers.
@@ -50,6 +53,16 @@ For serve in particular, Deep Mode should not stop at "serve + session + rough o
 - likely serve mechanism family such as toss, contact/timing, rhythm, or direction-control drift
 
 That is the difference between "we know this is serve" and "we know enough about this serve problem to hand off."
+
+PR2 extends the same rule to the other high-priority categories instead of leaving them on a generic non-serve fallback:
+
+- return can ask about return positioning and first-ball goal, but cannot ask serve toss/rhythm or incoming-ball-depth questions
+- volley can ask about volley contact height and racket-face control, but cannot ask serve or groundstroke-depth questions
+- overhead can ask about overhead contact timing/position, but cannot ask serve or incoming-ball-depth questions
+- slice can ask about slice response pattern, but cannot ask serve or incoming-ball-depth questions
+- moving groundstroke cases keep movement and incoming-ball-depth legal because those dimensions are meaningful for that category
+
+The non-serve detail slots stay bounded on purpose. They are category-specific enough to prevent obvious tennis-logic mismatches without turning scenario reconstruction into a full technique ontology.
 
 ## Skip and cannot-answer provenance
 
@@ -103,6 +116,7 @@ When adding a new tennis technique or follow-up:
 1. add or refine a `QuestionFamily`
 2. add or refine a `SkillCategory`
 3. update the single policy source of truth in `skillPolicy.ts`
-4. add regression tests showing invalid families can never surface for that category
+4. add any new detail slot to the scenario type, initial state, answer application, and handoff copy
+5. add regression tests showing invalid families can never surface for that category and the exact missing slot continues before generic fallback
 
 Do not add one-off exclusions directly inside selector ranking logic. If a question is invalid for a category, the policy layer should make it ineligible before ranking starts.

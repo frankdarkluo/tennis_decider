@@ -9,6 +9,7 @@ export function applyScenarioAnswer(
     ...scenario,
     context: { ...scenario.context },
     serve: { ...scenario.serve },
+    skill_detail: { ...scenario.skill_detail },
     incoming_ball: { ...scenario.incoming_ball },
     outcome: { ...scenario.outcome },
     subjective_feeling: { ...scenario.subjective_feeling, other: [...scenario.subjective_feeling.other] },
@@ -166,6 +167,90 @@ export function applyScenarioAnswer(
     nextScenario.subjective_feeling.tight = answerKey === "tight";
     nextScenario.subjective_feeling.nervous = false;
     mark("subjective_feeling.rushed", "answered");
+  }
+
+  if (questionId === "q_return_positioning") {
+    if (applyNonAnswer("skill_detail.return_positioning")) {
+      nextScenario.selected_next_question_id = questionId;
+      nextScenario.asked_followup_ids.push(questionId);
+      return nextScenario;
+    }
+
+    if (answerKey === "jammed" || answerKey === "too_far_back" || answerKey === "stepping_in") {
+      nextScenario.skill_detail.return_positioning = answerKey;
+    }
+
+    mark("skill_detail.return_positioning", "answered");
+  }
+
+  if (questionId === "q_return_first_ball_goal") {
+    if (applyNonAnswer("skill_detail.return_first_ball_goal")) {
+      nextScenario.selected_next_question_id = questionId;
+      nextScenario.asked_followup_ids.push(questionId);
+      return nextScenario;
+    }
+
+    if (answerKey === "block" || answerKey === "neutralize" || answerKey === "attack") {
+      nextScenario.skill_detail.return_first_ball_goal = answerKey;
+    }
+
+    mark("skill_detail.return_first_ball_goal", "answered");
+  }
+
+  if (questionId === "q_volley_height") {
+    if (applyNonAnswer("skill_detail.volley_height")) {
+      nextScenario.selected_next_question_id = questionId;
+      nextScenario.asked_followup_ids.push(questionId);
+      return nextScenario;
+    }
+
+    if (answerKey === "low" || answerKey === "waist" || answerKey === "high") {
+      nextScenario.skill_detail.volley_height = answerKey;
+    }
+
+    mark("skill_detail.volley_height", "answered");
+  }
+
+  if (questionId === "q_volley_racket_face") {
+    if (applyNonAnswer("skill_detail.volley_racket_face")) {
+      nextScenario.selected_next_question_id = questionId;
+      nextScenario.asked_followup_ids.push(questionId);
+      return nextScenario;
+    }
+
+    if (answerKey === "open" || answerKey === "closed" || answerKey === "unstable") {
+      nextScenario.skill_detail.volley_racket_face = answerKey;
+    }
+
+    mark("skill_detail.volley_racket_face", "answered");
+  }
+
+  if (questionId === "q_overhead_contact") {
+    if (applyNonAnswer("skill_detail.overhead_contact")) {
+      nextScenario.selected_next_question_id = questionId;
+      nextScenario.asked_followup_ids.push(questionId);
+      return nextScenario;
+    }
+
+    if (answerKey === "late" || answerKey === "behind" || answerKey === "too_low") {
+      nextScenario.skill_detail.overhead_contact = answerKey;
+    }
+
+    mark("skill_detail.overhead_contact", "answered");
+  }
+
+  if (questionId === "q_slice_response_pattern") {
+    if (applyNonAnswer("skill_detail.slice_response_pattern")) {
+      nextScenario.selected_next_question_id = questionId;
+      nextScenario.asked_followup_ids.push(questionId);
+      return nextScenario;
+    }
+
+    if (answerKey === "net" || answerKey === "float" || answerKey === "sits_up" || answerKey === "long") {
+      nextScenario.skill_detail.slice_response_pattern = answerKey;
+    }
+
+    mark("skill_detail.slice_response_pattern", "answered");
   }
 
   nextScenario.selected_next_question_id = questionId;

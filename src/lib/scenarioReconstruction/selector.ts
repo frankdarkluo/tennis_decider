@@ -21,6 +21,14 @@ function isQuestionEligible(scenario: ScenarioState, question: ScenarioQuestion)
     return false;
   }
 
+  if (policy.forbiddenQuestionFamilies.includes(question.family)) {
+    return false;
+  }
+
+  if (question.fillsSlots.some((slot) => policy.forbiddenSlots.includes(slot))) {
+    return false;
+  }
+
   if (scenario.asked_followup_ids.length >= policy.maxDeepFollowups) {
     return false;
   }
@@ -45,6 +53,12 @@ function slotPriority(slot: MissingSlotPath): number {
   if (slot === "serve.control_pattern") return 74;
   if (slot === "serve.mechanism_family") return 68;
   if (slot === "incoming_ball.depth") return 70;
+  if (slot === "skill_detail.return_positioning") return 76;
+  if (slot === "skill_detail.return_first_ball_goal") return 72;
+  if (slot === "skill_detail.volley_height") return 76;
+  if (slot === "skill_detail.volley_racket_face") return 72;
+  if (slot === "skill_detail.overhead_contact") return 76;
+  if (slot === "skill_detail.slice_response_pattern") return 76;
   return 60;
 }
 

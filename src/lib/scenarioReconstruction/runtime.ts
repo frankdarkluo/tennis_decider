@@ -42,6 +42,14 @@ export function createEmptyScenario(rawUserInput: string): ScenarioState {
       control_pattern: "unknown",
       mechanism_family: "unknown"
     },
+    skill_detail: {
+      return_positioning: "unknown",
+      return_first_ball_goal: "unknown",
+      volley_height: "unknown",
+      volley_racket_face: "unknown",
+      overhead_contact: "unknown",
+      slice_response_pattern: "unknown"
+    },
     incoming_ball: {
       depth: "unknown",
       height: "unknown",
@@ -83,7 +91,13 @@ export function createInitialSlotResolution(): SlotResolutionMap {
     "serve.control_pattern": "unasked",
     "serve.mechanism_family": "unasked",
     "incoming_ball.depth": "unasked",
-    "subjective_feeling.rushed": "unasked"
+    "subjective_feeling.rushed": "unasked",
+    "skill_detail.return_positioning": "unasked",
+    "skill_detail.return_first_ball_goal": "unasked",
+    "skill_detail.volley_height": "unasked",
+    "skill_detail.volley_racket_face": "unasked",
+    "skill_detail.overhead_contact": "unasked",
+    "skill_detail.slice_response_pattern": "unasked"
   };
 }
 
@@ -161,6 +175,30 @@ function isSlotKnownFromScenario(scenario: ScenarioState, slot: MissingSlotPath)
       scenario.subjective_feeling.tight ||
       scenario.subjective_feeling.nervous
     );
+  }
+
+  if (slot === "skill_detail.return_positioning") {
+    return scenario.skill_detail.return_positioning !== "unknown";
+  }
+
+  if (slot === "skill_detail.return_first_ball_goal") {
+    return scenario.skill_detail.return_first_ball_goal !== "unknown";
+  }
+
+  if (slot === "skill_detail.volley_height") {
+    return scenario.skill_detail.volley_height !== "unknown";
+  }
+
+  if (slot === "skill_detail.volley_racket_face") {
+    return scenario.skill_detail.volley_racket_face !== "unknown";
+  }
+
+  if (slot === "skill_detail.overhead_contact") {
+    return scenario.skill_detail.overhead_contact !== "unknown";
+  }
+
+  if (slot === "skill_detail.slice_response_pattern") {
+    return scenario.skill_detail.slice_response_pattern !== "unknown";
   }
 
   return false;
@@ -255,6 +293,10 @@ export function ensureScenarioInternals(scenario: ScenarioState): ScenarioState 
     serve: {
       ...baseScenario.serve,
       ...(scenario.serve ?? {})
+    },
+    skill_detail: {
+      ...baseScenario.skill_detail,
+      ...(scenario.skill_detail ?? {})
     },
     incoming_ball: {
       ...baseScenario.incoming_ball,
@@ -381,6 +423,64 @@ export function parseScenarioTextDeterministically(rawUserInput: string): Scenar
     }
   }
 
+  if (scenario.stroke === "return") {
+    if (includesAny(normalized, ["被顶住", "顶身", "jammed"])) {
+      scenario.skill_detail.return_positioning = "jammed";
+    } else if (includesAny(normalized, ["站太后", "too far back"])) {
+      scenario.skill_detail.return_positioning = "too_far_back";
+    } else if (includesAny(normalized, ["往前", "上步", "stepping in"])) {
+      scenario.skill_detail.return_positioning = "stepping_in";
+    }
+
+    if (includesAny(normalized, ["挡", "block"])) {
+      scenario.skill_detail.return_first_ball_goal = "block";
+    } else if (includesAny(normalized, ["中和", "neutralize"])) {
+      scenario.skill_detail.return_first_ball_goal = "neutralize";
+    } else if (includesAny(normalized, ["抢攻", "attack"])) {
+      scenario.skill_detail.return_first_ball_goal = "attack";
+    }
+  }
+
+  if (scenario.stroke === "volley") {
+    if (includesAny(normalized, ["低", "low"])) {
+      scenario.skill_detail.volley_height = "low";
+    } else if (includesAny(normalized, ["腰", "waist"])) {
+      scenario.skill_detail.volley_height = "waist";
+    } else if (includesAny(normalized, ["高", "high"])) {
+      scenario.skill_detail.volley_height = "high";
+    }
+
+    if (includesAny(normalized, ["拍面太开", "open face"])) {
+      scenario.skill_detail.volley_racket_face = "open";
+    } else if (includesAny(normalized, ["拍面压", "closed face"])) {
+      scenario.skill_detail.volley_racket_face = "closed";
+    } else if (includesAny(normalized, ["拍面不稳", "unstable face"])) {
+      scenario.skill_detail.volley_racket_face = "unstable";
+    }
+  }
+
+  if (scenario.stroke === "overhead") {
+    if (includesAny(normalized, ["晚", "late"])) {
+      scenario.skill_detail.overhead_contact = "late";
+    } else if (includesAny(normalized, ["身后", "behind"])) {
+      scenario.skill_detail.overhead_contact = "behind";
+    } else if (includesAny(normalized, ["太低", "too low"])) {
+      scenario.skill_detail.overhead_contact = "too_low";
+    }
+  }
+
+  if (scenario.stroke === "slice") {
+    if (scenario.outcome.primary_error === "net") {
+      scenario.skill_detail.slice_response_pattern = "net";
+    } else if (scenario.outcome.primary_error === "long") {
+      scenario.skill_detail.slice_response_pattern = "long";
+    } else if (includesAny(normalized, ["飘", "float"])) {
+      scenario.skill_detail.slice_response_pattern = "float";
+    } else if (includesAny(normalized, ["冒高", "坐起来", "sits up"])) {
+      scenario.skill_detail.slice_response_pattern = "sits_up";
+    }
+  }
+
   if (includesAny(normalized, ["深", "deep"])) {
     scenario.incoming_ball.depth = "deep";
   } else if (includesAny(normalized, ["短", "short"])) {
@@ -391,7 +491,7 @@ export function parseScenarioTextDeterministically(rawUserInput: string): Scenar
     scenario.subjective_feeling.tight = true;
   }
 
-  if (includesAny(normalized, ["急", "rushed"])) {
+  if (includesAny(normalized, ["急", "来不及", "rushed"])) {
     scenario.subjective_feeling.rushed = true;
   }
 
@@ -423,6 +523,10 @@ function mergeScenarioState(baseScenario: ScenarioState, partialScenario: Partia
     serve: {
       ...baseScenario.serve,
       ...(partialScenario.serve ?? {})
+    },
+    skill_detail: {
+      ...baseScenario.skill_detail,
+      ...(partialScenario.skill_detail ?? {})
     },
     incoming_ball: {
       ...baseScenario.incoming_ball,

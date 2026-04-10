@@ -285,4 +285,73 @@ describe("scenario reconstruction handoff adapter", () => {
     expect(diagnosis.title).not.toBe("正手控制不足");
     expect(diagnosis.category).toContain("serve");
   });
+
+  it("keeps return-specific positioning evidence in the diagnosis handoff copy", () => {
+    const scenario = buildScenario({
+      raw_user_input: "比赛里我的接发总是没力量，而且来不及",
+      stroke: "return",
+      context: {
+        session_type: "match",
+        serve_variant: "unknown",
+        pressure: "unknown",
+        movement: "unknown",
+        format: "unknown"
+      },
+      outcome: {
+        primary_error: "no_power",
+        frequency: "unknown"
+      },
+      skill_detail: {
+        ...buildScenario().skill_detail,
+        return_positioning: "jammed"
+      },
+      subjective_feeling: {
+        tight: false,
+        rushed: true,
+        awkward: false,
+        hesitant: false,
+        nervous: false,
+        late_contact: false,
+        no_timing: false,
+        other: []
+      }
+    });
+
+    expect(toDiagnosisInput({ scenario, locale: "zh" })).toContain("接发被顶住");
+  });
+
+  it("keeps volley-specific contact-height evidence in the diagnosis handoff copy", () => {
+    const scenario = buildScenario({
+      raw_user_input: "My volley keeps going into the net in matches and I feel rushed",
+      language: "en",
+      stroke: "volley",
+      context: {
+        session_type: "match",
+        serve_variant: "unknown",
+        pressure: "unknown",
+        movement: "unknown",
+        format: "unknown"
+      },
+      outcome: {
+        primary_error: "net",
+        frequency: "unknown"
+      },
+      skill_detail: {
+        ...buildScenario().skill_detail,
+        volley_height: "low"
+      },
+      subjective_feeling: {
+        tight: false,
+        rushed: true,
+        awkward: false,
+        hesitant: false,
+        nervous: false,
+        late_contact: false,
+        no_timing: false,
+        other: []
+      }
+    });
+
+    expect(toDiagnosisInput({ scenario, locale: "en" })).toContain("low volley");
+  });
 });

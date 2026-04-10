@@ -135,6 +135,76 @@ function buildEnFeeling(scenario: ScenarioState) {
   return "";
 }
 
+function buildZhCategoryDetail(scenario: ScenarioState) {
+  if (scenario.stroke === "return") {
+    if (scenario.skill_detail.return_positioning === "jammed") return "更像接发被顶住";
+    if (scenario.skill_detail.return_positioning === "too_far_back") return "更像接发站位偏后";
+    if (scenario.skill_detail.return_positioning === "stepping_in") return "更像接发上步抢得太多";
+    if (scenario.skill_detail.return_first_ball_goal === "block") return "目标更像先挡回去";
+    if (scenario.skill_detail.return_first_ball_goal === "neutralize") return "目标更像先中和对方";
+    if (scenario.skill_detail.return_first_ball_goal === "attack") return "目标更像主动抢攻";
+  }
+
+  if (scenario.stroke === "volley") {
+    if (scenario.skill_detail.volley_height === "low") return "更像低截击";
+    if (scenario.skill_detail.volley_height === "waist") return "更像腰部高度的截击";
+    if (scenario.skill_detail.volley_height === "high") return "更像偏高截击";
+    if (scenario.skill_detail.volley_racket_face === "open") return "更像截击拍面太开";
+    if (scenario.skill_detail.volley_racket_face === "closed") return "更像截击拍面压得太死";
+    if (scenario.skill_detail.volley_racket_face === "unstable") return "更像截击拍面不稳";
+  }
+
+  if (scenario.stroke === "overhead") {
+    if (scenario.skill_detail.overhead_contact === "late") return "更像高压击球晚了";
+    if (scenario.skill_detail.overhead_contact === "behind") return "更像高压时球跑到身后";
+    if (scenario.skill_detail.overhead_contact === "too_low") return "更像高压击球点太低";
+  }
+
+  if (scenario.stroke === "slice") {
+    if (scenario.skill_detail.slice_response_pattern === "net") return "更像切削下网";
+    if (scenario.skill_detail.slice_response_pattern === "float") return "更像切削飘高";
+    if (scenario.skill_detail.slice_response_pattern === "sits_up") return "更像切削后球坐起来";
+    if (scenario.skill_detail.slice_response_pattern === "long") return "更像切削偏长";
+  }
+
+  return "";
+}
+
+function buildEnCategoryDetail(scenario: ScenarioState) {
+  if (scenario.stroke === "return") {
+    if (scenario.skill_detail.return_positioning === "jammed") return "more like getting jammed on the return";
+    if (scenario.skill_detail.return_positioning === "too_far_back") return "more like returning from too far back";
+    if (scenario.skill_detail.return_positioning === "stepping_in") return "more like stepping in too much on the return";
+    if (scenario.skill_detail.return_first_ball_goal === "block") return "the return goal is mostly blocking it back";
+    if (scenario.skill_detail.return_first_ball_goal === "neutralize") return "the return goal is mostly neutralizing first";
+    if (scenario.skill_detail.return_first_ball_goal === "attack") return "the return goal is mostly attacking";
+  }
+
+  if (scenario.stroke === "volley") {
+    if (scenario.skill_detail.volley_height === "low") return "more like a low volley";
+    if (scenario.skill_detail.volley_height === "waist") return "more like a waist-height volley";
+    if (scenario.skill_detail.volley_height === "high") return "more like a high volley";
+    if (scenario.skill_detail.volley_racket_face === "open") return "more like the volley face is too open";
+    if (scenario.skill_detail.volley_racket_face === "closed") return "more like the volley face is too closed";
+    if (scenario.skill_detail.volley_racket_face === "unstable") return "more like the volley face is unstable";
+  }
+
+  if (scenario.stroke === "overhead") {
+    if (scenario.skill_detail.overhead_contact === "late") return "more like late overhead contact";
+    if (scenario.skill_detail.overhead_contact === "behind") return "more like the overhead gets behind me";
+    if (scenario.skill_detail.overhead_contact === "too_low") return "more like overhead contact is too low";
+  }
+
+  if (scenario.stroke === "slice") {
+    if (scenario.skill_detail.slice_response_pattern === "net") return "more like the slice goes into the net";
+    if (scenario.skill_detail.slice_response_pattern === "float") return "more like the slice floats up";
+    if (scenario.skill_detail.slice_response_pattern === "sits_up") return "more like the slice sits up";
+    if (scenario.skill_detail.slice_response_pattern === "long") return "more like the slice floats long";
+  }
+
+  return "";
+}
+
 function buildZhSummary(scenario: ScenarioState) {
   const leadParts: string[] = [];
   const serveSubtype = inferServeSubtype(scenario.raw_user_input);
@@ -173,6 +243,11 @@ function buildZhSummary(scenario: ScenarioState) {
   const serveControlDetail = buildZhServeControlDetail(scenario);
   if (serveControlDetail) {
     detailParts.push(serveControlDetail);
+  }
+
+  const categoryDetail = buildZhCategoryDetail(scenario);
+  if (categoryDetail) {
+    detailParts.push(categoryDetail);
   }
 
   const feeling = buildZhFeeling(scenario);
@@ -235,6 +310,11 @@ function buildEnSummary(scenario: ScenarioState) {
   const serveControlDetail = buildEnServeControlDetail(scenario);
   if (serveControlDetail) {
     detailParts.push(serveControlDetail);
+  }
+
+  const categoryDetail = buildEnCategoryDetail(scenario);
+  if (categoryDetail) {
+    detailParts.push(categoryDetail);
   }
 
   const feeling = buildEnFeeling(scenario);

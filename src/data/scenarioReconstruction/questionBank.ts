@@ -204,5 +204,138 @@ export const scenarioQuestionBank: ScenarioQuestion[] = [
       { key: "skip", zh: "先跳过", en: "Skip for now" },
       { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
     ]
+  },
+  {
+    id: "q_return_positioning",
+    family: "return_positioning",
+    category: "scenario_localization",
+    target_slots: ["skill_detail.return_positioning"],
+    fillsSlots: ["skill_detail.return_positioning"],
+    priority: 76,
+    zh: "接发时更像是被球顶住、站得太后，还是上步抢得太多？",
+    en: "On the return, is it more like you get jammed, stand too far back, or step in too aggressively?",
+    ask_when: ["return family is grounded", "return positioning is missing"],
+    do_not_ask_when: ["return positioning is already known"],
+    information_gain_weight: 0.82,
+    presupposition_risk: 0.2,
+    easy_to_answer_score: 0.84,
+    options: [
+      { key: "jammed", zh: "更像被顶住", en: "More like getting jammed" },
+      { key: "too_far_back", zh: "更像站得太后", en: "More like standing too far back" },
+      { key: "stepping_in", zh: "更像上步抢太多", en: "More like stepping in too much" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
+    ]
+  },
+  {
+    id: "q_return_first_ball_goal",
+    family: "return_first_ball_goal",
+    category: "scenario_localization",
+    target_slots: ["skill_detail.return_first_ball_goal"],
+    fillsSlots: ["skill_detail.return_first_ball_goal"],
+    priority: 72,
+    zh: "这次接发你更想先挡回去、中和对方，还是主动抢攻？",
+    en: "On this return, are you mostly trying to block it back, neutralize, or attack?",
+    ask_when: ["return family is grounded", "return first-ball goal is missing"],
+    do_not_ask_when: ["return first-ball goal is already known"],
+    information_gain_weight: 0.76,
+    presupposition_risk: 0.18,
+    easy_to_answer_score: 0.82,
+    options: [
+      { key: "block", zh: "先挡回去", en: "Block it back" },
+      { key: "neutralize", zh: "先中和", en: "Neutralize first" },
+      { key: "attack", zh: "主动抢攻", en: "Attack" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
+    ]
+  },
+  {
+    id: "q_volley_height",
+    family: "volley_height",
+    category: "scenario_localization",
+    target_slots: ["skill_detail.volley_height"],
+    fillsSlots: ["skill_detail.volley_height"],
+    priority: 76,
+    zh: "截击出问题时，来球更像低球、腰部高度，还是偏高的球？",
+    en: "When the volley breaks down, is the ball usually low, around waist height, or high?",
+    ask_when: ["volley family is grounded", "volley height is missing"],
+    do_not_ask_when: ["volley height is already known"],
+    information_gain_weight: 0.8,
+    presupposition_risk: 0.2,
+    easy_to_answer_score: 0.85,
+    options: [
+      { key: "low", zh: "低球更明显", en: "More on low volleys" },
+      { key: "waist", zh: "腰部高度", en: "Around waist height" },
+      { key: "high", zh: "偏高的球", en: "Higher volleys" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
+    ]
+  },
+  {
+    id: "q_volley_racket_face",
+    family: "volley_racket_face",
+    category: "scenario_localization",
+    target_slots: ["skill_detail.volley_racket_face"],
+    fillsSlots: ["skill_detail.volley_racket_face"],
+    priority: 72,
+    zh: "你更怀疑截击时拍面是太开、压得太死，还是整体不稳？",
+    en: "Do you suspect the volley face is too open, too closed, or just unstable?",
+    ask_when: ["volley family is grounded", "volley racket-face detail is missing"],
+    do_not_ask_when: ["volley racket-face detail is already known"],
+    information_gain_weight: 0.74,
+    presupposition_risk: 0.24,
+    easy_to_answer_score: 0.78,
+    options: [
+      { key: "open", zh: "拍面太开", en: "Too open" },
+      { key: "closed", zh: "压得太死", en: "Too closed" },
+      { key: "unstable", zh: "拍面不稳", en: "Unstable face" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
+    ]
+  },
+  {
+    id: "q_overhead_contact",
+    family: "overhead_contact",
+    category: "scenario_localization",
+    target_slots: ["skill_detail.overhead_contact"],
+    fillsSlots: ["skill_detail.overhead_contact"],
+    priority: 76,
+    zh: "高压出问题时，更像击球晚了、球跑到身后，还是击球点太低？",
+    en: "On the overhead, is it more like late contact, the ball getting behind you, or contact being too low?",
+    ask_when: ["overhead family is grounded", "overhead contact detail is missing"],
+    do_not_ask_when: ["overhead contact detail is already known"],
+    information_gain_weight: 0.8,
+    presupposition_risk: 0.2,
+    easy_to_answer_score: 0.82,
+    options: [
+      { key: "late", zh: "更像击球晚了", en: "Late contact" },
+      { key: "behind", zh: "球跑到身后", en: "Ball gets behind me" },
+      { key: "too_low", zh: "击球点太低", en: "Contact is too low" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
+    ]
+  },
+  {
+    id: "q_slice_response_pattern",
+    family: "slice_response_pattern",
+    category: "scenario_localization",
+    target_slots: ["skill_detail.slice_response_pattern"],
+    fillsSlots: ["skill_detail.slice_response_pattern"],
+    priority: 76,
+    zh: "切削出问题时，更像下网、飘高、球坐起来，还是偏长？",
+    en: "When the slice breaks down, is it more like into the net, floating up, sitting up, or flying long?",
+    ask_when: ["slice family is grounded", "slice response pattern is missing"],
+    do_not_ask_when: ["slice response pattern is already known"],
+    information_gain_weight: 0.8,
+    presupposition_risk: 0.18,
+    easy_to_answer_score: 0.84,
+    options: [
+      { key: "net", zh: "更像下网", en: "Into the net" },
+      { key: "float", zh: "更像飘高", en: "Floating up" },
+      { key: "sits_up", zh: "更像球坐起来", en: "Sitting up" },
+      { key: "long", zh: "更像偏长", en: "Flying long" },
+      { key: "skip", zh: "先跳过", en: "Skip for now" },
+      { key: "cannot_answer", zh: "说不清", en: "Can't answer" }
+    ]
   }
 ];
