@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { RecommendationSummary } from "@/components/content/RecommendationSummary";
 import { contents } from "@/data/contents";
 import { expandedContents } from "@/data/expandedContents";
 import { DayPlan } from "@/types/plan";
@@ -299,6 +300,7 @@ export function DayPlanCard({
           {focusLine && focusLine !== primaryTitle ? (
             <p className="mt-1 text-sm text-slate-600">{t("content.targetPrefix")} {focusLine}</p>
           ) : null}
+          <RecommendationSummary item={featuredContent} className="mt-2" />
           <p className="mt-2 text-sm font-medium text-slate-500">{t("plan.day.open")} →</p>
         </div>
       </div>

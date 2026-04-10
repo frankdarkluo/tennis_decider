@@ -1,4 +1,5 @@
 import type { ContentItem, ContentLanguageCode, ContentPlatform, ContentSubtitleAvailability, ContentType } from "@/types/content";
+import type { ContentTeachingIntent } from "@/lib/content/recommendationSignals";
 import type { EnvironmentValue } from "@/types/environment";
 
 export type CatalogRightsStatus = "direct_source" | "search_link" | "unknown";
@@ -13,6 +14,7 @@ export type CatalogContentItem = {
   language: ContentLanguageCode;
   contentLanguage?: ContentLanguageCode;
   subtitleAvailability?: ContentSubtitleAvailability;
+  teachingIntent: ContentTeachingIntent;
   skillCategories: string[];
   problemTags: string[];
   levelRange: string[];

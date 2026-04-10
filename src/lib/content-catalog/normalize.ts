@@ -1,5 +1,6 @@
 import { contents as defaultCuratedContents } from "@/data/contents";
 import { expandedContents as defaultExpandedContents } from "@/data/expandedContents";
+import { inferContentSourceQuality, inferContentTeachingIntent } from "@/lib/content/recommendationSignals";
 import type { ContentItem, ContentPlatform } from "@/types/content";
 import type { CatalogContentItem, CatalogIngestionMethod } from "@/lib/content-catalog/schema";
 import type { PlatformConnector } from "@/lib/platform-connectors/types";
@@ -16,11 +17,11 @@ function fallbackCanonicalizeUrl(url: string): string {
 }
 
 function fallbackRightsStatus(url: string): CatalogContentItem["rightsStatus"] {
-  if (/search\.bilibili\.com\/all\?keyword=|youtube\.com\/results\?search_query=/i.test(url)) {
+  if (inferContentSourceQuality(url) === "search_link") {
     return "search_link";
   }
 
-  return /^https?:\/\//i.test(url) ? "direct_source" : "unknown";
+  return inferContentSourceQuality(url);
 }
 
 function applyGlobalRightsFallback(
@@ -74,6 +75,15 @@ function normalizeContentItem(item: ContentItem, ingestionMethod: CatalogIngesti
     language: item.language,
     contentLanguage: item.contentLanguage,
     subtitleAvailability: item.subtitleAvailability,
+    teachingIntent: inferContentTeachingIntent({
+      title: item.title,
+      sourceTitle: item.sourceTitle,
+      originalTitle: item.originalTitle,
+      summary: item.summary,
+      reason: item.reason,
+      coachReason: item.coachReason,
+      useCases: item.useCases
+    }),
     skillCategories: [...item.skills],
     problemTags: [...item.problemTags],
     levelRange: [...item.levels],

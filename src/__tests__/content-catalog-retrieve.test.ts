@@ -84,6 +84,58 @@ describe("content catalog retrieval", () => {
     expect(recommended.map((item) => item.id)).toEqual(["direct_curated", "content_expanded_direct"]);
   });
 
+  it("prefers teaching breakdowns over commentary and match-style clips in the same recommendation lane", () => {
+    const commentaryFirst = createContentItem({
+      id: "commentary_first",
+      creatorId: "creator_a",
+      title: "Serve rhythm commentary from club match",
+      summary: "Loose commentary around a serve rhythm issue from match footage.",
+      reason: "Commentary clip about serve rhythm.",
+      coachReason: "Mostly commentary and reaction to a serve issue.",
+      skills: ["serve"],
+      problemTags: ["serve-rhythm"],
+      levels: ["3.0"],
+      url: "https://www.youtube.com/watch?v=commentaryFirst"
+    });
+    const matchExampleSecond = createContentItem({
+      id: "match_example_second",
+      creatorId: "creator_b",
+      title: "Serve rhythm example from practice set",
+      summary: "Match example showing how the serve rhythm looks in live points.",
+      reason: "Live-point example for serve rhythm.",
+      coachReason: "Useful match example once the core pattern is clear.",
+      skills: ["serve"],
+      problemTags: ["serve-rhythm"],
+      levels: ["3.0"],
+      url: "https://www.youtube.com/watch?v=matchExampleSecond"
+    });
+    const teachingThird = createContentItem({
+      id: "teaching_third",
+      creatorId: "creator_c",
+      title: "Serve rhythm breakdown for beginners",
+      summary: "Step-by-step lesson on toss timing and serve rhythm.",
+      reason: "Teaching lesson for players whose serve rushes.",
+      coachReason: "Clear technical breakdown for toss timing and tempo.",
+      skills: ["serve"],
+      problemTags: ["serve-rhythm"],
+      levels: ["3.0"],
+      url: "https://www.youtube.com/watch?v=teachingThird"
+    });
+
+    const recommended = retrieveCatalogRecommendations({
+      source: "diagnosis",
+      contentPool: [commentaryFirst, matchExampleSecond, teachingThird],
+      environment: "production",
+      skillCategories: ["serve"],
+      problemTags: ["serve-rhythm"],
+      lexicalTerms: ["serve", "rhythm"],
+      level: "3.0",
+      maxResults: 2
+    });
+
+    expect(recommended.map((item) => item.id)).toEqual(["teaching_third", "match_example_second"]);
+  });
+
   it("enforces the recommendation cap and keeps search links out of direct recommendation lookup", () => {
     const results = retrieveCatalogContentsByIds({
       ids: ["search_curated", "direct_a", "direct_b", "direct_c"],

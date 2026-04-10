@@ -1,12 +1,12 @@
 import { useState } from "react";
 
+import { RecommendationSummary } from "@/components/content/RecommendationSummary";
 import { creators } from "@/data/creators";
 import { ContentItem } from "@/types/content";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import {
   formatCompactViewCount,
-  getContentCoachNote,
   getContentFocusLine,
   getContentLanguageTag,
   getContentPrimaryTitle,
@@ -101,8 +101,6 @@ export function ContentCard({
   const subtitleAvailability = getSubtitleAvailability(item);
   const creatorName = creator ? getCreatorPrimaryName(creator, language) : t("content.unknownCreator");
   const [showWhy, setShowWhy] = useState(false);
-  const coachNote = getContentCoachNote(item, language);
-  const whySummary = coachNote || focusLine || primaryTitle;
 
   const subtitleLabel = subtitleAvailability === "english"
     ? t("content.subtitle.yes")
@@ -215,9 +213,7 @@ export function ContentCard({
               {t("content.whyRecommended")}
             </button>
             {showWhy ? (
-              <p className="mt-2 text-xs leading-5 text-slate-500">
-                {t("content.whyPrefix")} {whySummary}
-              </p>
+              <RecommendationSummary item={item} className="mt-2" />
             ) : null}
             {onToggleBookmark ? (
               <button

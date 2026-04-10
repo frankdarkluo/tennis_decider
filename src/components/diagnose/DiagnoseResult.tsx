@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { RecommendationSummary } from "@/components/content/RecommendationSummary";
 import { DiagnosisResult as DiagnosisResultType } from "@/types/diagnosis";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import {
-  getContentCoachNote,
   getContentFocusLine,
   getContentLanguageTag,
   getContentPrimaryTitle,
@@ -120,7 +120,6 @@ function RecommendationCard({
   const primaryTitle = getContentPrimaryTitle(item, language);
   const secondaryTitle = getContentSecondaryTitle(item, language);
   const targetLabel = getContentFocusLine(item, language);
-  const coachNote = getContentCoachNote(item, language);
   const contentLanguage = getContentLanguageTag(item);
   const subtitleAvailability = getSubtitleAvailability(item);
   const subtitleLabel = subtitleAvailability === "english"
@@ -174,9 +173,7 @@ function RecommendationCard({
           {targetLabel && targetLabel !== primaryTitle ? (
             <p className="mt-1 text-sm text-slate-600">{t("content.targetPrefix")} {targetLabel}</p>
           ) : null}
-          {coachNote && !coachNote.includes("[待填写") ? (
-            <p className="mt-2 text-xs text-slate-500">{t("content.coachNote")} {coachNote}</p>
-          ) : null}
+          <RecommendationSummary item={item} className="mt-2" />
         </div>
       </div>
       <div className="mt-3">

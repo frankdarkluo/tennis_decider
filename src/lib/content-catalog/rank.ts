@@ -49,6 +49,22 @@ function buildSearchText(item: CatalogContentItem): string {
     .toLowerCase();
 }
 
+function scoreTeachingIntent(item: CatalogContentItem): number {
+  if (item.teachingIntent === "teaching") {
+    return 12;
+  }
+
+  if (item.teachingIntent === "match_example") {
+    return 3;
+  }
+
+  if (item.teachingIntent === "commentary") {
+    return -8;
+  }
+
+  return 0;
+}
+
 function compareCandidates(left: RankedCatalogCandidate, right: RankedCatalogCandidate): number {
   if (right.score !== left.score) {
     return right.score - left.score;
@@ -70,6 +86,7 @@ export function rankCatalogContent(
   const requiredIdOrder = new Map((intent.requiredIds ?? []).map((id, index) => [id, index]));
   const preferredIdOrder = new Map((intent.preferredIds ?? []).map((id, index) => [id, index]));
   const problemTags = intent.problemTags ?? [];
+  const primaryProblemTag = problemTags[0];
   const skillCategories = intent.skillCategories ?? [];
   const lexicalTerms = (intent.lexicalTerms ?? [])
     .map((term) => term.trim().toLowerCase())
@@ -91,10 +108,15 @@ export function rankCatalogContent(
         score += 240 - ((preferredIdOrder.get(item.id) ?? 0) * 16);
       }
 
+      if (primaryProblemTag && primaryProblemTag !== "general-improvement" && item.problemTags.includes(primaryProblemTag)) {
+        score += 90;
+      }
+
       score += problemOverlap * 26;
       score += skillOverlap * 18;
       score += lexicalScore;
       score += scoreLevel(item, intent.level);
+      score += scoreTeachingIntent(item);
 
       if (item.rightsStatus === "direct_source") {
         score += 32;

@@ -54,6 +54,7 @@ function LibraryPageContent() {
   const { openLoginModal } = useAuthModal();
   const { t } = useI18n();
   const [gateState, setGateState] = useState<LibraryGateState>("checking");
+  const [keywordDraft, setKeywordDraft] = useState("");
   const [keyword, setKeyword] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState<LibraryPlatformFilter>("all");
   const [selectedContentLanguage, setSelectedContentLanguage] = useState<LibraryContentLanguageFilter>("all");
@@ -287,11 +288,16 @@ function LibraryPageContent() {
   }, [gateState, visibleItems.length]);
 
   const clearAll = () => {
+    setKeywordDraft("");
     setKeyword("");
     setSelectedPlatform("all");
     setSelectedContentLanguage("all");
     setSelectedSubtitleAvailability("all");
     setShowBookmarkedOnly(false);
+  };
+
+  const applySearch = () => {
+    setKeyword(keywordDraft.trim());
   };
 
   const handleToggleBookmark = async (contentId: string) => {
@@ -354,8 +360,9 @@ function LibraryPageContent() {
         </div>
 
         <LibraryFilters
-          keyword={keyword}
-          setKeyword={setKeyword}
+          keywordDraft={keywordDraft}
+          setKeywordDraft={setKeywordDraft}
+          onSearch={applySearch}
           selectedPlatform={selectedPlatform}
           setSelectedPlatform={setSelectedPlatform}
           selectedContentLanguage={selectedContentLanguage}
@@ -396,7 +403,9 @@ function LibraryPageContent() {
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-6 py-10 text-center text-slate-500 shadow-soft">
-            {t("library.empty")}
+            {keyword
+              ? t("library.emptySearch", { query: keyword })
+              : t("library.empty")}
             <div className="mt-4">
               <Button variant="secondary" onClick={clearAll}>{t("library.clear")}</Button>
             </div>

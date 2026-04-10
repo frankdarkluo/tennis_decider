@@ -32,6 +32,14 @@ const translationMap = {
   "content.open": "Open video",
   "content.whyRecommended": "Why recommended",
   "content.whyPrefix": "Recommended because:",
+  "content.recommendationWhy": "Why selected",
+  "content.recommendationTarget": "Technical point",
+  "content.recommendationTrust": "Trust signals",
+  "content.trust.directSource": "Direct source",
+  "content.trust.searchLink": "Search link",
+  "content.trust.teaching": "Teaching video",
+  "content.trust.matchExample": "Match example",
+  "content.trust.commentary": "Commentary",
   "creator.modalTitle": "Creator details",
   "creator.suitableFor": "Best for",
   "creator.theirContent": "Their content",
@@ -83,6 +91,8 @@ const translationMap = {
   "library.loading": "Loading library...",
   "library.bookmarkLogin": "Sign in to bookmark content",
   "library.searchPlaceholder": "Search by skill, creator, or situation",
+  "library.searchAction": "Search",
+  "library.emptySearch": "No strong content match for \"{query}\". Try a skill, creator, or problem phrase.",
   "library.filter.languageAll": "All languages",
   "library.filter.languageZh": "Chinese content",
   "library.filter.languageEn": "English content",
@@ -179,6 +189,14 @@ describe("bilingual rendering", () => {
     expect(screen.getByText(/网球发球/)).toBeInTheDocument();
     expect(screen.getByText("Focus: For players who rush the serve and lose trust in the second serve.")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Open video: Serve fundamentals: build rhythm before power" })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Why recommended" }));
+
+    expect(screen.getByText("Why selected")).toBeInTheDocument();
+    expect(screen.getByText("Technical point")).toBeInTheDocument();
+    expect(screen.getByText("Trust signals")).toBeInTheDocument();
+    expect(screen.getByText("Direct source")).toBeInTheDocument();
+    expect(screen.getByText("Teaching video")).toBeInTheDocument();
   });
 
   it("renders CreatorDetailModal in English with translated creator copy and featured video text", () => {
@@ -297,6 +315,8 @@ describe("bilingual rendering", () => {
     expect(screen.getByText("Original title")).toBeInTheDocument();
     expect(screen.getByText(/网球发球/)).toBeInTheDocument();
     expect(screen.getByText("Focus: For players who rush the serve and lose trust in the second serve.")).toBeInTheDocument();
+    expect(screen.getByText("Direct source")).toBeInTheDocument();
+    expect(screen.getByText("Teaching video")).toBeInTheDocument();
   });
 
   it("keeps the prescription sections ahead of featured content on today cards", () => {
@@ -387,6 +407,10 @@ describe("bilingual rendering", () => {
     expect(screen.getByText("No subtitles")).toBeInTheDocument();
     expect(screen.getByText("Original title")).toBeInTheDocument();
     expect(screen.getByText(/网球发球/)).toBeInTheDocument();
+    expect(screen.getByText("Why selected")).toBeInTheDocument();
+    expect(screen.getByText("Trust signals")).toBeInTheDocument();
+    expect(screen.getByText("Direct source")).toBeInTheDocument();
+    expect(screen.getByText("Teaching video")).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Upload a video for a more precise diagnosis" })).not.toBeInTheDocument();
     expect(planHref).toBeTruthy();
 
@@ -415,6 +439,24 @@ describe("bilingual rendering", () => {
 
     expect(screen.getByText("Chinese content")).toBeInTheDocument();
     expect(screen.getByText("English content")).toBeInTheDocument();
+  });
+
+  it("uses an explicit library search action and shows mismatch feedback after submission", async () => {
+    render(<LibraryPage />);
+
+    expect(await screen.findAllByRole("link", { name: /Open video:/ })).not.toHaveLength(0);
+
+    fireEvent.change(screen.getByPlaceholderText("Search by skill, creator, or situation"), {
+      target: { value: "nonexistent mismatch phrase" }
+    });
+
+    expect(screen.getAllByRole("link", { name: /Open video:/ }).length).toBeGreaterThan(0);
+
+    fireEvent.click(screen.getByRole("button", { name: "Search" }));
+
+    expect(
+      screen.getByText('No strong content match for "nonexistent mismatch phrase". Try a skill, creator, or problem phrase.')
+    ).toBeInTheDocument();
   });
 
   it("renders home hot content cards with bilingual metadata cues", () => {

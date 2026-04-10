@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useI18n } from "@/lib/i18n/config";
 import { ContentLanguageCode, ContentSubtitleAvailability } from "@/types/content";
@@ -7,8 +8,9 @@ export type LibraryContentLanguageFilter = "all" | ContentLanguageCode;
 export type LibrarySubtitleFilter = "all" | Extract<ContentSubtitleAvailability, "english" | "none">;
 
 type LibraryFiltersProps = {
-  keyword: string;
-  setKeyword: (value: string) => void;
+  keywordDraft: string;
+  setKeywordDraft: (value: string) => void;
+  onSearch: () => void;
   selectedPlatform: LibraryPlatformFilter;
   setSelectedPlatform: (value: LibraryPlatformFilter) => void;
   selectedContentLanguage: LibraryContentLanguageFilter;
@@ -35,8 +37,13 @@ export function LibraryFilters(props: LibraryFiltersProps) {
       <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_180px_180px_180px]">
         <Input
           placeholder={t("library.searchPlaceholder")}
-          value={props.keyword}
-          onChange={(e) => props.setKeyword(e.target.value)}
+          value={props.keywordDraft}
+          onChange={(e) => props.setKeywordDraft(e.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              props.onSearch();
+            }
+          }}
         />
         <select
           className="min-h-11 w-full rounded-xl border border-[var(--line)] bg-white px-4 py-2 text-sm text-slate-700"
@@ -70,6 +77,9 @@ export function LibraryFilters(props: LibraryFiltersProps) {
         </select>
       </div>
       <div className="flex flex-wrap items-center gap-3">
+        <Button type="button" variant="secondary" onClick={props.onSearch}>
+          {t("library.searchAction")}
+        </Button>
         <button
           type="button"
           aria-pressed={props.showBookmarkedOnly}
