@@ -57,6 +57,8 @@ describe("7-step plan semantics", () => {
   it("keeps supported English and Chinese plan copy step-based instead of week-based", () => {
     expect(en["plan.title"]).toBe("Your 7-step practice plan");
     expect(en["plan.day.label"]).toBe("Step {day}");
+    expect(en["plan.day.failure"]).toBe("Common failure cue");
+    expect(en["plan.day.transfer"]).toBe("Transfer cue");
     expect(en["plan.subtitle"]).not.toMatch(/\btoday\b|\bweek\b/i);
     expect(en["plan.summary.badge"]).not.toMatch(/\bweek\b/i);
     expect(en["plan.summary.diagnosis"]).not.toMatch(/seven days|week/i);
@@ -64,6 +66,8 @@ describe("7-step plan semantics", () => {
 
     expect(zh["plan.title"]).toBe("你的 7 步训练计划");
     expect(zh["plan.day.label"]).toBe("第 {day} 步");
+    expect(zh["plan.day.failure"]).toBe("常见失败信号");
+    expect(zh["plan.day.transfer"]).toBe("迁移提示");
     expect(zh["plan.subtitle"]).not.toMatch(/今天|本周|一周/);
     expect(zh["plan.summary.badge"]).not.toMatch(/本周|一周/);
     expect(zh["plan.fallback.target"]).not.toMatch(/本周|一周/);
@@ -92,6 +96,45 @@ describe("7-step plan semantics", () => {
 
     expect(screen.getByText("Step 2")).toBeInTheDocument();
     expect(screen.queryByText("Day 2")).not.toBeInTheDocument();
+  });
+
+  it("renders each visible plan step as a compact execution contract", () => {
+    renderWithI18n(
+      <DayPlanCard
+        isToday
+        day={{
+          day: 1,
+          focus: "稳住二发安全弧线",
+          contentIds: [],
+          drills: ["二发安全弧线 20 球"],
+          duration: "20 分钟",
+          goal: "让二发先稳定过网而不是先追求速度",
+          warmupBlock: { title: "二发准备", items: ["抛球节奏 10 次"] },
+          mainBlock: { title: "二发主练", items: ["二发安全弧线 20 球"] },
+          pressureBlock: { title: "带压力重复", items: ["连续 5 球过网才加速度"] },
+          successCriteria: ["20 球里至少 14 球有安全过网高度"],
+          failureCue: "一旦只想加速，二发又会下网",
+          progressionNote: "下一步再把同一弧线带进接近比赛节奏",
+          transferCue: "关键分先默念安全弧线，再开始抛球",
+          intensity: "medium",
+          tempo: "controlled"
+        }}
+      />,
+      "zh"
+    );
+
+    expect(screen.getByText("这一步目标")).toBeInTheDocument();
+    expect(screen.getByText("让二发先稳定过网而不是先追求速度")).toBeInTheDocument();
+    expect(screen.getByText("练多久 · 20 分钟")).toBeInTheDocument();
+    expect(screen.getByText("练习")).toBeInTheDocument();
+    expect(screen.getByText("二发安全弧线 20 球")).toBeInTheDocument();
+    expect(screen.getByText("连续 5 球过网才加速度")).toBeInTheDocument();
+    expect(screen.getByText("完成标准")).toBeInTheDocument();
+    expect(screen.getByText("20 球里至少 14 球有安全过网高度")).toBeInTheDocument();
+    expect(screen.getByText("常见失败信号")).toBeInTheDocument();
+    expect(screen.getByText("一旦只想加速，二发又会下网")).toBeInTheDocument();
+    expect(screen.getByText("迁移提示")).toBeInTheDocument();
+    expect(screen.getByText("关键分先默念安全弧线，再开始抛球")).toBeInTheDocument();
   });
 
   it("keeps diagnosis-origin plans on a step-based handoff contract", () => {

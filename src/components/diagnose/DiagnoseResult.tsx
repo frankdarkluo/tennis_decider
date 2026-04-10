@@ -277,6 +277,9 @@ export function DiagnoseResult({
   const evidenceTone = getEvidenceToneViewModel(result, locale);
   const featuredContent = result.recommendedContents[0];
   const moreContents = result.recommendedContents.slice(1);
+  const planCtaLabel = deepContext?.isDeepModeReady
+    ? (locale === "en" ? "Generate a more specific 7-step plan" : "生成更具体的 7 步训练计划")
+    : t("diagnose.result.plan");
   const hasCategoryConflict = result.categoryConsistency === "conflict";
   const categoryConflictMessage = hasCategoryConflict
     ? (locale === "en"
@@ -285,10 +288,9 @@ export function DiagnoseResult({
     : null;
 
   useEffect(() => {
-    const initialLayer = isDeepMode ? 2 : 1;
-    setLayer(initialLayer);
+    setLayer(1);
     setEvidenceExpanded(false);
-  }, [result.input, result.problemTag, isDeepMode]);
+  }, [result.input, result.problemTag]);
 
   if (!canGeneratePlan) {
     return null;
@@ -326,6 +328,19 @@ export function DiagnoseResult({
             <p className="mt-2">{evidenceTone.description}</p>
           ) : null}
         </div>
+        {!isNarrowingMode ? (
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href={planHref}
+              onClick={() => logEvent("diagnose.plan_cta_clicked", {
+                problemTag: result.problemTag,
+                levelBand: normalizedPlanLevel
+              }, { page: "/diagnose" })}
+            >
+              <Button>{planCtaLabel}</Button>
+            </Link>
+          </div>
+        ) : null}
         {result.fallbackUsed && result.fallbackMode ? (
           <div className="rounded-xl border border-brand-100 bg-brand-50/70 p-3 text-sm text-slate-700">
             <p>
@@ -511,19 +526,6 @@ export function DiagnoseResult({
           ) : null}
 
           <div className="mt-4 flex flex-wrap gap-2">
-            <Link
-              href={planHref}
-              onClick={() => logEvent("diagnose.plan_cta_clicked", {
-                problemTag: result.problemTag,
-                levelBand: normalizedPlanLevel
-              }, { page: "/diagnose" })}
-            >
-              <Button>
-                {deepContext?.isDeepModeReady
-                  ? (locale === "en" ? "Generate a more specific 7-step plan" : "生成更具体的 7 步训练计划")
-                  : t("diagnose.result.plan")}
-              </Button>
-            </Link>
             <Link
               href="/library"
               onClick={() => logEvent("cta_click", {

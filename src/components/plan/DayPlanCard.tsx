@@ -135,6 +135,21 @@ function PrescriptionMetadata({
   );
 }
 
+function PrescriptionCue({
+  label,
+  value
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="space-y-2 rounded-2xl border border-[var(--line)] bg-white/70 p-4">
+      <p className="text-sm font-semibold text-slate-900">{label}</p>
+      <p className="text-sm leading-6 text-slate-700">{value}</p>
+    </div>
+  );
+}
+
 function PrescriptionPlan({
   day,
   language,
@@ -165,7 +180,7 @@ function PrescriptionPlan({
       />
 
       <div className="space-y-3">
-            <PrescriptionBlock
+        <PrescriptionBlock
           label={practiceLabel}
           block={{
             title: practiceLabel,
@@ -182,6 +197,16 @@ function PrescriptionPlan({
           ))}
         </ul>
       </div>
+
+      <PrescriptionCue
+        label={t("plan.day.failure")}
+        value={showFull ? day.failureCue.trim() : compactPrompt(day.failureCue, language)}
+      />
+
+      <PrescriptionCue
+        label={t("plan.day.transfer")}
+        value={showFull ? day.transferCue.trim() : compactPrompt(day.transferCue, language)}
+      />
     </div>
   );
 }

@@ -185,6 +185,8 @@ const zh = {
   "plan.day.main": "练习",
   "plan.day.pressure": "带压力重复",
   "plan.day.success": "完成标准",
+  "plan.day.failure": "常见失败信号",
+  "plan.day.transfer": "迁移提示",
   "plan.day.intensity": "强度",
   "plan.day.tempo": "节奏",
   "plan.day.intensity.low": "低",

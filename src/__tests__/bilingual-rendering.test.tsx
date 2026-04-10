@@ -51,6 +51,8 @@ const translationMap = {
   "plan.day.main": "Practice",
   "plan.day.pressure": "Pressure reps",
   "plan.day.success": "Success criteria",
+  "plan.day.failure": "Common failure cue",
+  "plan.day.transfer": "Transfer cue",
   "plan.day.intensity": "Intensity",
   "plan.day.tempo": "Tempo",
   "plan.day.intensity.low": "Low",
@@ -285,6 +287,10 @@ describe("bilingual rendering", () => {
     expect(screen.getByText("Land 6 in a row before moving on")).toBeInTheDocument();
     expect(screen.getByText("Success criteria")).toBeInTheDocument();
     expect(screen.getByText("Finish with stable mechanics")).toBeInTheDocument();
+    expect(screen.getByText("Common failure cue")).toBeInTheDocument();
+    expect(screen.getByText("If the toss drifts, reset before adding pace")).toBeInTheDocument();
+    expect(screen.getByText("Transfer cue")).toBeInTheDocument();
+    expect(screen.getByText("Use the same toss cue on the first serve of each point")).toBeInTheDocument();
     expect(screen.getByText("Watch this")).toBeInTheDocument();
     expect(screen.getByText("ZH")).toBeInTheDocument();
     expect(screen.getByText("No subtitles")).toBeInTheDocument();

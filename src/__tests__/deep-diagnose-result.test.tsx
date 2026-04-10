@@ -109,14 +109,19 @@ describe("deep diagnose result surface", () => {
 
     render(<DiagnoseResult result={result} />);
 
+    expect(screen.getByRole("link", { name: "生成更具体的 7 步训练计划" })).toBeInTheDocument();
+    expect(screen.queryByText("深入模式")).not.toBeInTheDocument();
+    expect(screen.queryByText("深入诊断基于原始文本 + 场景还原证据。")).not.toBeInTheDocument();
+    expect(screen.queryByText("为什么这次判断更具体")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "展开看更多 ↓" }));
+
     expect(screen.getByText("深入模式")).toBeInTheDocument();
     expect(screen.getByText("深入诊断基于原始文本 + 场景还原证据。")).toBeInTheDocument();
     expect(screen.getByText("二发在关键分原地发球时容易下网，而且会发紧。")).toBeInTheDocument();
     expect(screen.getByText("为什么这次判断更具体")).toBeInTheDocument();
     expect(screen.getByText("这是关键分下的原地二发问题。")).toBeInTheDocument();
     expect(screen.getByText("场景还原保留了明确失误结果：下网。")).toBeInTheDocument();
-
-    expect(screen.getByRole("link", { name: "生成更具体的 7 步训练计划" })).toBeInTheDocument();
   });
 
   it("surfaces category conflicts honestly instead of treating them like a normal diagnosis", async () => {

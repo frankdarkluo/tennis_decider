@@ -185,6 +185,8 @@ const en = {
   "plan.day.main": "Practice",
   "plan.day.pressure": "Pressure reps",
   "plan.day.success": "Success criteria",
+  "plan.day.failure": "Common failure cue",
+  "plan.day.transfer": "Transfer cue",
   "plan.day.intensity": "Intensity",
   "plan.day.tempo": "Tempo",
   "plan.day.intensity.low": "Low",
