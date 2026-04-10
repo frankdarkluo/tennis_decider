@@ -41,7 +41,6 @@ docs_local/
 docs/.obsidian/
 docs/Untitled.base
 .github/
-scripts/automation/
 /*.md
 !/README.md
 
