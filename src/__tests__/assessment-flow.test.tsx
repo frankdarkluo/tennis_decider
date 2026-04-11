@@ -1,7 +1,7 @@
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import { assessmentQuestions } from "@/data/assessmentQuestions";
+import { ASSESSMENT_QUESTIONS, PROFILE_QUESTION_IDS } from "@/data/assessmentQuestions";
 import { calculateAssessmentResult } from "@/lib/assessment";
 import { normalizeDraftStepIndex } from "@/lib/assessmentDraft";
 import { ResultSummary } from "@/components/assessment/ResultSummary";
@@ -28,62 +28,50 @@ let mockLanguage: "zh" | "en" = "zh";
 
 const translationMap = {
   "assessment.title": "1 分钟测一下你的水平",
-  "assessment.subtitle": "答几个小问题，先给你一个区间。",
+  "assessment.subtitle": "10 个核心问题先判断区间，再用 2 个轻量问题定制训练计划。",
   "assessment.loading": "正在同步你的评估记录...",
-  "assessment.resumeDraft": "",
-  "assessment.question.profile": "",
-  "assessment.question.coarse": "核心评估",
-  "assessment.question.fine": "继续了解一下",
-  "assessment.question.slider": "再补一个背景信息",
-  "assessment.progress.almostDone": "快完成了",
-  "assessment.tapToContinue": "点一下就继续",
-  "assessment.previous": "上一步",
+  "assessment.start": "开始评估",
+  "assessment.previous": "上一题",
+  "assessment.progress.core": "核心评估进度",
+  "assessment.transition.title": "核心评估已完成",
+  "assessment.transition.subtitle": "最后 2 个轻量问题，用来定制你的训练计划。",
+  "assessment.transition.cta": "继续定制",
   "assessment.empty.title": "先完成一次水平评估",
-  "assessment.empty.subtitle": "做完后，我们会直接告诉你大概处在哪个能力区间，以及接下来更值得优先补哪一块。",
-  "assessment.result.headline": "你的能力区间接近",
-  "assessment.result.range": "参考区间",
-  "assessment.result.confidence": "可信度",
-  "assessment.result.observed": "这次直接覆盖",
-  "assessment.result.summary": "这次结果怎么读",
-  "assessment.result.weaknesses": "优先补强",
-  "assessment.result.noWeaknesses": "这次没有明显落到薄弱档的维度，先把待观察项作为下一步检查点。",
-  "assessment.result.observationNeeded": "继续观察",
-  "assessment.result.unobserved": "这次未直接覆盖",
-  "assessment.result.selfReportNote": "这次结果来自短问卷自评，不等于视频观察。",
-  "assessment.result.noObservationNeeded": "目前没有额外待观察项。",
-  "assessment.result.noUnobserved": "这次没有额外未覆盖项。",
+  "assessment.empty.subtitle": "做完后，我们会给出能力区间、打法画像和下一步训练重点。",
+  "assessment.result.headline": "你的当前能力区间",
+  "assessment.result.level": "参考区间",
+  "assessment.result.headlineLabel": "当前重点",
+  "assessment.result.planHintLabel": "计划提示",
+  "assessment.result.styleLabel": "打法画像",
+  "assessment.result.contextLabel": "打球场景",
+  "assessment.result.strongLabel": "当前强项",
+  "assessment.result.weakLabel": "优先补强",
   "assessment.result.skillBreakdown": "分项能力",
-  "assessment.result.skillBreakdownHint": "每个维度会落在薄弱、待提升、正常或强项四档。"
+  "assessment.result.skillBreakdownHint": "10 个核心维度按 1–4 分映射为四档状态。"
 } satisfies Record<string, string>;
 
 const translationMapEn = {
   "assessment.title": "A 1-minute read on your level",
-  "assessment.subtitle": "Answer a short ladder and we will show your current range plus the next area worth improving.",
+  "assessment.subtitle": "Use 10 core questions to read your range, then 2 light profile cards to shape the plan.",
   "assessment.loading": "Syncing your assessment record...",
-  "assessment.resumeDraft": "",
-  "assessment.question.profile": "",
-  "assessment.question.coarse": "Quick level read",
-  "assessment.question.fine": "Narrow the next step",
-  "assessment.question.slider": "One more background detail",
-  "assessment.progress.almostDone": "Almost there",
-  "assessment.tapToContinue": "Tap once to continue",
+  "assessment.start": "Start assessment",
   "assessment.previous": "Back",
-  "assessment.empty.title": "Complete one level assessment first",
-  "assessment.empty.subtitle": "After that, we will tell you roughly where you are and what is worth improving first.",
-  "assessment.result.headline": "Your current range is close to",
-  "assessment.result.range": "Estimated range",
-  "assessment.result.confidence": "Confidence",
-  "assessment.result.observed": "Directly covered",
-  "assessment.result.summary": "How to read this result",
-  "assessment.result.weaknesses": "Priority gaps",
-  "assessment.result.noWeaknesses": "No clear weak tier surfaced in this pass. Use the watch list as your next checkpoint.",
-  "assessment.result.observationNeeded": "Watch next",
-  "assessment.result.unobserved": "Not directly covered yet",
-  "assessment.result.selfReportNote": "This pass is based on a short self-report, not direct stroke observation.",
-  "assessment.result.noObservationNeeded": "No extra watch areas surfaced right now.",
-  "assessment.result.noUnobserved": "No extra uncovered areas surfaced right now.",
+  "assessment.progress.core": "Core assessment progress",
+  "assessment.transition.title": "Core assessment complete",
+  "assessment.transition.subtitle": "Two light profile questions remain to tailor your training plan.",
+  "assessment.transition.cta": "Continue",
+  "assessment.empty.title": "Complete the assessment first",
+  "assessment.empty.subtitle": "After that, we will show your level band, style profile, and next training focus.",
+  "assessment.result.headline": "Your current level band",
+  "assessment.result.level": "Level band",
+  "assessment.result.headlineLabel": "Current focus",
+  "assessment.result.planHintLabel": "Plan hint",
+  "assessment.result.styleLabel": "Style profile",
+  "assessment.result.contextLabel": "Playing context",
+  "assessment.result.strongLabel": "Current strengths",
+  "assessment.result.weakLabel": "Priority gaps",
   "assessment.result.skillBreakdown": "Skill breakdown",
-  "assessment.result.skillBreakdownHint": "Each area is tagged as weak, needs work, normal, or strength."
+  "assessment.result.skillBreakdownHint": "The 10 core dimensions map each 1–4 answer into a simple status band."
 } satisfies Record<string, string>;
 
 vi.mock("next/navigation", () => ({
@@ -113,16 +101,7 @@ vi.mock("@/lib/i18n/config", () => ({
     language: mockLanguage,
     canChangeLanguage: true,
     setLanguage: vi.fn(),
-    t: (key: string, replacements?: Record<string, string | number>) => {
-      const template = (mockLanguage === "en" ? translationMapEn : translationMap)[key] ?? key;
-      if (!replacements) {
-        return template;
-      }
-
-      return Object.entries(replacements).reduce((current, [token, value]) => {
-        return current.replace(new RegExp(`\\{${token}\\}`, "g"), String(value));
-      }, template);
-    }
+    t: (key: string) => (mockLanguage === "en" ? translationMapEn : translationMap)[key] ?? key
   })
 }));
 
@@ -142,6 +121,25 @@ vi.mock("@/lib/appShell/localRouteState", () => ({
   updateLocalStudyProgress: vi.fn()
 }));
 
+const coreAnswerLabels = [
+  "9–15 拍多数能维持，遇到稍快的球也还能继续打",
+  "大多数时候能打出有质量的正手，偶尔能主动压住对手",
+  "反手多数能稳住，切削能作为过渡球或防守变化使用",
+  "一发有基本落点或节奏，二发大多数时候能把回合稳定开始",
+  "大多数发球都能接进场，并把回合正常拉起来",
+  "大多数球能赶到，打完也能基本回到准备位置",
+  "知道什么时候该上网，第一拍大多能处理干净，半截击偶尔能救",
+  "大多数高球和高压都能处理干净，不容易白送",
+  "大体还能保持平时水平，不至于关键分完全失常",
+  "有 1–2 个比较常用的套路，比如先压一侧再找空档"
+] as const;
+
+async function answerCoreQuestions(labels: readonly string[]) {
+  for (const label of labels) {
+    fireEvent.click(await screen.findByRole("button", { name: label }));
+  }
+}
+
 describe("assessment flow and result summary", () => {
   beforeEach(() => {
     cleanup();
@@ -157,131 +155,96 @@ describe("assessment flow and result summary", () => {
     cleanup();
   });
 
-  it("restores the last coarse step and advances into the first fine question with updated progress after gender removal", async () => {
+  it("uses the new 10+2 assessment structure and keeps profile questions out of the core progress bar", async () => {
     const { default: AssessmentPage } = await import("@/app/assessment/page");
-
-    window.localStorage.setItem(ASSESSMENT_DRAFT_STORAGE_KEY, JSON.stringify({
-      stepIndex: 4,
-      answers: {
-        coarse_rally: 1,
-        coarse_serve: 1,
-        coarse_movement: 1,
-        coarse_awareness: 1
-      },
-      profile: {
-        yearsPlaying: 2,
-        yearsLabel: "2年"
-      },
-      updatedAt: "2026-04-05T00:00:00.000Z"
-    }));
-
     const { container } = render(<AssessmentPage />);
 
-    expect(await screen.findByText("比分紧张或练习加压时，你通常会怎样？")).toBeInTheDocument();
-    expect(screen.queryByText("你的性别？")).not.toBeInTheDocument();
-    expect(screen.queryByText("打了多久网球？")).not.toBeInTheDocument();
-    expect((container.querySelector(".h-2.rounded-full.bg-brand-500.transition-all") as HTMLElement | null)?.style.width).toBe("56%");
+    expect(await screen.findByRole("button", { name: "开始评估" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "开始评估" }));
 
-    fireEvent.click(screen.getByRole("button", { name: "明显发紧，失误一下变多" }));
+    expect(await screen.findByText("平时对拉时，你多数情况下能把球维持在什么质量？")).toBeInTheDocument();
 
-    expect(await screen.findByText("打球时你的握拍和准备动作？")).toBeInTheDocument();
-    await waitFor(() => {
-      expect((container.querySelector(".h-2.rounded-full.bg-brand-500.transition-all") as HTMLElement | null)?.style.width).toBe("67%");
+    await answerCoreQuestions(coreAnswerLabels.slice(0, 8));
+
+    expect(await screen.findByText("比分紧、被追分，或者连续失误后，你通常会怎样？")).toBeInTheDocument();
+    expect((container.querySelector(".h-2.rounded-full.bg-brand-500.transition-all") as HTMLElement | null)?.style.width).toBe("80%");
+
+    await answerCoreQuestions(coreAnswerLabels.slice(8));
+
+    expect(await screen.findByText("核心评估已完成")).toBeInTheDocument();
+    expect(screen.queryByText("你现在更接近哪种打球风格？")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "继续定制" }));
+
+    const styleQuestion = await screen.findByText("你现在更接近哪种打球风格？");
+    const styleCardGrid = styleQuestion.closest("div");
+    expect(styleCardGrid).not.toBeNull();
+    expect(screen.getAllByRole("button").length).toBeGreaterThanOrEqual(4);
+    expect(screen.getByText("稳定防守型")).toBeInTheDocument();
+    expect(screen.getByText("网前压迫型")).toBeInTheDocument();
+  });
+
+  it("treats legacy branch-era draft answers as stale and keeps valid 10+2 drafts aligned", () => {
+    expect(normalizeDraftStepIndex(
+      4,
+      {
+        coarse_rally: "1",
+        coarse_serve: "1"
+      },
+      ASSESSMENT_QUESTIONS
+    )).toBe(0);
+
+    expect(normalizeDraftStepIndex(
+      6,
+      {
+        rally_stability: "rally_3",
+        forehand_weapon: "forehand_3",
+        backhand_slice_reliability: "backhand_slice_3",
+        serve_quality: "serve_3",
+        return_quality: "return_3",
+        movement_recovery: "movement_3"
+      },
+      ASSESSMENT_QUESTIONS
+    )).toBe(6);
+  });
+
+  it("renders level band, profile summary, and strongest/weakest areas from the player profile vector", () => {
+    const result = calculateAssessmentResult({
+      rally_stability: "rally_3",
+      forehand_weapon: "forehand_4",
+      backhand_slice_reliability: "backhand_slice_3",
+      serve_quality: "serve_1",
+      return_quality: "return_3",
+      movement_recovery: "movement_2",
+      net_transition_volley: "net_3",
+      overhead_highball: "overhead_3",
+      pressure_matchplay: "pressure_3",
+      point_construction: "tactics_2",
+      play_style_profile: "baseline_attack",
+      play_context_modifier: "singles_standard"
     });
-    expect(mockPush).not.toHaveBeenCalled();
-  });
-
-  it("keeps current-flow draft steps unchanged when only default years fields are present", () => {
-    const profileQuestions = assessmentQuestions.filter((question) => question.phase === "profile" && question.type !== "gender");
-
-    expect(normalizeDraftStepIndex(
-      4,
-      {
-        coarse_rally: 2,
-        coarse_serve: 2,
-        coarse_movement: 2,
-        coarse_awareness: 2
-      },
-      profileQuestions
-    )).toBe(4);
-  });
-
-  it("subtracts only the retired legacy profile steps from older drafts", () => {
-    const profileQuestions = assessmentQuestions.filter((question) => question.phase === "profile" && question.type !== "gender");
-
-    expect(normalizeDraftStepIndex(
-      4,
-      {
-        coarse_rally: 2,
-        coarse_serve: 2
-      },
-      profileQuestions
-    )).toBe(2);
-  });
-
-  it("renders summary, weak areas, and watch areas from the calculated result model", () => {
-    const result = calculateAssessmentResult({
-      coarse_rally: 1,
-      coarse_serve: 2,
-      coarse_awareness: 4,
-      coarse_movement: 4,
-      coarse_pressure: 4
-    }, assessmentQuestions);
 
     render(<ResultSummary result={result} />);
 
-    expect(screen.getByText(result.summary)).toBeInTheDocument();
-    const weaknessesCard = screen.getByText("优先补强").closest("div");
-    const observationCard = screen.getByText("继续观察").closest("div");
+    expect(screen.getByText("你的当前能力区间")).toBeInTheDocument();
+    expect(screen.getByText("3.5")).toBeInTheDocument();
+    expect(screen.getByText("当前重点")).toBeInTheDocument();
+    expect(screen.getByText("当前最值得优先补强的是发球")).toBeInTheDocument();
+    expect(screen.getByText("计划提示")).toBeInTheDocument();
+    expect(screen.getByText("后续训练计划应先围绕发球展开。")).toBeInTheDocument();
+    expect(screen.getByText("打法画像")).toBeInTheDocument();
+    expect(screen.getByText("底线推进型")).toBeInTheDocument();
+    expect(screen.getByText("打球场景")).toBeInTheDocument();
+    expect(screen.getByText("单打为主")).toBeInTheDocument();
+    expect(screen.getByText("当前强项")).toBeInTheDocument();
+    expect(screen.getByText("优先补强")).toBeInTheDocument();
 
-    expect(weaknessesCard).not.toBeNull();
-    expect(observationCard).not.toBeNull();
-    expect(within(weaknessesCard as HTMLElement).getByText("对拉稳定性")).toBeInTheDocument();
-    expect(within(observationCard as HTMLElement).getByText("发球")).toBeInTheDocument();
-  });
+    const strengthsCard = screen.getByText("当前强项").closest("div");
+    const weakCard = screen.getByText("优先补强").closest("div");
 
-  it("localizes the summary and breakdown labels into the active language", () => {
-    mockLanguage = "en";
-
-    const result = calculateAssessmentResult({
-      coarse_rally: 1,
-      coarse_serve: 2,
-      coarse_awareness: 4,
-      coarse_movement: 4,
-      coarse_pressure: 4
-    }, assessmentQuestions, undefined, "zh");
-
-    render(<ResultSummary result={result} />);
-
-    expect(screen.getByText("How to read this result")).toBeInTheDocument();
-    expect(screen.getByText("Estimated range")).toBeInTheDocument();
-    expect(screen.getByText(/Your current self-reported range looks around 3\.5-4\.0\./)).toBeInTheDocument();
-    expect(screen.getAllByText("rally stability").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("serve").length).toBeGreaterThan(0);
-    expect(screen.queryByText(result.summary)).not.toBeInTheDocument();
-    expect(screen.queryByText("对拉稳定性")).not.toBeInTheDocument();
-  });
-
-  it("renders a conservative range plus uncovered technique areas", () => {
-    const result = calculateAssessmentResult({
-      coarse_rally: 3,
-      coarse_serve: 3,
-      coarse_awareness: 3,
-      coarse_movement: 3,
-      coarse_pressure: 2,
-      fine_b_both_sides: 3,
-      fine_b_direction: 3,
-      fine_b_slice: 1,
-      fine_b_serve_game: 3
-    }, assessmentQuestions);
-
-    render(<ResultSummary result={result} />);
-
-    expect(screen.getByText("参考区间")).toBeInTheDocument();
-    expect(screen.getByText("3.0-3.5")).toBeInTheDocument();
-    expect(screen.getByText("这次未直接覆盖")).toBeInTheDocument();
-    expect(screen.getByText("高压球")).toBeInTheDocument();
-    expect(screen.getByText("截击")).toBeInTheDocument();
-    expect(screen.getByText("这次结果来自短问卷自评，不等于视频观察。")).toBeInTheDocument();
+    expect(strengthsCard).not.toBeNull();
+    expect(weakCard).not.toBeNull();
+    expect(within(strengthsCard as HTMLElement).getByText("正手主动能力")).toBeInTheDocument();
+    expect(within(weakCard as HTMLElement).getByText("发球")).toBeInTheDocument();
   });
 });

@@ -1,4 +1,5 @@
 import { getSupabaseBrowserClient } from "@/lib/supabase";
+import { migrateLegacyAssessmentResult } from "@/lib/assessment";
 import { AssessmentResult } from "@/types/assessment";
 import { DiagnosisResult } from "@/types/diagnosis";
 import { GeneratedPlan } from "@/types/plan";
@@ -32,55 +33,49 @@ function getErrorMessage(error: unknown, fallback: string) {
 
 function serializeAssessmentResult(result: AssessmentResult) {
   const scores: PersistedAssessmentScores = {
-    totalScore: result.totalScore,
-    maxScore: result.maxScore,
-    normalizedScore: result.normalizedScore,
+    version: result.version,
+    rawScore: result.profileVector?.rawScore ?? null,
     answeredCount: result.answeredCount,
-    uncertainCount: result.uncertainCount,
+    coreAnsweredCount: result.coreAnsweredCount,
     totalQuestions: result.totalQuestions,
-    ceilingLevel: result.ceilingLevel,
-    confidence: result.confidence,
-    dimensions: result.dimensions,
-    observedAreas: result.observedAreas,
-    unobservedAreas: result.unobservedAreas,
-    profile: result.profile,
-    branch: result.branch,
-    coarseScore: result.coarseScore,
-    fineScore: result.fineScore
+    dimensionSummaries: result.dimensionSummaries,
+    profileVector: result.profileVector,
+    completedAt: result.completedAt
   };
 
   return {
-    level: result.level,
+    level: result.profileVector?.levelBand ?? null,
     scores,
-    strengths: result.strengths,
-    weaknesses: result.weaknesses,
-    uncertain: result.observationNeeded,
-    summary: result.summary
+    strengths: result.profileVector?.strongDimensions ?? [],
+    weaknesses: result.profileVector?.weakDimensions ?? [],
+    uncertain: [],
+    summary: result.profileVector?.summary.headline ?? null
   };
 }
 
 export function hydrateAssessmentResult(row: AssessmentResultRow): AssessmentResult {
-  return {
-    totalScore: row.scores.totalScore,
-    maxScore: row.scores.maxScore,
-    normalizedScore: row.scores.normalizedScore,
-    answeredCount: row.scores.answeredCount,
-    uncertainCount: row.scores.uncertainCount,
-    totalQuestions: row.scores.totalQuestions,
+  const migrated = migrateLegacyAssessmentResult({
+    ...row.scores,
     level: row.level,
-    ceilingLevel: row.scores.ceilingLevel,
-    confidence: row.scores.confidence,
-    dimensions: row.scores.dimensions,
-    observedAreas: row.scores.observedAreas ?? [],
-    unobservedAreas: row.scores.unobservedAreas ?? [],
-    strengths: row.strengths ?? [],
-    weaknesses: row.weaknesses ?? [],
-    observationNeeded: row.uncertain ?? [],
-    summary: row.summary ?? "",
-    profile: row.scores.profile,
-    branch: row.scores.branch,
-    coarseScore: row.scores.coarseScore,
-    fineScore: row.scores.fineScore
+    strengths: row.strengths,
+    weaknesses: row.weaknesses,
+    summary: row.summary,
+    completedAt: row.scores.completedAt ?? row.created_at,
+    created_at: row.created_at
+  });
+
+  if (migrated) {
+    return migrated;
+  }
+
+  return {
+    version: row.scores.version ?? "assessment_10_plus_2",
+    answeredCount: row.scores.answeredCount,
+    coreAnsweredCount: row.scores.coreAnsweredCount ?? Math.min(row.scores.answeredCount, 10),
+    totalQuestions: row.scores.totalQuestions,
+    profileVector: row.scores.profileVector ?? null,
+    dimensionSummaries: row.scores.dimensionSummaries ?? [],
+    completedAt: row.scores.completedAt ?? row.created_at
   };
 }
 

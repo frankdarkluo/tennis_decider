@@ -2,45 +2,37 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { assessmentQuestions } from "@/data/assessmentQuestions";
 import {
-  calculateAssessmentResult,
-  determineBranch,
-  getCoarseQuestions,
-  getFineQuestionsForBranch
-} from "@/lib/assessment";
+  ASSESSMENT_QUESTIONS,
+  PROFILE_QUESTION_IDS,
+  SCORED_QUESTION_IDS
+} from "@/data/assessmentQuestions";
+import { calculateAssessmentResult } from "@/lib/assessment";
+import { normalizeDraftStepIndex } from "@/lib/assessmentDraft";
 import {
-  hasCompletedAssessmentResult,
   clearAssessmentDraftFromStorage,
+  hasCompletedAssessmentResult,
   readAssessmentDraftFromStorage,
   readAssessmentResultFromStorage,
   writeAssessmentDraftToStorage,
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
-import { normalizeDraftStepIndex } from "@/lib/assessmentDraft";
-import { getPostAssessmentHref } from "@/lib/environment";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
-import { formatAssessmentYearsLabel, getAssessmentOptionLabel } from "@/lib/i18n/assessmentCopy";
 import { saveAssessmentResult } from "@/lib/userData";
-import { AssessmentProfile, AssessmentQuestion } from "@/types/assessment";
-import { PageContainer } from "@/components/layout/PageContainer";
-import { AssessmentProgress } from "@/components/assessment/AssessmentProgress";
+import { AssessmentAnswerMap, AssessmentQuestion } from "@/types/assessment";
 import { QuestionCard } from "@/components/assessment/QuestionCard";
-import { Button } from "@/components/ui/Button";
+import { AssessmentProgress } from "@/components/assessment/AssessmentProgress";
 import { useAppShell } from "@/components/app/AppShellProvider";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { PageContainer } from "@/components/layout/PageContainer";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 
-const AUTO_ADVANCE_DELAY = 300;
-const SLIDER_ADVANCE_DELAY = 500;
+type AssessmentView = "checking" | "intro" | "core" | "transition" | "profile" | "submitting";
 
-function hasProfileProgress(profile: AssessmentProfile, profileQuestions: AssessmentQuestion[]) {
-  return profileQuestions.some((question) => {
-    return question.type === "slider"
-      ? (profile.yearsPlaying ?? question.sliderConfig.default) !== question.sliderConfig.default
-      : false;
-  });
-}
+const CORE_QUESTIONS = ASSESSMENT_QUESTIONS.filter((question) => question.type === "scored");
+const PROFILE_QUESTIONS = ASSESSMENT_QUESTIONS.filter((question) => question.type === "profile");
 
 function getSourceRoute() {
   if (typeof document === "undefined" || !document.referrer) {
@@ -54,82 +46,90 @@ function getSourceRoute() {
   }
 }
 
+function countAnswered(ids: string[], answers: AssessmentAnswerMap) {
+  return ids.filter((id) => Boolean(answers[id])).length;
+}
+
+function deriveDraftCursor(answers: AssessmentAnswerMap) {
+  const coreAnsweredCount = countAnswered(SCORED_QUESTION_IDS, answers);
+  const profileAnsweredCount = countAnswered(PROFILE_QUESTION_IDS, answers);
+
+  if (coreAnsweredCount < CORE_QUESTIONS.length) {
+    return {
+      view: "core" as const,
+      coreIndex: coreAnsweredCount,
+      profileIndex: 0
+    };
+  }
+
+  if (profileAnsweredCount === 0) {
+    return {
+      view: "transition" as const,
+      coreIndex: CORE_QUESTIONS.length - 1,
+      profileIndex: 0
+    };
+  }
+
+  if (profileAnsweredCount < PROFILE_QUESTIONS.length) {
+    return {
+      view: "profile" as const,
+      coreIndex: CORE_QUESTIONS.length - 1,
+      profileIndex: profileAnsweredCount
+    };
+  }
+
+  return {
+    view: "transition" as const,
+    coreIndex: CORE_QUESTIONS.length - 1,
+    profileIndex: PROFILE_QUESTIONS.length - 1
+  };
+}
+
+function getDraftStepIndex(view: AssessmentView, coreIndex: number, profileIndex: number) {
+  if (view === "core") {
+    return coreIndex;
+  }
+
+  if (view === "transition") {
+    return CORE_QUESTIONS.length;
+  }
+
+  if (view === "profile") {
+    return CORE_QUESTIONS.length + profileIndex;
+  }
+
+  return CORE_QUESTIONS.length + PROFILE_QUESTIONS.length;
+}
+
 export default function AssessmentPage() {
   const router = useRouter();
-  const { user, configured } = useAuth();
+  const { user, configured, loading } = useAuth();
   const { environment } = useAppShell();
   const { language, t } = useI18n();
-  const postAssessmentHref = getPostAssessmentHref(environment);
-  const [entryState, setEntryState] = useState<"checking" | "questionnaire">("checking");
-  const [searchReady, setSearchReady] = useState(false);
-  const [retakeRequested, setRetakeRequested] = useState(false);
+
+  const [view, setView] = useState<AssessmentView>("checking");
+  const [answers, setAnswers] = useState<AssessmentAnswerMap>({});
+  const [coreIndex, setCoreIndex] = useState(0);
+  const [profileIndex, setProfileIndex] = useState(0);
   const [draftRestored, setDraftRestored] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, number>>({});
-  const [profile, setProfile] = useState<AssessmentProfile>({
-    yearsPlaying: 2,
-    yearsLabel: formatAssessmentYearsLabel(2, language)
-  });
-  const [submitting, setSubmitting] = useState(false);
-  const [autoAdvancing, setAutoAdvancing] = useState(false);
-  const timerRef = useRef<number | null>(null);
+  const [retakeRequested, setRetakeRequested] = useState(false);
+
+  const answersRef = useRef<AssessmentAnswerMap>({});
+  const startedRef = useRef(false);
   const completedRef = useRef(false);
   const startedAtRef = useRef<number | null>(null);
-  const branchLoggedRef = useRef<string | null>(null);
-  const answersRef = useRef<Record<string, number>>({});
-  const stepRef = useRef(0);
-  const profileRef = useRef<AssessmentProfile>(profile);
-  const sliderTouchedRef = useRef(false);
-  const profileQuestions = useMemo(
-    () => assessmentQuestions.filter((question) => question.phase === "profile" && question.type !== "gender"),
-    []
-  );
-  const coarseQuestions = useMemo(() => getCoarseQuestions(assessmentQuestions), []);
-  const coarseScore = coarseQuestions.reduce((sum, question) => sum + Number(answers[question.id] ?? 0), 0);
-  const branch = determineBranch(coarseScore);
-  const fineQuestions = useMemo(() => getFineQuestionsForBranch(branch, assessmentQuestions), [branch]);
-  const fineStartStep = profileQuestions.length + coarseQuestions.length;
-  const totalSteps = profileQuestions.length + coarseQuestions.length + fineQuestions.length;
 
-  const currentQuestion: AssessmentQuestion | null = useMemo(() => {
-    const profileCount = profileQuestions.length;
-    const coarseEnd = profileCount + coarseQuestions.length;
-
-    if (stepIndex < profileCount) {
-      return profileQuestions[stepIndex] ?? null;
-    }
-
-    if (stepIndex < coarseEnd) {
-      return coarseQuestions[stepIndex - profileCount] ?? null;
-    }
-
-    return fineQuestions[stepIndex - coarseEnd] ?? null;
-  }, [coarseQuestions, fineQuestions, profileQuestions, stepIndex]);
-
-  const selectedValue = useMemo(() => {
-    if (!currentQuestion) {
-      return undefined;
-    }
-
-    if (currentQuestion.type === "slider") {
-      return profile.yearsPlaying ?? currentQuestion.sliderConfig.default;
-    }
-
-    return answers[currentQuestion.id];
-  }, [answers, currentQuestion, profile.yearsPlaying]);
+  const coreAnsweredCount = useMemo(() => countAnswered(SCORED_QUESTION_IDS, answers), [answers]);
+  const currentQuestion: AssessmentQuestion | null = view === "core"
+    ? CORE_QUESTIONS[coreIndex] ?? null
+    : view === "profile"
+      ? PROFILE_QUESTIONS[profileIndex] ?? null
+      : null;
+  const selectedValue = currentQuestion ? answers[currentQuestion.id] : undefined;
 
   useEffect(() => {
     answersRef.current = answers;
-    stepRef.current = stepIndex;
-    profileRef.current = profile;
-  }, [answers, profile, stepIndex]);
-
-  useEffect(() => {
-    setProfile((prev) => ({
-      ...prev,
-      yearsLabel: formatAssessmentYearsLabel(prev.yearsPlaying ?? 2, language)
-    }));
-  }, [language]);
+  }, [answers]);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -137,234 +137,242 @@ export default function AssessmentPage() {
     }
 
     setRetakeRequested(new URLSearchParams(window.location.search).get("retake") === "1");
-    setSearchReady(true);
   }, []);
 
   useEffect(() => {
-    if (!searchReady) {
+    if (loading) {
       return;
     }
 
-    const storedDraft = readAssessmentDraftFromStorage();
     const storedResult = readAssessmentResultFromStorage();
 
-    if (retakeRequested) {
-      if (storedDraft) {
-        setAnswers(storedDraft.answers ?? {});
-        setProfile((prev) => ({
-          ...prev,
-          ...storedDraft.profile,
-          yearsLabel: formatAssessmentYearsLabel(storedDraft.profile?.yearsPlaying ?? prev.yearsPlaying ?? 2, language)
-        }));
-        setStepIndex(Math.max(0, Math.min(
-          totalSteps - 1,
-          normalizeDraftStepIndex(storedDraft.stepIndex, storedDraft.answers, profileQuestions)
-        )));
-        setDraftRestored(true);
-      }
-      setEntryState("questionnaire");
-      return;
-    }
-
-    if (hasCompletedAssessmentResult(storedResult)) {
+    if (!retakeRequested && hasCompletedAssessmentResult(storedResult)) {
       router.replace("/assessment/result");
       return;
     }
 
-    if (storedDraft) {
-      setAnswers(storedDraft.answers ?? {});
-      setProfile((prev) => ({
-        ...prev,
-        ...storedDraft.profile,
-        yearsLabel: formatAssessmentYearsLabel(storedDraft.profile?.yearsPlaying ?? prev.yearsPlaying ?? 2, language)
-      }));
-      setStepIndex(Math.max(0, Math.min(
-        totalSteps - 1,
-        normalizeDraftStepIndex(storedDraft.stepIndex, storedDraft.answers, profileQuestions)
-      )));
+    const storedDraft = readAssessmentDraftFromStorage();
+
+    if (storedDraft?.answers) {
+      const normalizedStep = normalizeDraftStepIndex(
+        storedDraft.stepIndex,
+        storedDraft.answers,
+        ASSESSMENT_QUESTIONS
+      );
+      const nextAnswers = storedDraft.answers;
+      const cursor = deriveDraftCursor(nextAnswers);
+
+      answersRef.current = nextAnswers;
+      setAnswers(nextAnswers);
+      setCoreIndex(
+        cursor.view === "core"
+          ? Math.min(normalizedStep, CORE_QUESTIONS.length - 1)
+          : cursor.coreIndex
+      );
+      setProfileIndex(cursor.profileIndex);
       setDraftRestored(true);
-      setEntryState("questionnaire");
-      return;
     }
 
-    setEntryState("questionnaire");
-  }, [language, profileQuestions, retakeRequested, router, searchReady, totalSteps]);
+    setView("intro");
+  }, [loading, retakeRequested, router]);
 
   useEffect(() => {
-    if (entryState !== "questionnaire") {
+    if (!startedRef.current) {
       return;
     }
 
-    const hasProgress =
-      stepIndex > 0 ||
-      Object.keys(answers).length > 0 ||
-      hasProfileProgress(profile, profileQuestions);
-
-    if (!hasProgress) {
+    if (view !== "core" && view !== "transition" && view !== "profile") {
       return;
     }
 
     writeAssessmentDraftToStorage({
-      stepIndex,
+      stepIndex: getDraftStepIndex(view, coreIndex, profileIndex),
       answers,
-      profile,
       updatedAt: new Date().toISOString()
     });
-
-  }, [answers, entryState, profile, profileQuestions, stepIndex]);
+  }, [answers, coreIndex, profileIndex, view]);
 
   useEffect(() => {
-    if (entryState !== "questionnaire") {
-      return;
-    }
-
-    startedAtRef.current = Date.now();
-    logEvent("assessment.started", {
-      sourceRoute: getSourceRoute()
-    }, { page: "/assessment" });
-
     return () => {
-      if (timerRef.current) {
-        window.clearTimeout(timerRef.current);
+      if (!startedRef.current || completedRef.current) {
+        return;
       }
 
-      if (!completedRef.current && stepRef.current > 0) {
-        logEvent("assessment.exited", {
-          stepReached: stepRef.current + 1,
-          completed: false
-        }, { page: "/assessment" });
+      const answeredCount = Object.keys(answersRef.current).length;
+
+      if (answeredCount === 0) {
+        return;
       }
+
+      logEvent("assessment.exited", {
+        answeredCount,
+        coreAnsweredCount: countAnswered(SCORED_QUESTION_IDS, answersRef.current),
+        completed: false
+      }, { page: "/assessment" });
     };
-  }, [entryState]);
+  }, []);
 
-  useEffect(() => {
-    if (stepIndex < fineStartStep || branchLoggedRef.current === branch) {
+  const startAssessment = () => {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      startedAtRef.current = Date.now();
+      logEvent("assessment.started", {
+        sourceRoute: getSourceRoute(),
+        environment
+      }, { page: "/assessment" });
+    }
+
+    if (draftRestored) {
+      const cursor = deriveDraftCursor(answersRef.current);
+      setCoreIndex(cursor.coreIndex);
+      setProfileIndex(cursor.profileIndex);
+      setView(cursor.view);
       return;
     }
 
-    branchLoggedRef.current = branch;
-    logEvent("assessment.branch_resolved", {
-      branch: branch === "A" ? "beginner" : branch === "B" ? "intermediate" : "advanced"
-    }, { page: "/assessment" });
-  }, [branch, fineStartStep, stepIndex]);
-
-  const clearAdvanceTimer = () => {
-    if (timerRef.current) {
-      window.clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
+    setView("core");
   };
 
-  const moveToStep = (nextStep: number) => {
-    clearAdvanceTimer();
-    setAutoAdvancing(false);
-    sliderTouchedRef.current = false;
-    setStepIndex(Math.max(0, Math.min(totalSteps - 1, nextStep)));
-  };
-
-  const scheduleAdvance = (callback: () => void, delay: number) => {
-    clearAdvanceTimer();
-    setAutoAdvancing(true);
-    timerRef.current = window.setTimeout(() => {
-      setAutoAdvancing(false);
-      callback();
-    }, delay);
-  };
-
-  const onSubmit = async (finalAnswers: Record<string, number>) => {
-    if (submitting) {
+  const finalizeAssessment = async (finalAnswers: AssessmentAnswerMap) => {
+    if (completedRef.current) {
       return;
     }
 
-    clearAdvanceTimer();
-    setSubmitting(true);
-    const result = calculateAssessmentResult(finalAnswers, assessmentQuestions, profileRef.current, language);
     completedRef.current = true;
+    setView("submitting");
+
+    const result = calculateAssessmentResult(finalAnswers);
+
     clearAssessmentDraftFromStorage();
     writeAssessmentResultToStorage(result);
 
     if (user?.id && configured) {
       const saveResult = await saveAssessmentResult(user.id, result);
+
       if (saveResult.error) {
         console.error("[assessment] failed to save result", saveResult.error);
       }
     }
 
-    const rankedDimensions = [...result.dimensions].sort((left, right) => right.average - left.average);
-    const weakestDimensions = [...result.dimensions].sort((left, right) => left.average - right.average);
     logEvent("assessment.completed", {
       durationMs: startedAtRef.current ? Date.now() - startedAtRef.current : null,
-      approximateLevelBand: result.level,
-      strongestAreaCodes: rankedDimensions.slice(0, 2).map((dimension) => dimension.key),
-      weakestAreaCodes: weakestDimensions.slice(0, 2).map((dimension) => dimension.key)
+      approximateLevelBand: result.profileVector?.levelBand ?? null,
+      primaryWeakness: result.profileVector?.primaryWeakness ?? null,
+      playStyle: result.profileVector?.playStyle ?? null,
+      playContext: result.profileVector?.playContext ?? null
     }, { page: "/assessment" });
 
-    router.push(postAssessmentHref);
+    router.push("/assessment/result");
   };
 
-  const handleChoiceSelect = (value: number) => {
-    if (!currentQuestion || submitting) {
+  const handleSelect = (value: string) => {
+    if (!currentQuestion || view === "submitting") {
       return;
     }
 
-    if (currentQuestion.type !== "choice") {
-      return;
-    }
-
-    const selectedOption = currentQuestion.options.find((option) => option.value === value);
-    const nextAnswers = { ...answersRef.current, [currentQuestion.id]: value };
+    const nextAnswers = {
+      ...answersRef.current,
+      [currentQuestion.id]: value
+    };
 
     answersRef.current = nextAnswers;
     setAnswers(nextAnswers);
+
     logEvent("assessment.step_answered", {
-      stepIndex,
-      stepType: currentQuestion.phase,
       questionId: currentQuestion.id,
-      answerCode: getAssessmentOptionLabel(currentQuestion.id, value, selectedOption?.label ?? String(value), language),
-      autoAdvanced: true
+      questionType: currentQuestion.type,
+      dimension: currentQuestion.dimension,
+      value
     }, { page: "/assessment" });
 
-    if (stepIndex === totalSteps - 1) {
-      scheduleAdvance(() => {
-        void onSubmit(nextAnswers);
-      }, AUTO_ADVANCE_DELAY);
+    if (view === "core") {
+      if (coreIndex === CORE_QUESTIONS.length - 1) {
+        setView("transition");
+        return;
+      }
+
+      setCoreIndex((current) => current + 1);
       return;
     }
 
-    scheduleAdvance(() => moveToStep(stepIndex + 1), AUTO_ADVANCE_DELAY);
-  };
-
-  const handleSliderChange = (value: number) => {
-    clearAdvanceTimer();
-    sliderTouchedRef.current = true;
-    setProfile((prev) => ({
-      ...prev,
-      yearsPlaying: value,
-      yearsLabel: formatAssessmentYearsLabel(value, language)
-    }));
-  };
-
-  const commitSliderStep = () => {
-    if (!currentQuestion || currentQuestion.type !== "slider" || !sliderTouchedRef.current || submitting) {
+    if (profileIndex === PROFILE_QUESTIONS.length - 1) {
+      void finalizeAssessment(nextAnswers);
       return;
     }
 
-    sliderTouchedRef.current = false;
-    logEvent("assessment.step_answered", {
-      stepIndex,
-      stepType: "profile",
-      questionId: currentQuestion.id,
-      answerCode: profileRef.current.yearsLabel ?? formatAssessmentYearsLabel(profileRef.current.yearsPlaying ?? 2, language),
-      autoAdvanced: true
-    }, { page: "/assessment" });
-    scheduleAdvance(() => moveToStep(stepIndex + 1), SLIDER_ADVANCE_DELAY);
+    setProfileIndex((current) => current + 1);
   };
 
-  if (entryState !== "questionnaire") {
+  const handlePrevious = () => {
+    if (view === "core") {
+      if (coreIndex === 0) {
+        setView("intro");
+        return;
+      }
+
+      setCoreIndex((current) => current - 1);
+      return;
+    }
+
+    if (view === "transition") {
+      setView("core");
+      setCoreIndex(CORE_QUESTIONS.length - 1);
+      return;
+    }
+
+    if (view === "profile") {
+      if (profileIndex === 0) {
+        setView("transition");
+        return;
+      }
+
+      setProfileIndex((current) => current - 1);
+    }
+  };
+
+  if (view === "checking") {
     return (
       <PageContainer>
-        <div className="mx-auto max-w-2xl rounded-2xl border border-[var(--line)] bg-white p-6 text-sm text-slate-600">
-          {t("assessment.loading")}
+        <Card className="text-sm text-slate-600">{t("assessment.loading")}</Card>
+      </PageContainer>
+    );
+  }
+
+  if (view === "intro") {
+    return (
+      <PageContainer>
+        <Card className="mx-auto max-w-3xl space-y-5">
+          <div className="space-y-3">
+            <h1 className="text-3xl font-black text-slate-900">{t("assessment.title")}</h1>
+            <p className="text-slate-600">{t("assessment.subtitle")}</p>
+            {draftRestored ? (
+              <p className="text-sm text-brand-700">{t("assessment.resumeDraft")}</p>
+            ) : null}
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Button onClick={startAssessment}>{t("assessment.start")}</Button>
+          </div>
+        </Card>
+      </PageContainer>
+    );
+  }
+
+  if (view === "transition") {
+    return (
+      <PageContainer>
+        <div className="mx-auto max-w-3xl space-y-4">
+          <AssessmentProgress current={CORE_QUESTIONS.length} total={CORE_QUESTIONS.length} />
+          <Card className="space-y-4">
+            <div className="space-y-2">
+              <p className="text-sm font-semibold text-brand-700">{t("assessment.progress.core")}</p>
+              <h1 className="text-3xl font-black text-slate-900">{t("assessment.transition.title")}</h1>
+              <p className="text-slate-600">{t("assessment.transition.subtitle")}</p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Button onClick={() => setView("profile")}>{t("assessment.transition.cta")}</Button>
+              <Button variant="secondary" onClick={handlePrevious}>{t("assessment.previous")}</Button>
+            </div>
+          </Card>
         </div>
       </PageContainer>
     );
@@ -372,48 +380,27 @@ export default function AssessmentPage() {
 
   return (
     <PageContainer>
-      <div className="mx-auto max-w-2xl space-y-5">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-black text-slate-900">{t("assessment.title")}</h1>
-          <p className="text-slate-600">{t("assessment.subtitle")}</p>
-          {draftRestored ? (
-            <p className="text-sm text-brand-700">{t("assessment.resumeDraft")}</p>
-          ) : null}
-        </div>
-
-        <AssessmentProgress
-          current={stepIndex + 1}
-          total={totalSteps}
-          hint={stepIndex >= totalSteps - 3 ? t("assessment.progress.almostDone") : undefined}
-        />
+      <div className="mx-auto max-w-3xl space-y-4">
+        {view === "core" ? (
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-slate-500">{t("assessment.progress.core")}</p>
+            <AssessmentProgress current={coreAnsweredCount} total={CORE_QUESTIONS.length} />
+          </div>
+        ) : null}
 
         {currentQuestion ? (
           <QuestionCard
             question={currentQuestion}
             selectedValue={selectedValue}
-            disabled={autoAdvancing || submitting}
-            onSelect={handleChoiceSelect}
-            onSliderChange={handleSliderChange}
-            onSliderCommit={commitSliderStep}
-            onSliderBeginInteract={() => {
-              sliderTouchedRef.current = true;
-              clearAdvanceTimer();
-            }}
+            disabled={view === "submitting"}
+            onSelect={handleSelect}
           />
         ) : null}
 
-        <div className="flex items-center justify-between gap-3">
-          <div className="text-sm text-slate-400">{t("assessment.tapToContinue")}</div>
-          {stepIndex > 0 ? (
-            <Button
-              variant="ghost"
-              className="px-3"
-              disabled={submitting}
-              onClick={() => moveToStep(stepIndex - 1)}
-            >
-              {t("assessment.previous")}
-            </Button>
-          ) : null}
+        <div className="flex flex-wrap gap-3">
+          <Button variant="secondary" onClick={handlePrevious}>
+            {t("assessment.previous")}
+          </Button>
         </div>
       </div>
     </PageContainer>

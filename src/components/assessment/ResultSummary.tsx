@@ -1,18 +1,19 @@
 import { AssessmentResult } from "@/types/assessment";
 import { Card } from "@/components/ui/Card";
-import { useI18n } from "@/lib/i18n/config";
+import { SkillBreakdown } from "@/components/assessment/SkillBreakdown";
 import {
   formatAssessmentLevelRange,
-  getAssessmentConfidenceLabel,
-  getCoverageAreaLabel,
-  getLocalizedAssessmentResult
+  getDimensionLabel,
+  getLocalizedAssessmentResult,
+  getPlayContextLabel,
+  getPlayStyleLabel
 } from "@/lib/assessment";
-import { SkillBreakdown } from "@/components/assessment/SkillBreakdown";
+import { useI18n } from "@/lib/i18n/config";
 
 export function ResultSummary({ result }: { result: AssessmentResult }) {
   const { language, t } = useI18n();
 
-  if (result.answeredCount === 0) {
+  if (!result.profileVector) {
     return (
       <Card className="space-y-2">
         <h1 className="text-2xl font-black text-slate-900">{t("assessment.empty.title")}</h1>
@@ -22,55 +23,82 @@ export function ResultSummary({ result }: { result: AssessmentResult }) {
   }
 
   const localizedResult = getLocalizedAssessmentResult(result, language);
-  const rangeLabel = formatAssessmentLevelRange(localizedResult.level, localizedResult.ceilingLevel);
-  const confidenceLabel = getAssessmentConfidenceLabel(localizedResult.confidence, language);
-  const observedAreas = Array.from(new Set(localizedResult.observedAreas ?? []))
-    .map((area) => getCoverageAreaLabel(area, language));
-  const weaknesses = Array.from(new Set(localizedResult.weaknesses));
-  const observationNeeded = Array.from(new Set(localizedResult.observationNeeded));
-  const unobservedAreas = Array.from(new Set(localizedResult.unobservedAreas ?? []))
-    .map((area) => getCoverageAreaLabel(area, language));
+  const profileVector = localizedResult.profileVector!;
+  const rangeLabel = formatAssessmentLevelRange(profileVector.levelBand);
+  const strongDimensions = profileVector.strongDimensions.map((dimension) => getDimensionLabel(dimension, language));
+  const weakDimensions = [
+    profileVector.primaryWeakness,
+    profileVector.secondaryWeakness,
+    ...profileVector.weakDimensions
+  ]
+    .filter((dimension, index, array): dimension is NonNullable<typeof dimension> => Boolean(dimension) && array.indexOf(dimension) === index)
+    .slice(0, 3)
+    .map((dimension) => getDimensionLabel(dimension, language));
 
   return (
     <Card className="space-y-5">
-      <div className="space-y-3">
-        <h1 className="text-2xl font-black text-slate-900">{t("assessment.result.headline")} {rangeLabel}</h1>
-        <div className="grid gap-3 md:grid-cols-2">
-          <div className="rounded-2xl bg-[var(--surface-soft)] p-4">
-            <p className="text-sm font-semibold text-brand-700">{t("assessment.result.range")}</p>
-            <p className="mt-2 text-2xl font-black text-slate-900">{rangeLabel}</p>
-            <p className="mt-2 text-sm leading-6 text-slate-600">{t("assessment.result.selfReportNote")}</p>
-          </div>
+      <div className="space-y-2">
+        <h1 className="text-2xl font-black text-slate-900">{t("assessment.result.headline")}</h1>
+      </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
-            <p className="text-sm font-semibold text-slate-700">{t("assessment.result.confidence")}</p>
-            <p className="mt-2 text-base font-semibold text-slate-900">{confidenceLabel}</p>
-            <p className="mt-4 text-sm font-semibold text-slate-700">{t("assessment.result.observed")}</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {observedAreas.map((label) => (
-                <span
-                  key={label}
-                  className="rounded-full border border-slate-200 bg-white px-3 py-1 text-sm font-medium text-slate-700"
-                >
-                  {label}
-                </span>
-              ))}
-            </div>
-          </div>
+      <div className="grid gap-3 md:grid-cols-2">
+        <div className="rounded-2xl bg-[var(--surface-soft)] p-4">
+          <p className="text-sm font-semibold text-brand-700">{t("assessment.result.level")}</p>
+          <p className="mt-2 text-2xl font-black text-slate-900">{rangeLabel}</p>
+          <p className="mt-2 text-sm leading-6 text-slate-600">{profileVector.summary.oneLineLevelSummary}</p>
         </div>
 
-        <div className="rounded-2xl bg-[var(--surface-soft)] p-4">
-          <p className="text-sm font-semibold text-brand-700">{t("assessment.result.summary")}</p>
-          <p className="mt-2 text-base leading-7 text-slate-800">{localizedResult.summary}</p>
+        <div className="rounded-2xl border border-[var(--line)] bg-white p-4">
+          <p className="text-sm font-semibold text-brand-700">{t("assessment.result.headlineLabel")}</p>
+          <p className="mt-2 text-base font-semibold text-slate-900">{profileVector.summary.headline}</p>
         </div>
       </div>
 
       <div className="grid gap-3 md:grid-cols-3">
-        <div className="rounded-2xl border border-rose-100 bg-rose-50/70 p-4">
-          <p className="text-sm font-semibold text-rose-700">{t("assessment.result.weaknesses")}</p>
+        <div className="rounded-2xl border border-[var(--line)] bg-white p-4">
+          <p className="text-sm font-semibold text-slate-700">{t("assessment.result.planHintLabel")}</p>
+          <p className="mt-2 text-sm leading-6 text-slate-700">{profileVector.summary.oneLinePlanHint}</p>
+        </div>
+
+        <div className="rounded-2xl border border-[var(--line)] bg-white p-4">
+          <p className="text-sm font-semibold text-slate-700">{t("assessment.result.styleLabel")}</p>
+          <p className="mt-2 text-sm font-semibold text-slate-900">
+            {getPlayStyleLabel(profileVector.playStyle, language)}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-[var(--line)] bg-white p-4">
+          <p className="text-sm font-semibold text-slate-700">{t("assessment.result.contextLabel")}</p>
+          <p className="mt-2 text-sm font-semibold text-slate-900">
+            {getPlayContextLabel(profileVector.playContext, language)}
+          </p>
+        </div>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-2">
+        <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4">
+          <p className="text-sm font-semibold text-emerald-700">{t("assessment.result.strongLabel")}</p>
           <div className="mt-3 flex flex-wrap gap-2">
-            {weaknesses.length > 0 ? (
-              weaknesses.map((label) => (
+            {strongDimensions.length > 0 ? (
+              strongDimensions.map((label) => (
+                <span
+                  key={label}
+                  className="rounded-full border border-emerald-200 bg-white px-3 py-1 text-sm font-medium text-emerald-700"
+                >
+                  {label}
+                </span>
+              ))
+            ) : (
+              <p className="text-sm text-slate-600">{t("profile.none")}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-rose-100 bg-rose-50/60 p-4">
+          <p className="text-sm font-semibold text-rose-700">{t("assessment.result.weakLabel")}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {weakDimensions.length > 0 ? (
+              weakDimensions.map((label) => (
                 <span
                   key={label}
                   className="rounded-full border border-rose-200 bg-white px-3 py-1 text-sm font-medium text-rose-700"
@@ -79,43 +107,7 @@ export function ResultSummary({ result }: { result: AssessmentResult }) {
                 </span>
               ))
             ) : (
-              <p className="text-sm text-slate-600">{t("assessment.result.noWeaknesses")}</p>
-            )}
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-amber-100 bg-amber-50/70 p-4">
-          <p className="text-sm font-semibold text-amber-700">{t("assessment.result.observationNeeded")}</p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {observationNeeded.length > 0 ? (
-              observationNeeded.map((label) => (
-                <span
-                  key={label}
-                  className="rounded-full border border-amber-200 bg-white px-3 py-1 text-sm font-medium text-amber-700"
-                >
-                  {label}
-                </span>
-              ))
-            ) : (
-              <p className="text-sm text-slate-600">{t("assessment.result.noObservationNeeded")}</p>
-            )}
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-sky-100 bg-sky-50/70 p-4">
-          <p className="text-sm font-semibold text-sky-700">{t("assessment.result.unobserved")}</p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {unobservedAreas.length > 0 ? (
-              unobservedAreas.map((label) => (
-                <span
-                  key={label}
-                  className="rounded-full border border-sky-200 bg-white px-3 py-1 text-sm font-medium text-sky-700"
-                >
-                  {label}
-                </span>
-              ))
-            ) : (
-              <p className="text-sm text-slate-600">{t("assessment.result.noUnobserved")}</p>
+              <p className="text-sm text-slate-600">{t("profile.none")}</p>
             )}
           </div>
         </div>

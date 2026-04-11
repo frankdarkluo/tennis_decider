@@ -154,14 +154,14 @@ describe("7-step plan semantics", () => {
 
   it("keeps assessment-origin plans compatible without weekly framing", () => {
     const plan = getPlanFromAssessment({
-      weaknesses: ["发球"],
-      observationNeeded: ["比赛意识"],
+      weakDimensions: ["serve"],
+      observationDimensions: ["pressure"],
       locale: "zh"
     });
 
     expect(plan.days).toHaveLength(7);
     expect(plan.summary).toContain("发球");
-    expect(plan.summary).toContain("比赛意识");
+    expect(plan.summary).toContain("关键分与压力处理");
     expect(plan.summary).not.toMatch(/本周|一周/);
   });
 

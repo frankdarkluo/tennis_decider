@@ -5,7 +5,7 @@ import {
   getAssessmentPlanFocusLine,
   getPlanTemplate
 } from "@/lib/plans";
-import { AssessmentResult } from "@/types/assessment";
+import { PlayerProfileVector } from "@/types/assessment";
 
 type TemplateCoverageCase = {
   problemTag: string;
@@ -69,44 +69,33 @@ const templateCoverageCases: TemplateCoverageCase[] = [
   }
 ];
 
-function createAssessmentResult(): AssessmentResult {
+function createAssessmentResult(): PlayerProfileVector {
   return {
-    totalScore: 0,
-    maxScore: 0,
-    normalizedScore: 0,
-    answeredCount: 8,
-    uncertainCount: 0,
-    totalQuestions: 8,
-    level: "3.0",
-    confidence: "中等",
-    dimensions: [
-      {
-        key: "serve",
-        label: "发球",
-        score: 1,
-        maxScore: 4,
-        average: 1,
-        levelHint: "3.0",
-        answeredCount: 2,
-        uncertainCount: 0,
-        status: "薄弱"
-      },
-      {
-        key: "matchplay",
-        label: "比赛意识",
-        score: 2,
-        maxScore: 4,
-        average: 2,
-        levelHint: "3.0",
-        answeredCount: 2,
-        uncertainCount: 0,
-        status: "待提升"
-      }
-    ],
-    strengths: [],
-    weaknesses: ["发球"],
-    observationNeeded: ["比赛意识"],
-    summary: "发球最需要优先补强，比赛意识还需要继续观察。"
+    rawScore: 20,
+    levelBand: "3.0",
+    dimensionScores: {
+      rally: 3,
+      forehand: 3,
+      backhand_slice: 3,
+      serve: 1,
+      return: 3,
+      movement: 3,
+      net: 3,
+      overhead: 3,
+      pressure: 2,
+      tactics: 3
+    },
+    weakDimensions: ["serve", "pressure"],
+    strongDimensions: [],
+    primaryWeakness: "serve",
+    secondaryWeakness: undefined,
+    playStyle: "baseline_attack",
+    playContext: "singles_standard",
+    summary: {
+      headline: "发球最需要优先补强，关键分与压力处理还需要继续观察。",
+      oneLineLevelSummary: "你目前大致在 3.0 区间。",
+      oneLinePlanHint: "后续训练计划应先围绕发球展开。"
+    }
   };
 }
 
@@ -152,9 +141,9 @@ describe("diagnosis plan template coverage", () => {
     });
     const focusLine = getAssessmentPlanFocusLine(assessmentPlan.planContext, "zh");
 
-    expect(focusLine).toBe("优先补强：发球。继续观察：比赛意识。");
+    expect(focusLine).toBe("优先补强：发球。继续观察：关键分与压力处理。");
     expect(plan.summary).toContain("发球");
-    expect(plan.summary).toContain("比赛意识");
+    expect(plan.summary).toContain("关键分与压力处理");
     expect(plan.summary).not.toContain("主动作");
   });
 });

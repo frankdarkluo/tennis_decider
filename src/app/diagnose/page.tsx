@@ -17,6 +17,7 @@ import {
   readAssessmentResultFromStorage,
   writeAssessmentResultToStorage
 } from "@/lib/assessmentStorage";
+import { getAssessmentLevelBand } from "@/lib/assessment";
 import { CONSUMER_VISIBLE_FOLLOWUP_CAP, decideDiagnoseFlow } from "@/lib/intake/decideDiagnoseFlow";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
@@ -396,7 +397,7 @@ function DiagnosePageContent() {
 
     async function hydrateAssessmentContext() {
       const localResult = readAssessmentResultFromStorage();
-      let nextLevel = localResult?.level;
+      let nextLevel: string | undefined = getAssessmentLevelBand(localResult) ?? undefined;
       let nextAssessmentResult = localResult ?? null;
 
       if (user?.id && configured) {
@@ -407,7 +408,7 @@ function DiagnosePageContent() {
         }
 
         if (remoteResult.data) {
-          nextLevel = remoteResult.data.level;
+          nextLevel = getAssessmentLevelBand(remoteResult.data) ?? undefined;
           nextAssessmentResult = remoteResult.data;
           writeAssessmentResultToStorage(remoteResult.data);
         }

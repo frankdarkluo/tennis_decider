@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { getLatestAssessmentResult, getVideoDiagnosisHistory, getVideoUsage, incrementVideoUsage, saveVideoDiagnosisHistory } from "@/lib/userData";
 import { readAssessmentResultFromStorage, writeAssessmentResultToStorage } from "@/lib/assessmentStorage";
+import { getAssessmentLevelBand } from "@/lib/assessment";
 import { useI18n } from "@/lib/i18n/config";
 import { formatLocalizedDateTime } from "@/lib/i18n/format";
 import { extractFramesInBrowser, getVideoLimits, validateVideoFile } from "@/lib/videoFrames";
@@ -84,7 +85,7 @@ export default function VideoDiagnosePage() {
       setHistoryHint("");
       const localResult = readAssessmentResultFromStorage();
       if (localResult && active) {
-        setCurrentLevel(localResult.level);
+        setCurrentLevel(getAssessmentLevelBand(localResult) ?? undefined);
       }
 
       if (user?.id && configured) {
@@ -99,7 +100,7 @@ export default function VideoDiagnosePage() {
         }
 
         if (remoteAssessment.data) {
-          setCurrentLevel(remoteAssessment.data.level);
+          setCurrentLevel(getAssessmentLevelBand(remoteAssessment.data) ?? undefined);
           writeAssessmentResultToStorage(remoteAssessment.data);
         }
 

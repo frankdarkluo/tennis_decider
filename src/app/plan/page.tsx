@@ -31,8 +31,12 @@ import { PlanLevel } from "@/types/plan";
 // ActionabilityPrompt intentionally not rendered on the plan page per product request.
 
 function normalizeLevelParam(level: string | null): PlanLevel {
-  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.5") {
+  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.0+") {
     return level;
+  }
+
+  if (level === "4.5") {
+    return "4.0+";
   }
 
   return "3.0";
@@ -112,7 +116,7 @@ function PlanPageContent() {
     [deepContext, plan.level, plan.problemTag, preferredContentIds, primaryNextStep, planContext, sourceType]
   );
   const regenerate = () => {
-    setLevel((prev) => (prev === "2.5" ? "3.0" : prev === "3.0" ? "3.5" : prev === "3.5" ? "4.0" : prev === "4.0" ? "4.5" : "2.5"));
+    setLevel((prev) => (prev === "2.5" ? "3.0" : prev === "3.0" ? "3.5" : prev === "3.5" ? "4.0" : prev === "4.0" ? "4.0+" : "2.5"));
   };
 
   const hasSource = Boolean(params.get("problemTag") || params.get("level") || restoredDraft);

@@ -1,7 +1,7 @@
-import { AssessmentDimension } from "@/types/assessment";
+import { ScoredDimension } from "@/types/assessment";
 import { EnvironmentValue } from "@/types/environment";
 
-export type PlanLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.5";
+export type PlanLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.0+";
 export type PlanContextSessionType = "match" | "practice" | "unknown";
 export type PlanContextPressure = "high" | "some" | "unknown";
 export type PlanContextMovement = "stationary" | "moving" | "unknown";
@@ -18,8 +18,8 @@ export type PlanContext = {
   incomingBallDepth: PlanContextDepth;
   outcomePattern: PlanContextOutcome;
   feelingModifiers: PlanContextFeeling[];
-  weakDimensions?: AssessmentDimension[];
-  observationDimensions?: AssessmentDimension[];
+  weakDimensions?: ScoredDimension[];
+  observationDimensions?: ScoredDimension[];
   rationale?: string;
 };
 

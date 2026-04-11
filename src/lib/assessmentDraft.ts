@@ -2,12 +2,15 @@ import { AssessmentQuestion } from "@/types/assessment";
 
 export function normalizeDraftStepIndex(
   rawStepIndex: number | undefined,
-  draftAnswers: Record<string, number> | undefined,
-  profileQuestions: AssessmentQuestion[]
+  draftAnswers: Record<string, string> | undefined,
+  questions: AssessmentQuestion[]
 ) {
-  const answeredCount = Object.keys(draftAnswers ?? {}).length;
-  const activeProfileStepCount = profileQuestions.length;
-  const inferredLegacyProfileSteps = Math.max((rawStepIndex ?? 0) - answeredCount - activeProfileStepCount, 0);
+  const validQuestionIds = new Set(questions.map((question) => question.id));
+  const validAnsweredCount = Object.keys(draftAnswers ?? {}).filter((id) => validQuestionIds.has(id)).length;
 
-  return Math.max(0, (rawStepIndex ?? 0) - inferredLegacyProfileSteps);
+  if (validAnsweredCount === 0) {
+    return 0;
+  }
+
+  return Math.max(0, Math.min(rawStepIndex ?? validAnsweredCount, validAnsweredCount));
 }

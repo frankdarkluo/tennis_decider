@@ -97,8 +97,12 @@ function getEvidenceToneViewModel(
 }
 
 function normalizePlanLevel(level?: string): PlanLevel {
-  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.5") {
+  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.0+") {
     return level;
+  }
+
+  if (level === "4.5") {
+    return "4.0+";
   }
 
   return "3.0";

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AssessmentResult } from "@/types/assessment";
-import { getDefaultAssessmentResult } from "@/lib/assessment";
+import { getDefaultAssessmentResult, getAssessmentLevelBand } from "@/lib/assessment";
 import {
   readAssessmentResultFromStorage,
   writeAssessmentResultToStorage
@@ -26,11 +26,12 @@ export default function AssessmentResultPage() {
   const { language, t } = useI18n();
   const [result, setResult] = useState<AssessmentResult>(getDefaultAssessmentResult(language));
   const [source, setSource] = useState<AssessmentResultSource>("loading");
-  const assessmentPlan = result.answeredCount > 0 ? buildAssessmentPlanContext(result) : null;
+  const levelBand = getAssessmentLevelBand(result);
+  const assessmentPlan = result.profileVector ? buildAssessmentPlanContext(result.profileVector) : null;
   const planHref = assessmentPlan
     ? buildPlanHref({
       problemTag: assessmentPlan.problemTag,
-      level: result.level,
+      level: levelBand ?? "3.5",
       preferredContentIds: assessmentPlan.candidateIds,
       sourceType: "assessment",
       planContext: assessmentPlan.planContext
@@ -92,10 +93,10 @@ export default function AssessmentResultPage() {
     }
 
     logEvent("assessment_result.viewed", {
-      approximateLevelBand: result.answeredCount > 0 ? result.level : null,
-      hasResult: result.answeredCount > 0
+      approximateLevelBand: levelBand,
+      hasResult: Boolean(result.profileVector)
     }, { page: "/assessment/result" });
-  }, [result, source]);
+  }, [levelBand, result.profileVector, source]);
 
   return (
     <PageContainer>
@@ -109,7 +110,7 @@ export default function AssessmentResultPage() {
         ) : null}
         <ResultSummary result={result} />
         {source !== "loading" ? (
-          result.answeredCount > 0 ? (
+          result.profileVector ? (
             <>
               <div className="flex flex-wrap gap-3">
                 {planHref ? (
@@ -127,7 +128,7 @@ export default function AssessmentResultPage() {
                   <Button>{t("assessment.result.ctaDiagnose")}</Button>
                 </Link>
                 <Link
-                  href={`/library?level=${result.level}`}
+                  href={`/library?level=${levelBand ?? "3.5"}`}
                   onClick={() => logEvent("assessment_result.next_action_clicked", { action: "browse_content" }, { page: "/assessment/result" })}
                 >
                   <Button variant="secondary">{t("assessment.result.ctaLibrary")}</Button>

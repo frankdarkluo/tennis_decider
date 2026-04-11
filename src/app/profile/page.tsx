@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { contents } from "@/data/contents";
+import { getAssessmentLevelBand, getDimensionLabel, getLocalizedAssessmentResult } from "@/lib/assessment";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { formatLocalizedDateTime } from "@/lib/i18n/format";
@@ -199,16 +200,20 @@ export default function ProfilePage() {
     };
   }, [configured, loading, user?.id]);
 
+  const localizedAssessmentResult = useMemo(
+    () => assessmentResult ? getLocalizedAssessmentResult(assessmentResult, language) : null,
+    [assessmentResult, language]
+  );
+
+  const assessmentLevelBand = getAssessmentLevelBand(localizedAssessmentResult);
+
   const weakestSummary = useMemo(() => {
-    if (!assessmentResult?.dimensions.length) {
+    if (!localizedAssessmentResult?.dimensionSummaries.length) {
       return [];
     }
 
-    return [...assessmentResult.dimensions]
-      .filter((dimension) => dimension.answeredCount > 0)
-      .sort((a, b) => a.average - b.average)
-      .slice(0, 3);
-  }, [assessmentResult]);
+    return localizedAssessmentResult.dimensionSummaries.slice(0, 3);
+  }, [localizedAssessmentResult]);
 
   const formatDateTime = (value: string) => formatLocalizedDateTime(value, language);
 
@@ -281,8 +286,8 @@ export default function ProfilePage() {
               <p className="text-sm font-semibold text-brand-700">{t("profile.title")}</p>
               <h1 className="mt-1 text-2xl font-black text-slate-900">{user.email}</h1>
             </div>
-            {assessmentResult?.level ? (
-              <Badge className="h-fit">{t("profile.levelBadge", { value: assessmentResult.level })}</Badge>
+            {assessmentLevelBand ? (
+              <Badge className="h-fit">{t("profile.levelBadge", { value: assessmentLevelBand })}</Badge>
             ) : (
               <Badge className="h-fit bg-slate-100 text-slate-700">{t("profile.notAssessed")}</Badge>
             )}
@@ -292,33 +297,41 @@ export default function ProfilePage() {
         <div className="grid gap-5 xl:grid-cols-2">
           {assessmentLoading ? (
             <SectionSkeleton lines={4} />
-          ) : assessmentResult ? (
+          ) : localizedAssessmentResult ? (
             <Card className="space-y-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <h2 className="text-lg font-bold text-slate-900">{t("profile.assessment.title")}</h2>
-                  <p className="mt-1 text-sm text-slate-600">{assessmentResult.summary}</p>
+                  <p className="mt-1 text-sm text-slate-600">{localizedAssessmentResult.profileVector?.summary.headline}</p>
                 </div>
-                <Badge>{t("profile.levelBadge", { value: assessmentResult.level })}</Badge>
+                <Badge>{t("profile.levelBadge", { value: assessmentLevelBand ?? "-" })}</Badge>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
                   <p className="text-sm font-semibold text-slate-900">{t("profile.assessment.strong")}</p>
                   <p className="mt-1 text-sm text-slate-600">
-                    {assessmentResult.strengths.length > 0 ? assessmentResult.strengths.join(" / ") : t("profile.none")}
+                    {localizedAssessmentResult.profileVector && localizedAssessmentResult.profileVector.strongDimensions.length > 0
+                      ? localizedAssessmentResult.profileVector.strongDimensions
+                        .map((dimension) => getDimensionLabel(dimension, language))
+                        .join(" / ")
+                      : t("profile.none")}
                   </p>
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-slate-900">{t("profile.assessment.weak")}</p>
                   <p className="mt-1 text-sm text-slate-600">
-                    {assessmentResult.weaknesses.length > 0 ? assessmentResult.weaknesses.join(" / ") : t("profile.none")}
+                    {localizedAssessmentResult.profileVector && localizedAssessmentResult.profileVector.weakDimensions.length > 0
+                      ? localizedAssessmentResult.profileVector.weakDimensions
+                        .map((dimension) => getDimensionLabel(dimension, language))
+                        .join(" / ")
+                      : t("profile.none")}
                   </p>
                 </div>
               </div>
               <div className="grid gap-2 sm:grid-cols-3">
                 {weakestSummary.map((dimension) => (
                   <div key={dimension.key} className="rounded-xl bg-slate-50 px-3 py-2">
-                    <p className="text-xs font-medium text-slate-500">{dimension.label}</p>
+                    <p className="text-xs font-medium text-slate-500">{getDimensionLabel(dimension.key, language)}</p>
                     <p className="mt-1 text-sm font-semibold text-slate-900">
                       {dimension.score} / {dimension.maxScore}
                     </p>
@@ -327,7 +340,7 @@ export default function ProfilePage() {
               </div>
               <div className="flex flex-wrap gap-2">
                 <Link href="/assessment"><Button variant="secondary">{t("assessment.result.retry")}</Button></Link>
-                <Link href={`/library?level=${assessmentResult.level}`}><Button variant="ghost">{t("profile.assessment.openLibrary")}</Button></Link>
+                <Link href={`/library?level=${assessmentLevelBand ?? "3.5"}`}><Button variant="ghost">{t("profile.assessment.openLibrary")}</Button></Link>
               </div>
             </Card>
           ) : (

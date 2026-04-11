@@ -612,53 +612,31 @@ describe("content display helpers", () => {
 
   it("derives assessment plan candidates from the weakest dimension and watch areas", () => {
     const context = buildAssessmentPlanContext({
-      totalScore: 0,
-      maxScore: 0,
-      normalizedScore: 0,
-      answeredCount: 8,
-      uncertainCount: 0,
-      totalQuestions: 8,
-      level: "3.0",
-      confidence: "中等",
-      dimensions: [
-        {
-          key: "serve",
-          label: "发球",
-          score: 1,
-          maxScore: 4,
-          average: 1,
-          levelHint: "3.0",
-          answeredCount: 2,
-          uncertainCount: 0,
-          status: "正常"
-        },
-        {
-          key: "matchplay",
-          label: "比赛意识",
-          score: 2,
-          maxScore: 4,
-          average: 2,
-          levelHint: "3.0",
-          answeredCount: 2,
-          uncertainCount: 0,
-          status: "正常"
-        },
-        {
-          key: "forehand",
-          label: "正手",
-          score: 3,
-          maxScore: 4,
-          average: 3,
-          levelHint: "3.0",
-          answeredCount: 2,
-          uncertainCount: 0,
-          status: "正常"
-        }
-      ],
-      strengths: ["正手"],
-      weaknesses: ["发球"],
-      observationNeeded: ["比赛意识"],
-      summary: ""
+      rawScore: 20,
+      levelBand: "3.0",
+      dimensionScores: {
+        rally: 3,
+        forehand: 3,
+        backhand_slice: 3,
+        serve: 1,
+        return: 3,
+        movement: 3,
+        net: 3,
+        overhead: 3,
+        pressure: 2,
+        tactics: 3
+      },
+      weakDimensions: ["serve", "pressure"],
+      strongDimensions: ["forehand"],
+      primaryWeakness: "serve",
+      secondaryWeakness: "pressure",
+      playStyle: "baseline_attack",
+      playContext: "singles_standard",
+      summary: {
+        headline: "",
+        oneLineLevelSummary: "",
+        oneLinePlanHint: ""
+      }
     });
     const contentById = new Map([...contents, ...expandedContents].map((entry) => [entry.id, entry]));
 
@@ -706,53 +684,31 @@ describe("content display helpers", () => {
 
   it("keeps assessment-derived second-serve plans on serve-focused content", () => {
     const context = buildAssessmentPlanContext({
-      totalScore: 0,
-      maxScore: 0,
-      normalizedScore: 0,
-      answeredCount: 8,
-      uncertainCount: 0,
-      totalQuestions: 8,
-      level: "3.0",
-      confidence: "中等",
-      dimensions: [
-        {
-          key: "serve",
-          label: "发球",
-          score: 1,
-          maxScore: 4,
-          average: 1,
-          levelHint: "3.0",
-          answeredCount: 2,
-          uncertainCount: 0,
-          status: "正常"
-        },
-        {
-          key: "matchplay",
-          label: "比赛意识",
-          score: 2,
-          maxScore: 4,
-          average: 2,
-          levelHint: "3.0",
-          answeredCount: 2,
-          uncertainCount: 0,
-          status: "正常"
-        },
-        {
-          key: "forehand",
-          label: "正手",
-          score: 3,
-          maxScore: 4,
-          average: 3,
-          levelHint: "3.0",
-          answeredCount: 2,
-          uncertainCount: 0,
-          status: "正常"
-        }
-      ],
-      strengths: ["正手"],
-      weaknesses: ["发球"],
-      observationNeeded: ["比赛意识"],
-      summary: ""
+      rawScore: 20,
+      levelBand: "3.0",
+      dimensionScores: {
+        rally: 3,
+        forehand: 3,
+        backhand_slice: 3,
+        serve: 1,
+        return: 3,
+        movement: 3,
+        net: 3,
+        overhead: 3,
+        pressure: 2,
+        tactics: 3
+      },
+      weakDimensions: ["serve", "pressure"],
+      strongDimensions: ["forehand"],
+      primaryWeakness: "serve",
+      secondaryWeakness: "pressure",
+      playStyle: "baseline_attack",
+      playContext: "singles_standard",
+      summary: {
+        headline: "",
+        oneLineLevelSummary: "",
+        oneLinePlanHint: ""
+      }
     });
     const contentById = new Map([...contents, ...expandedContents].map((entry) => [entry.id, entry]));
     const plan = getPlanTemplate(context.problemTag, "3.0", "zh", context.candidateIds);

@@ -1,6 +1,15 @@
-import { getDefaultAssessmentResult } from "@/lib/assessment";
+import { getDefaultAssessmentResult, migrateLegacyAssessmentResult } from "@/lib/assessment";
 import { ASSESSMENT_DRAFT_STORAGE_KEY, ASSESSMENT_STORAGE_KEY } from "@/lib/utils";
 import { AssessmentDraft, AssessmentResult } from "@/types/assessment";
+
+function isCompletedAssessmentResult(value: AssessmentResult | null | undefined): value is AssessmentResult {
+  return Boolean(
+    value &&
+    value.version === "assessment_10_plus_2" &&
+    value.profileVector &&
+    value.answeredCount >= value.totalQuestions
+  );
+}
 
 export function readAssessmentResultFromStorage(): AssessmentResult | null {
   if (typeof window === "undefined") {
@@ -16,19 +25,19 @@ export function readAssessmentResultFromStorage(): AssessmentResult | null {
   try {
     const parsed = JSON.parse(raw) as AssessmentResult;
 
-    // Migrate legacy 4.0+ level to 4.5
-    if ((parsed.level as string) === "4.0+") {
-      parsed.level = "4.5";
+    if (isCompletedAssessmentResult(parsed)) {
+      return parsed;
     }
 
-    return parsed;
+    const migrated = migrateLegacyAssessmentResult(parsed);
+    return isCompletedAssessmentResult(migrated) ? migrated : null;
   } catch {
     return null;
   }
 }
 
 export function hasCompletedAssessmentResult(result: AssessmentResult | null | undefined): result is AssessmentResult {
-  return Boolean(result && typeof result.answeredCount === "number" && result.answeredCount > 0);
+  return isCompletedAssessmentResult(result);
 }
 
 export function hasStoredCompletedAssessmentResult() {
@@ -60,9 +69,11 @@ export function readAssessmentDraftFromStorage(): AssessmentDraft | null {
 
   try {
     const draft = JSON.parse(raw) as AssessmentDraft;
-    if (typeof draft.stepIndex !== "number" || typeof draft.answers !== "object" || typeof draft.profile !== "object") {
+
+    if (typeof draft.stepIndex !== "number" || typeof draft.answers !== "object") {
       return null;
     }
+
     return draft;
   } catch {
     return null;

@@ -1,137 +1,123 @@
-export type AssessmentLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.5";
+export type LevelBand = "2.5" | "3.0" | "3.5" | "4.0" | "4.0+";
 
-export type AssessmentCoverageArea =
+export type PlayStyle =
+  | "defensive"
+  | "baseline_attack"
+  | "all_court"
+  | "net_pressure";
+
+export type PlayContext =
+  | "singles_standard"
+  | "singles_limited_mobility"
+  | "mixed_with_doubles"
+  | "doubles_primary";
+
+export type AssessmentQuestionType = "scored" | "profile";
+export type AssessmentUiVariant = "list" | "card-grid";
+
+export type ScoredDimension =
   | "rally"
-  | "serve"
-  | "movement"
-  | "matchplay"
-  | "volley"
-  | "overhead"
-  | "slice";
-
-export type AssessmentBranch = "A" | "B" | "C";
-
-export type AssessmentGender = "male" | "female";
-
-export type AssessmentPhase = "profile" | "coarse" | "fine";
-
-export type AssessmentDimension =
-  | "basics"
   | "forehand"
-  | "backhand"
+  | "backhand_slice"
   | "serve"
-  | "net"
+  | "return"
   | "movement"
-  | "matchplay"
-  | "rally"
-  | "awareness"
-  | "fundamentals"
-  | "receiving"
-  | "consistency"
-  | "both_sides"
-  | "direction"
-  | "rhythm"
-  | "net_play"
-  | "volley"
+  | "net"
   | "overhead"
-  | "slice"
-  | "depth_variety"
-  | "forcing"
-  | "tactics"
-  | "tactical_adaptability"
-  | "pressure_performance";
+  | "pressure"
+  | "tactics";
 
-export type AssessmentProfile = {
-  gender?: AssessmentGender;
-  yearsPlaying?: number;
-  yearsLabel?: string;
+export type ProfileDimension = "play_style" | "context";
+
+export type AssessmentDimension = ScoredDimension | ProfileDimension;
+
+export type AssessmentOption = {
+  id: string;
+  value: string;
+  label: string;
+  description?: string;
+  score?: 1 | 2 | 3 | 4;
+  icon?: string;
+};
+
+export type AssessmentQuestion = {
+  id: string;
+  type: AssessmentQuestionType;
+  dimension: AssessmentDimension;
+  prompt: string;
+  uiVariant: AssessmentUiVariant;
+  options: AssessmentOption[];
+};
+
+export type AssessmentAnswerMap = Record<string, string>;
+
+export type DimensionScores = Record<ScoredDimension, 1 | 2 | 3 | 4>;
+
+export type ScoredAssessmentResult = {
+  rawScore: number;
+  levelBand: LevelBand;
+  dimensionScores: DimensionScores;
+};
+
+export type WeaknessRankingItem = {
+  dimension: ScoredDimension;
+  score: 1 | 2 | 3 | 4;
+  priorityScore: number;
+  baseImpactWeight: number;
+  severityWeight: number;
+  levelMultiplier: number;
+  styleMultiplier: number;
+  contextMultiplier: number;
+  suppressedAsPrimary?: boolean;
+};
+
+export type PlayerProfileVector = {
+  rawScore: number;
+  levelBand: LevelBand;
+  dimensionScores: DimensionScores;
+  weakDimensions: ScoredDimension[];
+  strongDimensions: ScoredDimension[];
+  primaryWeakness?: ScoredDimension;
+  secondaryWeakness?: ScoredDimension;
+  playStyle: PlayStyle;
+  playContext: PlayContext;
+  summary: {
+    headline: string;
+    oneLineLevelSummary: string;
+    oneLinePlanHint: string;
+  };
+};
+
+export type AssessmentDimensionStatus = "weak" | "needs_work" | "normal" | "strength";
+
+export type DimensionSummary = {
+  key: ScoredDimension;
+  score: 1 | 2 | 3 | 4;
+  maxScore: 4;
+  status: AssessmentDimensionStatus;
 };
 
 export type AssessmentDraft = {
   stepIndex: number;
-  answers: AssessmentAnswers;
-  profile: AssessmentProfile;
+  answers: AssessmentAnswerMap;
   updatedAt: string;
 };
 
-export type AssessmentOption = {
-  label: string;
-  value: number;
-};
-
-export type AssessmentSliderConfig = {
-  min: number;
-  max: number;
-  step: number;
-  default: number;
-  displayLabels: { value: number; label: string }[];
-};
-
-type AssessmentQuestionBase = {
-  id: string;
-  phase: AssessmentPhase;
-  branch?: AssessmentBranch;
-  question: string;
-  dimension?: AssessmentDimension;
-};
-
-export type AssessmentGenderQuestion = AssessmentQuestionBase & {
-  type: "gender";
-  options: AssessmentOption[];
-};
-
-export type AssessmentSliderQuestion = AssessmentQuestionBase & {
-  type: "slider";
-  sliderConfig: AssessmentSliderConfig;
-};
-
-export type AssessmentChoiceQuestion = AssessmentQuestionBase & {
-  type: "choice";
-  options: AssessmentOption[];
-};
-
-export type AssessmentQuestion =
-  | AssessmentGenderQuestion
-  | AssessmentSliderQuestion
-  | AssessmentChoiceQuestion;
-
-export type DimensionKey = AssessmentDimension;
-
-export type AssessmentAnswers = Record<string, number>;
-
-export type AssessmentDimensionStatus = "薄弱" | "待提升" | "正常" | "强项";
-
-export type DimensionSummary = {
-  key: DimensionKey;
-  label: string;
-  score: number;
-  maxScore: number;
-  average: number;
-  levelHint: AssessmentLevel;
-  answeredCount: number;
-  uncertainCount: number;
-  status: AssessmentDimensionStatus;
-};
-
 export type AssessmentResult = {
-  totalScore: number;
-  maxScore: number;
-  normalizedScore: number;
+  version: "assessment_10_plus_2";
   answeredCount: number;
-  uncertainCount: number;
+  coreAnsweredCount: number;
   totalQuestions: number;
-  level: AssessmentLevel;
-  ceilingLevel?: AssessmentLevel;
-  confidence: "较低" | "中等" | "较高";
-  dimensions: DimensionSummary[];
-  observedAreas?: AssessmentCoverageArea[];
-  unobservedAreas?: AssessmentCoverageArea[];
-  strengths: string[];
-  weaknesses: string[];
-  observationNeeded: string[];
-  summary: string;
-  profile?: AssessmentProfile;
-  branch?: AssessmentBranch;
-  coarseScore?: number;
-  fineScore?: number;
+  profileVector: PlayerProfileVector | null;
+  dimensionSummaries: DimensionSummary[];
+  completedAt?: string;
+};
+
+export type PlanInputFromAssessment = {
+  levelBand: PlayerProfileVector["levelBand"];
+  primaryWeakness?: PlayerProfileVector["primaryWeakness"];
+  secondaryWeakness?: PlayerProfileVector["secondaryWeakness"];
+  playStyle: PlayerProfileVector["playStyle"];
+  playContext: PlayerProfileVector["playContext"];
+  dimensionScores: PlayerProfileVector["dimensionScores"];
 };

@@ -89,8 +89,48 @@ vi.mock("@/lib/userData", () => ({
 
 vi.mock("@/components/assessment/ResultSummary", () => ({
   ResultSummary: ({ result }: { result: AssessmentResult }) =>
-    React.createElement("div", { "data-testid": "assessment-result-summary" }, `${result.level}:${result.answeredCount}`)
+    React.createElement("div", { "data-testid": "assessment-result-summary" }, `${result.profileVector?.levelBand}:${result.answeredCount}`)
 }));
+
+function createStoredAssessmentResult(summary: string): AssessmentResult {
+  return {
+    version: "assessment_10_plus_2",
+    answeredCount: 12,
+    coreAnsweredCount: 10,
+    totalQuestions: 12,
+    profileVector: {
+      rawScore: 26,
+      levelBand: "3.5",
+      dimensionScores: {
+        rally: 3,
+        forehand: 3,
+        backhand_slice: 3,
+        serve: 1,
+        return: 3,
+        movement: 2,
+        net: 3,
+        overhead: 3,
+        pressure: 3,
+        tactics: 2
+      },
+      weakDimensions: ["serve", "movement", "tactics"],
+      strongDimensions: ["rally", "forehand"],
+      primaryWeakness: "serve",
+      secondaryWeakness: "movement",
+      playStyle: "baseline_attack",
+      playContext: "singles_standard",
+      summary: {
+        headline: summary,
+        oneLineLevelSummary: "你目前大致在 3.5 区间。",
+        oneLinePlanHint: "后续训练计划应先围绕发球展开。"
+      }
+    },
+    dimensionSummaries: [
+      { key: "serve", score: 1, maxScore: 4, status: "weak" },
+      { key: "movement", score: 2, maxScore: 4, status: "needs_work" }
+    ]
+  };
+}
 
 async function loadAssessmentPage() {
   const module = await import("@/app/assessment/page");
@@ -134,47 +174,19 @@ describe("assessment boundary cleanup", () => {
 
   it("renders a locally saved assessment result on the consumer result page", async () => {
     window.history.pushState({}, "", "/assessment/result");
-    window.localStorage.setItem("tennislevel-assessment-result", JSON.stringify({
-      totalScore: 30,
-      maxScore: 40,
-      normalizedScore: 75,
-      answeredCount: 6,
-      uncertainCount: 0,
-      totalQuestions: 6,
-      level: "3.5",
-      confidence: "中等",
-      dimensions: [],
-      strengths: [],
-      weaknesses: [],
-      observationNeeded: [],
-      summary: "local result"
-    }));
+    window.localStorage.setItem("tennislevel-assessment-result", JSON.stringify(createStoredAssessmentResult("local result")));
     const AssessmentResultPage = await loadAssessmentResultPage();
 
     render(React.createElement(AssessmentResultPage));
 
-    expect(await screen.findByTestId("assessment-result-summary")).toHaveTextContent("3.5:6");
+    expect(await screen.findByTestId("assessment-result-summary")).toHaveTextContent("3.5:12");
   });
 
   it("syncs assessment result through the consumer account path", async () => {
     mockAuthState.user = { id: "user_1" };
     mockAuthState.configured = true;
     getLatestAssessmentResultMock.mockResolvedValue({
-      data: {
-        totalScore: 30,
-        maxScore: 40,
-        normalizedScore: 75,
-        answeredCount: 6,
-        uncertainCount: 0,
-        totalQuestions: 6,
-        level: "3.5",
-        confidence: "中等",
-        dimensions: [],
-        strengths: [],
-        weaknesses: [],
-        observationNeeded: [],
-        summary: "remote result"
-      },
+      data: createStoredAssessmentResult("remote result"),
       error: null
     });
     window.history.pushState({}, "", "/assessment/result");
@@ -182,7 +194,7 @@ describe("assessment boundary cleanup", () => {
 
     render(React.createElement(AssessmentResultPage));
 
-    expect(await screen.findByTestId("assessment-result-summary")).toHaveTextContent("3.5:6");
+    expect(await screen.findByTestId("assessment-result-summary")).toHaveTextContent("3.5:12");
     expect(getLatestAssessmentResultMock).toHaveBeenCalledWith("user_1");
   });
 });

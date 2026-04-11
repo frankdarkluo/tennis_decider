@@ -1,269 +1,176 @@
 import { AssessmentQuestion } from "@/types/assessment";
 
-export const assessmentQuestions: AssessmentQuestion[] = [
+export const ASSESSMENT_QUESTIONS: AssessmentQuestion[] = [
   {
-    id: "gender",
-    phase: "profile",
-    type: "gender",
-    question: "你的性别？",
+    id: "rally_stability",
+    type: "scored",
+    dimension: "rally",
+    prompt: "平时对拉时，你多数情况下能把球维持在什么质量？",
+    uiVariant: "list",
     options: [
-      { label: "男", value: 1 },
-      { label: "女", value: 2 }
+      { id: "rally_1", value: "rally_1", label: "3 拍内经常先自己失误", score: 1 },
+      { id: "rally_2", value: "rally_2", label: "4–8 拍通常能维持，但球一快、一深或一变方向就容易断", score: 2 },
+      { id: "rally_3", value: "rally_3", label: "9–15 拍多数能维持，遇到稍快的球也还能继续打", score: 3 },
+      { id: "rally_4", value: "rally_4", label: "16 拍以上也能基本保持质量，主动失误相对少", score: 4 }
     ]
   },
-  /*
   {
-    id: "years",
-    phase: "profile",
-    type: "slider",
-    question: "打了多久网球？",
-    sliderConfig: {
-      min: 0,
-      max: 10,
-      step: 0.5,
-      default: 2,
-      displayLabels: [
-        { value: 0, label: "0" },
-        { value: 2, label: "2年" },
-        { value: 5, label: "5年" },
-        { value: 10, label: "10年+" }
-      ]
-    }
-  },
-  */
-  {
-    id: "coarse_rally",
-    phase: "coarse",
-    type: "choice",
-    question: "日常练习中，你通常能连续对打多少拍？",
+    id: "forehand_weapon",
+    type: "scored",
+    dimension: "forehand",
+    prompt: "遇到自己舒服的正手球时，你最接近哪种状态？",
+    uiVariant: "list",
     options: [
-      { label: "3 拍以内", value: 1 },
-      { label: "4-8 拍", value: 2 },
-      { label: "9-15 拍", value: 3 },
-      { label: "16 拍以上，主动失误比较少", value: 4 }
-    ],
-    dimension: "rally"
+      { id: "forehand_1", value: "forehand_1", label: "主要是把球回过去，很难主动发力或压制", score: 1 },
+      { id: "forehand_2", value: "forehand_2", label: "敢发力，但失误偏多，比赛里不太敢常用", score: 2 },
+      { id: "forehand_3", value: "forehand_3", label: "大多数时候能打出有质量的正手，偶尔能主动压住对手", score: 3 },
+      { id: "forehand_4", value: "forehand_4", label: "正手已经是明确武器，能靠它主动变线、加速或制造机会", score: 4 }
+    ]
   },
   {
-    id: "coarse_serve",
-    phase: "coarse",
-    type: "choice",
-    question: "你的发球大概什么状态？",
+    id: "backhand_slice_reliability",
+    type: "scored",
+    dimension: "backhand_slice",
+    prompt: "你的反手和切削整体更接近哪种状态？",
+    uiVariant: "list",
     options: [
-      { label: "还在练，经常发不进", value: 1 },
-      { label: "能发进但没什么旋转", value: 2 },
-      { label: "有一定旋转和落点控制", value: 3 },
-      { label: "一发有攻击性，二发也比较稳", value: 4 }
-    ],
-    dimension: "serve"
+      { id: "backhand_slice_1", value: "backhand_slice_1", label: "反手明显吃亏，切削也基本不敢用", score: 1 },
+      { id: "backhand_slice_2", value: "backhand_slice_2", label: "反手能打，但一受压就容易散；切削常飘或太短", score: 2 },
+      { id: "backhand_slice_3", value: "backhand_slice_3", label: "反手多数能稳住，切削能作为过渡球或防守变化使用", score: 3 },
+      { id: "backhand_slice_4", value: "backhand_slice_4", label: "反手能稳定对抗，切削也能主动压低或打乱对手节奏", score: 4 }
+    ]
   },
   {
-    id: "coarse_movement",
-    phase: "coarse",
-    type: "choice",
-    question: "来回移动和还原时，你通常是什么状态？",
+    id: "serve_quality",
+    type: "scored",
+    dimension: "serve",
+    prompt: "在自己的发球局里，你的发球更接近哪种状态？",
+    uiVariant: "list",
     options: [
-      { label: "经常站住，看着球过去", value: 1 },
-      { label: "会去追球，但经常慢半拍", value: 2 },
-      { label: "大部分球都能赶到并回位", value: 3 },
-      { label: "启动和回位都比较自然，很少被打定住", value: 4 }
-    ],
-    dimension: "movement"
+      { id: "serve_1", value: "serve_1", label: "一发进率和二发安全都不稳，经常直接送分", score: 1 },
+      { id: "serve_2", value: "serve_2", label: "一发能发进一些，但二发比较虚，容易被对手上手", score: 2 },
+      { id: "serve_3", value: "serve_3", label: "一发有基本落点或节奏，二发大多数时候能把回合稳定开始", score: 3 },
+      { id: "serve_4", value: "serve_4", label: "一发能制造优势，二发也可靠，不容易被直接压制", score: 4 }
+    ]
   },
   {
-    id: "coarse_awareness",
-    phase: "coarse",
-    type: "choice",
-    question: "你练球或者比赛时脑海里在想什么？",
+    id: "return_quality",
+    type: "scored",
+    dimension: "return",
+    prompt: "面对对手发球时，你的接发更接近哪种状态？",
+    uiVariant: "list",
     options: [
-      { label: "先把球打过去就行", value: 1 },
-      { label: "会想打方向但经常做不到", value: 2 },
-      { label: "能有意识地调动对手", value: 3 },
-      { label: "能根据对手弱点组织战术", value: 4 }
-    ],
-    dimension: "awareness"
+      { id: "return_1", value: "return_1", label: "经常接不到舒服的击球点，只能勉强碰到或直接失误", score: 1 },
+      { id: "return_2", value: "return_2", label: "普通发球能接回去，但速度快一点或旋转明显就容易失误", score: 2 },
+      { id: "return_3", value: "return_3", label: "大多数发球都能接进场，并把回合正常拉起来", score: 3 },
+      { id: "return_4", value: "return_4", label: "不仅能接进场，还能通过落点、节奏或线路给对手压力", score: 4 }
+    ]
   },
   {
-    id: "coarse_pressure",
-    phase: "coarse",
-    type: "choice",
-    question: "比分紧张或练习加压时，你通常会怎样？",
+    id: "movement_recovery",
+    type: "scored",
+    dimension: "movement",
+    prompt: "跑动、制动和还原整体更接近哪种状态？",
+    uiVariant: "list",
     options: [
-      { label: "明显发紧，失误一下变多", value: 1 },
-      { label: "会保守，质量掉得比较多", value: 2 },
-      { label: "大体还能保持平时水平", value: 3 },
-      { label: "越到关键分越能打出自己的球", value: 4 }
-    ],
-    dimension: "pressure_performance"
+      { id: "movement_1", value: "movement_1", label: "经常启动慢半拍，打完也容易站住", score: 1 },
+      { id: "movement_2", value: "movement_2", label: "能追到不少球，但急停后下一拍常接不上", score: 2 },
+      { id: "movement_3", value: "movement_3", label: "大多数球能赶到，打完也能基本回到准备位置", score: 3 },
+      { id: "movement_4", value: "movement_4", label: "启动、制动、还原都比较自然，跑动中还能保持基本击球质量", score: 4 }
+    ]
   },
   {
-    id: "fine_a_grip",
-    phase: "fine",
-    branch: "A",
-    type: "choice",
-    question: "打球时你的握拍和准备动作？",
+    id: "net_transition_volley",
+    type: "scored",
+    dimension: "net",
+    prompt: "上网、截击和过渡球处理更接近哪种状态？",
+    uiVariant: "list",
     options: [
-      { label: "还不太确定怎么握", value: 1 },
-      { label: "知道怎么握但经常忘", value: 2 },
-      { label: "基本固定，偶尔会乱", value: 3 },
-      { label: "已经很自然不用想了", value: 4 }
-    ],
-    dimension: "fundamentals"
+      { id: "net_1", value: "net_1", label: "基本不上网，上网后第一拍常直接失误", score: 1 },
+      { id: "net_2", value: "net_2", label: "简单高球能截到，但低球、快球或半截击就容易乱", score: 2 },
+      { id: "net_3", value: "net_3", label: "知道什么时候该上网，第一拍大多能处理干净，半截击偶尔能救", score: 3 },
+      { id: "net_4", value: "net_4", label: "能主动利用上网施压或结束分数，低球和半截击也有基本质量", score: 4 }
+    ]
   },
   {
-    id: "fine_a_fast",
-    phase: "fine",
-    branch: "A",
-    type: "choice",
-    question: "对方来球速度稍快时？",
+    id: "overhead_highball",
+    type: "scored",
+    dimension: "overhead",
+    prompt: "处理高球、高压和头顶球时，你更接近哪种状态？",
+    uiVariant: "list",
     options: [
-      { label: "经常反应不过来", value: 1 },
-      { label: "能碰到但方向控不住", value: 2 },
-      { label: "大多能回过去", value: 3 },
-      { label: "能回过去而且有一定质量", value: 4 }
-    ],
-    dimension: "receiving"
+      { id: "overhead_1", value: "overhead_1", label: "经常判断不好落点，不敢主动压", score: 1 },
+      { id: "overhead_2", value: "overhead_2", label: "能打到球，但脚步和击球点不稳，质量一般", score: 2 },
+      { id: "overhead_3", value: "overhead_3", label: "大多数高球和高压都能处理干净，不容易白送", score: 3 },
+      { id: "overhead_4", value: "overhead_4", label: "能主动用高压终结，遇到需要回撤的高球也比较从容", score: 4 }
+    ]
   },
   {
-    id: "fine_a_issue",
-    phase: "fine",
-    branch: "A",
-    type: "choice",
-    question: "你目前打球最大的困扰是？",
+    id: "pressure_matchplay",
+    type: "scored",
+    dimension: "pressure",
+    prompt: "比分紧、被追分，或者连续失误后，你通常会怎样？",
+    uiVariant: "list",
     options: [
-      { label: "动作还没有固定下来", value: 1 },
-      { label: "动作有了但失误太多", value: 2 },
-      { label: "稳定性时好时坏", value: 3 },
-      { label: "能打稳但想要更多变化", value: 4 }
-    ],
-    dimension: "consistency"
+      { id: "pressure_1", value: "pressure_1", label: "明显发紧，动作变形，失误会一下变多", score: 1 },
+      { id: "pressure_2", value: "pressure_2", label: "会明显保守，虽然能回球，但质量掉得很多", score: 2 },
+      { id: "pressure_3", value: "pressure_3", label: "大体还能保持平时水平，不至于关键分完全失常", score: 3 },
+      { id: "pressure_4", value: "pressure_4", label: "关键分能保持清楚思路，也敢用自己最可靠的球", score: 4 }
+    ]
   },
   {
-    id: "fine_a_movement",
-    phase: "fine",
-    branch: "A",
-    type: "choice",
-    question: "打球时你的跑位和还原做得怎么样？",
+    id: "point_construction",
+    type: "scored",
+    dimension: "tactics",
+    prompt: "比赛或对拉中，你是否能按一个清楚的思路去组织分点？",
+    uiVariant: "list",
     options: [
-      { label: "打完常站在原地", value: 1 },
-      { label: "会动，但很少及时回位", value: 2 },
-      { label: "大多能回到准备位置", value: 3 },
-      { label: "每拍后回位已经比较自然", value: 4 }
-    ],
-    dimension: "movement"
+      { id: "tactics_1", value: "tactics_1", label: "大多只是先把球回过去，很少会想下一拍怎么打", score: 1 },
+      { id: "tactics_2", value: "tactics_2", label: "知道自己想打什么，但比赛里经常第一拍做不到，后面就乱了", score: 2 },
+      { id: "tactics_3", value: "tactics_3", label: "有 1–2 个比较常用的套路，比如先压一侧再找空档", score: 3 },
+      { id: "tactics_4", value: "tactics_4", label: "能根据对手、比分和来球质量主动切换套路，不只是机械回球", score: 4 }
+    ]
   },
   {
-    id: "fine_b_both_sides",
-    phase: "fine",
-    branch: "B",
-    type: "choice",
-    question: "你正手和反手的差距大吗？",
+    id: "play_style_profile",
+    type: "profile",
+    dimension: "play_style",
+    prompt: "你现在更接近哪种打球风格？",
+    uiVariant: "card-grid",
     options: [
-      { label: "反手明显比正手弱很多", value: 1 },
-      { label: "反手能打但不敢主动用", value: 2 },
-      { label: "差距不大，都还比较稳", value: 3 },
-      { label: "两边都能主动打出质量", value: 4 }
-    ],
-    dimension: "both_sides"
+      { id: "style_defensive", value: "defensive", label: "稳定防守型", description: "先把球打稳，等对手失误", icon: "shield" },
+      { id: "style_baseline_attack", value: "baseline_attack", label: "底线推进型", description: "更想靠正反手质量压住对手", icon: "zap" },
+      { id: "style_all_court", value: "all_court", label: "全场过渡型", description: "会主动找机会上网，从底线打到网前", icon: "move-up-right" },
+      { id: "style_net_pressure", value: "net_pressure", label: "网前压迫型", description: "喜欢抢网、截击、双打式施压", icon: "target" }
+    ]
   },
   {
-    id: "fine_b_direction",
-    phase: "fine",
-    branch: "B",
-    type: "choice",
-    question: "你能有意识地控制球的方向吗？",
+    id: "play_context_modifier",
+    type: "profile",
+    dimension: "context",
+    prompt: "你现在最接近哪种真实打球情况？",
+    uiVariant: "card-grid",
     options: [
-      { label: "基本控制不了", value: 1 },
-      { label: "偶尔能打到想要的方向", value: 2 },
-      { label: "大部分时候能控制", value: 3 },
-      { label: "能稳定地打出直线和斜线", value: 4 }
-    ],
-    dimension: "direction"
-  },
-  {
-    id: "fine_b_slice",
-    phase: "fine",
-    branch: "B",
-    type: "choice",
-    question: "你的切削现在更接近哪种状态？",
-    options: [
-      { label: "基本不敢用，或者一切就飘", value: 1 },
-      { label: "能打出来，但高度和落点不太稳", value: 2 },
-      { label: "能把切削当过渡球或变化球用", value: 3 },
-      { label: "能稳定压低，也能主动用它改变节奏", value: 4 }
-    ],
-    dimension: "slice"
-  },
-  {
-    id: "fine_b_serve_game",
-    phase: "fine",
-    branch: "B",
-    type: "choice",
-    question: "你的发球局稳定吗？",
-    options: [
-      { label: "经常保不住发球局", value: 1 },
-      { label: "偶尔能保发，但不太稳", value: 2 },
-      { label: "多数时候能靠发球局稳住局面", value: 3 },
-      { label: "发球局已经是我的可靠优势", value: 4 }
-    ],
-    dimension: "serve"
-  },
-  {
-    id: "fine_c_volley",
-    phase: "fine",
-    branch: "C",
-    type: "choice",
-    question: "你在网前处理截击时更接近哪种状态？",
-    options: [
-      { label: "基本不上网，或者截击一碰就乱", value: 1 },
-      { label: "简单球能处理，但受压就容易失误", value: 2 },
-      { label: "会主动上网，截击大多能处理干净", value: 3 },
-      { label: "截击已经是我稳定的得分或压迫手段", value: 4 }
-    ],
-    dimension: "volley"
-  },
-  {
-    id: "fine_c_depth",
-    phase: "fine",
-    branch: "C",
-    type: "choice",
-    question: "你的击球有深度和变化吗？",
-    options: [
-      { label: "球经常落在发球线附近", value: 1 },
-      { label: "能打深但变化不多", value: 2 },
-      { label: "能控制深度也能变方向", value: 3 },
-      { label: "能用深度、角度和旋转组合变化", value: 4 }
-    ],
-    dimension: "depth_variety"
-  },
-  {
-    id: "fine_c_overhead",
-    phase: "fine",
-    branch: "C",
-    type: "choice",
-    question: "遇到高压球时，你现在更接近哪种状态？",
-    options: [
-      { label: "经常找不准点，或者干脆不敢压", value: 1 },
-      { label: "能打到，但脚步和落点还不太稳", value: 2 },
-      { label: "大部分高压都能处理干净并回到位", value: 3 },
-      { label: "高压球已经是我可靠的终结手段", value: 4 }
-    ],
-    dimension: "overhead"
-  },
-  {
-    id: "fine_c_adaptability",
-    phase: "fine",
-    branch: "C",
-    type: "choice",
-    question: "你能根据对手调整打法吗？",
-    options: [
-      { label: "基本不管对手，自己怎么打都一样", value: 1 },
-      { label: "能看出来问题，但比赛里很难执行", value: 2 },
-      { label: "比赛中能做一些针对性调整", value: 3 },
-      { label: "会主动根据对手特点设计和切换打法", value: 4 }
-    ],
-    dimension: "tactical_adaptability"
+      { id: "context_singles_standard", value: "singles_standard", label: "单打为主", description: "跑动不是明显限制", icon: "user" },
+      { id: "context_singles_limited_mobility", value: "singles_limited_mobility", label: "单打为主但需控负荷", description: "体能、跑动或恢复需要被特别考虑", icon: "activity" },
+      { id: "context_mixed_with_doubles", value: "mixed_with_doubles", label: "单双都打", description: "网前和配合也重要", icon: "users" },
+      { id: "context_doubles_primary", value: "doubles_primary", label: "双打为主", description: "希望更多站位轮转和网前内容", icon: "grid-2x2" }
+    ]
   }
 ];
+
+export const SCORED_QUESTION_IDS = ASSESSMENT_QUESTIONS
+  .filter((question) => question.type === "scored")
+  .map((question) => question.id);
+
+export const PROFILE_QUESTION_IDS = ASSESSMENT_QUESTIONS
+  .filter((question) => question.type === "profile")
+  .map((question) => question.id);
+
+export const QUESTIONS_BY_ID = Object.fromEntries(
+  ASSESSMENT_QUESTIONS.map((question) => [question.id, question])
+) as Record<string, AssessmentQuestion>;
+
+export const assessmentQuestions = ASSESSMENT_QUESTIONS;
 
 export default assessmentQuestions;

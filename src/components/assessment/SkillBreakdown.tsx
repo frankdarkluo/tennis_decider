@@ -1,15 +1,15 @@
-import { AssessmentResult, DimensionSummary } from "@/types/assessment";
-import { getAssessmentStatusLabel, getLocalizedAssessmentResult } from "@/lib/assessment";
+import { AssessmentResult, AssessmentDimensionStatus } from "@/types/assessment";
+import { getAssessmentStatusLabel, getDimensionLabel } from "@/lib/assessment";
 import { useI18n } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 
-function getStatusClasses(status: DimensionSummary["status"]) {
+function getStatusClasses(status: AssessmentDimensionStatus) {
   switch (status) {
-    case "薄弱":
+    case "weak":
       return "border-rose-200 bg-rose-50 text-rose-700";
-    case "待提升":
+    case "needs_work":
       return "border-amber-200 bg-amber-50 text-amber-700";
-    case "强项":
+    case "strength":
       return "border-emerald-200 bg-emerald-50 text-emerald-700";
     default:
       return "border-slate-200 bg-slate-50 text-slate-600";
@@ -18,9 +18,8 @@ function getStatusClasses(status: DimensionSummary["status"]) {
 
 export function SkillBreakdown({ result }: { result: AssessmentResult }) {
   const { language, t } = useI18n();
-  const localizedResult = getLocalizedAssessmentResult(result, language);
 
-  if (localizedResult.dimensions.length === 0) {
+  if (!result.profileVector || result.dimensionSummaries.length === 0) {
     return null;
   }
 
@@ -32,7 +31,7 @@ export function SkillBreakdown({ result }: { result: AssessmentResult }) {
       </div>
 
       <div className="space-y-2">
-        {localizedResult.dimensions.map((dimension) => {
+        {result.dimensionSummaries.map((dimension) => {
           const percentage = Math.round((dimension.score / dimension.maxScore) * 100);
 
           return (
@@ -42,8 +41,8 @@ export function SkillBreakdown({ result }: { result: AssessmentResult }) {
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1">
-                  <p className="text-sm font-semibold text-slate-900">{dimension.label}</p>
-                  <p className="text-xs text-slate-500">{`${dimension.score.toFixed(1)} / ${dimension.maxScore}`}</p>
+                  <p className="text-sm font-semibold text-slate-900">{getDimensionLabel(dimension.key, language)}</p>
+                  <p className="text-xs text-slate-500">{`${dimension.score} / ${dimension.maxScore}`}</p>
                 </div>
                 <span
                   className={cn(
@@ -59,11 +58,11 @@ export function SkillBreakdown({ result }: { result: AssessmentResult }) {
                 <div
                   className={cn(
                     "h-2 rounded-full transition-all",
-                    dimension.status === "薄弱"
+                    dimension.status === "weak"
                       ? "bg-rose-400"
-                      : dimension.status === "待提升"
+                      : dimension.status === "needs_work"
                         ? "bg-amber-400"
-                        : dimension.status === "强项"
+                        : dimension.status === "strength"
                           ? "bg-emerald-400"
                           : "bg-slate-400"
                   )}

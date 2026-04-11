@@ -3,27 +3,28 @@ import { GeneratedPlan } from "@/types/plan";
 import { VLMObservation, VideoDiagnosisResult } from "@/types/videoDiagnosis";
 
 export type PersistedAssessmentScores = {
-  totalScore: number;
-  maxScore: number;
-  normalizedScore: number;
+  version?: AssessmentResult["version"];
+  rawScore?: number | null;
   answeredCount: number;
-  uncertainCount: number;
+  coreAnsweredCount?: number;
   totalQuestions: number;
-  ceilingLevel?: AssessmentResult["ceilingLevel"];
-  confidence: AssessmentResult["confidence"];
-  dimensions: AssessmentResult["dimensions"];
-  observedAreas?: AssessmentResult["observedAreas"];
-  unobservedAreas?: AssessmentResult["unobservedAreas"];
-  profile?: AssessmentResult["profile"];
-  branch?: AssessmentResult["branch"];
-  coarseScore?: AssessmentResult["coarseScore"];
-  fineScore?: AssessmentResult["fineScore"];
+  dimensionSummaries?: AssessmentResult["dimensionSummaries"];
+  profileVector?: AssessmentResult["profileVector"];
+  completedAt?: AssessmentResult["completedAt"];
+  totalScore?: number;
+  dimensions?: Array<{
+    key?: string;
+    label?: string;
+    score?: number;
+    average?: number;
+  }>;
+  answers?: Record<string, string>;
 };
 
 export type AssessmentResultRow = {
   id: string;
   user_id: string;
-  level: AssessmentResult["level"];
+  level: string | null;
   scores: PersistedAssessmentScores;
   strengths: string[];
   weaknesses: string[];

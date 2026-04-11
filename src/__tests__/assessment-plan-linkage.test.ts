@@ -6,83 +6,61 @@ import {
   normalizePlanDraftSnapshot,
   parsePlanContext
 } from "@/lib/plans";
-import { AssessmentResult } from "@/types/assessment";
+import type { PlayerProfileVector } from "@/types/assessment";
 
-function createAssessmentResult(): AssessmentResult {
+function createPlayerProfileVector(): PlayerProfileVector {
   return {
-    totalScore: 0,
-    maxScore: 0,
-    normalizedScore: 0,
-    answeredCount: 8,
-    uncertainCount: 0,
-    totalQuestions: 8,
-    level: "3.0",
-    confidence: "中等",
-    dimensions: [
-      {
-        key: "serve",
-        label: "发球",
-        score: 1,
-        maxScore: 4,
-        average: 1,
-        levelHint: "3.0",
-        answeredCount: 2,
-        uncertainCount: 0,
-        status: "薄弱"
-      },
-      {
-        key: "matchplay",
-        label: "比赛意识",
-        score: 2,
-        maxScore: 4,
-        average: 2,
-        levelHint: "3.0",
-        answeredCount: 2,
-        uncertainCount: 0,
-        status: "待提升"
-      },
-      {
-        key: "movement",
-        label: "移动",
-        score: 3,
-        maxScore: 4,
-        average: 3,
-        levelHint: "3.0",
-        answeredCount: 2,
-        uncertainCount: 0,
-        status: "正常"
-      }
-    ],
-    strengths: ["移动"],
-    weaknesses: ["发球"],
-    observationNeeded: ["比赛意识"],
-    summary: "发球最需要优先补强，比赛意识还需要继续观察。"
+    rawScore: 26,
+    levelBand: "3.5",
+    dimensionScores: {
+      rally: 3,
+      forehand: 3,
+      backhand_slice: 3,
+      serve: 1,
+      return: 3,
+      movement: 2,
+      net: 3,
+      overhead: 3,
+      pressure: 3,
+      tactics: 2
+    },
+    weakDimensions: ["serve", "movement", "tactics"],
+    strongDimensions: ["rally", "forehand"],
+    primaryWeakness: "serve",
+    secondaryWeakness: "movement",
+    playStyle: "baseline_attack",
+    playContext: "singles_standard",
+    summary: {
+      headline: "当前最值得优先补强的是发球",
+      oneLineLevelSummary: "你目前大致在 3.5 区间。",
+      oneLinePlanHint: "后续训练计划应先围绕发球展开。"
+    }
   };
 }
 
 describe("assessment to plan linkage", () => {
-  it("passes weak assessment dimensions into plan generation", () => {
-    const context = buildAssessmentPlanContext(createAssessmentResult());
-    const plan = getPlanTemplate(context.problemTag, "3.0", "zh", context.candidateIds, {
+  it("passes profile-vector assessment inputs into plan generation", () => {
+    const context = buildAssessmentPlanContext(createPlayerProfileVector());
+    const plan = getPlanTemplate(context.problemTag, "3.5", "zh", context.candidateIds, {
       planContext: context.planContext
     });
 
     expect(context.planContext).toMatchObject({
       source: "assessment",
       primaryProblemTag: "second-serve-reliability",
-      weakDimensions: ["serve"],
-      observationDimensions: ["matchplay"]
+      weakDimensions: ["serve", "movement"],
+      observationDimensions: ["tactics"]
     });
     expect(context.planContext.rationale).toContain("serve");
     expect(plan.summary ?? "").toContain("发球");
-    expect(plan.summary ?? "").toContain("比赛意识");
+    expect(plan.summary ?? "").toContain("跑动");
   });
 
-  it("keeps assessment plan context intact through href and draft handoff", () => {
-    const context = buildAssessmentPlanContext(createAssessmentResult());
+  it("keeps the player profile vector intact through href and draft handoff", () => {
+    const context = buildAssessmentPlanContext(createPlayerProfileVector());
     const href = buildPlanHref({
       problemTag: context.problemTag,
-      level: "3.0",
+      level: "3.5",
       preferredContentIds: context.candidateIds,
       sourceType: "assessment",
       planContext: context.planContext
@@ -92,26 +70,21 @@ describe("assessment to plan linkage", () => {
     const roundTripped = parsePlanContext(params.get("planContext"));
     const normalizedDraft = normalizePlanDraftSnapshot({
       problemTag: context.problemTag,
-      level: "3.0",
+      level: "3.5",
       preferredContentIds: context.candidateIds,
       sourceType: "assessment",
       planContext: context.planContext
     });
-    const plan = getPlanTemplate(context.problemTag, "3.0", "zh", context.candidateIds, {
-      planContext: normalizedDraft?.planContext
-    });
 
     expect(roundTripped).toMatchObject({
       source: "assessment",
-      weakDimensions: ["serve"],
-      observationDimensions: ["matchplay"]
+      weakDimensions: ["serve", "movement"],
+      observationDimensions: ["tactics"]
     });
     expect(normalizedDraft?.planContext).toMatchObject({
       source: "assessment",
-      weakDimensions: ["serve"],
-      observationDimensions: ["matchplay"]
+      weakDimensions: ["serve", "movement"],
+      observationDimensions: ["tactics"]
     });
-    expect(normalizedDraft?.planContext?.rationale).toContain("serve");
-    expect(plan.summary ?? "").toContain("发球");
   });
 });

@@ -13,7 +13,7 @@ import {
 import { filterByEnvironment } from "@/lib/environment";
 import { withDeterministicDayContract } from "@/lib/plan-core/baseSkeleton";
 import { applySceneOverlay } from "@/lib/plan-core/sceneOverlay";
-import { AssessmentDimension, AssessmentResult, DimensionSummary } from "@/types/assessment";
+import { PlayerProfileVector, ScoredDimension } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
 import { AppEnvironment } from "@/types/environment";
 import { EnrichedDiagnosisContext } from "@/types/enrichedDiagnosis";
@@ -633,28 +633,28 @@ const planDayKeywordSignals = [
 ] as const;
 
 const ASSESSMENT_DIMENSION_PLAN_HINTS: Record<
-  AssessmentDimension,
+  ScoredDimension,
   { primaryProblemTag: string; relatedProblemTags: string[]; skills: string[] }
 > = {
-  basics: {
-    primaryProblemTag: "cant-self-practice",
-    relatedProblemTags: ["late-contact", "plateau-no-progress", "general-improvement"],
-    skills: ["basics", "training", "forehand", "backhand"]
-  },
   forehand: {
     primaryProblemTag: "forehand-out",
     relatedProblemTags: ["topspin-low", "forehand-no-power", "balls-too-short"],
     skills: ["forehand", "topspin"]
   },
-  backhand: {
+  backhand_slice: {
     primaryProblemTag: "backhand-into-net",
-    relatedProblemTags: ["backhand-slice-floating", "late-contact", "incoming-slice-trouble"],
+    relatedProblemTags: ["backhand-slice-floating", "incoming-slice-trouble"],
     skills: ["backhand", "slice"]
   },
   serve: {
     primaryProblemTag: "second-serve-reliability",
     relatedProblemTags: ["serve-toss-consistency", "serve-accuracy"],
     skills: ["serve"]
+  },
+  return: {
+    primaryProblemTag: "return-under-pressure",
+    relatedProblemTags: ["late-contact", "balls-too-short"],
+    skills: ["return", "timing", "movement"]
   },
   net: {
     primaryProblemTag: "net-confidence",
@@ -666,92 +666,22 @@ const ASSESSMENT_DIMENSION_PLAN_HINTS: Record<
     relatedProblemTags: ["movement-slow", "balls-too-short"],
     skills: ["movement", "footwork"]
   },
-  matchplay: {
-    primaryProblemTag: "match-anxiety",
-    relatedProblemTags: ["plateau-no-progress", "cant-self-practice", "return-under-pressure"],
-    skills: ["matchplay", "mental", "return"]
-  },
   rally: {
     primaryProblemTag: "backhand-into-net",
     relatedProblemTags: ["forehand-out", "balls-too-short", "general-improvement"],
     skills: ["consistency", "forehand", "backhand"]
   },
-  awareness: {
-    primaryProblemTag: "match-anxiety",
-    relatedProblemTags: ["cant-self-practice", "plateau-no-progress"],
-    skills: ["matchplay", "mental", "training"]
-  },
-  fundamentals: {
-    primaryProblemTag: "cant-self-practice",
-    relatedProblemTags: ["late-contact", "general-improvement"],
-    skills: ["basics", "grip", "forehand", "backhand"]
-  },
-  receiving: {
-    primaryProblemTag: "late-contact",
-    relatedProblemTags: ["return-under-pressure", "movement-slow", "backhand-into-net"],
-    skills: ["return", "movement", "backhand", "footwork"]
-  },
-  consistency: {
-    primaryProblemTag: "cant-self-practice",
-    relatedProblemTags: ["plateau-no-progress", "balls-too-short", "general-improvement"],
-    skills: ["consistency", "training", "basics"]
-  },
-  both_sides: {
-    primaryProblemTag: "backhand-into-net",
-    relatedProblemTags: ["forehand-out", "general-improvement"],
-    skills: ["forehand", "backhand", "consistency"]
-  },
-  direction: {
-    primaryProblemTag: "forehand-out",
-    relatedProblemTags: ["balls-too-short", "general-improvement"],
-    skills: ["forehand", "backhand", "training"]
-  },
-  rhythm: {
-    primaryProblemTag: "late-contact",
-    relatedProblemTags: ["movement-slow", "incoming-slice-trouble"],
-    skills: ["movement", "footwork", "backhand"]
-  },
-  net_play: {
-    primaryProblemTag: "net-confidence",
-    relatedProblemTags: ["doubles-positioning"],
-    skills: ["net", "doubles"]
-  },
-  volley: {
-    primaryProblemTag: "volley-into-net",
-    relatedProblemTags: ["volley-floating", "net-confidence"],
-    skills: ["net", "volley", "doubles"]
-  },
   overhead: {
     primaryProblemTag: "overhead-timing",
-    relatedProblemTags: ["late-contact", "no-clear-technique"],
+    relatedProblemTags: ["late-contact", "general-improvement"],
     skills: ["overhead", "footwork", "serve"]
-  },
-  slice: {
-    primaryProblemTag: "backhand-slice-floating",
-    relatedProblemTags: ["incoming-slice-trouble", "backhand-into-net"],
-    skills: ["backhand", "slice"]
-  },
-  depth_variety: {
-    primaryProblemTag: "balls-too-short",
-    relatedProblemTags: ["topspin-low", "forehand-no-power"],
-    skills: ["forehand", "topspin", "training"]
-  },
-  forcing: {
-    primaryProblemTag: "forehand-no-power",
-    relatedProblemTags: ["forehand-out", "balls-too-short"],
-    skills: ["forehand", "topspin", "matchplay"]
   },
   tactics: {
     primaryProblemTag: "match-anxiety",
     relatedProblemTags: ["doubles-positioning", "cant-self-practice"],
     skills: ["matchplay", "mental", "doubles"]
   },
-  tactical_adaptability: {
-    primaryProblemTag: "doubles-positioning",
-    relatedProblemTags: ["match-anxiety", "cant-self-practice"],
-    skills: ["matchplay", "mental", "doubles", "training"]
-  },
-  pressure_performance: {
+  pressure: {
     primaryProblemTag: "pressure-tightness",
     relatedProblemTags: ["match-anxiety", "return-under-pressure", "second-serve-reliability"],
     skills: ["matchplay", "mental", "serve", "return"]
@@ -776,7 +706,7 @@ function normalizePlanLevel(level: PlanLevel): PlanTemplate["level"] {
     return "3.0";
   }
 
-  if (level === "4.5") {
+  if (level === "4.0+") {
     return "4.0";
   }
 
@@ -803,22 +733,22 @@ function uniqueStrings(values: string[]): string[] {
   return Array.from(new Set(values.filter(Boolean)));
 }
 
-function uniqueAssessmentDimensions(values: AssessmentDimension[]): AssessmentDimension[] {
+function uniqueAssessmentDimensions(values: ScoredDimension[]): ScoredDimension[] {
   return Array.from(new Set(
-    values.filter((value): value is AssessmentDimension => value in ASSESSMENT_DIMENSION_PLAN_HINTS)
+    values.filter((value): value is ScoredDimension => value in ASSESSMENT_DIMENSION_PLAN_HINTS)
   ));
 }
 
-function findAssessmentDimensionKey(label: string): AssessmentDimension | null {
-  return (Object.keys(ASSESSMENT_DIMENSION_PLAN_HINTS) as AssessmentDimension[])
+function findAssessmentDimensionKey(label: string): ScoredDimension | null {
+  return (Object.keys(ASSESSMENT_DIMENSION_PLAN_HINTS) as ScoredDimension[])
     .find((key) => getDimensionLabel(key, "zh") === label || getDimensionLabel(key, "en") === label) ?? null;
 }
 
-function getAssessmentDimensionsFromLabels(labels: string[]): AssessmentDimension[] {
+function getAssessmentDimensionsFromLabels(labels: string[]): ScoredDimension[] {
   return uniqueAssessmentDimensions(
     labels
       .map((label) => findAssessmentDimensionKey(label))
-      .filter((value): value is AssessmentDimension => Boolean(value))
+      .filter((value): value is ScoredDimension => Boolean(value))
   );
 }
 
@@ -938,7 +868,7 @@ function getLevelPreferenceScore(content: ContentItem, level: PlanLevel) {
       ? ["2.5", "3.0"]
       : level === "3.5"
         ? ["3.0", "3.5"]
-        : level === "4.5"
+        : level === "4.0+"
           ? ["4.0", "4.5"]
           : [normalizedLevel, level];
 
@@ -1245,46 +1175,47 @@ function fillCandidatePoolIfNeeded(
   return uniqueStrings([...combined, ...diversifiedGenericBackfill]).slice(0, MAX_PLAN_CANDIDATES);
 }
 
-function getAssessmentDimensionKeySet(result: AssessmentResult): AssessmentDimension[] {
-  const directKeys = result.dimensions.map((dimension) => dimension.key);
-  const labelKeys = getAssessmentDimensionsFromLabels(result.observationNeeded);
-
-  return uniqueStrings([...directKeys, ...labelKeys]) as AssessmentDimension[];
+function getAssessmentDimensionKeySet(profile: PlayerProfileVector): ScoredDimension[] {
+  return uniqueAssessmentDimensions([
+    ...profile.weakDimensions,
+    ...profile.strongDimensions,
+    ...Object.keys(profile.dimensionScores) as ScoredDimension[]
+  ]);
 }
 
-function getWeakestAssessmentDimension(result: AssessmentResult): DimensionSummary | null {
-  const scored = result.dimensions.filter((dimension) => dimension.answeredCount > 0);
-
-  if (scored.length === 0) {
-    return null;
-  }
-
-  return [...scored].sort((left, right) => left.average - right.average || left.label.localeCompare(right.label))[0] ?? null;
+function getWeakestAssessmentDimension(profile: PlayerProfileVector): ScoredDimension | null {
+  return profile.primaryWeakness
+    ?? profile.weakDimensions[0]
+    ?? Object.entries(profile.dimensionScores)
+      .sort((left, right) => left[1] - right[1])
+      .map(([dimension]) => dimension as ScoredDimension)[0]
+    ?? null;
 }
 
 function getAssessmentWeakDimensions(
-  result: AssessmentResult,
-  weakestKey: AssessmentDimension
-): AssessmentDimension[] {
-  const weaknessKeys = getAssessmentDimensionsFromLabels(result.weaknesses);
-
-  return uniqueAssessmentDimensions([weakestKey, ...weaknessKeys]).slice(0, 2);
+  profile: PlayerProfileVector,
+  weakestKey: ScoredDimension
+): ScoredDimension[] {
+  return uniqueAssessmentDimensions([
+    weakestKey,
+    ...(profile.secondaryWeakness ? [profile.secondaryWeakness] : [])
+  ]).slice(0, 2);
 }
 
 function getAssessmentObservationDimensions(
-  result: AssessmentResult,
-  weakDimensions: AssessmentDimension[]
-): AssessmentDimension[] {
+  profile: PlayerProfileVector,
+  weakDimensions: ScoredDimension[]
+): ScoredDimension[] {
   const weakDimensionSet = new Set(weakDimensions);
 
-  return getAssessmentDimensionsFromLabels(result.observationNeeded)
+  return profile.weakDimensions
     .filter((dimension) => !weakDimensionSet.has(dimension))
     .slice(0, 2);
 }
 
 function encodeAssessmentPlanRationale(
-  weakDimensions: AssessmentDimension[],
-  observationDimensions: AssessmentDimension[]
+  weakDimensions: ScoredDimension[],
+  observationDimensions: ScoredDimension[]
 ): string | undefined {
   const parts = [
     weakDimensions.length > 0 ? `focus:${weakDimensions.join(",")}` : null,
@@ -1294,7 +1225,7 @@ function encodeAssessmentPlanRationale(
   return parts.length > 0 ? parts.join(";") : undefined;
 }
 
-function joinAssessmentDimensionLabels(dimensions: AssessmentDimension[], locale: PlanLocale): string | null {
+function joinAssessmentDimensionLabels(dimensions: ScoredDimension[], locale: PlanLocale): string | null {
   if (dimensions.length === 0) {
     return null;
   }
@@ -1598,20 +1529,19 @@ export function buildDiagnosisPlanCandidateIds(input: {
   ).slice(0, input.maxCandidates ?? MAX_PLAN_CANDIDATES);
 }
 
-export function buildAssessmentPlanContext(result: AssessmentResult): {
+export function buildAssessmentPlanContext(profile: PlayerProfileVector): {
   problemTag: string;
   candidateIds: string[];
   planContext: PlanContext;
 } {
-  const weakestDimension = getWeakestAssessmentDimension(result);
-  const weakestKey = weakestDimension?.key ?? "basics";
+  const weakestKey = getWeakestAssessmentDimension(profile) ?? "rally";
   const primaryHint = ASSESSMENT_DIMENSION_PLAN_HINTS[weakestKey];
-  const allDimensionKeys = getAssessmentDimensionKeySet(result);
+  const allDimensionKeys = getAssessmentDimensionKeySet(profile);
   const secondaryKeys = allDimensionKeys.filter((key) => key !== weakestKey);
   const secondaryHints = secondaryKeys.map((key) => ASSESSMENT_DIMENSION_PLAN_HINTS[key]);
   const explicitContentIds = getRecommendedRuleContentIds(primaryHint.primaryProblemTag);
   const directExplicitContentIds = explicitContentIds.filter(isDirectPlanContentId);
-  const templateSeedContentIds = getTemplateSeedContentIds(primaryHint.primaryProblemTag, result.level);
+  const templateSeedContentIds = getTemplateSeedContentIds(primaryHint.primaryProblemTag, profile.levelBand);
   const directTemplateSeedContentIds = templateSeedContentIds.filter(isDirectPlanContentId);
   const explicitItems = directExplicitContentIds
     .map((id) => planContentById.get(id))
@@ -1646,7 +1576,7 @@ export function buildAssessmentPlanContext(result: AssessmentResult): {
       ...secondaryProblemTags
     ]),
     skillCategories: uniqueStrings([...seedSkills, ...secondarySkills]),
-    level: result.level,
+    level: profile.levelBand,
     preferredIds: uniqueStrings([...directExplicitContentIds, ...directTemplateSeedContentIds]),
     maxResults: MAX_PLAN_CANDIDATES
   }).map((item) => item.id);
@@ -1656,14 +1586,14 @@ export function buildAssessmentPlanContext(result: AssessmentResult): {
     ...directTemplateSeedContentIds,
     ...diversifiedRankedCandidateIds
   ]);
-  const weakDimensions = getAssessmentWeakDimensions(result, weakestKey);
-  const observationDimensions = getAssessmentObservationDimensions(result, weakDimensions);
+  const weakDimensions = getAssessmentWeakDimensions(profile, weakestKey);
+  const observationDimensions = getAssessmentObservationDimensions(profile, weakDimensions);
 
   return {
     problemTag: primaryHint.primaryProblemTag,
     candidateIds: fillCandidatePoolIfNeeded(
       orderedIds,
-      result.level,
+      profile.levelBand,
       seedSkills,
       seedProblemTags
     ),
@@ -2215,8 +2145,12 @@ function normalizePlanDraftSourceType(sourceType?: string | null): SavedPlanSour
 }
 
 function normalizePlanDraftLevel(level?: string | null): PlanLevel {
-  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.5") {
+  if (level === "2.5" || level === "3.0" || level === "3.5" || level === "4.0" || level === "4.0+") {
     return level;
+  }
+
+  if (level === "4.5") {
+    return "4.0+";
   }
 
   return "3.0";
@@ -2662,26 +2596,17 @@ export function getPlanTemplate(
   }), locale);
 }
 
-const DIMENSION_TO_PROBLEM_TAG: Record<string, string> = {
-  "正手": "forehand-out",
-  "反手": "backhand-into-net",
-  "发球": "second-serve-reliability",
-  "网前": "net-confidence",
-  "截击": "volley-into-net",
-  "高压球": "overhead-timing",
-  "切削": "backhand-slice-floating",
-  "移动": "late-contact",
-  "比赛意识": "match-anxiety",
-  "forehand": "forehand-out",
-  "backhand": "backhand-into-net",
-  "serve": "second-serve-reliability",
-  "net play": "net-confidence",
-  "volley": "volley-into-net",
-  "overhead": "overhead-timing",
-  "slice": "backhand-slice-floating",
-  "movement": "late-contact",
-  "match play": "match-anxiety",
-  "match awareness": "match-anxiety"
+const DIMENSION_TO_PROBLEM_TAG: Record<ScoredDimension, string> = {
+  forehand: "forehand-out",
+  backhand_slice: "backhand-into-net",
+  serve: "second-serve-reliability",
+  return: "return-under-pressure",
+  net: "net-confidence",
+  overhead: "overhead-timing",
+  movement: "late-contact",
+  pressure: "pressure-tightness",
+  tactics: "match-anxiety",
+  rally: "general-improvement"
 };
 
 export function getPlanFromDiagnosis(input: {
@@ -2724,32 +2649,34 @@ export function getPlanFromDiagnosis(input: {
 
 export function getPlanFromAssessment(input: {
   level?: PlanLevel;
-  weaknesses?: string[];
-  observationNeeded?: string[];
+  weakDimensions?: ScoredDimension[];
+  observationDimensions?: ScoredDimension[];
   locale?: PlanLocale;
 }): GeneratedPlan {
   const level = input.level ?? "3.5";
   const locale = input.locale ?? "zh";
   const mapped =
-    (input.weaknesses?.[0] && DIMENSION_TO_PROBLEM_TAG[input.weaknesses[0]]) ||
-    (input.observationNeeded?.[0] && DIMENSION_TO_PROBLEM_TAG[input.observationNeeded[0]]) ||
+    (input.weakDimensions?.[0] && DIMENSION_TO_PROBLEM_TAG[input.weakDimensions[0]]) ||
+    (input.observationDimensions?.[0] && DIMENSION_TO_PROBLEM_TAG[input.observationDimensions[0]]) ||
     "general-improvement";
 
   const base = getPlanTemplate(mapped, level, locale);
+  const weakLabels = input.weakDimensions?.map((dimension) => getDimensionLabel(dimension, locale)) ?? [];
+  const observationLabels = input.observationDimensions?.map((dimension) => getDimensionLabel(dimension, locale)) ?? [];
 
   if (locale === "en") {
     return {
       ...base,
-      summary: input.observationNeeded?.length
-        ? `The plan starts by shoring up ${input.weaknesses?.join(" and ") ?? "the weakest area"}, while keeping ${input.observationNeeded.join(" and ")} on the watch list.`
+      summary: observationLabels.length
+        ? `The plan starts by shoring up ${weakLabels.join(" and ") || "the weakest area"}, while keeping ${observationLabels.join(" and ")} on the watch list.`
         : "The plan starts from the weakest area surfaced by the assessment and builds a practical 7-step rhythm."
     };
   }
 
   return {
     ...base,
-    summary: input.observationNeeded?.length
-      ? `计划会先补强${input.weaknesses?.join("、") ?? "最弱短板"}，同时把 ${input.observationNeeded.join("、")} 作为待观察维度。`
+    summary: observationLabels.length
+      ? `计划会先补强${weakLabels.join("、") || "最弱短板"}，同时把 ${observationLabels.join("、")} 作为待观察维度。`
       : "计划会优先围绕评估中的相对短板，建立一套可执行的 7 步训练节奏。"
   };
 }

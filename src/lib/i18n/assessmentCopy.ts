@@ -1,212 +1,149 @@
 import { AssessmentQuestion } from "@/types/assessment";
 import { LocaleValue } from "@/lib/i18n/config";
 
-const questionCopy: Record<string, { en: string; labels?: Record<number, string> }> = {
-  gender: {
-    en: "What is your gender?",
-    labels: { 1: "Male", 2: "Female" }
-  },
-  years: {
-    en: "How long have you been playing tennis?"
-  },
-  coarse_rally: {
-    en: "How many shots can you usually hit in a rally during practice?",
+const questionCopy: Record<string, { en: string; labels?: Record<string, string>; descriptions?: Record<string, string> }> = {
+  rally_stability: {
+    en: "During a normal rally, what quality do you usually sustain?",
     labels: {
-      1: "Up to 3 shots",
-      2: "4-8 shots",
-      3: "9-15 shots",
-      4: "16+ shots, without many unforced errors"
+      rally_1: "I often miss within 3 balls",
+      rally_2: "I can hold 4–8 balls, but a faster, deeper, or wider ball breaks it down",
+      rally_3: "I can usually hold 9–15 balls, even when the pace rises a bit",
+      rally_4: "I can usually keep quality beyond 16 balls with relatively few unforced errors"
     }
   },
-  coarse_serve: {
-    en: "How would you describe your serve right now?",
+  forehand_weapon: {
+    en: "When you get a comfortable forehand, which one sounds closest?",
     labels: {
-      1: "Still learning, often miss",
-      2: "Can land it, little spin",
-      3: "Some spin and placement control",
-      4: "Attacking first serve, stable second serve"
+      forehand_1: "I mostly just guide it back without real pressure",
+      forehand_2: "I swing for it, but errors are still too high to trust in matches",
+      forehand_3: "I can usually produce a quality forehand and sometimes pin the opponent back",
+      forehand_4: "My forehand is already a real weapon that can change direction, accelerate, or create openings"
     }
   },
-  coarse_movement: {
-    en: "What usually happens with your movement and recovery?",
+  backhand_slice_reliability: {
+    en: "How would you describe your backhand and slice as a whole?",
     labels: {
-      1: "I get stuck and watch balls go by",
-      2: "I chase balls, but I am often late",
-      3: "I reach most balls and recover reasonably well",
-      4: "My first step and recovery are natural, and I rarely get wrong-footed"
+      backhand_slice_1: "My backhand is a clear liability and I rarely trust the slice",
+      backhand_slice_2: "I can hit the backhand, but pressure breaks it down and the slice floats or sits short",
+      backhand_slice_3: "I can usually hold the backhand, and the slice works as a neutral or defensive change-up",
+      backhand_slice_4: "I can hold the backhand in exchanges, and the slice can stay low or disrupt rhythm on purpose"
     }
   },
-  coarse_awareness: {
-    en: "What is usually in your head during rallies or matches?",
+  serve_quality: {
+    en: "In your service games, what does your serve feel like right now?",
     labels: {
-      1: "Just put the ball back",
-      2: "I think about direction but cannot execute it",
-      3: "I can move the opponent on purpose",
-      4: "I can build tactics around opponent weaknesses"
+      serve_1: "Both first-serve percentage and second-serve safety are shaky, and I donate points outright",
+      serve_2: "I can land some first serves, but the second serve is vulnerable",
+      serve_3: "My first serve has basic placement or rhythm, and my second serve usually starts the rally cleanly",
+      serve_4: "My first serve can create an edge, and my second serve is dependable"
     }
   },
-  coarse_pressure: {
-    en: "What usually happens when the score gets tight or practice gets pressured?",
+  return_quality: {
+    en: "Against an opponent's serve, which one sounds closest to your return?",
     labels: {
-      1: "I get tight and errors jump quickly",
-      2: "I become passive and my quality drops",
-      3: "I stay close to my normal level",
-      4: "I usually raise my level on important points"
+      return_1: "I often miss the contact point and only poke it back or miss outright",
+      return_2: "I can return ordinary serves, but pace or spin quickly exposes me",
+      return_3: "I can return most serves in and start the rally normally",
+      return_4: "I can return in and also use placement, tempo, or direction to pressure the server"
     }
   },
-  fine_a_grip: {
-    en: "How stable are your grip and preparation habits?",
+  movement_recovery: {
+    en: "How would you describe your movement, deceleration, and recovery?",
     labels: {
-      1: "Still unsure how to hold the racquet",
-      2: "I know it, but forget often",
-      3: "Mostly stable, sometimes messy",
-      4: "Feels natural already"
+      movement_1: "I am often a half-step late and get stuck after I hit",
+      movement_2: "I can chase a lot of balls, but I struggle to connect the next shot after stopping",
+      movement_3: "I reach most balls and usually recover back to a usable ready position",
+      movement_4: "My start, stop, and recovery are natural, and I can still keep reasonable shot quality on the run"
     }
   },
-  fine_a_fast: {
-    en: "What happens when the incoming ball gets a little faster?",
+  net_transition_volley: {
+    en: "How would you describe your transition forward, volleys, and half-volleys?",
     labels: {
-      1: "I often cannot react in time",
-      2: "I can touch it but lose direction",
-      3: "I usually get it back",
-      4: "I get it back with decent quality"
+      net_1: "I rarely come forward, and the first volley often breaks down immediately",
+      net_2: "I can handle simple high balls, but low balls, pace, or half-volleys get messy fast",
+      net_3: "I know when to come in, I usually clean up the first volley, and I can sometimes save a half-volley",
+      net_4: "I can use the net to pressure or finish points, and even low balls and half-volleys have baseline quality"
     }
   },
-  fine_a_issue: {
-    en: "What is your biggest issue right now?",
+  overhead_highball: {
+    en: "When you handle high balls and overheads, which one sounds closest?",
     labels: {
-      1: "My mechanics are not stable yet",
-      2: "I have the motion, but too many errors",
-      3: "My consistency comes and goes",
-      4: "I am stable and want more variety"
+      overhead_1: "I often misread the drop point and do not trust the overhead",
+      overhead_2: "I can reach the ball, but the footwork and contact point are still unstable",
+      overhead_3: "I handle most high balls and overheads cleanly and do not donate them easily",
+      overhead_4: "I can actively finish with the overhead and stay composed on deeper recovery lobs"
     }
   },
-  fine_a_movement: {
-    en: "How are your movement and recovery during points?",
+  pressure_matchplay: {
+    en: "When the score gets tight or a miss streak starts, what usually happens?",
     labels: {
-      1: "I often stay in one spot after I hit",
-      2: "I move, but rarely recover in time",
-      3: "I usually get back to a ready position",
-      4: "Recovery after each shot feels natural"
+      pressure_1: "I tighten up, the motion changes, and errors jump quickly",
+      pressure_2: "I get noticeably more passive and the quality drops a lot",
+      pressure_3: "I stay close to my normal level and do not completely fall apart on big points",
+      pressure_4: "I keep a clear head on big points and still trust my most reliable patterns"
     }
   },
-  fine_b_both_sides: {
-    en: "How big is the gap between your forehand and backhand?",
+  point_construction: {
+    en: "In rallies or matches, can you organize points with a clear idea?",
     labels: {
-      1: "Backhand is much weaker",
-      2: "I can hit it, but do not trust it",
-      3: "Not much gap, both are fairly stable",
-      4: "I can attack with both sides"
+      tactics_1: "I mostly just send the ball back and rarely think about the next shot",
+      tactics_2: "I know what I want to do, but the first shot often fails and the point gets messy",
+      tactics_3: "I have one or two usable patterns, like pressing one side before opening space",
+      tactics_4: "I can switch patterns based on the opponent, score, and incoming ball quality instead of just rallying mechanically"
     }
   },
-  fine_b_direction: {
-    en: "Can you control direction on purpose?",
+  play_style_profile: {
+    en: "Which playing style feels closest right now?",
     labels: {
-      1: "Not really",
-      2: "Only sometimes",
-      3: "Most of the time",
-      4: "I can hit crosscourt and down the line on purpose"
+      defensive: "Defensive",
+      baseline_attack: "Baseline attack",
+      all_court: "All-court",
+      net_pressure: "Net pressure"
+    },
+    descriptions: {
+      defensive: "Stabilize the rally first and wait for the opponent to miss",
+      baseline_attack: "Use baseline ball quality to push the opponent back",
+      all_court: "Look for chances to move forward and connect baseline play to net play",
+      net_pressure: "Prefer to press with the net, volleys, and doubles-style patterns"
     }
   },
-  fine_b_slice: {
-    en: "Which one sounds closest to your slice right now?",
+  play_context_modifier: {
+    en: "Which real playing context sounds closest right now?",
     labels: {
-      1: "I rarely trust it, or it floats right away",
-      2: "I can hit it, but the height and landing spot are not steady",
-      3: "I can use it as a neutral or change-up ball",
-      4: "I can keep it low and use it to change rhythm on purpose"
-    }
-  },
-  fine_b_serve_game: {
-    en: "How stable are your service games?",
-    labels: {
-      1: "I lose most of my service games",
-      2: "I hold sometimes, but not reliably",
-      3: "I usually steady the game with my serve",
-      4: "My serve games are a dependable weapon"
-    }
-  },
-  fine_c_volley: {
-    en: "Which one sounds closest to your volleying at the net?",
-    labels: {
-      1: "I rarely come forward, or the volley gets messy right away",
-      2: "I can handle simple volleys, but pressure exposes it quickly",
-      3: "I come forward on purpose and handle most volleys cleanly",
-      4: "My volley is a dependable scoring or pressure tool"
-    }
-  },
-  fine_c_depth: {
-    en: "How much depth and variation do you have?",
-    labels: {
-      1: "Balls often land near the service line",
-      2: "I can hit deep, but with little variation",
-      3: "I can control depth and change direction",
-      4: "I combine depth, angles, and spin"
-    }
-  },
-  fine_c_overhead: {
-    en: "Which one sounds closest to your overhead right now?",
-    labels: {
-      1: "I often mis-time it, or I do not trust it enough to finish",
-      2: "I can hit it, but the footwork and placement are still shaky",
-      3: "I handle most overheads cleanly and recover well after them",
-      4: "My overhead is a reliable finishing shot"
-    }
-  },
-  fine_c_adaptability: {
-    en: "Can you adjust your game plan for different opponents?",
-    labels: {
-      1: "I mostly play the same way regardless of the opponent",
-      2: "I notice what to change, but I cannot execute it in matches",
-      3: "I can make targeted adjustments during a match",
-      4: "I actively shape and switch tactics for different opponents"
-    }
-  },
-  fine_c_pressure: {
-    en: "How do you perform on big points?",
-    labels: {
-      1: "I get nervous and errors increase noticeably",
-      2: "I hang in but play passively, afraid to attack",
-      3: "I keep my normal level and sometimes hit a good shot",
-      4: "I can attack on big points and have a reliable weapon"
+      singles_standard: "Singles first",
+      singles_limited_mobility: "Singles with load control",
+      mixed_with_doubles: "Singles and doubles mix",
+      doubles_primary: "Doubles first"
+    },
+    descriptions: {
+      singles_standard: "Movement is not the main limiting factor",
+      singles_limited_mobility: "Fitness, movement, or recovery has to be managed carefully",
+      mixed_with_doubles: "Net play and partner coordination also matter",
+      doubles_primary: "You want more positioning, rotation, and net pressure content"
     }
   }
 };
 
-export function formatAssessmentYearsLabel(value: number, language: LocaleValue) {
-  if (language === "en") {
-    if (value === 0.5) {
-      return "6 months";
-    }
-    if (value >= 10) {
-      return "10+ years";
-    }
-    return `${value} year${value === 1 ? "" : "s"}`;
-  }
-
-  if (value === 0.5) {
-    return "半年";
-  }
-
-  if (value >= 10) {
-    return "10年+";
-  }
-
-  return `${value}年`;
-}
-
 export function getAssessmentQuestionText(question: AssessmentQuestion, language: LocaleValue) {
   if (language === "zh") {
-    return question.question;
+    return question.prompt;
   }
 
-  return questionCopy[question.id]?.en ?? question.question;
+  return questionCopy[question.id]?.en ?? question.prompt;
 }
 
-export function getAssessmentOptionLabel(questionId: string, value: number, fallback: string, language: LocaleValue) {
+export function getAssessmentOptionLabel(questionId: string, value: string, fallback: string, language: LocaleValue) {
   if (language === "zh") {
     return fallback;
   }
 
   return questionCopy[questionId]?.labels?.[value] ?? fallback;
+}
+
+export function getAssessmentOptionDescription(questionId: string, value: string, fallback: string | undefined, language: LocaleValue) {
+  if (language === "zh") {
+    return fallback;
+  }
+
+  return questionCopy[questionId]?.descriptions?.[value] ?? fallback;
 }

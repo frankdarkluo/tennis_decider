@@ -121,6 +121,7 @@ const LEVEL_PREFERENCE_MAP: Record<string, string[]> = {
   "3.0": ["2.5", "3.0"],
   "3.5": ["3.0", "3.5"],
   "4.0": ["3.5", "4.0", "4.5"],
+  "4.0+": ["4.0", "4.5"],
   "4.5": ["4.0", "4.5"]
 };
 
@@ -1212,17 +1213,19 @@ function getGenericFallbackContents(
 }
 
 function getWeakestAssessmentDimension(assessmentResult?: AssessmentResult | null) {
-  if (!assessmentResult) {
+  if (!assessmentResult?.profileVector) {
     return null;
   }
 
-  const scoredDimensions = assessmentResult.dimensions.filter((dimension) => dimension.answeredCount > 0);
+  const primaryWeakness = assessmentResult.profileVector.primaryWeakness
+    ?? assessmentResult.profileVector.weakDimensions[0]
+    ?? assessmentResult.dimensionSummaries[0]?.key;
 
-  if (scoredDimensions.length === 0) {
+  if (!primaryWeakness) {
     return null;
   }
 
-  return [...scoredDimensions].sort((a, b) => a.average - b.average)[0] ?? null;
+  return { key: primaryWeakness };
 }
 
 export function getContentsByIds(
