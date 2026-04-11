@@ -14,6 +14,7 @@ import type {
   EnrichedSubjectiveFeeling
 } from "@/types/enrichedDiagnosis";
 import type { PlanContext } from "@/types/plan";
+import { isProblemTag, type ProblemTag } from "@/types/problemTag";
 import type { ScenarioState } from "@/types/scenario";
 
 function normalizeMode(value: string | null | undefined): EnrichedDiagnosisMode {
@@ -233,7 +234,9 @@ export function normalizeDeepDiagnosisHandoff(
 export function normalizeEnrichedDiagnosisContext(
   context: Partial<EnrichedDiagnosisContext> | null | undefined
 ): EnrichedDiagnosisContext | null {
-  if (!context?.problemTag?.trim()) {
+  const normalizedProblemTag = context?.problemTag?.trim();
+
+  if (!normalizedProblemTag || !isProblemTag(normalizedProblemTag)) {
     return null;
   }
 
@@ -244,7 +247,7 @@ export function normalizeEnrichedDiagnosisContext(
 
   return {
     ...handoff,
-    problemTag: context.problemTag.trim()
+    problemTag: normalizedProblemTag
   };
 }
 
@@ -307,7 +310,7 @@ export function buildDeepDiagnosisHandoff(input: {
 
 export function buildEnrichedDiagnosisContext(input: {
   handoff: DeepDiagnosisHandoff;
-  problemTag: string;
+  problemTag: ProblemTag;
 }): EnrichedDiagnosisContext {
   const context = normalizeEnrichedDiagnosisContext({
     ...input.handoff,

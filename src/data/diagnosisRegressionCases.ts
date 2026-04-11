@@ -5,6 +5,10 @@ export type DiagnosisRegressionCaseRiskTag =
   | "moonball"
   | "doubles_net"
   | "mobility_age"
+  | "long_tail_net"
+  | "tactics"
+  | "pressure_pattern"
+  | "movement_context"
   | "support_only"
   | "general";
 
@@ -65,5 +69,47 @@ export const diagnosisRegressionCases: DiagnosisRegressionCase[] = [
     expectedProblemTag: "second-serve-reliability",
     allowedEvidenceLevels: ["medium", "high"],
     riskTag: "key_point"
+  },
+  {
+    id: "net-first-volley-dirty-contact",
+    input: "网前第一拍总处理不干净",
+    expectedProblemTag: "volley-contact-instability",
+    allowedEvidenceLevels: ["medium", "high"],
+    riskTag: "long_tail_net"
+  },
+  {
+    id: "half-volley-cannot-lift",
+    input: "半截击总是挑不起来",
+    expectedProblemTag: "half-volley-late-contact",
+    allowedEvidenceLevels: ["medium", "high"],
+    riskTag: "long_tail_net"
+  },
+  {
+    id: "doubles-poach-hesitation",
+    input: "双打网前不敢抢",
+    expectedProblemTag: "doubles-poach-hesitation",
+    allowedEvidenceLevels: ["medium", "high"],
+    riskTag: "doubles_net"
+  },
+  {
+    id: "point-construction-missing",
+    input: "不会组织分点",
+    expectedProblemTag: "passive-point-construction",
+    allowedEvidenceLevels: ["medium", "high"],
+    riskTag: "tactics"
+  },
+  {
+    id: "pressure-safe-short-collapse",
+    input: "比赛里关键分一紧张就只敢搓短球",
+    expectedProblemTag: "safe-short-collapse",
+    allowedEvidenceLevels: ["medium", "high"],
+    riskTag: "pressure_pattern"
+  },
+  {
+    id: "on-the-run-late-contact",
+    input: "跑动中正手总晚点",
+    expectedProblemTag: "on-the-run-late-contact",
+    allowedEvidenceLevels: ["medium", "high"],
+    riskTag: "movement_context"
   }
 ];

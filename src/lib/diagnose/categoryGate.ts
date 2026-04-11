@@ -15,11 +15,20 @@ const SERVE_PROBLEM_TAGS = [
 ] as const;
 
 const RETURN_PROBLEM_TAGS = ["return-under-pressure"] as const;
-const VOLLEY_PROBLEM_TAGS = ["volley-floating", "volley-into-net", "net-confidence"] as const;
-const OVERHEAD_PROBLEM_TAGS = ["overhead-timing", "cant-hit-lob"] as const;
-const SLICE_PROBLEM_TAGS = ["backhand-slice-floating", "incoming-slice-trouble"] as const;
-const CONTEXTUAL_PROBLEM_TAGS = ["match-anxiety", "pressure-tightness"] as const;
-const GROUNDSTROKE_SHARED_TAGS = ["late-contact", "rally-consistency", "balls-too-short", "moonball-trouble"] as const;
+const VOLLEY_PROBLEM_TAGS = ["volley-floating", "volley-into-net", "volley-contact-instability", "half-volley-late-contact", "net-confidence"] as const;
+const OVERHEAD_PROBLEM_TAGS = ["overhead-timing", "overhead-spacing", "cant-hit-lob"] as const;
+const SLICE_PROBLEM_TAGS = ["backhand-slice-floating", "slice-depth-control", "incoming-slice-trouble"] as const;
+const CONTEXTUAL_PROBLEM_TAGS = [
+  "match-anxiety",
+  "pressure-tightness",
+  "safe-short-collapse",
+  "key-point-indecision",
+  "passive-point-construction",
+  "doubles-positioning",
+  "doubles-poach-hesitation",
+  "doubles-formation-confusion"
+] as const;
+const GROUNDSTROKE_SHARED_TAGS = ["late-contact", "rally-consistency", "balls-too-short", "moonball-trouble", "on-the-run-late-contact", "recovery-delay"] as const;
 const FOREHAND_PROBLEM_TAGS = ["forehand-out", "forehand-no-power", "running-forehand", "topspin-low"] as const;
 const BACKHAND_PROBLEM_TAGS = ["backhand-into-net", "running-backhand", "backhand-slice-floating", "incoming-slice-trouble"] as const;
 

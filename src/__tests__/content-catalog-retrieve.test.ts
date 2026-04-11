@@ -136,6 +136,82 @@ describe("content catalog retrieval", () => {
     expect(recommended.map((item) => item.id)).toEqual(["teaching_third", "match_example_second"]);
   });
 
+  it("keeps half-volley and net-play recommendations out of generic backhand tutorial lanes", () => {
+    const halfVolleyTeaching = createContentItem({
+      id: "half_volley_teaching",
+      title: "Half-volley pickup and low-ball control",
+      summary: "Short-hop pickup lesson for late half-volley contact at net.",
+      reason: "Teaching lesson for half-volley timing and low-ball pickup.",
+      coachReason: "Covers emergency half-volley spacing and staying compact on the pickup.",
+      skills: ["net"],
+      problemTags: ["half-volley-late-contact", "volley-contact-instability"],
+      levels: ["3.5"],
+      url: "https://www.youtube.com/watch?v=halfVolleyTeaching"
+    });
+    const genericBackhand = createContentItem({
+      id: "generic_backhand",
+      title: "Backhand basics for club players",
+      summary: "General backhand lesson without net-play context.",
+      reason: "Generic backhand technique lesson.",
+      coachReason: "Useful backhand fundamentals, but not a half-volley lane.",
+      skills: ["backhand"],
+      problemTags: ["backhand-into-net"],
+      levels: ["3.5"],
+      url: "https://www.youtube.com/watch?v=genericBackhand"
+    });
+
+    const recommended = retrieveCatalogRecommendations({
+      source: "diagnosis",
+      contentPool: [genericBackhand, halfVolleyTeaching],
+      environment: "production",
+      skillCategories: ["net"],
+      problemTags: ["half-volley-late-contact"],
+      lexicalTerms: ["half-volley", "pickup", "short hop"],
+      level: "3.5",
+      maxResults: 1
+    });
+
+    expect(recommended.map((item) => item.id)).toEqual(["half_volley_teaching"]);
+  });
+
+  it("prefers tactical and match-handling content over generic technique when the diagnosis lane is strategic", () => {
+    const tacticalTeaching = createContentItem({
+      id: "tactical_teaching",
+      title: "Point construction patterns for club singles",
+      summary: "Pattern-building lesson for players who do not know how to organize points.",
+      reason: "Tactical teaching on building one simple point pattern before changing direction.",
+      coachReason: "Shows how to create pressure with setup shots instead of rallying passively.",
+      skills: ["matchplay", "doubles"],
+      problemTags: ["passive-point-construction", "poor-ball-selection"],
+      levels: ["3.5"],
+      url: "https://www.youtube.com/watch?v=tacticalTeaching"
+    });
+    const genericTechnique = createContentItem({
+      id: "generic_technique",
+      title: "Forehand mechanics refresh",
+      summary: "Generic forehand tune-up with no tactical lane.",
+      reason: "Technique refresh.",
+      coachReason: "Good for forehand mechanics, not for point construction.",
+      skills: ["forehand"],
+      problemTags: ["forehand-out"],
+      levels: ["3.5"],
+      url: "https://www.youtube.com/watch?v=genericTechnique"
+    });
+
+    const recommended = retrieveCatalogRecommendations({
+      source: "diagnosis",
+      contentPool: [genericTechnique, tacticalTeaching],
+      environment: "production",
+      skillCategories: ["matchplay", "doubles"],
+      problemTags: ["passive-point-construction"],
+      lexicalTerms: ["point construction", "pattern", "organize points"],
+      level: "3.5",
+      maxResults: 1
+    });
+
+    expect(recommended.map((item) => item.id)).toEqual(["tactical_teaching"]);
+  });
+
   it("enforces the recommendation cap and keeps search links out of direct recommendation lookup", () => {
     const results = retrieveCatalogContentsByIds({
       ids: ["search_curated", "direct_a", "direct_b", "direct_c"],

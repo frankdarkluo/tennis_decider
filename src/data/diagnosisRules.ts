@@ -37,9 +37,21 @@ const searchQueriesByRule = {
     bilibili: ["网球截击 下网 纠正", "网前截击 老下网 网球", "双打网前 截击 过网 训练"],
     youtube: ["tennis volley into net fix", "net clearance volley drill", "compact volley contact tennis"]
   },
+  rule_volley_contact_instability: {
+    bilibili: ["网前 第一拍 处理不干净 网球", "截击 处理不实 网球", "网前 第一拍 稳定性 网球"],
+    youtube: ["first volley not clean tennis", "volley contact stability tennis", "how to clean up the first volley"]
+  },
+  rule_half_volley_late_contact: {
+    bilibili: ["半截击 总挑不起来 网球", "半截击 低球处理 网球", "网球 半截击 前点击球"],
+    youtube: ["half volley late contact tennis", "half volley pickup drill tennis", "short hop half volley lesson"]
+  },
   rule_overhead_timing: {
     bilibili: ["网球高压 时机 纠正", "杀高球 总打不到点 网球", "高压球 步法 节奏 网球"],
     youtube: ["tennis overhead timing fix", "overhead footwork tennis", "smash timing drill"]
+  },
+  rule_overhead_spacing: {
+    bilibili: ["高压 总被顶到身后 网球", "高压 退位 不到位 网球", "网球 高压 站到球后"],
+    youtube: ["overhead spacing tennis", "getting behind the overhead tennis", "overhead positioning footwork tennis"]
   },
   rule_match_anxiety: {
     bilibili: ["网球比赛紧张 怎么办", "比赛心态 调整 网球", "比赛失误多 心态 网球"],
@@ -48,6 +60,14 @@ const searchQueriesByRule = {
   rule_pressure_tightness: {
     bilibili: ["网球 关键分 手紧 怎么办", "比赛压力下 动作变形 网球", "网球 关键球 执行 心态"],
     youtube: ["tennis tight under pressure", "tennis key point nerves", "how to stay loose tennis match"]
+  },
+  rule_safe_short_collapse: {
+    bilibili: ["关键分 只敢搓短球 网球", "压力下 只敢保守短球 网球", "关键分 短球 被动 网球"],
+    youtube: ["tennis safe but short under pressure", "playing too safe on big points tennis", "short ball collapse tennis"]
+  },
+  rule_key_point_indecision: {
+    bilibili: ["关键分 不知道怎么打 网球", "关键分 犹豫 决策 网球", "比赛 关键球 选择混乱 网球"],
+    youtube: ["tennis indecision on big points", "key point decision making tennis", "what to do on pressure points tennis"]
   },
   rule_forehand_no_power: {
     bilibili: ["正手没力量 发力链 网球", "盖奥网球 正手 发力", "正手转体发力 教学 网球"],
@@ -60,6 +80,14 @@ const searchQueriesByRule = {
   rule_running_backhand: {
     bilibili: ["跑动中反手 网球", "反手 跑动击球 训练", "移动中反手 击球点 网球"],
     youtube: ["running backhand tennis fix", "wide backhand recovery tennis", "tennis running backhand drill"]
+  },
+  rule_on_the_run_late_contact: {
+    bilibili: ["跑动中 晚点 网球", "跑动中 击球点 晚 网球", "移动中 来不及 击球点 网球"],
+    youtube: ["late contact on the run tennis", "running late contact tennis", "tennis movement contact timing"]
+  },
+  rule_recovery_delay: {
+    bilibili: ["击球后 回位慢 网球", "跑出去打一拍 回不来 网球", "网球 还原 步伐 慢"],
+    youtube: ["tennis recovery delay", "recover after wide ball tennis", "tennis reset steps after contact"]
   },
   rule_balls_too_short: {
     bilibili: ["网球打不深 怎么办", "击球深度 训练 网球", "网球 稳定性 打深 底线 深度"],
@@ -76,6 +104,10 @@ const searchQueriesByRule = {
   rule_slice_too_high: {
     bilibili: ["反手切削 飘起来 纠正", "切削拍面控制 网球", "切削送不低 教学 网球"],
     youtube: ["tennis slice backhand fix", "slice floats tennis correction", "backhand slice control drill"]
+  },
+  rule_slice_depth_control: {
+    bilibili: ["切削 太短 太飘 网球", "切削 深度 控制 网球", "反手切削 落点 太浅 网球"],
+    youtube: ["slice depth control tennis", "backhand slice too short tennis", "keep the slice deep tennis"]
   },
   rule_topspin_low: {
     bilibili: ["正手上旋 怎么打 网球", "盖奥网球 正手 上旋", "正手弧线不够 纠正 网球"],
@@ -104,6 +136,18 @@ const searchQueriesByRule = {
   rule_doubles_positioning: {
     bilibili: ["双打站位 基础 网球", "双打轮转 配合 教学", "一前一后 站位 网球"],
     youtube: ["tennis doubles positioning basics", "doubles formation beginner", "doubles net play position"]
+  },
+  rule_doubles_poach_hesitation: {
+    bilibili: ["双打 网前 不敢抢 网球", "双打 抢网 犹豫 网球", "双打 封网 时机 网球"],
+    youtube: ["doubles poach hesitation tennis", "when to poach in doubles tennis", "doubles net poach timing"]
+  },
+  rule_doubles_formation_confusion: {
+    bilibili: ["双打 发接发后 谁该上 谁该退 网球", "双打 阵型 混乱 网球", "双打 轮转 规则 网球"],
+    youtube: ["doubles formation confusion tennis", "who moves after the return in doubles", "doubles rotation rules tennis"]
+  },
+  rule_passive_point_construction: {
+    bilibili: ["不会组织分点 网球", "网球 分点 模式 组织", "网球 战术 太被动"],
+    youtube: ["point construction tennis basics", "how to build points tennis", "tennis pattern play for club players"]
   },
   rule_trouble_with_slice: {
     bilibili: ["是佩恩呀 下旋 来球 网球", "低球处理 教学 网球", "对方切球 怎么接 网球"],
@@ -325,6 +369,40 @@ export const diagnosisRules: DiagnosisRule[] = [
     environment: ["testing", "production"]
   },
   {
+    id: "rule_volley_contact_instability",
+    keywords: ["网前", "第一拍", "处理不干净", "volley", "clean"],
+    synonyms: ["网前第一拍总处理不干净", "第一拍截击总处理不实", "第一拍总打不扎实", "first volley never feels clean", "my first volley contact is messy", "I cannot handle the first net ball cleanly"],
+    category: ["net", "control"],
+    problemTag: "volley-contact-instability",
+    causes: ["第一拍触球点摇摆，拍头没有先稳在身体前面", "想直接做结果，第一拍却没有先挡稳", "网前第一拍准备偏慢，来球一顶就散"],
+    causes_en: ["The first-volley contact point wobbles because the racquet head never stabilizes in front", "Trying to do too much before the first net ball is blocked cleanly", "Preparation is late on the first net ball, so contact falls apart under pace"],
+    fixes: ["第一拍先只求拍面稳定和身体前触球", "先把第一拍挡稳送深，再谈角度和压迫", "把第一拍准备做得更早，不要等球顶到身上"],
+    fixes_en: ["On the first volley, prioritize a stable face and out-front contact", "Block the first ball cleanly and deep before chasing angle or pressure", "Prepare earlier so the first net ball does not jam you"],
+    drills: ["第一拍截击固定拍面 15 球", "第一拍挡深中路 12 组", "上网后第一拍只记是否打实 10 组"],
+    drills_en: ["15 first-volley reps with a fixed racquet face", "12 first-volley blocks deep through the middle", "10 approach-and-first-volley sets tracking only clean contact"],
+    recommendedContentIds: ["content_cn_b_03", "content_rb_01", "content_cn_b_01"],
+    searchQueries: searchQueriesByRule.rule_volley_contact_instability,
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
+  },
+  {
+    id: "rule_half_volley_late_contact",
+    keywords: ["半截击", "half-volley", "short hop"],
+    synonyms: ["半截击总是挑不起来", "半截击总晚一点", "低球半截击总处理不好", "short hop pickup keeps failing", "my half volley is always late", "I cannot lift the half volley cleanly"],
+    category: ["net", "timing"],
+    problemTag: "half-volley-late-contact",
+    causes: ["半截击时脚没有先低下来，触球点总落在身体后面", "看到低球才临时补救，拍面和手腕都来不及稳住", "把半截击当成普通截击打，低球捡不起来"],
+    causes_en: ["The body stays too high, so half-volley contact falls behind the body", "The pickup becomes a late rescue and the face never stabilizes", "Treating the half volley like a normal volley instead of a low-ball pickup"],
+    fixes: ["看到低球先降重心，把触球点放到身体前侧", "半截击先只求把球捡起来送深，不急着压", "动作更短更贴身，先稳住拍面再送球"],
+    fixes_en: ["Lower the body earlier and move contact in front on low balls", "On the half volley, just lift and send the ball deep before pressing", "Keep the motion shorter and tighter, then guide the ball through"],
+    drills: ["半截击低球捡球 15 球", "半截击前点击球 12 组", "半截击后回位 10 组"],
+    drills_en: ["15 low-ball half-volley pickups", "12 out-front half-volley sets", "10 half-volley plus recovery reps"],
+    recommendedContentIds: ["content_cn_b_03", "content_rb_01"],
+    searchQueries: searchQueriesByRule.rule_half_volley_late_contact,
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
+  },
+  {
     id: "rule_overhead_timing",
     keywords: ["高压", "overhead", "timing"],
     synonyms: ["高压总打不到点", "高压球对不准球", "高压老打框", "高压球下来总找不准点", "杀高球总慢半拍", "高球来了不知道怎么调步", "my overhead timing is off", "I keep missing overheads", "I mistime my overheads"],
@@ -348,6 +426,23 @@ export const diagnosisRules: DiagnosisRule[] = [
     environment: ["testing", "production"],
     searchQueries: searchQueriesByRule.rule_overhead_timing,
     fallbackLevel: ["3.0", "3.5", "4.0"]
+  },
+  {
+    id: "rule_overhead_spacing",
+    keywords: ["身后", "退位", "站不到球后", "behind", "spacing"],
+    synonyms: ["高压总被顶到身后", "高压总退不到位", "高压老站不到球后面", "my overhead gets pushed behind me", "I never get behind the overhead", "overhead spacing keeps breaking down"],
+    category: ["net", "footwork"],
+    problemTag: "overhead-spacing",
+    causes: ["第一步退位太慢，没有把身体先转过去", "总想原地打高压，留不出站到球后的空间", "后退和调步顺序混乱，击球点只好掉到身后"],
+    causes_en: ["The first retreat step is too slow and the body never turns early enough", "Trying to hit the overhead from a flat-footed position instead of creating space", "Retreat and adjustment steps are out of order, so contact drops behind you"],
+    fixes: ["先转身再退位，先给自己站到球后的空间", "高压前两步只做找位，不急着出拍", "宁可站稳后打一颗高成功率球，也别原地硬抡"],
+    fixes_en: ["Turn first, then retreat so you can actually get behind the ball", "Use the first two steps only to create space before you swing", "Prefer a stable, high-percentage overhead over a rushed flat-footed hit"],
+    drills: ["高压转身退位 15 组", "站到球后再击球 12 组", "高压退位后恢复 10 组"],
+    drills_en: ["15 overhead turn-and-retreat sets", "12 reps getting behind the ball before contact", "10 overhead retreat-plus-recovery sets"],
+    recommendedContentIds: [],
+    searchQueries: searchQueriesByRule.rule_overhead_spacing,
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
   },
   {
     id: "rule_match_anxiety",
@@ -380,6 +475,40 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["10 key-point cue rehearsals", "10 minutes starting every game at 30-30", "Take one reset breath before every point"],
     recommendedContentIds: ["content_cn_f_01", "content_cn_e_02", "content_rb_03"],
     searchQueries: searchQueriesByRule.rule_pressure_tightness,
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
+  },
+  {
+    id: "rule_safe_short_collapse",
+    keywords: ["关键分", "短球", "保守", "short"],
+    synonyms: ["比赛里关键分一紧张就只敢搓短球", "关键分只敢把球搓短", "一到关键分就只敢保守回短球", "I go too safe and short on big points", "under pressure I only bunt the ball short", "key points turn into safe short balls"],
+    category: ["matchplay", "mental"],
+    problemTag: "safe-short-collapse",
+    causes: ["压力一来就只想别失误，球路立刻缩短", "没有保留一条安全但不短的执行线路", "紧张时动作不敢完整送出去，只剩保守小球"],
+    causes_en: ["Under pressure, the only goal becomes not missing and the ball immediately gets shorter", "There is no trusted safe-but-deep pattern to fall back on", "Tension cuts off the full motion, leaving only a short safe ball"],
+    fixes: ["关键分先保留一条安全但能送深的线路", "把目标从'别失误'改成'完整送到目标深区'", "压力练习里先只记录是不是又把球回短了"],
+    fixes_en: ["On big points, keep one safe pattern that still drives the ball deep", "Change the goal from 'do not miss' to 'send it cleanly into the deep target'", "In pressure reps, track whether you collapse back into the short ball"],
+    drills: ["关键分送深路线 12 组", "比分压力下只练高容错深球 10 分钟", "短球塌陷复盘 8 分钟"],
+    drills_en: ["12 safe-but-deep key-point pattern sets", "10 minutes of pressure scoring using only deep high-margin balls", "8 minutes reviewing the short-ball collapse"],
+    recommendedContentIds: ["content_cn_f_01", "content_rb_03", "content_cn_e_02"],
+    searchQueries: searchQueriesByRule.rule_safe_short_collapse,
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
+  },
+  {
+    id: "rule_key_point_indecision",
+    keywords: ["关键分", "犹豫", "不知道怎么打", "indecision"],
+    synonyms: ["关键分总不知道这拍该保守还是该压", "关键分不知道该怎么打", "关键球总在犹豫", "I cannot decide what to do on big points", "I get indecisive on key points", "key point decision keeps changing at the last second"],
+    category: ["matchplay", "mental"],
+    problemTag: "key-point-indecision",
+    causes: ["关键分前没有先选好一个默认模式，临到出手才改主意", "压力一来，风险判断和出手选择来回摇摆", "没有把最可信的一条比赛线路练成默认选择"],
+    causes_en: ["There is no default pattern selected before the point starts, so the decision changes late", "Pressure makes risk judgment swing back and forth", "The most trusted match pattern has not been trained into an automatic default"],
+    fixes: ["关键分前先决定一条默认线路，不在出手前临时改", "只保留一个保守版和一个进攻版的明确边界", "训练里把关键分默认模式重复到不用再想"],
+    fixes_en: ["Choose the default pattern before the point begins and do not change it late", "Keep one clear conservative option and one clear pressure option", "Repeat the key-point default pattern until you stop negotiating with yourself"],
+    drills: ["关键分默认模式口述 10 次", "关键分两条选择边界练习 12 组", "30-30 起打只执行预设方案 10 分钟"],
+    drills_en: ["10 verbal reps of your key-point default pattern", "12 sets rehearsing the line between the safe and pressure option", "10 minutes starting at 30-30 using only the pre-set choice"],
+    recommendedContentIds: ["content_rb_03", "content_cn_f_01", "content_cn_e_02"],
+    searchQueries: searchQueriesByRule.rule_key_point_indecision,
     fallbackLevel: ["3.0", "3.5", "4.0"],
     environment: ["testing", "production"]
   },
@@ -435,6 +564,40 @@ export const diagnosisRules: DiagnosisRule[] = [
     environment: ["testing", "production"]
   },
   {
+    id: "rule_on_the_run_late_contact",
+    keywords: ["跑动", "晚点", "running", "late"],
+    synonyms: ["跑动中正手总晚点", "跑动中反手总晚点", "移动中总是晚点击球", "my contact is always late on the run", "I keep contacting late while moving", "on-the-run contact is always late"],
+    category: ["movement", "timing"],
+    problemTag: "on-the-run-late-contact",
+    causes: ["跑动中准备动作启动太晚，最后只剩补救击球", "脚先没有到位，触球点自然总落在身后", "移动节奏和挥拍节奏没有接上，一急就晚点"],
+    causes_en: ["Preparation starts too late while moving, so the hit becomes a rescue", "The feet never arrive first, so contact keeps falling behind", "Movement rhythm and swing rhythm never connect, so late contact shows up under pace"],
+    fixes: ["跑动中先只求更早准备和更前触球，不急着打穿", "最后两步先让身体稳住，再把拍子送出去", "先接受更安全的弧线，把晚点问题修掉再加压"],
+    fixes_en: ["While moving, prioritize earlier prep and farther-out contact before pace", "Use the last two steps to stabilize before sending the racquet out", "Accept a safer arc first and fix late contact before you press"],
+    drills: ["跑动中早准备 12 组", "跑动前点击球 15 球", "跑动击球后回中 10 组"],
+    drills_en: ["12 on-the-run early-preparation sets", "15 out-front contacts while moving", "10 move-hit-recover-to-middle sets"],
+    recommendedContentIds: ["content_fr_02", "content_cn_a_03", "content_cn_c_02"],
+    searchQueries: searchQueriesByRule.rule_on_the_run_late_contact,
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
+  },
+  {
+    id: "rule_recovery_delay",
+    keywords: ["回位慢", "回不来", "recover", "recovery"],
+    synonyms: ["跑出去打一拍后总回不来", "击球后回位总慢", "打完一拍下一拍总站不回去", "I cannot recover after the wide ball", "my recovery is always late after contact", "I hit on the run and never get back in"],
+    category: ["movement", "recovery"],
+    problemTag: "recovery-delay",
+    causes: ["击球后就停在原地，恢复步没有被当成动作的一部分", "跑动击球时只顾够到球，没有提前想下一步还原", "回位路径太大，恢复效率过低"],
+    causes_en: ["Recovery is not treated as part of the shot, so you stop after contact", "On the run, all attention goes to reaching the ball and none to the next recovery step", "Recovery routes are too large and inefficient"],
+    fixes: ["把恢复步写进每次跑动击球后流程", "击球前就知道自己下一步往哪里还原", "先缩短还原路线，别每拍都跑大圈"],
+    fixes_en: ["Make the recovery step part of every run-hit sequence", "Know where you are recovering before you even make contact", "Shorten the recovery route instead of looping back in a big arc"],
+    drills: ["跑动击球后回位 12 组", "宽球回中路线 10 组", "打完第一拍必须完成还原 8 分钟"],
+    drills_en: ["12 run-hit-recover sets", "10 wide-ball return-to-middle route sets", "8 minutes where every rep includes the full recovery"],
+    recommendedContentIds: ["content_fr_02", "content_cn_c_02", "content_cn_a_03"],
+    searchQueries: searchQueriesByRule.rule_recovery_delay,
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
+  },
+  {
     id: "rule_balls_too_short",
     keywords: ["打得太浅", "球太浅", "too short", "not deep"],
     synonyms: ["打不深", "球总落在发球线附近", "对抗里总是短球", "老给短球", "总压不深", "球都落中场", "my shots keep landing short", "I cannot hit deep", "everything lands around the service line"],
@@ -482,6 +645,23 @@ export const diagnosisRules: DiagnosisRule[] = [
     drills_en: ["20 no-ball slice shadow swings", "20 medium-pace slices aimed deep", "Slice target practice — land within 2 metres of the baseline"],
     recommendedContentIds: ["content_common_03", "content_zlx_03", "content_it_01"],
     searchQueries: searchQueriesByRule.rule_slice_too_high,
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
+  },
+  {
+    id: "rule_slice_depth_control",
+    keywords: ["切削", "太短", "深度", "slice", "depth"],
+    synonyms: ["切削总是飘而且很短", "切削总落在中场", "切削没有深度", "my slice floats and lands short", "my slice stays too short", "I cannot keep the slice deep"],
+    category: ["backhand", "slice"],
+    problemTag: "slice-depth-control",
+    causes: ["切削拍面和送拍方向不稳定，球只浮不送", "击球点和身体距离不对，切出去没有延伸", "只想着把球切过去，没有明确深度目标"],
+    causes_en: ["The face and follow-through are unstable, so the slice floats without penetration", "Contact distance is wrong and there is no forward extension", "The goal is just to get the ball back instead of sending it deep"],
+    fixes: ["先让切削送拍更向前，不只往下砍", "把落点目标放到底线前 1 到 2 米", "先让切削既低又深，再谈变化"],
+    fixes_en: ["Drive the slice more forward instead of just chopping down", "Set the landing target 1 to 2 metres inside the baseline", "Make the slice low and deep before adding variety"],
+    drills: ["切削送深 15 球", "切削底线前目标区 12 组", "切削对拉只记深度 8 分钟"],
+    drills_en: ["15 deep-driving slices", "12 slice target sets 1 to 2 metres inside the baseline", "8 minutes of slice exchanges tracking depth only"],
+    recommendedContentIds: ["content_common_03", "content_common_02"],
+    searchQueries: searchQueriesByRule.rule_slice_depth_control,
     fallbackLevel: ["3.0", "3.5", "4.0"],
     environment: ["testing", "production"]
   },
@@ -599,6 +779,57 @@ export const diagnosisRules: DiagnosisRule[] = [
     recommendedContentIds: ["content_cn_b_02", "content_rb_01", "content_rb_03"],
     searchQueries: searchQueriesByRule.rule_doubles_positioning,
     fallbackLevel: ["3.0", "3.5"],
+    environment: ["testing", "production"]
+  },
+  {
+    id: "rule_doubles_poach_hesitation",
+    keywords: ["双打", "不敢抢", "poach", "hesitation"],
+    synonyms: ["双打网前不敢抢", "双打网前总犹豫要不要抢", "双打封网时机总慢半拍", "I never poach in doubles", "I hesitate to poach at the net", "doubles poach timing feels late"],
+    category: ["doubles", "net"],
+    problemTag: "doubles-poach-hesitation",
+    causes: ["没有把什么时候该抢、什么时候该守想清楚", "双打网前第一步不敢往前压，封网时机总慢", "和搭档没有默认的压网规则，临场才开始猜"],
+    causes_en: ["There is no clear read for when to poach versus hold", "The first step forward at the net is hesitant, so the poach timing stays late", "There are no default pressure rules with the partner, so decisions happen too late"],
+    fixes: ["先设一条最简单的抢网触发条件", "网前第一步先敢往前压半步，不要等球已经过去", "和搭档先约定谁在什么球上默认压"],
+    fixes_en: ["Set one simple trigger for when you poach", "Commit the first net step forward instead of waiting until the ball has passed", "Agree with your partner on who presses on which ball first"],
+    drills: ["双打抢网触发练习 12 组", "网前第一步压网 15 次", "双打封网判断 10 分钟"],
+    drills_en: ["12 doubles poach-trigger sets", "15 net-first-step pressure reps", "10 minutes of doubles poach reads"],
+    recommendedContentIds: ["content_rb_01", "content_cn_b_01", "content_rb_03"],
+    searchQueries: searchQueriesByRule.rule_doubles_poach_hesitation,
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
+  },
+  {
+    id: "rule_doubles_formation_confusion",
+    keywords: ["双打", "谁该上", "谁该退", "formation", "rotation"],
+    synonyms: ["双打发接发后总不知道谁该上谁该退", "双打阵型总乱", "双打轮转规则总断", "we do not know who goes after the return in doubles", "our doubles formation keeps breaking down", "doubles rotation rules feel unclear"],
+    category: ["doubles", "tactics"],
+    problemTag: "doubles-formation-confusion",
+    causes: ["发接发后的默认阵型没有先约定好", "双打里谁补中路、谁守边线不清楚", "打完第一拍后没有按固定规则轮转"],
+    causes_en: ["The default formation after serve or return has not been agreed on", "It is unclear who covers the middle and who protects the lane", "After the first ball, the pair does not rotate by any stable rule"],
+    fixes: ["先固定一条最基础的发接发后阵型规则", "把谁补中路、谁守边线说清楚", "练习里先只盯发接发后前两拍站位轮转"],
+    fixes_en: ["Fix one basic formation rule after serve and return first", "Make it explicit who covers the middle and who protects the line", "In practice, track only the first two doubles rotations after the serve-return exchange"],
+    drills: ["双打发接发后阵型走位 10 组", "双打中路与边线分工练习 12 组", "双打前两拍轮转练习 8 分钟"],
+    drills_en: ["10 doubles serve-return formation walks", "12 doubles middle-versus-line role sets", "8 minutes of first-two-ball doubles rotations"],
+    recommendedContentIds: ["content_cn_b_02", "content_rb_01", "content_rb_03"],
+    searchQueries: searchQueriesByRule.rule_doubles_formation_confusion,
+    fallbackLevel: ["3.0", "3.5", "4.0"],
+    environment: ["testing", "production"]
+  },
+  {
+    id: "rule_passive_point_construction",
+    keywords: ["分点", "组织", "太被动", "pattern", "construction"],
+    synonyms: ["不会组织分点", "只会被动对拉", "不知道怎么把下一拍做出来", "我没有分点模式", "I do not know how to build points", "I rally passively with no pattern", "I have no point construction plan"],
+    category: ["matchplay", "tactics"],
+    problemTag: "passive-point-construction",
+    causes: ["回合里没有先建立一条最基础的推进顺序", "每拍都像重新开始，缺少设定下一拍的意识", "一上来就想直接得分，反而没有把分点做出来"],
+    causes_en: ["There is no basic point-building sequence inside the rally", "Each shot starts from zero instead of setting up the next ball", "Trying to finish the point too early means no construction ever gets built"],
+    fixes: ["先固定一条最简单的三拍结构：稳住、推进、再变化", "每拍都问自己这一拍是为了把下一拍做出来还是直接结束", "先让分点有顺序，不要急着每拍都求制胜"],
+    fixes_en: ["Fix one simple three-ball structure first: stabilize, build, then change", "On every shot, ask whether this ball is building the next one or finishing the point", "Put the rally in order before trying to win every ball outright"],
+    drills: ["三拍分点口述 10 次", "稳住后推进的三拍模式 12 组", "只按预设模式打分点 10 分钟"],
+    drills_en: ["10 verbal reps of a three-ball point pattern", "12 sets of stabilize-then-build three-ball patterns", "10 minutes of point play using only the pre-set construction pattern"],
+    recommendedContentIds: ["content_rb_03", "content_cn_e_02"],
+    searchQueries: searchQueriesByRule.rule_passive_point_construction,
+    fallbackLevel: ["3.0", "3.5", "4.0"],
     environment: ["testing", "production"]
   },
   {

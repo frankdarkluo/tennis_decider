@@ -161,7 +161,7 @@ function createDiagnosisResult(input: string) {
     refusalReasonCodes: [],
     missingEvidenceSlots: [],
     primaryNextStep: "先把二发节奏稳定住",
-    problemTag: "second-serve-net",
+    problemTag: "second-serve-reliability",
     category: ["serve"],
     title: "先修正二发稳定性",
     summary: "关键分里先保住二发弧线和节奏。",

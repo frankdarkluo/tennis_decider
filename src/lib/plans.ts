@@ -14,11 +14,20 @@ import { filterByEnvironment, resolveAppEnvironment } from "@/lib/environment";
 import { withDeterministicDayContract } from "@/lib/plan-core/baseSkeleton";
 import { assemblePlanFromIntent } from "@/lib/plan-core/assemble";
 import { buildPlanIntent } from "@/lib/plan-core/intent";
+import {
+  ASSESSMENT_DIMENSION_PLAN_HINTS,
+  DIMENSION_TO_PROBLEM_TAG,
+  getNormalizedPlanContentProblemTags,
+  getPlanLookupProblemTags,
+  normalizePlanProblemTag,
+  normalizePlanProblemTags
+} from "@/lib/plan-core/problemTagSupport";
 import { applySceneOverlay } from "@/lib/plan-core/sceneOverlay";
 import { PlayerProfileVector, ScoredDimension } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
 import { AppEnvironment } from "@/types/environment";
 import { EnrichedDiagnosisContext } from "@/types/enrichedDiagnosis";
+import { ProblemTag } from "@/types/problemTag";
 import {
   DayPlan,
   DayPlanBlock,
@@ -41,7 +50,7 @@ type PlanPoolSource = "curated" | "expanded";
 
 type PlanDiagnosisContextHint = {
   skills: string[];
-  problemTags: string[];
+  problemTags: ProblemTag[];
   contentIds: string[];
   terms: string[];
 };
@@ -55,55 +64,33 @@ type RankedPlanContentCandidate = {
 const MAX_PLAN_CANDIDATES = 10;
 const MIN_PLAN_CANDIDATES = 7;
 
-const PLAN_TAG_ALIASES: Record<string, string> = {
-  "second-serve-confidence": "second-serve-reliability",
-  "serve-toss-inconsistent": "serve-toss-consistency",
-  "slice-too-high": "backhand-slice-floating",
-  "trouble-with-slice": "incoming-slice-trouble",
-};
-
-const PLAN_COMPATIBILITY_FALLBACKS: Record<string, string> = {
-  "pressure-tightness": "match-anxiety",
-  "stamina-drop": "movement-slow"
-};
-
-const CONTENT_PROBLEM_TAG_ALIASES: Record<string, string[]> = {
-  "second-serve-confidence": ["second-serve-reliability"],
-  "serve-toss-inconsistent": ["serve-toss-consistency"],
-  "slice-too-high": ["backhand-slice-floating"],
-  "trouble-with-slice": ["incoming-slice-trouble"],
-  "slow-preparation": ["late-contact"],
-  "volley-errors": ["volley-floating", "volley-into-net"],
-  "doubles-net-fear": ["net-confidence"]
-};
-
 const PLAN_DAY_REVIEW_TERMS = ["review", "录像", "复盘", "休息", "track"];
 
 const PLAN_CONTEXT_SIGNAL_PATTERNS: Array<{
   patterns: RegExp[];
   skills: string[];
-  problemTags: string[];
+  problemTags: ProblemTag[];
   contentIds: string[];
   terms: string[];
 }> = [
   {
     patterns: [/(?:关键分|关键球|一紧张|紧张|手紧|pressure point|big point|under pressure|nerves?)/i],
     skills: ["mental", "matchplay"],
-    problemTags: ["pressure-tightness", "match-anxiety"],
+    problemTags: ["pressure-tightness", "match-anxiety", "safe-short-collapse", "key-point-indecision"],
     contentIds: ["content_rb_03", "content_rb_02", "content_cn_f_02"],
     terms: ["关键分", "紧张", "手紧", "pressure", "nerves", "key point"]
   },
   {
     patterns: [/(?:对手在网前|对手一上网|网前压迫|抢网|封网|opponent at net|net pressure|poach|poaching)/i],
     skills: ["net", "matchplay", "doubles"],
-    problemTags: ["net-confidence", "doubles-positioning", "volley-floating", "volley-into-net"],
+    problemTags: ["net-confidence", "volley-contact-instability", "half-volley-late-contact", "doubles-positioning", "doubles-poach-hesitation", "volley-floating", "volley-into-net"],
     contentIds: ["content_rb_01", "content_rb_03", "content_rb_02"],
     terms: ["网前", "上网", "截击", "opponent at net", "poach", "net pressure"]
   },
   {
     patterns: [/(?:左右移动|跑动中|追球|宽球|move wide|running|on the stretch)/i],
     skills: ["movement", "footwork"],
-    problemTags: ["movement-slow", "late-contact", "running-forehand", "running-backhand"],
+    problemTags: ["movement-slow", "late-contact", "running-forehand", "running-backhand", "on-the-run-late-contact", "recovery-delay"],
     contentIds: ["content_cn_c_02", "content_fr_02"],
     terms: ["左右移动", "跑动", "追球", "move wide", "running"]
   },
@@ -117,9 +104,16 @@ const PLAN_CONTEXT_SIGNAL_PATTERNS: Array<{
   {
     patterns: [/(?:下旋来球|对方切过来|against slice|incoming slice|low skidding balls)/i],
     skills: ["backhand", "slice"],
-    problemTags: ["incoming-slice-trouble", "backhand-slice-floating"],
+    problemTags: ["incoming-slice-trouble", "backhand-slice-floating", "slice-depth-control"],
     contentIds: ["content_fr_01", "content_fr_02"],
     terms: ["下旋", "切球", "against slice", "incoming slice", "low skidding"]
+  },
+  {
+    patterns: [/(?:组织分点|分点模式|不会组织分点|pattern play|point construction|ball selection)/i],
+    skills: ["matchplay", "tactics"],
+    problemTags: ["passive-point-construction", "key-point-indecision"],
+    contentIds: ["content_rb_03", "content_cn_e_02"],
+    terms: ["组织分点", "分点模式", "point construction", "pattern play", "ball selection"]
   },
   {
     patterns: [/(?:年纪大了|上年纪|跑不太动|跑不动|跟不上|cannot move well anymore|mobility)/i],
@@ -652,62 +646,6 @@ const planDayKeywordSignals = [
   }
 ] as const;
 
-const ASSESSMENT_DIMENSION_PLAN_HINTS: Record<
-  ScoredDimension,
-  { primaryProblemTag: string; relatedProblemTags: string[]; skills: string[] }
-> = {
-  forehand: {
-    primaryProblemTag: "forehand-out",
-    relatedProblemTags: ["topspin-low", "forehand-no-power", "balls-too-short"],
-    skills: ["forehand", "topspin"]
-  },
-  backhand_slice: {
-    primaryProblemTag: "backhand-into-net",
-    relatedProblemTags: ["backhand-slice-floating", "incoming-slice-trouble"],
-    skills: ["backhand", "slice"]
-  },
-  serve: {
-    primaryProblemTag: "second-serve-reliability",
-    relatedProblemTags: ["serve-toss-consistency", "serve-accuracy"],
-    skills: ["serve"]
-  },
-  return: {
-    primaryProblemTag: "return-under-pressure",
-    relatedProblemTags: ["late-contact", "balls-too-short"],
-    skills: ["return", "timing", "movement"]
-  },
-  net: {
-    primaryProblemTag: "net-confidence",
-    relatedProblemTags: ["doubles-positioning"],
-    skills: ["net", "doubles"]
-  },
-  movement: {
-    primaryProblemTag: "late-contact",
-    relatedProblemTags: ["movement-slow", "balls-too-short"],
-    skills: ["movement", "footwork"]
-  },
-  rally: {
-    primaryProblemTag: "backhand-into-net",
-    relatedProblemTags: ["forehand-out", "balls-too-short", "general-improvement"],
-    skills: ["consistency", "forehand", "backhand"]
-  },
-  overhead: {
-    primaryProblemTag: "overhead-timing",
-    relatedProblemTags: ["late-contact", "general-improvement"],
-    skills: ["overhead", "footwork", "serve"]
-  },
-  tactics: {
-    primaryProblemTag: "match-anxiety",
-    relatedProblemTags: ["doubles-positioning", "cant-self-practice"],
-    skills: ["matchplay", "mental", "doubles"]
-  },
-  pressure: {
-    primaryProblemTag: "pressure-tightness",
-    relatedProblemTags: ["match-anxiety", "return-under-pressure", "second-serve-reliability"],
-    skills: ["matchplay", "mental", "serve", "return"]
-  }
-};
-
 function toGenerated(template: PlanTemplate, locale: PlanLocale): GeneratedPlan {
   const isEn = locale === "en";
 
@@ -722,7 +660,7 @@ function toGenerated(template: PlanTemplate, locale: PlanLocale): GeneratedPlan 
 }
 
 function findPlanTemplate(
-  problemTag: string,
+  problemTag: ProblemTag,
   level: PlanLevel,
   environment: AppEnvironment = resolveAppEnvironment()
 ): PlanTemplate | null {
@@ -741,7 +679,7 @@ function findPlanTemplate(
   return null;
 }
 
-function createFallbackPlan(level: PlanLevel, locale: PlanLocale, problemTag: string): GeneratedPlan {
+function createFallbackPlan(level: PlanLevel, locale: PlanLocale, problemTag: ProblemTag): GeneratedPlan {
   return {
     source: "fallback",
     level,
@@ -767,10 +705,6 @@ function normalizePlanLevel(level: PlanLevel): PlanTemplate["level"] {
   }
 
   return level;
-}
-
-function normalizePlanProblemTag(problemTag: string): string {
-  return PLAN_TAG_ALIASES[problemTag] ?? problemTag;
 }
 
 function getPlanPoolSource(contentId: string): PlanPoolSource {
@@ -820,7 +754,7 @@ function buildDiagnosisContextHint(rawInput?: string): PlanDiagnosisContextHint 
   const skills = uniqueStrings(
     matchedSignals.flatMap(({ skills: signalSkills }) => signalSkills)
   );
-  const problemTags = uniqueStrings(
+  const problemTags = normalizePlanProblemTags(
     matchedSignals.flatMap(({ problemTags: signalProblemTags }) => signalProblemTags)
   );
   const contentIds = uniqueStrings(
@@ -833,16 +767,6 @@ function buildDiagnosisContextHint(rawInput?: string): PlanDiagnosisContextHint 
   return { skills, problemTags, contentIds, terms };
 }
 
-function getPlanLookupProblemTags(problemTag: string): string[] {
-  const canonicalProblemTag = normalizePlanProblemTag(problemTag);
-  const compatibilityFallback = PLAN_COMPATIBILITY_FALLBACKS[canonicalProblemTag];
-
-  return uniqueStrings([
-    canonicalProblemTag,
-    compatibilityFallback ?? ""
-  ]);
-}
-
 function overlapCount(left: string[], right: string[]): number {
   if (left.length === 0 || right.length === 0) {
     return 0;
@@ -852,13 +776,8 @@ function overlapCount(left: string[], right: string[]): number {
   return left.reduce((count, value) => count + (rightSet.has(value) ? 1 : 0), 0);
 }
 
-function normalizeProblemTags(problemTags: string[]): string[] {
-  const canonical = problemTags.flatMap((tag) => CONTENT_PROBLEM_TAG_ALIASES[tag] ?? []);
-  return uniqueStrings([...problemTags, ...canonical]);
-}
-
-function getNormalizedContentProblemTags(content: ContentItem): string[] {
-  return normalizeProblemTags(content.problemTags);
+function getNormalizedContentProblemTags(content: ContentItem): ProblemTag[] {
+  return getNormalizedPlanContentProblemTags(content);
 }
 
 function getContentSearchText(content: ContentItem) {
@@ -952,7 +871,7 @@ function getRecommendedRuleContentIds(problemTag: string): string[] {
 }
 
 function getTemplateSeedContentIds(problemTag: string, level: PlanLevel): string[] {
-  const template = findPlanTemplate(problemTag, level);
+  const template = findPlanTemplate(normalizePlanProblemTag(problemTag), level);
 
   if (template) {
     return uniqueStrings(template.days.flatMap((day) => day.contentIds));
@@ -994,7 +913,7 @@ function getDaySignals(day: DayPlan) {
 function scorePreferredContentForDay(
   content: ContentItem,
   day: DayPlan,
-  problemTag: string,
+  problemTag: ProblemTag,
   level: PlanLevel,
   reuseCount = 0
 ) {
@@ -1034,14 +953,14 @@ function scorePreferredContentForDay(
 function scoreContentForCandidatePool(input: {
   item: ContentItem;
   index: number;
-  problemTag: string;
+  problemTag: ProblemTag;
   level: PlanLevel;
   explicitContentIdSet: Set<string>;
-  seedProblemTags: string[];
+  seedProblemTags: ProblemTag[];
   seedSkills: string[];
-  secondaryProblemTags: string[];
+  secondaryProblemTags: ProblemTag[];
   secondarySkills: string[];
-  contextProblemTags: string[];
+  contextProblemTags: ProblemTag[];
   contextSkills: string[];
   contextTerms: string[];
   templateSeedContentIdSet: Set<string>;
@@ -1538,7 +1457,7 @@ export function buildDiagnosisPlanCandidateIds(input: {
   const templateSeedItems = templateSeedContentIds
     .map((id) => planContentById.get(id))
     .filter((item): item is ContentItem => Boolean(item));
-  const seedProblemTags = uniqueStrings([
+  const seedProblemTags = normalizePlanProblemTags([
     normalizedProblemTag,
     ...lookupProblemTags,
     ...explicitItems.flatMap((item) => item.problemTags),
@@ -1554,7 +1473,7 @@ export function buildDiagnosisPlanCandidateIds(input: {
     source: "plan",
     contentPool: contents,
     expandedContentPool: expandedContents,
-    problemTags: uniqueStrings([
+    problemTags: normalizePlanProblemTags([
       normalizedProblemTag,
       ...seedProblemTags,
       ...contextHint.problemTags
@@ -1581,7 +1500,7 @@ export function buildDiagnosisPlanCandidateIds(input: {
 }
 
 export function buildAssessmentPlanContext(profile: PlayerProfileVector): {
-  problemTag: string;
+  problemTag: ProblemTag;
   candidateIds: string[];
   planContext: PlanContext;
 } {
@@ -1600,11 +1519,11 @@ export function buildAssessmentPlanContext(profile: PlayerProfileVector): {
   const templateSeedItems = directTemplateSeedContentIds
     .map((id) => planContentById.get(id))
     .filter((item): item is ContentItem => Boolean(item));
-  const secondaryProblemTags = uniqueStrings(
+  const secondaryProblemTags = normalizePlanProblemTags(
     secondaryHints.flatMap((hint) => [hint.primaryProblemTag, ...hint.relatedProblemTags])
   );
   const secondarySkills = uniqueStrings(secondaryHints.flatMap((hint) => hint.skills));
-  const seedProblemTags = uniqueStrings([
+  const seedProblemTags = normalizePlanProblemTags([
     primaryHint.primaryProblemTag,
     ...primaryHint.relatedProblemTags,
     ...explicitItems.flatMap((item) => item.problemTags),
@@ -1621,7 +1540,7 @@ export function buildAssessmentPlanContext(profile: PlayerProfileVector): {
     source: "plan",
     contentPool: contents,
     expandedContentPool: expandedContents,
-    problemTags: uniqueStrings([
+    problemTags: normalizePlanProblemTags([
       primaryHint.primaryProblemTag,
       ...seedProblemTags,
       ...secondaryProblemTags
@@ -2066,7 +1985,7 @@ export function parsePlanContentIds(raw: string | null | undefined): string[] {
 }
 
 export type PlanDraftSnapshot = {
-  problemTag: string;
+  problemTag: ProblemTag;
   level: PlanLevel;
   preferredContentIds: string[];
   sourceType: SavedPlanSource;
@@ -2075,6 +1994,10 @@ export type PlanDraftSnapshot = {
   deepContext?: EnrichedDiagnosisContext;
   updatedAt: string;
 };
+
+type RawPlanDraftSnapshot = Partial<Omit<PlanDraftSnapshot, "problemTag"> & {
+  problemTag?: string | null;
+}>;
 
 function uniquePlanContextFeelings(values: PlanContextFeeling[]): PlanContextFeeling[] {
   return Array.from(new Set(values));
@@ -2113,10 +2036,13 @@ export function normalizePlanContext(context: Partial<PlanContext> | null | unde
     return null;
   }
 
-  const primaryProblemTag = context.primaryProblemTag?.trim();
-  if (!primaryProblemTag) {
+  const rawPrimaryProblemTag = typeof context.primaryProblemTag === "string"
+    ? context.primaryProblemTag.trim()
+    : "";
+  if (!rawPrimaryProblemTag) {
     return null;
   }
+  const primaryProblemTag = normalizePlanProblemTag(rawPrimaryProblemTag);
 
   const normalizedWeakDimensions = uniqueAssessmentDimensions(context.weakDimensions ?? []);
   const normalizedObservationDimensions = uniqueAssessmentDimensions(context.observationDimensions ?? []);
@@ -2220,16 +2146,17 @@ function normalizePlanDraftLevel(level?: string | null): PlanLevel {
 }
 
 export function normalizePlanDraftSnapshot(
-  draft: Partial<PlanDraftSnapshot> | null | undefined
+  draft: RawPlanDraftSnapshot | null | undefined
 ): PlanDraftSnapshot | null {
   if (!draft) {
     return null;
   }
 
-  const problemTag = draft.problemTag?.trim();
-  if (!problemTag || problemTag === "no-plan") {
+  const rawProblemTag = typeof draft.problemTag === "string" ? draft.problemTag.trim() : "";
+  if (!rawProblemTag || rawProblemTag === "no-plan") {
     return null;
   }
+  const problemTag = normalizePlanProblemTag(rawProblemTag);
 
   const preferredContentIds = uniqueStrings((draft.preferredContentIds ?? []).map((value) => value.trim()));
   const primaryNextStep = normalizePrimaryNextStep(draft.primaryNextStep);
@@ -2536,14 +2463,14 @@ export function getPlanTemplate(
     environment?: AppEnvironment;
   } = {}
 ): GeneratedPlan {
-  if (normalizePlanProblemTag(problemTag) === "unknown-problem") {
-    return createFallbackPlan(level, locale, problemTag);
+  const normalizedProblemTag = normalizePlanProblemTag(problemTag);
+  if (normalizedProblemTag === "unknown-problem") {
+    return createFallbackPlan(level, locale, normalizedProblemTag);
   }
 
   const effectivePlanContext = options.deepContext
     ? buildPlanContextFromEnrichedContext(options.deepContext) ?? options.planContext
     : options.planContext;
-  const normalizedProblemTag = normalizePlanProblemTag(problemTag);
   const templateSeed = findPlanTemplate(normalizedProblemTag, level, options.environment ?? resolveAppEnvironment());
   const candidateContentIds = preferredContentIds.length > 0
     ? preferredContentIds
@@ -2587,22 +2514,9 @@ export function getPlanTemplate(
 
   return {
     ...normalizeGeneratedPlanStepSemantics(plan, locale),
-    problemTag
+    problemTag: normalizedProblemTag
   };
 }
-
-const DIMENSION_TO_PROBLEM_TAG: Record<ScoredDimension, string> = {
-  forehand: "forehand-out",
-  backhand_slice: "backhand-into-net",
-  serve: "second-serve-reliability",
-  return: "return-under-pressure",
-  net: "net-confidence",
-  overhead: "overhead-timing",
-  movement: "late-contact",
-  pressure: "pressure-tightness",
-  tactics: "match-anxiety",
-  rally: "general-improvement"
-};
 
 export function getPlanFromDiagnosis(input: {
   level?: PlanLevel;

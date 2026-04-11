@@ -1,4 +1,5 @@
 import { EnvironmentValue } from "@/types/environment";
+import { ProblemTag } from "@/types/problemTag";
 
 export type ContentType = "video" | "article" | "post";
 export type ContentPlatform = "Bilibili" | "Xiaohongshu" | "Zhihu" | "YouTube" | "Instagram";
@@ -19,7 +20,7 @@ export type ContentItem = {
   type: ContentType;
   levels: string[];
   skills: string[];
-  problemTags: string[];
+  problemTags: ProblemTag[];
   language: ContentLanguageCode;
   contentLanguage?: ContentLanguageCode;
   subtitleAvailability?: ContentSubtitleAvailability;

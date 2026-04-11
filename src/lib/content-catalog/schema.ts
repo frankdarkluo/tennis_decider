@@ -1,6 +1,7 @@
 import type { ContentItem, ContentLanguageCode, ContentPlatform, ContentSubtitleAvailability, ContentType } from "@/types/content";
 import type { ContentTeachingIntent } from "@/lib/content/recommendationSignals";
 import type { EnvironmentValue } from "@/types/environment";
+import type { ProblemTag } from "@/types/problemTag";
 
 export type CatalogRightsStatus = "direct_source" | "search_link" | "unknown";
 export type CatalogIngestionMethod = "curated" | "expanded";
@@ -16,7 +17,7 @@ export type CatalogContentItem = {
   subtitleAvailability?: ContentSubtitleAvailability;
   teachingIntent: ContentTeachingIntent;
   skillCategories: string[];
-  problemTags: string[];
+  problemTags: ProblemTag[];
   levelRange: string[];
   mediaType: ContentType;
   rightsStatus: CatalogRightsStatus;
@@ -39,7 +40,7 @@ export type CatalogContentItem = {
 
 export type CatalogRecommendationIntent = {
   source: "diagnosis" | "plan";
-  problemTags?: string[];
+  problemTags?: ProblemTag[];
   skillCategories?: string[];
   lexicalTerms?: string[];
   level?: string;

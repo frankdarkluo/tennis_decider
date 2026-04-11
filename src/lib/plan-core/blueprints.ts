@@ -13,6 +13,8 @@ type FamilyCopy = {
   mistakeCue: LocalizedCopy;
 };
 
+type ProblemVariantCopy = Partial<Record<keyof FamilyCopy, LocalizedCopy>>;
+
 type BlueprintDaySpec = Omit<DayPlan, "contentIds" | "linkedContentReason"> & {
   contentIds: string[];
   linkedContentReason?: string | null;
@@ -91,8 +93,89 @@ const FAMILY_COPY: Record<PlanIntent["skillFamily"], FamilyCopy> = {
   }
 };
 
+const PROBLEM_VARIANT_COPY: Record<string, ProblemVariantCopy> = {
+  "volley-contact-instability": {
+    label: { zh: "网前第一拍", en: "first volley" },
+    drillNoun: { zh: "第一拍截击重复", en: "first-volley reps" },
+    baselineCue: { zh: "先把第一拍打实并留在身体前侧", en: "clean up the first contact out in front" },
+    transferCue: { zh: "上网后第一拍处理片段", en: "approach plus first-volley pattern" },
+    mistakeCue: { zh: "第一拍就想做太多，球还没打实就开始抢结果", en: "trying to do too much before the first volley is even clean" }
+  },
+  "half-volley-late-contact": {
+    label: { zh: "半截击", en: "half volley" },
+    drillNoun: { zh: "半截击捡球", en: "half-volley pickups" },
+    baselineCue: { zh: "先降重心，再把低球捡到身体前侧", en: "lower early and pick the low ball up in front" },
+    transferCue: { zh: "半截击后回位片段", en: "half-volley plus recovery pattern" },
+    mistakeCue: { zh: "等球已经到脚下才临时补救", en: "waiting until the ball is already at the feet before reacting" }
+  },
+  "overhead-spacing": {
+    label: { zh: "高压退位", en: "overhead spacing" },
+    drillNoun: { zh: "高压退位重复", en: "overhead spacing reps" },
+    baselineCue: { zh: "先转身退位，站到球后再出手", en: "turn, retreat, and get behind the ball before contact" },
+    transferCue: { zh: "高球退位后终结片段", en: "lob retreat plus finish pattern" },
+    mistakeCue: { zh: "原地硬打高压，球一顶就掉到身后", en: "hitting the overhead flat-footed and letting the ball get behind you" }
+  },
+  "slice-depth-control": {
+    label: { zh: "切削深度", en: "slice depth" },
+    drillNoun: { zh: "切削送深", en: "deep-driving slices" },
+    baselineCue: { zh: "把切削低平送深，而不是只把球切过去", en: "drive the slice low and deep instead of just floating it through" },
+    transferCue: { zh: "切削压深片段", en: "deep slice pattern" },
+    mistakeCue: { zh: "只顾把球切过网，却没有把落点送深", en: "getting the slice over the net without sending it deep" }
+  },
+  "doubles-poach-hesitation": {
+    label: { zh: "双打抢网", en: "doubles poach" },
+    drillNoun: { zh: "抢网触发练习", en: "poach-trigger reps" },
+    baselineCue: { zh: "先读触发球，再敢往前压半步", en: "read the trigger ball and commit the first step forward" },
+    transferCue: { zh: "抢网后封网片段", en: "poach plus net-close pattern" },
+    mistakeCue: { zh: "球都快过去了才开始决定抢不抢", en: "deciding whether to poach only after the ball is already gone" }
+  },
+  "doubles-formation-confusion": {
+    label: { zh: "双打阵型", en: "doubles formation" },
+    drillNoun: { zh: "阵型轮转练习", en: "formation rotation reps" },
+    baselineCue: { zh: "发接发后先守住阵型和轮转规则", en: "hold the formation and rotation rule after serve and return" },
+    transferCue: { zh: "双打前两拍轮转片段", en: "first-two-ball doubles rotation pattern" },
+    mistakeCue: { zh: "只看球不看搭档和空当，阵型自然散掉", en: "watching only the ball and ignoring the partner or open space" }
+  },
+  "passive-point-construction": {
+    label: { zh: "分点组织", en: "point construction" },
+    drillNoun: { zh: "三拍分点", en: "three-ball patterns" },
+    baselineCue: { zh: "先稳住、再推进、再变化", en: "stabilize first, build second, then change" },
+    transferCue: { zh: "分点模式实战片段", en: "live point-construction pattern" },
+    mistakeCue: { zh: "每拍都像重新开始，没有把下一拍做出来", en: "starting from zero on every ball instead of building the next one" }
+  },
+  "safe-short-collapse": {
+    label: { zh: "关键分保深", en: "key-point depth" },
+    drillNoun: { zh: "关键分送深练习", en: "key-point deep-ball reps" },
+    baselineCue: { zh: "关键分下也把球安全送深，不缩成短球", en: "send the ball deep safely on key points instead of shrinking into the short ball" },
+    transferCue: { zh: "关键分默认深球线路", en: "key-point default deep pattern" },
+    mistakeCue: { zh: "一紧张就只剩保守短球，把主动权直接送掉", en: "tightening up into the short safe ball and giving away the initiative" }
+  },
+  "key-point-indecision": {
+    label: { zh: "关键分决策", en: "key-point decisions" },
+    drillNoun: { zh: "默认模式重复", en: "default-pattern reps" },
+    baselineCue: { zh: "关键分前先选好默认线路，不在出手前改主意", en: "choose the default pattern before the point and stop changing it late" },
+    transferCue: { zh: "关键分双方案片段", en: "two-option key-point pattern" },
+    mistakeCue: { zh: "出手前还在摇摆，整拍就先慢半拍", en: "still negotiating the choice right before contact" }
+  },
+  "on-the-run-late-contact": {
+    label: { zh: "跑动晚点", en: "late contact on the run" },
+    drillNoun: { zh: "跑动前点击球", en: "on-the-run out-front reps" },
+    baselineCue: { zh: "先到位再出手，把触球点留在身体前侧", en: "arrive first and keep contact in front while moving" },
+    transferCue: { zh: "跑动击球后回中片段", en: "move-hit-recover pattern" },
+    mistakeCue: { zh: "身体还没稳住就急着挥拍，触球点自然往后掉", en: "swinging before the body settles and letting contact drift back" }
+  },
+  "recovery-delay": {
+    label: { zh: "跑动还原", en: "recovery footwork" },
+    drillNoun: { zh: "跑动回位重复", en: "recover-after-contact reps" },
+    baselineCue: { zh: "打完立刻还原，不停在原地看球", en: "recover immediately after contact instead of freezing to watch" },
+    transferCue: { zh: "宽球后回中片段", en: "wide-ball recovery pattern" },
+    mistakeCue: { zh: "打完一拍就停住，下一拍又从被动开始", en: "stopping after the shot and starting the next ball from behind" }
+  }
+};
+
 function copyFor(intent: PlanIntent, value: keyof FamilyCopy) {
-  return FAMILY_COPY[intent.skillFamily][value][intent.locale];
+  return PROBLEM_VARIANT_COPY[intent.primaryProblemTag]?.[value]?.[intent.locale]
+    ?? FAMILY_COPY[intent.skillFamily][value][intent.locale];
 }
 
 function isEnglish(intent: PlanIntent) {
@@ -100,6 +183,12 @@ function isEnglish(intent: PlanIntent) {
 }
 
 function getSpecificLabel(intent: PlanIntent): string | null {
+  const variantLabel = PROBLEM_VARIANT_COPY[intent.primaryProblemTag]?.label?.[intent.locale];
+
+  if (variantLabel) {
+    return variantLabel;
+  }
+
   const labels: Record<string, LocalizedCopy> = {
     "second-serve-reliability": { zh: "二发", en: "second serve" },
     "serve-toss-consistency": { zh: "抛球", en: "serve toss" },
@@ -117,18 +206,29 @@ function getSpecificLabel(intent: PlanIntent): string | null {
     "volley-floating": { zh: "截击", en: "floating volley" },
     "volley-into-net": { zh: "截击", en: "volley" },
     "net-confidence": { zh: "网前", en: "net play" },
+    "volley-contact-instability": { zh: "网前第一拍", en: "first volley" },
+    "half-volley-late-contact": { zh: "半截击", en: "half volley" },
     "overhead-timing": { zh: "高压", en: "overhead" },
+    "overhead-spacing": { zh: "高压退位", en: "overhead spacing" },
     "movement-slow": { zh: "脚步", en: "movement" },
     "stamina-drop": { zh: "脚步", en: "movement" },
     "late-contact": { zh: "提前准备", en: "early preparation" },
     "running-forehand": { zh: "跑动正手", en: "running forehand" },
     "running-backhand": { zh: "跑动反手", en: "running backhand" },
+    "on-the-run-late-contact": { zh: "跑动晚点", en: "late contact on the run" },
+    "recovery-delay": { zh: "跑动还原", en: "recovery footwork" },
     "mobility-limit": { zh: "移动", en: "mobility" },
     "pressure-tightness": { zh: "抗压", en: "pressure control" },
     "match-anxiety": { zh: "比赛处理", en: "match calm" },
+    "safe-short-collapse": { zh: "关键分保深", en: "key-point depth" },
+    "key-point-indecision": { zh: "关键分决策", en: "key-point decisions" },
     "doubles-positioning": { zh: "双打站位", en: "doubles positioning" },
+    "doubles-poach-hesitation": { zh: "双打抢网", en: "doubles poach" },
+    "doubles-formation-confusion": { zh: "双打阵型", en: "doubles formation" },
     "general-improvement": { zh: "通用", en: "general" },
-    "rally-consistency": { zh: "基础动作", en: "base pattern" }
+    "rally-consistency": { zh: "基础动作", en: "base pattern" },
+    "slice-depth-control": { zh: "切削深度", en: "slice depth" },
+    "passive-point-construction": { zh: "分点组织", en: "point construction" }
   };
 
   return labels[intent.primaryProblemTag]?.[intent.locale] ?? null;

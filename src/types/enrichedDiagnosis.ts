@@ -1,4 +1,5 @@
 import type { MissingSlotPath, SkillCategory, SkillCategoryInference } from "@/types/scenario";
+import type { ProblemTag } from "@/types/problemTag";
 
 export type EnrichedDiagnosisMode = "standard" | "deep";
 export type EnrichedStrokeFamily = "forehand" | "backhand" | "serve" | "return" | "volley" | "overhead" | "slice" | "general";
@@ -36,5 +37,5 @@ export type DeepDiagnosisHandoff = {
 };
 
 export type EnrichedDiagnosisContext = DeepDiagnosisHandoff & {
-  problemTag: string;
+  problemTag: ProblemTag;
 };

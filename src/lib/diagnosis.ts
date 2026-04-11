@@ -7,11 +7,17 @@ import {
   isDiagnosisResultConsistentWithHandoff,
   ruleMatchesDiagnosisCategoryGate
 } from "@/lib/diagnose/categoryGate";
+import {
+  ASSESSMENT_DIMENSION_HINTS,
+  DEFAULT_PROBLEM_TAG,
+  DIAGNOSIS_CONTENT_PROBLEM_TAG_ALIASES
+} from "@/lib/diagnose/problemTagSupport";
 import { retrieveCatalogContentsByIds, retrieveCatalogRecommendations } from "@/lib/content-catalog/retrieve";
 import { filterByEnvironment } from "@/lib/environment";
 import { AssessmentResult } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
 import { AppEnvironment } from "@/types/environment";
+import { ProblemTag } from "@/types/problemTag";
 import {
   DiagnosisAlias,
   DiagnosisConfidence,
@@ -36,10 +42,8 @@ import {
 export type ProblemPreviewOption = {
   label: string;
   label_en: string;
-  problemTag: string;
+  problemTag: ProblemTag;
 };
-
-const DEFAULT_PROBLEM_TAG = "general-improvement";
 
 const DEFAULT_SUMMARY =
   "我们先给你一个基础方向：先找最影响你的 1 个问题，先把稳定性和准备节奏建立起来，再逐步加强力量和变化。";
@@ -122,94 +126,6 @@ const LEVEL_PREFERENCE_MAP: Record<string, string[]> = {
   "4.5": ["4.0", "4.5"]
 };
 
-const CONTENT_PROBLEM_TAG_ALIASES: Record<string, string[]> = {
-  "second-serve-confidence": ["second-serve-reliability"],
-  "serve-toss-inconsistent": ["serve-toss-consistency"],
-  "slice-too-high": ["backhand-slice-floating"],
-  "trouble-with-slice": ["incoming-slice-trouble"],
-  "slow-preparation": ["late-contact"],
-  "volley-errors": ["volley-floating", "volley-into-net"],
-  "doubles-net-fear": ["net-confidence"]
-};
-
-const ASSESSMENT_DIMENSION_HINTS: Record<string, { skills: string[]; problemTags: string[] }> = {
-  basics: {
-    skills: ["basics", "forehand", "backhand"],
-    problemTags: ["general-improvement", "cant-self-practice", "plateau-no-progress", "late-contact"]
-  },
-  forehand: {
-    skills: ["forehand", "topspin"],
-    problemTags: ["forehand-out", "forehand-no-power", "balls-too-short", "topspin-low"]
-  },
-  backhand: {
-    skills: ["backhand", "slice"],
-    problemTags: ["backhand-into-net", "backhand-slice-floating", "late-contact", "incoming-slice-trouble"]
-  },
-  serve: {
-    skills: ["serve"],
-    problemTags: ["second-serve-reliability", "serve-toss-consistency", "serve-accuracy"]
-  },
-  net: {
-    skills: ["net", "doubles"],
-    problemTags: ["net-confidence", "doubles-positioning"]
-  },
-  movement: {
-    skills: ["movement", "footwork"],
-    problemTags: ["late-contact", "balls-too-short", "movement-slow"]
-  },
-  matchplay: {
-    skills: ["matchplay", "mental", "return"],
-    problemTags: ["match-anxiety", "return-under-pressure", "cant-self-practice", "cant-hit-lob", "plateau-no-progress"]
-  },
-  rally: {
-    skills: ["basics", "consistency", "forehand", "backhand"],
-    problemTags: ["rally-consistency", "general-improvement", "plateau-no-progress", "backhand-into-net", "forehand-out"]
-  },
-  awareness: {
-    skills: ["matchplay", "mental", "training"],
-    problemTags: ["match-anxiety", "cant-self-practice", "plateau-no-progress"]
-  },
-  fundamentals: {
-    skills: ["basics", "grip", "forehand", "backhand"],
-    problemTags: ["general-improvement", "late-contact", "cant-self-practice"]
-  },
-  receiving: {
-    skills: ["return", "backhand", "defense", "footwork"],
-    problemTags: ["late-contact", "return-under-pressure", "backhand-into-net", "movement-slow"]
-  },
-  consistency: {
-    skills: ["consistency", "basics", "training"],
-    problemTags: ["general-improvement", "plateau-no-progress", "balls-too-short"]
-  },
-  both_sides: {
-    skills: ["forehand", "backhand", "consistency"],
-    problemTags: ["backhand-into-net", "forehand-out", "general-improvement"]
-  },
-  direction: {
-    skills: ["forehand", "backhand", "training"],
-    problemTags: ["forehand-out", "balls-too-short", "general-improvement"]
-  },
-  rhythm: {
-    skills: ["movement", "footwork", "backhand"],
-    problemTags: ["movement-slow", "late-contact", "incoming-slice-trouble"]
-  },
-  net_play: {
-    skills: ["net", "doubles"],
-    problemTags: ["net-confidence", "doubles-positioning"]
-  },
-  depth_variety: {
-    skills: ["forehand", "topspin", "training"],
-    problemTags: ["balls-too-short", "topspin-low", "forehand-no-power"]
-  },
-  forcing: {
-    skills: ["forehand", "topspin", "matchplay"],
-    problemTags: ["forehand-no-power", "balls-too-short", "general-improvement"]
-  },
-  tactics: {
-    skills: ["matchplay", "mental", "doubles"],
-    problemTags: ["match-anxiety", "doubles-positioning", "cant-self-practice"]
-  }
-};
 
 const TITLE_MAP_ZH: Record<string, string> = {
   "backhand-into-net": "反手稳定性不足",
@@ -223,24 +139,35 @@ const TITLE_MAP_ZH: Record<string, string> = {
   "net-confidence": "网前信心和动作控制不足",
   "volley-floating": "截击控制不稳，回球容易冒高",
   "volley-into-net": "截击过网稳定性不足",
+  "volley-contact-instability": "网前第一拍处理不干净",
+  "half-volley-late-contact": "半截击低球处理和前点击球不足",
   "overhead-timing": "高压球时机和调步不足",
+  "overhead-spacing": "高压球退位和站到球后不足",
   "match-anxiety": "比赛紧张导致执行下降",
   "pressure-tightness": "压力下执行变形",
+  "safe-short-collapse": "压力下只敢搓短球，主动权丢失",
+  "key-point-indecision": "关键分处理犹豫，决策不清晰",
   "forehand-no-power": "正手发力链条不顺",
   "running-forehand": "跑动中正手稳定性不足",
   "running-backhand": "跑动中反手稳定性不足",
+  "on-the-run-late-contact": "跑动中准备慢，触球点总偏晚",
+  "recovery-delay": "跑动击球后回位与还原偏慢",
   "balls-too-short": "击球深度不足",
   "return-under-pressure": "接发球准备和策略不足",
   "backhand-slice-floating": "反手切削控制不足",
+  "slice-depth-control": "切削落点和深度控制不足",
   "topspin-low": "正手上旋和弧线不足",
   "serve-accuracy": "发球进区率和落点控制不足",
   "movement-slow": "脚步启动和到位偏慢",
   "mobility-limit": "移动范围和到位能力受限",
   "stamina-drop": "体能下降后动作稳定性下滑",
   "doubles-positioning": "双打站位和轮转不清晰",
+  "doubles-poach-hesitation": "双打抢网时机和压网决定不足",
+  "doubles-formation-confusion": "双打发接发阵型和轮转规则不清楚",
   "incoming-slice-trouble": "对手削球来球处理不顺",
   "moonball-trouble": "高吊球 / 月亮球来球处理不顺",
   "cant-hit-lob": "防守高球选择不足",
+  "passive-point-construction": "分点组织被动，没有建立下一拍结构",
   "plateau-no-progress": "训练聚焦不够，进入平台期",
   "cant-self-practice": "训练规划不清晰",
   "general-improvement": "通用提升方向"
@@ -258,24 +185,35 @@ const TITLE_MAP_EN: Record<string, string> = {
   "net-confidence": "Net play confidence and control",
   "volley-floating": "Volley height control",
   "volley-into-net": "Volley net clearance",
+  "volley-contact-instability": "First-volley contact stability",
+  "half-volley-late-contact": "Half-volley pickup and timing",
   "overhead-timing": "Overhead timing",
+  "overhead-spacing": "Overhead spacing and positioning",
   "match-anxiety": "Match nerves affecting execution",
   "pressure-tightness": "Execution tightening under pressure",
+  "safe-short-collapse": "Pressure collapse into safe short balls",
+  "key-point-indecision": "Indecision on key points",
   "forehand-no-power": "Forehand power chain",
   "running-forehand": "Running forehand stability",
   "running-backhand": "Running backhand stability",
+  "on-the-run-late-contact": "Late contact on the run",
+  "recovery-delay": "Recovery delay after movement",
   "balls-too-short": "Depth and penetration",
   "return-under-pressure": "Return of serve under pressure",
   "backhand-slice-floating": "Backhand slice control",
+  "slice-depth-control": "Slice depth control",
   "topspin-low": "Forehand topspin and arc",
   "serve-accuracy": "Serve accuracy and placement",
   "movement-slow": "Footwork start and court coverage",
   "mobility-limit": "Mobility and court coverage limits",
   "stamina-drop": "Stamina drop-off",
   "doubles-positioning": "Doubles positioning and rotation",
+  "doubles-poach-hesitation": "Doubles poach hesitation",
+  "doubles-formation-confusion": "Doubles formation confusion",
   "incoming-slice-trouble": "Handling incoming slice",
   "moonball-trouble": "Handling moonballs",
   "cant-hit-lob": "Defensive lob selection",
+  "passive-point-construction": "Passive point construction",
   "plateau-no-progress": "Training focus — breaking through a plateau",
   "cant-self-practice": "Practice planning",
   "general-improvement": "General improvement direction"
@@ -401,10 +339,15 @@ const DIAGNOSIS_SLOT_PATTERNS: Array<{ type: DiagnosisSlotType; value: string; p
   { type: "stroke", value: "serve", patterns: [/(?:发球|一发(?!力)|二发|first serve|second serve|first_serve|second_serve|serve)/i] },
   { type: "stroke", value: "slice", patterns: [/(?:切削|切球|slice)/i] },
   { type: "stroke", value: "volley", patterns: [/(?:截击|截球|网前|volley)/i] },
+  { type: "stroke", value: "half_volley", patterns: [/(?:半截击|half-?volley|short hop)/i] },
   { type: "stroke", value: "overhead", patterns: [/(?:高压|smash|overhead)/i] },
   { type: "outcome", value: "net", patterns: [/(?:下网|挂网|不过网|into the net|cannot clear the net)/i] },
   { type: "outcome", value: "out", patterns: [/(?:出界|出底线|老飞|一抡就飞|long|flying long|going out|goes long)/i] },
   { type: "outcome", value: "float", patterns: [/(?:冒高|总浮|总飘|飘起来|floating|keeps floating|sits up)/i] },
+  { type: "outcome", value: "short", patterns: [/(?:很短|太短|落点浅|没有深度|只敢搓短|short|lands short|drops short)/i] },
+  { type: "outcome", value: "dirty_contact", patterns: [/(?:处理不干净|处理不实|打不扎实|处理不利索|not clean|not solid|shank)/i] },
+  { type: "outcome", value: "pickup_fail", patterns: [/(?:挑不起来|撩不起来|带不起来|get it up|pick it up)/i] },
+  { type: "outcome", value: "late_contact", patterns: [/(?:晚点|晚一拍|总晚一点|late contact)/i] },
   { type: "outcome", value: "double_fault", patterns: [/(?:双误|double fault|double faults|double faulting|doublefault|doublefaults|doublefaulting)/i] },
   { type: "outcome", value: "miss_in", patterns: [/(?:发不进|进区率太低|will not go in|keeps missing)/i] },
   {
@@ -420,7 +363,8 @@ const DIAGNOSIS_SLOT_PATTERNS: Array<{ type: DiagnosisSlotType; value: string; p
   { type: "context", value: "incoming_moonball", patterns: [/(?:月亮球|moonball|moon ball|高吊球|高挑球|挑高球)/i] },
   { type: "context", value: "doubles", patterns: [/(?:双打|doubles)/i] },
   { type: "condition", value: "mobility_limit", patterns: [/(?:年纪大了|年纪大|上年纪|年龄大|老了|跑不太动|跑不动|跟不上|movement range feels limited|cannot move well anymore|cover the court anymore|mobility_limit)/i] },
-  { type: "condition", value: "tight", patterns: [/(?:手紧|tight|freeze|缩手缩脚|动作就变形|swing tighten)/i] }
+  { type: "condition", value: "tight", patterns: [/(?:手紧|tight|freeze|缩手缩脚|动作就变形|swing tighten)/i] },
+  { type: "condition", value: "hesitation", patterns: [/(?:不敢抢|不敢压|犹豫|迟疑|拿不准|不知道.*该|hesitat|freeze at net|cannot decide|do not know what to do)/i] }
 ];
 
 const DIAGNOSIS_LANE_WEIGHTS: Record<DiagnosisPriorityLane, number> = {
@@ -461,10 +405,29 @@ const DIAGNOSIS_RULE_SLOT_PROFILES: Partial<Record<string, DiagnosisRuleSlotProf
     lane: "stroke_outcome",
     required: ["slot_stroke_volley", "slot_outcome_net"]
   },
+  "volley-contact-instability": {
+    lane: "stroke_outcome",
+    required: ["slot_stroke_volley", "slot_outcome_dirty_contact"]
+  },
+  "half-volley-late-contact": {
+    lane: "stroke_context",
+    required: ["slot_stroke_half_volley"],
+    optional: ["slot_outcome_pickup_fail", "slot_outcome_late_contact"]
+  },
   "backhand-slice-floating": {
     lane: "stroke_outcome",
     required: ["slot_stroke_slice", "slot_outcome_float"],
     optional: ["slot_stroke_backhand"]
+  },
+  "slice-depth-control": {
+    lane: "stroke_outcome",
+    required: ["slot_stroke_slice", "slot_outcome_short"],
+    optional: ["slot_outcome_float"]
+  },
+  "overhead-spacing": {
+    lane: "stroke_context",
+    required: ["slot_stroke_overhead"],
+    optional: ["slot_outcome_late_contact"]
   },
   "running-forehand": {
     lane: "stroke_context",
@@ -473,6 +436,14 @@ const DIAGNOSIS_RULE_SLOT_PROFILES: Partial<Record<string, DiagnosisRuleSlotProf
   "running-backhand": {
     lane: "stroke_context",
     required: ["slot_stroke_backhand", "slot_context_movement"]
+  },
+  "on-the-run-late-contact": {
+    lane: "stroke_context",
+    required: ["slot_context_movement", "slot_outcome_late_contact"]
+  },
+  "recovery-delay": {
+    lane: "physical_primary",
+    required: ["slot_context_movement"]
   },
   "rally-consistency": {
     lane: "stroke_context",
@@ -493,6 +464,17 @@ const DIAGNOSIS_RULE_SLOT_PROFILES: Partial<Record<string, DiagnosisRuleSlotProf
     lane: "tactical_primary",
     required: ["slot_context_doubles"]
   },
+  "doubles-poach-hesitation": {
+    lane: "tactical_primary",
+    required: ["slot_context_doubles", "slot_condition_hesitation"]
+  },
+  "doubles-formation-confusion": {
+    lane: "tactical_primary",
+    required: ["slot_context_doubles"]
+  },
+  "passive-point-construction": {
+    lane: "tactical_primary"
+  },
   "mobility-limit": {
     lane: "physical_primary",
     required: ["slot_condition_mobility_limit"]
@@ -505,6 +487,14 @@ const DIAGNOSIS_RULE_SLOT_PROFILES: Partial<Record<string, DiagnosisRuleSlotProf
     lane: "mental_fallback",
     required: ["slot_context_pressure"],
     optional: ["slot_condition_tight"]
+  },
+  "safe-short-collapse": {
+    lane: "mental_fallback",
+    required: ["slot_context_pressure", "slot_outcome_short"]
+  },
+  "key-point-indecision": {
+    lane: "tactical_primary",
+    required: ["slot_context_pressure", "slot_condition_hesitation"]
   },
   "match-anxiety": {
     lane: "mental_fallback",
@@ -953,7 +943,7 @@ function scoreContentAgainstLevel(item: ContentItem, preferredLevels: string[], 
 
 type DiagnosisRecommendationSignalBoost = {
   contentIds: string[];
-  problemTags: string[];
+  problemTags: ProblemTag[];
   skills: string[];
 };
 
@@ -966,18 +956,18 @@ function overlapCount(left: string[], right: string[]): number {
   return left.reduce((count, value) => count + (rightSet.has(value) ? 1 : 0), 0);
 }
 
-function normalizeProblemTags(problemTags: string[]): string[] {
-  const canonical = problemTags.flatMap((tag) => CONTENT_PROBLEM_TAG_ALIASES[tag] ?? []);
-  return buildUniqueSignalList([...problemTags, ...canonical]);
+function normalizeProblemTags(problemTags: ProblemTag[]): ProblemTag[] {
+  const canonical = problemTags.flatMap((tag) => DIAGNOSIS_CONTENT_PROBLEM_TAG_ALIASES[tag] ?? []);
+  return buildUniqueSignalList([...problemTags, ...(canonical as ProblemTag[])]);
 }
 
-function getNormalizedContentProblemTags(item: ContentItem): string[] {
+function getNormalizedContentProblemTags(item: ContentItem): ProblemTag[] {
   return normalizeProblemTags(item.problemTags);
 }
 
 function getDiagnosisSignalBoost(signalBundle: DiagnosisSignalBundle): DiagnosisRecommendationSignalBoost {
   const contentIds: string[] = [];
-  const problemTags: string[] = [];
+  const problemTags: ProblemTag[] = [];
   const skills: string[] = [];
 
   const slotSignals = new Set(signalBundle.internalSignals);

@@ -1,6 +1,7 @@
 import { LevelBand, PlayContext, PlayStyle, ScoredDimension } from "@/types/assessment";
 import { EnvironmentValue } from "@/types/environment";
 import { EnrichedDiagnosisContext } from "@/types/enrichedDiagnosis";
+import { ProblemTag } from "@/types/problemTag";
 
 export type PlanLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.0+";
 export type PlanContextSessionType = "match" | "practice" | "unknown";
@@ -40,7 +41,7 @@ export type PlanBlueprintRole =
 
 export type PlanContext = {
   source: "diagnosis" | "assessment";
-  primaryProblemTag: string;
+  primaryProblemTag: ProblemTag;
   sessionType: PlanContextSessionType;
   pressureContext: PlanContextPressure;
   movementContext: PlanContextMovement;
@@ -126,7 +127,7 @@ export type PlanTemplateDay = {
 };
 
 export type PlanTemplate = {
-  problemTag: string;
+  problemTag: ProblemTag;
   level: "3.0" | "3.5" | "4.0";
   title: string;
   titleEn: string;
@@ -139,7 +140,7 @@ export type PlanTemplate = {
 export type GeneratedPlan = {
   source: "template" | "fallback";
   level: PlanLevel;
-  problemTag: string;
+  problemTag: ProblemTag;
   title: string;
   target: string;
   summary?: string;
@@ -150,7 +151,7 @@ export type PlanIntent = {
   source: "diagnosis" | "assessment" | "direct";
   locale: "zh" | "en";
   levelBand: PlanLevel;
-  primaryProblemTag: string;
+  primaryProblemTag: ProblemTag;
   skillFamily: PlanSkillFamily;
   mechanismFamily: PlanMechanismFamily;
   primaryWeakness?: ScoredDimension;

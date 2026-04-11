@@ -94,4 +94,21 @@ describe("assessment to plan linkage", () => {
       playContext: "singles_standard"
     });
   });
+
+  it("routes a tactics-led profile into a tactical plan lane instead of a generic anxiety fallback", () => {
+    const profile = createPlayerProfileVector();
+    profile.primaryWeakness = "tactics";
+    profile.secondaryWeakness = "pressure";
+    profile.weakDimensions = ["tactics", "pressure", "movement"];
+    profile.playStyle = "counterpuncher";
+    profile.playContext = "singles_standard";
+
+    const context = buildAssessmentPlanContext(profile);
+
+    expect(context.problemTag).toBe("passive-point-construction");
+    expect(context.planContext).toMatchObject({
+      weakDimensions: ["tactics", "pressure"],
+      observationDimensions: ["movement"]
+    });
+  });
 });

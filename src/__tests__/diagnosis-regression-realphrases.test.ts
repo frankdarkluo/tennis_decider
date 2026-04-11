@@ -20,5 +20,9 @@ describe("diagnosis real-phrase regression", () => {
     expect(riskTags.has("moonball")).toBe(true);
     expect(riskTags.has("doubles_net")).toBe(true);
     expect(riskTags.has("mobility_age")).toBe(true);
+    expect(riskTags.has("long_tail_net")).toBe(true);
+    expect(riskTags.has("tactics")).toBe(true);
+    expect(riskTags.has("pressure_pattern")).toBe(true);
+    expect(riskTags.has("movement_context")).toBe(true);
   });
 });

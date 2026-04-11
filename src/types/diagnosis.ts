@@ -2,6 +2,7 @@ import { AssessmentResult } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
 import { AppEnvironment, EnvironmentValue } from "@/types/environment";
 import { DeepDiagnosisHandoff, EnrichedDiagnosisContext } from "@/types/enrichedDiagnosis";
+import { ProblemTag } from "@/types/problemTag";
 
 export type DiagnosisSearchQueries = {
   bilibili: string[];
@@ -12,7 +13,7 @@ export type DiagnosisCategoryConsistency = "ungated" | "consistent" | "conflict"
 
 export type DiagnosisCategoryConflict = {
   expectedSkillCategory: string;
-  actualProblemTag: string | null;
+  actualProblemTag: ProblemTag | null;
   actualCategory: string[];
   reason: string;
 };
@@ -81,7 +82,7 @@ export type DiagnosisRule = {
   keywords: string[];
   synonyms?: string[];
   category: string[];
-  problemTag: string;
+  problemTag: ProblemTag;
   causes: string[];
   fixes: string[];
   causes_en?: string[];
@@ -130,7 +131,7 @@ export type DiagnosisResult = {
   refusalReasonCodes?: DiagnosisRefusalReasonCode[];
   missingEvidenceSlots?: DiagnosisSlotType[];
   primaryNextStep: string;
-  problemTag: string;
+  problemTag: ProblemTag;
   category: string[];
   title: string;
   summary: string;
@@ -162,7 +163,7 @@ export type DiagnosisSnapshot = {
   refusalReasonCodes?: DiagnosisRefusalReasonCode[];
   missingEvidenceSlots?: DiagnosisSlotType[];
   primaryNextStep: string;
-  problemTag: string;
+  problemTag: ProblemTag;
   category: string[];
   title: string;
   summary: string;

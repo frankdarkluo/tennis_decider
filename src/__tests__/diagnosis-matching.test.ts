@@ -149,6 +149,23 @@ describe("diagnosis alias normalization", () => {
     expect(findBestDiagnosisRule("高压球下来总找不准点").rule?.problemTag).toBe("overhead-timing");
   });
 
+  it("routes long-tail net, tactics, pressure, and on-the-run complaints into first-class tags", () => {
+    expect(findBestDiagnosisRule("网前第一拍总处理不干净").rule?.problemTag).toBe("volley-contact-instability");
+    expect(findBestDiagnosisRule("半截击总是挑不起来").rule?.problemTag).toBe("half-volley-late-contact");
+    expect(findBestDiagnosisRule("高压总被顶到身后").rule?.problemTag).toBe("overhead-spacing");
+    expect(findBestDiagnosisRule("不会组织分点").rule?.problemTag).toBe("passive-point-construction");
+    expect(findBestDiagnosisRule("比赛里关键分一紧张就只敢搓短球").rule?.problemTag).toBe("safe-short-collapse");
+    expect(findBestDiagnosisRule("跑动中正手总晚点").rule?.problemTag).toBe("on-the-run-late-contact");
+  });
+
+  it("keeps doubles, slice, moonball, and pressure complaints out of generic baseline lanes", () => {
+    expect(findBestDiagnosisRule("双打网前不敢抢").rule?.problemTag).toBe("doubles-poach-hesitation");
+    expect(findBestDiagnosisRule("双打发接发后总不知道谁该上谁该退").rule?.problemTag).toBe("doubles-formation-confusion");
+    expect(findBestDiagnosisRule("切削总是飘而且很短").rule?.problemTag).toBe("slice-depth-control");
+    expect(findBestDiagnosisRule("被月亮球压得很难受").rule?.problemTag).toBe("moonball-trouble");
+    expect(findBestDiagnosisRule("关键分总不知道这拍该保守还是该压").rule?.problemTag).toBe("key-point-indecision");
+  });
+
   it("recognizes more colloquial serve-toss phrasing", () => {
     expect(findBestDiagnosisRule("发球老是扔不准球").rule?.problemTag).toBe("serve-toss-consistency");
   });
