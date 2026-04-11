@@ -49,7 +49,10 @@ describe("assessment to plan linkage", () => {
       source: "assessment",
       primaryProblemTag: "second-serve-reliability",
       weakDimensions: ["serve", "movement"],
-      observationDimensions: ["tactics"]
+      observationDimensions: ["tactics"],
+      playStyle: "baseline_attack",
+      playContext: "singles_standard",
+      levelBand: "3.5"
     });
     expect(context.planContext.rationale).toContain("serve");
     expect(plan.summary ?? "").toContain("发球");
@@ -79,12 +82,16 @@ describe("assessment to plan linkage", () => {
     expect(roundTripped).toMatchObject({
       source: "assessment",
       weakDimensions: ["serve", "movement"],
-      observationDimensions: ["tactics"]
+      observationDimensions: ["tactics"],
+      playStyle: "baseline_attack",
+      playContext: "singles_standard"
     });
     expect(normalizedDraft?.planContext).toMatchObject({
       source: "assessment",
       weakDimensions: ["serve", "movement"],
-      observationDimensions: ["tactics"]
+      observationDimensions: ["tactics"],
+      playStyle: "baseline_attack",
+      playContext: "singles_standard"
     });
   });
 });

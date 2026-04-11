@@ -10,8 +10,10 @@ import {
   encodeEnrichedDiagnosisContext,
   parseEnrichedDiagnosisContext
 } from "@/lib/diagnose/enrichedContext";
-import { filterByEnvironment } from "@/lib/environment";
+import { filterByEnvironment, resolveAppEnvironment } from "@/lib/environment";
 import { withDeterministicDayContract } from "@/lib/plan-core/baseSkeleton";
+import { assemblePlanFromIntent } from "@/lib/plan-core/assemble";
+import { buildPlanIntent } from "@/lib/plan-core/intent";
 import { applySceneOverlay } from "@/lib/plan-core/sceneOverlay";
 import { PlayerProfileVector, ScoredDimension } from "@/types/assessment";
 import { ContentItem } from "@/types/content";
@@ -152,6 +154,14 @@ type PlanDayInput = Pick<DayPlan, "day" | "focus" | "contentIds" | "drills" | "d
     | "transferCueEn"
     | "intensity"
     | "tempo"
+    | "drill"
+    | "drillEn"
+    | "load"
+    | "loadEn"
+    | "executionFocus"
+    | "executionFocusEn"
+    | "linkedContentReason"
+    | "linkedContentReasonEn"
   >>;
 
 function createBlock(title: string, items: string[]): DayPlanBlock {
@@ -221,6 +231,10 @@ function normalizeStepDay(day: DayPlan, locale: PlanLocale): DayPlan {
     ...day,
     focus: normalizeStepText(day.focus, locale),
     drills: day.drills.map((drill) => normalizeStepText(drill, locale)),
+    drill: day.drill ? normalizeStepText(day.drill, locale) : day.drill,
+    load: day.load ? normalizeStepText(day.load, locale) : day.load,
+    executionFocus: day.executionFocus ? normalizeStepText(day.executionFocus, locale) : day.executionFocus,
+    linkedContentReason: day.linkedContentReason ? normalizeStepText(day.linkedContentReason, locale) : day.linkedContentReason,
     goal: normalizeStepText(day.goal, locale),
     warmupBlock: normalizeStepBlock(day.warmupBlock, locale),
     mainBlock: normalizeStepBlock(day.mainBlock, locale),
@@ -257,6 +271,12 @@ function buildDayPlan(day: PlanDayInput, locale: PlanLocale): DayPlan {
     focus,
     contentIds: [...day.contentIds],
     drills,
+    drill: isEn ? day.drillEn ?? day.drill ?? drills[0] : day.drill ?? day.drillEn ?? drills[0],
+    load: isEn ? day.loadEn ?? day.load ?? duration : day.load ?? day.loadEn ?? duration,
+    executionFocus: isEn
+      ? day.executionFocusEn ?? day.executionFocus ?? (day.goalEn ?? day.goal ?? `Repeat ${focus} cleanly.`)
+      : day.executionFocus ?? day.executionFocusEn ?? (day.goal ?? day.goalEn ?? `把${focus}稳定重复出来。`),
+    linkedContentReason: isEn ? day.linkedContentReasonEn ?? day.linkedContentReason : day.linkedContentReason ?? day.linkedContentReasonEn,
     duration,
     goal: isEn ? day.goalEn ?? `Build control in ${focus}` : day.goal ?? `围绕${focus}建立稳定执行`,
     warmupBlock: isEn
@@ -701,6 +721,42 @@ function toGenerated(template: PlanTemplate, locale: PlanLocale): GeneratedPlan 
   };
 }
 
+function findPlanTemplate(
+  problemTag: string,
+  level: PlanLevel,
+  environment: AppEnvironment = resolveAppEnvironment()
+): PlanTemplate | null {
+  const templateLevel = normalizePlanLevel(level);
+  const scopedTemplates = filterByEnvironment(planTemplates, environment);
+
+  for (const lookupProblemTag of getPlanLookupProblemTags(problemTag)) {
+    const template = scopedTemplates.find((item) => item.problemTag === lookupProblemTag && item.level === templateLevel)
+      ?? scopedTemplates.find((item) => item.problemTag === lookupProblemTag);
+
+    if (template) {
+      return template;
+    }
+  }
+
+  return null;
+}
+
+function createFallbackPlan(level: PlanLevel, locale: PlanLocale, problemTag: string): GeneratedPlan {
+  return {
+    source: "fallback",
+    level,
+    problemTag,
+    title: locale === "en" ? "7-Step General Improvement Plan" : "通用 7 步基础提升计划",
+    target: locale === "en"
+      ? "Use these 7 steps to build steadier contact and a repeatable practice rhythm."
+      : "按这 7 步建立稳定击球与可执行训练节奏",
+    summary: locale === "en"
+      ? "The current context is still thin, so this version starts with a simple seven-step structure you can actually follow."
+      : "当前上下文不足，先使用一份通用且可执行的 7 步训练节奏。",
+    days: createDefaultDays(locale)
+  };
+}
+
 function normalizePlanLevel(level: PlanLevel): PlanTemplate["level"] {
   if (level === "2.5") {
     return "3.0";
@@ -896,16 +952,11 @@ function getRecommendedRuleContentIds(problemTag: string): string[] {
 }
 
 function getTemplateSeedContentIds(problemTag: string, level: PlanLevel): string[] {
-  const templateLevel = normalizePlanLevel(level);
-  for (const lookupProblemTag of getPlanLookupProblemTags(problemTag)) {
-    const template = planTemplates.find((item) => item.problemTag === lookupProblemTag && item.level === templateLevel)
-      ?? planTemplates.find((item) => item.problemTag === lookupProblemTag);
+  const template = findPlanTemplate(problemTag, level);
 
-    if (template) {
-      return uniqueStrings(template.days.flatMap((day) => day.contentIds));
-    }
+  if (template) {
+    return uniqueStrings(template.days.flatMap((day) => day.contentIds));
   }
-
   return [];
 }
 
@@ -1608,6 +1659,9 @@ export function buildAssessmentPlanContext(profile: PlayerProfileVector): {
       feelingModifiers: [],
       weakDimensions,
       observationDimensions,
+      levelBand: profile.levelBand,
+      playStyle: profile.playStyle,
+      playContext: profile.playContext,
       rationale: encodeAssessmentPlanRationale(weakDimensions, observationDimensions)
     }
   };
@@ -2089,6 +2143,15 @@ export function normalizePlanContext(context: Partial<PlanContext> | null | unde
     ...((isAssessmentContext || hasExplicitObservationDimensions)
       ? { observationDimensions: normalizedObservationDimensions }
       : {}),
+    ...((context.levelBand === "2.5" || context.levelBand === "3.0" || context.levelBand === "3.5" || context.levelBand === "4.0" || context.levelBand === "4.0+")
+      ? { levelBand: context.levelBand }
+      : {}),
+    ...((context.playStyle === "defensive" || context.playStyle === "baseline_attack" || context.playStyle === "all_court" || context.playStyle === "net_pressure")
+      ? { playStyle: context.playStyle }
+      : {}),
+    ...((context.playContext === "singles_standard" || context.playContext === "singles_limited_mobility" || context.playContext === "mixed_with_doubles" || context.playContext === "doubles_primary")
+      ? { playContext: context.playContext }
+      : {}),
     ...(typeof context.rationale === "string" && context.rationale.trim().length > 0
       ? { rationale: context.rationale.trim() }
       : {})
@@ -2473,112 +2536,39 @@ export function getPlanTemplate(
     environment?: AppEnvironment;
   } = {}
 ): GeneratedPlan {
+  if (normalizePlanProblemTag(problemTag) === "unknown-problem") {
+    return createFallbackPlan(level, locale, problemTag);
+  }
+
   const effectivePlanContext = options.deepContext
     ? buildPlanContextFromEnrichedContext(options.deepContext) ?? options.planContext
     : options.planContext;
   const normalizedProblemTag = normalizePlanProblemTag(problemTag);
-  const templateLevel = normalizePlanLevel(level);
-  const activePlanTemplates = filterByEnvironment(planTemplates, options.environment ?? "production");
-  const exact = getPlanLookupProblemTags(problemTag)
-    .map((lookupProblemTag) => activePlanTemplates.find((item) => item.problemTag === lookupProblemTag && item.level === templateLevel))
-    .find((item): item is PlanTemplate => Boolean(item));
-  if (exact) {
-    const plan = applySceneOverlay(applyDeepModeOverlay(applyPlanMicrocycle(
-      applyPlanContext(
-        applyPrimaryNextStepContext(
-          sanitizePlanDayContentIds(
-            applyPreferredContentIds(
-              {
-                ...toGenerated(exact, locale),
-                level
-              },
-              level,
-              preferredContentIds
-            )
-          ),
-          locale,
-          options.primaryNextStep
-        ),
-        locale,
-        effectivePlanContext,
-        { primaryNextStep: options.primaryNextStep, deepContext: options.deepContext }
-      ),
-      locale,
-      effectivePlanContext
-    ), locale, options.deepContext), locale, {
-      problemTag,
-      planContext: effectivePlanContext ?? null,
-      deepContext: options.deepContext,
-      primaryNextStep: options.primaryNextStep
+  const templateSeed = findPlanTemplate(normalizedProblemTag, level, options.environment ?? resolveAppEnvironment());
+  const candidateContentIds = preferredContentIds.length > 0
+    ? preferredContentIds
+    : buildDiagnosisPlanCandidateIds({
+      problemTag: normalizedProblemTag,
+      level,
+      diagnosisInput: options.primaryNextStep,
+      maxCandidates: MAX_PLAN_CANDIDATES
     });
-
-    return {
-      ...normalizeGeneratedPlanStepSemantics(plan, locale),
-      problemTag
-    };
-  }
-
-  const sameTag = getPlanLookupProblemTags(problemTag)
-    .map((lookupProblemTag) => activePlanTemplates.find((item) => item.problemTag === lookupProblemTag))
-    .find((item): item is PlanTemplate => Boolean(item));
-  if (sameTag) {
-    const plan = applySceneOverlay(applyDeepModeOverlay(applyPlanMicrocycle(
-      applyPlanContext(
-        applyPrimaryNextStepContext(
-          sanitizePlanDayContentIds(
-            applyPreferredContentIds(
-              {
-                ...toGenerated(sameTag, locale),
-                level
-              },
-              level,
-              preferredContentIds
-            )
-          ),
-          locale,
-          options.primaryNextStep
-        ),
-        locale,
-        effectivePlanContext,
-        { primaryNextStep: options.primaryNextStep, deepContext: options.deepContext }
-      ),
+  const source = effectivePlanContext?.source ?? (options.primaryNextStep ? "diagnosis" : "direct");
+  const assembled = assemblePlanFromIntent(buildPlanIntent({
+    source,
+    problemTag: normalizedProblemTag,
+      level,
       locale,
-      effectivePlanContext
-    ), locale, options.deepContext), locale, {
-      problemTag,
-      planContext: effectivePlanContext ?? null,
-      deepContext: options.deepContext,
-      primaryNextStep: options.primaryNextStep
-    });
-
-    return {
-      ...normalizeGeneratedPlanStepSemantics(plan, locale),
-      problemTag
-    };
-  }
-
-  return normalizeGeneratedPlanStepSemantics(applySceneOverlay(applyDeepModeOverlay(applyPlanMicrocycle(
+      candidateContentIds,
+      primaryNextStep: options.primaryNextStep,
+      planContext: effectivePlanContext,
+      templateSeed,
+      deepContext: options.deepContext
+    }));
+  const plan = applySceneOverlay(applyDeepModeOverlay(applyPlanMicrocycle(
     applyPlanContext(
       applyPrimaryNextStepContext(
-        sanitizePlanDayContentIds(
-          applyPreferredContentIds(
-            {
-              source: "fallback",
-              level,
-              problemTag,
-              title: locale === "en" ? "7-step general improvement plan" : "通用 7 步基础提升计划",
-              target: locale === "en"
-                ? "Build a steady swing and a practical training rhythm within one week"
-                : "在一周内建立稳定击球与可执行训练节奏",
-              summary: locale === "en"
-                ? "Not enough context to customize yet. Starting with a general, actionable 7-step training rhythm."
-                : "当前上下文不足，先使用一份通用且可执行的 7 步训练节奏。",
-              days: createDefaultDays(locale)
-            },
-            level,
-            preferredContentIds
-          )
-        ),
+        sanitizePlanDayContentIds(assembled),
         locale,
         options.primaryNextStep
       ),
@@ -2593,7 +2583,12 @@ export function getPlanTemplate(
     planContext: effectivePlanContext ?? null,
     deepContext: options.deepContext,
     primaryNextStep: options.primaryNextStep
-  }), locale);
+  });
+
+  return {
+    ...normalizeGeneratedPlanStepSemantics(plan, locale),
+    problemTag
+  };
 }
 
 const DIMENSION_TO_PROBLEM_TAG: Record<ScoredDimension, string> = {
@@ -2659,8 +2654,20 @@ export function getPlanFromAssessment(input: {
     (input.weakDimensions?.[0] && DIMENSION_TO_PROBLEM_TAG[input.weakDimensions[0]]) ||
     (input.observationDimensions?.[0] && DIMENSION_TO_PROBLEM_TAG[input.observationDimensions[0]]) ||
     "general-improvement";
+  const planContext = normalizePlanContext({
+    source: "assessment",
+    primaryProblemTag: mapped,
+    sessionType: "unknown",
+    pressureContext: "unknown",
+    movementContext: "unknown",
+    incomingBallDepth: "unknown",
+    outcomePattern: "unknown",
+    feelingModifiers: [],
+    weakDimensions: input.weakDimensions,
+    observationDimensions: input.observationDimensions
+  });
 
-  const base = getPlanTemplate(mapped, level, locale);
+  const base = getPlanTemplate(mapped, level, locale, [], { planContext });
   const weakLabels = input.weakDimensions?.map((dimension) => getDimensionLabel(dimension, locale)) ?? [];
   const observationLabels = input.observationDimensions?.map((dimension) => getDimensionLabel(dimension, locale)) ?? [];
 

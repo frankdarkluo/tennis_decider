@@ -107,6 +107,9 @@ describe("7-step plan semantics", () => {
           focus: "稳住二发安全弧线",
           contentIds: [],
           drills: ["二发安全弧线 20 球"],
+          drill: "二发安全弧线 20 球",
+          load: "4 组 x 5 球",
+          executionFocus: "先守住过网高度和抛球节奏，再慢慢加速。",
           duration: "20 分钟",
           goal: "让二发先稳定过网而不是先追求速度",
           warmupBlock: { title: "二发准备", items: ["抛球节奏 10 次"] },
@@ -125,9 +128,15 @@ describe("7-step plan semantics", () => {
 
     expect(screen.getByText("这一步目标")).toBeInTheDocument();
     expect(screen.getByText("让二发先稳定过网而不是先追求速度")).toBeInTheDocument();
+    expect(screen.getByText("主练动作")).toBeInTheDocument();
+    expect(screen.getAllByText("二发安全弧线 20 球").length).toBeGreaterThan(0);
+    expect(screen.getByText("负荷 / 训练量")).toBeInTheDocument();
+    expect(screen.getByText("4 组 x 5 球")).toBeInTheDocument();
+    expect(screen.getByText("执行重点")).toBeInTheDocument();
+    expect(screen.getByText("先守住过网高度和抛球节奏，再慢慢加速。")).toBeInTheDocument();
     expect(screen.getByText("练多久 · 20 分钟")).toBeInTheDocument();
     expect(screen.getByText("练习")).toBeInTheDocument();
-    expect(screen.getByText("二发安全弧线 20 球")).toBeInTheDocument();
+    expect(screen.getAllByText("二发安全弧线 20 球").length).toBeGreaterThan(0);
     expect(screen.getByText("连续 5 球过网才加速度")).toBeInTheDocument();
     expect(screen.getByText("完成标准")).toBeInTheDocument();
     expect(screen.getByText("20 球里至少 14 球有安全过网高度")).toBeInTheDocument();

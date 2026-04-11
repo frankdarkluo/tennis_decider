@@ -1,5 +1,6 @@
-import { ScoredDimension } from "@/types/assessment";
+import { LevelBand, PlayContext, PlayStyle, ScoredDimension } from "@/types/assessment";
 import { EnvironmentValue } from "@/types/environment";
+import { EnrichedDiagnosisContext } from "@/types/enrichedDiagnosis";
 
 export type PlanLevel = "2.5" | "3.0" | "3.5" | "4.0" | "4.0+";
 export type PlanContextSessionType = "match" | "practice" | "unknown";
@@ -8,6 +9,34 @@ export type PlanContextMovement = "stationary" | "moving" | "unknown";
 export type PlanContextDepth = "deep" | "unknown";
 export type PlanContextOutcome = "net" | "long" | "no_control" | "weak" | "unknown";
 export type PlanContextFeeling = "tight" | "nervous" | "rushed";
+export type PlanSkillFamily =
+  | "serve"
+  | "return"
+  | "forehand"
+  | "backhand"
+  | "net"
+  | "overhead"
+  | "movement"
+  | "mental"
+  | "tactics"
+  | "general";
+export type PlanMechanismFamily =
+  | "contact_window"
+  | "rhythm"
+  | "spacing"
+  | "pressure_regulation"
+  | "positioning"
+  | "decision"
+  | "recovery"
+  | "shape_control";
+export type PlanBlueprintRole =
+  | "stabilize"
+  | "repeatable_mechanics"
+  | "controlled_variability"
+  | "review_reset"
+  | "pressure_repetition"
+  | "transfer"
+  | "consolidation";
 
 export type PlanContext = {
   source: "diagnosis" | "assessment";
@@ -20,6 +49,9 @@ export type PlanContext = {
   feelingModifiers: PlanContextFeeling[];
   weakDimensions?: ScoredDimension[];
   observationDimensions?: ScoredDimension[];
+  levelBand?: LevelBand;
+  playStyle?: PlayStyle;
+  playContext?: PlayContext;
   rationale?: string;
 };
 
@@ -39,6 +71,10 @@ export type DayPlan = {
   focus: string;
   contentIds: string[];
   drills: string[];
+  drill?: string;
+  load?: string;
+  executionFocus?: string;
+  linkedContentReason?: string | null;
   duration: string;
   goal: string;
   warmupBlock: DayPlanBlock;
@@ -79,6 +115,14 @@ export type PlanTemplateDay = {
   transferCueEn?: string;
   intensity?: PlanIntensity;
   tempo?: PlanTempo;
+  drill?: string;
+  drillEn?: string;
+  load?: string;
+  loadEn?: string;
+  executionFocus?: string;
+  executionFocusEn?: string;
+  linkedContentReason?: string;
+  linkedContentReasonEn?: string;
 };
 
 export type PlanTemplate = {
@@ -100,4 +144,23 @@ export type GeneratedPlan = {
   target: string;
   summary?: string;
   days: DayPlan[];
+};
+
+export type PlanIntent = {
+  source: "diagnosis" | "assessment" | "direct";
+  locale: "zh" | "en";
+  levelBand: PlanLevel;
+  primaryProblemTag: string;
+  skillFamily: PlanSkillFamily;
+  mechanismFamily: PlanMechanismFamily;
+  primaryWeakness?: ScoredDimension;
+  secondaryWeakness?: ScoredDimension;
+  playStyle?: PlayStyle;
+  playContext?: PlayContext;
+  primaryNextStep?: string;
+  candidateContentIds: string[];
+  planContext: PlanContext | null;
+  templateSeed?: PlanTemplate | null;
+  deepContext?: EnrichedDiagnosisContext | null;
+  microcycle: PlanBlueprintRole[];
 };

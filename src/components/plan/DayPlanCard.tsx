@@ -166,12 +166,23 @@ function PrescriptionPlan({
     .map((item) => item.trim())
     .filter((item, index, source) => item.length > 0 && source.indexOf(item) === index);
   const practiceLabel = t("plan.day.main");
+  const drillText = showFull ? (day.drill ?? day.drills[0] ?? day.focus).trim() : compactPrompt(day.drill ?? day.drills[0] ?? day.focus, language);
+  const loadText = showFull ? (day.load ?? day.duration).trim() : compactPrompt(day.load ?? day.duration, language);
+  const executionFocusText = showFull
+    ? (day.executionFocus ?? day.goal).trim()
+    : compactPrompt(day.executionFocus ?? day.goal, language);
 
   return (
     <div className="space-y-4">
       <div className="space-y-2">
         <p className="text-sm font-semibold text-slate-900">{t("plan.day.goal")}</p>
         <p className="text-sm leading-6 text-slate-700">{showFull ? day.goal.trim() : compactPrompt(day.goal, language)}</p>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-3">
+        <PrescriptionCue label={t("plan.day.drill")} value={drillText} />
+        <PrescriptionCue label={t("plan.day.load")} value={loadText} />
+        <PrescriptionCue label={t("plan.day.executionFocus")} value={executionFocusText} />
       </div>
 
       <PrescriptionMetadata
@@ -334,6 +345,14 @@ export function DayPlanCard({
           {featuredContentCard ?? (
             <p className="text-sm text-slate-600">{t("plan.day.fallback")}</p>
           )}
+          {day.linkedContentReason ? (
+            <div className="mt-3 rounded-2xl border border-[var(--line)] bg-white/70 p-4">
+              <p className="text-sm font-semibold text-slate-900">{t("plan.day.linkedReason")}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-700">
+                {displayExpanded ? day.linkedContentReason : compactPrompt(day.linkedContentReason, language)}
+              </p>
+            </div>
+          ) : null}
         </div>
       </Card>
     );
@@ -365,6 +384,14 @@ export function DayPlanCard({
             {featuredContentCard ?? (
               <p className="text-sm text-slate-600">{t("plan.day.fallback")}</p>
             )}
+            {day.linkedContentReason ? (
+              <div className="rounded-2xl border border-[var(--line)] bg-white/70 p-4">
+                <p className="text-sm font-semibold text-slate-900">{t("plan.day.linkedReason")}</p>
+                <p className="mt-2 text-sm leading-6 text-slate-700">
+                  {displayExpanded ? day.linkedContentReason : compactPrompt(day.linkedContentReason, language)}
+                </p>
+              </div>
+            ) : null}
           </div>
         </div>
       ) : null}

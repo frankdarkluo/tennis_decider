@@ -55,12 +55,16 @@ const translationMap = {
   "plan.day.watch": "Watch this",
   "plan.day.open": "Open video",
   "plan.day.goal": "Goal",
+  "plan.day.drill": "Drill",
+  "plan.day.load": "Load / volume",
+  "plan.day.executionFocus": "Execution focus",
   "plan.day.warmup": "Warm-up",
   "plan.day.main": "Practice",
   "plan.day.pressure": "Pressure reps",
   "plan.day.success": "Success criteria",
   "plan.day.failure": "Common failure cue",
   "plan.day.transfer": "Transfer cue",
+  "plan.day.linkedReason": "Why watch this today",
   "plan.day.intensity": "Intensity",
   "plan.day.tempo": "Tempo",
   "plan.day.intensity.low": "Low",
@@ -276,6 +280,10 @@ describe("bilingual rendering", () => {
           focus: "Stabilize the toss",
           contentIds: ["content_gaiao_02"],
           drills: ["30 toss reps"],
+          drill: "30 toss reps",
+          load: "3 sets x 10 reps",
+          executionFocus: "Keep the toss shape and timing the same on every rep.",
+          linkedContentReason: "Use this content today because it reinforces the exact pattern this step is trying to stabilize.",
           duration: "20 min",
           goal: "Build a steadier serve rhythm",
           warmupBlock: { title: "Warm-up prep", items: ["30 toss reps"] },
@@ -295,6 +303,12 @@ describe("bilingual rendering", () => {
 
     expect(screen.getByText("Goal")).toBeInTheDocument();
     expect(screen.getByText("Build a steadier serve rhythm")).toBeInTheDocument();
+    expect(screen.getByText("Drill")).toBeInTheDocument();
+    expect(screen.getAllByText("30 toss reps").length).toBeGreaterThan(0);
+    expect(screen.getByText("Load / volume")).toBeInTheDocument();
+    expect(screen.getByText("3 sets x 10 reps")).toBeInTheDocument();
+    expect(screen.getByText("Execution focus")).toBeInTheDocument();
+    expect(screen.getByText("Keep the toss shape and timing the same on every rep.")).toBeInTheDocument();
     expect(screen.getByText("How long · 20 min")).toBeInTheDocument();
     expect(screen.getByText("Intensity · Medium")).toBeInTheDocument();
     expect(screen.getByText("Tempo · Controlled")).toBeInTheDocument();
@@ -317,6 +331,8 @@ describe("bilingual rendering", () => {
     expect(screen.getByText("Focus: For players who rush the serve and lose trust in the second serve.")).toBeInTheDocument();
     expect(screen.getByText("Direct source")).toBeInTheDocument();
     expect(screen.getByText("Teaching video")).toBeInTheDocument();
+    expect(screen.getByText("Why watch this today")).toBeInTheDocument();
+    expect(screen.getByText("Use this content today because it reinforces the exact pattern this step is trying to stabilize.")).toBeInTheDocument();
   });
 
   it("keeps the prescription sections ahead of featured content on today cards", () => {
@@ -328,6 +344,10 @@ describe("bilingual rendering", () => {
           focus: "固定高压准备点",
           contentIds: ["content_gaiao_02"],
           drills: ["原地高压引拍 15 次", "高压落点控制 12 球"],
+          drill: "高压落点控制 12 球",
+          load: "3 组 x 4 球",
+          executionFocus: "先转身找球，再把击球点放到身体前上方。",
+          linkedContentReason: "今天挂这条内容，是为了让你看到这一步正在练的动作主线到底该长什么样。",
           duration: "20 分钟",
           goal: "先把高压准备点固定住",
           warmupBlock: { title: "高压热身", items: ["原地高压引拍 15 次"] },

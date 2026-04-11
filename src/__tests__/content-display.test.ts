@@ -157,35 +157,40 @@ describe("content display helpers", () => {
     expect(formatLocalizedDateTime(value, "zh")).toContain("2025");
   });
 
-  it("returns localized exact plan templates without changing fallback generation", () => {
+  it("routes plan generation through localized blueprint contracts while keeping fallback generation", () => {
     const exactEn = getPlanTemplate("backhand-into-net", "3.0", "en");
     const exactZh = getPlanTemplate("backhand-into-net", "3.0", "zh");
     const fallbackEn = getPlanTemplate("unknown-problem", "3.0", "en");
 
     expect(exactEn.source).toBe("template");
-    expect(exactEn.title).toBe("7-Step Backhand Net-Clearance Plan");
-    expect(exactEn.target).toBe("Fix the backhand net error first by building earlier, more forward contact.");
+    expect(exactEn.title).toBe("7-Step Backhand Blueprint Plan");
+    expect(exactEn.target).toContain("seven-step blueprint");
     expect(exactEn.days[0]).toMatchObject({
-      focus: "Prepare earlier",
-      drills: ["20 shoulder-turn prep reps", "15 no-ball preparation reps"],
-      duration: "20 min"
+      drill: expect.any(String),
+      load: expect.any(String),
+      executionFocus: expect.any(String),
+      duration: expect.any(String)
     });
 
-    expect(exactZh.title).toBe("反手过网稳定性 7 步计划");
+    expect(exactZh.title).toBe("反手蓝图式 7 步训练计划");
     expect(exactZh.days[0]).toMatchObject({
-      focus: "更早准备",
-      drills: ["转肩准备 20 次", "不击球准备动作 15 次"],
-      duration: "20 分钟"
+      drill: expect.any(String),
+      load: expect.any(String),
+      executionFocus: expect.any(String),
+      duration: expect.any(String)
     });
 
     expect(fallbackEn.source).toBe("fallback");
-    expect(fallbackEn.days[0].focus).toBe("Settle your rhythm and contact before adding pace");
+    expect(fallbackEn.days[0].drill).toBeTruthy();
   });
 
   it("includes prescription metadata on generated plan days", () => {
     const plan = getPlanTemplate("second-serve-reliability", "3.5", "zh");
 
     expect(plan.days[0]).toMatchObject({
+      drill: expect.any(String),
+      load: expect.any(String),
+      executionFocus: expect.any(String),
       goal: expect.any(String),
       warmupBlock: {
         title: expect.any(String),
@@ -249,6 +254,9 @@ describe("content display helpers", () => {
 
       expect(plan.source).toBe("template");
       expect(plan.days[0]).toMatchObject({
+        drill: expect.any(String),
+        load: expect.any(String),
+        executionFocus: expect.any(String),
         goal: expect.any(String),
         warmupBlock: {
           title: expect.any(String),
