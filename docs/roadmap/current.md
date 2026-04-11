@@ -9,80 +9,80 @@ tags:
 
 # Current Roadmap — TennisLevel
 
-> Last updated: 2026-03-31
+> Last updated: 2026-04-11
 
 ## Current goal
 
-Improve TennisLevel's core study-ready experience so users can finish a session, understand the diagnosis, and follow a credible next-step training plan.
+Stabilize TennisLevel as a study-ready training decision routing layer:
+- narrow vague tennis complaints into one credible next step
+- keep recommendation confidence honest and direct-source constrained
+- turn assessment and diagnosis outputs into executable 7-day plans
 
 ## Related docs
 - [[index]]
 - [[product/requirements]]
-- [[roadmap/content-expansion]]
+- [[product/boundaries]]
+- [[product/definition-of-done]]
 - [[research/study-mode]]
-- [[engineering/diagnosis-observability]]
-- [[progress/2026-04-01]]
 - [[weekly/project-progress-summary]]
+- [[progress/2026-04-10]]
+- [[progress/2026-04-11]]
 
-## Priority 1 — active
+## Current branch reality
 
-### P1.1 Training plan quality
-- Make plans feel more like coach prescriptions, not generic content suggestions
-- Emphasize:
-  - clear daily goal
-  - intensity
-  - tempo
-  - success criteria
-- Keep the 7-day plan structure simple and executable
+### Landed on `app-development`
+- `PR7` plan blueprint engine is in place
+- `PR8` assessment 10+2 redesign and `PlayerProfileVector` handoff are in place
+- `PR9` long-tail diagnosis / recommendation / plan coverage is in place
+- diagnose recommendation thumbnails now use a shared fallback path with local overrides where needed
+- hidden `/video-diagnose` is now closed at both route and API level
+- legacy live platform-search behavior has been removed from the active consumer path
 
-### P1.2 Diagnosis quality
-- Improve text diagnosis parsing and ranking
-- Better handle mixed complaints, modifiers, and natural tennis phrasing
-- Keep the system deterministic and study-safe
+### Explicit decisions now in effect
+- diagnose recommendations remain limited to direct-source content from `src/data/contents.ts`
+- `/video-diagnose` stays out of study scope and is not a hidden alternative path anymore
+- taxonomy tightening was implemented as a lightweight typed `ProblemTag` contract, not a full registry rewrite
+- recommendation contract tightening remains inside the current content-catalog + trusted-content path; no separate public recommendation payload layer was added
 
-### P1.3 Study flow usability
-- Reduce confusion in the study flow
-- Improve clarity around what the user should do next
-- Preserve current event logging and actionability measurement
+## Priority 1 — validate the wrapped-up core flow
 
-### P1.4 Mobile polish on core pages
-- Focus on:
-  - diagnose
-  - plan
-  - study mode
-  - results
-- Improve readability and interaction on small screens without redesigning the product
+### P1.1 Study walkthrough on the current branch
+- Run end-to-end checks on:
+  - assessment
+  - diagnose `standard`
+  - diagnose `deep`
+  - plan generation from both diagnosis and assessment
+- Confirm the result surface stays understandable on mobile and does not over-expand by default
 
-### P1.5 Diagnosis reliability closure (completed on 2026-03-31)
-- 7-point codex execution is fully completed.
-- Completed items include:
-  - expandable decision evidence
-  - explicit low-evidence refusal metadata
-  - replayable diagnosis snapshot
-  - real-phrase regression baseline
-  - summary copy budget with detail overflow
-  - cross-effort consistency constraints
-  - study flush failure reason buckets and export aggregation
-- See: [[roadmap/archive/codex-7-point-2026-03-31]]
+### P1.2 Recommendation quality on the tightened surface
+- Spot-check that:
+  - long-tail problems no longer collapse back into generic baseline content
+  - diagnose cards render stable thumbnails or clean placeholders
+  - linked content reasons stay specific and honest
 
-## Priority 2 — next
+### P1.3 Research reliability
+- Keep study event logging, actionability capture, and export flows stable
+- Continue treating `/library` and `/rankings` ordering as frozen study constraints
 
-### P2.1 Data quality and validation
-- Keep content, creator, and study data consistent
-- Prefer scripts and deterministic validation over manual cleanup
+## Priority 2 — next improvements if another implementation slice starts
 
-### P2.2 Bilingual consistency
-- Improve zh/en coverage where it affects active study flows
-- Do not expand localization scope beyond what current features need
+### P2.1 Continue reducing monolith pressure
+- Further shrink `src/lib/diagnosis.ts`
+- Further shrink `src/lib/plans.ts`
+- Prefer moving domain maps and normalization helpers into narrower support modules
 
-### P2.3 Research execution loop (next immediate step)
-- Run a bilingual study walkthrough and verify the new default-density diagnosis behavior.
-- Export local study logs and inspect flush fallback buckets (`network_error`, `http_non_2xx`, `beacon_rejected`).
-- Adjust summary budget wording only if study feedback indicates readability or actionability issues.
+### P2.2 Recommendation-contract decision, if product pressure increases
+- Only introduce a separate recommendation payload layer if current content-catalog outputs become a real maintenance blocker
+- Do not add another contract layer just because the earlier plan named one
 
-## Explicitly out of scope for autonomous agents
+### P2.3 Docs and research materials freshness
+- Keep roadmap, progress notes, and README aligned with the actually landed branch state
+- Avoid stale references to removed search behavior or hidden-but-reachable routes
+
+## Explicitly out of scope unless a human re-opens them
 - reopening `/video-diagnose`
+- restoring generic live platform search to the core consumer flow
 - changing frozen `/library` ordering
 - changing frozen `/rankings` ordering
-- new payments, subscriptions, or growth features
-- schema changes or auth rework
+- auth or schema rework
+- growth, subscription, or payments work

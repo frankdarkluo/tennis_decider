@@ -11,27 +11,24 @@ tags:
 # TennisLevel Docs Index
 
 ## Project Overview
-TennisLevel is currently focused on a study-ready workflow for SportsHCI-style research.
+TennisLevel is currently being wrapped up as a study-ready training decision routing layer for amateur tennis players.
 
-## Current Priorities
-- Study mode execution and session lifecycle
-- Event logging quality and export reliability
-- Post-task actionability capture
-- Frozen ranking and library behavior for controlled studies
-- Core bilingual consistency where it affects active study tasks
+## Current Branch State
+- `PR7` blueprint-based plan engine is landed
+- `PR8` assessment 10+2 redesign is landed
+- `PR9` long-tail diagnosis coverage is landed
+- diagnose recommendation thumbnail handling is stabilized
+- hidden `/video-diagnose` is closed at route and API level
 
-## Graph Hubs
+## Primary entry points
 - [[roadmap/current]]
 - [[product/requirements]]
-- [[research/study-mode]]
-- [[weekly/project-progress-summary]]
-- [[progress/2026-04-01]]
-- [[roadmap/content-expansion]]
-
-## Product identity
-- [[product/principles]]
 - [[product/boundaries]]
 - [[product/definition-of-done]]
+- [[research/study-mode]]
+- [[weekly/project-progress-summary]]
+- [[progress/2026-04-10]]
+- [[progress/2026-04-11]]
 
 ## Navigation
 - Product identity: `product/`
@@ -45,39 +42,15 @@ TennisLevel is currently focused on a study-ready workflow for SportsHCI-style r
 - Workflow guides: `skills/`
 - AI planning artifacts: `superpowers/`
 
-## Recent Progress Files
-- [[progress/2026-04-04]]
-- [[progress/2026-04-02]]
-- [[progress/2026-04-01]]
-- [[progress/2026-03-31]]
-- [[weekly/project-progress-summary]]
-- [[weekly/2026-W14]]
-
-## Feature Entrypoints
-- [[research/study-mode]]
-- [[engineering/diagnosis-observability]]
-- [[engineering/youtube-spec]]
-
-## Research Entrypoints
-- [[research/study-setup]]
-- [[research/study-snapshot]]
-- [[research/study-facilitator]]
-
-## Roadmap Entrypoints
+## Useful hubs
 - [[roadmap/current]]
-- [[roadmap/ux-simplification-plan]]
-- [[product/requirements]]
+- [[research/study-mode]]
+- [[weekly/project-progress-summary]]
 - [[roadmap/content-expansion]]
-- [[roadmap/archive/routing-3-step-2026-03-31]]
-- [[roadmap/archive/codex-7-point-2026-03-31]]
+- [[roadmap/app-development/codex_implementation_plan]]
 
-## Prompt Entrypoints
-- [[prompts/ORGANIZE]]
-- [[prompts/DAILY_PROGRESS_PROMPT]]
-- [[prompts/WEEKLY_REVIEW_PROMPT]]
-
-## Templates and Workflow
-- [[templates/daily-progress-template]]
-- [[templates/weekly-review-template]]
-- [[templates/decision-template]]
-- [[skills/WORKFLOW]]
+## Recent progress
+- [[progress/2026-04-11]]
+- [[progress/2026-04-10]]
+- [[progress/2026-04-09]]
+- [[weekly/project-progress-summary]]

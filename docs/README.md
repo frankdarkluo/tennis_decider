@@ -1,91 +1,59 @@
 # TennisLevel Docs
 
-This folder is the Obsidian vault for the TennisLevel project. It is the single source of truth for product direction, research, engineering decisions, and working process.
+This folder is the working documentation vault for TennisLevel. It is used for product constraints, roadmap state, study materials, engineering notes, and execution logs.
 
-Start at [index.md](index.md) — it is the graph hub that links everything.
+Start at [index.md](index.md).
 
----
-
-## Folder structure
+## Current structure
 
 | Folder | Purpose |
 |--------|---------|
-| `product/` | Product identity, constraints, and quality standards. These are stable, high-authority documents. Change them deliberately. |
-| `roadmap/` | Active priorities and planning. `current.md` is the live sprint state. `archive/` holds completed execution plans. |
-| `engineering/` | Feature specs and technical design notes. One file per major feature or platform concern. |
-| `research/` | Study mode documentation: setup, facilitator guide, snapshot config, and session lifecycle. |
-| `progress/` | Daily logs, one file per day (`YYYY-MM-DD.md`). Append-only records of real work done. |
-| `weekly/` | Weekly summaries distilled from daily logs. |
-| `templates/` | Reusable starters for progress notes, decisions, and weekly reviews. |
-| `prompts/` | AI prompts for daily progress generation, weekly review, and doc organization. |
-| `skills/` | Workflow guides for AI agents (Codex efficiency, general workflow). |
-| `superpowers/` | Claude Code planning artifacts: `plans/` for implementation plans, `specs/` for design specs. |
+| `product/` | Stable product identity, boundaries, requirements, and definition of done |
+| `roadmap/` | Current roadmap, active initiative docs, archive plans, and app-development execution notes |
+| `engineering/` | Technical notes and platform-specific specs |
+| `research/` | Study-mode docs, setup, facilitator guide, and snapshot materials |
+| `progress/` | Daily logs (`YYYY-MM-DD.md`) of what actually happened |
+| `weekly/` | Weekly synthesis based on daily logs |
+| `templates/` | Reusable document starters |
+| `prompts/` | AI prompt files used for progress / review workflows |
+| `skills/` | Workflow guidance for local agents |
+| `superpowers/` | Implementation plans and design specs generated during execution |
 
----
+## How to place new docs
 
-## Naming rules
+Put a document where its long-term purpose belongs, not where it was created:
 
-- **Lowercase with hyphens** for all file and folder names: `study-setup.md`, not `STUDY_SETUP.md`.
-- **Date-prefixed** files for time-bound entries: `2026-04-01.md`, `2026-04-04-deep-diagnose-plan.md`.
-- **Descriptive, not generic**: `content-expansion.md` not `roadmap-v2.md`.
-- **Obsidian links** use explicit folder paths: `[[roadmap/current]]`, not just `[[current]]`.
+- Product law, boundary, or acceptance rule: `product/`
+- What is active now or next: `roadmap/`
+- Feature or implementation design note: `engineering/`
+- Research operations and study execution: `research/`
+- What happened today: `progress/`
+- Summaries distilled from logs: `weekly/`
+- Agent workflow assets: `templates/`, `prompts/`, `skills/`, `superpowers/`
 
----
+If a note is time-bound and implementation-specific, prefer a date-prefixed filename.
 
-## Where each type of document belongs
+## Naming conventions
 
-**A product decision or quality standard** → `product/`  
-Core identity, boundaries, definition of done, original requirements. Not updated frequently.
+- Use lowercase plus hyphens: `study-setup.md`
+- Use date-prefixed filenames for logs and execution artifacts: `2026-04-11.md`
+- Prefer descriptive names over version suffixes
+- Use folder-prefixed wikilinks when the target is ambiguous: `[[roadmap/current]]`
 
-**An active plan or sprint state** → `roadmap/`  
-What we are building now and what comes next. `current.md` is kept up to date.
+## Cross-linking rules
 
-**A completed execution plan** → `roadmap/archive/`  
-Date-named plans that have fully shipped. Read-only reference.
+Every persistent document should link back to the vault and to its nearest upstream/downstream docs.
 
-**A feature or platform technical spec** → `engineering/`  
-How a specific capability works, what its constraints are, what its acceptance criteria look like.
+Minimum expectations:
+- `product/` docs link to `[[index]]`
+- `roadmap/` docs link to `[[product/requirements]]` and relevant engineering / progress docs
+- `engineering/` docs link to `[[roadmap/current]]` and the owning product constraints
+- `research/` docs link to `[[research/study-mode]]`
+- `progress/` docs link to `[[roadmap/current]]` and a weekly summary when relevant
 
-**Study mode, research protocol, or session logistics** → `research/`  
-Everything needed to set up and run a SportsHCI-style user study.
+## Keep it clean
 
-**Daily work log** → `progress/`  
-What actually happened today. Generated or written after real work is done.
-
-**Weekly synthesis** → `weekly/`  
-Distilled from daily logs; captures conclusions and direction changes.
-
-**Reusable document starter** → `templates/`
-
-**AI prompt** → `prompts/`
-
-**AI planning artifact from this session** → `superpowers/plans/` or `superpowers/specs/`
-
----
-
-## Cross-linking conventions
-
-Every persistent document should include a `## Related docs` section near the top with `[[wikilinks]]` to its upstream constraints and downstream consumers. This is what makes the Obsidian knowledge graph useful.
-
-Minimum expected links per document type:
-
-- `product/` docs link to each other and to `[[index]]`
-- `roadmap/` docs link to `[[product/requirements]]`, `[[roadmap/current]]`, and relevant `[[engineering/...]]` docs
-- `engineering/` docs link to `[[roadmap/current]]`, `[[product/definition-of-done]]`, and the relevant `[[research/...]]` or `[[progress/...]]` docs
-- `research/` docs link to `[[research/study-mode]]` and `[[weekly/project-progress-summary]]`
-- `progress/` docs link to `[[index]]`, `[[roadmap/current]]`, and `[[weekly/project-progress-summary]]`
-
----
-
-## Bilingual note
-
-Chinese and English materials coexist throughout. There is no dedicated `zh/` or `en/` split — most documents address both. When a concept has a Chinese-only name (e.g. `study_facilitator` script), keep the file name in English for Obsidian compatibility but write the content in whichever language is most natural.
-
----
-
-## What not to put here
-
-- Source code, configs, or build artifacts (those live in `src/`, `supabase/`, etc.)
-- Secrets or environment variables
-- Large binary files
-- Ephemeral scratch notes with no lasting value — if it is not worth linking from somewhere, it probably does not belong in the vault
+- Do not leave stale roadmap status in place after the branch reality changes
+- Do not keep exact metrics in README/docs unless they are easy to verify and actively maintained
+- Do not create parallel docs for the same active topic when one canonical file will do
+- Archive completed plans instead of letting `current.md` become historical clutter
