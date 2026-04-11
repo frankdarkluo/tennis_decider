@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeVideoFrames } from "@/lib/vlm";
 import { buildVideoDiagnosisResult } from "@/lib/videoDiagnosis";
+import { VIDEO_DIAGNOSE_VISIBLE } from "@/lib/videoDiagnose";
 import { VideoAnalysisRequest } from "@/types/videoDiagnosis";
 
 export const runtime = "nodejs";
@@ -10,6 +11,10 @@ function badRequest(message: string, code = "BAD_REQUEST") {
 }
 
 export async function POST(request: NextRequest) {
+  if (!VIDEO_DIAGNOSE_VISIBLE) {
+    return NextResponse.json({ error: "NOT_FOUND", message: "Video diagnose is not available in this study phase." }, { status: 404 });
+  }
+
   try {
     const body = await request.json() as Partial<VideoAnalysisRequest>;
 
@@ -40,4 +45,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "INTERNAL_ERROR", message }, { status: 500 });
   }
 }
-

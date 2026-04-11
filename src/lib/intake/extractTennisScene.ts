@@ -1,11 +1,11 @@
 import { sanitizeTennisSceneExtraction, type StructuredTennisSceneExtraction } from "@/lib/intake/schema";
-import { createLocalQwenClient, type LocalQwenClient } from "@/lib/scenarioReconstruction/llm/client";
+import { createLocalModelClient, type LocalModelClient } from "@/lib/localModel/client";
 
 export async function extractTennisScene(
   text: string,
-  options: { client?: LocalQwenClient } = {}
+  options: { client?: LocalModelClient } = {}
 ): Promise<StructuredTennisSceneExtraction | null> {
-  const client = options.client ?? createLocalQwenClient();
+  const client = options.client ?? createLocalModelClient();
 
   try {
     const extraction = await client.extractTennisScene(text);

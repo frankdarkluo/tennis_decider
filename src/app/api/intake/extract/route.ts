@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 import { extractTennisScene } from "@/lib/intake/extractTennisScene";
 import { normalizeToScenario } from "@/lib/intake/normalizeToScenario";
 import { hasStructuredSceneSignal, type StructuredTennisSceneExtraction } from "@/lib/intake/schema";
+import { createLocalModelClient } from "@/lib/localModel/client";
 import { getEligibleQuestions, selectNextQuestionWithLlm } from "@/lib/scenarioReconstruction/selector";
-import { createLocalQwenClient } from "@/lib/scenarioReconstruction/llm/client";
 import type { ScenarioState } from "@/types/scenario";
 
 type IntakeRequestBody = {
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
   }
 
   const uiLanguage = ui_language === "en" ? "en" : "zh";
-  const client = createLocalQwenClient();
+  const client = createLocalModelClient();
   const extraction = await extractTennisScene(text, { client });
 
   if (!extraction) {

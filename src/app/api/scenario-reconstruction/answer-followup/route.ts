@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createLocalQwenClient } from "@/lib/scenarioReconstruction/llm/client";
+import { createLocalModelClient } from "@/lib/localModel/client";
 import {
   applyScenarioAnswer,
   ensureScenarioInternals,
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
   }
 
   const uiLanguage = ui_language === "en" ? "en" : "zh";
-  const client = createLocalQwenClient();
+  const client = createLocalModelClient();
   const nextScenario = applyScenarioAnswer(ensureScenarioInternals(scenario), question_id, answer);
   const eligibleQuestions = getEligibleQuestions(nextScenario);
   const selectedQuestion = isScenarioMinimallyAnalyzable(nextScenario)

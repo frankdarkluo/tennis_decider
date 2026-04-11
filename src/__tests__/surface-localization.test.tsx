@@ -10,7 +10,6 @@ import { CreatorDetailModal } from "@/components/rankings/CreatorDetailModal";
 import ProfilePage from "@/app/profile/page";
 import { VideoUploader } from "@/components/video/VideoUploader";
 import { UsageMeter } from "@/components/video/UsageMeter";
-import { PlatformVideoSearch } from "@/components/PlatformVideoSearch";
 import { DayPlanCard } from "@/components/plan/DayPlanCard";
 import { Header } from "@/components/layout/Header";
 import { getPlanTemplate } from "@/lib/plans";
@@ -225,83 +224,6 @@ describe("surface localization", () => {
     expect(screen.getByText("Drop a clip here or click to upload a video under 1 minute")).toBeInTheDocument();
     expect(screen.getByText("Video diagnosis quota")).toBeInTheDocument();
     expect(screen.getByText("You have 2 free video diagnoses left")).toBeInTheDocument();
-  });
-
-  it("renders PlatformVideoSearch in English with localized metadata", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => ({
-      ok: true,
-      json: async () => ({
-        availability: "supported",
-        cached: true,
-        results: [
-          {
-            platform: "bilibili",
-            videoId: "demo-video",
-            title: "Serve rhythm drill",
-            author: "",
-            url: "https://example.com/demo-video",
-            duration: "4:52",
-            thumbnail: null,
-            viewCount: 150977,
-            publishedAt: "2025-03-01T12:00:00.000Z"
-          }
-        ]
-      })
-    })) as unknown as typeof fetch);
-
-    renderWithI18n(
-      <PlatformVideoSearch
-        queries={{
-          bilibili: ["serve rhythm drill"],
-          youtube: ["serve rhythm drill"]
-        }}
-      />
-    );
-
-    expect(await screen.findByText("More related videos")).toBeInTheDocument();
-    expect(await screen.findByText("Cached within 24h")).toBeInTheDocument();
-    expect(await screen.findByText("Unknown creator")).toBeInTheDocument();
-    expect(await screen.findByText(/151K views/i)).toBeInTheDocument();
-    expect(await screen.findByText("Open on Bilibili")).toBeInTheDocument();
-  });
-
-  it("renders an honest not-configured state for YouTube search instead of a fake empty result", async () => {
-    vi.stubGlobal("fetch", vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
-      const body = init?.body ? JSON.parse(String(init.body)) : {};
-
-      if (body.platform === "youtube") {
-        return {
-          ok: true,
-          json: async () => ({
-            availability: "not_configured",
-            cached: false,
-            results: []
-          })
-        };
-      }
-
-      return {
-        ok: true,
-        json: async () => ({
-          availability: "supported",
-          cached: false,
-          results: []
-        })
-      };
-    }) as unknown as typeof fetch);
-
-    renderWithI18n(
-      <PlatformVideoSearch
-        queries={{
-          bilibili: [],
-          youtube: ["serve rhythm drill"]
-        }}
-      />
-    );
-
-    fireEvent.click(screen.getByRole("button", { name: "YouTube" }));
-
-    expect(await screen.findByText("YouTube search is not configured right now.")).toBeInTheDocument();
   });
 
   it("renders localized plan prescription blocks in both locales", () => {

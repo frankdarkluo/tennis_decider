@@ -2,14 +2,14 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mockLocalMediation = vi.hoisted(() => vi.fn());
 
-vi.mock("@/lib/scenarioReconstruction/llm/client", async () => {
-  const actual = await vi.importActual<typeof import("@/lib/scenarioReconstruction/llm/client")>(
-    "@/lib/scenarioReconstruction/llm/client"
+vi.mock("@/lib/localModel/client", async () => {
+  const actual = await vi.importActual<typeof import("@/lib/localModel/client")>(
+    "@/lib/localModel/client"
   );
 
   return {
     ...actual,
-    createLocalQwenClient: () => ({
+    createLocalModelClient: () => ({
       extractTennisScene: vi.fn(),
       mediateDiagnoseComplaint: mockLocalMediation,
       parseScenario: vi.fn(),

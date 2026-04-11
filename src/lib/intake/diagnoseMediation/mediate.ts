@@ -1,4 +1,4 @@
-import { createLocalQwenClient } from "@/lib/scenarioReconstruction/llm/client";
+import { createLocalModelClient } from "@/lib/localModel/client";
 import { shouldMediateDiagnoseComplaint } from "./gate";
 import { validateDiagnoseMediationResult } from "./validate";
 import type {
@@ -97,7 +97,7 @@ export async function mediateDiagnoseComplaint(input: DiagnoseMediationRequest):
     locale: "zh" | "en";
     lockedCategory: SkillCategory | null;
   }) => {
-    const client = createLocalQwenClient();
+    const client = createLocalModelClient();
     return client.mediateDiagnoseComplaint(complaint, locale, lockedCategory);
   });
 
