@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { RecommendationSummary } from "@/components/content/RecommendationSummary";
+import { VideoThumbnail } from "@/components/content/VideoThumbnail";
 import { creators } from "@/data/creators";
 import { ContentItem } from "@/types/content";
 import { Badge } from "@/components/ui/Badge";
@@ -16,7 +17,7 @@ import {
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
-import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
+import { getThumbnail } from "@/lib/thumbnail";
 
 type ContentCardProps = {
   item: ContentItem;
@@ -65,21 +66,6 @@ function ViewsIcon() {
   );
 }
 
-function ThumbnailFallback({ title, platform }: { title: string; platform: string }) {
-  return (
-    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-100 via-white to-brand-50">
-      <div className="flex flex-col items-center gap-2 text-center">
-        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-4xl font-semibold text-slate-300 shadow-sm ring-1 ring-slate-200/70">
-          {getVideoInitial(title)}
-        </span>
-        <span className="rounded-full bg-white/85 px-3 py-1 text-xs font-semibold tracking-[0.16em] text-slate-400 shadow-sm ring-1 ring-slate-200/70">
-          {platform.toUpperCase()}
-        </span>
-      </div>
-    </div>
-  );
-}
-
 export function ContentCard({
   item,
   source = "library",
@@ -95,8 +81,6 @@ export function ContentCard({
   const focusLine = getContentFocusLine(item, language);
   const thumbnail = getThumbnail(item);
   const viewCountLabel = formatCompactViewCount(item.viewCount, language);
-  const [thumbnailFailed, setThumbnailFailed] = useState(false);
-  const showThumbnail = Boolean(thumbnail) && !thumbnailFailed;
   const contentLanguage = getContentLanguageTag(item);
   const subtitleAvailability = getSubtitleAvailability(item);
   const creatorName = creator ? getCreatorPrimaryName(creator, language) : t("content.unknownCreator");
@@ -136,27 +120,17 @@ export function ContentCard({
       />
       <div className="relative z-10 flex h-full flex-col pointer-events-none">
         <div className="relative aspect-[16/9] shrink-0 overflow-hidden bg-slate-100">
-          {showThumbnail ? (
-            <img
-              src={thumbnail ?? undefined}
-              alt={primaryTitle}
-              className="absolute inset-0 h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.02]"
-              loading="lazy"
-              onError={() => setThumbnailFailed(true)}
-            />
-          ) : (
-            <ThumbnailFallback title={primaryTitle} platform={item.platform} />
-          )}
-          <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-slate-200/70" />
+          <VideoThumbnail
+            thumbnail={thumbnail}
+            title={primaryTitle}
+            duration={item.duration}
+            className="relative h-full w-full overflow-hidden bg-slate-100"
+            imageClassName="absolute inset-0 h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.02]"
+          />
           {viewCountLabel ? (
             <span className="absolute bottom-2 left-2 inline-flex items-center gap-1.5 rounded bg-black/75 px-2 py-1 text-xs font-medium text-white">
               <ViewsIcon />
               {viewCountLabel}
-            </span>
-          ) : null}
-          {item.duration ? (
-            <span className="absolute bottom-2 right-2 rounded bg-black/75 px-1.5 py-0.5 text-xs font-medium text-white">
-              {item.duration}
             </span>
           ) : null}
         </div>

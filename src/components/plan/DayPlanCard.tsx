@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { RecommendationSummary } from "@/components/content/RecommendationSummary";
+import { VideoThumbnail } from "@/components/content/VideoThumbnail";
 import { contents } from "@/data/contents";
 import { expandedContents } from "@/data/expandedContents";
 import { DayPlan } from "@/types/plan";
@@ -17,7 +18,7 @@ import {
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
-import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
+import { getThumbnail } from "@/lib/thumbnail";
 
 function compactFocus(value: string, maxLength = 24) {
   if (value.length <= maxLength) {
@@ -269,25 +270,11 @@ export function DayPlanCard({
       }}
     >
       <div className="flex gap-3">
-        <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg bg-slate-100">
-          {thumbnail ? (
-            <img
-              src={thumbnail}
-              alt={primaryTitle ?? featuredContent.title}
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <span className="text-lg font-medium text-slate-300">{getVideoInitial(primaryTitle ?? featuredContent.title)}</span>
-            </div>
-          )}
-          {featuredContent.duration ? (
-            <span className="absolute bottom-1.5 right-1.5 rounded bg-black/75 px-1 py-0.5 text-[11px] font-medium text-white">
-              {featuredContent.duration}
-            </span>
-          ) : null}
-        </div>
+        <VideoThumbnail
+          thumbnail={thumbnail}
+          title={primaryTitle ?? featuredContent.title}
+          duration={featuredContent.duration}
+        />
         <div className="min-w-0 flex-1">
           {featuredContent ? (
             <div className="mb-2 flex flex-wrap gap-2">

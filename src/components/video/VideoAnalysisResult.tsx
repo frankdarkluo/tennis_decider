@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { VideoThumbnail } from "@/components/content/VideoThumbnail";
 import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import { Badge } from "@/components/ui/Badge";
@@ -18,7 +19,7 @@ import {
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { buildDiagnosisPlanCandidateIds, buildPlanHref } from "@/lib/plans";
-import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
+import { getThumbnail } from "@/lib/thumbnail";
 import { VideoDiagnosisResult } from "@/types/videoDiagnosis";
 
 function getConfidenceTone(confidence: VideoDiagnosisResult["confidenceBand"]) {
@@ -48,25 +49,7 @@ function RecommendationCard({
   return (
     <div className="rounded-xl border border-[var(--line)] p-4">
       <div className="flex gap-3">
-        <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg bg-slate-100">
-          {thumbnail ? (
-            <img
-              src={thumbnail}
-              alt={primaryTitle}
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <span className="text-lg font-medium text-slate-300">{getVideoInitial(primaryTitle)}</span>
-            </div>
-          )}
-          {item.duration ? (
-            <span className="absolute bottom-1.5 right-1.5 rounded bg-black/75 px-1 py-0.5 text-[11px] font-medium text-white">
-              {item.duration}
-            </span>
-          ) : null}
-        </div>
+        <VideoThumbnail thumbnail={thumbnail} title={primaryTitle} duration={item.duration} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <PlatformBadge platform={item.platform} />

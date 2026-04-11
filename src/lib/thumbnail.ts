@@ -1,3 +1,5 @@
+import { CONTENT_THUMBNAIL_OVERRIDES } from "@/data/contentThumbnailOverrides";
+
 const YOUTUBE_PATTERNS = [
   /(?:v=)([a-zA-Z0-9_-]{11})/,
   /(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
@@ -65,12 +67,19 @@ export function parseIsoDuration(iso: string): string {
 }
 
 export function getThumbnail(item: {
+  id?: string;
   platform: string;
   url: string;
   thumbnail?: string | null;
 }): string | null {
-  if (item.thumbnail) {
-    return item.thumbnail;
+  const explicitThumbnail = item.thumbnail?.trim();
+
+  if (explicitThumbnail) {
+    return explicitThumbnail;
+  }
+
+  if (item.id && CONTENT_THUMBNAIL_OVERRIDES[item.id]) {
+    return CONTENT_THUMBNAIL_OVERRIDES[item.id];
   }
 
   if (item.platform === "YouTube") {

@@ -5,6 +5,7 @@ import { ContentItem } from "@/types/content";
 import { Modal } from "@/components/ui/Modal";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { VideoThumbnail } from "@/components/content/VideoThumbnail";
 import { CreatorAvatar } from "@/components/ui/CreatorAvatar";
 import { PlatformBadge } from "@/components/ui/PlatformBadge";
 import {
@@ -24,7 +25,7 @@ import {
 } from "@/lib/content/display";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
-import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
+import { getThumbnail } from "@/lib/thumbnail";
 
 type CreatorModalItem = {
   id: string;
@@ -296,25 +297,11 @@ export function CreatorDetailModal({ creator, open, onClose }: { creator: Creato
                   }}
                 >
                   <div className="flex gap-3">
-                    <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg bg-slate-100">
-                      {getThumbnail(item) ? (
-                        <img
-                          src={getThumbnail(item)!}
-                          alt={item.title}
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center">
-                          <span className="text-lg font-medium text-slate-300">{getVideoInitial(item.title)}</span>
-                        </div>
-                      )}
-                      {item.duration ? (
-                        <span className="absolute bottom-1.5 right-1.5 rounded bg-black/75 px-1 py-0.5 text-[11px] font-medium text-white">
-                          {item.duration}
-                        </span>
-                      ) : null}
-                    </div>
+                    <VideoThumbnail
+                      thumbnail={getThumbnail(item)}
+                      title={item.title}
+                      duration={item.duration}
+                    />
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <p className="font-semibold text-slate-900">{item.title}</p>

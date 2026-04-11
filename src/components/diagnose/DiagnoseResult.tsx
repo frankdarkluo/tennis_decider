@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RecommendationSummary } from "@/components/content/RecommendationSummary";
+import { VideoThumbnail } from "@/components/content/VideoThumbnail";
 import { DiagnosisResult as DiagnosisResultType } from "@/types/diagnosis";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -22,7 +23,7 @@ import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
 import { getDiagnosisConfidenceLabel } from "@/lib/diagnosis";
 import { buildDiagnosisPlanCandidateIds, buildDiagnosisPlanContext, buildPlanHref } from "@/lib/plans";
-import { getThumbnail, getVideoInitial } from "@/lib/thumbnail";
+import { getThumbnail } from "@/lib/thumbnail";
 import { VIDEO_DIAGNOSE_VISIBLE } from "@/lib/videoDiagnose";
 import { PlanLevel } from "@/types/plan";
 import { Badge } from "@/components/ui/Badge";
@@ -137,25 +138,7 @@ function RecommendationCard({
   return (
     <div className="rounded-xl border border-[var(--line)] p-4 text-sm">
       <div className="flex gap-3">
-        <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg bg-slate-100">
-          {thumbnail ? (
-            <img
-              src={thumbnail}
-              alt={primaryTitle}
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <span className="text-lg font-medium text-slate-300">{getVideoInitial(primaryTitle)}</span>
-            </div>
-          )}
-          {item.duration ? (
-            <span className="absolute bottom-1.5 right-1.5 rounded bg-black/75 px-1 py-0.5 text-[11px] font-medium text-white">
-              {item.duration}
-            </span>
-          ) : null}
-        </div>
+        <VideoThumbnail thumbnail={thumbnail} title={primaryTitle} duration={item.duration} />
         <div className="min-w-0 flex-1">
           <div className="mb-2 flex flex-wrap gap-2">
             <Badge className="bg-slate-100 px-4 py-1.5 text-sm font-semibold leading-none text-slate-700">
@@ -241,7 +224,7 @@ export function DiagnoseResult({
     deepContext: deepContext ?? undefined
   });
   const canGeneratePlan = Boolean(result.input.trim());
-  const [layer, setLayer] = useState<1 | 2 | 3>(1);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [evidenceExpanded, setEvidenceExpanded] = useState(false);
   const isNarrowingMode = result.needsNarrowing ?? false;
   const isQuickMode = result.effortMode === "quick";
@@ -289,7 +272,7 @@ export function DiagnoseResult({
     : null;
 
   useEffect(() => {
-    setLayer(1);
+    setDetailsOpen(false);
     setEvidenceExpanded(false);
   }, [result.input, result.problemTag]);
 
@@ -307,28 +290,6 @@ export function DiagnoseResult({
           <p className="text-sm font-semibold text-slate-700">{t("diagnose.result.today")}</p>
           <p className="mt-2 text-base font-medium text-slate-900">{primaryNextStep}</p>
         </div>
-        <div className={evidenceTone.wrapperClassName}>
-          <div className="flex items-center justify-between gap-3">
-            <p className={evidenceTone.titleClassName}>{evidenceTone.title}</p>
-            <button
-              type="button"
-              className="text-xs font-semibold text-slate-600 transition hover:text-slate-900"
-              onClick={() => {
-                if (!evidenceExpanded) {
-                  logEvent("diagnose.why_this_viewed", { targetType: "evidence" }, { page: "/diagnose" });
-                }
-                setEvidenceExpanded((prev) => !prev);
-              }}
-            >
-              {evidenceExpanded
-                ? (language === "en" ? "Hide" : "收起")
-                : (language === "en" ? "View" : "展开")}
-            </button>
-          </div>
-          {evidenceExpanded ? (
-            <p className="mt-2">{evidenceTone.description}</p>
-          ) : null}
-        </div>
         {!isNarrowingMode ? (
           <div className="flex flex-wrap gap-2">
             <Link
@@ -340,24 +301,6 @@ export function DiagnoseResult({
             >
               <Button>{planCtaLabel}</Button>
             </Link>
-          </div>
-        ) : null}
-        {result.fallbackUsed && result.fallbackMode ? (
-          <div className="rounded-xl border border-brand-100 bg-brand-50/70 p-3 text-sm text-slate-700">
-            <p>
-              {result.fallbackMode === "assessment"
-                ? (language === "en"
-                  ? "This first pass uses the weakest area from the assessment. A more specific description will make the diagnosis more precise."
-                  : "这次先按你评估里最需要补的环节给你一组方向，后面你再把问题描述得更具体一点，我们会更准。")
-                : (language === "en"
-                  ? "This first pass uses a general improvement bundle. After the 1-minute assessment, recommendations will be more precise."
-                  : "这次先给你一组通用提升内容。做完 1 分钟评估后，我们能把推荐收得更准。")}
-            </p>
-            {result.fallbackMode === "no-assessment" ? (
-              <div className="mt-3">
-                <Link href="/assessment"><Button variant="secondary">{t("video.assessment.cta")}</Button></Link>
-              </div>
-            ) : null}
           </div>
         ) : null}
         {hasCategoryConflict && categoryConflictMessage ? (
@@ -439,23 +382,75 @@ export function DiagnoseResult({
             </div>
           </div>
         ) : null}
-        {layer === 1 && canExpandLayerTwo ? (
+        {!isNarrowingMode && result.causes.length > 0 ? (
+          <div className="rounded-xl border border-[var(--line)] bg-white/80 p-3 text-sm text-slate-700">
+            <p className="font-semibold text-slate-900">{t("diagnose.result.why")}</p>
+            <p className="mt-2 leading-6">{result.causes[0]}</p>
+          </div>
+        ) : null}
+        {canExpandLayerTwo ? (
           <button
             type="button"
             className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
             onClick={() => {
-              logEvent("diagnose.layer_opened", { layer: 2 }, { page: "/diagnose" });
-              logEvent("diagnose.why_this_viewed", { targetType: "fix" }, { page: "/diagnose" });
-              setLayer(2);
+              if (!detailsOpen) {
+                logEvent("diagnose.layer_opened", { layer: 2 }, { page: "/diagnose" });
+                logEvent("diagnose.why_this_viewed", { targetType: "fix" }, { page: "/diagnose" });
+              }
+              setDetailsOpen((prev) => !prev);
             }}
           >
-            {t("diagnose.result.expand1")}
+            {detailsOpen
+              ? (language === "en" ? "Hide details" : "收起细节")
+              : t("diagnose.result.expand1")}
           </button>
         ) : null}
       </div>
 
-      {layer >= 2 && !isNarrowingMode ? (
+      {detailsOpen && !isNarrowingMode ? (
         <div className="space-y-4 border-t border-[var(--line)] pt-4">
+          <div className={evidenceTone.wrapperClassName}>
+            <div className="flex items-center justify-between gap-3">
+              <p className={evidenceTone.titleClassName}>{evidenceTone.title}</p>
+              <button
+                type="button"
+                className="text-xs font-semibold text-slate-600 transition hover:text-slate-900"
+                onClick={() => {
+                  if (!evidenceExpanded) {
+                    logEvent("diagnose.why_this_viewed", { targetType: "evidence" }, { page: "/diagnose" });
+                  }
+                  setEvidenceExpanded((prev) => !prev);
+                }}
+              >
+                {evidenceExpanded
+                  ? (language === "en" ? "Hide" : "收起")
+                  : (language === "en" ? "View" : "展开")}
+              </button>
+            </div>
+            {evidenceExpanded ? (
+              <p className="mt-2">{evidenceTone.description}</p>
+            ) : null}
+          </div>
+
+          {result.fallbackUsed && result.fallbackMode ? (
+            <div className="rounded-xl border border-brand-100 bg-brand-50/70 p-3 text-sm text-slate-700">
+              <p>
+                {result.fallbackMode === "assessment"
+                  ? (language === "en"
+                    ? "This first pass uses the weakest area from the assessment. A more specific description will make the diagnosis more precise."
+                    : "这次先按你评估里最需要补的环节给你一组方向，后面你再把问题描述得更具体一点，我们会更准。")
+                  : (language === "en"
+                    ? "This first pass uses a general improvement bundle. After the 1-minute assessment, recommendations will be more precise."
+                    : "这次先给你一组通用提升内容。做完 1 分钟评估后，我们能把推荐收得更准。")}
+              </p>
+              {result.fallbackMode === "no-assessment" ? (
+                <div className="mt-3">
+                  <Link href="/assessment"><Button variant="secondary">{t("video.assessment.cta")}</Button></Link>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+
           {detailedSummary ? (
             <div>
               <p className="mb-2 text-sm font-semibold text-slate-900">
@@ -468,7 +463,7 @@ export function DiagnoseResult({
           <div>
             <p className="mb-2 text-sm font-semibold text-slate-900">{t("diagnose.result.why")}</p>
             <ul className="list-disc space-y-1 pl-5 text-sm text-slate-700">
-              {result.causes.map((cause) => (
+              {result.causes.slice(1).map((cause) => (
                 <li key={cause}>{cause}</li>
               ))}
             </ul>
@@ -491,6 +486,15 @@ export function DiagnoseResult({
             <div>
               <p className="mb-2 text-sm font-semibold text-slate-900">{t("diagnose.result.featured")}</p>
               <RecommendationCard item={featuredContent} source="diagnosis_featured" layer={2} problemTag={result.problemTag} />
+            </div>
+          ) : null}
+
+          {moreContents.length > 0 ? (
+            <div className="space-y-2">
+              <p className="text-sm font-semibold text-slate-900">{t("diagnose.result.more")}</p>
+              {moreContents.map((item) => (
+                <RecommendationCard key={item.id} item={item} source="diagnosis_more" layer={3} problemTag={result.problemTag} />
+              ))}
             </div>
           ) : null}
 
@@ -537,35 +541,6 @@ export function DiagnoseResult({
             >
               <Button variant="secondary">{t("diagnose.result.library")}</Button>
             </Link>
-          </div>
-
-          {layer === 2 ? (
-            <button
-              type="button"
-              className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
-              onClick={() => {
-                logEvent("diagnose.layer_opened", { layer: 3 }, { page: "/diagnose" });
-                setLayer(3);
-              }}
-            >
-              {t("diagnose.result.expand2")}
-            </button>
-          ) : null}
-        </div>
-      ) : null}
-
-      {layer >= 3 && !isNarrowingMode ? (
-        <div className="space-y-4 border-t border-[var(--line)] pt-4">
-          {moreContents.length > 0 ? (
-            <div className="space-y-2">
-              <p className="text-sm font-semibold text-slate-900">{t("diagnose.result.more")}</p>
-              {moreContents.map((item) => (
-                <RecommendationCard key={item.id} item={item} source="diagnosis_more" layer={3} problemTag={result.problemTag} />
-              ))}
-            </div>
-          ) : null}
-
-          <div className="flex flex-wrap gap-2">
             <button
               type="button"
               className="text-sm font-medium text-slate-500 transition hover:text-slate-900"
@@ -575,14 +550,14 @@ export function DiagnoseResult({
             >
               {t("diagnose.result.continue")}
             </button>
-            {VIDEO_DIAGNOSE_VISIBLE ? (
-              <Link
-                href="/video-diagnose"
+              {VIDEO_DIAGNOSE_VISIBLE ? (
+                <Link
+                  href="/video-diagnose"
                 onClick={() => logEvent("cta_click", { ctaLabel: t("cta.videoUpgrade"), ctaLocation: "diagnosis_result", targetPage: "/video-diagnose" })}
               >
                 <Button variant="secondary">{t("diagnose.result.video")}</Button>
               </Link>
-            ) : null}
+                ) : null}
           </div>
         </div>
       ) : null}
