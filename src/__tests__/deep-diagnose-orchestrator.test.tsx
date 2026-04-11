@@ -31,6 +31,9 @@ const translationMap: Record<string, string> = {
   "diagnose.subtitle": "具体说出动作、错误和场景，我来帮你判断先改什么。",
   "diagnose.placeholder": "例如：我反手总下网，一快就更容易失误",
   "diagnose.quickTags": "示例",
+  "diagnose.mode.label": "诊断深度",
+  "diagnose.mode.standard": "标准",
+  "diagnose.mode.deep": "深入",
   "diagnose.button.start": "开始诊断",
   "diagnose.button.clear": "清空",
   "diagnose.result.badge": "你的问题是：",
@@ -302,16 +305,110 @@ describe("deep diagnose orchestrator", () => {
     cleanup();
   });
 
-  it("keeps the consumer diagnose route free of legacy deep mode controls", async () => {
+  it("shows only Standard and Deep on the diagnose surface and keeps removed recommendation UI absent", async () => {
     const DiagnosePage = await loadDiagnosePage();
 
     render(React.createElement(DiagnosePage));
 
     expect(await screen.findByText("说一句你的问题")).toBeInTheDocument();
+    expect(screen.getByText("诊断深度")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "标准" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "深入" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "快速" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "标准" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "深入" })).not.toBeInTheDocument();
     expect(screen.queryByText("场景还原")).not.toBeInTheDocument();
+    expect(screen.queryByText("更多相关视频")).not.toBeInTheDocument();
+  });
+
+  it("uses Standard by default in the direct diagnosis path", async () => {
+    prepareDiagnoseSubmissionMock.mockResolvedValueOnce({
+      source: "structured_intake",
+      decision: "direct_result",
+      diagnosisInput: "比赛里我反手老下网。",
+      extraction: null,
+      scenario: null,
+      selectedQuestion: null,
+      eligibleQuestions: [],
+      missingSlots: [],
+      done: true,
+      mediationMode: "skip",
+      mediationDisplayText: null,
+      mediationQuestion: null,
+      clarificationUsed: false
+    });
+
+    const DiagnosePage = await loadDiagnosePage();
+
+    render(React.createElement(DiagnosePage));
+
+    fireEvent.change(await screen.findByPlaceholderText(/我反手总下网/), {
+      target: { value: "比赛里我反手老下网" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "开始诊断" }));
+
+    await waitFor(() => {
+      expect(diagnoseProblemMock).toHaveBeenCalledWith(
+        "比赛里我反手老下网。",
+        expect.objectContaining({
+          effortMode: "standard"
+        })
+      );
+    });
+  });
+
+  it("shows scene reconstruction only in Deep mode and uses it to call the deep diagnosis path", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        scenario: createScenario({
+          deep_progress: {
+            deepReady: true,
+            stoppedByCap: false,
+            requiredRemaining: [],
+            optionalRemaining: [],
+            unresolvedRequiredBecauseOfSkip: [],
+            unresolvedRequiredBecauseUnavailable: []
+          },
+          missing_slots: [],
+          next_question_candidates: [],
+          selected_next_question_id: null
+        }),
+        missing_slots: [],
+        eligible_questions: [],
+        selected_question: null,
+        done: true
+      })
+    } satisfies Partial<Response>);
+
+    const DiagnosePage = await loadDiagnosePage();
+
+    render(React.createElement(DiagnosePage));
+
+    fireEvent.change(await screen.findByPlaceholderText(/我反手总下网/), {
+      target: { value: "关键分时我的二发容易下网" }
+    });
+
+    expect(screen.queryByText("场景还原")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "深入" }));
+
+    expect(screen.getByText("场景还原")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "开始场景还原" }));
+
+    expect(await screen.findByRole("button", { name: "进入后续分析" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "进入后续分析" }));
+
+    await waitFor(() => {
+      expect(diagnoseProblemMock).toHaveBeenCalledWith(
+        expect.stringContaining("二发"),
+        expect.objectContaining({
+          effortMode: "deep",
+          deepHandoff: expect.objectContaining({
+            mode: "deep",
+            isDeepModeReady: true
+          })
+        })
+      );
+    });
   });
 
   it("hydrates the complaint text from q and starts inline follow-up when intake needs one more clue", async () => {

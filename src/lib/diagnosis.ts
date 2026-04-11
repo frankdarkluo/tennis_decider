@@ -104,15 +104,12 @@ const SUPPORT_SIGNAL_CONTENT_IDS: Record<string, string[]> = {
 
 const PROBLEM_PREVIEW_OPTIONS: ProblemPreviewOption[] = [
   { label: "反手总是下网", label_en: "Backhand keeps going into the net", problemTag: "backhand-into-net" },
-  { label: "一发总发不进", label_en: "My first serve will not go in", problemTag: "first-serve-in" },
   { label: "二发总双误", label_en: "Second serve keeps double faulting", problemTag: "second-serve-reliability" },
   { label: "多拍对拉总不稳", label_en: "Rally breaks down after a few balls", problemTag: "rally-consistency" },
   { label: "正手一发力就出界", label_en: "Forehand flies out when I swing harder", problemTag: "forehand-out" },
   { label: "双打不知道站哪", label_en: "Not sure where to stand in doubles", problemTag: "doubles-positioning" },
   { label: "脚步总慢半拍", label_en: "Footwork is always half a beat late", problemTag: "movement-slow" },
-  { label: "网前截击老冒高", label_en: "My volleys keep floating", problemTag: "volley-floating" },
   { label: "比赛一紧张就乱", label_en: "Execution tightens up under pressure", problemTag: "pressure-tightness" },
-  { label: "月亮球一来就很别扭", label_en: "Moonballs throw off my timing", problemTag: "moonball-trouble" },
   { label: "年纪大了跑不太动", label_en: "I cannot move as well anymore", problemTag: "mobility-limit" }
 ];
 

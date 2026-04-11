@@ -313,15 +313,15 @@ describe("consumer diagnose PR3", () => {
     cleanup();
   });
 
-  it("shows no visible quick, standard, or deep mode controls in consumer diagnose", async () => {
+  it("shows Standard and Deep controls without exposing the legacy Quick mode", async () => {
     const DiagnosePage = await loadDiagnosePage();
 
     render(React.createElement(DiagnosePage));
 
     expect(await screen.findByText("说一句你的问题")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "标准" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "深入" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "快速" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "标准" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "深入" })).not.toBeInTheDocument();
   });
 
   it("keeps the consumer diagnose route available without legacy redirects", async () => {

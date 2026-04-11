@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
@@ -21,15 +20,18 @@ import { getAssessmentLevelBand } from "@/lib/assessment";
 import { CONSUMER_VISIBLE_FOLLOWUP_CAP, decideDiagnoseFlow } from "@/lib/intake/decideDiagnoseFlow";
 import { logEvent } from "@/lib/eventLogger";
 import { useI18n } from "@/lib/i18n/config";
+import { buildDeepDiagnosisHandoff, buildEnrichedDiagnosisContext } from "@/lib/diagnose/enrichedContext";
 import { prepareDiagnoseSubmission } from "@/lib/intake/prepareDiagnoseSubmission";
 // hasStudyTaskRating removed: actionability prompt not shown on diagnose page
 import { getLatestAssessmentResult, saveDiagnosisHistory } from "@/lib/userData";
 import type { ObserveDiagnoseMediation } from "@/lib/intake/diagnoseMediation/types";
-import { AssessmentResult } from "@/types/assessment";
-import { DiagnosisResult, DiagnosisSnapshot } from "@/types/diagnosis";
+import type { AssessmentResult } from "@/types/assessment";
+import type { DeepDiagnosisHandoff } from "@/types/enrichedDiagnosis";
+import type { DiagnosisEffortMode, DiagnosisResult, DiagnosisSnapshot } from "@/types/diagnosis";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { PageBreadcrumbs } from "@/components/layout/PageBreadcrumbs";
 import { DiagnoseInput } from "@/components/diagnose/DiagnoseInput";
+import { DeepScenarioModule } from "@/components/diagnose/DeepScenarioModule";
 import { DiagnoseMediationInline } from "@/components/diagnose/DiagnoseMediationInline";
 import { InlineFollowupFlow } from "@/components/diagnose/InlineFollowupFlow";
 import { DiagnoseResult as DiagnoseResultPanel } from "@/components/diagnose/DiagnoseResult";
@@ -141,6 +143,7 @@ function DiagnosePageContent() {
   const [text, setText] = useState("");
   const [currentLevel, setCurrentLevel] = useState<string | undefined>(undefined);
   const [assessmentResult, setAssessmentResult] = useState<AssessmentResult | null>(null);
+  const [effortMode, setEffortMode] = useState<DiagnosisEffortMode>("standard");
   const [result, setResult] = useState<DiagnosisResult>(getDefaultDiagnosisResult());
   const [latestSnapshot, setLatestSnapshot] = useState<DiagnosisSnapshot | null>(null);
   const [contextReady, setContextReady] = useState(false);
@@ -150,6 +153,7 @@ function DiagnosePageContent() {
   const [mediationState, setMediationState] = useState<ConsumerMediationState | null>(null);
   const [mediationSubmitting, setMediationSubmitting] = useState(false);
   const [mediationError, setMediationError] = useState<string | null>(null);
+  const [deepResetSignal, setDeepResetSignal] = useState(0);
   const diagnosisRunTokenRef = useRef(0);
   const handledQueryRef = useRef<string | null>(null);
 
@@ -173,6 +177,10 @@ function DiagnosePageContent() {
     setMediationError(null);
   }
 
+  function resetDeepScenarioState() {
+    setDeepResetSignal((signal) => signal + 1);
+  }
+
   function invalidatePendingDiagnosisRuns() {
     diagnosisRunTokenRef.current += 1;
     return diagnosisRunTokenRef.current;
@@ -191,11 +199,13 @@ function DiagnosePageContent() {
     diagnosisInput,
     queryText,
     scenario,
+    deepHandoff,
     runToken
   }: {
     diagnosisInput: string;
     queryText: string;
     scenario: ScenarioState | null;
+    deepHandoff?: DeepDiagnosisHandoff | null;
     runToken: number;
   }) => {
     const trimmedDiagnosisInput = diagnosisInput.trim();
@@ -208,17 +218,24 @@ function DiagnosePageContent() {
     resetFollowupState();
     setText(trimmedQueryText);
 
+    const resolvedEffortMode: DiagnosisEffortMode = deepHandoff ? "deep" : effortMode;
     const diagnosisResult = diagnoseProblem(trimmedDiagnosisInput, {
       level: currentLevel,
       assessmentResult,
       maxRecommendations: 5,
-      effortMode: "standard",
+      effortMode: resolvedEffortMode,
       locale: language,
-      environment
+      environment,
+      deepHandoff: deepHandoff ?? null
     });
     const finalResult: DiagnosisResult = {
       ...diagnosisResult,
-      enrichedContext: null
+      enrichedContext: deepHandoff
+        ? buildEnrichedDiagnosisContext({
+            handoff: deepHandoff,
+            problemTag: diagnosisResult.problemTag
+          })
+        : null
     };
 
     if (!isCurrentDiagnosisRun(runToken)) {
@@ -458,6 +475,17 @@ function DiagnosePageContent() {
   }, [contextReady, searchParams]);
 
   const onDiagnose = async () => {
+    if (effortMode === "deep") {
+      invalidatePendingDiagnosisRuns();
+      resetFollowupState(true);
+      resetMediationState();
+      document.getElementById("deep-scenario-module")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+      return;
+    }
+
     await runDiagnosis(text);
   };
 
@@ -467,6 +495,20 @@ function DiagnosePageContent() {
     setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
     resetFollowupState();
     resetMediationState();
+    resetDeepScenarioState();
+  };
+
+  const handleEffortModeChange = (nextMode: DiagnosisEffortMode) => {
+    if (nextMode === effortMode) {
+      return;
+    }
+
+    invalidatePendingDiagnosisRuns();
+    setEffortMode(nextMode);
+    setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
+    resetFollowupState();
+    resetMediationState();
+    resetDeepScenarioState();
   };
 
   async function handleFollowupAnswer(answerKey: string) {
@@ -592,6 +634,8 @@ function DiagnosePageContent() {
           value={text}
           quickTags={quickTags}
           quickTagsLabel={t("diagnose.quickTags")}
+          locale={language === "en" ? "en" : "zh"}
+          effortMode={effortMode}
           onChange={(value) => {
             invalidatePendingDiagnosisRuns();
             setText(value);
@@ -602,12 +646,53 @@ function DiagnosePageContent() {
               resetMediationState();
             }
           }}
+          onEffortModeChange={handleEffortModeChange}
           onDiagnose={onDiagnose}
           onClear={onClear}
-          onQuickTagClick={(tag) => void runDiagnosis(tag, "tag_click")}
+          onQuickTagClick={(tag) => {
+            if (effortMode === "deep") {
+              invalidatePendingDiagnosisRuns();
+              setText(tag);
+              setResult(getDefaultDiagnosisResult(currentLevel, undefined, undefined, language));
+              resetFollowupState();
+              resetMediationState();
+              resetDeepScenarioState();
+              return;
+            }
+
+            void runDiagnosis(tag, "tag_click");
+          }}
         />
 
-        {mediationState ? (
+        {effortMode === "deep" ? (
+          <div id="deep-scenario-module">
+            <DeepScenarioModule
+              sourceText={text}
+              language={language === "en" ? "en" : "zh"}
+              visible
+              resetSignal={deepResetSignal}
+              onApplyScenario={({ scenario, diagnosisInput }) => {
+                const queryText = text.trim() || diagnosisInput.trim();
+                const deepHandoff = buildDeepDiagnosisHandoff({
+                  mode: "deep",
+                  sourceInput: queryText,
+                  scenario,
+                  level: currentLevel
+                });
+
+                void applyDiagnosisResult({
+                  diagnosisInput,
+                  queryText,
+                  scenario,
+                  deepHandoff,
+                  runToken: startDiagnosisRun()
+                });
+              }}
+            />
+          </div>
+        ) : null}
+
+        {effortMode === "standard" && mediationState ? (
           <DiagnoseMediationInline
             language={language === "en" ? "en" : "zh"}
             mode={mediationState.mode}
@@ -621,7 +706,7 @@ function DiagnosePageContent() {
           />
         ) : null}
 
-        {followupState ? (
+        {effortMode === "standard" && followupState ? (
           <InlineFollowupFlow
             scenario={followupState.scenario}
             question={followupState.selectedQuestion}
@@ -636,7 +721,7 @@ function DiagnosePageContent() {
           />
         ) : null}
 
-        {!hasDiagnosed && !followupState && !mediationState && latestSnapshot ? (
+        {!hasDiagnosed && effortMode === "standard" && !followupState && !mediationState && latestSnapshot ? (
           <Card className="space-y-3 border-slate-200 bg-slate-50/60">
             <p className="text-sm font-semibold text-slate-900">
               {language === "en" ? "Latest diagnosis snapshot" : "最近一次诊断快照"}
